@@ -1,0 +1,314 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Utilizadores ────────────────────────────────────────────────────────────
+
+enum Role {
+  enfermeiro
+  auxiliar
+  medico
+  chefe_turno
+  chefe_enfermeiros
+  administrativo
+}
+
+model Utilizador {
+  id                String   @id @default(uuid())
+  numeroFuncionario String   @unique
+  nome              String
+  passwordHash      String
+  role              Role
+  ordemExperiencia  Int? // definida pela chefe de enfermeiros
+  ativo             Boolean  @default(true)
+  criadoEm          DateTime @default(now())
+  atualizadoEm      DateTime @updatedAt
+
+  // Relações
+  turnosComoChefe           Turno[]                    @relation("ChefeTurno")
+  horariosEntrada           HorarioEntrada[]
+  notasTurno                NotaTurno[]
+  tarefasCriadas            Tarefa[]                   @relation("TarefaCriadaPor")
+  tarefasResponsavel        Tarefa[]                   @relation("TarefaResponsavel")
+  medicacoesPrescritas      Medicacao[]                @relation("MedicacaoPrescritor")
+  registosMedicacao         RegistoMedicacao[]
+  doentesAdmitidos          Doente[]                   @relation("DoenteAdmissao")
+  escalas                   Escala[]
+  atribuicoesEnfermeiro     AtribuicaoDoente[]
+  horariosTurnoProfissional HorarioTurnoProfissional[]
+
+  @@map("utilizadores")
+}
+
+// ─── Camas ───────────────────────────────────────────────────────────────────
+
+enum EstadoCama {
+  livre
+  ocupada
+  em_limpeza
+  reservada
+}
+
+model Cama {
+  id     String     @id @default(uuid())
+  numero String     @unique
+  quarto String
+  estado EstadoCama @default(livre)
+
+  doente Doente?
+
+  @@map("camas")
+}
+
+// ─── Doentes ─────────────────────────────────────────────────────────────────
+
+enum EstadoDoente {
+  estavel
+  grave
+  critico
+  alta_prevista
+}
+
+model Doente {
+  id                   String       @id @default(uuid())
+  nome                 String
+  dataNascimento       DateTime
+  numeroProcesso       String       @unique
+  estado               EstadoDoente @default(estavel)
+  diagnosticoPrincipal String
+  dataAdmissao         DateTime     @default(now())
+  dataAltaPrevista     DateTime?
+  dataAlta             DateTime?
+  ativo                Boolean      @default(true)
+
+  camaId String @unique
+  cama   Cama   @relation(fields: [camaId], references: [id])
+
+  administrativoAdmissaoId String
+  administrativo           Utilizador @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
+
+  // Relações
+  atribuicoes       AtribuicaoDoente[]
+  tarefas           Tarefa[]
+  medicacoes        Medicacao[]
+  registosMedicacao RegistoMedicacao[]
+  notasTurno        NotaTurno[]
+  passagensTurno    PassagemTurno[]
+
+  @@map("doentes")
+}
+
+// ─── Turnos e Horários ────────────────────────────────────────────────────────
+
+enum TipoTurno {
+  manha
+  tarde
+  noite
+}
+
+model Turno {
+  id         String    @id @default(uuid())
+  tipo       TipoTurno
+  dataInicio DateTime
+  dataFim    DateTime
+
+  chefeTurnoId String
+  chefeTurno   Utilizador @relation("ChefeTurno", fields: [chefeTurnoId], references: [id])
+
+  // Relações
+  atribuicoes            AtribuicaoDoente[]
+  horariosEntrada        HorarioEntrada[]
+  notasTurno             NotaTurno[]
+  tarefas                Tarefa[]
+  passagensTurnoAnterior PassagemTurno[]    @relation("PassagemTurnoAnterior")
+  passagensTurnoAtual    PassagemTurno[]    @relation("PassagemTurnoAtual")
+
+  @@map("turnos")
+}
+
+model AtribuicaoDoente {
+  id           String @id @default(uuid())
+  doenteId     String
+  enfermeiroId String
+  turnoId      String
+
+  doente     Doente     @relation(fields: [doenteId], references: [id])
+  enfermeiro Utilizador @relation(fields: [enfermeiroId], references: [id])
+  turno      Turno      @relation(fields: [turnoId], references: [id])
+
+  @@unique([doenteId, enfermeiroId, turnoId])
+  @@map("atribuicoes_doente")
+}
+
+model HorarioEntrada {
+  id                 String   @id @default(uuid())
+  turnoId            String
+  utilizadorId       String
+  checkInEm          DateTime @default(now())
+  passagemTurnoVista Boolean  @default(false)
+
+  turno      Turno      @relation(fields: [turnoId], references: [id])
+  utilizador Utilizador @relation(fields: [utilizadorId], references: [id])
+
+  @@unique([turnoId, utilizadorId])
+  @@map("horarios_entrada")
+}
+
+model PassagemTurno {
+  id              String @id @default(uuid())
+  turnoAnteriorId String
+  turnoAtualId    String
+  doenteId        String
+
+  turnoAnterior Turno  @relation("PassagemTurnoAnterior", fields: [turnoAnteriorId], references: [id])
+  turnoAtual    Turno  @relation("PassagemTurnoAtual", fields: [turnoAtualId], references: [id])
+  doente        Doente @relation(fields: [doenteId], references: [id])
+
+  @@map("passagens_turno")
+}
+
+// ─── Notas de Turno ──────────────────────────────────────────────────────────
+
+model NotaTurno {
+  id       String   @id @default(uuid())
+  texto    String
+  criadaEm DateTime @default(now())
+
+  turnoId  String
+  doenteId String
+  autorId  String
+
+  turno  Turno      @relation(fields: [turnoId], references: [id])
+  doente Doente     @relation(fields: [doenteId], references: [id])
+  autor  Utilizador @relation(fields: [autorId], references: [id])
+
+  @@map("notas_turno")
+}
+
+// ─── Tarefas ─────────────────────────────────────────────────────────────────
+
+enum TipoTarefa {
+  clinica
+  logistica
+}
+
+enum PrioridadeTarefa {
+  baixa
+  media
+  alta
+  urgente
+}
+
+enum EstadoTarefa {
+  pendente
+  em_progresso
+  concluida
+  cancelada
+}
+
+model Tarefa {
+  id               String           @id @default(uuid())
+  descricao        String
+  tipo             TipoTarefa
+  prioridade       PrioridadeTarefa @default(media)
+  estado           EstadoTarefa     @default(pendente)
+  prazo            DateTime?
+  transitouDeTurno Boolean          @default(false)
+  criadaEm         DateTime         @default(now())
+  concluidaEm      DateTime?
+
+  doenteId      String
+  responsavelId String
+  criadoPorId   String
+  turnoId       String
+
+  doente      Doente     @relation(fields: [doenteId], references: [id])
+  responsavel Utilizador @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
+  criadoPor   Utilizador @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
+  turno       Turno      @relation(fields: [turnoId], references: [id])
+
+  @@map("tarefas")
+}
+
+// ─── Medicação ───────────────────────────────────────────────────────────────
+
+model Medicacao {
+  id          String    @id @default(uuid())
+  nome        String
+  dose        String
+  via         String
+  frequencia  String
+  ativo       Boolean   @default(true)
+  iniciadoEm  DateTime  @default(now())
+  terminadoEm DateTime?
+
+  doenteId       String
+  prescritoPorId String
+
+  doente       Doente             @relation(fields: [doenteId], references: [id])
+  prescritoPor Utilizador         @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id])
+  registos     RegistoMedicacao[]
+
+  @@map("medicacoes")
+}
+
+model RegistoMedicacao {
+  id             String   @id @default(uuid())
+  administradoEm DateTime @default(now())
+  observacoes    String?
+
+  medicacaoId       String
+  doenteId          String
+  administradoPorId String
+
+  medicacao       Medicacao  @relation(fields: [medicacaoId], references: [id])
+  doente          Doente     @relation(fields: [doenteId], references: [id])
+  administradoPor Utilizador @relation(fields: [administradoPorId], references: [id])
+
+  @@map("registos_medicacao")
+}
+
+// ─── Escalas ─────────────────────────────────────────────────────────────────
+
+model Escala {
+  id          String   @id @default(uuid())
+  mes         Int
+  ano         Int
+  criadaEm    DateTime @default(now())
+  criadaPorId String
+
+  criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id])
+  turnos    HorarioTurno[]
+
+  @@unique([mes, ano])
+  @@map("escalas")
+}
+
+model HorarioTurno {
+  id      String    @id @default(uuid())
+  tipo    TipoTurno
+  data    DateTime
+  escalId String
+
+  escala        Escala                     @relation(fields: [escalId], references: [id])
+  profissionais HorarioTurnoProfissional[]
+
+  @@map("horarios_turno")
+}
+
+model HorarioTurnoProfissional {
+  horarioTurnoId String
+  utilizadorId   String
+
+  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id])
+  utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id])
+
+  @@id([horarioTurnoId, utilizadorId])
+  @@map("horarios_turno_profissionais")
+}
