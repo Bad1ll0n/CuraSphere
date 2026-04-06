@@ -1,0 +1,188 @@
+=========================================================
+  APP DE GESTÃO DE DOENTES HOSPITALARES
+  Conceito e Requisitos
+=========================================================
+
+OBJETIVO
+--------
+Substituir papel, excels e comunicação boca a boca num hospital.
+Centralizar toda a informação clínica e operacional, garantindo
+que nenhuma informação se perde entre turnos ou entre profissionais.
+
+
+PLATAFORMA
+----------
+- App móvel (iOS/Android) + tablet: para enfermeiros, auxiliares e médicos
+- App web (PC): para administrativos e Chefe de Enfermeiros
+- Ambas partilham os mesmos dados em tempo real
+- REQUER LIGAÇÃO À INTERNET OBRIGATÓRIA
+  (evitar conflitos, duplicações ou sobreposição de alterações entre utilizadores)
+
+
+AUTENTICAÇÃO
+------------
+- Login com número de funcionário (+ password)
+- O role do utilizador é determinado automaticamente pelo seu perfil
+
+
+FOCO DO PROJETO (fase atual)
+-----------------------------
+O foco principal é o fluxo dos ENFERMEIROS.
+Médicos e restantes roles serão expandidos em fases futuras.
+
+
+ACESSO A DOENTES
+----------------
+- Qualquer enfermeiro ou médico pode consultar o histórico de QUALQUER doente
+  (para garantir continuidade de cuidados em caso de emergência)
+- A vista prioritária (dashboard, tarefas, alertas) foca-se nos doentes ATRIBUÍDOS
+- Isto garante que ninguém fica sem acesso a informação crítica se o responsável
+  não estiver disponível
+
+
+PERFIS DE UTILIZADOR / ROLES
+-----------------------------
+1. Enfermeiro [FOCO PRINCIPAL]
+   - Vista prioritária dos seus doentes atribuídos
+   - Acesso de consulta a todos os doentes
+   - Responsável por tarefas CLÍNICAS dos seus doentes
+   - Regista medicação administrada
+   - Cria tarefas clínicas
+   - Escreve notas de turno (ficam gravadas e visíveis para turnos seguintes)
+   - Faz check-in no turno (ativa a passagem de turno)
+
+2. Auxiliar
+   - Recebe tarefas logísticas avulsas (sem atribuição fixa de doentes ou áreas)
+   - Responsável por tarefas LOGÍSTICAS
+   - Faz check-in no turno
+   - Gerido pela Chefe de Enfermeiros
+
+3. Médico
+   - Acesso a todos os doentes
+   - Cria tarefas (maioritariamente clínicas)
+   - Regista informação clínica
+   - Faz check-in no turno
+   - Passagem de turno: igual à dos enfermeiros, mas com as tarefas dos médicos
+   - Gestão de turnos médicos: fora do âmbito atual (gerida externamente)
+
+4. Chefe de Turno
+   - Determinado automaticamente pela ordem de experiência definida pela Chefe de Enfermeiros
+   - Distribui doentes pelos enfermeiros no início do turno
+   - Pode atribuir camas na ausência do Administrativo e da Chefe de Enfermeiros
+   - Visão geral do serviço durante o turno
+
+5. Chefe de Enfermeiros
+   - Gere enfermeiros e auxiliares (perfis, dados, ordem de experiência)
+   - Define e gere os horários dos turnos
+   - Pode atribuir camas na ausência do Administrativo
+   - Acesso via PC (app web)
+
+6. Administrativo
+   - Admissão manual de doentes + atribuição de camas
+   - Regista altas
+   - Visão geral: camas, doentes internados, altas previstas
+   - Restante acesso é apenas leitura
+   - Acesso via PC (app web)
+
+
+HIERARQUIA DE ATRIBUIÇÃO DE CAMAS
+----------------------------------
+1. Administrativo
+2. Chefe de Enfermeiros (na ausência do administrativo)
+3. Chefe de Turno (na ausência dos dois anteriores)
+
+
+TIPOS DE TAREFAS
+----------------
+- Clínicas → responsabilidade dos ENFERMEIROS
+  (ex: fazer penso, colher sangue, administrar medicação, monitorizar sinais vitais)
+- Logísticas → responsabilidade dos AUXILIARES
+  (ex: limpar cama, transportar doente, repor material)
+- Ambos os tipos têm grau de prioridade/urgência e prazo
+- Tarefas não concluídas transitam automaticamente para o turno seguinte
+
+
+MÓDULOS PRINCIPAIS
+------------------
+
+[1] DOENTES
+   - Ficha com informações críticas em destaque (estado, alertas, diagnóstico principal)
+   - Restante informação acessível em segundo plano
+   - Admissão pelos administrativos (com atribuição de cama)
+   - Alta pelos administrativos
+
+[2] TAREFAS
+   - Lista de tarefas pendentes por doente, filtrada pelo responsável
+   - Separação clara: clínicas (enfermeiros) vs. logísticas (auxiliares)
+   - Criação por enfermeiros, auxiliares ou médicos
+   - Prioridade/urgência + prazo
+   - Transição automática de tarefas não concluídas para o turno seguinte
+   - Alertas para tarefas em atraso
+
+[3] MEDICAÇÃO
+   - Registo de medicação administrada por doente
+   - Histórico completo por doente
+   - Alertas para medicação pendente
+
+[4] NOTAS DE TURNO
+   - Qualquer enfermeiro pode escrever notas livres associadas a um doente
+   - Ficam gravadas com data, hora e autor
+   - Visíveis nos turnos seguintes e no histórico do doente
+   - Exemplo: "doente agitado esta noite", "família pediu para contactar"
+
+[5] PASSAGEM DE TURNO
+   - Automática, ativada pelo check-in do profissional
+   - Inclui: estado dos doentes atribuídos, tarefas pendentes, notas do turno anterior
+   - Sem check-in = sem acesso ao turno
+   - Passagem de turno para médicos: a definir em fase futura
+
+[6] HORÁRIOS E TURNOS
+   - Geridos pela Chefe de Enfermeiros (via PC)
+   - Chefe de Turno determinado automaticamente pela ordem de experiência
+   - No início do turno, o Chefe de Turno distribui doentes pelos enfermeiros
+   - Visibilidade: cada profissional pode consultar o horário dos colegas do mesmo grupo
+     (enfermeiro vê horários de outros enfermeiros, médico vê horários de outros médicos)
+
+[7] GESTÃO DE CAMAS
+   - Mapa de camas: livre, ocupada, em limpeza, reservada
+   - Atribuição de cama na admissão (hierarquia definida acima)
+
+[8] DASHBOARD (PC)
+   - Ocupação de camas em tempo real
+   - Listagem de doentes internados
+   - Altas previstas
+   - Gestão de horários e escalas
+
+
+ALERTAS E NOTIFICAÇÕES
+----------------------
+- Tarefa em atraso ou próxima do prazo
+- Medicação pendente
+- Doente em estado crítico
+- Tarefas sem responsável atribuído
+- Nova admissão / cama atribuída
+
+
+STACK TECNOLÓGICA
+-----------------
+- Linguagem:    TypeScript (em toda a stack)
+- Mobile/Tablet: React Native + Expo
+- Web (PC):     Next.js
+- Backend/API:  NestJS
+- Base de dados: PostgreSQL
+- Tempo real:   Socket.io (WebSockets)
+- Monorepo:     Nx (suporte nativo a NestJS + geração automática de código)
+
+
+INTEGRAÇÕES
+-----------
+- App completamente independente por agora
+- Expansão futura a definir (ex: integração com sistemas clínicos hospitalares)
+
+
+QUESTÕES EM ABERTO (fase futura)
+---------------------------------
+- Gestão de turnos de médicos: será integrada na app no futuro?
+- Auxiliares recebem tarefas avulsas, sem atribuição fixa de doentes ou áreas.
+
+=========================================================
