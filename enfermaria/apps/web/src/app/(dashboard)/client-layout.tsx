@@ -50,6 +50,36 @@ const navItems = [
     ),
   },
   {
+    href: '/tarefas',
+    label: 'Tarefas',
+    roles: ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h.01M9 16h.01m6-4h-3" />
+      </svg>
+    ),
+  },
+  {
+    href: '/trocas',
+    label: 'Trocas de Turno',
+    roles: ['enfermeiro', 'auxiliar', 'medico', 'chefe_enfermeiros'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    ),
+  },
+  {
+    href: '/atribuicoes',
+    label: 'Atribuições',
+    roles: ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'medico'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+      </svg>
+    ),
+  },
+  {
     href: '/utilizadores',
     label: 'Utilizadores',
     roles: ['chefe_enfermeiros'],
@@ -127,8 +157,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-4 overflow-y-auto" style={{ paddingTop: '28px', paddingBottom: '16px' }}>
-          <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-widest px-3" style={{ marginBottom: '12px' }}>Menu</p>
+        <nav className="flex-1 overflow-y-auto" style={{ paddingTop: '28px', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' }}>
+          <p className="text-slate-600 text-[10px] font-semibold uppercase tracking-widest" style={{ marginBottom: '12px', paddingLeft: '12px' }}>Menu</p>
           {itemsVisiveis.map((item) => {
             const active = pathname === item.href;
             return (
@@ -155,7 +185,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* Perfil */}
-        <div className="px-3 py-4 border-t border-white/5">
+        <div className="border-t border-white/5" style={{ padding: '16px 20px' }}>
           <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1">
             <Avatar nome={utilizador.nome} />
             <div className="flex-1 min-w-0">

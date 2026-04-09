@@ -253,6 +253,25 @@ exports.Prisma.HorarioTurnoProfissionalScalarFieldEnum = {
   utilizadorId: 'utilizadorId'
 };
 
+exports.Prisma.PedidoTrocaTurnoScalarFieldEnum = {
+  id: 'id',
+  estado: 'estado',
+  criadoEm: 'criadoEm',
+  respondidoEm: 'respondidoEm',
+  solicitanteId: 'solicitanteId',
+  turnoId: 'turnoId',
+  destinatarioId: 'destinatarioId',
+  aprovadoPorId: 'aprovadoPorId'
+};
+
+exports.Prisma.AtribuicaoHorarioTurnoScalarFieldEnum = {
+  id: 'id',
+  horarioTurnoId: 'horarioTurnoId',
+  doenteId: 'doenteId',
+  utilizadorId: 'utilizadorId',
+  atribuidoPorId: 'atribuidoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -315,6 +334,13 @@ exports.EstadoTarefa = exports.$Enums.EstadoTarefa = {
   cancelada: 'cancelada'
 };
 
+exports.EstadoPedidoTroca = exports.$Enums.EstadoPedidoTroca = {
+  pendente_destinatario: 'pendente_destinatario',
+  pendente_chefe: 'pendente_chefe',
+  aprovado: 'aprovado',
+  rejeitado: 'rejeitado'
+};
+
 exports.Prisma.ModelName = {
   Utilizador: 'Utilizador',
   Cama: 'Cama',
@@ -329,7 +355,9 @@ exports.Prisma.ModelName = {
   RegistoMedicacao: 'RegistoMedicacao',
   Escala: 'Escala',
   HorarioTurno: 'HorarioTurno',
-  HorarioTurnoProfissional: 'HorarioTurnoProfissional'
+  HorarioTurnoProfissional: 'HorarioTurnoProfissional',
+  PedidoTrocaTurno: 'PedidoTrocaTurno',
+  AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno'
 };
 
 /**

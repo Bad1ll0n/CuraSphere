@@ -9,6 +9,8 @@ import { TarefasModule } from './tarefas/tarefas.module';
 import { MedicacaoModule } from './medicacao/medicacao.module';
 import { TurnosModule } from './turnos/turnos.module';
 import { HorariosModule } from './horarios/horarios.module';
+import { AtribuicoesModule } from './atribuicoes/atribuicoes.module';
+import { TrocasModule } from './trocas/trocas.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -24,6 +26,8 @@ import { AppService } from './app.service';
     MedicacaoModule,
     TurnosModule,
     HorariosModule,
+    AtribuicoesModule,
+    TrocasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

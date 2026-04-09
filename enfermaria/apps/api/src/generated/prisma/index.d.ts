@@ -83,6 +83,16 @@ export type HorarioTurno = $Result.DefaultSelection<Prisma.$HorarioTurnoPayload>
  * 
  */
 export type HorarioTurnoProfissional = $Result.DefaultSelection<Prisma.$HorarioTurnoProfissionalPayload>
+/**
+ * Model PedidoTrocaTurno
+ * 
+ */
+export type PedidoTrocaTurno = $Result.DefaultSelection<Prisma.$PedidoTrocaTurnoPayload>
+/**
+ * Model AtribuicaoHorarioTurno
+ * 
+ */
+export type AtribuicaoHorarioTurno = $Result.DefaultSelection<Prisma.$AtribuicaoHorarioTurnoPayload>
 
 /**
  * Enums
@@ -156,6 +166,16 @@ export const EstadoTarefa: {
 
 export type EstadoTarefa = (typeof EstadoTarefa)[keyof typeof EstadoTarefa]
 
+
+export const EstadoPedidoTroca: {
+  pendente_destinatario: 'pendente_destinatario',
+  pendente_chefe: 'pendente_chefe',
+  aprovado: 'aprovado',
+  rejeitado: 'rejeitado'
+};
+
+export type EstadoPedidoTroca = (typeof EstadoPedidoTroca)[keyof typeof EstadoPedidoTroca]
+
 }
 
 export type Role = $Enums.Role
@@ -185,6 +205,10 @@ export const PrioridadeTarefa: typeof $Enums.PrioridadeTarefa
 export type EstadoTarefa = $Enums.EstadoTarefa
 
 export const EstadoTarefa: typeof $Enums.EstadoTarefa
+
+export type EstadoPedidoTroca = $Enums.EstadoPedidoTroca
+
+export const EstadoPedidoTroca: typeof $Enums.EstadoPedidoTroca
 
 /**
  * ##  Prisma Client ʲˢ
@@ -443,6 +467,26 @@ export class PrismaClient<
     * ```
     */
   get horarioTurnoProfissional(): Prisma.HorarioTurnoProfissionalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pedidoTrocaTurno`: Exposes CRUD operations for the **PedidoTrocaTurno** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PedidoTrocaTurnos
+    * const pedidoTrocaTurnos = await prisma.pedidoTrocaTurno.findMany()
+    * ```
+    */
+  get pedidoTrocaTurno(): Prisma.PedidoTrocaTurnoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.atribuicaoHorarioTurno`: Exposes CRUD operations for the **AtribuicaoHorarioTurno** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AtribuicaoHorarioTurnos
+    * const atribuicaoHorarioTurnos = await prisma.atribuicaoHorarioTurno.findMany()
+    * ```
+    */
+  get atribuicaoHorarioTurno(): Prisma.AtribuicaoHorarioTurnoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -897,7 +941,9 @@ export namespace Prisma {
     RegistoMedicacao: 'RegistoMedicacao',
     Escala: 'Escala',
     HorarioTurno: 'HorarioTurno',
-    HorarioTurnoProfissional: 'HorarioTurnoProfissional'
+    HorarioTurnoProfissional: 'HorarioTurnoProfissional',
+    PedidoTrocaTurno: 'PedidoTrocaTurno',
+    AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -916,7 +962,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional"
+      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1956,6 +2002,154 @@ export namespace Prisma {
           }
         }
       }
+      PedidoTrocaTurno: {
+        payload: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>
+        fields: Prisma.PedidoTrocaTurnoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PedidoTrocaTurnoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PedidoTrocaTurnoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          findFirst: {
+            args: Prisma.PedidoTrocaTurnoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PedidoTrocaTurnoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          findMany: {
+            args: Prisma.PedidoTrocaTurnoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>[]
+          }
+          create: {
+            args: Prisma.PedidoTrocaTurnoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          createMany: {
+            args: Prisma.PedidoTrocaTurnoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PedidoTrocaTurnoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>[]
+          }
+          delete: {
+            args: Prisma.PedidoTrocaTurnoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          update: {
+            args: Prisma.PedidoTrocaTurnoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          deleteMany: {
+            args: Prisma.PedidoTrocaTurnoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PedidoTrocaTurnoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PedidoTrocaTurnoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>[]
+          }
+          upsert: {
+            args: Prisma.PedidoTrocaTurnoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTrocaTurnoPayload>
+          }
+          aggregate: {
+            args: Prisma.PedidoTrocaTurnoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePedidoTrocaTurno>
+          }
+          groupBy: {
+            args: Prisma.PedidoTrocaTurnoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PedidoTrocaTurnoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PedidoTrocaTurnoCountArgs<ExtArgs>
+            result: $Utils.Optional<PedidoTrocaTurnoCountAggregateOutputType> | number
+          }
+        }
+      }
+      AtribuicaoHorarioTurno: {
+        payload: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>
+        fields: Prisma.AtribuicaoHorarioTurnoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AtribuicaoHorarioTurnoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AtribuicaoHorarioTurnoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          findFirst: {
+            args: Prisma.AtribuicaoHorarioTurnoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AtribuicaoHorarioTurnoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          findMany: {
+            args: Prisma.AtribuicaoHorarioTurnoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>[]
+          }
+          create: {
+            args: Prisma.AtribuicaoHorarioTurnoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          createMany: {
+            args: Prisma.AtribuicaoHorarioTurnoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AtribuicaoHorarioTurnoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>[]
+          }
+          delete: {
+            args: Prisma.AtribuicaoHorarioTurnoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          update: {
+            args: Prisma.AtribuicaoHorarioTurnoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AtribuicaoHorarioTurnoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AtribuicaoHorarioTurnoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AtribuicaoHorarioTurnoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AtribuicaoHorarioTurnoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtribuicaoHorarioTurnoPayload>
+          }
+          aggregate: {
+            args: Prisma.AtribuicaoHorarioTurnoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAtribuicaoHorarioTurno>
+          }
+          groupBy: {
+            args: Prisma.AtribuicaoHorarioTurnoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AtribuicaoHorarioTurnoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AtribuicaoHorarioTurnoCountArgs<ExtArgs>
+            result: $Utils.Optional<AtribuicaoHorarioTurnoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2066,6 +2260,8 @@ export namespace Prisma {
     escala?: EscalaOmit
     horarioTurno?: HorarioTurnoOmit
     horarioTurnoProfissional?: HorarioTurnoProfissionalOmit
+    pedidoTrocaTurno?: PedidoTrocaTurnoOmit
+    atribuicaoHorarioTurno?: AtribuicaoHorarioTurnoOmit
   }
 
   /* Types for Logging */
@@ -2157,6 +2353,11 @@ export namespace Prisma {
     escalas: number
     atribuicoesEnfermeiro: number
     horariosTurnoProfissional: number
+    atribuicoesComoUtilizador: number
+    atribuicoesFeitas: number
+    trocasSolicitadas: number
+    trocasRecebidas: number
+    trocasAprovadas: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2171,6 +2372,11 @@ export namespace Prisma {
     escalas?: boolean | UtilizadorCountOutputTypeCountEscalasArgs
     atribuicoesEnfermeiro?: boolean | UtilizadorCountOutputTypeCountAtribuicoesEnfermeiroArgs
     horariosTurnoProfissional?: boolean | UtilizadorCountOutputTypeCountHorariosTurnoProfissionalArgs
+    atribuicoesComoUtilizador?: boolean | UtilizadorCountOutputTypeCountAtribuicoesComoUtilizadorArgs
+    atribuicoesFeitas?: boolean | UtilizadorCountOutputTypeCountAtribuicoesFeitasArgs
+    trocasSolicitadas?: boolean | UtilizadorCountOutputTypeCountTrocasSolicitadasArgs
+    trocasRecebidas?: boolean | UtilizadorCountOutputTypeCountTrocasRecebidasArgs
+    trocasAprovadas?: boolean | UtilizadorCountOutputTypeCountTrocasAprovadasArgs
   }
 
   // Custom InputTypes
@@ -2261,6 +2467,41 @@ export namespace Prisma {
     where?: HorarioTurnoProfissionalWhereInput
   }
 
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAtribuicoesComoUtilizadorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtribuicaoHorarioTurnoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAtribuicoesFeitasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtribuicaoHorarioTurnoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTrocaTurnoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTrocaTurnoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasAprovadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTrocaTurnoWhereInput
+  }
+
 
   /**
    * Count Type DoenteCountOutputType
@@ -2268,6 +2509,7 @@ export namespace Prisma {
 
   export type DoenteCountOutputType = {
     atribuicoes: number
+    atribuicoesHorario: number
     tarefas: number
     medicacoes: number
     registosMedicacao: number
@@ -2277,6 +2519,7 @@ export namespace Prisma {
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     atribuicoes?: boolean | DoenteCountOutputTypeCountAtribuicoesArgs
+    atribuicoesHorario?: boolean | DoenteCountOutputTypeCountAtribuicoesHorarioArgs
     tarefas?: boolean | DoenteCountOutputTypeCountTarefasArgs
     medicacoes?: boolean | DoenteCountOutputTypeCountMedicacoesArgs
     registosMedicacao?: boolean | DoenteCountOutputTypeCountRegistosMedicacaoArgs
@@ -2300,6 +2543,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountAtribuicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AtribuicaoDoenteWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountAtribuicoesHorarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtribuicaoHorarioTurnoWhereInput
   }
 
   /**
@@ -2482,10 +2732,14 @@ export namespace Prisma {
 
   export type HorarioTurnoCountOutputType = {
     profissionais: number
+    atribuicoes: number
+    trocas: number
   }
 
   export type HorarioTurnoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profissionais?: boolean | HorarioTurnoCountOutputTypeCountProfissionaisArgs
+    atribuicoes?: boolean | HorarioTurnoCountOutputTypeCountAtribuicoesArgs
+    trocas?: boolean | HorarioTurnoCountOutputTypeCountTrocasArgs
   }
 
   // Custom InputTypes
@@ -2504,6 +2758,20 @@ export namespace Prisma {
    */
   export type HorarioTurnoCountOutputTypeCountProfissionaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HorarioTurnoProfissionalWhereInput
+  }
+
+  /**
+   * HorarioTurnoCountOutputType without action
+   */
+  export type HorarioTurnoCountOutputTypeCountAtribuicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtribuicaoHorarioTurnoWhereInput
+  }
+
+  /**
+   * HorarioTurnoCountOutputType without action
+   */
+  export type HorarioTurnoCountOutputTypeCountTrocasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTrocaTurnoWhereInput
   }
 
 
@@ -2760,6 +3028,11 @@ export namespace Prisma {
     escalas?: boolean | Utilizador$escalasArgs<ExtArgs>
     atribuicoesEnfermeiro?: boolean | Utilizador$atribuicoesEnfermeiroArgs<ExtArgs>
     horariosTurnoProfissional?: boolean | Utilizador$horariosTurnoProfissionalArgs<ExtArgs>
+    atribuicoesComoUtilizador?: boolean | Utilizador$atribuicoesComoUtilizadorArgs<ExtArgs>
+    atribuicoesFeitas?: boolean | Utilizador$atribuicoesFeitasArgs<ExtArgs>
+    trocasSolicitadas?: boolean | Utilizador$trocasSolicitadasArgs<ExtArgs>
+    trocasRecebidas?: boolean | Utilizador$trocasRecebidasArgs<ExtArgs>
+    trocasAprovadas?: boolean | Utilizador$trocasAprovadasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -2815,6 +3088,11 @@ export namespace Prisma {
     escalas?: boolean | Utilizador$escalasArgs<ExtArgs>
     atribuicoesEnfermeiro?: boolean | Utilizador$atribuicoesEnfermeiroArgs<ExtArgs>
     horariosTurnoProfissional?: boolean | Utilizador$horariosTurnoProfissionalArgs<ExtArgs>
+    atribuicoesComoUtilizador?: boolean | Utilizador$atribuicoesComoUtilizadorArgs<ExtArgs>
+    atribuicoesFeitas?: boolean | Utilizador$atribuicoesFeitasArgs<ExtArgs>
+    trocasSolicitadas?: boolean | Utilizador$trocasSolicitadasArgs<ExtArgs>
+    trocasRecebidas?: boolean | Utilizador$trocasRecebidasArgs<ExtArgs>
+    trocasAprovadas?: boolean | Utilizador$trocasAprovadasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2834,6 +3112,11 @@ export namespace Prisma {
       escalas: Prisma.$EscalaPayload<ExtArgs>[]
       atribuicoesEnfermeiro: Prisma.$AtribuicaoDoentePayload<ExtArgs>[]
       horariosTurnoProfissional: Prisma.$HorarioTurnoProfissionalPayload<ExtArgs>[]
+      atribuicoesComoUtilizador: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>[]
+      atribuicoesFeitas: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>[]
+      trocasSolicitadas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
+      trocasRecebidas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
+      trocasAprovadas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3251,6 +3534,11 @@ export namespace Prisma {
     escalas<T extends Utilizador$escalasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$escalasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EscalaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     atribuicoesEnfermeiro<T extends Utilizador$atribuicoesEnfermeiroArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$atribuicoesEnfermeiroArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     horariosTurnoProfissional<T extends Utilizador$horariosTurnoProfissionalArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$horariosTurnoProfissionalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HorarioTurnoProfissionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    atribuicoesComoUtilizador<T extends Utilizador$atribuicoesComoUtilizadorArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$atribuicoesComoUtilizadorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    atribuicoesFeitas<T extends Utilizador$atribuicoesFeitasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$atribuicoesFeitasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasSolicitadas<T extends Utilizador$trocasSolicitadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasSolicitadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasRecebidas<T extends Utilizador$trocasRecebidasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasRecebidasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasAprovadas<T extends Utilizador$trocasAprovadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasAprovadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3939,6 +4227,126 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HorarioTurnoProfissionalScalarFieldEnum | HorarioTurnoProfissionalScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.atribuicoesComoUtilizador
+   */
+  export type Utilizador$atribuicoesComoUtilizadorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    where?: AtribuicaoHorarioTurnoWhereInput
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.atribuicoesFeitas
+   */
+  export type Utilizador$atribuicoesFeitasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    where?: AtribuicaoHorarioTurnoWhereInput
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasSolicitadas
+   */
+  export type Utilizador$trocasSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    where?: PedidoTrocaTurnoWhereInput
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasRecebidas
+   */
+  export type Utilizador$trocasRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    where?: PedidoTrocaTurnoWhereInput
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasAprovadas
+   */
+  export type Utilizador$trocasAprovadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    where?: PedidoTrocaTurnoWhereInput
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
   }
 
   /**
@@ -5233,6 +5641,7 @@ export namespace Prisma {
     cama?: boolean | CamaDefaultArgs<ExtArgs>
     administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
     atribuicoes?: boolean | Doente$atribuicoesArgs<ExtArgs>
+    atribuicoesHorario?: boolean | Doente$atribuicoesHorarioArgs<ExtArgs>
     tarefas?: boolean | Doente$tarefasArgs<ExtArgs>
     medicacoes?: boolean | Doente$medicacoesArgs<ExtArgs>
     registosMedicacao?: boolean | Doente$registosMedicacaoArgs<ExtArgs>
@@ -5295,6 +5704,7 @@ export namespace Prisma {
     cama?: boolean | CamaDefaultArgs<ExtArgs>
     administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
     atribuicoes?: boolean | Doente$atribuicoesArgs<ExtArgs>
+    atribuicoesHorario?: boolean | Doente$atribuicoesHorarioArgs<ExtArgs>
     tarefas?: boolean | Doente$tarefasArgs<ExtArgs>
     medicacoes?: boolean | Doente$medicacoesArgs<ExtArgs>
     registosMedicacao?: boolean | Doente$registosMedicacaoArgs<ExtArgs>
@@ -5317,6 +5727,7 @@ export namespace Prisma {
       cama: Prisma.$CamaPayload<ExtArgs>
       administrativo: Prisma.$UtilizadorPayload<ExtArgs>
       atribuicoes: Prisma.$AtribuicaoDoentePayload<ExtArgs>[]
+      atribuicoesHorario: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>[]
       tarefas: Prisma.$TarefaPayload<ExtArgs>[]
       medicacoes: Prisma.$MedicacaoPayload<ExtArgs>[]
       registosMedicacao: Prisma.$RegistoMedicacaoPayload<ExtArgs>[]
@@ -5733,6 +6144,7 @@ export namespace Prisma {
     cama<T extends CamaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CamaDefaultArgs<ExtArgs>>): Prisma__CamaClient<$Result.GetResult<Prisma.$CamaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     administrativo<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     atribuicoes<T extends Doente$atribuicoesArgs<ExtArgs> = {}>(args?: Subset<T, Doente$atribuicoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    atribuicoesHorario<T extends Doente$atribuicoesHorarioArgs<ExtArgs> = {}>(args?: Subset<T, Doente$atribuicoesHorarioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tarefas<T extends Doente$tarefasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$tarefasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TarefaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     medicacoes<T extends Doente$medicacoesArgs<ExtArgs> = {}>(args?: Subset<T, Doente$medicacoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     registosMedicacao<T extends Doente$registosMedicacaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$registosMedicacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoMedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6196,6 +6608,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AtribuicaoDoenteScalarFieldEnum | AtribuicaoDoenteScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.atribuicoesHorario
+   */
+  export type Doente$atribuicoesHorarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    where?: AtribuicaoHorarioTurnoWhereInput
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
   }
 
   /**
@@ -10896,7 +11332,7 @@ export namespace Prisma {
     id: string
     texto: string
     criadaEm: Date
-    turnoId: string
+    turnoId: string | null
     doenteId: string
     autorId: string
     _count: NotaTurnoCountAggregateOutputType | null
@@ -10925,7 +11361,7 @@ export namespace Prisma {
     turnoId?: boolean
     doenteId?: boolean
     autorId?: boolean
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaTurno"]>
@@ -10937,7 +11373,7 @@ export namespace Prisma {
     turnoId?: boolean
     doenteId?: boolean
     autorId?: boolean
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaTurno"]>
@@ -10949,7 +11385,7 @@ export namespace Prisma {
     turnoId?: boolean
     doenteId?: boolean
     autorId?: boolean
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaTurno"]>
@@ -10965,17 +11401,17 @@ export namespace Prisma {
 
   export type NotaTurnoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "texto" | "criadaEm" | "turnoId" | "doenteId" | "autorId", ExtArgs["result"]["notaTurno"]>
   export type NotaTurnoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
   export type NotaTurnoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
   export type NotaTurnoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | NotaTurno$turnoArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
@@ -10983,7 +11419,7 @@ export namespace Prisma {
   export type $NotaTurnoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "NotaTurno"
     objects: {
-      turno: Prisma.$TurnoPayload<ExtArgs>
+      turno: Prisma.$TurnoPayload<ExtArgs> | null
       doente: Prisma.$DoentePayload<ExtArgs>
       autor: Prisma.$UtilizadorPayload<ExtArgs>
     }
@@ -10991,7 +11427,7 @@ export namespace Prisma {
       id: string
       texto: string
       criadaEm: Date
-      turnoId: string
+      turnoId: string | null
       doenteId: string
       autorId: string
     }, ExtArgs["result"]["notaTurno"]>
@@ -11388,7 +11824,7 @@ export namespace Prisma {
    */
   export interface Prisma__NotaTurnoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    turno<T extends TurnoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TurnoDefaultArgs<ExtArgs>>): Prisma__TurnoClient<$Result.GetResult<Prisma.$TurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    turno<T extends NotaTurno$turnoArgs<ExtArgs> = {}>(args?: Subset<T, NotaTurno$turnoArgs<ExtArgs>>): Prisma__TurnoClient<$Result.GetResult<Prisma.$TurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     autor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -11822,6 +12258,25 @@ export namespace Prisma {
   }
 
   /**
+   * NotaTurno.turno
+   */
+  export type NotaTurno$turnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turno
+     */
+    select?: TurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turno
+     */
+    omit?: TurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurnoInclude<ExtArgs> | null
+    where?: TurnoWhereInput
+  }
+
+  /**
    * NotaTurno without action
    */
   export type NotaTurnoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12034,7 +12489,7 @@ export namespace Prisma {
     doenteId: string
     responsavelId: string
     criadoPorId: string
-    turnoId: string
+    turnoId: string | null
     _count: TarefaCountAggregateOutputType | null
     _min: TarefaMinAggregateOutputType | null
     _max: TarefaMaxAggregateOutputType | null
@@ -12071,7 +12526,7 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
 
   export type TarefaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12091,7 +12546,7 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
 
   export type TarefaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12111,7 +12566,7 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
 
   export type TarefaSelectScalar = {
@@ -12135,19 +12590,19 @@ export namespace Prisma {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
   export type TarefaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
   export type TarefaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
-    turno?: boolean | TurnoDefaultArgs<ExtArgs>
+    turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
 
   export type $TarefaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12156,7 +12611,7 @@ export namespace Prisma {
       doente: Prisma.$DoentePayload<ExtArgs>
       responsavel: Prisma.$UtilizadorPayload<ExtArgs>
       criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
-      turno: Prisma.$TurnoPayload<ExtArgs>
+      turno: Prisma.$TurnoPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12171,7 +12626,7 @@ export namespace Prisma {
       doenteId: string
       responsavelId: string
       criadoPorId: string
-      turnoId: string
+      turnoId: string | null
     }, ExtArgs["result"]["tarefa"]>
     composites: {}
   }
@@ -12569,7 +13024,7 @@ export namespace Prisma {
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     responsavel<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    turno<T extends TurnoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TurnoDefaultArgs<ExtArgs>>): Prisma__TurnoClient<$Result.GetResult<Prisma.$TurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    turno<T extends Tarefa$turnoArgs<ExtArgs> = {}>(args?: Subset<T, Tarefa$turnoArgs<ExtArgs>>): Prisma__TurnoClient<$Result.GetResult<Prisma.$TurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13005,6 +13460,25 @@ export namespace Prisma {
      * Limit how many Tarefas to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Tarefa.turno
+   */
+  export type Tarefa$turnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Turno
+     */
+    select?: TurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Turno
+     */
+    omit?: TurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TurnoInclude<ExtArgs> | null
+    where?: TurnoWhereInput
   }
 
   /**
@@ -16558,6 +17032,8 @@ export namespace Prisma {
     escalId?: boolean
     escala?: boolean | EscalaDefaultArgs<ExtArgs>
     profissionais?: boolean | HorarioTurno$profissionaisArgs<ExtArgs>
+    atribuicoes?: boolean | HorarioTurno$atribuicoesArgs<ExtArgs>
+    trocas?: boolean | HorarioTurno$trocasArgs<ExtArgs>
     _count?: boolean | HorarioTurnoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["horarioTurno"]>
 
@@ -16588,6 +17064,8 @@ export namespace Prisma {
   export type HorarioTurnoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     escala?: boolean | EscalaDefaultArgs<ExtArgs>
     profissionais?: boolean | HorarioTurno$profissionaisArgs<ExtArgs>
+    atribuicoes?: boolean | HorarioTurno$atribuicoesArgs<ExtArgs>
+    trocas?: boolean | HorarioTurno$trocasArgs<ExtArgs>
     _count?: boolean | HorarioTurnoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HorarioTurnoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16602,6 +17080,8 @@ export namespace Prisma {
     objects: {
       escala: Prisma.$EscalaPayload<ExtArgs>
       profissionais: Prisma.$HorarioTurnoProfissionalPayload<ExtArgs>[]
+      atribuicoes: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>[]
+      trocas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17004,6 +17484,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     escala<T extends EscalaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EscalaDefaultArgs<ExtArgs>>): Prisma__EscalaClient<$Result.GetResult<Prisma.$EscalaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     profissionais<T extends HorarioTurno$profissionaisArgs<ExtArgs> = {}>(args?: Subset<T, HorarioTurno$profissionaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HorarioTurnoProfissionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    atribuicoes<T extends HorarioTurno$atribuicoesArgs<ExtArgs> = {}>(args?: Subset<T, HorarioTurno$atribuicoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocas<T extends HorarioTurno$trocasArgs<ExtArgs> = {}>(args?: Subset<T, HorarioTurno$trocasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17454,6 +17936,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HorarioTurnoProfissionalScalarFieldEnum | HorarioTurnoProfissionalScalarFieldEnum[]
+  }
+
+  /**
+   * HorarioTurno.atribuicoes
+   */
+  export type HorarioTurno$atribuicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    where?: AtribuicaoHorarioTurnoWhereInput
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * HorarioTurno.trocas
+   */
+  export type HorarioTurno$trocasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    where?: PedidoTrocaTurnoWhereInput
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
   }
 
   /**
@@ -18503,6 +19033,2228 @@ export namespace Prisma {
 
 
   /**
+   * Model PedidoTrocaTurno
+   */
+
+  export type AggregatePedidoTrocaTurno = {
+    _count: PedidoTrocaTurnoCountAggregateOutputType | null
+    _min: PedidoTrocaTurnoMinAggregateOutputType | null
+    _max: PedidoTrocaTurnoMaxAggregateOutputType | null
+  }
+
+  export type PedidoTrocaTurnoMinAggregateOutputType = {
+    id: string | null
+    estado: $Enums.EstadoPedidoTroca | null
+    criadoEm: Date | null
+    respondidoEm: Date | null
+    solicitanteId: string | null
+    turnoId: string | null
+    destinatarioId: string | null
+    aprovadoPorId: string | null
+  }
+
+  export type PedidoTrocaTurnoMaxAggregateOutputType = {
+    id: string | null
+    estado: $Enums.EstadoPedidoTroca | null
+    criadoEm: Date | null
+    respondidoEm: Date | null
+    solicitanteId: string | null
+    turnoId: string | null
+    destinatarioId: string | null
+    aprovadoPorId: string | null
+  }
+
+  export type PedidoTrocaTurnoCountAggregateOutputType = {
+    id: number
+    estado: number
+    criadoEm: number
+    respondidoEm: number
+    solicitanteId: number
+    turnoId: number
+    destinatarioId: number
+    aprovadoPorId: number
+    _all: number
+  }
+
+
+  export type PedidoTrocaTurnoMinAggregateInputType = {
+    id?: true
+    estado?: true
+    criadoEm?: true
+    respondidoEm?: true
+    solicitanteId?: true
+    turnoId?: true
+    destinatarioId?: true
+    aprovadoPorId?: true
+  }
+
+  export type PedidoTrocaTurnoMaxAggregateInputType = {
+    id?: true
+    estado?: true
+    criadoEm?: true
+    respondidoEm?: true
+    solicitanteId?: true
+    turnoId?: true
+    destinatarioId?: true
+    aprovadoPorId?: true
+  }
+
+  export type PedidoTrocaTurnoCountAggregateInputType = {
+    id?: true
+    estado?: true
+    criadoEm?: true
+    respondidoEm?: true
+    solicitanteId?: true
+    turnoId?: true
+    destinatarioId?: true
+    aprovadoPorId?: true
+    _all?: true
+  }
+
+  export type PedidoTrocaTurnoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PedidoTrocaTurno to aggregate.
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTrocaTurnos to fetch.
+     */
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTrocaTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTrocaTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PedidoTrocaTurnos
+    **/
+    _count?: true | PedidoTrocaTurnoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PedidoTrocaTurnoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PedidoTrocaTurnoMaxAggregateInputType
+  }
+
+  export type GetPedidoTrocaTurnoAggregateType<T extends PedidoTrocaTurnoAggregateArgs> = {
+        [P in keyof T & keyof AggregatePedidoTrocaTurno]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePedidoTrocaTurno[P]>
+      : GetScalarType<T[P], AggregatePedidoTrocaTurno[P]>
+  }
+
+
+
+
+  export type PedidoTrocaTurnoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTrocaTurnoWhereInput
+    orderBy?: PedidoTrocaTurnoOrderByWithAggregationInput | PedidoTrocaTurnoOrderByWithAggregationInput[]
+    by: PedidoTrocaTurnoScalarFieldEnum[] | PedidoTrocaTurnoScalarFieldEnum
+    having?: PedidoTrocaTurnoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PedidoTrocaTurnoCountAggregateInputType | true
+    _min?: PedidoTrocaTurnoMinAggregateInputType
+    _max?: PedidoTrocaTurnoMaxAggregateInputType
+  }
+
+  export type PedidoTrocaTurnoGroupByOutputType = {
+    id: string
+    estado: $Enums.EstadoPedidoTroca
+    criadoEm: Date
+    respondidoEm: Date | null
+    solicitanteId: string
+    turnoId: string
+    destinatarioId: string
+    aprovadoPorId: string | null
+    _count: PedidoTrocaTurnoCountAggregateOutputType | null
+    _min: PedidoTrocaTurnoMinAggregateOutputType | null
+    _max: PedidoTrocaTurnoMaxAggregateOutputType | null
+  }
+
+  type GetPedidoTrocaTurnoGroupByPayload<T extends PedidoTrocaTurnoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PedidoTrocaTurnoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PedidoTrocaTurnoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PedidoTrocaTurnoGroupByOutputType[P]>
+            : GetScalarType<T[P], PedidoTrocaTurnoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PedidoTrocaTurnoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    estado?: boolean
+    criadoEm?: boolean
+    respondidoEm?: boolean
+    solicitanteId?: boolean
+    turnoId?: boolean
+    destinatarioId?: boolean
+    aprovadoPorId?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTrocaTurno"]>
+
+  export type PedidoTrocaTurnoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    estado?: boolean
+    criadoEm?: boolean
+    respondidoEm?: boolean
+    solicitanteId?: boolean
+    turnoId?: boolean
+    destinatarioId?: boolean
+    aprovadoPorId?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTrocaTurno"]>
+
+  export type PedidoTrocaTurnoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    estado?: boolean
+    criadoEm?: boolean
+    respondidoEm?: boolean
+    solicitanteId?: boolean
+    turnoId?: boolean
+    destinatarioId?: boolean
+    aprovadoPorId?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTrocaTurno"]>
+
+  export type PedidoTrocaTurnoSelectScalar = {
+    id?: boolean
+    estado?: boolean
+    criadoEm?: boolean
+    respondidoEm?: boolean
+    solicitanteId?: boolean
+    turnoId?: boolean
+    destinatarioId?: boolean
+    aprovadoPorId?: boolean
+  }
+
+  export type PedidoTrocaTurnoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "estado" | "criadoEm" | "respondidoEm" | "solicitanteId" | "turnoId" | "destinatarioId" | "aprovadoPorId", ExtArgs["result"]["pedidoTrocaTurno"]>
+  export type PedidoTrocaTurnoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }
+  export type PedidoTrocaTurnoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }
+  export type PedidoTrocaTurnoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    turno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>
+  }
+
+  export type $PedidoTrocaTurnoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PedidoTrocaTurno"
+    objects: {
+      solicitante: Prisma.$UtilizadorPayload<ExtArgs>
+      destinatario: Prisma.$UtilizadorPayload<ExtArgs>
+      turno: Prisma.$HorarioTurnoPayload<ExtArgs>
+      aprovadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      estado: $Enums.EstadoPedidoTroca
+      criadoEm: Date
+      respondidoEm: Date | null
+      solicitanteId: string
+      turnoId: string
+      destinatarioId: string
+      aprovadoPorId: string | null
+    }, ExtArgs["result"]["pedidoTrocaTurno"]>
+    composites: {}
+  }
+
+  type PedidoTrocaTurnoGetPayload<S extends boolean | null | undefined | PedidoTrocaTurnoDefaultArgs> = $Result.GetResult<Prisma.$PedidoTrocaTurnoPayload, S>
+
+  type PedidoTrocaTurnoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PedidoTrocaTurnoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PedidoTrocaTurnoCountAggregateInputType | true
+    }
+
+  export interface PedidoTrocaTurnoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PedidoTrocaTurno'], meta: { name: 'PedidoTrocaTurno' } }
+    /**
+     * Find zero or one PedidoTrocaTurno that matches the filter.
+     * @param {PedidoTrocaTurnoFindUniqueArgs} args - Arguments to find a PedidoTrocaTurno
+     * @example
+     * // Get one PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PedidoTrocaTurnoFindUniqueArgs>(args: SelectSubset<T, PedidoTrocaTurnoFindUniqueArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PedidoTrocaTurno that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PedidoTrocaTurnoFindUniqueOrThrowArgs} args - Arguments to find a PedidoTrocaTurno
+     * @example
+     * // Get one PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PedidoTrocaTurnoFindUniqueOrThrowArgs>(args: SelectSubset<T, PedidoTrocaTurnoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PedidoTrocaTurno that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoFindFirstArgs} args - Arguments to find a PedidoTrocaTurno
+     * @example
+     * // Get one PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PedidoTrocaTurnoFindFirstArgs>(args?: SelectSubset<T, PedidoTrocaTurnoFindFirstArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PedidoTrocaTurno that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoFindFirstOrThrowArgs} args - Arguments to find a PedidoTrocaTurno
+     * @example
+     * // Get one PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PedidoTrocaTurnoFindFirstOrThrowArgs>(args?: SelectSubset<T, PedidoTrocaTurnoFindFirstOrThrowArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PedidoTrocaTurnos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PedidoTrocaTurnos
+     * const pedidoTrocaTurnos = await prisma.pedidoTrocaTurno.findMany()
+     * 
+     * // Get first 10 PedidoTrocaTurnos
+     * const pedidoTrocaTurnos = await prisma.pedidoTrocaTurno.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pedidoTrocaTurnoWithIdOnly = await prisma.pedidoTrocaTurno.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PedidoTrocaTurnoFindManyArgs>(args?: SelectSubset<T, PedidoTrocaTurnoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PedidoTrocaTurno.
+     * @param {PedidoTrocaTurnoCreateArgs} args - Arguments to create a PedidoTrocaTurno.
+     * @example
+     * // Create one PedidoTrocaTurno
+     * const PedidoTrocaTurno = await prisma.pedidoTrocaTurno.create({
+     *   data: {
+     *     // ... data to create a PedidoTrocaTurno
+     *   }
+     * })
+     * 
+     */
+    create<T extends PedidoTrocaTurnoCreateArgs>(args: SelectSubset<T, PedidoTrocaTurnoCreateArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PedidoTrocaTurnos.
+     * @param {PedidoTrocaTurnoCreateManyArgs} args - Arguments to create many PedidoTrocaTurnos.
+     * @example
+     * // Create many PedidoTrocaTurnos
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PedidoTrocaTurnoCreateManyArgs>(args?: SelectSubset<T, PedidoTrocaTurnoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PedidoTrocaTurnos and returns the data saved in the database.
+     * @param {PedidoTrocaTurnoCreateManyAndReturnArgs} args - Arguments to create many PedidoTrocaTurnos.
+     * @example
+     * // Create many PedidoTrocaTurnos
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PedidoTrocaTurnos and only return the `id`
+     * const pedidoTrocaTurnoWithIdOnly = await prisma.pedidoTrocaTurno.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PedidoTrocaTurnoCreateManyAndReturnArgs>(args?: SelectSubset<T, PedidoTrocaTurnoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PedidoTrocaTurno.
+     * @param {PedidoTrocaTurnoDeleteArgs} args - Arguments to delete one PedidoTrocaTurno.
+     * @example
+     * // Delete one PedidoTrocaTurno
+     * const PedidoTrocaTurno = await prisma.pedidoTrocaTurno.delete({
+     *   where: {
+     *     // ... filter to delete one PedidoTrocaTurno
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PedidoTrocaTurnoDeleteArgs>(args: SelectSubset<T, PedidoTrocaTurnoDeleteArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PedidoTrocaTurno.
+     * @param {PedidoTrocaTurnoUpdateArgs} args - Arguments to update one PedidoTrocaTurno.
+     * @example
+     * // Update one PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PedidoTrocaTurnoUpdateArgs>(args: SelectSubset<T, PedidoTrocaTurnoUpdateArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PedidoTrocaTurnos.
+     * @param {PedidoTrocaTurnoDeleteManyArgs} args - Arguments to filter PedidoTrocaTurnos to delete.
+     * @example
+     * // Delete a few PedidoTrocaTurnos
+     * const { count } = await prisma.pedidoTrocaTurno.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PedidoTrocaTurnoDeleteManyArgs>(args?: SelectSubset<T, PedidoTrocaTurnoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PedidoTrocaTurnos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PedidoTrocaTurnos
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PedidoTrocaTurnoUpdateManyArgs>(args: SelectSubset<T, PedidoTrocaTurnoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PedidoTrocaTurnos and returns the data updated in the database.
+     * @param {PedidoTrocaTurnoUpdateManyAndReturnArgs} args - Arguments to update many PedidoTrocaTurnos.
+     * @example
+     * // Update many PedidoTrocaTurnos
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PedidoTrocaTurnos and only return the `id`
+     * const pedidoTrocaTurnoWithIdOnly = await prisma.pedidoTrocaTurno.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PedidoTrocaTurnoUpdateManyAndReturnArgs>(args: SelectSubset<T, PedidoTrocaTurnoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PedidoTrocaTurno.
+     * @param {PedidoTrocaTurnoUpsertArgs} args - Arguments to update or create a PedidoTrocaTurno.
+     * @example
+     * // Update or create a PedidoTrocaTurno
+     * const pedidoTrocaTurno = await prisma.pedidoTrocaTurno.upsert({
+     *   create: {
+     *     // ... data to create a PedidoTrocaTurno
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PedidoTrocaTurno we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PedidoTrocaTurnoUpsertArgs>(args: SelectSubset<T, PedidoTrocaTurnoUpsertArgs<ExtArgs>>): Prisma__PedidoTrocaTurnoClient<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PedidoTrocaTurnos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoCountArgs} args - Arguments to filter PedidoTrocaTurnos to count.
+     * @example
+     * // Count the number of PedidoTrocaTurnos
+     * const count = await prisma.pedidoTrocaTurno.count({
+     *   where: {
+     *     // ... the filter for the PedidoTrocaTurnos we want to count
+     *   }
+     * })
+    **/
+    count<T extends PedidoTrocaTurnoCountArgs>(
+      args?: Subset<T, PedidoTrocaTurnoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PedidoTrocaTurnoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PedidoTrocaTurno.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PedidoTrocaTurnoAggregateArgs>(args: Subset<T, PedidoTrocaTurnoAggregateArgs>): Prisma.PrismaPromise<GetPedidoTrocaTurnoAggregateType<T>>
+
+    /**
+     * Group by PedidoTrocaTurno.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTrocaTurnoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PedidoTrocaTurnoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PedidoTrocaTurnoGroupByArgs['orderBy'] }
+        : { orderBy?: PedidoTrocaTurnoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PedidoTrocaTurnoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPedidoTrocaTurnoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PedidoTrocaTurno model
+   */
+  readonly fields: PedidoTrocaTurnoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PedidoTrocaTurno.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PedidoTrocaTurnoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    solicitante<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    destinatario<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    turno<T extends HorarioTurnoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HorarioTurnoDefaultArgs<ExtArgs>>): Prisma__HorarioTurnoClient<$Result.GetResult<Prisma.$HorarioTurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    aprovadoPor<T extends PedidoTrocaTurno$aprovadoPorArgs<ExtArgs> = {}>(args?: Subset<T, PedidoTrocaTurno$aprovadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PedidoTrocaTurno model
+   */
+  interface PedidoTrocaTurnoFieldRefs {
+    readonly id: FieldRef<"PedidoTrocaTurno", 'String'>
+    readonly estado: FieldRef<"PedidoTrocaTurno", 'EstadoPedidoTroca'>
+    readonly criadoEm: FieldRef<"PedidoTrocaTurno", 'DateTime'>
+    readonly respondidoEm: FieldRef<"PedidoTrocaTurno", 'DateTime'>
+    readonly solicitanteId: FieldRef<"PedidoTrocaTurno", 'String'>
+    readonly turnoId: FieldRef<"PedidoTrocaTurno", 'String'>
+    readonly destinatarioId: FieldRef<"PedidoTrocaTurno", 'String'>
+    readonly aprovadoPorId: FieldRef<"PedidoTrocaTurno", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PedidoTrocaTurno findUnique
+   */
+  export type PedidoTrocaTurnoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTrocaTurno to fetch.
+     */
+    where: PedidoTrocaTurnoWhereUniqueInput
+  }
+
+  /**
+   * PedidoTrocaTurno findUniqueOrThrow
+   */
+  export type PedidoTrocaTurnoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTrocaTurno to fetch.
+     */
+    where: PedidoTrocaTurnoWhereUniqueInput
+  }
+
+  /**
+   * PedidoTrocaTurno findFirst
+   */
+  export type PedidoTrocaTurnoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTrocaTurno to fetch.
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTrocaTurnos to fetch.
+     */
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PedidoTrocaTurnos.
+     */
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTrocaTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTrocaTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PedidoTrocaTurnos.
+     */
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTrocaTurno findFirstOrThrow
+   */
+  export type PedidoTrocaTurnoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTrocaTurno to fetch.
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTrocaTurnos to fetch.
+     */
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PedidoTrocaTurnos.
+     */
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTrocaTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTrocaTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PedidoTrocaTurnos.
+     */
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTrocaTurno findMany
+   */
+  export type PedidoTrocaTurnoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTrocaTurnos to fetch.
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTrocaTurnos to fetch.
+     */
+    orderBy?: PedidoTrocaTurnoOrderByWithRelationInput | PedidoTrocaTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PedidoTrocaTurnos.
+     */
+    cursor?: PedidoTrocaTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTrocaTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTrocaTurnos.
+     */
+    skip?: number
+    distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTrocaTurno create
+   */
+  export type PedidoTrocaTurnoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PedidoTrocaTurno.
+     */
+    data: XOR<PedidoTrocaTurnoCreateInput, PedidoTrocaTurnoUncheckedCreateInput>
+  }
+
+  /**
+   * PedidoTrocaTurno createMany
+   */
+  export type PedidoTrocaTurnoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PedidoTrocaTurnos.
+     */
+    data: PedidoTrocaTurnoCreateManyInput | PedidoTrocaTurnoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PedidoTrocaTurno createManyAndReturn
+   */
+  export type PedidoTrocaTurnoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * The data used to create many PedidoTrocaTurnos.
+     */
+    data: PedidoTrocaTurnoCreateManyInput | PedidoTrocaTurnoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PedidoTrocaTurno update
+   */
+  export type PedidoTrocaTurnoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PedidoTrocaTurno.
+     */
+    data: XOR<PedidoTrocaTurnoUpdateInput, PedidoTrocaTurnoUncheckedUpdateInput>
+    /**
+     * Choose, which PedidoTrocaTurno to update.
+     */
+    where: PedidoTrocaTurnoWhereUniqueInput
+  }
+
+  /**
+   * PedidoTrocaTurno updateMany
+   */
+  export type PedidoTrocaTurnoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PedidoTrocaTurnos.
+     */
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyInput>
+    /**
+     * Filter which PedidoTrocaTurnos to update
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * Limit how many PedidoTrocaTurnos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PedidoTrocaTurno updateManyAndReturn
+   */
+  export type PedidoTrocaTurnoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * The data used to update PedidoTrocaTurnos.
+     */
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyInput>
+    /**
+     * Filter which PedidoTrocaTurnos to update
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * Limit how many PedidoTrocaTurnos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PedidoTrocaTurno upsert
+   */
+  export type PedidoTrocaTurnoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PedidoTrocaTurno to update in case it exists.
+     */
+    where: PedidoTrocaTurnoWhereUniqueInput
+    /**
+     * In case the PedidoTrocaTurno found by the `where` argument doesn't exist, create a new PedidoTrocaTurno with this data.
+     */
+    create: XOR<PedidoTrocaTurnoCreateInput, PedidoTrocaTurnoUncheckedCreateInput>
+    /**
+     * In case the PedidoTrocaTurno was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PedidoTrocaTurnoUpdateInput, PedidoTrocaTurnoUncheckedUpdateInput>
+  }
+
+  /**
+   * PedidoTrocaTurno delete
+   */
+  export type PedidoTrocaTurnoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+    /**
+     * Filter which PedidoTrocaTurno to delete.
+     */
+    where: PedidoTrocaTurnoWhereUniqueInput
+  }
+
+  /**
+   * PedidoTrocaTurno deleteMany
+   */
+  export type PedidoTrocaTurnoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PedidoTrocaTurnos to delete
+     */
+    where?: PedidoTrocaTurnoWhereInput
+    /**
+     * Limit how many PedidoTrocaTurnos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PedidoTrocaTurno.aprovadoPor
+   */
+  export type PedidoTrocaTurno$aprovadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * PedidoTrocaTurno without action
+   */
+  export type PedidoTrocaTurnoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTrocaTurno
+     */
+    select?: PedidoTrocaTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTrocaTurno
+     */
+    omit?: PedidoTrocaTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTrocaTurnoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AtribuicaoHorarioTurno
+   */
+
+  export type AggregateAtribuicaoHorarioTurno = {
+    _count: AtribuicaoHorarioTurnoCountAggregateOutputType | null
+    _min: AtribuicaoHorarioTurnoMinAggregateOutputType | null
+    _max: AtribuicaoHorarioTurnoMaxAggregateOutputType | null
+  }
+
+  export type AtribuicaoHorarioTurnoMinAggregateOutputType = {
+    id: string | null
+    horarioTurnoId: string | null
+    doenteId: string | null
+    utilizadorId: string | null
+    atribuidoPorId: string | null
+  }
+
+  export type AtribuicaoHorarioTurnoMaxAggregateOutputType = {
+    id: string | null
+    horarioTurnoId: string | null
+    doenteId: string | null
+    utilizadorId: string | null
+    atribuidoPorId: string | null
+  }
+
+  export type AtribuicaoHorarioTurnoCountAggregateOutputType = {
+    id: number
+    horarioTurnoId: number
+    doenteId: number
+    utilizadorId: number
+    atribuidoPorId: number
+    _all: number
+  }
+
+
+  export type AtribuicaoHorarioTurnoMinAggregateInputType = {
+    id?: true
+    horarioTurnoId?: true
+    doenteId?: true
+    utilizadorId?: true
+    atribuidoPorId?: true
+  }
+
+  export type AtribuicaoHorarioTurnoMaxAggregateInputType = {
+    id?: true
+    horarioTurnoId?: true
+    doenteId?: true
+    utilizadorId?: true
+    atribuidoPorId?: true
+  }
+
+  export type AtribuicaoHorarioTurnoCountAggregateInputType = {
+    id?: true
+    horarioTurnoId?: true
+    doenteId?: true
+    utilizadorId?: true
+    atribuidoPorId?: true
+    _all?: true
+  }
+
+  export type AtribuicaoHorarioTurnoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtribuicaoHorarioTurno to aggregate.
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtribuicaoHorarioTurnos to fetch.
+     */
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtribuicaoHorarioTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtribuicaoHorarioTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AtribuicaoHorarioTurnos
+    **/
+    _count?: true | AtribuicaoHorarioTurnoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AtribuicaoHorarioTurnoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AtribuicaoHorarioTurnoMaxAggregateInputType
+  }
+
+  export type GetAtribuicaoHorarioTurnoAggregateType<T extends AtribuicaoHorarioTurnoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAtribuicaoHorarioTurno]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAtribuicaoHorarioTurno[P]>
+      : GetScalarType<T[P], AggregateAtribuicaoHorarioTurno[P]>
+  }
+
+
+
+
+  export type AtribuicaoHorarioTurnoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtribuicaoHorarioTurnoWhereInput
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithAggregationInput | AtribuicaoHorarioTurnoOrderByWithAggregationInput[]
+    by: AtribuicaoHorarioTurnoScalarFieldEnum[] | AtribuicaoHorarioTurnoScalarFieldEnum
+    having?: AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AtribuicaoHorarioTurnoCountAggregateInputType | true
+    _min?: AtribuicaoHorarioTurnoMinAggregateInputType
+    _max?: AtribuicaoHorarioTurnoMaxAggregateInputType
+  }
+
+  export type AtribuicaoHorarioTurnoGroupByOutputType = {
+    id: string
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+    atribuidoPorId: string
+    _count: AtribuicaoHorarioTurnoCountAggregateOutputType | null
+    _min: AtribuicaoHorarioTurnoMinAggregateOutputType | null
+    _max: AtribuicaoHorarioTurnoMaxAggregateOutputType | null
+  }
+
+  type GetAtribuicaoHorarioTurnoGroupByPayload<T extends AtribuicaoHorarioTurnoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AtribuicaoHorarioTurnoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AtribuicaoHorarioTurnoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AtribuicaoHorarioTurnoGroupByOutputType[P]>
+            : GetScalarType<T[P], AtribuicaoHorarioTurnoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AtribuicaoHorarioTurnoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    horarioTurnoId?: boolean
+    doenteId?: boolean
+    utilizadorId?: boolean
+    atribuidoPorId?: boolean
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atribuicaoHorarioTurno"]>
+
+  export type AtribuicaoHorarioTurnoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    horarioTurnoId?: boolean
+    doenteId?: boolean
+    utilizadorId?: boolean
+    atribuidoPorId?: boolean
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atribuicaoHorarioTurno"]>
+
+  export type AtribuicaoHorarioTurnoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    horarioTurnoId?: boolean
+    doenteId?: boolean
+    utilizadorId?: boolean
+    atribuidoPorId?: boolean
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atribuicaoHorarioTurno"]>
+
+  export type AtribuicaoHorarioTurnoSelectScalar = {
+    id?: boolean
+    horarioTurnoId?: boolean
+    doenteId?: boolean
+    utilizadorId?: boolean
+    atribuidoPorId?: boolean
+  }
+
+  export type AtribuicaoHorarioTurnoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "horarioTurnoId" | "doenteId" | "utilizadorId" | "atribuidoPorId", ExtArgs["result"]["atribuicaoHorarioTurno"]>
+  export type AtribuicaoHorarioTurnoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AtribuicaoHorarioTurnoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AtribuicaoHorarioTurnoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    horarioTurno?: boolean | HorarioTurnoDefaultArgs<ExtArgs>
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atribuidoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $AtribuicaoHorarioTurnoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AtribuicaoHorarioTurno"
+    objects: {
+      horarioTurno: Prisma.$HorarioTurnoPayload<ExtArgs>
+      doente: Prisma.$DoentePayload<ExtArgs>
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+      atribuidoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      horarioTurnoId: string
+      doenteId: string
+      utilizadorId: string
+      atribuidoPorId: string
+    }, ExtArgs["result"]["atribuicaoHorarioTurno"]>
+    composites: {}
+  }
+
+  type AtribuicaoHorarioTurnoGetPayload<S extends boolean | null | undefined | AtribuicaoHorarioTurnoDefaultArgs> = $Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload, S>
+
+  type AtribuicaoHorarioTurnoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AtribuicaoHorarioTurnoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AtribuicaoHorarioTurnoCountAggregateInputType | true
+    }
+
+  export interface AtribuicaoHorarioTurnoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AtribuicaoHorarioTurno'], meta: { name: 'AtribuicaoHorarioTurno' } }
+    /**
+     * Find zero or one AtribuicaoHorarioTurno that matches the filter.
+     * @param {AtribuicaoHorarioTurnoFindUniqueArgs} args - Arguments to find a AtribuicaoHorarioTurno
+     * @example
+     * // Get one AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AtribuicaoHorarioTurnoFindUniqueArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoFindUniqueArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AtribuicaoHorarioTurno that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AtribuicaoHorarioTurnoFindUniqueOrThrowArgs} args - Arguments to find a AtribuicaoHorarioTurno
+     * @example
+     * // Get one AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AtribuicaoHorarioTurnoFindUniqueOrThrowArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtribuicaoHorarioTurno that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoFindFirstArgs} args - Arguments to find a AtribuicaoHorarioTurno
+     * @example
+     * // Get one AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AtribuicaoHorarioTurnoFindFirstArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoFindFirstArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtribuicaoHorarioTurno that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoFindFirstOrThrowArgs} args - Arguments to find a AtribuicaoHorarioTurno
+     * @example
+     * // Get one AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AtribuicaoHorarioTurnoFindFirstOrThrowArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AtribuicaoHorarioTurnos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurnos = await prisma.atribuicaoHorarioTurno.findMany()
+     * 
+     * // Get first 10 AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurnos = await prisma.atribuicaoHorarioTurno.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const atribuicaoHorarioTurnoWithIdOnly = await prisma.atribuicaoHorarioTurno.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AtribuicaoHorarioTurnoFindManyArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AtribuicaoHorarioTurno.
+     * @param {AtribuicaoHorarioTurnoCreateArgs} args - Arguments to create a AtribuicaoHorarioTurno.
+     * @example
+     * // Create one AtribuicaoHorarioTurno
+     * const AtribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.create({
+     *   data: {
+     *     // ... data to create a AtribuicaoHorarioTurno
+     *   }
+     * })
+     * 
+     */
+    create<T extends AtribuicaoHorarioTurnoCreateArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoCreateArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AtribuicaoHorarioTurnos.
+     * @param {AtribuicaoHorarioTurnoCreateManyArgs} args - Arguments to create many AtribuicaoHorarioTurnos.
+     * @example
+     * // Create many AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AtribuicaoHorarioTurnoCreateManyArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AtribuicaoHorarioTurnos and returns the data saved in the database.
+     * @param {AtribuicaoHorarioTurnoCreateManyAndReturnArgs} args - Arguments to create many AtribuicaoHorarioTurnos.
+     * @example
+     * // Create many AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AtribuicaoHorarioTurnos and only return the `id`
+     * const atribuicaoHorarioTurnoWithIdOnly = await prisma.atribuicaoHorarioTurno.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AtribuicaoHorarioTurnoCreateManyAndReturnArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AtribuicaoHorarioTurno.
+     * @param {AtribuicaoHorarioTurnoDeleteArgs} args - Arguments to delete one AtribuicaoHorarioTurno.
+     * @example
+     * // Delete one AtribuicaoHorarioTurno
+     * const AtribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.delete({
+     *   where: {
+     *     // ... filter to delete one AtribuicaoHorarioTurno
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AtribuicaoHorarioTurnoDeleteArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoDeleteArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AtribuicaoHorarioTurno.
+     * @param {AtribuicaoHorarioTurnoUpdateArgs} args - Arguments to update one AtribuicaoHorarioTurno.
+     * @example
+     * // Update one AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AtribuicaoHorarioTurnoUpdateArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoUpdateArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AtribuicaoHorarioTurnos.
+     * @param {AtribuicaoHorarioTurnoDeleteManyArgs} args - Arguments to filter AtribuicaoHorarioTurnos to delete.
+     * @example
+     * // Delete a few AtribuicaoHorarioTurnos
+     * const { count } = await prisma.atribuicaoHorarioTurno.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AtribuicaoHorarioTurnoDeleteManyArgs>(args?: SelectSubset<T, AtribuicaoHorarioTurnoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtribuicaoHorarioTurnos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AtribuicaoHorarioTurnoUpdateManyArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtribuicaoHorarioTurnos and returns the data updated in the database.
+     * @param {AtribuicaoHorarioTurnoUpdateManyAndReturnArgs} args - Arguments to update many AtribuicaoHorarioTurnos.
+     * @example
+     * // Update many AtribuicaoHorarioTurnos
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AtribuicaoHorarioTurnos and only return the `id`
+     * const atribuicaoHorarioTurnoWithIdOnly = await prisma.atribuicaoHorarioTurno.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AtribuicaoHorarioTurnoUpdateManyAndReturnArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AtribuicaoHorarioTurno.
+     * @param {AtribuicaoHorarioTurnoUpsertArgs} args - Arguments to update or create a AtribuicaoHorarioTurno.
+     * @example
+     * // Update or create a AtribuicaoHorarioTurno
+     * const atribuicaoHorarioTurno = await prisma.atribuicaoHorarioTurno.upsert({
+     *   create: {
+     *     // ... data to create a AtribuicaoHorarioTurno
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AtribuicaoHorarioTurno we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AtribuicaoHorarioTurnoUpsertArgs>(args: SelectSubset<T, AtribuicaoHorarioTurnoUpsertArgs<ExtArgs>>): Prisma__AtribuicaoHorarioTurnoClient<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AtribuicaoHorarioTurnos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoCountArgs} args - Arguments to filter AtribuicaoHorarioTurnos to count.
+     * @example
+     * // Count the number of AtribuicaoHorarioTurnos
+     * const count = await prisma.atribuicaoHorarioTurno.count({
+     *   where: {
+     *     // ... the filter for the AtribuicaoHorarioTurnos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AtribuicaoHorarioTurnoCountArgs>(
+      args?: Subset<T, AtribuicaoHorarioTurnoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AtribuicaoHorarioTurnoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AtribuicaoHorarioTurno.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AtribuicaoHorarioTurnoAggregateArgs>(args: Subset<T, AtribuicaoHorarioTurnoAggregateArgs>): Prisma.PrismaPromise<GetAtribuicaoHorarioTurnoAggregateType<T>>
+
+    /**
+     * Group by AtribuicaoHorarioTurno.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtribuicaoHorarioTurnoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AtribuicaoHorarioTurnoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AtribuicaoHorarioTurnoGroupByArgs['orderBy'] }
+        : { orderBy?: AtribuicaoHorarioTurnoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AtribuicaoHorarioTurnoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAtribuicaoHorarioTurnoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AtribuicaoHorarioTurno model
+   */
+  readonly fields: AtribuicaoHorarioTurnoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AtribuicaoHorarioTurno.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AtribuicaoHorarioTurnoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    horarioTurno<T extends HorarioTurnoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HorarioTurnoDefaultArgs<ExtArgs>>): Prisma__HorarioTurnoClient<$Result.GetResult<Prisma.$HorarioTurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    atribuidoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AtribuicaoHorarioTurno model
+   */
+  interface AtribuicaoHorarioTurnoFieldRefs {
+    readonly id: FieldRef<"AtribuicaoHorarioTurno", 'String'>
+    readonly horarioTurnoId: FieldRef<"AtribuicaoHorarioTurno", 'String'>
+    readonly doenteId: FieldRef<"AtribuicaoHorarioTurno", 'String'>
+    readonly utilizadorId: FieldRef<"AtribuicaoHorarioTurno", 'String'>
+    readonly atribuidoPorId: FieldRef<"AtribuicaoHorarioTurno", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AtribuicaoHorarioTurno findUnique
+   */
+  export type AtribuicaoHorarioTurnoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtribuicaoHorarioTurno to fetch.
+     */
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+  }
+
+  /**
+   * AtribuicaoHorarioTurno findUniqueOrThrow
+   */
+  export type AtribuicaoHorarioTurnoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtribuicaoHorarioTurno to fetch.
+     */
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+  }
+
+  /**
+   * AtribuicaoHorarioTurno findFirst
+   */
+  export type AtribuicaoHorarioTurnoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtribuicaoHorarioTurno to fetch.
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtribuicaoHorarioTurnos to fetch.
+     */
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtribuicaoHorarioTurnos.
+     */
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtribuicaoHorarioTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtribuicaoHorarioTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtribuicaoHorarioTurnos.
+     */
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * AtribuicaoHorarioTurno findFirstOrThrow
+   */
+  export type AtribuicaoHorarioTurnoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtribuicaoHorarioTurno to fetch.
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtribuicaoHorarioTurnos to fetch.
+     */
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtribuicaoHorarioTurnos.
+     */
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtribuicaoHorarioTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtribuicaoHorarioTurnos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtribuicaoHorarioTurnos.
+     */
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * AtribuicaoHorarioTurno findMany
+   */
+  export type AtribuicaoHorarioTurnoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtribuicaoHorarioTurnos to fetch.
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtribuicaoHorarioTurnos to fetch.
+     */
+    orderBy?: AtribuicaoHorarioTurnoOrderByWithRelationInput | AtribuicaoHorarioTurnoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AtribuicaoHorarioTurnos.
+     */
+    cursor?: AtribuicaoHorarioTurnoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtribuicaoHorarioTurnos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtribuicaoHorarioTurnos.
+     */
+    skip?: number
+    distinct?: AtribuicaoHorarioTurnoScalarFieldEnum | AtribuicaoHorarioTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * AtribuicaoHorarioTurno create
+   */
+  export type AtribuicaoHorarioTurnoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AtribuicaoHorarioTurno.
+     */
+    data: XOR<AtribuicaoHorarioTurnoCreateInput, AtribuicaoHorarioTurnoUncheckedCreateInput>
+  }
+
+  /**
+   * AtribuicaoHorarioTurno createMany
+   */
+  export type AtribuicaoHorarioTurnoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AtribuicaoHorarioTurnos.
+     */
+    data: AtribuicaoHorarioTurnoCreateManyInput | AtribuicaoHorarioTurnoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AtribuicaoHorarioTurno createManyAndReturn
+   */
+  export type AtribuicaoHorarioTurnoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AtribuicaoHorarioTurnos.
+     */
+    data: AtribuicaoHorarioTurnoCreateManyInput | AtribuicaoHorarioTurnoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AtribuicaoHorarioTurno update
+   */
+  export type AtribuicaoHorarioTurnoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AtribuicaoHorarioTurno.
+     */
+    data: XOR<AtribuicaoHorarioTurnoUpdateInput, AtribuicaoHorarioTurnoUncheckedUpdateInput>
+    /**
+     * Choose, which AtribuicaoHorarioTurno to update.
+     */
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+  }
+
+  /**
+   * AtribuicaoHorarioTurno updateMany
+   */
+  export type AtribuicaoHorarioTurnoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AtribuicaoHorarioTurnos.
+     */
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyInput>
+    /**
+     * Filter which AtribuicaoHorarioTurnos to update
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * Limit how many AtribuicaoHorarioTurnos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtribuicaoHorarioTurno updateManyAndReturn
+   */
+  export type AtribuicaoHorarioTurnoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * The data used to update AtribuicaoHorarioTurnos.
+     */
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyInput>
+    /**
+     * Filter which AtribuicaoHorarioTurnos to update
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * Limit how many AtribuicaoHorarioTurnos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AtribuicaoHorarioTurno upsert
+   */
+  export type AtribuicaoHorarioTurnoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AtribuicaoHorarioTurno to update in case it exists.
+     */
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    /**
+     * In case the AtribuicaoHorarioTurno found by the `where` argument doesn't exist, create a new AtribuicaoHorarioTurno with this data.
+     */
+    create: XOR<AtribuicaoHorarioTurnoCreateInput, AtribuicaoHorarioTurnoUncheckedCreateInput>
+    /**
+     * In case the AtribuicaoHorarioTurno was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AtribuicaoHorarioTurnoUpdateInput, AtribuicaoHorarioTurnoUncheckedUpdateInput>
+  }
+
+  /**
+   * AtribuicaoHorarioTurno delete
+   */
+  export type AtribuicaoHorarioTurnoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+    /**
+     * Filter which AtribuicaoHorarioTurno to delete.
+     */
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+  }
+
+  /**
+   * AtribuicaoHorarioTurno deleteMany
+   */
+  export type AtribuicaoHorarioTurnoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtribuicaoHorarioTurnos to delete
+     */
+    where?: AtribuicaoHorarioTurnoWhereInput
+    /**
+     * Limit how many AtribuicaoHorarioTurnos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtribuicaoHorarioTurno without action
+   */
+  export type AtribuicaoHorarioTurnoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtribuicaoHorarioTurno
+     */
+    select?: AtribuicaoHorarioTurnoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtribuicaoHorarioTurno
+     */
+    omit?: AtribuicaoHorarioTurnoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtribuicaoHorarioTurnoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18690,6 +21442,31 @@ export namespace Prisma {
   export type HorarioTurnoProfissionalScalarFieldEnum = (typeof HorarioTurnoProfissionalScalarFieldEnum)[keyof typeof HorarioTurnoProfissionalScalarFieldEnum]
 
 
+  export const PedidoTrocaTurnoScalarFieldEnum: {
+    id: 'id',
+    estado: 'estado',
+    criadoEm: 'criadoEm',
+    respondidoEm: 'respondidoEm',
+    solicitanteId: 'solicitanteId',
+    turnoId: 'turnoId',
+    destinatarioId: 'destinatarioId',
+    aprovadoPorId: 'aprovadoPorId'
+  };
+
+  export type PedidoTrocaTurnoScalarFieldEnum = (typeof PedidoTrocaTurnoScalarFieldEnum)[keyof typeof PedidoTrocaTurnoScalarFieldEnum]
+
+
+  export const AtribuicaoHorarioTurnoScalarFieldEnum: {
+    id: 'id',
+    horarioTurnoId: 'horarioTurnoId',
+    doenteId: 'doenteId',
+    utilizadorId: 'utilizadorId',
+    atribuidoPorId: 'atribuidoPorId'
+  };
+
+  export type AtribuicaoHorarioTurnoScalarFieldEnum = (typeof AtribuicaoHorarioTurnoScalarFieldEnum)[keyof typeof AtribuicaoHorarioTurnoScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18867,6 +21644,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'EstadoPedidoTroca'
+   */
+  export type EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPedidoTroca'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoPedidoTroca[]'
+   */
+  export type ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPedidoTroca[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -18908,6 +21699,11 @@ export namespace Prisma {
     escalas?: EscalaListRelationFilter
     atribuicoesEnfermeiro?: AtribuicaoDoenteListRelationFilter
     horariosTurnoProfissional?: HorarioTurnoProfissionalListRelationFilter
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoListRelationFilter
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoListRelationFilter
+    trocasSolicitadas?: PedidoTrocaTurnoListRelationFilter
+    trocasRecebidas?: PedidoTrocaTurnoListRelationFilter
+    trocasAprovadas?: PedidoTrocaTurnoListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -18932,6 +21728,11 @@ export namespace Prisma {
     escalas?: EscalaOrderByRelationAggregateInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteOrderByRelationAggregateInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalOrderByRelationAggregateInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoOrderByRelationAggregateInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoOrderByRelationAggregateInput
+    trocasSolicitadas?: PedidoTrocaTurnoOrderByRelationAggregateInput
+    trocasRecebidas?: PedidoTrocaTurnoOrderByRelationAggregateInput
+    trocasAprovadas?: PedidoTrocaTurnoOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -18959,6 +21760,11 @@ export namespace Prisma {
     escalas?: EscalaListRelationFilter
     atribuicoesEnfermeiro?: AtribuicaoDoenteListRelationFilter
     horariosTurnoProfissional?: HorarioTurnoProfissionalListRelationFilter
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoListRelationFilter
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoListRelationFilter
+    trocasSolicitadas?: PedidoTrocaTurnoListRelationFilter
+    trocasRecebidas?: PedidoTrocaTurnoListRelationFilter
+    trocasAprovadas?: PedidoTrocaTurnoListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -19064,6 +21870,7 @@ export namespace Prisma {
     cama?: XOR<CamaScalarRelationFilter, CamaWhereInput>
     administrativo?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     atribuicoes?: AtribuicaoDoenteListRelationFilter
+    atribuicoesHorario?: AtribuicaoHorarioTurnoListRelationFilter
     tarefas?: TarefaListRelationFilter
     medicacoes?: MedicacaoListRelationFilter
     registosMedicacao?: RegistoMedicacaoListRelationFilter
@@ -19087,6 +21894,7 @@ export namespace Prisma {
     cama?: CamaOrderByWithRelationInput
     administrativo?: UtilizadorOrderByWithRelationInput
     atribuicoes?: AtribuicaoDoenteOrderByRelationAggregateInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoOrderByRelationAggregateInput
     tarefas?: TarefaOrderByRelationAggregateInput
     medicacoes?: MedicacaoOrderByRelationAggregateInput
     registosMedicacao?: RegistoMedicacaoOrderByRelationAggregateInput
@@ -19113,6 +21921,7 @@ export namespace Prisma {
     cama?: XOR<CamaScalarRelationFilter, CamaWhereInput>
     administrativo?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     atribuicoes?: AtribuicaoDoenteListRelationFilter
+    atribuicoesHorario?: AtribuicaoHorarioTurnoListRelationFilter
     tarefas?: TarefaListRelationFilter
     medicacoes?: MedicacaoListRelationFilter
     registosMedicacao?: RegistoMedicacaoListRelationFilter
@@ -19408,10 +22217,10 @@ export namespace Prisma {
     id?: StringFilter<"NotaTurno"> | string
     texto?: StringFilter<"NotaTurno"> | string
     criadaEm?: DateTimeFilter<"NotaTurno"> | Date | string
-    turnoId?: StringFilter<"NotaTurno"> | string
+    turnoId?: StringNullableFilter<"NotaTurno"> | string | null
     doenteId?: StringFilter<"NotaTurno"> | string
     autorId?: StringFilter<"NotaTurno"> | string
-    turno?: XOR<TurnoScalarRelationFilter, TurnoWhereInput>
+    turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }
@@ -19420,7 +22229,7 @@ export namespace Prisma {
     id?: SortOrder
     texto?: SortOrder
     criadaEm?: SortOrder
-    turnoId?: SortOrder
+    turnoId?: SortOrderInput | SortOrder
     doenteId?: SortOrder
     autorId?: SortOrder
     turno?: TurnoOrderByWithRelationInput
@@ -19435,10 +22244,10 @@ export namespace Prisma {
     NOT?: NotaTurnoWhereInput | NotaTurnoWhereInput[]
     texto?: StringFilter<"NotaTurno"> | string
     criadaEm?: DateTimeFilter<"NotaTurno"> | Date | string
-    turnoId?: StringFilter<"NotaTurno"> | string
+    turnoId?: StringNullableFilter<"NotaTurno"> | string | null
     doenteId?: StringFilter<"NotaTurno"> | string
     autorId?: StringFilter<"NotaTurno"> | string
-    turno?: XOR<TurnoScalarRelationFilter, TurnoWhereInput>
+    turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }, "id">
@@ -19447,7 +22256,7 @@ export namespace Prisma {
     id?: SortOrder
     texto?: SortOrder
     criadaEm?: SortOrder
-    turnoId?: SortOrder
+    turnoId?: SortOrderInput | SortOrder
     doenteId?: SortOrder
     autorId?: SortOrder
     _count?: NotaTurnoCountOrderByAggregateInput
@@ -19462,7 +22271,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"NotaTurno"> | string
     texto?: StringWithAggregatesFilter<"NotaTurno"> | string
     criadaEm?: DateTimeWithAggregatesFilter<"NotaTurno"> | Date | string
-    turnoId?: StringWithAggregatesFilter<"NotaTurno"> | string
+    turnoId?: StringNullableWithAggregatesFilter<"NotaTurno"> | string | null
     doenteId?: StringWithAggregatesFilter<"NotaTurno"> | string
     autorId?: StringWithAggregatesFilter<"NotaTurno"> | string
   }
@@ -19483,11 +22292,11 @@ export namespace Prisma {
     doenteId?: StringFilter<"Tarefa"> | string
     responsavelId?: StringFilter<"Tarefa"> | string
     criadoPorId?: StringFilter<"Tarefa"> | string
-    turnoId?: StringFilter<"Tarefa"> | string
+    turnoId?: StringNullableFilter<"Tarefa"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     responsavel?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
-    turno?: XOR<TurnoScalarRelationFilter, TurnoWhereInput>
+    turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
   }
 
   export type TarefaOrderByWithRelationInput = {
@@ -19503,7 +22312,7 @@ export namespace Prisma {
     doenteId?: SortOrder
     responsavelId?: SortOrder
     criadoPorId?: SortOrder
-    turnoId?: SortOrder
+    turnoId?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     responsavel?: UtilizadorOrderByWithRelationInput
     criadoPor?: UtilizadorOrderByWithRelationInput
@@ -19526,11 +22335,11 @@ export namespace Prisma {
     doenteId?: StringFilter<"Tarefa"> | string
     responsavelId?: StringFilter<"Tarefa"> | string
     criadoPorId?: StringFilter<"Tarefa"> | string
-    turnoId?: StringFilter<"Tarefa"> | string
+    turnoId?: StringNullableFilter<"Tarefa"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     responsavel?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
-    turno?: XOR<TurnoScalarRelationFilter, TurnoWhereInput>
+    turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
   }, "id">
 
   export type TarefaOrderByWithAggregationInput = {
@@ -19546,7 +22355,7 @@ export namespace Prisma {
     doenteId?: SortOrder
     responsavelId?: SortOrder
     criadoPorId?: SortOrder
-    turnoId?: SortOrder
+    turnoId?: SortOrderInput | SortOrder
     _count?: TarefaCountOrderByAggregateInput
     _max?: TarefaMaxOrderByAggregateInput
     _min?: TarefaMinOrderByAggregateInput
@@ -19568,7 +22377,7 @@ export namespace Prisma {
     doenteId?: StringWithAggregatesFilter<"Tarefa"> | string
     responsavelId?: StringWithAggregatesFilter<"Tarefa"> | string
     criadoPorId?: StringWithAggregatesFilter<"Tarefa"> | string
-    turnoId?: StringWithAggregatesFilter<"Tarefa"> | string
+    turnoId?: StringNullableWithAggregatesFilter<"Tarefa"> | string | null
   }
 
   export type MedicacaoWhereInput = {
@@ -19794,6 +22603,8 @@ export namespace Prisma {
     escalId?: StringFilter<"HorarioTurno"> | string
     escala?: XOR<EscalaScalarRelationFilter, EscalaWhereInput>
     profissionais?: HorarioTurnoProfissionalListRelationFilter
+    atribuicoes?: AtribuicaoHorarioTurnoListRelationFilter
+    trocas?: PedidoTrocaTurnoListRelationFilter
   }
 
   export type HorarioTurnoOrderByWithRelationInput = {
@@ -19803,6 +22614,8 @@ export namespace Prisma {
     escalId?: SortOrder
     escala?: EscalaOrderByWithRelationInput
     profissionais?: HorarioTurnoProfissionalOrderByRelationAggregateInput
+    atribuicoes?: AtribuicaoHorarioTurnoOrderByRelationAggregateInput
+    trocas?: PedidoTrocaTurnoOrderByRelationAggregateInput
   }
 
   export type HorarioTurnoWhereUniqueInput = Prisma.AtLeast<{
@@ -19815,6 +22628,8 @@ export namespace Prisma {
     escalId?: StringFilter<"HorarioTurno"> | string
     escala?: XOR<EscalaScalarRelationFilter, EscalaWhereInput>
     profissionais?: HorarioTurnoProfissionalListRelationFilter
+    atribuicoes?: AtribuicaoHorarioTurnoListRelationFilter
+    trocas?: PedidoTrocaTurnoListRelationFilter
   }, "id">
 
   export type HorarioTurnoOrderByWithAggregationInput = {
@@ -19881,6 +22696,150 @@ export namespace Prisma {
     utilizadorId?: StringWithAggregatesFilter<"HorarioTurnoProfissional"> | string
   }
 
+  export type PedidoTrocaTurnoWhereInput = {
+    AND?: PedidoTrocaTurnoWhereInput | PedidoTrocaTurnoWhereInput[]
+    OR?: PedidoTrocaTurnoWhereInput[]
+    NOT?: PedidoTrocaTurnoWhereInput | PedidoTrocaTurnoWhereInput[]
+    id?: StringFilter<"PedidoTrocaTurno"> | string
+    estado?: EnumEstadoPedidoTrocaFilter<"PedidoTrocaTurno"> | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFilter<"PedidoTrocaTurno"> | Date | string
+    respondidoEm?: DateTimeNullableFilter<"PedidoTrocaTurno"> | Date | string | null
+    solicitanteId?: StringFilter<"PedidoTrocaTurno"> | string
+    turnoId?: StringFilter<"PedidoTrocaTurno"> | string
+    destinatarioId?: StringFilter<"PedidoTrocaTurno"> | string
+    aprovadoPorId?: StringNullableFilter<"PedidoTrocaTurno"> | string | null
+    solicitante?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    destinatario?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    turno?: XOR<HorarioTurnoScalarRelationFilter, HorarioTurnoWhereInput>
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type PedidoTrocaTurnoOrderByWithRelationInput = {
+    id?: SortOrder
+    estado?: SortOrder
+    criadoEm?: SortOrder
+    respondidoEm?: SortOrderInput | SortOrder
+    solicitanteId?: SortOrder
+    turnoId?: SortOrder
+    destinatarioId?: SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    solicitante?: UtilizadorOrderByWithRelationInput
+    destinatario?: UtilizadorOrderByWithRelationInput
+    turno?: HorarioTurnoOrderByWithRelationInput
+    aprovadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type PedidoTrocaTurnoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PedidoTrocaTurnoWhereInput | PedidoTrocaTurnoWhereInput[]
+    OR?: PedidoTrocaTurnoWhereInput[]
+    NOT?: PedidoTrocaTurnoWhereInput | PedidoTrocaTurnoWhereInput[]
+    estado?: EnumEstadoPedidoTrocaFilter<"PedidoTrocaTurno"> | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFilter<"PedidoTrocaTurno"> | Date | string
+    respondidoEm?: DateTimeNullableFilter<"PedidoTrocaTurno"> | Date | string | null
+    solicitanteId?: StringFilter<"PedidoTrocaTurno"> | string
+    turnoId?: StringFilter<"PedidoTrocaTurno"> | string
+    destinatarioId?: StringFilter<"PedidoTrocaTurno"> | string
+    aprovadoPorId?: StringNullableFilter<"PedidoTrocaTurno"> | string | null
+    solicitante?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    destinatario?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    turno?: XOR<HorarioTurnoScalarRelationFilter, HorarioTurnoWhereInput>
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type PedidoTrocaTurnoOrderByWithAggregationInput = {
+    id?: SortOrder
+    estado?: SortOrder
+    criadoEm?: SortOrder
+    respondidoEm?: SortOrderInput | SortOrder
+    solicitanteId?: SortOrder
+    turnoId?: SortOrder
+    destinatarioId?: SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    _count?: PedidoTrocaTurnoCountOrderByAggregateInput
+    _max?: PedidoTrocaTurnoMaxOrderByAggregateInput
+    _min?: PedidoTrocaTurnoMinOrderByAggregateInput
+  }
+
+  export type PedidoTrocaTurnoScalarWhereWithAggregatesInput = {
+    AND?: PedidoTrocaTurnoScalarWhereWithAggregatesInput | PedidoTrocaTurnoScalarWhereWithAggregatesInput[]
+    OR?: PedidoTrocaTurnoScalarWhereWithAggregatesInput[]
+    NOT?: PedidoTrocaTurnoScalarWhereWithAggregatesInput | PedidoTrocaTurnoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PedidoTrocaTurno"> | string
+    estado?: EnumEstadoPedidoTrocaWithAggregatesFilter<"PedidoTrocaTurno"> | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeWithAggregatesFilter<"PedidoTrocaTurno"> | Date | string
+    respondidoEm?: DateTimeNullableWithAggregatesFilter<"PedidoTrocaTurno"> | Date | string | null
+    solicitanteId?: StringWithAggregatesFilter<"PedidoTrocaTurno"> | string
+    turnoId?: StringWithAggregatesFilter<"PedidoTrocaTurno"> | string
+    destinatarioId?: StringWithAggregatesFilter<"PedidoTrocaTurno"> | string
+    aprovadoPorId?: StringNullableWithAggregatesFilter<"PedidoTrocaTurno"> | string | null
+  }
+
+  export type AtribuicaoHorarioTurnoWhereInput = {
+    AND?: AtribuicaoHorarioTurnoWhereInput | AtribuicaoHorarioTurnoWhereInput[]
+    OR?: AtribuicaoHorarioTurnoWhereInput[]
+    NOT?: AtribuicaoHorarioTurnoWhereInput | AtribuicaoHorarioTurnoWhereInput[]
+    id?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    horarioTurnoId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    doenteId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    utilizadorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    atribuidoPorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    horarioTurno?: XOR<HorarioTurnoScalarRelationFilter, HorarioTurnoWhereInput>
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    atribuidoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type AtribuicaoHorarioTurnoOrderByWithRelationInput = {
+    id?: SortOrder
+    horarioTurnoId?: SortOrder
+    doenteId?: SortOrder
+    utilizadorId?: SortOrder
+    atribuidoPorId?: SortOrder
+    horarioTurno?: HorarioTurnoOrderByWithRelationInput
+    doente?: DoenteOrderByWithRelationInput
+    utilizador?: UtilizadorOrderByWithRelationInput
+    atribuidoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type AtribuicaoHorarioTurnoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    horarioTurnoId_doenteId_utilizadorId?: AtribuicaoHorarioTurnoHorarioTurnoIdDoenteIdUtilizadorIdCompoundUniqueInput
+    AND?: AtribuicaoHorarioTurnoWhereInput | AtribuicaoHorarioTurnoWhereInput[]
+    OR?: AtribuicaoHorarioTurnoWhereInput[]
+    NOT?: AtribuicaoHorarioTurnoWhereInput | AtribuicaoHorarioTurnoWhereInput[]
+    horarioTurnoId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    doenteId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    utilizadorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    atribuidoPorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    horarioTurno?: XOR<HorarioTurnoScalarRelationFilter, HorarioTurnoWhereInput>
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    atribuidoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id" | "horarioTurnoId_doenteId_utilizadorId">
+
+  export type AtribuicaoHorarioTurnoOrderByWithAggregationInput = {
+    id?: SortOrder
+    horarioTurnoId?: SortOrder
+    doenteId?: SortOrder
+    utilizadorId?: SortOrder
+    atribuidoPorId?: SortOrder
+    _count?: AtribuicaoHorarioTurnoCountOrderByAggregateInput
+    _max?: AtribuicaoHorarioTurnoMaxOrderByAggregateInput
+    _min?: AtribuicaoHorarioTurnoMinOrderByAggregateInput
+  }
+
+  export type AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput = {
+    AND?: AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput | AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput[]
+    OR?: AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput[]
+    NOT?: AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput | AtribuicaoHorarioTurnoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
+    horarioTurnoId?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
+    doenteId?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
+    utilizadorId?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
+    atribuidoPorId?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
+  }
+
   export type UtilizadorCreateInput = {
     id?: string
     numeroFuncionario: string
@@ -19903,6 +22862,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -19927,6 +22891,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -19951,6 +22920,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -19975,6 +22949,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -20083,6 +23062,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -20104,6 +23084,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -20125,6 +23106,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -20146,6 +23128,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -20425,7 +23408,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turno: TurnoCreateNestedOneWithoutNotasTurnoInput
+    turno?: TurnoCreateNestedOneWithoutNotasTurnoInput
     doente: DoenteCreateNestedOneWithoutNotasTurnoInput
     autor: UtilizadorCreateNestedOneWithoutNotasTurnoInput
   }
@@ -20434,7 +23417,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     doenteId: string
     autorId: string
   }
@@ -20443,7 +23426,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turno?: TurnoUpdateOneRequiredWithoutNotasTurnoNestedInput
+    turno?: TurnoUpdateOneWithoutNotasTurnoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutNotasTurnoNestedInput
     autor?: UtilizadorUpdateOneRequiredWithoutNotasTurnoNestedInput
   }
@@ -20452,7 +23435,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     autorId?: StringFieldUpdateOperationsInput | string
   }
@@ -20461,7 +23444,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     doenteId: string
     autorId: string
   }
@@ -20476,7 +23459,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     autorId?: StringFieldUpdateOperationsInput | string
   }
@@ -20494,7 +23477,7 @@ export namespace Prisma {
     doente: DoenteCreateNestedOneWithoutTarefasInput
     responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
-    turno: TurnoCreateNestedOneWithoutTarefasInput
+    turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
 
   export type TarefaUncheckedCreateInput = {
@@ -20510,7 +23493,7 @@ export namespace Prisma {
     doenteId: string
     responsavelId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaUpdateInput = {
@@ -20526,7 +23509,7 @@ export namespace Prisma {
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
     responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
-    turno?: TurnoUpdateOneRequiredWithoutTarefasNestedInput
+    turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
 
   export type TarefaUncheckedUpdateInput = {
@@ -20542,7 +23525,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     responsavelId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaCreateManyInput = {
@@ -20558,7 +23541,7 @@ export namespace Prisma {
     doenteId: string
     responsavelId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaUpdateManyMutationInput = {
@@ -20586,7 +23569,7 @@ export namespace Prisma {
     doenteId?: StringFieldUpdateOperationsInput | string
     responsavelId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MedicacaoCreateInput = {
@@ -20807,6 +23790,8 @@ export namespace Prisma {
     data: Date | string
     escala: EscalaCreateNestedOneWithoutTurnosInput
     profissionais?: HorarioTurnoProfissionalCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoUncheckedCreateInput = {
@@ -20815,6 +23800,8 @@ export namespace Prisma {
     data: Date | string
     escalId: string
     profissionais?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoUpdateInput = {
@@ -20823,6 +23810,8 @@ export namespace Prisma {
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     escala?: EscalaUpdateOneRequiredWithoutTurnosNestedInput
     profissionais?: HorarioTurnoProfissionalUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUpdateManyWithoutTurnoNestedInput
   }
 
   export type HorarioTurnoUncheckedUpdateInput = {
@@ -20831,6 +23820,8 @@ export namespace Prisma {
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     escalId?: StringFieldUpdateOperationsInput | string
     profissionais?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoNestedInput
   }
 
   export type HorarioTurnoCreateManyInput = {
@@ -20885,6 +23876,131 @@ export namespace Prisma {
   export type HorarioTurnoProfissionalUncheckedUpdateManyInput = {
     horarioTurnoId?: StringFieldUpdateOperationsInput | string
     utilizadorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PedidoTrocaTurnoCreateInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasSolicitadasInput
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasRecebidasInput
+    turno: HorarioTurnoCreateNestedOneWithoutTrocasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasAprovadasInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasSolicitadasNestedInput
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasRecebidasNestedInput
+    turno?: HorarioTurnoUpdateOneRequiredWithoutTrocasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasAprovadasNestedInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoCreateManyInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AtribuicaoHorarioTurnoCreateInput = {
+    id?: string
+    horarioTurno: HorarioTurnoCreateNestedOneWithoutAtribuicoesInput
+    doente: DoenteCreateNestedOneWithoutAtribuicoesHorarioInput
+    utilizador: UtilizadorCreateNestedOneWithoutAtribuicoesComoUtilizadorInput
+    atribuidoPor: UtilizadorCreateNestedOneWithoutAtribuicoesFeitasInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurno?: HorarioTurnoUpdateOneRequiredWithoutAtribuicoesNestedInput
+    doente?: DoenteUpdateOneRequiredWithoutAtribuicoesHorarioNestedInput
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAtribuicoesComoUtilizadorNestedInput
+    atribuidoPor?: UtilizadorUpdateOneRequiredWithoutAtribuicoesFeitasNestedInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -21011,6 +24127,18 @@ export namespace Prisma {
     none?: HorarioTurnoProfissionalWhereInput
   }
 
+  export type AtribuicaoHorarioTurnoListRelationFilter = {
+    every?: AtribuicaoHorarioTurnoWhereInput
+    some?: AtribuicaoHorarioTurnoWhereInput
+    none?: AtribuicaoHorarioTurnoWhereInput
+  }
+
+  export type PedidoTrocaTurnoListRelationFilter = {
+    every?: PedidoTrocaTurnoWhereInput
+    some?: PedidoTrocaTurnoWhereInput
+    none?: PedidoTrocaTurnoWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -21053,6 +24181,14 @@ export namespace Prisma {
   }
 
   export type HorarioTurnoProfissionalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AtribuicaoHorarioTurnoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PedidoTrocaTurnoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21465,6 +24601,11 @@ export namespace Prisma {
     doenteId?: SortOrder
   }
 
+  export type TurnoNullableScalarRelationFilter = {
+    is?: TurnoWhereInput | null
+    isNot?: TurnoWhereInput | null
+  }
+
   export type NotaTurnoCountOrderByAggregateInput = {
     id?: SortOrder
     texto?: SortOrder
@@ -21789,6 +24930,91 @@ export namespace Prisma {
     utilizadorId?: SortOrder
   }
 
+  export type EnumEstadoPedidoTrocaFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTroca | EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel> | $Enums.EstadoPedidoTroca
+  }
+
+  export type UtilizadorNullableScalarRelationFilter = {
+    is?: UtilizadorWhereInput | null
+    isNot?: UtilizadorWhereInput | null
+  }
+
+  export type PedidoTrocaTurnoCountOrderByAggregateInput = {
+    id?: SortOrder
+    estado?: SortOrder
+    criadoEm?: SortOrder
+    respondidoEm?: SortOrder
+    solicitanteId?: SortOrder
+    turnoId?: SortOrder
+    destinatarioId?: SortOrder
+    aprovadoPorId?: SortOrder
+  }
+
+  export type PedidoTrocaTurnoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    estado?: SortOrder
+    criadoEm?: SortOrder
+    respondidoEm?: SortOrder
+    solicitanteId?: SortOrder
+    turnoId?: SortOrder
+    destinatarioId?: SortOrder
+    aprovadoPorId?: SortOrder
+  }
+
+  export type PedidoTrocaTurnoMinOrderByAggregateInput = {
+    id?: SortOrder
+    estado?: SortOrder
+    criadoEm?: SortOrder
+    respondidoEm?: SortOrder
+    solicitanteId?: SortOrder
+    turnoId?: SortOrder
+    destinatarioId?: SortOrder
+    aprovadoPorId?: SortOrder
+  }
+
+  export type EnumEstadoPedidoTrocaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTroca | EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTrocaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoPedidoTroca
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel>
+    _max?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel>
+  }
+
+  export type AtribuicaoHorarioTurnoHorarioTurnoIdDoenteIdUtilizadorIdCompoundUniqueInput = {
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCountOrderByAggregateInput = {
+    id?: SortOrder
+    horarioTurnoId?: SortOrder
+    doenteId?: SortOrder
+    utilizadorId?: SortOrder
+    atribuidoPorId?: SortOrder
+  }
+
+  export type AtribuicaoHorarioTurnoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    horarioTurnoId?: SortOrder
+    doenteId?: SortOrder
+    utilizadorId?: SortOrder
+    atribuidoPorId?: SortOrder
+  }
+
+  export type AtribuicaoHorarioTurnoMinOrderByAggregateInput = {
+    id?: SortOrder
+    horarioTurnoId?: SortOrder
+    doenteId?: SortOrder
+    utilizadorId?: SortOrder
+    atribuidoPorId?: SortOrder
+  }
+
   export type TurnoCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -21866,6 +25092,41 @@ export namespace Prisma {
     connect?: HorarioTurnoProfissionalWhereUniqueInput | HorarioTurnoProfissionalWhereUniqueInput[]
   }
 
+  export type AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput> | AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyUtilizadorInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput> | AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyAtribuidoPorInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput> | PedidoTrocaTurnoCreateWithoutSolicitanteInput[] | PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput | PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput[]
+    createMany?: PedidoTrocaTurnoCreateManySolicitanteInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput> | PedidoTrocaTurnoCreateWithoutDestinatarioInput[] | PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput | PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput[]
+    createMany?: PedidoTrocaTurnoCreateManyDestinatarioInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput> | PedidoTrocaTurnoCreateWithoutAprovadoPorInput[] | PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput | PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -21941,6 +25202,41 @@ export namespace Prisma {
     connectOrCreate?: HorarioTurnoProfissionalCreateOrConnectWithoutUtilizadorInput | HorarioTurnoProfissionalCreateOrConnectWithoutUtilizadorInput[]
     createMany?: HorarioTurnoProfissionalCreateManyUtilizadorInputEnvelope
     connect?: HorarioTurnoProfissionalWhereUniqueInput | HorarioTurnoProfissionalWhereUniqueInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput> | AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyUtilizadorInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput> | AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyAtribuidoPorInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput> | PedidoTrocaTurnoCreateWithoutSolicitanteInput[] | PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput | PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput[]
+    createMany?: PedidoTrocaTurnoCreateManySolicitanteInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput> | PedidoTrocaTurnoCreateWithoutDestinatarioInput[] | PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput | PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput[]
+    createMany?: PedidoTrocaTurnoCreateManyDestinatarioInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput> | PedidoTrocaTurnoCreateWithoutAprovadoPorInput[] | PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput | PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -22125,6 +25421,76 @@ export namespace Prisma {
     deleteMany?: HorarioTurnoProfissionalScalarWhereInput | HorarioTurnoProfissionalScalarWhereInput[]
   }
 
+  export type AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput> | AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyUtilizadorInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput> | AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutAtribuidoPorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyAtribuidoPorInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutAtribuidoPorInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutAtribuidoPorInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput> | PedidoTrocaTurnoCreateWithoutSolicitanteInput[] | PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput | PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutSolicitanteInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutSolicitanteInput[]
+    createMany?: PedidoTrocaTurnoCreateManySolicitanteInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutSolicitanteInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutSolicitanteInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutSolicitanteInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutSolicitanteInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput> | PedidoTrocaTurnoCreateWithoutDestinatarioInput[] | PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput | PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutDestinatarioInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutDestinatarioInput[]
+    createMany?: PedidoTrocaTurnoCreateManyDestinatarioInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutDestinatarioInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutDestinatarioInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutDestinatarioInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutDestinatarioInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput> | PedidoTrocaTurnoCreateWithoutAprovadoPorInput[] | PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput | PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutAprovadoPorInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutAprovadoPorInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutAprovadoPorInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutAprovadoPorInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -22279,6 +25645,76 @@ export namespace Prisma {
     deleteMany?: HorarioTurnoProfissionalScalarWhereInput | HorarioTurnoProfissionalScalarWhereInput[]
   }
 
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput> | AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyUtilizadorInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutUtilizadorInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput> | AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutAtribuidoPorInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyAtribuidoPorInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutAtribuidoPorInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutAtribuidoPorInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutAtribuidoPorInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput> | PedidoTrocaTurnoCreateWithoutSolicitanteInput[] | PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput | PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutSolicitanteInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutSolicitanteInput[]
+    createMany?: PedidoTrocaTurnoCreateManySolicitanteInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutSolicitanteInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutSolicitanteInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutSolicitanteInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutSolicitanteInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput> | PedidoTrocaTurnoCreateWithoutDestinatarioInput[] | PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput | PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutDestinatarioInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutDestinatarioInput[]
+    createMany?: PedidoTrocaTurnoCreateManyDestinatarioInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutDestinatarioInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutDestinatarioInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutDestinatarioInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutDestinatarioInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput> | PedidoTrocaTurnoCreateWithoutAprovadoPorInput[] | PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput | PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutAprovadoPorInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutAprovadoPorInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutAprovadoPorInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutAprovadoPorInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
   export type DoenteCreateNestedOneWithoutCamaInput = {
     create?: XOR<DoenteCreateWithoutCamaInput, DoenteUncheckedCreateWithoutCamaInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutCamaInput
@@ -22334,6 +25770,13 @@ export namespace Prisma {
     connect?: AtribuicaoDoenteWhereUniqueInput | AtribuicaoDoenteWhereUniqueInput[]
   }
 
+  export type AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput> | AtribuicaoHorarioTurnoCreateWithoutDoenteInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyDoenteInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
   export type TarefaCreateNestedManyWithoutDoenteInput = {
     create?: XOR<TarefaCreateWithoutDoenteInput, TarefaUncheckedCreateWithoutDoenteInput> | TarefaCreateWithoutDoenteInput[] | TarefaUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: TarefaCreateOrConnectWithoutDoenteInput | TarefaCreateOrConnectWithoutDoenteInput[]
@@ -22374,6 +25817,13 @@ export namespace Prisma {
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
     createMany?: AtribuicaoDoenteCreateManyDoenteInputEnvelope
     connect?: AtribuicaoDoenteWhereUniqueInput | AtribuicaoDoenteWhereUniqueInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput> | AtribuicaoHorarioTurnoCreateWithoutDoenteInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyDoenteInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
   }
 
   export type TarefaUncheckedCreateNestedManyWithoutDoenteInput = {
@@ -22447,6 +25897,20 @@ export namespace Prisma {
     update?: AtribuicaoDoenteUpdateWithWhereUniqueWithoutDoenteInput | AtribuicaoDoenteUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: AtribuicaoDoenteUpdateManyWithWhereWithoutDoenteInput | AtribuicaoDoenteUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: AtribuicaoDoenteScalarWhereInput | AtribuicaoDoenteScalarWhereInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput> | AtribuicaoHorarioTurnoCreateWithoutDoenteInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutDoenteInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyDoenteInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutDoenteInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutDoenteInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
   }
 
   export type TarefaUpdateManyWithoutDoenteNestedInput = {
@@ -22531,6 +25995,20 @@ export namespace Prisma {
     update?: AtribuicaoDoenteUpdateWithWhereUniqueWithoutDoenteInput | AtribuicaoDoenteUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: AtribuicaoDoenteUpdateManyWithWhereWithoutDoenteInput | AtribuicaoDoenteUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: AtribuicaoDoenteScalarWhereInput | AtribuicaoDoenteScalarWhereInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput> | AtribuicaoHorarioTurnoCreateWithoutDoenteInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutDoenteInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyDoenteInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutDoenteInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutDoenteInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
   }
 
   export type TarefaUncheckedUpdateManyWithoutDoenteNestedInput = {
@@ -23003,10 +26481,12 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
-  export type TurnoUpdateOneRequiredWithoutNotasTurnoNestedInput = {
+  export type TurnoUpdateOneWithoutNotasTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutNotasTurnoInput, TurnoUncheckedCreateWithoutNotasTurnoInput>
     connectOrCreate?: TurnoCreateOrConnectWithoutNotasTurnoInput
     upsert?: TurnoUpsertWithoutNotasTurnoInput
+    disconnect?: TurnoWhereInput | boolean
+    delete?: TurnoWhereInput | boolean
     connect?: TurnoWhereUniqueInput
     update?: XOR<XOR<TurnoUpdateToOneWithWhereWithoutNotasTurnoInput, TurnoUpdateWithoutNotasTurnoInput>, TurnoUncheckedUpdateWithoutNotasTurnoInput>
   }
@@ -23087,10 +26567,12 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTarefasCriadasInput, UtilizadorUpdateWithoutTarefasCriadasInput>, UtilizadorUncheckedUpdateWithoutTarefasCriadasInput>
   }
 
-  export type TurnoUpdateOneRequiredWithoutTarefasNestedInput = {
+  export type TurnoUpdateOneWithoutTarefasNestedInput = {
     create?: XOR<TurnoCreateWithoutTarefasInput, TurnoUncheckedCreateWithoutTarefasInput>
     connectOrCreate?: TurnoCreateOrConnectWithoutTarefasInput
     upsert?: TurnoUpsertWithoutTarefasInput
+    disconnect?: TurnoWhereInput | boolean
+    delete?: TurnoWhereInput | boolean
     connect?: TurnoWhereUniqueInput
     update?: XOR<XOR<TurnoUpdateToOneWithWhereWithoutTarefasInput, TurnoUpdateWithoutTarefasInput>, TurnoUncheckedUpdateWithoutTarefasInput>
   }
@@ -23284,11 +26766,39 @@ export namespace Prisma {
     connect?: HorarioTurnoProfissionalWhereUniqueInput | HorarioTurnoProfissionalWhereUniqueInput[]
   }
 
+  export type AtribuicaoHorarioTurnoCreateNestedManyWithoutHorarioTurnoInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput> | AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyHorarioTurnoInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoCreateNestedManyWithoutTurnoInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput> | PedidoTrocaTurnoCreateWithoutTurnoInput[] | PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput | PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput[]
+    createMany?: PedidoTrocaTurnoCreateManyTurnoInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
   export type HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutHorarioTurnoInput = {
     create?: XOR<HorarioTurnoProfissionalCreateWithoutHorarioTurnoInput, HorarioTurnoProfissionalUncheckedCreateWithoutHorarioTurnoInput> | HorarioTurnoProfissionalCreateWithoutHorarioTurnoInput[] | HorarioTurnoProfissionalUncheckedCreateWithoutHorarioTurnoInput[]
     connectOrCreate?: HorarioTurnoProfissionalCreateOrConnectWithoutHorarioTurnoInput | HorarioTurnoProfissionalCreateOrConnectWithoutHorarioTurnoInput[]
     createMany?: HorarioTurnoProfissionalCreateManyHorarioTurnoInputEnvelope
     connect?: HorarioTurnoProfissionalWhereUniqueInput | HorarioTurnoProfissionalWhereUniqueInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutHorarioTurnoInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput> | AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyHorarioTurnoInputEnvelope
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateNestedManyWithoutTurnoInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput> | PedidoTrocaTurnoCreateWithoutTurnoInput[] | PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput | PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput[]
+    createMany?: PedidoTrocaTurnoCreateManyTurnoInputEnvelope
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
   }
 
   export type EscalaUpdateOneRequiredWithoutTurnosNestedInput = {
@@ -23313,6 +26823,34 @@ export namespace Prisma {
     deleteMany?: HorarioTurnoProfissionalScalarWhereInput | HorarioTurnoProfissionalScalarWhereInput[]
   }
 
+  export type AtribuicaoHorarioTurnoUpdateManyWithoutHorarioTurnoNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput> | AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutHorarioTurnoInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyHorarioTurnoInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutHorarioTurnoInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutHorarioTurnoInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithoutTurnoNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput> | PedidoTrocaTurnoCreateWithoutTurnoInput[] | PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput | PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutTurnoInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutTurnoInput[]
+    createMany?: PedidoTrocaTurnoCreateManyTurnoInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutTurnoInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutTurnoInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutTurnoInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutTurnoInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+  }
+
   export type HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoNestedInput = {
     create?: XOR<HorarioTurnoProfissionalCreateWithoutHorarioTurnoInput, HorarioTurnoProfissionalUncheckedCreateWithoutHorarioTurnoInput> | HorarioTurnoProfissionalCreateWithoutHorarioTurnoInput[] | HorarioTurnoProfissionalUncheckedCreateWithoutHorarioTurnoInput[]
     connectOrCreate?: HorarioTurnoProfissionalCreateOrConnectWithoutHorarioTurnoInput | HorarioTurnoProfissionalCreateOrConnectWithoutHorarioTurnoInput[]
@@ -23325,6 +26863,34 @@ export namespace Prisma {
     update?: HorarioTurnoProfissionalUpdateWithWhereUniqueWithoutHorarioTurnoInput | HorarioTurnoProfissionalUpdateWithWhereUniqueWithoutHorarioTurnoInput[]
     updateMany?: HorarioTurnoProfissionalUpdateManyWithWhereWithoutHorarioTurnoInput | HorarioTurnoProfissionalUpdateManyWithWhereWithoutHorarioTurnoInput[]
     deleteMany?: HorarioTurnoProfissionalScalarWhereInput | HorarioTurnoProfissionalScalarWhereInput[]
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoNestedInput = {
+    create?: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput> | AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput[] | AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput[]
+    connectOrCreate?: AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput[]
+    upsert?: AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutHorarioTurnoInput[]
+    createMany?: AtribuicaoHorarioTurnoCreateManyHorarioTurnoInputEnvelope
+    set?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    disconnect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    delete?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    connect?: AtribuicaoHorarioTurnoWhereUniqueInput | AtribuicaoHorarioTurnoWhereUniqueInput[]
+    update?: AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutHorarioTurnoInput[]
+    updateMany?: AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutHorarioTurnoInput | AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutHorarioTurnoInput[]
+    deleteMany?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoNestedInput = {
+    create?: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput> | PedidoTrocaTurnoCreateWithoutTurnoInput[] | PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput[]
+    connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput | PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput[]
+    upsert?: PedidoTrocaTurnoUpsertWithWhereUniqueWithoutTurnoInput | PedidoTrocaTurnoUpsertWithWhereUniqueWithoutTurnoInput[]
+    createMany?: PedidoTrocaTurnoCreateManyTurnoInputEnvelope
+    set?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    disconnect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    delete?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+    update?: PedidoTrocaTurnoUpdateWithWhereUniqueWithoutTurnoInput | PedidoTrocaTurnoUpdateWithWhereUniqueWithoutTurnoInput[]
+    updateMany?: PedidoTrocaTurnoUpdateManyWithWhereWithoutTurnoInput | PedidoTrocaTurnoUpdateManyWithWhereWithoutTurnoInput[]
+    deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
   }
 
   export type HorarioTurnoCreateNestedOneWithoutProfissionaisInput = {
@@ -23353,6 +26919,124 @@ export namespace Prisma {
     upsert?: UtilizadorUpsertWithoutHorariosTurnoProfissionalInput
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutHorariosTurnoProfissionalInput, UtilizadorUpdateWithoutHorariosTurnoProfissionalInput>, UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTrocasSolicitadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTrocasRecebidasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasRecebidasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type HorarioTurnoCreateNestedOneWithoutTrocasInput = {
+    create?: XOR<HorarioTurnoCreateWithoutTrocasInput, HorarioTurnoUncheckedCreateWithoutTrocasInput>
+    connectOrCreate?: HorarioTurnoCreateOrConnectWithoutTrocasInput
+    connect?: HorarioTurnoWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTrocasAprovadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasAprovadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasAprovadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EnumEstadoPedidoTrocaFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoPedidoTroca
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutTrocasSolicitadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput
+    upsert?: UtilizadorUpsertWithoutTrocasSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasSolicitadasInput, UtilizadorUpdateWithoutTrocasSolicitadasInput>, UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutTrocasRecebidasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasRecebidasInput
+    upsert?: UtilizadorUpsertWithoutTrocasRecebidasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasRecebidasInput, UtilizadorUpdateWithoutTrocasRecebidasInput>, UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput>
+  }
+
+  export type HorarioTurnoUpdateOneRequiredWithoutTrocasNestedInput = {
+    create?: XOR<HorarioTurnoCreateWithoutTrocasInput, HorarioTurnoUncheckedCreateWithoutTrocasInput>
+    connectOrCreate?: HorarioTurnoCreateOrConnectWithoutTrocasInput
+    upsert?: HorarioTurnoUpsertWithoutTrocasInput
+    connect?: HorarioTurnoWhereUniqueInput
+    update?: XOR<XOR<HorarioTurnoUpdateToOneWithWhereWithoutTrocasInput, HorarioTurnoUpdateWithoutTrocasInput>, HorarioTurnoUncheckedUpdateWithoutTrocasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutTrocasAprovadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasAprovadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasAprovadasInput
+    upsert?: UtilizadorUpsertWithoutTrocasAprovadasInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasAprovadasInput, UtilizadorUpdateWithoutTrocasAprovadasInput>, UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput>
+  }
+
+  export type HorarioTurnoCreateNestedOneWithoutAtribuicoesInput = {
+    create?: XOR<HorarioTurnoCreateWithoutAtribuicoesInput, HorarioTurnoUncheckedCreateWithoutAtribuicoesInput>
+    connectOrCreate?: HorarioTurnoCreateOrConnectWithoutAtribuicoesInput
+    connect?: HorarioTurnoWhereUniqueInput
+  }
+
+  export type DoenteCreateNestedOneWithoutAtribuicoesHorarioInput = {
+    create?: XOR<DoenteCreateWithoutAtribuicoesHorarioInput, DoenteUncheckedCreateWithoutAtribuicoesHorarioInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAtribuicoesHorarioInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAtribuicoesComoUtilizadorInput = {
+    create?: XOR<UtilizadorCreateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAtribuicoesFeitasInput = {
+    create?: XOR<UtilizadorCreateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type HorarioTurnoUpdateOneRequiredWithoutAtribuicoesNestedInput = {
+    create?: XOR<HorarioTurnoCreateWithoutAtribuicoesInput, HorarioTurnoUncheckedCreateWithoutAtribuicoesInput>
+    connectOrCreate?: HorarioTurnoCreateOrConnectWithoutAtribuicoesInput
+    upsert?: HorarioTurnoUpsertWithoutAtribuicoesInput
+    connect?: HorarioTurnoWhereUniqueInput
+    update?: XOR<XOR<HorarioTurnoUpdateToOneWithWhereWithoutAtribuicoesInput, HorarioTurnoUpdateWithoutAtribuicoesInput>, HorarioTurnoUncheckedUpdateWithoutAtribuicoesInput>
+  }
+
+  export type DoenteUpdateOneRequiredWithoutAtribuicoesHorarioNestedInput = {
+    create?: XOR<DoenteCreateWithoutAtribuicoesHorarioInput, DoenteUncheckedCreateWithoutAtribuicoesHorarioInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAtribuicoesHorarioInput
+    upsert?: DoenteUpsertWithoutAtribuicoesHorarioInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutAtribuicoesHorarioInput, DoenteUpdateWithoutAtribuicoesHorarioInput>, DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAtribuicoesComoUtilizadorNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput
+    upsert?: UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAtribuicoesComoUtilizadorInput, UtilizadorUpdateWithoutAtribuicoesComoUtilizadorInput>, UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAtribuicoesFeitasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput
+    upsert?: UtilizadorUpsertWithoutAtribuicoesFeitasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAtribuicoesFeitasInput, UtilizadorUpdateWithoutAtribuicoesFeitasInput>, UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -23675,6 +27359,23 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumEstadoPedidoTrocaFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTroca | EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel> | $Enums.EstadoPedidoTroca
+  }
+
+  export type NestedEnumEstadoPedidoTrocaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTroca | EnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTrocaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoPedidoTroca
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel>
+    _max?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel>
+  }
+
   export type TurnoCreateWithoutChefeTurnoInput = {
     id?: string
     tipo: $Enums.TipoTurno
@@ -23739,7 +27440,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turno: TurnoCreateNestedOneWithoutNotasTurnoInput
+    turno?: TurnoCreateNestedOneWithoutNotasTurnoInput
     doente: DoenteCreateNestedOneWithoutNotasTurnoInput
   }
 
@@ -23747,7 +27448,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     doenteId: string
   }
 
@@ -23773,7 +27474,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
     responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
-    turno: TurnoCreateNestedOneWithoutTarefasInput
+    turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
 
   export type TarefaUncheckedCreateWithoutCriadoPorInput = {
@@ -23788,7 +27489,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doenteId: string
     responsavelId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaCreateOrConnectWithoutCriadoPorInput = {
@@ -23813,7 +27514,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
-    turno: TurnoCreateNestedOneWithoutTarefasInput
+    turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
 
   export type TarefaUncheckedCreateWithoutResponsavelInput = {
@@ -23828,7 +27529,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doenteId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaCreateOrConnectWithoutResponsavelInput = {
@@ -23916,6 +27617,7 @@ export namespace Prisma {
     ativo?: boolean
     cama: CamaCreateNestedOneWithoutDoenteInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -23936,6 +27638,7 @@ export namespace Prisma {
     ativo?: boolean
     camaId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -24019,6 +27722,144 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput = {
+    id?: string
+    horarioTurno: HorarioTurnoCreateNestedOneWithoutAtribuicoesInput
+    doente: DoenteCreateNestedOneWithoutAtribuicoesHorarioInput
+    atribuidoPor: UtilizadorCreateNestedOneWithoutAtribuicoesFeitasInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateOrConnectWithoutUtilizadorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyUtilizadorInputEnvelope = {
+    data: AtribuicaoHorarioTurnoCreateManyUtilizadorInput | AtribuicaoHorarioTurnoCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput = {
+    id?: string
+    horarioTurno: HorarioTurnoCreateNestedOneWithoutAtribuicoesInput
+    doente: DoenteCreateNestedOneWithoutAtribuicoesHorarioInput
+    utilizador: UtilizadorCreateNestedOneWithoutAtribuicoesComoUtilizadorInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateOrConnectWithoutAtribuidoPorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyAtribuidoPorInputEnvelope = {
+    data: AtribuicaoHorarioTurnoCreateManyAtribuidoPorInput | AtribuicaoHorarioTurnoCreateManyAtribuidoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTrocaTurnoCreateWithoutSolicitanteInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasRecebidasInput
+    turno: HorarioTurnoCreateNestedOneWithoutTrocasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasAprovadasInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    turnoId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoCreateOrConnectWithoutSolicitanteInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    create: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput>
+  }
+
+  export type PedidoTrocaTurnoCreateManySolicitanteInputEnvelope = {
+    data: PedidoTrocaTurnoCreateManySolicitanteInput | PedidoTrocaTurnoCreateManySolicitanteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTrocaTurnoCreateWithoutDestinatarioInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasSolicitadasInput
+    turno: HorarioTurnoCreateNestedOneWithoutTrocasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasAprovadasInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoCreateOrConnectWithoutDestinatarioInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    create: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput>
+  }
+
+  export type PedidoTrocaTurnoCreateManyDestinatarioInputEnvelope = {
+    data: PedidoTrocaTurnoCreateManyDestinatarioInput | PedidoTrocaTurnoCreateManyDestinatarioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTrocaTurnoCreateWithoutAprovadoPorInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasSolicitadasInput
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasRecebidasInput
+    turno: HorarioTurnoCreateNestedOneWithoutTrocasInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    destinatarioId: string
+  }
+
+  export type PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    create: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope = {
+    data: PedidoTrocaTurnoCreateManyAprovadoPorInput | PedidoTrocaTurnoCreateManyAprovadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TurnoUpsertWithWhereUniqueWithoutChefeTurnoInput = {
     where: TurnoWhereUniqueInput
     update: XOR<TurnoUpdateWithoutChefeTurnoInput, TurnoUncheckedUpdateWithoutChefeTurnoInput>
@@ -24096,7 +27937,7 @@ export namespace Prisma {
     id?: StringFilter<"NotaTurno"> | string
     texto?: StringFilter<"NotaTurno"> | string
     criadaEm?: DateTimeFilter<"NotaTurno"> | Date | string
-    turnoId?: StringFilter<"NotaTurno"> | string
+    turnoId?: StringNullableFilter<"NotaTurno"> | string | null
     doenteId?: StringFilter<"NotaTurno"> | string
     autorId?: StringFilter<"NotaTurno"> | string
   }
@@ -24133,7 +27974,7 @@ export namespace Prisma {
     doenteId?: StringFilter<"Tarefa"> | string
     responsavelId?: StringFilter<"Tarefa"> | string
     criadoPorId?: StringFilter<"Tarefa"> | string
-    turnoId?: StringFilter<"Tarefa"> | string
+    turnoId?: StringNullableFilter<"Tarefa"> | string | null
   }
 
   export type TarefaUpsertWithWhereUniqueWithoutResponsavelInput = {
@@ -24323,6 +28164,111 @@ export namespace Prisma {
     utilizadorId?: StringFilter<"HorarioTurnoProfissional"> | string
   }
 
+  export type AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    update: XOR<AtribuicaoHorarioTurnoUpdateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateWithoutUtilizadorInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: AtribuicaoHorarioTurnoScalarWhereInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoScalarWhereInput = {
+    AND?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+    OR?: AtribuicaoHorarioTurnoScalarWhereInput[]
+    NOT?: AtribuicaoHorarioTurnoScalarWhereInput | AtribuicaoHorarioTurnoScalarWhereInput[]
+    id?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    horarioTurnoId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    doenteId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    utilizadorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+    atribuidoPorId?: StringFilter<"AtribuicaoHorarioTurno"> | string
+  }
+
+  export type AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutAtribuidoPorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    update: XOR<AtribuicaoHorarioTurnoUpdateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutAtribuidoPorInput>
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutAtribuidoPorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutAtribuidoPorInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateWithoutAtribuidoPorInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutAtribuidoPorInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutAtribuidoPorInput = {
+    where: AtribuicaoHorarioTurnoScalarWhereInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorInput>
+  }
+
+  export type PedidoTrocaTurnoUpsertWithWhereUniqueWithoutSolicitanteInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    update: XOR<PedidoTrocaTurnoUpdateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedUpdateWithoutSolicitanteInput>
+    create: XOR<PedidoTrocaTurnoCreateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedCreateWithoutSolicitanteInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateWithWhereUniqueWithoutSolicitanteInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    data: XOR<PedidoTrocaTurnoUpdateWithoutSolicitanteInput, PedidoTrocaTurnoUncheckedUpdateWithoutSolicitanteInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithWhereWithoutSolicitanteInput = {
+    where: PedidoTrocaTurnoScalarWhereInput
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteInput>
+  }
+
+  export type PedidoTrocaTurnoScalarWhereInput = {
+    AND?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+    OR?: PedidoTrocaTurnoScalarWhereInput[]
+    NOT?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
+    id?: StringFilter<"PedidoTrocaTurno"> | string
+    estado?: EnumEstadoPedidoTrocaFilter<"PedidoTrocaTurno"> | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFilter<"PedidoTrocaTurno"> | Date | string
+    respondidoEm?: DateTimeNullableFilter<"PedidoTrocaTurno"> | Date | string | null
+    solicitanteId?: StringFilter<"PedidoTrocaTurno"> | string
+    turnoId?: StringFilter<"PedidoTrocaTurno"> | string
+    destinatarioId?: StringFilter<"PedidoTrocaTurno"> | string
+    aprovadoPorId?: StringNullableFilter<"PedidoTrocaTurno"> | string | null
+  }
+
+  export type PedidoTrocaTurnoUpsertWithWhereUniqueWithoutDestinatarioInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    update: XOR<PedidoTrocaTurnoUpdateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedUpdateWithoutDestinatarioInput>
+    create: XOR<PedidoTrocaTurnoCreateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedCreateWithoutDestinatarioInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateWithWhereUniqueWithoutDestinatarioInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    data: XOR<PedidoTrocaTurnoUpdateWithoutDestinatarioInput, PedidoTrocaTurnoUncheckedUpdateWithoutDestinatarioInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithWhereWithoutDestinatarioInput = {
+    where: PedidoTrocaTurnoScalarWhereInput
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioInput>
+  }
+
+  export type PedidoTrocaTurnoUpsertWithWhereUniqueWithoutAprovadoPorInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    update: XOR<PedidoTrocaTurnoUpdateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedUpdateWithoutAprovadoPorInput>
+    create: XOR<PedidoTrocaTurnoCreateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateWithWhereUniqueWithoutAprovadoPorInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    data: XOR<PedidoTrocaTurnoUpdateWithoutAprovadoPorInput, PedidoTrocaTurnoUncheckedUpdateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithWhereWithoutAprovadoPorInput = {
+    where: PedidoTrocaTurnoScalarWhereInput
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorInput>
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -24336,6 +28282,7 @@ export namespace Prisma {
     ativo?: boolean
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -24356,6 +28303,7 @@ export namespace Prisma {
     ativo?: boolean
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -24392,6 +28340,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -24412,6 +28361,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -24459,6 +28409,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -24482,6 +28437,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -24511,6 +28471,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AtribuicaoHorarioTurnoCreateWithoutDoenteInput = {
+    id?: string
+    horarioTurno: HorarioTurnoCreateNestedOneWithoutAtribuicoesInput
+    utilizador: UtilizadorCreateNestedOneWithoutAtribuicoesComoUtilizadorInput
+    atribuidoPor: UtilizadorCreateNestedOneWithoutAtribuicoesFeitasInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    horarioTurnoId: string
+    utilizadorId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateOrConnectWithoutDoenteInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyDoenteInputEnvelope = {
+    data: AtribuicaoHorarioTurnoCreateManyDoenteInput | AtribuicaoHorarioTurnoCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TarefaCreateWithoutDoenteInput = {
     id?: string
     descricao: string
@@ -24523,7 +28507,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
-    turno: TurnoCreateNestedOneWithoutTarefasInput
+    turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
 
   export type TarefaUncheckedCreateWithoutDoenteInput = {
@@ -24538,7 +28522,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     responsavelId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaCreateOrConnectWithoutDoenteInput = {
@@ -24617,7 +28601,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turno: TurnoCreateNestedOneWithoutNotasTurnoInput
+    turno?: TurnoCreateNestedOneWithoutNotasTurnoInput
     autor: UtilizadorCreateNestedOneWithoutNotasTurnoInput
   }
 
@@ -24625,7 +28609,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     autorId: string
   }
 
@@ -24718,6 +28702,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -24741,6 +28730,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -24757,6 +28751,22 @@ export namespace Prisma {
   export type AtribuicaoDoenteUpdateManyWithWhereWithoutDoenteInput = {
     where: AtribuicaoDoenteScalarWhereInput
     data: XOR<AtribuicaoDoenteUpdateManyMutationInput, AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    update: XOR<AtribuicaoHorarioTurnoUpdateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutDoenteInput>
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateWithoutDoenteInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutDoenteInput = {
+    where: AtribuicaoHorarioTurnoScalarWhereInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteInput>
   }
 
   export type TarefaUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -24870,6 +28880,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -24893,6 +28908,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -25088,6 +29108,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -25111,6 +29136,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -25222,6 +29252,7 @@ export namespace Prisma {
     ativo?: boolean
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -25242,6 +29273,7 @@ export namespace Prisma {
     ativo?: boolean
     camaId: string
     administrativoAdmissaoId: string
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -25275,6 +29307,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -25298,6 +29335,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -25360,6 +29402,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -25380,6 +29423,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -25419,6 +29463,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -25442,6 +29491,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -25533,6 +29587,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -25556,6 +29615,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -25632,6 +29696,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -25655,6 +29724,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -25733,6 +29807,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -25753,6 +29828,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -25863,6 +29939,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -25883,6 +29960,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -25934,6 +30012,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
@@ -25954,6 +30033,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -25986,6 +30066,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -26009,6 +30094,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -26078,6 +30168,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -26098,6 +30189,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -26136,6 +30228,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -26159,6 +30256,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -26175,6 +30277,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
@@ -26195,6 +30298,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -26227,6 +30331,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -26250,6 +30359,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -26278,6 +30392,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -26301,6 +30420,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -26364,6 +30488,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
@@ -26384,6 +30509,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -26422,6 +30548,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -26445,6 +30576,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -26479,6 +30615,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -26502,6 +30643,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -26555,6 +30701,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
@@ -26575,6 +30722,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -26607,6 +30755,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -26630,6 +30783,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -26688,6 +30846,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
@@ -26708,6 +30867,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -26746,6 +30906,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -26769,6 +30934,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -26832,6 +31002,7 @@ export namespace Prisma {
     cama: CamaCreateNestedOneWithoutDoenteInput
     administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
@@ -26852,6 +31023,7 @@ export namespace Prisma {
     camaId: string
     administrativoAdmissaoId: string
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -26884,6 +31056,11 @@ export namespace Prisma {
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -26907,6 +31084,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -26976,6 +31158,7 @@ export namespace Prisma {
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
@@ -26996,6 +31179,7 @@ export namespace Prisma {
     camaId?: StringFieldUpdateOperationsInput | string
     administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -27034,6 +31218,11 @@ export namespace Prisma {
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -27057,6 +31246,11 @@ export namespace Prisma {
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -27080,6 +31274,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -27103,6 +31302,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -27115,6 +31319,8 @@ export namespace Prisma {
     tipo: $Enums.TipoTurno
     data: Date | string
     profissionais?: HorarioTurnoProfissionalCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoUncheckedCreateWithoutEscalaInput = {
@@ -27122,6 +31328,8 @@ export namespace Prisma {
     tipo: $Enums.TipoTurno
     data: Date | string
     profissionais?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoCreateOrConnectWithoutEscalaInput = {
@@ -27166,6 +31374,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -27189,6 +31402,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
     horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -27256,6 +31474,60 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput = {
+    id?: string
+    doente: DoenteCreateNestedOneWithoutAtribuicoesHorarioInput
+    utilizador: UtilizadorCreateNestedOneWithoutAtribuicoesComoUtilizadorInput
+    atribuidoPor: UtilizadorCreateNestedOneWithoutAtribuicoesFeitasInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput = {
+    id?: string
+    doenteId: string
+    utilizadorId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateOrConnectWithoutHorarioTurnoInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput>
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyHorarioTurnoInputEnvelope = {
+    data: AtribuicaoHorarioTurnoCreateManyHorarioTurnoInput | AtribuicaoHorarioTurnoCreateManyHorarioTurnoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTrocaTurnoCreateWithoutTurnoInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasSolicitadasInput
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasRecebidasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasAprovadasInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoCreateOrConnectWithoutTurnoInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    create: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput>
+  }
+
+  export type PedidoTrocaTurnoCreateManyTurnoInputEnvelope = {
+    data: PedidoTrocaTurnoCreateManyTurnoInput | PedidoTrocaTurnoCreateManyTurnoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EscalaUpsertWithoutTurnosInput = {
     update: XOR<EscalaUpdateWithoutTurnosInput, EscalaUncheckedUpdateWithoutTurnosInput>
     create: XOR<EscalaCreateWithoutTurnosInput, EscalaUncheckedCreateWithoutTurnosInput>
@@ -27299,11 +31571,45 @@ export namespace Prisma {
     data: XOR<HorarioTurnoProfissionalUpdateManyMutationInput, HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoInput>
   }
 
+  export type AtribuicaoHorarioTurnoUpsertWithWhereUniqueWithoutHorarioTurnoInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    update: XOR<AtribuicaoHorarioTurnoUpdateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutHorarioTurnoInput>
+    create: XOR<AtribuicaoHorarioTurnoCreateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedCreateWithoutHorarioTurnoInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithWhereUniqueWithoutHorarioTurnoInput = {
+    where: AtribuicaoHorarioTurnoWhereUniqueInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateWithoutHorarioTurnoInput, AtribuicaoHorarioTurnoUncheckedUpdateWithoutHorarioTurnoInput>
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateManyWithWhereWithoutHorarioTurnoInput = {
+    where: AtribuicaoHorarioTurnoScalarWhereInput
+    data: XOR<AtribuicaoHorarioTurnoUpdateManyMutationInput, AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoInput>
+  }
+
+  export type PedidoTrocaTurnoUpsertWithWhereUniqueWithoutTurnoInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    update: XOR<PedidoTrocaTurnoUpdateWithoutTurnoInput, PedidoTrocaTurnoUncheckedUpdateWithoutTurnoInput>
+    create: XOR<PedidoTrocaTurnoCreateWithoutTurnoInput, PedidoTrocaTurnoUncheckedCreateWithoutTurnoInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateWithWhereUniqueWithoutTurnoInput = {
+    where: PedidoTrocaTurnoWhereUniqueInput
+    data: XOR<PedidoTrocaTurnoUpdateWithoutTurnoInput, PedidoTrocaTurnoUncheckedUpdateWithoutTurnoInput>
+  }
+
+  export type PedidoTrocaTurnoUpdateManyWithWhereWithoutTurnoInput = {
+    where: PedidoTrocaTurnoScalarWhereInput
+    data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoInput>
+  }
+
   export type HorarioTurnoCreateWithoutProfissionaisInput = {
     id?: string
     tipo: $Enums.TipoTurno
     data: Date | string
     escala: EscalaCreateNestedOneWithoutTurnosInput
+    atribuicoes?: AtribuicaoHorarioTurnoCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoUncheckedCreateWithoutProfissionaisInput = {
@@ -27311,6 +31617,8 @@ export namespace Prisma {
     tipo: $Enums.TipoTurno
     data: Date | string
     escalId: string
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutTurnoInput
   }
 
   export type HorarioTurnoCreateOrConnectWithoutProfissionaisInput = {
@@ -27339,6 +31647,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
     escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -27362,6 +31675,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
     escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -27385,6 +31703,8 @@ export namespace Prisma {
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     escala?: EscalaUpdateOneRequiredWithoutTurnosNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUpdateManyWithoutTurnoNestedInput
   }
 
   export type HorarioTurnoUncheckedUpdateWithoutProfissionaisInput = {
@@ -27392,6 +31712,8 @@ export namespace Prisma {
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     escalId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoNestedInput
   }
 
   export type UtilizadorUpsertWithoutHorariosTurnoProfissionalInput = {
@@ -27426,6 +31748,11 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
     escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -27449,6 +31776,855 @@ export namespace Prisma {
     doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
     escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
     atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput>
+  }
+
+  export type UtilizadorCreateWithoutTrocasRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasRecebidasInput>
+  }
+
+  export type HorarioTurnoCreateWithoutTrocasInput = {
+    id?: string
+    tipo: $Enums.TipoTurno
+    data: Date | string
+    escala: EscalaCreateNestedOneWithoutTurnosInput
+    profissionais?: HorarioTurnoProfissionalCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoCreateNestedManyWithoutHorarioTurnoInput
+  }
+
+  export type HorarioTurnoUncheckedCreateWithoutTrocasInput = {
+    id?: string
+    tipo: $Enums.TipoTurno
+    data: Date | string
+    escalId: string
+    profissionais?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutHorarioTurnoInput
+  }
+
+  export type HorarioTurnoCreateOrConnectWithoutTrocasInput = {
+    where: HorarioTurnoWhereUniqueInput
+    create: XOR<HorarioTurnoCreateWithoutTrocasInput, HorarioTurnoUncheckedCreateWithoutTrocasInput>
+  }
+
+  export type UtilizadorCreateWithoutTrocasAprovadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasAprovadasInput>
+  }
+
+  export type UtilizadorUpsertWithoutTrocasSolicitadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasSolicitadasInput, UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasSolicitadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasSolicitadasInput, UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasRecebidasInput, UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasRecebidasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasRecebidasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasRecebidasInput, UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type HorarioTurnoUpsertWithoutTrocasInput = {
+    update: XOR<HorarioTurnoUpdateWithoutTrocasInput, HorarioTurnoUncheckedUpdateWithoutTrocasInput>
+    create: XOR<HorarioTurnoCreateWithoutTrocasInput, HorarioTurnoUncheckedCreateWithoutTrocasInput>
+    where?: HorarioTurnoWhereInput
+  }
+
+  export type HorarioTurnoUpdateToOneWithWhereWithoutTrocasInput = {
+    where?: HorarioTurnoWhereInput
+    data: XOR<HorarioTurnoUpdateWithoutTrocasInput, HorarioTurnoUncheckedUpdateWithoutTrocasInput>
+  }
+
+  export type HorarioTurnoUpdateWithoutTrocasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    escala?: EscalaUpdateOneRequiredWithoutTurnosNestedInput
+    profissionais?: HorarioTurnoProfissionalUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUpdateManyWithoutHorarioTurnoNestedInput
+  }
+
+  export type HorarioTurnoUncheckedUpdateWithoutTrocasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    escalId?: StringFieldUpdateOperationsInput | string
+    profissionais?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTrocasAprovadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasAprovadasInput, UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasAprovadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasAprovadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasAprovadasInput, UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasAprovadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+  }
+
+  export type HorarioTurnoCreateWithoutAtribuicoesInput = {
+    id?: string
+    tipo: $Enums.TipoTurno
+    data: Date | string
+    escala: EscalaCreateNestedOneWithoutTurnosInput
+    profissionais?: HorarioTurnoProfissionalCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoCreateNestedManyWithoutTurnoInput
+  }
+
+  export type HorarioTurnoUncheckedCreateWithoutAtribuicoesInput = {
+    id?: string
+    tipo: $Enums.TipoTurno
+    data: Date | string
+    escalId: string
+    profissionais?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutHorarioTurnoInput
+    trocas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutTurnoInput
+  }
+
+  export type HorarioTurnoCreateOrConnectWithoutAtribuicoesInput = {
+    where: HorarioTurnoWhereUniqueInput
+    create: XOR<HorarioTurnoCreateWithoutAtribuicoesInput, HorarioTurnoUncheckedCreateWithoutAtribuicoesInput>
+  }
+
+  export type DoenteCreateWithoutAtribuicoesHorarioInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutAtribuicoesHorarioInput, DoenteUncheckedCreateWithoutAtribuicoesHorarioInput>
+  }
+
+  export type UtilizadorCreateWithoutAtribuicoesComoUtilizadorInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput>
+  }
+
+  export type UtilizadorCreateWithoutAtribuicoesFeitasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput>
+  }
+
+  export type HorarioTurnoUpsertWithoutAtribuicoesInput = {
+    update: XOR<HorarioTurnoUpdateWithoutAtribuicoesInput, HorarioTurnoUncheckedUpdateWithoutAtribuicoesInput>
+    create: XOR<HorarioTurnoCreateWithoutAtribuicoesInput, HorarioTurnoUncheckedCreateWithoutAtribuicoesInput>
+    where?: HorarioTurnoWhereInput
+  }
+
+  export type HorarioTurnoUpdateToOneWithWhereWithoutAtribuicoesInput = {
+    where?: HorarioTurnoWhereInput
+    data: XOR<HorarioTurnoUpdateWithoutAtribuicoesInput, HorarioTurnoUncheckedUpdateWithoutAtribuicoesInput>
+  }
+
+  export type HorarioTurnoUpdateWithoutAtribuicoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    escala?: EscalaUpdateOneRequiredWithoutTurnosNestedInput
+    profissionais?: HorarioTurnoProfissionalUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUpdateManyWithoutTurnoNestedInput
+  }
+
+  export type HorarioTurnoUncheckedUpdateWithoutAtribuicoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    escalId?: StringFieldUpdateOperationsInput | string
+    profissionais?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoNestedInput
+  }
+
+  export type DoenteUpsertWithoutAtribuicoesHorarioInput = {
+    update: XOR<DoenteUpdateWithoutAtribuicoesHorarioInput, DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput>
+    create: XOR<DoenteCreateWithoutAtribuicoesHorarioInput, DoenteUncheckedCreateWithoutAtribuicoesHorarioInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutAtribuicoesHorarioInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutAtribuicoesHorarioInput, DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput>
+  }
+
+  export type DoenteUpdateWithoutAtribuicoesHorarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
+    update: XOR<UtilizadorUpdateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput>
+    create: XOR<UtilizadorCreateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAtribuicoesComoUtilizadorInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAtribuicoesComoUtilizadorInput, UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput>
+  }
+
+  export type UtilizadorUpdateWithoutAtribuicoesComoUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
+    update: XOR<UtilizadorUpdateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput>
+    create: XOR<UtilizadorCreateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAtribuicoesFeitasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAtribuicoesFeitasInput, UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput>
+  }
+
+  export type UtilizadorUpdateWithoutAtribuicoesFeitasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoCreateManyChefeTurnoInput = {
@@ -27469,7 +32645,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     doenteId: string
   }
 
@@ -27485,7 +32661,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doenteId: string
     responsavelId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type TarefaCreateManyResponsavelInput = {
@@ -27500,7 +32676,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     doenteId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type MedicacaoCreateManyPrescritoPorInput = {
@@ -27552,6 +32728,50 @@ export namespace Prisma {
 
   export type HorarioTurnoProfissionalCreateManyUtilizadorInput = {
     horarioTurnoId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyUtilizadorInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    atribuidoPorId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyAtribuidoPorInput = {
+    id?: string
+    horarioTurnoId: string
+    doenteId: string
+    utilizadorId: string
+  }
+
+  export type PedidoTrocaTurnoCreateManySolicitanteInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    turnoId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoCreateManyDestinatarioInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    aprovadoPorId?: string | null
+  }
+
+  export type PedidoTrocaTurnoCreateManyAprovadoPorInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    turnoId: string
+    destinatarioId: string
   }
 
   export type TurnoUpdateWithoutChefeTurnoInput = {
@@ -27612,7 +32832,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turno?: TurnoUpdateOneRequiredWithoutNotasTurnoNestedInput
+    turno?: TurnoUpdateOneWithoutNotasTurnoNestedInput
     doente?: DoenteUpdateOneRequiredWithoutNotasTurnoNestedInput
   }
 
@@ -27620,7 +32840,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -27628,7 +32848,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -27644,7 +32864,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
     responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
-    turno?: TurnoUpdateOneRequiredWithoutTarefasNestedInput
+    turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
 
   export type TarefaUncheckedUpdateWithoutCriadoPorInput = {
@@ -27659,7 +32879,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     responsavelId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaUncheckedUpdateManyWithoutCriadoPorInput = {
@@ -27674,7 +32894,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     responsavelId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaUpdateWithoutResponsavelInput = {
@@ -27689,7 +32909,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
-    turno?: TurnoUpdateOneRequiredWithoutTarefasNestedInput
+    turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
 
   export type TarefaUncheckedUpdateWithoutResponsavelInput = {
@@ -27704,7 +32924,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaUncheckedUpdateManyWithoutResponsavelInput = {
@@ -27719,7 +32939,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MedicacaoUpdateWithoutPrescritoPorInput = {
@@ -27797,6 +33017,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
@@ -27817,6 +33038,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     camaId?: StringFieldUpdateOperationsInput | string
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -27891,10 +33113,149 @@ export namespace Prisma {
     horarioTurnoId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AtribuicaoHorarioTurnoUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurno?: HorarioTurnoUpdateOneRequiredWithoutAtribuicoesNestedInput
+    doente?: DoenteUpdateOneRequiredWithoutAtribuicoesHorarioNestedInput
+    atribuidoPor?: UtilizadorUpdateOneRequiredWithoutAtribuicoesFeitasNestedInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithoutAtribuidoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurno?: HorarioTurnoUpdateOneRequiredWithoutAtribuicoesNestedInput
+    doente?: DoenteUpdateOneRequiredWithoutAtribuicoesHorarioNestedInput
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAtribuicoesComoUtilizadorNestedInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateWithoutAtribuidoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PedidoTrocaTurnoUpdateWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasRecebidasNestedInput
+    turno?: HorarioTurnoUpdateOneRequiredWithoutTrocasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasAprovadasNestedInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoUpdateWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasSolicitadasNestedInput
+    turno?: HorarioTurnoUpdateOneRequiredWithoutTrocasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasAprovadasNestedInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasSolicitadasNestedInput
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasRecebidasNestedInput
+    turno?: HorarioTurnoUpdateOneRequiredWithoutTrocasNestedInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    turnoId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type AtribuicaoDoenteCreateManyDoenteInput = {
     id?: string
     enfermeiroId: string
     turnoId: string
+  }
+
+  export type AtribuicaoHorarioTurnoCreateManyDoenteInput = {
+    id?: string
+    horarioTurnoId: string
+    utilizadorId: string
+    atribuidoPorId: string
   }
 
   export type TarefaCreateManyDoenteInput = {
@@ -27909,7 +33270,7 @@ export namespace Prisma {
     concluidaEm?: Date | string | null
     responsavelId: string
     criadoPorId: string
-    turnoId: string
+    turnoId?: string | null
   }
 
   export type MedicacaoCreateManyDoenteInput = {
@@ -27936,7 +33297,7 @@ export namespace Prisma {
     id?: string
     texto: string
     criadaEm?: Date | string
-    turnoId: string
+    turnoId?: string | null
     autorId: string
   }
 
@@ -27964,6 +33325,27 @@ export namespace Prisma {
     turnoId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AtribuicaoHorarioTurnoUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurno?: HorarioTurnoUpdateOneRequiredWithoutAtribuicoesNestedInput
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAtribuicoesComoUtilizadorNestedInput
+    atribuidoPor?: UtilizadorUpdateOneRequiredWithoutAtribuicoesFeitasNestedInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    horarioTurnoId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type TarefaUpdateWithoutDoenteInput = {
     id?: StringFieldUpdateOperationsInput | string
     descricao?: StringFieldUpdateOperationsInput | string
@@ -27976,7 +33358,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
-    turno?: TurnoUpdateOneRequiredWithoutTarefasNestedInput
+    turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
 
   export type TarefaUncheckedUpdateWithoutDoenteInput = {
@@ -27991,7 +33373,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     responsavelId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaUncheckedUpdateManyWithoutDoenteInput = {
@@ -28006,7 +33388,7 @@ export namespace Prisma {
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     responsavelId?: StringFieldUpdateOperationsInput | string
     criadoPorId?: StringFieldUpdateOperationsInput | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MedicacaoUpdateWithoutDoenteInput = {
@@ -28075,7 +33457,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turno?: TurnoUpdateOneRequiredWithoutNotasTurnoNestedInput
+    turno?: TurnoUpdateOneWithoutNotasTurnoNestedInput
     autor?: UtilizadorUpdateOneRequiredWithoutNotasTurnoNestedInput
   }
 
@@ -28083,7 +33465,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     autorId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -28091,7 +33473,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     texto?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
-    turnoId?: StringFieldUpdateOperationsInput | string
+    turnoId?: NullableStringFieldUpdateOperationsInput | string | null
     autorId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -28348,6 +33730,8 @@ export namespace Prisma {
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     profissionais?: HorarioTurnoProfissionalUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUpdateManyWithoutTurnoNestedInput
   }
 
   export type HorarioTurnoUncheckedUpdateWithoutEscalaInput = {
@@ -28355,6 +33739,8 @@ export namespace Prisma {
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
     data?: DateTimeFieldUpdateOperationsInput | Date | string
     profissionais?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    atribuicoes?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoNestedInput
+    trocas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoNestedInput
   }
 
   export type HorarioTurnoUncheckedUpdateManyWithoutEscalaInput = {
@@ -28367,6 +33753,23 @@ export namespace Prisma {
     utilizadorId: string
   }
 
+  export type AtribuicaoHorarioTurnoCreateManyHorarioTurnoInput = {
+    id?: string
+    doenteId: string
+    utilizadorId: string
+    atribuidoPorId: string
+  }
+
+  export type PedidoTrocaTurnoCreateManyTurnoInput = {
+    id?: string
+    estado?: $Enums.EstadoPedidoTroca
+    criadoEm?: Date | string
+    respondidoEm?: Date | string | null
+    solicitanteId: string
+    destinatarioId: string
+    aprovadoPorId?: string | null
+  }
+
   export type HorarioTurnoProfissionalUpdateWithoutHorarioTurnoInput = {
     utilizador?: UtilizadorUpdateOneRequiredWithoutHorariosTurnoProfissionalNestedInput
   }
@@ -28377,6 +33780,57 @@ export namespace Prisma {
 
   export type HorarioTurnoProfissionalUncheckedUpdateManyWithoutHorarioTurnoInput = {
     utilizadorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUpdateWithoutHorarioTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doente?: DoenteUpdateOneRequiredWithoutAtribuicoesHorarioNestedInput
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAtribuicoesComoUtilizadorNestedInput
+    atribuidoPor?: UtilizadorUpdateOneRequiredWithoutAtribuicoesFeitasNestedInput
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateWithoutHorarioTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutHorarioTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    atribuidoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PedidoTrocaTurnoUpdateWithoutTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasSolicitadasNestedInput
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasRecebidasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasAprovadasNestedInput
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateWithoutTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTrocaTurnoUncheckedUpdateManyWithoutTurnoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoTrocaFieldUpdateOperationsInput | $Enums.EstadoPedidoTroca
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    respondidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

@@ -8,7 +8,7 @@ interface HorarioTurno {
   id: string;
   tipo: string;
   data: string;
-  profissionais: { utilizador: { id: string; nome: string; role: string } }[];
+  profissionais: { utilizadorId: string; utilizador: { id: string; nome: string; role: string; ordemExperiencia?: number; equipa?: string } }[];
 }
 
 interface Escala {
@@ -58,6 +58,9 @@ export default function HorariosPagina() {
   const [salvando, setSalvando] = useState(false);
   const [erroModal, setErroModal] = useState('');
 
+  // Modal ver turno (enfermeiro)
+  const [turnoVendo, setTurnoVendo] = useState<HorarioTurno | null>(null);
+
   // Modal editar turno
   const [turnoEditando, setTurnoEditando] = useState<HorarioTurno | null>(null);
   const [editTurno, setEditTurno] = useState({ tipo: 'manha', profissionaisIds: [] as string[] });
@@ -65,6 +68,7 @@ export default function HorariosPagina() {
   const [erroEdit, setErroEdit] = useState('');
 
   const isChefe = utilizador?.role === 'chefe_enfermeiros';
+  const verApenasSeus = ['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '');
 
   const carregar = async () => {
     setLoading(true);
@@ -92,6 +96,7 @@ export default function HorariosPagina() {
   }, [isChefe]);
 
   const turnosPorDia = escala?.turnos.reduce<Record<string, HorarioTurno[]>>((acc, t) => {
+    if (verApenasSeus && !t.profissionais.some((p) => p.utilizador.id === utilizador?.id)) return acc;
     const dia = new Date(t.data).toISOString().split('T')[0];
     if (!acc[dia]) acc[dia] = [];
     acc[dia].push(t);
@@ -203,19 +208,6 @@ export default function HorariosPagina() {
         </div>
       </div>
 
-      {/* Os meus turnos */}
-      {meuHorario.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '28px' }}>
-          <h2 className="font-semibold text-blue-800 text-sm" style={{ marginBottom: '12px' }}>Os meus turnos este mês</h2>
-          <div className="flex flex-wrap gap-2">
-            {meuHorario.map((h) => (
-              <span key={h.horarioTurno.id} className={`text-xs px-3 py-1.5 rounded-full font-medium ${tipoCor[h.horarioTurno.tipo].pill}`}>
-                {new Date(h.horarioTurno.data).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })} · {tipoLabel[h.horarioTurno.tipo]}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
 
       {loading ? (
         <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '60px' }}>
@@ -292,10 +284,14 @@ export default function HorariosPagina() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                       {[...turnos].sort((a, b) => ['manha','tarde','noite'].indexOf(a.tipo) - ['manha','tarde','noite'].indexOf(b.tipo)).map((t) => (
                         <div key={t.id}
-                          className={`text-xs font-medium rounded-lg truncate ${tipoCor[t.tipo].cal} ${isChefe ? 'cursor-pointer hover:opacity-75' : ''}`}
+                          className={`text-xs font-medium rounded-lg truncate cursor-pointer hover:opacity-75 ${tipoCor[t.tipo].cal}`}
                           style={{ padding: '3px 6px' }}
                           title={t.profissionais.map((p) => p.utilizador.nome).join(', ')}
-                          onClick={isChefe ? (e) => abrirEditar(t, e) : undefined}>
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (isChefe) abrirEditar(t, e);
+                            else setTurnoVendo(t);
+                          }}>
                           {tipoLabel[t.tipo]} · {t.profissionais.length}
                         </div>
                       ))}
@@ -509,6 +505,81 @@ export default function HorariosPagina() {
           </div>
         </div>
       )}
+
+      {/* Modal ver turno (enfermeiro) */}
+      {turnoVendo && (() => {
+        const enfermeiros = turnoVendo.profissionais
+          .filter((p) => p.utilizador.role === 'enfermeiro')
+          .sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999));
+        const chefe = enfermeiros[0]?.utilizador;
+        const outros = enfermeiros.slice(1);
+        return (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+            <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <div className={`inline-flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-lg ${tipoCor[turnoVendo.tipo].cal}`} style={{ marginBottom: '12px' }}>
+                  {tipoLabel[turnoVendo.tipo]}
+                </div>
+                <h2 className="text-xl font-bold text-slate-900">Equipa do Turno</h2>
+                <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+                  {new Date(turnoVendo.data).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+                </p>
+              </div>
+
+              {/* Chefe */}
+              {chefe && (
+                <div style={{ marginBottom: '20px' }}>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Chefe de Turno</p>
+                  <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl" style={{ padding: '12px 16px' }}>
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                      {chefe.nome.split(' ').slice(0,2).map((w: string) => w[0]).join('').toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{chefe.nome}</p>
+                      <p className="text-xs text-blue-600 font-medium" style={{ marginTop: '2px' }}>Chefe de Turno</p>
+                    </div>
+                    {chefe.id === utilizador?.id && (
+                      <span className="ml-auto text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Tu</span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Restantes */}
+              {outros.length > 0 && (
+                <div style={{ marginBottom: '24px' }}>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Enfermeiros</p>
+                  <div className="flex flex-col gap-2">
+                    {outros.map((p) => {
+                      return (
+                        <div key={p.utilizador.id} className="flex items-center gap-3 bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-400 to-slate-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                            {p.utilizador.nome.split(' ').slice(0,2).map((w: string) => w[0]).join('').toUpperCase()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-800">{p.utilizador.nome}</p>
+                            {p.utilizador.equipa && <p className="text-xs text-slate-400" style={{ marginTop: '1px' }}>Equipa {p.utilizador.equipa}</p>}
+                          </div>
+                          {p.utilizador.id === utilizador?.id && (
+                            <span className="text-xs font-semibold text-slate-500 bg-slate-200 px-2 py-0.5 rounded-full">Tu</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={() => setTurnoVendo(null)}
+                className="w-full border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>
+                Fechar
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

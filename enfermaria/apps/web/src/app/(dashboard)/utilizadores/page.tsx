@@ -190,7 +190,7 @@ export default function UtilizadoresPagina() {
                           {u.ordemExperiencia && (
                             <>
                               <span className="text-slate-200">·</span>
-                              <span className="text-xs text-slate-400">Exp. {u.ordemExperiencia}</span>
+                              <span className="text-xs text-slate-400">#{u.ordemExperiencia} experiência</span>
                             </>
                           )}
                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${roleCor[role].badge}`}>
@@ -255,12 +255,13 @@ export default function UtilizadoresPagina() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência</label>
+                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
                   <input
                     type="number"
+                    min="1"
                     value={formEdit.ordemExperiencia}
                     onChange={(e) => setFormEdit((f) => ({ ...f, ordemExperiencia: e.target.value }))}
-                    placeholder="Opcional"
+                    placeholder="Ex: 1"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition"
                     style={{ padding: '10px 14px' }}
                   />
@@ -385,12 +386,13 @@ export default function UtilizadoresPagina() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência</label>
+                  <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
                   <input
                     type="number"
+                    min="1"
                     value={form.ordemExperiencia}
                     onChange={setField('ordemExperiencia')}
-                    placeholder="Opcional"
+                    placeholder="Ex: 1"
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                     style={{ padding: '10px 14px' }}
                   />

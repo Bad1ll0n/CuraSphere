@@ -26,6 +26,7 @@ model Utilizador {
   passwordHash      String
   role              Role
   ordemExperiencia  Int? // definida pela chefe de enfermeiros
+  equipa            String? // ex: "A", "B", "C"
   ativo             Boolean  @default(true)
   criadoEm          DateTime @default(now())
   atualizadoEm      DateTime @updatedAt
@@ -42,6 +43,11 @@ model Utilizador {
   escalas                   Escala[]
   atribuicoesEnfermeiro     AtribuicaoDoente[]
   horariosTurnoProfissional HorarioTurnoProfissional[]
+  atribuicoesComoUtilizador AtribuicaoHorarioTurno[]   @relation("AtribuicaoUtilizador")
+  atribuicoesFeitas         AtribuicaoHorarioTurno[]   @relation("AtribuicaoAtribuidoPor")
+  trocasSolicitadas         PedidoTrocaTurno[]         @relation("TrocaSolicitante")
+  trocasRecebidas           PedidoTrocaTurno[]         @relation("TrocaDestinatario")
+  trocasAprovadas           PedidoTrocaTurno[]         @relation("TrocaAprovadoPor")
 
   @@map("utilizadores")
 }
@@ -94,12 +100,13 @@ model Doente {
   administrativo           Utilizador @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
 
   // Relações
-  atribuicoes       AtribuicaoDoente[]
-  tarefas           Tarefa[]
-  medicacoes        Medicacao[]
-  registosMedicacao RegistoMedicacao[]
-  notasTurno        NotaTurno[]
-  passagensTurno    PassagemTurno[]
+  atribuicoes        AtribuicaoDoente[]
+  atribuicoesHorario AtribuicaoHorarioTurno[]
+  tarefas            Tarefa[]
+  medicacoes         Medicacao[]
+  registosMedicacao  RegistoMedicacao[]
+  notasTurno         NotaTurno[]
+  passagensTurno     PassagemTurno[]
 
   @@map("doentes")
 }
@@ -298,6 +305,8 @@ model HorarioTurno {
 
   escala        Escala                     @relation(fields: [escalId], references: [id])
   profissionais HorarioTurnoProfissional[]
+  atribuicoes   AtribuicaoHorarioTurno[]
+  trocas        PedidoTrocaTurno[]         @relation("TrocaTurno")
 
   @@map("horarios_turno")
 }
@@ -311,4 +320,46 @@ model HorarioTurnoProfissional {
 
   @@id([horarioTurnoId, utilizadorId])
   @@map("horarios_turno_profissionais")
+}
+
+enum EstadoPedidoTroca {
+  pendente_destinatario
+  pendente_chefe
+  aprovado
+  rejeitado
+}
+
+model PedidoTrocaTurno {
+  id           String            @id @default(uuid())
+  estado       EstadoPedidoTroca @default(pendente_destinatario)
+  criadoEm     DateTime          @default(now())
+  respondidoEm DateTime?
+
+  solicitanteId  String
+  turnoId        String
+  destinatarioId String
+  aprovadoPorId  String?
+
+  solicitante  Utilizador   @relation("TrocaSolicitante", fields: [solicitanteId], references: [id])
+  destinatario Utilizador   @relation("TrocaDestinatario", fields: [destinatarioId], references: [id])
+  turno        HorarioTurno @relation("TrocaTurno", fields: [turnoId], references: [id])
+  aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id])
+
+  @@map("pedidos_troca_turno")
+}
+
+model AtribuicaoHorarioTurno {
+  id             String @id @default(uuid())
+  horarioTurnoId String
+  doenteId       String
+  utilizadorId   String
+  atribuidoPorId String
+
+  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id])
+  doente       Doente       @relation(fields: [doenteId], references: [id])
+  utilizador   Utilizador   @relation("AtribuicaoUtilizador", fields: [utilizadorId], references: [id])
+  atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id])
+
+  @@unique([horarioTurnoId, doenteId, utilizadorId])
+  @@map("atribuicoes_horario_turno")
 }

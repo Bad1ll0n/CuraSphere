@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { DoenteService } from './doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -11,8 +11,9 @@ export class DoenteController {
   constructor(private readonly doenteService: DoenteService) {}
 
   @Get()
-  listar() {
-    return this.doenteService.listar();
+  listar(@Request() req: any, @Query('todos') todos?: string) {
+    const ignorarFiltro = todos === 'true';
+    return this.doenteService.listar(req.user.sub, ignorarFiltro ? 'todos' : req.user.role);
   }
 
   @Get(':id')
@@ -47,5 +48,48 @@ export class DoenteController {
   @Patch(':id/alta')
   darAlta(@Param('id') id: string, @Request() req: any) {
     return this.doenteService.darAlta(id, req.user.sub);
+  }
+
+  @Post(':id/nota')
+  adicionarNota(
+    @Param('id') doenteId: string,
+    @Body() body: { texto: string },
+    @Request() req: any,
+  ) {
+    return this.doenteService.adicionarNota(doenteId, req.user.sub, body.texto);
+  }
+
+  @Patch(':id/nota/:notaId')
+  editarNota(
+    @Param('id') _doenteId: string,
+    @Param('notaId') notaId: string,
+    @Body() body: { texto: string },
+    @Request() req: any,
+  ) {
+    return this.doenteService.editarNota(notaId, req.user.sub, body.texto);
+  }
+
+  @Delete(':id/nota/:notaId')
+  apagarNota(
+    @Param('id') _doenteId: string,
+    @Param('notaId') notaId: string,
+    @Request() req: any,
+  ) {
+    return this.doenteService.apagarNota(notaId, req.user.sub);
+  }
+
+  @Post(':id/tarefa')
+  criarTarefa(
+    @Param('id') doenteId: string,
+    @Body() body: {
+      descricao: string;
+      tipo: string;
+      prioridade: string;
+      responsavelId: string;
+      prazo?: Date;
+    },
+    @Request() req: any,
+  ) {
+    return this.doenteService.criarTarefa(doenteId, req.user.sub, body);
   }
 }

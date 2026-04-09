@@ -1,7 +1,46 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx prisma:*)"
+      "Bash(npx prisma:*)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill /F /PID 3932)",
+      "Bash(cmd /c \"taskkill /F /PID 3932\")",
+      "Bash(cmd /c \"netstat -ano | findstr :3333\")",
+      "Bash(curl -s http://localhost:3333/api/)",
+      "Bash(pnpm dev:*)",
+      "Bash(curl -s http://localhost:3333/api/utilizadores -H \"Content-Type: application/json\")",
+      "Bash(curl -s http://localhost:3333/utilizadores)",
+      "Bash(cmd /c \"psql postgresql://postgres:postgres@localhost:5432/enfermaria -c \\\\\"SELECT id, descricao, responsavel_id FROM \\\\\\\\\\\\\"Tarefa\\\\\\\\\\\\\" LIMIT 5;\\\\\" 2>&1\")",
+      "Bash(cmd /c \"netstat -an | findstr ':3000\\\\|:3333'\")",
+      "Bash(start \"API\" cmd /k \"pnpm nx serve api\")",
+      "Bash(cmd /c \"start cmd /k \\\\\"cd /d C:\\\\\\\\Users\\\\\\\\Badillon\\\\\\\\Projeto_Enfermaria\\\\\\\\enfermaria && pnpm nx serve api\\\\\"\")",
+      "Bash(powershell -Command \"Start-Process cmd -ArgumentList '/k cd /d C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria ^&^& pnpm nx serve api'\")",
+      "Bash(powershell -Command \"Start-Process cmd -ArgumentList '/k cd /d C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria ^&^& pnpm nx dev web'\")",
+      "Bash(powershell -Command \"Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd C:/Users/Badillon/Projeto_Enfermaria/enfermaria; pnpm nx serve api'\")",
+      "Bash(powershell -Command \"Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd C:/Users/Badillon/Projeto_Enfermaria/enfermaria; pnpm nx dev web'\")",
+      "Bash(cmd /c \"netstat -an | findstr LISTENING | findstr ':3000\\\\|:3333'\")",
+      "Bash(powershell -Command \"Start-Process 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\start-api.bat'\")",
+      "Bash(powershell -Command \"Start-Process 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\start-web.bat'\")",
+      "Bash(cmd /c \"netstat -an | findstr LISTENING\")",
+      "Bash(cmd /c \"netstat -an | findstr 3000\")",
+      "Bash(cmd /c \"netstat -an | findstr 3333\")",
+      "Bash(cmd /c \"tasklist | findstr node\")",
+      "Bash(powershell -Command \"Start-Process -FilePath 'powershell.exe' -ArgumentList @\\('-NoExit', '-Command', 'Set-Location C:/Users/Badillon/Projeto_Enfermaria/enfermaria; pnpm nx serve api'\\) -WindowStyle Normal\")",
+      "Bash(wscript \"C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\run-servers.vbs\")",
+      "Bash(cmd /c \"tasklist | findstr /i node\")",
+      "Bash(cmd /c \"tasklist | findstr /i pnpm\")",
+      "Bash(cmd /c \"schtasks /create /tn StartAPI /tr \\\\\"cmd /k cd /d C:\\\\\\\\Users\\\\\\\\Badillon\\\\\\\\Projeto_Enfermaria\\\\\\\\enfermaria ^&^& pnpm nx serve api\\\\\" /sc once /st 00:00 /ru INTERACTIVE /f\")",
+      "Bash(cmd /c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -aon ^| findstr :3000 ^| findstr LISTENING'\\) do taskkill /PID %a /F\")",
+      "Bash(cmd /c \"for /f \\\\\"tokens=5\\\\\" %a in \\('netstat -aon ^| findstr :3333 ^| findstr LISTENING'\\) do taskkill /PID %a /F\")",
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")",
+      "Bash(cmd /c \"netstat -aon | findstr :3000\")",
+      "Bash(cmd /c \"netstat -aon | findstr :3333\")",
+      "Bash(cmd /c \"tasklist | findstr /i node.exe\")",
+      "Bash(cmd /c \"netstat -aon | findstr LISTENING\")",
+      "Bash(cmd /c \"netstat -aon\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object LocalPort,OwningProcess; Get-NetTCPConnection -LocalPort 3333 -ErrorAction SilentlyContinue | Select-Object LocalPort,OwningProcess\")",
+      "Bash(powershell -Command \"Stop-Process -Id 15640 -Force; Stop-Process -Id 13816 -Force\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue; Get-NetTCPConnection -LocalPort 3333 -ErrorAction SilentlyContinue\")"
     ]
   }
 }

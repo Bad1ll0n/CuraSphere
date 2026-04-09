@@ -149,7 +149,7 @@ export class HorariosService {
         },
       },
       include: {
-        horarioTurno: { select: { tipo: true, data: true } },
+        horarioTurno: { select: { id: true, tipo: true, data: true } },
       },
       orderBy: { horarioTurno: { data: 'asc' } },
     });

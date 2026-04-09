@@ -48,7 +48,7 @@ export default function DashboardPage() {
   useEffect(() => {
     (async () => {
       try {
-        const [ocup, doc] = await Promise.all([api.get('/camas/ocupacao'), api.get('/doentes')]);
+        const [ocup, doc] = await Promise.all([api.get('/camas/ocupacao'), api.get('/doentes?todos=true')]);
         setOcupacao(ocup.data);
         setDoentes(doc.data);
       } catch { /* silencioso */ }
@@ -80,9 +80,9 @@ export default function DashboardPage() {
           </h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Aqui está o resumo da enfermaria</p>
         </div>
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2">
+        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl" style={{ padding: '8px 16px' }}>
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-emerald-700 text-xs font-semibold">Sistema Online</span>
+          <span className="text-emerald-700 text-sm font-semibold">Sistema Online</span>
         </div>
       </div>
 
@@ -100,10 +100,10 @@ export default function DashboardPage() {
           <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '40px' }}>
             {statCards.map(({ key, label, color, text }) => (
               <div key={key} className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
-                <div className={`w-11 h-11 rounded-xl ${color} flex items-center justify-center mb-4`}>
+                <div className={`w-11 h-11 rounded-xl ${color} flex items-center justify-center`}>
                   <span className="text-white font-bold text-lg">{ocupacaoMap[key]}</span>
                 </div>
-                <p className="text-sm text-slate-500 mb-1">{label}</p>
+                <p className="text-sm text-slate-500 mb-1" style={{ marginTop: '10px' }}>{label}</p>
                 <p className={`text-3xl font-bold ${text}`}>{ocupacaoMap[key]}</p>
                 {key === 'ocupadas' && (
                   <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
@@ -229,10 +229,10 @@ export default function DashboardPage() {
                         <span className="font-medium text-slate-900">{d.nome}</span>
                       </div>
                     </td>
-                    <td className="text-slate-500" style={{ padding: '16px 28px' }}>{d.cama.quarto} / {d.cama.numero}</td>
+                    <td className="text-slate-500" style={{ padding: '16px 28px' }}>Quarto {d.cama.quarto} / Cama {d.cama.numero}</td>
                     <td className="text-slate-500 max-w-xs truncate" style={{ padding: '16px 28px' }}>{d.diagnosticoPrincipal}</td>
                     <td style={{ padding: '16px 28px' }}>
-                      <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${estadoCor[d.estado].badge}`}>
+                      <span className={`text-xs font-medium rounded-lg ${estadoCor[d.estado].badge}`} style={{ padding: '5px 10px' }}>
                         {estadoLabel[d.estado]}
                       </span>
                     </td>

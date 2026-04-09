@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EstadoDoente } from '../common/enums';
 
@@ -6,9 +6,14 @@ import { EstadoDoente } from '../common/enums';
 export class DoenteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listar() {
+  async listar(utilizadorId: string, role: string) {
+    const restritos = ['enfermeiro', 'medico'];
+    const where = restritos.includes(role)
+      ? { ativo: true, atribuicoesHorario: { some: { utilizadorId } } }
+      : { ativo: true };
+
     return this.prisma.doente.findMany({
-      where: { ativo: true },
+      where,
       include: {
         cama: true,
         atribuicoes: {
@@ -27,7 +32,22 @@ export class DoenteService {
         atribuicoes: {
           include: { enfermeiro: { select: { id: true, nome: true, role: true } } },
         },
-        tarefas: { where: { estado: { not: 'concluida' } }, orderBy: { prioridade: 'asc' } },
+        atribuicoesHorario: {
+          include: {
+            utilizador: { select: { id: true, nome: true, role: true } },
+            horarioTurno: { select: { tipo: true, data: true } },
+          },
+          orderBy: { horarioTurno: { data: 'desc' } },
+          take: 10,
+        },
+        tarefas: {
+          where: { estado: { not: 'concluida' } },
+          include: {
+            responsavel: { select: { id: true, nome: true, role: true } },
+            criadoPor: { select: { id: true, nome: true, role: true } },
+          },
+          orderBy: { prioridade: 'asc' },
+        },
         medicacoes: { where: { ativo: true } },
         notasTurno: {
           include: { autor: { select: { id: true, nome: true, role: true } } },
@@ -112,6 +132,136 @@ export class DoenteService {
     ]);
 
     return { mensagem: 'Alta registada com sucesso' };
+  }
+
+  async adicionarNota(doenteId: string, autorId: string, texto: string) {
+    await this.verificarTurnoAtivo(autorId);
+    await this.buscarPorId(doenteId);
+    return this.prisma.notaTurno.create({
+      data: { doenteId, autorId, texto },
+      include: { autor: { select: { id: true, nome: true, role: true } } },
+    });
+  }
+
+  async criarTarefa(doenteId: string, criadoPorId: string, data: {
+    descricao: string;
+    tipo: string;
+    prioridade: string;
+    responsavelId: string;
+    prazo?: Date;
+  }) {
+    await this.verificarTurnoAtivo(criadoPorId);
+    await this.buscarPorId(doenteId);
+    return this.prisma.tarefa.create({
+      data: {
+        doenteId,
+        criadoPorId,
+        descricao: data.descricao,
+        tipo: data.tipo as any,
+        prioridade: data.prioridade as any,
+        responsavelId: data.responsavelId,
+        prazo: data.prazo ? new Date(data.prazo) : undefined,
+      },
+      include: {
+        responsavel: { select: { id: true, nome: true, role: true } },
+        criadoPor: { select: { id: true, nome: true, role: true } },
+      },
+    });
+  }
+
+  /**
+   * Calcula o deadline de edição de uma nota com base no turno real:
+   *   Manhã  08:00–16:00 → editável até 16:30
+   *   Tarde  16:00–23:00 → editável até 23:30
+   *   Noite  23:00–08:00 → editável até 08:30 do dia seguinte
+   */
+  private getDeadlineEdicaoNota(criadaEm: Date): Date {
+    const min = criadaEm.getHours() * 60 + criadaEm.getMinutes();
+    const deadline = new Date(criadaEm);
+
+    if (min >= 8 * 60 && min < 16 * 60) {
+      // Manhã → 16:30 mesmo dia
+      deadline.setHours(16, 30, 0, 0);
+    } else if (min >= 16 * 60 && min < 23 * 60) {
+      // Tarde → 23:30 mesmo dia
+      deadline.setHours(23, 30, 0, 0);
+    } else if (min >= 23 * 60) {
+      // Noite (início) → 08:30 do dia seguinte
+      deadline.setDate(deadline.getDate() + 1);
+      deadline.setHours(8, 30, 0, 0);
+    } else {
+      // 00:00–08:30 (continuação da noite anterior) → 08:30 mesmo dia
+      deadline.setHours(8, 30, 0, 0);
+    }
+
+    return deadline;
+  }
+
+  private notaDentroDoTurno(criadaEm: Date): boolean {
+    const agora = new Date();
+    const criacao = new Date(criadaEm);
+    if (agora.getTime() - criacao.getTime() > 10 * 60 * 60 * 1000) return false;
+    return agora <= this.getDeadlineEdicaoNota(criacao);
+  }
+
+  /** Verifica se o utilizador tem um HorarioTurno ativo neste momento */
+  private async verificarTurnoAtivo(utilizadorId: string): Promise<void> {
+    const agora = new Date();
+    const min = agora.getHours() * 60 + agora.getMinutes();
+
+    let tipo: string;
+    let dataRef = new Date(agora);
+
+    if (min >= 8 * 60 && min < 16 * 60) {
+      tipo = 'manha';
+    } else if (min >= 16 * 60 && min < 23 * 60) {
+      tipo = 'tarde';
+    } else if (min >= 23 * 60) {
+      tipo = 'noite';
+    } else {
+      // 00:00–08:30 → noite de ontem
+      tipo = 'noite';
+      dataRef.setDate(dataRef.getDate() - 1);
+    }
+
+    const diaStr = dataRef.toISOString().split('T')[0];
+    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
+    const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
+
+    const turno = await this.prisma.horarioTurnoProfissional.findFirst({
+      where: {
+        utilizadorId,
+        horarioTurno: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },
+      },
+    });
+
+    if (!turno) throw new ForbiddenException('Não tens turno ativo neste momento');
+  }
+
+  async editarNota(notaId: string, autorId: string, texto: string) {
+    await this.verificarTurnoAtivo(autorId);
+    const nota = await this.prisma.notaTurno.findUnique({ where: { id: notaId } });
+    if (!nota) throw new NotFoundException('Nota não encontrada');
+    if (nota.autorId !== autorId) throw new ForbiddenException('Sem permissão para editar esta nota');
+    if (!this.notaDentroDoTurno(nota.criadaEm))
+      throw new ForbiddenException('Nota bloqueada — turno já passou');
+
+    return this.prisma.notaTurno.update({
+      where: { id: notaId },
+      data: { texto },
+      include: { autor: { select: { id: true, nome: true, role: true } } },
+    });
+  }
+
+  async apagarNota(notaId: string, autorId: string) {
+    await this.verificarTurnoAtivo(autorId);
+    const nota = await this.prisma.notaTurno.findUnique({ where: { id: notaId } });
+    if (!nota) throw new NotFoundException('Nota não encontrada');
+    if (nota.autorId !== autorId) throw new ForbiddenException('Sem permissão para apagar esta nota');
+    if (!this.notaDentroDoTurno(nota.criadaEm))
+      throw new ForbiddenException('Nota bloqueada — turno já passou');
+
+    return this.prisma.notaTurno.delete({ where: { id: notaId } });
   }
 
   async historico(id: string) {
