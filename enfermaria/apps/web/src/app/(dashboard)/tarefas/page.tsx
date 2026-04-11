@@ -14,6 +14,7 @@ interface Tarefa {
   estado: string;
   prazo?: string;
   criadaEm: string;
+  grupoResponsavel?: string;
   doente: Doente;
   criadoPor?: { id: string; nome: string; role: string };
   responsavel?: { id: string; nome: string; role: string };
@@ -108,7 +109,7 @@ export default function TarefasPage() {
               </span>
             )}
           </div>
-          <p className="text-slate-500 text-sm">Tarefas atribuídas a ti, por grau de urgência</p>
+          <p className="text-slate-500 text-sm">Tarefas pendentes dos teus doentes neste turno</p>
         </div>
         <button onClick={carregar}
           className="flex items-center gap-2 border border-slate-200 text-slate-500 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
@@ -136,7 +137,7 @@ export default function TarefasPage() {
             </svg>
           </div>
           <p className="text-slate-700 font-semibold" style={{ marginBottom: '6px' }}>Sem tarefas pendentes</p>
-          <p className="text-slate-400 text-sm">Estás em dia — não tens tarefas atribuídas</p>
+          <p className="text-slate-400 text-sm">Sem tarefas pendentes para os teus doentes neste turno</p>
         </div>
       ) : (
         <div className="flex flex-col gap-6">

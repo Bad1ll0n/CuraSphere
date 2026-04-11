@@ -52,6 +52,15 @@ const estadoLabel: Record<string, string> = {
   estavel: 'Estável', grave: 'Grave', critico: 'Crítico', alta_prevista: 'Alta Prevista',
 };
 
+const grupoRoles: Record<string, string[]> = {
+  medico:            ['medico', 'chefe_medicos'],
+  chefe_medicos:     ['medico', 'chefe_medicos'],
+  enfermeiro:        ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
+  chefe_turno:       ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
+  chefe_enfermeiros: ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
+  auxiliar:          ['auxiliar'],
+};
+
 export default function AtribuicoesPage() {
   const { utilizador } = useAuth();
   const [turnos, setTurnos] = useState<HorarioTurno[]>([]);
@@ -60,6 +69,13 @@ export default function AtribuicoesPage() {
   const [loading, setLoading] = useState(true);
   const [salvando, setSalvando] = useState(false);
 
+  const meuGrupo = grupoRoles[utilizador?.role ?? ''] ?? ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'];
+
+  // Encontra o turno do tipo correto para o grupo do utilizador
+  const turnoDoGrupo = (lista: HorarioTurno[], tipo: string): HorarioTurno | undefined =>
+    lista.find((t) => t.tipo === tipo && t.profissionais.some((p) => meuGrupo.includes(p.utilizador.role)))
+    ?? lista.find((t) => t.tipo === tipo);
+
   const carregar = async () => {
     setLoading(true);
     try {
@@ -67,12 +83,19 @@ export default function AtribuicoesPage() {
         api.get('/atribuicoes/turnos'),
         api.get('/doentes?todos=true'),
       ]);
-      setTurnos(turnosR.data);
+      const lista: HorarioTurno[] = turnosR.data;
+      setTurnos(lista);
       setDoentes(doentesR.data);
-      if (turnosR.data.length > 0 && !turnoSelecionado) {
-        setTurnoSelecionado(turnosR.data[0]);
+      if (lista.length > 0 && !turnoSelecionado) {
+        // Seleccionar o turno activo actual do grupo do utilizador
+        const agora = new Date();
+        const min = agora.getHours() * 60 + agora.getMinutes();
+        const tipoAtual = min >= 8 * 60 && min < 16 * 60 + 30 ? 'manha'
+          : min >= 16 * 60 && min < 23 * 60 + 30 ? 'tarde' : 'noite';
+        const inicial = turnoDoGrupo(lista, tipoAtual) ?? turnoDoGrupo(lista, lista[0].tipo) ?? lista[0];
+        setTurnoSelecionado(inicial);
       } else if (turnoSelecionado) {
-        const atualizado = turnosR.data.find((t: HorarioTurno) => t.id === turnoSelecionado.id);
+        const atualizado = lista.find((t) => t.id === turnoSelecionado.id);
         if (atualizado) setTurnoSelecionado(atualizado);
       }
     } finally {
@@ -83,16 +106,17 @@ export default function AtribuicoesPage() {
   useEffect(() => { carregar(); }, []);
 
   const chefeDeTurno = (turno: HorarioTurno): Utilizador | null => {
-    const enfermeiros = turno.profissionais
-      .filter((p) => p.utilizador.role === 'enfermeiro')
-      .sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999));
-    return enfermeiros[0]?.utilizador ?? null;
+    const doGrupo = turno.profissionais.filter((p) => meuGrupo.includes(p.utilizador.role));
+    // Prioridade: chefe_enfermeiros ou chefe_medicos; depois menor ordemExperiencia
+    const chefe = doGrupo.find((p) => ['chefe_enfermeiros', 'chefe_medicos'].includes(p.utilizador.role));
+    if (chefe) return chefe.utilizador;
+    return doGrupo.sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999))[0]?.utilizador ?? null;
   };
 
   const souChefe = turnoSelecionado ? chefeDeTurno(turnoSelecionado)?.id === utilizador?.id : false;
 
   const atribuicaoDe = (doenteId: string): Atribuicao | undefined =>
-    turnoSelecionado?.atribuicoes.find((a) => a.doenteId === doenteId);
+    turnoSelecionado?.atribuicoes.find((a) => a.doenteId === doenteId && meuGrupo.includes(a.utilizador.role));
 
   const atribuir = async (doenteId: string, utilizadorId: string) => {
     if (!turnoSelecionado) return;
@@ -120,7 +144,7 @@ export default function AtribuicoesPage() {
   };
 
   const enfermeirosDoTurno = turnoSelecionado?.profissionais
-    .filter((p) => p.utilizador.role === 'enfermeiro')
+    .filter((p) => meuGrupo.includes(p.utilizador.role))
     .sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999)) ?? [];
 
   const hoje = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -162,7 +186,7 @@ export default function AtribuicoesPage() {
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '12px' }}>Turnos de hoje</p>
             <div className="flex flex-col gap-3">
               {(['manha', 'tarde', 'noite'] as const).map((tipo) => {
-                const turno = turnos.find((t) => t.tipo === tipo);
+                const turno = turnoDoGrupo(turnos, tipo);
                 if (!turno) return null;
                 const chefe = chefeDeTurno(turno);
                 const cor = tipoCor[tipo];
@@ -181,7 +205,7 @@ export default function AtribuicoesPage() {
                       </span>
                     </div>
                     <p className="text-xs text-slate-400" style={{ marginBottom: '4px' }}>
-                      {turno.profissionais.filter(p => p.utilizador.role === 'enfermeiro').length} enfermeiros
+                      {turno.profissionais.filter(p => meuGrupo.includes(p.utilizador.role)).length} profissionais
                     </p>
                     {chefe && (
                       <p className="text-xs font-medium text-slate-500">
@@ -212,7 +236,7 @@ export default function AtribuicoesPage() {
                   </div>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="text-slate-500">{doentes.length} doentes</span>
-                    <span className="text-slate-500">{enfermeirosDoTurno.length} enfermeiros</span>
+                    <span className="text-slate-500">{enfermeirosDoTurno.length} profissionais</span>
                   </div>
                 </div>
 
@@ -237,7 +261,7 @@ export default function AtribuicoesPage() {
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 24px' }}>Doente</th>
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Enfermeiro Atribuído</th>
+                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Profissional Atribuído</th>
                         </tr>
                       </thead>
                       <tbody>

@@ -4,6 +4,7 @@ export enum Role {
   medico = 'medico',
   chefe_turno = 'chefe_turno',
   chefe_enfermeiros = 'chefe_enfermeiros',
+  chefe_medicos = 'chefe_medicos',
   administrativo = 'administrativo',
 }
 

@@ -23,8 +23,9 @@ export class UtilizadoresController {
   }
 
   @Get()
-  listar(@Query('role') role?: Role) {
-    return this.utilizadoresService.listar(role);
+  listar(@Query('role') role?: Role, @Query('roles') rolesParam?: string) {
+    const roles = rolesParam ? (rolesParam.split(',') as Role[]) : undefined;
+    return this.utilizadoresService.listar(role, roles);
   }
 
   @Get(':id')

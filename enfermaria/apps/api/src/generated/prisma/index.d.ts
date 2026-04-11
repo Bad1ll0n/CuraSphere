@@ -104,6 +104,7 @@ export namespace $Enums {
   medico: 'medico',
   chefe_turno: 'chefe_turno',
   chefe_enfermeiros: 'chefe_enfermeiros',
+  chefe_medicos: 'chefe_medicos',
   administrativo: 'administrativo'
 };
 
@@ -12317,6 +12318,7 @@ export namespace Prisma {
     concluidaEm: Date | null
     doenteId: string | null
     responsavelId: string | null
+    grupoResponsavel: string | null
     criadoPorId: string | null
     turnoId: string | null
   }
@@ -12333,6 +12335,7 @@ export namespace Prisma {
     concluidaEm: Date | null
     doenteId: string | null
     responsavelId: string | null
+    grupoResponsavel: string | null
     criadoPorId: string | null
     turnoId: string | null
   }
@@ -12349,6 +12352,7 @@ export namespace Prisma {
     concluidaEm: number
     doenteId: number
     responsavelId: number
+    grupoResponsavel: number
     criadoPorId: number
     turnoId: number
     _all: number
@@ -12367,6 +12371,7 @@ export namespace Prisma {
     concluidaEm?: true
     doenteId?: true
     responsavelId?: true
+    grupoResponsavel?: true
     criadoPorId?: true
     turnoId?: true
   }
@@ -12383,6 +12388,7 @@ export namespace Prisma {
     concluidaEm?: true
     doenteId?: true
     responsavelId?: true
+    grupoResponsavel?: true
     criadoPorId?: true
     turnoId?: true
   }
@@ -12399,6 +12405,7 @@ export namespace Prisma {
     concluidaEm?: true
     doenteId?: true
     responsavelId?: true
+    grupoResponsavel?: true
     criadoPorId?: true
     turnoId?: true
     _all?: true
@@ -12487,7 +12494,8 @@ export namespace Prisma {
     criadaEm: Date
     concluidaEm: Date | null
     doenteId: string
-    responsavelId: string
+    responsavelId: string | null
+    grupoResponsavel: string | null
     criadoPorId: string
     turnoId: string | null
     _count: TarefaCountAggregateOutputType | null
@@ -12521,10 +12529,11 @@ export namespace Prisma {
     concluidaEm?: boolean
     doenteId?: boolean
     responsavelId?: boolean
+    grupoResponsavel?: boolean
     criadoPorId?: boolean
     turnoId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
@@ -12541,10 +12550,11 @@ export namespace Prisma {
     concluidaEm?: boolean
     doenteId?: boolean
     responsavelId?: boolean
+    grupoResponsavel?: boolean
     criadoPorId?: boolean
     turnoId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
@@ -12561,10 +12571,11 @@ export namespace Prisma {
     concluidaEm?: boolean
     doenteId?: boolean
     responsavelId?: boolean
+    grupoResponsavel?: boolean
     criadoPorId?: boolean
     turnoId?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }, ExtArgs["result"]["tarefa"]>
@@ -12581,26 +12592,27 @@ export namespace Prisma {
     concluidaEm?: boolean
     doenteId?: boolean
     responsavelId?: boolean
+    grupoResponsavel?: boolean
     criadoPorId?: boolean
     turnoId?: boolean
   }
 
-  export type TarefaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "descricao" | "tipo" | "prioridade" | "estado" | "prazo" | "transitouDeTurno" | "criadaEm" | "concluidaEm" | "doenteId" | "responsavelId" | "criadoPorId" | "turnoId", ExtArgs["result"]["tarefa"]>
+  export type TarefaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "descricao" | "tipo" | "prioridade" | "estado" | "prazo" | "transitouDeTurno" | "criadaEm" | "concluidaEm" | "doenteId" | "responsavelId" | "grupoResponsavel" | "criadoPorId" | "turnoId", ExtArgs["result"]["tarefa"]>
   export type TarefaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
   export type TarefaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
   export type TarefaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
-    responsavel?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | Tarefa$responsavelArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     turno?: boolean | Tarefa$turnoArgs<ExtArgs>
   }
@@ -12609,7 +12621,7 @@ export namespace Prisma {
     name: "Tarefa"
     objects: {
       doente: Prisma.$DoentePayload<ExtArgs>
-      responsavel: Prisma.$UtilizadorPayload<ExtArgs>
+      responsavel: Prisma.$UtilizadorPayload<ExtArgs> | null
       criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
       turno: Prisma.$TurnoPayload<ExtArgs> | null
     }
@@ -12624,7 +12636,8 @@ export namespace Prisma {
       criadaEm: Date
       concluidaEm: Date | null
       doenteId: string
-      responsavelId: string
+      responsavelId: string | null
+      grupoResponsavel: string | null
       criadoPorId: string
       turnoId: string | null
     }, ExtArgs["result"]["tarefa"]>
@@ -13022,7 +13035,7 @@ export namespace Prisma {
   export interface Prisma__TarefaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    responsavel<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    responsavel<T extends Tarefa$responsavelArgs<ExtArgs> = {}>(args?: Subset<T, Tarefa$responsavelArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     turno<T extends Tarefa$turnoArgs<ExtArgs> = {}>(args?: Subset<T, Tarefa$turnoArgs<ExtArgs>>): Prisma__TurnoClient<$Result.GetResult<Prisma.$TurnoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -13065,6 +13078,7 @@ export namespace Prisma {
     readonly concluidaEm: FieldRef<"Tarefa", 'DateTime'>
     readonly doenteId: FieldRef<"Tarefa", 'String'>
     readonly responsavelId: FieldRef<"Tarefa", 'String'>
+    readonly grupoResponsavel: FieldRef<"Tarefa", 'String'>
     readonly criadoPorId: FieldRef<"Tarefa", 'String'>
     readonly turnoId: FieldRef<"Tarefa", 'String'>
   }
@@ -13460,6 +13474,25 @@ export namespace Prisma {
      * Limit how many Tarefas to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Tarefa.responsavel
+   */
+  export type Tarefa$responsavelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
   }
 
   /**
@@ -21378,6 +21411,7 @@ export namespace Prisma {
     concluidaEm: 'concluidaEm',
     doenteId: 'doenteId',
     responsavelId: 'responsavelId',
+    grupoResponsavel: 'grupoResponsavel',
     criadoPorId: 'criadoPorId',
     turnoId: 'turnoId'
   };
@@ -22290,11 +22324,12 @@ export namespace Prisma {
     criadaEm?: DateTimeFilter<"Tarefa"> | Date | string
     concluidaEm?: DateTimeNullableFilter<"Tarefa"> | Date | string | null
     doenteId?: StringFilter<"Tarefa"> | string
-    responsavelId?: StringFilter<"Tarefa"> | string
+    responsavelId?: StringNullableFilter<"Tarefa"> | string | null
+    grupoResponsavel?: StringNullableFilter<"Tarefa"> | string | null
     criadoPorId?: StringFilter<"Tarefa"> | string
     turnoId?: StringNullableFilter<"Tarefa"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
-    responsavel?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
   }
@@ -22310,7 +22345,8 @@ export namespace Prisma {
     criadaEm?: SortOrder
     concluidaEm?: SortOrderInput | SortOrder
     doenteId?: SortOrder
-    responsavelId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    grupoResponsavel?: SortOrderInput | SortOrder
     criadoPorId?: SortOrder
     turnoId?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
@@ -22333,11 +22369,12 @@ export namespace Prisma {
     criadaEm?: DateTimeFilter<"Tarefa"> | Date | string
     concluidaEm?: DateTimeNullableFilter<"Tarefa"> | Date | string | null
     doenteId?: StringFilter<"Tarefa"> | string
-    responsavelId?: StringFilter<"Tarefa"> | string
+    responsavelId?: StringNullableFilter<"Tarefa"> | string | null
+    grupoResponsavel?: StringNullableFilter<"Tarefa"> | string | null
     criadoPorId?: StringFilter<"Tarefa"> | string
     turnoId?: StringNullableFilter<"Tarefa"> | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
-    responsavel?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     turno?: XOR<TurnoNullableScalarRelationFilter, TurnoWhereInput> | null
   }, "id">
@@ -22353,7 +22390,8 @@ export namespace Prisma {
     criadaEm?: SortOrder
     concluidaEm?: SortOrderInput | SortOrder
     doenteId?: SortOrder
-    responsavelId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    grupoResponsavel?: SortOrderInput | SortOrder
     criadoPorId?: SortOrder
     turnoId?: SortOrderInput | SortOrder
     _count?: TarefaCountOrderByAggregateInput
@@ -22375,7 +22413,8 @@ export namespace Prisma {
     criadaEm?: DateTimeWithAggregatesFilter<"Tarefa"> | Date | string
     concluidaEm?: DateTimeNullableWithAggregatesFilter<"Tarefa"> | Date | string | null
     doenteId?: StringWithAggregatesFilter<"Tarefa"> | string
-    responsavelId?: StringWithAggregatesFilter<"Tarefa"> | string
+    responsavelId?: StringNullableWithAggregatesFilter<"Tarefa"> | string | null
+    grupoResponsavel?: StringNullableWithAggregatesFilter<"Tarefa"> | string | null
     criadoPorId?: StringWithAggregatesFilter<"Tarefa"> | string
     turnoId?: StringNullableWithAggregatesFilter<"Tarefa"> | string | null
   }
@@ -23474,8 +23513,9 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
+    grupoResponsavel?: string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
-    responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
+    responsavel?: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
     turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
@@ -23491,7 +23531,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -23506,8 +23547,9 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
-    responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutTarefasResponsavelNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
     turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
@@ -23523,7 +23565,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -23539,7 +23582,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -23554,6 +23598,7 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TarefaUncheckedUpdateManyInput = {
@@ -23567,7 +23612,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -24654,6 +24700,11 @@ export namespace Prisma {
     not?: NestedEnumEstadoTarefaFilter<$PrismaModel> | $Enums.EstadoTarefa
   }
 
+  export type UtilizadorNullableScalarRelationFilter = {
+    is?: UtilizadorWhereInput | null
+    isNot?: UtilizadorWhereInput | null
+  }
+
   export type TarefaCountOrderByAggregateInput = {
     id?: SortOrder
     descricao?: SortOrder
@@ -24666,6 +24717,7 @@ export namespace Prisma {
     concluidaEm?: SortOrder
     doenteId?: SortOrder
     responsavelId?: SortOrder
+    grupoResponsavel?: SortOrder
     criadoPorId?: SortOrder
     turnoId?: SortOrder
   }
@@ -24682,6 +24734,7 @@ export namespace Prisma {
     concluidaEm?: SortOrder
     doenteId?: SortOrder
     responsavelId?: SortOrder
+    grupoResponsavel?: SortOrder
     criadoPorId?: SortOrder
     turnoId?: SortOrder
   }
@@ -24698,6 +24751,7 @@ export namespace Prisma {
     concluidaEm?: SortOrder
     doenteId?: SortOrder
     responsavelId?: SortOrder
+    grupoResponsavel?: SortOrder
     criadoPorId?: SortOrder
     turnoId?: SortOrder
   }
@@ -24935,11 +24989,6 @@ export namespace Prisma {
     in?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
     notIn?: $Enums.EstadoPedidoTroca[] | ListEnumEstadoPedidoTrocaFieldRefInput<$PrismaModel>
     not?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel> | $Enums.EstadoPedidoTroca
-  }
-
-  export type UtilizadorNullableScalarRelationFilter = {
-    is?: UtilizadorWhereInput | null
-    isNot?: UtilizadorWhereInput | null
   }
 
   export type PedidoTrocaTurnoCountOrderByAggregateInput = {
@@ -26551,10 +26600,12 @@ export namespace Prisma {
     update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutTarefasInput, DoenteUpdateWithoutTarefasInput>, DoenteUncheckedUpdateWithoutTarefasInput>
   }
 
-  export type UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput = {
+  export type UtilizadorUpdateOneWithoutTarefasResponsavelNestedInput = {
     create?: XOR<UtilizadorCreateWithoutTarefasResponsavelInput, UtilizadorUncheckedCreateWithoutTarefasResponsavelInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutTarefasResponsavelInput
     upsert?: UtilizadorUpsertWithoutTarefasResponsavelInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTarefasResponsavelInput, UtilizadorUpdateWithoutTarefasResponsavelInput>, UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput>
   }
@@ -27472,8 +27523,9 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
+    grupoResponsavel?: string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
-    responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
+    responsavel?: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
 
@@ -27488,7 +27540,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     turnoId?: string | null
   }
 
@@ -27512,6 +27565,7 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
+    grupoResponsavel?: string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
     turno?: TurnoCreateNestedOneWithoutTarefasInput
@@ -27528,6 +27582,7 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -27972,7 +28027,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFilter<"Tarefa"> | Date | string
     concluidaEm?: DateTimeNullableFilter<"Tarefa"> | Date | string | null
     doenteId?: StringFilter<"Tarefa"> | string
-    responsavelId?: StringFilter<"Tarefa"> | string
+    responsavelId?: StringNullableFilter<"Tarefa"> | string | null
+    grupoResponsavel?: StringNullableFilter<"Tarefa"> | string | null
     criadoPorId?: StringFilter<"Tarefa"> | string
     turnoId?: StringNullableFilter<"Tarefa"> | string | null
   }
@@ -28505,7 +28561,8 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
-    responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
+    grupoResponsavel?: string | null
+    responsavel?: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
     turno?: TurnoCreateNestedOneWithoutTarefasInput
   }
@@ -28520,7 +28577,8 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -29002,8 +29060,9 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
+    grupoResponsavel?: string | null
     doente: DoenteCreateNestedOneWithoutTarefasInput
-    responsavel: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
+    responsavel?: UtilizadorCreateNestedOneWithoutTarefasResponsavelInput
     criadoPor: UtilizadorCreateNestedOneWithoutTarefasCriadasInput
   }
 
@@ -29018,7 +29077,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
   }
 
@@ -32660,7 +32720,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     turnoId?: string | null
   }
 
@@ -32675,6 +32736,7 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -32862,8 +32924,9 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
-    responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutTarefasResponsavelNestedInput
     turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
 
@@ -32878,7 +32941,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -32893,7 +32957,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -32907,6 +32972,7 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
     turno?: TurnoUpdateOneWithoutTarefasNestedInput
@@ -32923,6 +32989,7 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -32938,6 +33005,7 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -33268,7 +33336,8 @@ export namespace Prisma {
     transitouDeTurno?: boolean
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
     turnoId?: string | null
   }
@@ -33356,7 +33425,8 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
+    responsavel?: UtilizadorUpdateOneWithoutTarefasResponsavelNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
     turno?: TurnoUpdateOneWithoutTarefasNestedInput
   }
@@ -33371,7 +33441,8 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -33386,7 +33457,8 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
     turnoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -33527,7 +33599,8 @@ export namespace Prisma {
     criadaEm?: Date | string
     concluidaEm?: Date | string | null
     doenteId: string
-    responsavelId: string
+    responsavelId?: string | null
+    grupoResponsavel?: string | null
     criadoPorId: string
   }
 
@@ -33616,8 +33689,9 @@ export namespace Prisma {
     transitouDeTurno?: BoolFieldUpdateOperationsInput | boolean
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutTarefasNestedInput
-    responsavel?: UtilizadorUpdateOneRequiredWithoutTarefasResponsavelNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutTarefasResponsavelNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutTarefasCriadasNestedInput
   }
 
@@ -33632,7 +33706,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -33647,7 +33722,8 @@ export namespace Prisma {
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     concluidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
-    responsavelId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    grupoResponsavel?: NullableStringFieldUpdateOperationsInput | string | null
     criadoPorId?: StringFieldUpdateOperationsInput | string
   }
 

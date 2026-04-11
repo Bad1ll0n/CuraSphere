@@ -30,13 +30,13 @@ export class HorariosController {
     );
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
   @Post()
   criar(@Body() body: { mes: number; ano: number }, @Request() req: any) {
     return this.horariosService.criar({ ...body, criadaPorId: req.user.sub });
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
   @Post(':escalId/turno')
   adicionarTurno(
     @Param('escalId') escalId: string,
@@ -45,7 +45,7 @@ export class HorariosController {
     return this.horariosService.adicionarTurno({ ...body, escalId });
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
   @Patch('turno/:turnoId')
   editarTurno(
     @Param('turnoId') turnoId: string,
@@ -54,7 +54,7 @@ export class HorariosController {
     return this.horariosService.editarTurno(turnoId, body);
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
   @Delete('turno/:turnoId')
   apagarTurno(@Param('turnoId') turnoId: string) {
     return this.horariosService.apagarTurno(turnoId);

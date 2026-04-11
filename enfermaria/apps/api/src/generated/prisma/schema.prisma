@@ -16,6 +16,7 @@ enum Role {
   medico
   chefe_turno
   chefe_enfermeiros
+  chefe_medicos
   administrativo
 }
 
@@ -187,11 +188,11 @@ model NotaTurno {
   texto    String
   criadaEm DateTime @default(now())
 
-  turnoId  String
+  turnoId  String?
   doenteId String
   autorId  String
 
-  turno  Turno      @relation(fields: [turnoId], references: [id])
+  turno  Turno?     @relation(fields: [turnoId], references: [id])
   doente Doente     @relation(fields: [doenteId], references: [id])
   autor  Utilizador @relation(fields: [autorId], references: [id])
 
@@ -230,15 +231,16 @@ model Tarefa {
   criadaEm         DateTime         @default(now())
   concluidaEm      DateTime?
 
-  doenteId      String
-  responsavelId String
-  criadoPorId   String
-  turnoId       String
+  doenteId         String
+  responsavelId    String?
+  grupoResponsavel String? // 'medico' | 'enfermeiro' | 'auxiliar'
+  criadoPorId      String
+  turnoId          String?
 
-  doente      Doente     @relation(fields: [doenteId], references: [id])
-  responsavel Utilizador @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
-  criadoPor   Utilizador @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
-  turno       Turno      @relation(fields: [turnoId], references: [id])
+  doente      Doente      @relation(fields: [doenteId], references: [id])
+  responsavel Utilizador? @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
+  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
+  turno       Turno?      @relation(fields: [turnoId], references: [id])
 
   @@map("tarefas")
 }

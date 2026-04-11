@@ -14,12 +14,13 @@ interface Utilizador {
 }
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro',
-  auxiliar: 'Auxiliar',
-  medico: 'Médico',
-  chefe_turno: 'Chefe de Turno',
+  enfermeiro:        'Enfermeiro',
+  auxiliar:          'Auxiliar',
+  medico:            'Médico',
+  chefe_turno:       'Chefe de Turno',
   chefe_enfermeiros: 'Chefe de Enfermeiros',
-  administrativo: 'Administrativo',
+  chefe_medicos:     'Chefe de Médicos',
+  administrativo:    'Administrativo',
 };
 
 const roleCor: Record<string, { badge: string; dot: string }> = {
@@ -28,10 +29,12 @@ const roleCor: Record<string, { badge: string; dot: string }> = {
   medico:            { badge: 'bg-violet-100 text-violet-700',dot: 'bg-violet-500' },
   chefe_turno:       { badge: 'bg-amber-100 text-amber-700',  dot: 'bg-amber-500' },
   chefe_enfermeiros: { badge: 'bg-blue-100 text-blue-700',    dot: 'bg-blue-500' },
+  chefe_medicos:     { badge: 'bg-purple-100 text-purple-700',dot: 'bg-purple-500' },
   administrativo:    { badge: 'bg-pink-100 text-pink-700',    dot: 'bg-pink-500' },
 };
 
 const roles = Object.keys(roleLabel);
+const rolesCriar = roles.filter((r) => r !== 'chefe_turno');
 
 function Avatar({ nome }: { nome: string }) {
   const initials = nome.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -251,7 +254,7 @@ export default function UtilizadoresPagina() {
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
                     style={{ padding: '10px 14px' }}
                   >
-                    {roles.map((r) => <option key={r} value={r}>{roleLabel[r]}</option>)}
+                    {rolesCriar.map((r) => <option key={r} value={r}>{roleLabel[r]}</option>)}
                   </select>
                 </div>
                 <div>
@@ -382,7 +385,7 @@ export default function UtilizadoresPagina() {
                     className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition bg-white"
                     style={{ padding: '10px 14px' }}
                   >
-                    {roles.map((r) => <option key={r} value={r}>{roleLabel[r]}</option>)}
+                    {rolesCriar.map((r) => <option key={r} value={r}>{roleLabel[r]}</option>)}
                   </select>
                 </div>
                 <div>

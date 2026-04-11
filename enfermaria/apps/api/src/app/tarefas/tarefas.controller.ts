@@ -26,8 +26,6 @@ export class TarefasController {
     descricao: string;
     prioridade: PrioridadeTarefa;
     prazo?: Date;
-    responsavelId: string;
-    turnoId: string;
   }, @Request() req: any) {
     return this.tarefasService.criar({ ...body, criadoPorId: req.user.sub });
   }
@@ -36,8 +34,7 @@ export class TarefasController {
   atualizarEstado(
     @Param('id') id: string,
     @Body() body: { estado: EstadoTarefa },
-    @Request() req: any,
   ) {
-    return this.tarefasService.atualizarEstado(id, body.estado, req.user.sub, req.user.role);
+    return this.tarefasService.atualizarEstado(id, body.estado);
   }
 }

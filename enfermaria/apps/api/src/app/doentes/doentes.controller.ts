@@ -85,7 +85,7 @@ export class DoenteController {
       descricao: string;
       tipo: string;
       prioridade: string;
-      responsavelId: string;
+      grupoResponsavel: string;
       prazo?: Date;
     },
     @Request() req: any,

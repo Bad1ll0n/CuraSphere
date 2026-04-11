@@ -35,7 +35,8 @@ const tipoCor: Record<string, { pill: string; cal: string }> = {
 
 const roleLabel: Record<string, string> = {
   enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros', administrativo: 'Administrativo',
+  chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros',
+  chefe_medicos: 'Chefe Médicos', administrativo: 'Administrativo',
 };
 
 const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -67,8 +68,13 @@ export default function HorariosPagina() {
   const [salvandoEdit, setSalvandoEdit] = useState(false);
   const [erroEdit, setErroEdit] = useState('');
 
-  const isChefe = utilizador?.role === 'chefe_enfermeiros';
+  const isChefe = ['chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
   const verApenasSeus = ['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '');
+
+  // Grupo de roles visíveis consoante o tipo de utilizador
+  const grupoDoChefe = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '')
+    ? ['medico', 'chefe_medicos']
+    : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
 
   const carregar = async () => {
     setLoading(true);
@@ -91,12 +97,18 @@ export default function HorariosPagina() {
 
   useEffect(() => {
     if (isChefe) {
-      api.get('/utilizadores').then((r) => setProfissionais(r.data)).catch(() => {});
+      api.get('/utilizadores').then((r) => {
+        const todos: Utilizador[] = r.data;
+        // chefe_medicos vê só médicos; chefe_enfermeiros vê enfermeiros/auxiliares
+        setProfissionais(todos.filter((u) => grupoDoChefe.includes(u.role)));
+      }).catch(() => {});
     }
   }, [isChefe]);
 
   const turnosPorDia = escala?.turnos.reduce<Record<string, HorarioTurno[]>>((acc, t) => {
     if (verApenasSeus && !t.profissionais.some((p) => p.utilizador.id === utilizador?.id)) return acc;
+    // Para chefers: só mostrar turnos que contenham profissionais do seu grupo (ou vazios para o placeholder)
+    if (isChefe && t.profissionais.length > 0 && !t.profissionais.some((p) => grupoDoChefe.includes(p.utilizador.role))) return acc;
     const dia = new Date(t.data).toISOString().split('T')[0];
     if (!acc[dia]) acc[dia] = [];
     acc[dia].push(t);
@@ -282,19 +294,37 @@ export default function HorariosPagina() {
                       </span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                      {[...turnos].sort((a, b) => ['manha','tarde','noite'].indexOf(a.tipo) - ['manha','tarde','noite'].indexOf(b.tipo)).map((t) => (
-                        <div key={t.id}
-                          className={`text-xs font-medium rounded-lg truncate cursor-pointer hover:opacity-75 ${tipoCor[t.tipo].cal}`}
-                          style={{ padding: '3px 6px' }}
-                          title={t.profissionais.map((p) => p.utilizador.nome).join(', ')}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (isChefe) abrirEditar(t, e);
-                            else setTurnoVendo(t);
-                          }}>
-                          {tipoLabel[t.tipo]} · {t.profissionais.length}
-                        </div>
-                      ))}
+                      {(['manha', 'tarde', 'noite'] as const).map((tipo) => {
+                        const t = turnos.find((x) => x.tipo === tipo);
+                        if (t) {
+                          return (
+                            <div key={t.id}
+                              className={`text-xs font-medium rounded-lg truncate cursor-pointer hover:opacity-75 ${tipoCor[tipo].cal}`}
+                              style={{ padding: '3px 6px' }}
+                              title={t.profissionais.map((p) => p.utilizador.nome).join(', ')}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (isChefe) abrirEditar(t, e);
+                                else setTurnoVendo(t);
+                              }}>
+                              {tipoLabel[tipo]} · {t.profissionais.length}
+                            </div>
+                          );
+                        }
+                        if (!isChefe) return null;
+                        return (
+                          <div key={tipo}
+                            className="text-xs font-medium rounded-lg truncate cursor-pointer border border-dashed border-slate-200 text-slate-300 hover:border-slate-300 hover:text-slate-400 transition-colors"
+                            style={{ padding: '3px 6px' }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setNovoTurno({ tipo, profissionaisIds: [] });
+                              setModalDia(dia);
+                            }}>
+                            {tipoLabel[tipo]} +
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 );
@@ -355,7 +385,7 @@ export default function HorariosPagina() {
                 )}
               </label>
               <div className="border border-slate-200 rounded-xl overflow-hidden" style={{ maxHeight: '260px', overflowY: 'auto' }}>
-                {profissionais.filter((p) => p.role === 'enfermeiro').sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
+                {profissionais.sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
                   const selected = novoTurno.profissionaisIds.includes(p.id);
                   return (
                     <div
@@ -451,7 +481,7 @@ export default function HorariosPagina() {
                 )}
               </label>
               <div className="border border-slate-200 rounded-xl overflow-hidden" style={{ maxHeight: '220px', overflowY: 'auto' }}>
-                {profissionais.filter((p) => p.role === 'enfermeiro').sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
+                {profissionais.sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
                   const selected = editTurno.profissionaisIds.includes(p.id);
                   return (
                     <div key={p.id}
@@ -508,11 +538,11 @@ export default function HorariosPagina() {
 
       {/* Modal ver turno (enfermeiro) */}
       {turnoVendo && (() => {
-        const enfermeiros = turnoVendo.profissionais
-          .filter((p) => p.utilizador.role === 'enfermeiro')
+        const membros = turnoVendo.profissionais
+          .filter((p) => grupoDoChefe.includes(p.utilizador.role))
           .sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999));
-        const chefe = enfermeiros[0]?.utilizador;
-        const outros = enfermeiros.slice(1);
+        const chefe = membros[0]?.utilizador;
+        const outros = membros.slice(1);
         return (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
             <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px' }}>
@@ -529,14 +559,18 @@ export default function HorariosPagina() {
               {/* Chefe */}
               {chefe && (
                 <div style={{ marginBottom: '20px' }}>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Chefe de Turno</p>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                    {utilizador?.role === 'chefe_medicos' ? 'Chefe de Médicos' : 'Chefe de Turno'}
+                  </p>
                   <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl" style={{ padding: '12px 16px' }}>
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
                       {chefe.nome.split(' ').slice(0,2).map((w: string) => w[0]).join('').toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{chefe.nome}</p>
-                      <p className="text-xs text-blue-600 font-medium" style={{ marginTop: '2px' }}>Chefe de Turno</p>
+                      <p className="text-xs text-blue-600 font-medium" style={{ marginTop: '2px' }}>
+                        {utilizador?.role === 'chefe_medicos' ? 'Chefe de Médicos' : 'Chefe de Turno'}
+                      </p>
                     </div>
                     {chefe.id === utilizador?.id && (
                       <span className="ml-auto text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Tu</span>
@@ -548,7 +582,9 @@ export default function HorariosPagina() {
               {/* Restantes */}
               {outros.length > 0 && (
                 <div style={{ marginBottom: '24px' }}>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Enfermeiros</p>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                    {utilizador?.role === 'chefe_medicos' ? 'Médicos' : 'Enfermeiros'}
+                  </p>
                   <div className="flex flex-col gap-2">
                     {outros.map((p) => {
                       return (

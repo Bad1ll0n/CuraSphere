@@ -20,7 +20,7 @@ export class MedicacaoController {
     return this.medicacaoService.historicoAdministracao(doenteId);
   }
 
-  @Roles(Role.medico)
+  @Roles(Role.medico, Role.chefe_medicos)
   @Post('prescrever')
   prescrever(@Body() body: {
     doenteId: string;
@@ -46,7 +46,7 @@ export class MedicacaoController {
     });
   }
 
-  @Roles(Role.medico, Role.chefe_turno)
+  @Roles(Role.medico, Role.chefe_medicos, Role.chefe_turno)
   @Patch(':id/descontinuar')
   descontinuar(@Param('id') id: string) {
     return this.medicacaoService.descontinuar(id);

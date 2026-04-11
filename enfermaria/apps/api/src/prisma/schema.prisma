@@ -16,6 +16,7 @@ enum Role {
   medico
   chefe_turno
   chefe_enfermeiros
+  chefe_medicos
   administrativo
 }
 
@@ -230,14 +231,15 @@ model Tarefa {
   criadaEm         DateTime         @default(now())
   concluidaEm      DateTime?
 
-  doenteId       String
-  responsavelId  String
-  criadoPorId    String
-  turnoId        String?
+  doenteId         String
+  responsavelId    String?
+  grupoResponsavel String?   // 'medico' | 'enfermeiro' | 'auxiliar'
+  criadoPorId      String
+  turnoId          String?
 
-  doente      Doente     @relation(fields: [doenteId], references: [id])
-  responsavel Utilizador @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
-  criadoPor   Utilizador @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
+  doente      Doente      @relation(fields: [doenteId], references: [id])
+  responsavel Utilizador? @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
+  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
   turno       Turno?     @relation(fields: [turnoId], references: [id])
 
   @@map("tarefas")

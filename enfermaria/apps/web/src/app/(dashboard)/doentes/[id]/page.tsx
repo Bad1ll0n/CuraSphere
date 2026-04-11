@@ -33,6 +33,8 @@ interface Tarefa {
   estado: string;
   prazo?: string;
   criadaEm: string;
+  concluidaEm?: string;
+  grupoResponsavel?: string;
   responsavel?: { id: string; nome: string; role: string };
   criadoPor?: { id: string; nome: string; role: string };
 }
@@ -44,6 +46,9 @@ interface Medicacao {
   via: string;
   frequencia: string;
   iniciadoEm: string;
+  terminadoEm?: string;
+  ativo: boolean;
+  prescritoPor?: { id: string; nome: string };
 }
 
 interface NotaTurno {
@@ -53,7 +58,6 @@ interface NotaTurno {
   autor: { id: string; nome: string; role: string };
 }
 
-interface UtilizadorSimples { id: string; nome: string; role: string }
 
 const estadoCor: Record<string, { badge: string; dot: string }> = {
   estavel:       { badge: 'bg-green-50 text-green-700 border border-green-200',    dot: 'bg-green-500' },
@@ -124,6 +128,12 @@ export default function DoenteDetalhe() {
   const [modalNota, setModalNota] = useState(false);
   const [modalTarefa, setModalTarefa] = useState(false);
   const [modalMed, setModalMed] = useState(false);
+  const [modalHistorico, setModalHistorico] = useState(false);
+  const [tarefasHistorico, setTarefasHistorico] = useState<Tarefa[]>([]);
+  const [loadingHistorico, setLoadingHistorico] = useState(false);
+  const [modalHistoricoMed, setModalHistoricoMed] = useState(false);
+  const [medHistorico, setMedHistorico] = useState<Medicacao[]>([]);
+  const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erroModal, setErroModal] = useState('');
 
@@ -142,9 +152,8 @@ export default function DoenteDetalhe() {
   const [tarefaDesc, setTarefaDesc] = useState('');
   const [tarefaTipo, setTarefaTipo] = useState('clinica');
   const [tarefaPrioridade, setTarefaPrioridade] = useState('media');
-  const [tarefaResponsavelId, setTarefaResponsavelId] = useState('');
+  const [tarefaGrupo, setTarefaGrupo] = useState('');
   const [tarefaPrazo, setTarefaPrazo] = useState('');
-  const [utilizadores, setUtilizadores] = useState<UtilizadorSimples[]>([]);
 
   // Medicação form
   const [medNome, setMedNome] = useState('');
@@ -152,16 +161,67 @@ export default function DoenteDetalhe() {
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
 
-  const podeAlterarEstado = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
-  const podeDarAlta = ['administrativo', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
-  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
-  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'].includes(utilizador?.role ?? '');
-  const podePrescreveMed = utilizador?.role === 'medico';
+  const podeAlterarEstado = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
+  const podeDarAlta = ['administrativo', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
+  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
+  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'auxiliar'].includes(utilizador?.role ?? '');
+  const podePrescreveMed = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '');
 
   // Grupo de role: médicos vêem só médicos; enfermagem vê só enfermagem
-  const grupoMedico = ['medico'];
+  const grupoMedico = ['medico', 'chefe_medicos'];
   const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
   const meuGrupo = grupoMedico.includes(utilizador?.role ?? '') ? grupoMedico : grupoEnfermagem;
+
+  // Chave do grupo para filtrar tarefas por grupoResponsavel
+  const meuGrupoChave = (() => {
+    const role = utilizador?.role ?? '';
+    if (['medico', 'chefe_medicos'].includes(role)) return 'medico';
+    if (role === 'auxiliar') return 'auxiliar';
+    return 'enfermeiro';
+  })();
+
+  // Grupos que cada role pode escolher ao criar tarefa
+  const gruposDisponiveis = (() => {
+    const role = utilizador?.role ?? '';
+    if (['medico', 'chefe_medicos'].includes(role)) return ['medico', 'enfermeiro'];
+    if (role === 'auxiliar') return ['auxiliar'];
+    return ['enfermeiro', 'auxiliar'];
+  })();
+
+  const grupoLabel: Record<string, string> = {
+    medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  };
+
+  const concluirMedicacao = async (medId: string) => {
+    if (!confirm('Confirmar conclusão desta medicação?')) return;
+    try {
+      await api.patch(`/medicacao/${medId}/descontinuar`);
+      carregar();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao concluir medicação');
+    }
+  };
+
+  const abrirHistoricoMed = async () => {
+    setLoadingHistoricoMed(true);
+    setModalHistoricoMed(true);
+    try {
+      const r = await api.get(`/medicacao/doente/${id}`);
+      setMedHistorico(r.data.filter((m: Medicacao) => !m.ativo));
+    } catch { setMedHistorico([]); }
+    finally { setLoadingHistoricoMed(false); }
+  };
+
+  const abrirHistorico = async () => {
+    setLoadingHistorico(true);
+    setModalHistorico(true);
+    try {
+      const r = await api.get(`/tarefas/doente/${id}`);
+      const concluidas = r.data.filter((t: Tarefa) => t.estado === 'concluida');
+      setTarefasHistorico(concluidas);
+    } catch { setTarefasHistorico([]); }
+    finally { setLoadingHistorico(false); }
+  };
 
   const carregar = () => {
     setLoading(true);
@@ -261,49 +321,9 @@ export default function DoenteDetalhe() {
     carregar();
   };
 
-  // Roles que o utilizador pode atribuir tarefas:
-  // médico → médicos + enfermeiros | enfermeiro/chefe → enfermeiros + auxiliares | auxiliar → só ele
-  const rolesPermitidos = (() => {
-    const role = utilizador?.role ?? '';
-    if (role === 'medico') return ['medico', 'enfermeiro'];
-    if (role === 'auxiliar') return ['auxiliar'];
-    return ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
-  })();
-
-  const abrirModalTarefa = async () => {
+  const abrirModalTarefa = () => {
     setTarefaDesc(''); setTarefaTipo('clinica'); setTarefaPrioridade('media');
-    setTarefaResponsavelId(''); setTarefaPrazo(''); setErroModal('');
-
-    // Se auxiliar, atribui apenas a si próprio
-    if (utilizador?.role === 'auxiliar') {
-      setUtilizadores([{ id: utilizador.id, nome: utilizador.nome, role: utilizador.role }]);
-      setTarefaResponsavelId(utilizador.id);
-      setModalTarefa(true);
-      return;
-    }
-
-    // Buscar pessoas do turno atual atribuídas a ESTE doente, filtradas pelos roles permitidos
-    try {
-      const r = await api.get('/atribuicoes/turno-ativo');
-      if (r.data) {
-        // Pessoas atribuídas especificamente a este doente no turno atual
-        const comDoente = (r.data.atribuicoes ?? [])
-          .filter((a: any) => a.doente?.id === id)
-          .map((a: any) => a.utilizador)
-          .filter((u: any) => rolesPermitidos.includes(u.role));
-
-        // Fallback: todos no turno com os roles permitidos
-        const todos = (r.data.profissionais ?? [])
-          .map((p: any) => p.utilizador)
-          .filter((u: any) => rolesPermitidos.includes(u.role));
-
-        setUtilizadores(comDoente.length ? comDoente : todos);
-      } else {
-        setUtilizadores([]);
-      }
-    } catch {
-      setUtilizadores([]);
-    }
+    setTarefaGrupo(gruposDisponiveis[0] ?? ''); setTarefaPrazo(''); setErroModal('');
     setModalTarefa(true);
   };
 
@@ -319,14 +339,14 @@ export default function DoenteDetalhe() {
   };
 
   const submeterTarefa = async () => {
-    if (!tarefaDesc.trim() || !tarefaResponsavelId) return;
+    if (!tarefaDesc.trim() || !tarefaGrupo) return;
     setSalvando(true); setErroModal('');
     try {
       await api.post(`/doentes/${id}/tarefa`, {
         descricao: tarefaDesc,
         tipo: tarefaTipo,
         prioridade: tarefaPrioridade,
-        responsavelId: tarefaResponsavelId,
+        grupoResponsavel: tarefaGrupo,
         prazo: tarefaPrazo || undefined,
       });
       setModalTarefa(false); carregar();
@@ -466,24 +486,37 @@ export default function DoenteDetalhe() {
             <InfoRow label="Cama" value={`Quarto ${doente.cama.quarto} · Cama ${doente.cama.numero}`} />
             <div className="flex flex-col gap-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Enfermeiros Atribuídos</span>
-              {doente.atribuicoesHorario.length > 0 ? (
-                <div className="flex flex-col gap-1.5">
-                  {doente.atribuicoesHorario.map((a, i) => (
-                    <div key={i} className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-800">{a.utilizador.nome}</span>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${
-                        a.horarioTurno.tipo === 'manha' ? 'bg-amber-50 text-amber-700' :
-                        a.horarioTurno.tipo === 'tarde' ? 'bg-orange-50 text-orange-700' :
-                        'bg-indigo-50 text-indigo-700'
-                      }`}>
-                        {a.horarioTurno.tipo === 'manha' ? 'Manhã' : a.horarioTurno.tipo === 'tarde' ? 'Tarde' : 'Noite'}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <span className="text-sm text-slate-400">Nenhum atribuído</span>
-              )}
+              {(() => {
+                const ordemTurno: Record<string, number> = { manha: 0, tarde: 1, noite: 2 };
+                const mapa = new Map<string, typeof doente.atribuicoesHorario[0]>();
+                for (const a of doente.atribuicoesHorario) {
+                  const existente = mapa.get(a.utilizador.id);
+                  if (!existente) { mapa.set(a.utilizador.id, a); continue; }
+                  const dataA = new Date(a.horarioTurno.data).getTime();
+                  const dataE = new Date(existente.horarioTurno.data).getTime();
+                  if (dataA > dataE || (dataA === dataE && ordemTurno[a.horarioTurno.tipo] > ordemTurno[existente.horarioTurno.tipo])) {
+                    mapa.set(a.utilizador.id, a);
+                  }
+                }
+                const unicos = Array.from(mapa.values());
+                return unicos.length > 0 ? (
+                  <div className="flex flex-col gap-1.5">
+                    {unicos.map((a) => (
+                      <div key={a.utilizador.id} className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-slate-800">{a.utilizador.nome}</span>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${
+                          a.horarioTurno.tipo === 'manha' ? 'bg-amber-50 text-amber-700' :
+                          a.horarioTurno.tipo === 'tarde' ? 'bg-orange-50 text-orange-700' :
+                          'bg-indigo-50 text-indigo-700'
+                        }`}>
+                          {a.horarioTurno.tipo === 'manha' ? 'Manhã' : a.horarioTurno.tipo === 'tarde' ? 'Tarde' : 'Noite'}
+                          {' · '}{new Date(a.horarioTurno.data).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : <span className="text-sm text-slate-400">Nenhum atribuído</span>;
+              })()}
             </div>
           </div>
         </div>
@@ -506,7 +539,15 @@ export default function DoenteDetalhe() {
                 {doente.medicacoes.length}
               </span>
             )}
-            {podePrescreveMed && <BtnAdd onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
+            <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
+              <button onClick={abrirHistoricoMed} title="Histórico de medicação"
+                className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              {podePrescreveMed && <BtnAdd onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
+            </div>
           </div>
           {doente.medicacoes.length === 0 ? (
             <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
@@ -519,7 +560,19 @@ export default function DoenteDetalhe() {
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                    {m.prescritoPor && (
+                      <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
+                    )}
                   </div>
+                  {podePrescreveMed && (
+                    <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
+                      className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors shrink-0"
+                      style={{ marginLeft: '8px' }}>
+                      <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -540,10 +593,22 @@ export default function DoenteDetalhe() {
                 {doente.tarefas.length}
               </span>
             )}
-            {podeCriarTarefa && <BtnAdd onClick={abrirModalTarefa} />}
+            <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
+              <button onClick={abrirHistorico}
+                title="Histórico de tarefas"
+                className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              {podeCriarTarefa && <BtnAdd onClick={abrirModalTarefa} />}
+            </div>
           </div>
           {(() => {
-            const tarefasFiltradas = doente.tarefas.filter((t) => meuGrupo.includes(t.responsavel?.role ?? ''));
+            const tarefasFiltradas = doente.tarefas.filter((t) =>
+              t.grupoResponsavel === meuGrupoChave ||
+              (t.responsavel && meuGrupo.includes(t.responsavel.role))
+            );
             return tarefasFiltradas.length === 0 ? (
             <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
               {podeCriarTarefa ? 'Sem tarefas — clica em + para criar' : 'Sem tarefas pendentes'}
@@ -556,12 +621,17 @@ export default function DoenteDetalhe() {
                     <p className="text-sm font-medium text-slate-800">{t.descricao}</p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
                       <span className="text-xs text-slate-400">{t.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
-                      {t.responsavel && (
+                      {t.responsavel ? (
                         <>
                           <span className="text-slate-300 text-xs">·</span>
                           <span className="text-xs text-slate-500 font-medium">A cargo: {t.responsavel.nome}</span>
                         </>
-                      )}
+                      ) : t.grupoResponsavel ? (
+                        <>
+                          <span className="text-slate-300 text-xs">·</span>
+                          <span className="text-xs text-slate-500 font-medium">Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</span>
+                        </>
+                      ) : null}
                       {t.criadoPor && (
                         <>
                           <span className="text-slate-300 text-xs">·</span>
@@ -718,13 +788,12 @@ export default function DoenteDetalhe() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Responsável *</label>
-              <select value={tarefaResponsavelId} onChange={(e) => setTarefaResponsavelId(e.target.value)}
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Para</label>
+              <select value={tarefaGrupo} onChange={(e) => setTarefaGrupo(e.target.value)}
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 style={{ padding: '10px 14px' }}>
-                <option value="">Selecionar responsável...</option>
-                {utilizadores.map((u) => (
-                  <option key={u.id} value={u.id}>{roleLabel[u.role] ?? u.role}</option>
+                {gruposDisponiveis.map((g) => (
+                  <option key={g} value={g}>{grupoLabel[g]}</option>
                 ))}
               </select>
             </div>
@@ -737,7 +806,7 @@ export default function DoenteDetalhe() {
           </div>
           {erroModal && <ErroBox texto={erroModal} />}
           <ModalFooter onCancel={() => setModalTarefa(false)} onConfirm={submeterTarefa}
-            loading={salvando} disabled={!tarefaDesc.trim() || !tarefaResponsavelId} labelConfirm="Criar Tarefa" />
+            loading={salvando} disabled={!tarefaDesc.trim() || !tarefaGrupo} labelConfirm="Criar Tarefa" />
         </Modal>
       )}
 
@@ -796,6 +865,142 @@ export default function DoenteDetalhe() {
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
             loading={salvando} disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq} labelConfirm="Prescrever" />
         </Modal>
+      )}
+
+      {/* ── Modal Histórico de Medicação ── */}
+      {modalHistoricoMed && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 className="text-xl font-bold text-slate-900">Histórico de Medicação</h2>
+              </div>
+              <button onClick={() => setModalHistoricoMed(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {loadingHistoricoMed ? (
+                <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '40px 0' }}>
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  <span className="text-sm">A carregar...</span>
+                </div>
+              ) : medHistorico.length === 0 ? (
+                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px 0' }}>Sem medicações concluídas</p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {medHistorico.map((m) => (
+                    <div key={m.id} className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '12px 14px' }}>
+                      <svg className="w-4 h-4 text-slate-400 shrink-0" style={{ marginTop: '2px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-700">{m.nome}</p>
+                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
+                          <span className="text-xs text-slate-400">
+                            Início: {new Date(m.iniciadoEm).toLocaleDateString('pt-PT')}
+                          </span>
+                          {m.terminadoEm && (
+                            <>
+                              <span className="text-slate-300 text-xs">·</span>
+                              <span className="text-xs text-slate-400">
+                                Fim: {new Date(m.terminadoEm).toLocaleDateString('pt-PT')}
+                              </span>
+                            </>
+                          )}
+                          {m.prescritoPor && (
+                            <>
+                              <span className="text-slate-300 text-xs">·</span>
+                              <span className="text-xs text-slate-400">Por {m.prescritoPor.nome}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal Histórico de Tarefas ── */}
+      {modalHistorico && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '560px', padding: '32px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 className="text-xl font-bold text-slate-900">Histórico de Tarefas</h2>
+              </div>
+              <button onClick={() => setModalHistorico(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div style={{ overflowY: 'auto', flex: 1 }}>
+              {loadingHistorico ? (
+                <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '40px 0' }}>
+                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  <span className="text-sm">A carregar...</span>
+                </div>
+              ) : tarefasHistorico.length === 0 ? (
+                <p className="text-sm text-slate-400 text-center" style={{ padding: '40px 0' }}>Sem tarefas concluídas</p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {tarefasHistorico.map((t) => (
+                    <div key={t.id} className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '12px 14px' }}>
+                      <svg className="w-4 h-4 text-green-500 shrink-0" style={{ marginTop: '2px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-700">{t.descricao}</p>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
+                          {t.concluidaEm && (
+                            <span className="text-xs text-slate-400">
+                              Concluída {new Date(t.concluidaEm).toLocaleDateString('pt-PT')} às {new Date(t.concluidaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          )}
+                          {t.responsavel && (
+                            <>
+                              <span className="text-slate-300 text-xs">·</span>
+                              <span className="text-xs text-slate-500">{t.responsavel.nome}</span>
+                            </>
+                          )}
+                          {t.criadoPor && (
+                            <>
+                              <span className="text-slate-300 text-xs">·</span>
+                              <span className="text-xs text-slate-400">Por {t.criadoPor.nome}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md shrink-0 ${prioridadeCor[t.prioridade]}`}>
+                        {prioridadeLabel[t.prioridade]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Modal confirmar alta */}

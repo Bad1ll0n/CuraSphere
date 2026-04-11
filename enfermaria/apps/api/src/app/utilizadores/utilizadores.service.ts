@@ -47,9 +47,13 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async listar(role?: Role) {
+  async listar(role?: Role, roles?: Role[]) {
+    let whereRole: any = {};
+    if (roles && roles.length > 0) whereRole = { role: { in: roles } };
+    else if (role) whereRole = { role };
+
     return this.prisma.utilizador.findMany({
-      where: { ativo: true, ...(role ? { role } : {}) },
+      where: { ativo: true, ...whereRole },
       select: {
         id: true,
         numeroFuncionario: true,

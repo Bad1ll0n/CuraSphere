@@ -7,19 +7,46 @@ export class DoenteService {
   constructor(private readonly prisma: PrismaService) {}
 
   async listar(utilizadorId: string, role: string) {
-    const restritos = ['enfermeiro', 'medico'];
-    const where = restritos.includes(role)
-      ? { ativo: true, atribuicoesHorario: { some: { utilizadorId } } }
-      : { ativo: true };
+    const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
+
+    if (!restritos.includes(role)) {
+      return this.prisma.doente.findMany({
+        where: { ativo: true },
+        include: { cama: true },
+        orderBy: { dataAdmissao: 'desc' },
+      });
+    }
+
+    // Determina turno ativo actual
+    const agora = new Date();
+    const min = agora.getHours() * 60 + agora.getMinutes();
+    let tipo: string;
+    if (min >= 8 * 60 && min < 16 * 60 + 30) tipo = 'manha';
+    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
+    else tipo = 'noite';
+
+    // Para o turno de noite após meia-noite, o horário foi criado no dia anterior
+    const diaStr = agora.toISOString().split('T')[0];
+    const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
+    const dataBase = tipo === 'noite' && min < 8 * 60 + 30
+      ? new Date(dataHoje.getTime() - 24 * 60 * 60 * 1000)
+      : dataHoje;
+    const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
 
     return this.prisma.doente.findMany({
-      where,
-      include: {
-        cama: true,
-        atribuicoes: {
-          include: { enfermeiro: { select: { id: true, nome: true, role: true } } },
+      where: {
+        ativo: true,
+        atribuicoesHorario: {
+          some: {
+            utilizadorId,
+            horarioTurno: {
+              tipo: tipo as any,
+              data: { gte: dataBase, lte: dataFim },
+            },
+          },
         },
       },
+      include: { cama: true },
       orderBy: { dataAdmissao: 'desc' },
     });
   }
@@ -147,11 +174,15 @@ export class DoenteService {
     descricao: string;
     tipo: string;
     prioridade: string;
-    responsavelId: string;
+    grupoResponsavel: string; // 'medico' | 'enfermeiro' | 'auxiliar'
     prazo?: Date;
   }) {
     await this.verificarTurnoAtivo(criadoPorId);
     await this.buscarPorId(doenteId);
+
+    // Tenta resolver o responsável concreto com base no grupo e turno atual
+    const responsavelId = await this.resolverResponsavel(doenteId, data.grupoResponsavel);
+
     return this.prisma.tarefa.create({
       data: {
         doenteId,
@@ -159,7 +190,8 @@ export class DoenteService {
         descricao: data.descricao,
         tipo: data.tipo as any,
         prioridade: data.prioridade as any,
-        responsavelId: data.responsavelId,
+        grupoResponsavel: data.grupoResponsavel,
+        responsavelId,
         prazo: data.prazo ? new Date(data.prazo) : undefined,
       },
       include: {
@@ -167,6 +199,44 @@ export class DoenteService {
         criadoPor: { select: { id: true, nome: true, role: true } },
       },
     });
+  }
+
+  /** Dado um grupo ('medico' | 'enfermeiro' | 'auxiliar') e o doente,
+   * encontra o utilizador atribuído ao doente no turno atual com esse grupo de role. */
+  private async resolverResponsavel(doenteId: string, grupo: string): Promise<string | null> {
+    const rolesMap: Record<string, string[]> = {
+      medico:     ['medico', 'chefe_medicos'],
+      enfermeiro: ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno'],
+      auxiliar:   ['auxiliar'],
+    };
+    const roles = rolesMap[grupo];
+    if (!roles) return null;
+
+    const agora = new Date();
+    const min = agora.getHours() * 60 + agora.getMinutes();
+    let tipo: string;
+    const dataRef = new Date(agora);
+    if (min >= 8 * 60 && min < 16 * 60 + 30)      { tipo = 'manha'; }
+    else if (min >= 16 * 60 && min < 23 * 60 + 30) { tipo = 'tarde'; }
+    else {
+      tipo = 'noite';
+      if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1);
+    }
+
+    const diaStr = dataRef.toISOString().split('T')[0];
+    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
+    const dataFim    = new Date(diaStr + 'T23:59:59.999Z');
+
+    const atribuicao = await this.prisma.atribuicaoHorarioTurno.findFirst({
+      where: {
+        doenteId,
+        utilizador: { role: { in: roles as any } },
+        horarioTurno: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },
+      },
+      select: { utilizadorId: true },
+    });
+
+    return atribuicao?.utilizadorId ?? null;
   }
 
   /**

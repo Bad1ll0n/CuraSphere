@@ -63,19 +63,26 @@ export class AtribuicoesService {
     return turno;
   }
 
-  // Chefe do turno = enfermeiro com menor ordemExperiencia no turno
-  chefeDeTurno(turno: any): string | null {
-    const enfermeiros = turno.profissionais
-      .filter((p: any) => p.utilizador.role === 'enfermeiro')
+  // Chefe do turno = profissional com menor ordemExperiencia no grupo de roles indicado
+  chefeDeTurno(turno: any, grupo: string[]): string | null {
+    const profissionais = turno.profissionais
+      .filter((p: any) => grupo.includes(p.utilizador.role))
       .sort((a: any, b: any) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999));
-    return enfermeiros[0]?.utilizador.id ?? null;
+    return profissionais[0]?.utilizador.id ?? null;
   }
 
-  // Atribuir doente a enfermeiro no turno
+  private async grupoDoUtilizador(utilizadorId: string): Promise<string[]> {
+    const u = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId }, select: { role: true } });
+    const grupoMedico = ['medico', 'chefe_medicos'];
+    return grupoMedico.includes(u?.role ?? '') ? grupoMedico : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
+  }
+
+  // Atribuir doente a profissional no turno
   async atribuir(turnoId: string, doenteId: string, utilizadorId: string, atribuidoPorId: string) {
     const turno = await this.buscarTurno(turnoId);
 
-    const chefeId = this.chefeDeTurno(turno);
+    const grupo = await this.grupoDoUtilizador(atribuidoPorId);
+    const chefeId = this.chefeDeTurno(turno, grupo);
     if (chefeId !== atribuidoPorId) {
       throw new ForbiddenException('Apenas o chefe de turno pode fazer atribuições');
     }
@@ -83,17 +90,6 @@ export class AtribuicoesService {
     const profissionalNoTurno = turno.profissionais.some((p: any) => p.utilizadorId === utilizadorId);
     if (!profissionalNoTurno) {
       throw new ForbiddenException('Utilizador não está neste turno');
-    }
-
-    // Só transfere tarefas se o turno atribuído já está ativo (hora atual >= início do turno)
-    const min = new Date().getHours() * 60 + new Date().getMinutes();
-    const turnoAtivo =
-      (turno.tipo === 'manha' && min >= 8 * 60 && min < 16 * 60) ||
-      (turno.tipo === 'tarde' && min >= 16 * 60 && min < 23 * 60) ||
-      (turno.tipo === 'noite' && (min >= 23 * 60 || min < 8 * 60 + 30));
-
-    if (turnoAtivo) {
-      await this.transferirTarefasDoente(doenteId, utilizadorId);
     }
 
     return this.prisma.atribuicaoHorarioTurno.upsert({
@@ -106,7 +102,8 @@ export class AtribuicoesService {
   // Remover atribuição
   async remover(turnoId: string, doenteId: string, utilizadorId: string, atribuidoPorId: string) {
     const turno = await this.buscarTurno(turnoId);
-    const chefeId = this.chefeDeTurno(turno);
+    const grupo = await this.grupoDoUtilizador(atribuidoPorId);
+    const chefeId = this.chefeDeTurno(turno, grupo);
     if (chefeId !== atribuidoPorId) {
       throw new ForbiddenException('Apenas o chefe de turno pode remover atribuições');
     }
@@ -116,36 +113,6 @@ export class AtribuicoesService {
     });
 
     return { mensagem: 'Atribuição removida' };
-  }
-
-  // Transfere tarefas pendentes do doente para o novo utilizador (mesmo grupo de role)
-  private async transferirTarefasDoente(doenteId: string, utilizadorId: string): Promise<void> {
-    const utilizador = await this.prisma.utilizador.findUnique({
-      where: { id: utilizadorId },
-      select: { role: true },
-    });
-    if (!utilizador) return;
-
-    const grupoMedico = ['medico'];
-    const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
-    const grupo = grupoMedico.includes(utilizador.role) ? grupoMedico : grupoEnfermagem;
-
-    const tarefas = await this.prisma.tarefa.findMany({
-      where: {
-        doenteId,
-        estado: { in: ['pendente', 'em_progresso'] as any },
-        responsavelId: { not: utilizadorId },
-        responsavel: { role: { in: grupo as any } },
-      },
-      select: { id: true },
-    });
-
-    if (tarefas.length === 0) return;
-
-    await this.prisma.tarefa.updateMany({
-      where: { id: { in: tarefas.map((t) => t.id) } },
-      data: { responsavelId: utilizadorId },
-    });
   }
 
   // Lista turnos do dia (para o chefe escolher qual gerir)

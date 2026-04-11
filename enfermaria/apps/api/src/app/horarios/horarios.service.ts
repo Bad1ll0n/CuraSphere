@@ -68,14 +68,28 @@ export class HorariosService {
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
     const dataNormalizada = dataInicio;
 
+    // Determinar o grupo dos profissionais a adicionar
+    const grupoMedico = ['medico', 'chefe_medicos'];
+    const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
+    const profRoles = await this.prisma.utilizador.findMany({
+      where: { id: { in: data.profissionaisIds } },
+      select: { role: true },
+    });
+    const isGrupoMedico = profRoles.some((p) => grupoMedico.includes(p.role));
+    const rolesDoGrupo = isGrupoMedico ? grupoMedico : grupoEnfermagem;
+
+    // Só bloqueia se já existir turno do mesmo tipo neste dia com profissionais do mesmo grupo
     const jaExiste = await this.prisma.horarioTurno.findFirst({
       where: {
         escalId: data.escalId,
         tipo: data.tipo,
         data: { gte: dataInicio, lte: dataFim },
+        profissionais: {
+          some: { utilizador: { role: { in: rolesDoGrupo as any } } },
+        },
       },
     });
-    if (jaExiste) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia`);
+    if (jaExiste) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia para este grupo`);
 
     const turno = await this.prisma.horarioTurno.create({
       data: {
@@ -104,15 +118,29 @@ export class HorariosService {
       const diaStr = new Date(turno.data).toISOString().split('T')[0];
       const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
       const dataFim = new Date(diaStr + 'T23:59:59.999Z');
+
+      // Determinar o grupo do turno atual
+      const grupoMedico = ['medico', 'chefe_medicos'];
+      const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
+      const turnoAtual = await this.prisma.horarioTurno.findUnique({
+        where: { id: turnoId },
+        include: { profissionais: { include: { utilizador: { select: { role: true } } } } },
+      });
+      const isGrupoMedico = turnoAtual?.profissionais.some((p) => grupoMedico.includes(p.utilizador.role));
+      const rolesDoGrupo = isGrupoMedico ? grupoMedico : grupoEnfermagem;
+
       const conflito = await this.prisma.horarioTurno.findFirst({
         where: {
           id: { not: turnoId },
           escalId: turno.escalId,
           tipo: data.tipo,
           data: { gte: dataInicio, lte: dataFim },
+          profissionais: {
+            some: { utilizador: { role: { in: rolesDoGrupo as any } } },
+          },
         },
       });
-      if (conflito) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia`);
+      if (conflito) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia para este grupo`);
     }
 
     if (data.profissionaisIds) {

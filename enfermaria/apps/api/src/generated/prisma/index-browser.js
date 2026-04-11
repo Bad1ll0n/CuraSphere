@@ -207,6 +207,7 @@ exports.Prisma.TarefaScalarFieldEnum = {
   concluidaEm: 'concluidaEm',
   doenteId: 'doenteId',
   responsavelId: 'responsavelId',
+  grupoResponsavel: 'grupoResponsavel',
   criadoPorId: 'criadoPorId',
   turnoId: 'turnoId'
 };
@@ -292,6 +293,7 @@ exports.Role = exports.$Enums.Role = {
   medico: 'medico',
   chefe_turno: 'chefe_turno',
   chefe_enfermeiros: 'chefe_enfermeiros',
+  chefe_medicos: 'chefe_medicos',
   administrativo: 'administrativo'
 };
 
