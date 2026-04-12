@@ -8,6 +8,7 @@ const roleLabel: Record<string, string> = {
   medico: 'Médico',
   chefe_turno: 'Chefe de Turno',
   chefe_enfermeiros: 'Chefe de Enfermeiros',
+  chefe_medicos: 'Chefe de Médicos',
   administrativo: 'Administrativo',
 };
 
@@ -38,7 +39,7 @@ export default function PerfilScreen({ utilizador, onLogout }: Props) {
         <View style={s.separador} />
         <View style={s.infoRow}>
           <Text style={s.infoLabel}>Função</Text>
-          <Text style={s.infoValor}>{roleLabel[utilizador.role]}</Text>
+          <Text style={s.infoValor}>{roleLabel[utilizador.role] ?? utilizador.role}</Text>
         </View>
       </View>
 

@@ -604,52 +604,71 @@ export default function DoenteDetalhe() {
               {podeCriarTarefa && <BtnAdd onClick={abrirModalTarefa} />}
             </div>
           </div>
-          {(() => {
-            const tarefasFiltradas = doente.tarefas.filter((t) =>
-              t.grupoResponsavel === meuGrupoChave ||
-              (t.responsavel && meuGrupo.includes(t.responsavel.role))
-            );
-            return tarefasFiltradas.length === 0 ? (
+          {doente.tarefas.length === 0 ? (
             <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>
               {podeCriarTarefa ? 'Sem tarefas — clica em + para criar' : 'Sem tarefas pendentes'}
             </p>
           ) : (
             <div className="flex flex-col gap-3">
-              {tarefasFiltradas.map((t) => (
-                <div key={t.id} className="flex items-start gap-3 bg-slate-50 rounded-xl" style={{ padding: '12px 14px' }}>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-800">{t.descricao}</p>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
-                      <span className="text-xs text-slate-400">{t.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
-                      {t.responsavel ? (
-                        <>
-                          <span className="text-slate-300 text-xs">·</span>
-                          <span className="text-xs text-slate-500 font-medium">A cargo: {t.responsavel.nome}</span>
-                        </>
-                      ) : t.grupoResponsavel ? (
-                        <>
-                          <span className="text-slate-300 text-xs">·</span>
-                          <span className="text-xs text-slate-500 font-medium">Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</span>
-                        </>
-                      ) : null}
-                      {t.criadoPor && (
-                        <>
-                          <span className="text-slate-300 text-xs">·</span>
-                          <span className="text-xs text-slate-400">
-                            Criada por {t.criadoPor.nome} às {new Date(t.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </>
+              {doente.tarefas.map((t) => {
+                // Pode concluir se for o responsável directo, ou se tiver a role do grupo atribuído
+                const podeConcluir = emTurno && (
+                  t.responsavel?.id === utilizador?.id ||
+                  (t.grupoResponsavel === meuGrupoChave && !t.responsavel)
+                );
+                return (
+                  <div key={t.id} className="flex items-start gap-3 bg-slate-50 rounded-xl" style={{ padding: '12px 14px' }}>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-800">{t.descricao}</p>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ marginTop: '4px' }}>
+                        <span className="text-xs text-slate-400">{t.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
+                        {t.responsavel ? (
+                          <>
+                            <span className="text-slate-300 text-xs">·</span>
+                            <span className="text-xs text-slate-500 font-medium">A cargo: {t.responsavel.nome}</span>
+                          </>
+                        ) : t.grupoResponsavel ? (
+                          <>
+                            <span className="text-slate-300 text-xs">·</span>
+                            <span className="text-xs text-slate-500 font-medium">Para: {grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}</span>
+                          </>
+                        ) : null}
+                        {t.criadoPor && (
+                          <>
+                            <span className="text-slate-300 text-xs">·</span>
+                            <span className="text-xs text-slate-400">
+                              Por {t.criadoPor.nome} às {new Date(t.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${prioridadeCor[t.prioridade]}`}>
+                        {prioridadeLabel[t.prioridade]}
+                      </span>
+                      {podeConcluir && (
+                        <button
+                          onClick={async () => {
+                            try {
+                              await api.patch(`/tarefas/${t.id}/estado`, { estado: 'concluida' });
+                              carregar();
+                            } catch { /* ignore */ }
+                          }}
+                          title="Concluir tarefa"
+                          className="w-6 h-6 rounded-full border-2 border-slate-300 hover:border-green-500 hover:bg-green-50 flex items-center justify-center transition-all"
+                        >
+                          <svg className="w-3 h-3 text-slate-400 hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </button>
                       )}
                     </div>
                   </div>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-md shrink-0 ${prioridadeCor[t.prioridade]}`}>
-                    {prioridadeLabel[t.prioridade]}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
-          );
-          })()}
+          )}
         </div>
       </div>
 

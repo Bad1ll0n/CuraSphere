@@ -13,19 +13,24 @@ interface Tarefa {
   prioridade: string;
   estado: string;
   prazo?: string;
-  transitouDeTurno: boolean;
+  grupoResponsavel?: string;
   doente: { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } };
-  criadoPor: { nome: string; role: string };
+  criadoPor?: { nome: string; role: string };
+  responsavel?: { id: string; nome: string; role: string };
 }
 
 const prioridadeCor: Record<string, { bg: string; text: string; label: string }> = {
   urgente: { bg: '#fef2f2', text: '#dc2626', label: 'Urgente' },
-  alta: { bg: '#fff7ed', text: '#c2410c', label: 'Alta' },
-  media: { bg: '#fefce8', text: '#854d0e', label: 'Média' },
-  baixa: { bg: '#f0fdf4', text: '#15803d', label: 'Baixa' },
+  alta:    { bg: '#fff7ed', text: '#c2410c', label: 'Alta' },
+  media:   { bg: '#fefce8', text: '#854d0e', label: 'Média' },
+  baixa:   { bg: '#f0fdf4', text: '#15803d', label: 'Baixa' },
 };
 
-const ordem = { urgente: 0, alta: 1, media: 2, baixa: 3 };
+const grupoLabel: Record<string, string> = {
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+};
+
+const ordem: Record<string, number> = { urgente: 0, alta: 1, media: 2, baixa: 3 };
 
 export default function TarefasScreen() {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
@@ -36,7 +41,9 @@ export default function TarefasScreen() {
   const carregar = async () => {
     try {
       const { data } = await api.get('/tarefas/minhas');
-      setTarefas(data.sort((a: Tarefa, b: Tarefa) => ordem[a.prioridade as keyof typeof ordem] - ordem[b.prioridade as keyof typeof ordem]));
+      setTarefas(data.sort((a: Tarefa, b: Tarefa) =>
+        (ordem[a.prioridade] ?? 9) - (ordem[b.prioridade] ?? 9)
+      ));
     } catch (_e) {
       // ignorar erros de rede
     } finally {
@@ -48,8 +55,10 @@ export default function TarefasScreen() {
   useFocusEffect(useCallback(() => { carregar(); }, []));
 
   const concluir = async (id: string) => {
-    await api.patch(`/tarefas/${id}/estado`, { estado: 'concluida' });
-    await carregar();
+    try {
+      await api.patch(`/tarefas/${id}/estado`, { estado: 'concluida' });
+      await carregar();
+    } catch { /* ignorar */ }
   };
 
   const filtradas = tarefas.filter((t) => filtro === 'todas' || t.tipo === filtro);
@@ -80,12 +89,17 @@ export default function TarefasScreen() {
       >
         {filtradas.length === 0 ? (
           <View style={s.vazio}>
-            <Text style={s.vazioTexto}>Sem tarefas pendentes</Text>
+            <Text style={s.vazioTexto}>Sem tarefas pendentes neste turno</Text>
           </View>
         ) : (
           <>
             {[...emProgresso, ...pendentes].map((t) => {
-              const p = prioridadeCor[t.prioridade];
+              const p = prioridadeCor[t.prioridade] ?? prioridadeCor.media;
+              const atribuidoA = t.responsavel
+                ? `A cargo: ${t.responsavel.nome}`
+                : t.grupoResponsavel
+                  ? `Para: ${grupoLabel[t.grupoResponsavel] ?? t.grupoResponsavel}`
+                  : null;
               return (
                 <View key={t.id} style={[s.cartao, { borderLeftColor: p.text }]}>
                   <View style={s.cartaoCabecalho}>
@@ -100,6 +114,10 @@ export default function TarefasScreen() {
 
                   <Text style={s.tarefaDescricao}>{t.descricao}</Text>
 
+                  {atribuidoA && (
+                    <Text style={s.atribuidoTexto}>{atribuidoA}</Text>
+                  )}
+
                   <View style={s.cartaoRodape}>
                     <View style={s.tags}>
                       <View style={[s.tag, { backgroundColor: t.tipo === 'clinica' ? '#dbeafe' : '#f3e8ff' }]}>
@@ -107,9 +125,9 @@ export default function TarefasScreen() {
                           {t.tipo === 'clinica' ? 'Clínica' : 'Logística'}
                         </Text>
                       </View>
-                      {t.transitouDeTurno && (
-                        <View style={[s.tag, { backgroundColor: '#fef9c3' }]}>
-                          <Text style={[s.tagTexto, { color: '#854d0e' }]}>Turno anterior</Text>
+                      {t.estado === 'em_progresso' && (
+                        <View style={[s.tag, { backgroundColor: '#dbeafe' }]}>
+                          <Text style={[s.tagTexto, { color: '#1d4ed8' }]}>Em progresso</Text>
                         </View>
                       )}
                       {t.prazo && (
@@ -147,7 +165,8 @@ const s = StyleSheet.create({
   doenteInfo: { fontSize: 12, color: '#64748b', marginTop: 2 },
   prioridadeBadge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 20 },
   prioridadeTexto: { fontSize: 12, fontWeight: '600' },
-  tarefaDescricao: { fontSize: 14, color: '#334155', lineHeight: 20, marginBottom: 10 },
+  tarefaDescricao: { fontSize: 14, color: '#334155', lineHeight: 20, marginBottom: 4 },
+  atribuidoTexto: { fontSize: 12, color: '#64748b', marginBottom: 8, fontStyle: 'italic' },
   cartaoRodape: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   tags: { flexDirection: 'row', gap: 6, flex: 1, flexWrap: 'wrap' },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 20 },
