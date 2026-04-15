@@ -93,6 +93,46 @@ export type PedidoTrocaTurno = $Result.DefaultSelection<Prisma.$PedidoTrocaTurno
  * 
  */
 export type AtribuicaoHorarioTurno = $Result.DefaultSelection<Prisma.$AtribuicaoHorarioTurnoPayload>
+/**
+ * Model SinalVital
+ * 
+ */
+export type SinalVital = $Result.DefaultSelection<Prisma.$SinalVitalPayload>
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
+/**
+ * Model Alergia
+ * 
+ */
+export type Alergia = $Result.DefaultSelection<Prisma.$AlergiaPayload>
+/**
+ * Model ContactoEmergencia
+ * 
+ */
+export type ContactoEmergencia = $Result.DefaultSelection<Prisma.$ContactoEmergenciaPayload>
+/**
+ * Model AlertaClinico
+ * 
+ */
+export type AlertaClinico = $Result.DefaultSelection<Prisma.$AlertaClinicoPayload>
+/**
+ * Model AvaliacaoRisco
+ * 
+ */
+export type AvaliacaoRisco = $Result.DefaultSelection<Prisma.$AvaliacaoRiscoPayload>
+/**
+ * Model SumarioAlta
+ * 
+ */
+export type SumarioAlta = $Result.DefaultSelection<Prisma.$SumarioAltaPayload>
+/**
+ * Model DispositivoToken
+ * 
+ */
+export type DispositivoToken = $Result.DefaultSelection<Prisma.$DispositivoTokenPayload>
 
 /**
  * Enums
@@ -488,6 +528,86 @@ export class PrismaClient<
     * ```
     */
   get atribuicaoHorarioTurno(): Prisma.AtribuicaoHorarioTurnoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sinalVital`: Exposes CRUD operations for the **SinalVital** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SinalVitals
+    * const sinalVitals = await prisma.sinalVital.findMany()
+    * ```
+    */
+  get sinalVital(): Prisma.SinalVitalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditLogs
+    * const auditLogs = await prisma.auditLog.findMany()
+    * ```
+    */
+  get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.alergia`: Exposes CRUD operations for the **Alergia** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Alergias
+    * const alergias = await prisma.alergia.findMany()
+    * ```
+    */
+  get alergia(): Prisma.AlergiaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contactoEmergencia`: Exposes CRUD operations for the **ContactoEmergencia** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContactoEmergencias
+    * const contactoEmergencias = await prisma.contactoEmergencia.findMany()
+    * ```
+    */
+  get contactoEmergencia(): Prisma.ContactoEmergenciaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.alertaClinico`: Exposes CRUD operations for the **AlertaClinico** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AlertaClinicos
+    * const alertaClinicos = await prisma.alertaClinico.findMany()
+    * ```
+    */
+  get alertaClinico(): Prisma.AlertaClinicoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.avaliacaoRisco`: Exposes CRUD operations for the **AvaliacaoRisco** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AvaliacaoRiscos
+    * const avaliacaoRiscos = await prisma.avaliacaoRisco.findMany()
+    * ```
+    */
+  get avaliacaoRisco(): Prisma.AvaliacaoRiscoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sumarioAlta`: Exposes CRUD operations for the **SumarioAlta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SumarioAltas
+    * const sumarioAltas = await prisma.sumarioAlta.findMany()
+    * ```
+    */
+  get sumarioAlta(): Prisma.SumarioAltaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dispositivoToken`: Exposes CRUD operations for the **DispositivoToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DispositivoTokens
+    * const dispositivoTokens = await prisma.dispositivoToken.findMany()
+    * ```
+    */
+  get dispositivoToken(): Prisma.DispositivoTokenDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -944,7 +1064,15 @@ export namespace Prisma {
     HorarioTurno: 'HorarioTurno',
     HorarioTurnoProfissional: 'HorarioTurnoProfissional',
     PedidoTrocaTurno: 'PedidoTrocaTurno',
-    AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno'
+    AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno',
+    SinalVital: 'SinalVital',
+    AuditLog: 'AuditLog',
+    Alergia: 'Alergia',
+    ContactoEmergencia: 'ContactoEmergencia',
+    AlertaClinico: 'AlertaClinico',
+    AvaliacaoRisco: 'AvaliacaoRisco',
+    SumarioAlta: 'SumarioAlta',
+    DispositivoToken: 'DispositivoToken'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -963,7 +1091,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno"
+      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2151,6 +2279,598 @@ export namespace Prisma {
           }
         }
       }
+      SinalVital: {
+        payload: Prisma.$SinalVitalPayload<ExtArgs>
+        fields: Prisma.SinalVitalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SinalVitalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SinalVitalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          findFirst: {
+            args: Prisma.SinalVitalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SinalVitalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          findMany: {
+            args: Prisma.SinalVitalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>[]
+          }
+          create: {
+            args: Prisma.SinalVitalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          createMany: {
+            args: Prisma.SinalVitalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SinalVitalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>[]
+          }
+          delete: {
+            args: Prisma.SinalVitalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          update: {
+            args: Prisma.SinalVitalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          deleteMany: {
+            args: Prisma.SinalVitalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SinalVitalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SinalVitalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>[]
+          }
+          upsert: {
+            args: Prisma.SinalVitalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SinalVitalPayload>
+          }
+          aggregate: {
+            args: Prisma.SinalVitalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSinalVital>
+          }
+          groupBy: {
+            args: Prisma.SinalVitalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SinalVitalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SinalVitalCountArgs<ExtArgs>
+            result: $Utils.Optional<SinalVitalCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuditLog: {
+        payload: Prisma.$AuditLogPayload<ExtArgs>
+        fields: Prisma.AuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.AuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.AuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.AuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          update: {
+            args: Prisma.AuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditLog>
+          }
+          groupBy: {
+            args: Prisma.AuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      Alergia: {
+        payload: Prisma.$AlergiaPayload<ExtArgs>
+        fields: Prisma.AlergiaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AlergiaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AlergiaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          findFirst: {
+            args: Prisma.AlergiaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AlergiaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          findMany: {
+            args: Prisma.AlergiaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>[]
+          }
+          create: {
+            args: Prisma.AlergiaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          createMany: {
+            args: Prisma.AlergiaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AlergiaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>[]
+          }
+          delete: {
+            args: Prisma.AlergiaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          update: {
+            args: Prisma.AlergiaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          deleteMany: {
+            args: Prisma.AlergiaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AlergiaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AlergiaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>[]
+          }
+          upsert: {
+            args: Prisma.AlergiaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlergiaPayload>
+          }
+          aggregate: {
+            args: Prisma.AlergiaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlergia>
+          }
+          groupBy: {
+            args: Prisma.AlergiaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlergiaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AlergiaCountArgs<ExtArgs>
+            result: $Utils.Optional<AlergiaCountAggregateOutputType> | number
+          }
+        }
+      }
+      ContactoEmergencia: {
+        payload: Prisma.$ContactoEmergenciaPayload<ExtArgs>
+        fields: Prisma.ContactoEmergenciaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContactoEmergenciaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContactoEmergenciaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          findFirst: {
+            args: Prisma.ContactoEmergenciaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContactoEmergenciaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          findMany: {
+            args: Prisma.ContactoEmergenciaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>[]
+          }
+          create: {
+            args: Prisma.ContactoEmergenciaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          createMany: {
+            args: Prisma.ContactoEmergenciaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContactoEmergenciaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>[]
+          }
+          delete: {
+            args: Prisma.ContactoEmergenciaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          update: {
+            args: Prisma.ContactoEmergenciaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContactoEmergenciaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContactoEmergenciaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContactoEmergenciaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContactoEmergenciaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactoEmergenciaPayload>
+          }
+          aggregate: {
+            args: Prisma.ContactoEmergenciaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContactoEmergencia>
+          }
+          groupBy: {
+            args: Prisma.ContactoEmergenciaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContactoEmergenciaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContactoEmergenciaCountArgs<ExtArgs>
+            result: $Utils.Optional<ContactoEmergenciaCountAggregateOutputType> | number
+          }
+        }
+      }
+      AlertaClinico: {
+        payload: Prisma.$AlertaClinicoPayload<ExtArgs>
+        fields: Prisma.AlertaClinicoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AlertaClinicoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AlertaClinicoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          findFirst: {
+            args: Prisma.AlertaClinicoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AlertaClinicoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          findMany: {
+            args: Prisma.AlertaClinicoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>[]
+          }
+          create: {
+            args: Prisma.AlertaClinicoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          createMany: {
+            args: Prisma.AlertaClinicoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AlertaClinicoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>[]
+          }
+          delete: {
+            args: Prisma.AlertaClinicoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          update: {
+            args: Prisma.AlertaClinicoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AlertaClinicoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AlertaClinicoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AlertaClinicoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AlertaClinicoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlertaClinicoPayload>
+          }
+          aggregate: {
+            args: Prisma.AlertaClinicoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlertaClinico>
+          }
+          groupBy: {
+            args: Prisma.AlertaClinicoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlertaClinicoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AlertaClinicoCountArgs<ExtArgs>
+            result: $Utils.Optional<AlertaClinicoCountAggregateOutputType> | number
+          }
+        }
+      }
+      AvaliacaoRisco: {
+        payload: Prisma.$AvaliacaoRiscoPayload<ExtArgs>
+        fields: Prisma.AvaliacaoRiscoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AvaliacaoRiscoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AvaliacaoRiscoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          findFirst: {
+            args: Prisma.AvaliacaoRiscoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AvaliacaoRiscoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          findMany: {
+            args: Prisma.AvaliacaoRiscoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>[]
+          }
+          create: {
+            args: Prisma.AvaliacaoRiscoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          createMany: {
+            args: Prisma.AvaliacaoRiscoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AvaliacaoRiscoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>[]
+          }
+          delete: {
+            args: Prisma.AvaliacaoRiscoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          update: {
+            args: Prisma.AvaliacaoRiscoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AvaliacaoRiscoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AvaliacaoRiscoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AvaliacaoRiscoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AvaliacaoRiscoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AvaliacaoRiscoPayload>
+          }
+          aggregate: {
+            args: Prisma.AvaliacaoRiscoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAvaliacaoRisco>
+          }
+          groupBy: {
+            args: Prisma.AvaliacaoRiscoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AvaliacaoRiscoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AvaliacaoRiscoCountArgs<ExtArgs>
+            result: $Utils.Optional<AvaliacaoRiscoCountAggregateOutputType> | number
+          }
+        }
+      }
+      SumarioAlta: {
+        payload: Prisma.$SumarioAltaPayload<ExtArgs>
+        fields: Prisma.SumarioAltaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SumarioAltaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SumarioAltaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          findFirst: {
+            args: Prisma.SumarioAltaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SumarioAltaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          findMany: {
+            args: Prisma.SumarioAltaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>[]
+          }
+          create: {
+            args: Prisma.SumarioAltaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          createMany: {
+            args: Prisma.SumarioAltaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SumarioAltaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>[]
+          }
+          delete: {
+            args: Prisma.SumarioAltaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          update: {
+            args: Prisma.SumarioAltaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          deleteMany: {
+            args: Prisma.SumarioAltaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SumarioAltaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SumarioAltaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>[]
+          }
+          upsert: {
+            args: Prisma.SumarioAltaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SumarioAltaPayload>
+          }
+          aggregate: {
+            args: Prisma.SumarioAltaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSumarioAlta>
+          }
+          groupBy: {
+            args: Prisma.SumarioAltaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SumarioAltaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SumarioAltaCountArgs<ExtArgs>
+            result: $Utils.Optional<SumarioAltaCountAggregateOutputType> | number
+          }
+        }
+      }
+      DispositivoToken: {
+        payload: Prisma.$DispositivoTokenPayload<ExtArgs>
+        fields: Prisma.DispositivoTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DispositivoTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DispositivoTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.DispositivoTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DispositivoTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          findMany: {
+            args: Prisma.DispositivoTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>[]
+          }
+          create: {
+            args: Prisma.DispositivoTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          createMany: {
+            args: Prisma.DispositivoTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DispositivoTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.DispositivoTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          update: {
+            args: Prisma.DispositivoTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.DispositivoTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DispositivoTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DispositivoTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.DispositivoTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DispositivoTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.DispositivoTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDispositivoToken>
+          }
+          groupBy: {
+            args: Prisma.DispositivoTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DispositivoTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DispositivoTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<DispositivoTokenCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2263,6 +2983,14 @@ export namespace Prisma {
     horarioTurnoProfissional?: HorarioTurnoProfissionalOmit
     pedidoTrocaTurno?: PedidoTrocaTurnoOmit
     atribuicaoHorarioTurno?: AtribuicaoHorarioTurnoOmit
+    sinalVital?: SinalVitalOmit
+    auditLog?: AuditLogOmit
+    alergia?: AlergiaOmit
+    contactoEmergencia?: ContactoEmergenciaOmit
+    alertaClinico?: AlertaClinicoOmit
+    avaliacaoRisco?: AvaliacaoRiscoOmit
+    sumarioAlta?: SumarioAltaOmit
+    dispositivoToken?: DispositivoTokenOmit
   }
 
   /* Types for Logging */
@@ -2359,6 +3087,11 @@ export namespace Prisma {
     trocasSolicitadas: number
     trocasRecebidas: number
     trocasAprovadas: number
+    auditLogs: number
+    sinaisVitaisRegistados: number
+    dispositivosTokens: number
+    avaliacoesRisco: number
+    sumariosAlta: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2378,6 +3111,11 @@ export namespace Prisma {
     trocasSolicitadas?: boolean | UtilizadorCountOutputTypeCountTrocasSolicitadasArgs
     trocasRecebidas?: boolean | UtilizadorCountOutputTypeCountTrocasRecebidasArgs
     trocasAprovadas?: boolean | UtilizadorCountOutputTypeCountTrocasAprovadasArgs
+    auditLogs?: boolean | UtilizadorCountOutputTypeCountAuditLogsArgs
+    sinaisVitaisRegistados?: boolean | UtilizadorCountOutputTypeCountSinaisVitaisRegistadosArgs
+    dispositivosTokens?: boolean | UtilizadorCountOutputTypeCountDispositivosTokensArgs
+    avaliacoesRisco?: boolean | UtilizadorCountOutputTypeCountAvaliacoesRiscoArgs
+    sumariosAlta?: boolean | UtilizadorCountOutputTypeCountSumariosAltaArgs
   }
 
   // Custom InputTypes
@@ -2503,6 +3241,41 @@ export namespace Prisma {
     where?: PedidoTrocaTurnoWhereInput
   }
 
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountSinaisVitaisRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SinalVitalWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountDispositivosTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DispositivoTokenWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAvaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AvaliacaoRiscoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountSumariosAltaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SumarioAltaWhereInput
+  }
+
 
   /**
    * Count Type DoenteCountOutputType
@@ -2516,6 +3289,11 @@ export namespace Prisma {
     registosMedicacao: number
     notasTurno: number
     passagensTurno: number
+    sinaisVitais: number
+    alergias: number
+    contactosEmergencia: number
+    alertasClinicos: number
+    avaliacoesRisco: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2526,6 +3304,11 @@ export namespace Prisma {
     registosMedicacao?: boolean | DoenteCountOutputTypeCountRegistosMedicacaoArgs
     notasTurno?: boolean | DoenteCountOutputTypeCountNotasTurnoArgs
     passagensTurno?: boolean | DoenteCountOutputTypeCountPassagensTurnoArgs
+    sinaisVitais?: boolean | DoenteCountOutputTypeCountSinaisVitaisArgs
+    alergias?: boolean | DoenteCountOutputTypeCountAlergiasArgs
+    contactosEmergencia?: boolean | DoenteCountOutputTypeCountContactosEmergenciaArgs
+    alertasClinicos?: boolean | DoenteCountOutputTypeCountAlertasClinicosArgs
+    avaliacoesRisco?: boolean | DoenteCountOutputTypeCountAvaliacoesRiscoArgs
   }
 
   // Custom InputTypes
@@ -2586,6 +3369,41 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountPassagensTurnoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PassagemTurnoWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountSinaisVitaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SinalVitalWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountAlergiasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlergiaWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountContactosEmergenciaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContactoEmergenciaWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountAlertasClinicosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlertaClinicoWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountAvaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AvaliacaoRiscoWhereInput
   }
 
 
@@ -3034,6 +3852,11 @@ export namespace Prisma {
     trocasSolicitadas?: boolean | Utilizador$trocasSolicitadasArgs<ExtArgs>
     trocasRecebidas?: boolean | Utilizador$trocasRecebidasArgs<ExtArgs>
     trocasAprovadas?: boolean | Utilizador$trocasAprovadasArgs<ExtArgs>
+    auditLogs?: boolean | Utilizador$auditLogsArgs<ExtArgs>
+    sinaisVitaisRegistados?: boolean | Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>
+    dispositivosTokens?: boolean | Utilizador$dispositivosTokensArgs<ExtArgs>
+    avaliacoesRisco?: boolean | Utilizador$avaliacoesRiscoArgs<ExtArgs>
+    sumariosAlta?: boolean | Utilizador$sumariosAltaArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -3094,6 +3917,11 @@ export namespace Prisma {
     trocasSolicitadas?: boolean | Utilizador$trocasSolicitadasArgs<ExtArgs>
     trocasRecebidas?: boolean | Utilizador$trocasRecebidasArgs<ExtArgs>
     trocasAprovadas?: boolean | Utilizador$trocasAprovadasArgs<ExtArgs>
+    auditLogs?: boolean | Utilizador$auditLogsArgs<ExtArgs>
+    sinaisVitaisRegistados?: boolean | Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>
+    dispositivosTokens?: boolean | Utilizador$dispositivosTokensArgs<ExtArgs>
+    avaliacoesRisco?: boolean | Utilizador$avaliacoesRiscoArgs<ExtArgs>
+    sumariosAlta?: boolean | Utilizador$sumariosAltaArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3118,6 +3946,11 @@ export namespace Prisma {
       trocasSolicitadas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
       trocasRecebidas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
       trocasAprovadas: Prisma.$PedidoTrocaTurnoPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      sinaisVitaisRegistados: Prisma.$SinalVitalPayload<ExtArgs>[]
+      dispositivosTokens: Prisma.$DispositivoTokenPayload<ExtArgs>[]
+      avaliacoesRisco: Prisma.$AvaliacaoRiscoPayload<ExtArgs>[]
+      sumariosAlta: Prisma.$SumarioAltaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3540,6 +4373,11 @@ export namespace Prisma {
     trocasSolicitadas<T extends Utilizador$trocasSolicitadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasSolicitadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     trocasRecebidas<T extends Utilizador$trocasRecebidasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasRecebidasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     trocasAprovadas<T extends Utilizador$trocasAprovadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasAprovadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTrocaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends Utilizador$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sinaisVitaisRegistados<T extends Utilizador$sinaisVitaisRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dispositivosTokens<T extends Utilizador$dispositivosTokensArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$dispositivosTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    avaliacoesRisco<T extends Utilizador$avaliacoesRiscoArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$avaliacoesRiscoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sumariosAlta<T extends Utilizador$sumariosAltaArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$sumariosAltaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4348,6 +5186,126 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PedidoTrocaTurnoScalarFieldEnum | PedidoTrocaTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.auditLogs
+   */
+  export type Utilizador$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.sinaisVitaisRegistados
+   */
+  export type Utilizador$sinaisVitaisRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    where?: SinalVitalWhereInput
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    cursor?: SinalVitalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SinalVitalScalarFieldEnum | SinalVitalScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.dispositivosTokens
+   */
+  export type Utilizador$dispositivosTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    where?: DispositivoTokenWhereInput
+    orderBy?: DispositivoTokenOrderByWithRelationInput | DispositivoTokenOrderByWithRelationInput[]
+    cursor?: DispositivoTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DispositivoTokenScalarFieldEnum | DispositivoTokenScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.avaliacoesRisco
+   */
+  export type Utilizador$avaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    where?: AvaliacaoRiscoWhereInput
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AvaliacaoRiscoScalarFieldEnum | AvaliacaoRiscoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.sumariosAlta
+   */
+  export type Utilizador$sumariosAltaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    where?: SumarioAltaWhereInput
+    orderBy?: SumarioAltaOrderByWithRelationInput | SumarioAltaOrderByWithRelationInput[]
+    cursor?: SumarioAltaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SumarioAltaScalarFieldEnum | SumarioAltaScalarFieldEnum[]
   }
 
   /**
@@ -5648,6 +6606,12 @@ export namespace Prisma {
     registosMedicacao?: boolean | Doente$registosMedicacaoArgs<ExtArgs>
     notasTurno?: boolean | Doente$notasTurnoArgs<ExtArgs>
     passagensTurno?: boolean | Doente$passagensTurnoArgs<ExtArgs>
+    sinaisVitais?: boolean | Doente$sinaisVitaisArgs<ExtArgs>
+    alergias?: boolean | Doente$alergiasArgs<ExtArgs>
+    contactosEmergencia?: boolean | Doente$contactosEmergenciaArgs<ExtArgs>
+    alertasClinicos?: boolean | Doente$alertasClinicosArgs<ExtArgs>
+    avaliacoesRisco?: boolean | Doente$avaliacoesRiscoArgs<ExtArgs>
+    sumarioAlta?: boolean | Doente$sumarioAltaArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -5711,6 +6675,12 @@ export namespace Prisma {
     registosMedicacao?: boolean | Doente$registosMedicacaoArgs<ExtArgs>
     notasTurno?: boolean | Doente$notasTurnoArgs<ExtArgs>
     passagensTurno?: boolean | Doente$passagensTurnoArgs<ExtArgs>
+    sinaisVitais?: boolean | Doente$sinaisVitaisArgs<ExtArgs>
+    alergias?: boolean | Doente$alergiasArgs<ExtArgs>
+    contactosEmergencia?: boolean | Doente$contactosEmergenciaArgs<ExtArgs>
+    alertasClinicos?: boolean | Doente$alertasClinicosArgs<ExtArgs>
+    avaliacoesRisco?: boolean | Doente$avaliacoesRiscoArgs<ExtArgs>
+    sumarioAlta?: boolean | Doente$sumarioAltaArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5734,6 +6704,12 @@ export namespace Prisma {
       registosMedicacao: Prisma.$RegistoMedicacaoPayload<ExtArgs>[]
       notasTurno: Prisma.$NotaTurnoPayload<ExtArgs>[]
       passagensTurno: Prisma.$PassagemTurnoPayload<ExtArgs>[]
+      sinaisVitais: Prisma.$SinalVitalPayload<ExtArgs>[]
+      alergias: Prisma.$AlergiaPayload<ExtArgs>[]
+      contactosEmergencia: Prisma.$ContactoEmergenciaPayload<ExtArgs>[]
+      alertasClinicos: Prisma.$AlertaClinicoPayload<ExtArgs>[]
+      avaliacoesRisco: Prisma.$AvaliacaoRiscoPayload<ExtArgs>[]
+      sumarioAlta: Prisma.$SumarioAltaPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6151,6 +7127,12 @@ export namespace Prisma {
     registosMedicacao<T extends Doente$registosMedicacaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$registosMedicacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistoMedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasTurno<T extends Doente$notasTurnoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$notasTurnoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passagensTurno<T extends Doente$passagensTurnoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$passagensTurnoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PassagemTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sinaisVitais<T extends Doente$sinaisVitaisArgs<ExtArgs> = {}>(args?: Subset<T, Doente$sinaisVitaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    alergias<T extends Doente$alergiasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$alergiasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    contactosEmergencia<T extends Doente$contactosEmergenciaArgs<ExtArgs> = {}>(args?: Subset<T, Doente$contactosEmergenciaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    alertasClinicos<T extends Doente$alertasClinicosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$alertasClinicosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    avaliacoesRisco<T extends Doente$avaliacoesRiscoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$avaliacoesRiscoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sumarioAlta<T extends Doente$sumarioAltaArgs<ExtArgs> = {}>(args?: Subset<T, Doente$sumarioAltaArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6753,6 +7735,145 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PassagemTurnoScalarFieldEnum | PassagemTurnoScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.sinaisVitais
+   */
+  export type Doente$sinaisVitaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    where?: SinalVitalWhereInput
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    cursor?: SinalVitalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SinalVitalScalarFieldEnum | SinalVitalScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.alergias
+   */
+  export type Doente$alergiasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    where?: AlergiaWhereInput
+    orderBy?: AlergiaOrderByWithRelationInput | AlergiaOrderByWithRelationInput[]
+    cursor?: AlergiaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlergiaScalarFieldEnum | AlergiaScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.contactosEmergencia
+   */
+  export type Doente$contactosEmergenciaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    where?: ContactoEmergenciaWhereInput
+    orderBy?: ContactoEmergenciaOrderByWithRelationInput | ContactoEmergenciaOrderByWithRelationInput[]
+    cursor?: ContactoEmergenciaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContactoEmergenciaScalarFieldEnum | ContactoEmergenciaScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.alertasClinicos
+   */
+  export type Doente$alertasClinicosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    where?: AlertaClinicoWhereInput
+    orderBy?: AlertaClinicoOrderByWithRelationInput | AlertaClinicoOrderByWithRelationInput[]
+    cursor?: AlertaClinicoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlertaClinicoScalarFieldEnum | AlertaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.avaliacoesRisco
+   */
+  export type Doente$avaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    where?: AvaliacaoRiscoWhereInput
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AvaliacaoRiscoScalarFieldEnum | AvaliacaoRiscoScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.sumarioAlta
+   */
+  export type Doente$sumarioAltaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    where?: SumarioAltaWhereInput
   }
 
   /**
@@ -21288,6 +22409,8855 @@ export namespace Prisma {
 
 
   /**
+   * Model SinalVital
+   */
+
+  export type AggregateSinalVital = {
+    _count: SinalVitalCountAggregateOutputType | null
+    _avg: SinalVitalAvgAggregateOutputType | null
+    _sum: SinalVitalSumAggregateOutputType | null
+    _min: SinalVitalMinAggregateOutputType | null
+    _max: SinalVitalMaxAggregateOutputType | null
+  }
+
+  export type SinalVitalAvgAggregateOutputType = {
+    pressaoSistolica: number | null
+    pressaoDiastolica: number | null
+    pulso: number | null
+    temperatura: number | null
+    saturacaoO2: number | null
+    frequenciaRespiratoria: number | null
+    peso: number | null
+  }
+
+  export type SinalVitalSumAggregateOutputType = {
+    pressaoSistolica: number | null
+    pressaoDiastolica: number | null
+    pulso: number | null
+    temperatura: number | null
+    saturacaoO2: number | null
+    frequenciaRespiratoria: number | null
+    peso: number | null
+  }
+
+  export type SinalVitalMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    registadoPorId: string | null
+    data: Date | null
+    pressaoSistolica: number | null
+    pressaoDiastolica: number | null
+    pulso: number | null
+    temperatura: number | null
+    saturacaoO2: number | null
+    frequenciaRespiratoria: number | null
+    peso: number | null
+    notas: string | null
+  }
+
+  export type SinalVitalMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    registadoPorId: string | null
+    data: Date | null
+    pressaoSistolica: number | null
+    pressaoDiastolica: number | null
+    pulso: number | null
+    temperatura: number | null
+    saturacaoO2: number | null
+    frequenciaRespiratoria: number | null
+    peso: number | null
+    notas: string | null
+  }
+
+  export type SinalVitalCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    registadoPorId: number
+    data: number
+    pressaoSistolica: number
+    pressaoDiastolica: number
+    pulso: number
+    temperatura: number
+    saturacaoO2: number
+    frequenciaRespiratoria: number
+    peso: number
+    notas: number
+    _all: number
+  }
+
+
+  export type SinalVitalAvgAggregateInputType = {
+    pressaoSistolica?: true
+    pressaoDiastolica?: true
+    pulso?: true
+    temperatura?: true
+    saturacaoO2?: true
+    frequenciaRespiratoria?: true
+    peso?: true
+  }
+
+  export type SinalVitalSumAggregateInputType = {
+    pressaoSistolica?: true
+    pressaoDiastolica?: true
+    pulso?: true
+    temperatura?: true
+    saturacaoO2?: true
+    frequenciaRespiratoria?: true
+    peso?: true
+  }
+
+  export type SinalVitalMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    registadoPorId?: true
+    data?: true
+    pressaoSistolica?: true
+    pressaoDiastolica?: true
+    pulso?: true
+    temperatura?: true
+    saturacaoO2?: true
+    frequenciaRespiratoria?: true
+    peso?: true
+    notas?: true
+  }
+
+  export type SinalVitalMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    registadoPorId?: true
+    data?: true
+    pressaoSistolica?: true
+    pressaoDiastolica?: true
+    pulso?: true
+    temperatura?: true
+    saturacaoO2?: true
+    frequenciaRespiratoria?: true
+    peso?: true
+    notas?: true
+  }
+
+  export type SinalVitalCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    registadoPorId?: true
+    data?: true
+    pressaoSistolica?: true
+    pressaoDiastolica?: true
+    pulso?: true
+    temperatura?: true
+    saturacaoO2?: true
+    frequenciaRespiratoria?: true
+    peso?: true
+    notas?: true
+    _all?: true
+  }
+
+  export type SinalVitalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SinalVital to aggregate.
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SinalVitals to fetch.
+     */
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SinalVitalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SinalVitals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SinalVitals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SinalVitals
+    **/
+    _count?: true | SinalVitalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SinalVitalAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SinalVitalSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SinalVitalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SinalVitalMaxAggregateInputType
+  }
+
+  export type GetSinalVitalAggregateType<T extends SinalVitalAggregateArgs> = {
+        [P in keyof T & keyof AggregateSinalVital]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSinalVital[P]>
+      : GetScalarType<T[P], AggregateSinalVital[P]>
+  }
+
+
+
+
+  export type SinalVitalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SinalVitalWhereInput
+    orderBy?: SinalVitalOrderByWithAggregationInput | SinalVitalOrderByWithAggregationInput[]
+    by: SinalVitalScalarFieldEnum[] | SinalVitalScalarFieldEnum
+    having?: SinalVitalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SinalVitalCountAggregateInputType | true
+    _avg?: SinalVitalAvgAggregateInputType
+    _sum?: SinalVitalSumAggregateInputType
+    _min?: SinalVitalMinAggregateInputType
+    _max?: SinalVitalMaxAggregateInputType
+  }
+
+  export type SinalVitalGroupByOutputType = {
+    id: string
+    doenteId: string
+    registadoPorId: string
+    data: Date
+    pressaoSistolica: number | null
+    pressaoDiastolica: number | null
+    pulso: number | null
+    temperatura: number | null
+    saturacaoO2: number | null
+    frequenciaRespiratoria: number | null
+    peso: number | null
+    notas: string | null
+    _count: SinalVitalCountAggregateOutputType | null
+    _avg: SinalVitalAvgAggregateOutputType | null
+    _sum: SinalVitalSumAggregateOutputType | null
+    _min: SinalVitalMinAggregateOutputType | null
+    _max: SinalVitalMaxAggregateOutputType | null
+  }
+
+  type GetSinalVitalGroupByPayload<T extends SinalVitalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SinalVitalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SinalVitalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SinalVitalGroupByOutputType[P]>
+            : GetScalarType<T[P], SinalVitalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SinalVitalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    registadoPorId?: boolean
+    data?: boolean
+    pressaoSistolica?: boolean
+    pressaoDiastolica?: boolean
+    pulso?: boolean
+    temperatura?: boolean
+    saturacaoO2?: boolean
+    frequenciaRespiratoria?: boolean
+    peso?: boolean
+    notas?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sinalVital"]>
+
+  export type SinalVitalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    registadoPorId?: boolean
+    data?: boolean
+    pressaoSistolica?: boolean
+    pressaoDiastolica?: boolean
+    pulso?: boolean
+    temperatura?: boolean
+    saturacaoO2?: boolean
+    frequenciaRespiratoria?: boolean
+    peso?: boolean
+    notas?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sinalVital"]>
+
+  export type SinalVitalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    registadoPorId?: boolean
+    data?: boolean
+    pressaoSistolica?: boolean
+    pressaoDiastolica?: boolean
+    pulso?: boolean
+    temperatura?: boolean
+    saturacaoO2?: boolean
+    frequenciaRespiratoria?: boolean
+    peso?: boolean
+    notas?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sinalVital"]>
+
+  export type SinalVitalSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    registadoPorId?: boolean
+    data?: boolean
+    pressaoSistolica?: boolean
+    pressaoDiastolica?: boolean
+    pulso?: boolean
+    temperatura?: boolean
+    saturacaoO2?: boolean
+    frequenciaRespiratoria?: boolean
+    peso?: boolean
+    notas?: boolean
+  }
+
+  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas", ExtArgs["result"]["sinalVital"]>
+  export type SinalVitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SinalVitalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SinalVitalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $SinalVitalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SinalVital"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      registadoPorId: string
+      data: Date
+      pressaoSistolica: number | null
+      pressaoDiastolica: number | null
+      pulso: number | null
+      temperatura: number | null
+      saturacaoO2: number | null
+      frequenciaRespiratoria: number | null
+      peso: number | null
+      notas: string | null
+    }, ExtArgs["result"]["sinalVital"]>
+    composites: {}
+  }
+
+  type SinalVitalGetPayload<S extends boolean | null | undefined | SinalVitalDefaultArgs> = $Result.GetResult<Prisma.$SinalVitalPayload, S>
+
+  type SinalVitalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SinalVitalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SinalVitalCountAggregateInputType | true
+    }
+
+  export interface SinalVitalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SinalVital'], meta: { name: 'SinalVital' } }
+    /**
+     * Find zero or one SinalVital that matches the filter.
+     * @param {SinalVitalFindUniqueArgs} args - Arguments to find a SinalVital
+     * @example
+     * // Get one SinalVital
+     * const sinalVital = await prisma.sinalVital.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SinalVitalFindUniqueArgs>(args: SelectSubset<T, SinalVitalFindUniqueArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SinalVital that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SinalVitalFindUniqueOrThrowArgs} args - Arguments to find a SinalVital
+     * @example
+     * // Get one SinalVital
+     * const sinalVital = await prisma.sinalVital.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SinalVitalFindUniqueOrThrowArgs>(args: SelectSubset<T, SinalVitalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SinalVital that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalFindFirstArgs} args - Arguments to find a SinalVital
+     * @example
+     * // Get one SinalVital
+     * const sinalVital = await prisma.sinalVital.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SinalVitalFindFirstArgs>(args?: SelectSubset<T, SinalVitalFindFirstArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SinalVital that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalFindFirstOrThrowArgs} args - Arguments to find a SinalVital
+     * @example
+     * // Get one SinalVital
+     * const sinalVital = await prisma.sinalVital.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SinalVitalFindFirstOrThrowArgs>(args?: SelectSubset<T, SinalVitalFindFirstOrThrowArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SinalVitals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SinalVitals
+     * const sinalVitals = await prisma.sinalVital.findMany()
+     * 
+     * // Get first 10 SinalVitals
+     * const sinalVitals = await prisma.sinalVital.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sinalVitalWithIdOnly = await prisma.sinalVital.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SinalVitalFindManyArgs>(args?: SelectSubset<T, SinalVitalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SinalVital.
+     * @param {SinalVitalCreateArgs} args - Arguments to create a SinalVital.
+     * @example
+     * // Create one SinalVital
+     * const SinalVital = await prisma.sinalVital.create({
+     *   data: {
+     *     // ... data to create a SinalVital
+     *   }
+     * })
+     * 
+     */
+    create<T extends SinalVitalCreateArgs>(args: SelectSubset<T, SinalVitalCreateArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SinalVitals.
+     * @param {SinalVitalCreateManyArgs} args - Arguments to create many SinalVitals.
+     * @example
+     * // Create many SinalVitals
+     * const sinalVital = await prisma.sinalVital.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SinalVitalCreateManyArgs>(args?: SelectSubset<T, SinalVitalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SinalVitals and returns the data saved in the database.
+     * @param {SinalVitalCreateManyAndReturnArgs} args - Arguments to create many SinalVitals.
+     * @example
+     * // Create many SinalVitals
+     * const sinalVital = await prisma.sinalVital.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SinalVitals and only return the `id`
+     * const sinalVitalWithIdOnly = await prisma.sinalVital.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SinalVitalCreateManyAndReturnArgs>(args?: SelectSubset<T, SinalVitalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SinalVital.
+     * @param {SinalVitalDeleteArgs} args - Arguments to delete one SinalVital.
+     * @example
+     * // Delete one SinalVital
+     * const SinalVital = await prisma.sinalVital.delete({
+     *   where: {
+     *     // ... filter to delete one SinalVital
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SinalVitalDeleteArgs>(args: SelectSubset<T, SinalVitalDeleteArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SinalVital.
+     * @param {SinalVitalUpdateArgs} args - Arguments to update one SinalVital.
+     * @example
+     * // Update one SinalVital
+     * const sinalVital = await prisma.sinalVital.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SinalVitalUpdateArgs>(args: SelectSubset<T, SinalVitalUpdateArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SinalVitals.
+     * @param {SinalVitalDeleteManyArgs} args - Arguments to filter SinalVitals to delete.
+     * @example
+     * // Delete a few SinalVitals
+     * const { count } = await prisma.sinalVital.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SinalVitalDeleteManyArgs>(args?: SelectSubset<T, SinalVitalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SinalVitals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SinalVitals
+     * const sinalVital = await prisma.sinalVital.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SinalVitalUpdateManyArgs>(args: SelectSubset<T, SinalVitalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SinalVitals and returns the data updated in the database.
+     * @param {SinalVitalUpdateManyAndReturnArgs} args - Arguments to update many SinalVitals.
+     * @example
+     * // Update many SinalVitals
+     * const sinalVital = await prisma.sinalVital.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SinalVitals and only return the `id`
+     * const sinalVitalWithIdOnly = await prisma.sinalVital.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SinalVitalUpdateManyAndReturnArgs>(args: SelectSubset<T, SinalVitalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SinalVital.
+     * @param {SinalVitalUpsertArgs} args - Arguments to update or create a SinalVital.
+     * @example
+     * // Update or create a SinalVital
+     * const sinalVital = await prisma.sinalVital.upsert({
+     *   create: {
+     *     // ... data to create a SinalVital
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SinalVital we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SinalVitalUpsertArgs>(args: SelectSubset<T, SinalVitalUpsertArgs<ExtArgs>>): Prisma__SinalVitalClient<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SinalVitals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalCountArgs} args - Arguments to filter SinalVitals to count.
+     * @example
+     * // Count the number of SinalVitals
+     * const count = await prisma.sinalVital.count({
+     *   where: {
+     *     // ... the filter for the SinalVitals we want to count
+     *   }
+     * })
+    **/
+    count<T extends SinalVitalCountArgs>(
+      args?: Subset<T, SinalVitalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SinalVitalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SinalVital.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SinalVitalAggregateArgs>(args: Subset<T, SinalVitalAggregateArgs>): Prisma.PrismaPromise<GetSinalVitalAggregateType<T>>
+
+    /**
+     * Group by SinalVital.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SinalVitalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SinalVitalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SinalVitalGroupByArgs['orderBy'] }
+        : { orderBy?: SinalVitalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SinalVitalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSinalVitalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SinalVital model
+   */
+  readonly fields: SinalVitalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SinalVital.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SinalVitalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SinalVital model
+   */
+  interface SinalVitalFieldRefs {
+    readonly id: FieldRef<"SinalVital", 'String'>
+    readonly doenteId: FieldRef<"SinalVital", 'String'>
+    readonly registadoPorId: FieldRef<"SinalVital", 'String'>
+    readonly data: FieldRef<"SinalVital", 'DateTime'>
+    readonly pressaoSistolica: FieldRef<"SinalVital", 'Int'>
+    readonly pressaoDiastolica: FieldRef<"SinalVital", 'Int'>
+    readonly pulso: FieldRef<"SinalVital", 'Int'>
+    readonly temperatura: FieldRef<"SinalVital", 'Float'>
+    readonly saturacaoO2: FieldRef<"SinalVital", 'Int'>
+    readonly frequenciaRespiratoria: FieldRef<"SinalVital", 'Int'>
+    readonly peso: FieldRef<"SinalVital", 'Float'>
+    readonly notas: FieldRef<"SinalVital", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SinalVital findUnique
+   */
+  export type SinalVitalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter, which SinalVital to fetch.
+     */
+    where: SinalVitalWhereUniqueInput
+  }
+
+  /**
+   * SinalVital findUniqueOrThrow
+   */
+  export type SinalVitalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter, which SinalVital to fetch.
+     */
+    where: SinalVitalWhereUniqueInput
+  }
+
+  /**
+   * SinalVital findFirst
+   */
+  export type SinalVitalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter, which SinalVital to fetch.
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SinalVitals to fetch.
+     */
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SinalVitals.
+     */
+    cursor?: SinalVitalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SinalVitals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SinalVitals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SinalVitals.
+     */
+    distinct?: SinalVitalScalarFieldEnum | SinalVitalScalarFieldEnum[]
+  }
+
+  /**
+   * SinalVital findFirstOrThrow
+   */
+  export type SinalVitalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter, which SinalVital to fetch.
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SinalVitals to fetch.
+     */
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SinalVitals.
+     */
+    cursor?: SinalVitalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SinalVitals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SinalVitals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SinalVitals.
+     */
+    distinct?: SinalVitalScalarFieldEnum | SinalVitalScalarFieldEnum[]
+  }
+
+  /**
+   * SinalVital findMany
+   */
+  export type SinalVitalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter, which SinalVitals to fetch.
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SinalVitals to fetch.
+     */
+    orderBy?: SinalVitalOrderByWithRelationInput | SinalVitalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SinalVitals.
+     */
+    cursor?: SinalVitalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SinalVitals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SinalVitals.
+     */
+    skip?: number
+    distinct?: SinalVitalScalarFieldEnum | SinalVitalScalarFieldEnum[]
+  }
+
+  /**
+   * SinalVital create
+   */
+  export type SinalVitalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SinalVital.
+     */
+    data: XOR<SinalVitalCreateInput, SinalVitalUncheckedCreateInput>
+  }
+
+  /**
+   * SinalVital createMany
+   */
+  export type SinalVitalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SinalVitals.
+     */
+    data: SinalVitalCreateManyInput | SinalVitalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SinalVital createManyAndReturn
+   */
+  export type SinalVitalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * The data used to create many SinalVitals.
+     */
+    data: SinalVitalCreateManyInput | SinalVitalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SinalVital update
+   */
+  export type SinalVitalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SinalVital.
+     */
+    data: XOR<SinalVitalUpdateInput, SinalVitalUncheckedUpdateInput>
+    /**
+     * Choose, which SinalVital to update.
+     */
+    where: SinalVitalWhereUniqueInput
+  }
+
+  /**
+   * SinalVital updateMany
+   */
+  export type SinalVitalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SinalVitals.
+     */
+    data: XOR<SinalVitalUpdateManyMutationInput, SinalVitalUncheckedUpdateManyInput>
+    /**
+     * Filter which SinalVitals to update
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * Limit how many SinalVitals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SinalVital updateManyAndReturn
+   */
+  export type SinalVitalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * The data used to update SinalVitals.
+     */
+    data: XOR<SinalVitalUpdateManyMutationInput, SinalVitalUncheckedUpdateManyInput>
+    /**
+     * Filter which SinalVitals to update
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * Limit how many SinalVitals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SinalVital upsert
+   */
+  export type SinalVitalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SinalVital to update in case it exists.
+     */
+    where: SinalVitalWhereUniqueInput
+    /**
+     * In case the SinalVital found by the `where` argument doesn't exist, create a new SinalVital with this data.
+     */
+    create: XOR<SinalVitalCreateInput, SinalVitalUncheckedCreateInput>
+    /**
+     * In case the SinalVital was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SinalVitalUpdateInput, SinalVitalUncheckedUpdateInput>
+  }
+
+  /**
+   * SinalVital delete
+   */
+  export type SinalVitalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+    /**
+     * Filter which SinalVital to delete.
+     */
+    where: SinalVitalWhereUniqueInput
+  }
+
+  /**
+   * SinalVital deleteMany
+   */
+  export type SinalVitalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SinalVitals to delete
+     */
+    where?: SinalVitalWhereInput
+    /**
+     * Limit how many SinalVitals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SinalVital without action
+   */
+  export type SinalVitalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SinalVital
+     */
+    select?: SinalVitalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SinalVital
+     */
+    omit?: SinalVitalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SinalVitalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuditLog
+   */
+
+  export type AggregateAuditLog = {
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  export type AuditLogMinAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    acao: string | null
+    entidadeId: string | null
+    entidadeTipo: string | null
+    detalhes: string | null
+    ip: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogMaxAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    acao: string | null
+    entidadeId: string | null
+    entidadeTipo: string | null
+    detalhes: string | null
+    ip: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogCountAggregateOutputType = {
+    id: number
+    utilizadorId: number
+    acao: number
+    entidadeId: number
+    entidadeTipo: number
+    detalhes: number
+    ip: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AuditLogMinAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    acao?: true
+    entidadeId?: true
+    entidadeTipo?: true
+    detalhes?: true
+    ip?: true
+    createdAt?: true
+  }
+
+  export type AuditLogMaxAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    acao?: true
+    entidadeId?: true
+    entidadeTipo?: true
+    detalhes?: true
+    ip?: true
+    createdAt?: true
+  }
+
+  export type AuditLogCountAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    acao?: true
+    entidadeId?: true
+    entidadeTipo?: true
+    detalhes?: true
+    ip?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLog to aggregate.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditLogs
+    **/
+    _count?: true | AuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type GetAuditLogAggregateType<T extends AuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditLog[P]>
+      : GetScalarType<T[P], AggregateAuditLog[P]>
+  }
+
+
+
+
+  export type AuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithAggregationInput | AuditLogOrderByWithAggregationInput[]
+    by: AuditLogScalarFieldEnum[] | AuditLogScalarFieldEnum
+    having?: AuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditLogCountAggregateInputType | true
+    _min?: AuditLogMinAggregateInputType
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type AuditLogGroupByOutputType = {
+    id: string
+    utilizadorId: string
+    acao: string
+    entidadeId: string | null
+    entidadeTipo: string | null
+    detalhes: string | null
+    ip: string | null
+    createdAt: Date
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  type GetAuditLogGroupByPayload<T extends AuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    acao?: boolean
+    entidadeId?: boolean
+    entidadeTipo?: boolean
+    detalhes?: boolean
+    ip?: boolean
+    createdAt?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    acao?: boolean
+    entidadeId?: boolean
+    entidadeTipo?: boolean
+    detalhes?: boolean
+    ip?: boolean
+    createdAt?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    acao?: boolean
+    entidadeId?: boolean
+    entidadeTipo?: boolean
+    detalhes?: boolean
+    ip?: boolean
+    createdAt?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectScalar = {
+    id?: boolean
+    utilizadorId?: boolean
+    acao?: boolean
+    entidadeId?: boolean
+    entidadeTipo?: boolean
+    detalhes?: boolean
+    ip?: boolean
+    createdAt?: boolean
+  }
+
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "acao" | "entidadeId" | "entidadeTipo" | "detalhes" | "ip" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditLog"
+    objects: {
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      utilizadorId: string
+      acao: string
+      entidadeId: string | null
+      entidadeTipo: string | null
+      detalhes: string | null
+      ip: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["auditLog"]>
+    composites: {}
+  }
+
+  type AuditLogGetPayload<S extends boolean | null | undefined | AuditLogDefaultArgs> = $Result.GetResult<Prisma.$AuditLogPayload, S>
+
+  type AuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditLogCountAggregateInputType | true
+    }
+
+  export interface AuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditLog'], meta: { name: 'AuditLog' } }
+    /**
+     * Find zero or one AuditLog that matches the filter.
+     * @param {AuditLogFindUniqueArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditLogFindUniqueArgs>(args: SelectSubset<T, AuditLogFindUniqueArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditLogFindUniqueOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditLogFindFirstArgs>(args?: SelectSubset<T, AuditLogFindFirstArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany()
+     * 
+     * // Get first 10 AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditLogFindManyArgs>(args?: SelectSubset<T, AuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditLog.
+     * @param {AuditLogCreateArgs} args - Arguments to create a AuditLog.
+     * @example
+     * // Create one AuditLog
+     * const AuditLog = await prisma.auditLog.create({
+     *   data: {
+     *     // ... data to create a AuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditLogCreateArgs>(args: SelectSubset<T, AuditLogCreateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditLogs.
+     * @param {AuditLogCreateManyArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditLogCreateManyArgs>(args?: SelectSubset<T, AuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditLogs and returns the data saved in the database.
+     * @param {AuditLogCreateManyAndReturnArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditLog.
+     * @param {AuditLogDeleteArgs} args - Arguments to delete one AuditLog.
+     * @example
+     * // Delete one AuditLog
+     * const AuditLog = await prisma.auditLog.delete({
+     *   where: {
+     *     // ... filter to delete one AuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditLogDeleteArgs>(args: SelectSubset<T, AuditLogDeleteArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditLog.
+     * @param {AuditLogUpdateArgs} args - Arguments to update one AuditLog.
+     * @example
+     * // Update one AuditLog
+     * const auditLog = await prisma.auditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditLogUpdateArgs>(args: SelectSubset<T, AuditLogUpdateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditLogs.
+     * @param {AuditLogDeleteManyArgs} args - Arguments to filter AuditLogs to delete.
+     * @example
+     * // Delete a few AuditLogs
+     * const { count } = await prisma.auditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditLogDeleteManyArgs>(args?: SelectSubset<T, AuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditLogUpdateManyArgs>(args: SelectSubset<T, AuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs and returns the data updated in the database.
+     * @param {AuditLogUpdateManyAndReturnArgs} args - Arguments to update many AuditLogs.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditLog.
+     * @param {AuditLogUpsertArgs} args - Arguments to update or create a AuditLog.
+     * @example
+     * // Update or create a AuditLog
+     * const auditLog = await prisma.auditLog.upsert({
+     *   create: {
+     *     // ... data to create a AuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditLogUpsertArgs>(args: SelectSubset<T, AuditLogUpsertArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogCountArgs} args - Arguments to filter AuditLogs to count.
+     * @example
+     * // Count the number of AuditLogs
+     * const count = await prisma.auditLog.count({
+     *   where: {
+     *     // ... the filter for the AuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditLogCountArgs>(
+      args?: Subset<T, AuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditLogAggregateArgs>(args: Subset<T, AuditLogAggregateArgs>): Prisma.PrismaPromise<GetAuditLogAggregateType<T>>
+
+    /**
+     * Group by AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: AuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditLog model
+   */
+  readonly fields: AuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditLog model
+   */
+  interface AuditLogFieldRefs {
+    readonly id: FieldRef<"AuditLog", 'String'>
+    readonly utilizadorId: FieldRef<"AuditLog", 'String'>
+    readonly acao: FieldRef<"AuditLog", 'String'>
+    readonly entidadeId: FieldRef<"AuditLog", 'String'>
+    readonly entidadeTipo: FieldRef<"AuditLog", 'String'>
+    readonly detalhes: FieldRef<"AuditLog", 'String'>
+    readonly ip: FieldRef<"AuditLog", 'String'>
+    readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditLog findUnique
+   */
+  export type AuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findUniqueOrThrow
+   */
+  export type AuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findFirst
+   */
+  export type AuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findFirstOrThrow
+   */
+  export type AuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findMany
+   */
+  export type AuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLogs to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog create
+   */
+  export type AuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditLog.
+     */
+    data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * AuditLog createMany
+   */
+  export type AuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditLog createManyAndReturn
+   */
+  export type AuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog update
+   */
+  export type AuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditLog.
+     */
+    data: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which AuditLog to update.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog updateMany
+   */
+  export type AuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog updateManyAndReturn
+   */
+  export type AuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog upsert
+   */
+  export type AuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditLog to update in case it exists.
+     */
+    where: AuditLogWhereUniqueInput
+    /**
+     * In case the AuditLog found by the `where` argument doesn't exist, create a new AuditLog with this data.
+     */
+    create: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+    /**
+     * In case the AuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditLog delete
+   */
+  export type AuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which AuditLog to delete.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog deleteMany
+   */
+  export type AuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLogs to delete
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog without action
+   */
+  export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Alergia
+   */
+
+  export type AggregateAlergia = {
+    _count: AlergiaCountAggregateOutputType | null
+    _min: AlergiaMinAggregateOutputType | null
+    _max: AlergiaMaxAggregateOutputType | null
+  }
+
+  export type AlergiaMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    alergenio: string | null
+    tipo: string | null
+    severidade: string | null
+    notas: string | null
+    criadaEm: Date | null
+  }
+
+  export type AlergiaMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    alergenio: string | null
+    tipo: string | null
+    severidade: string | null
+    notas: string | null
+    criadaEm: Date | null
+  }
+
+  export type AlergiaCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    alergenio: number
+    tipo: number
+    severidade: number
+    notas: number
+    criadaEm: number
+    _all: number
+  }
+
+
+  export type AlergiaMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    alergenio?: true
+    tipo?: true
+    severidade?: true
+    notas?: true
+    criadaEm?: true
+  }
+
+  export type AlergiaMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    alergenio?: true
+    tipo?: true
+    severidade?: true
+    notas?: true
+    criadaEm?: true
+  }
+
+  export type AlergiaCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    alergenio?: true
+    tipo?: true
+    severidade?: true
+    notas?: true
+    criadaEm?: true
+    _all?: true
+  }
+
+  export type AlergiaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Alergia to aggregate.
+     */
+    where?: AlergiaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Alergias to fetch.
+     */
+    orderBy?: AlergiaOrderByWithRelationInput | AlergiaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AlergiaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Alergias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Alergias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Alergias
+    **/
+    _count?: true | AlergiaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AlergiaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AlergiaMaxAggregateInputType
+  }
+
+  export type GetAlergiaAggregateType<T extends AlergiaAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlergia]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAlergia[P]>
+      : GetScalarType<T[P], AggregateAlergia[P]>
+  }
+
+
+
+
+  export type AlergiaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlergiaWhereInput
+    orderBy?: AlergiaOrderByWithAggregationInput | AlergiaOrderByWithAggregationInput[]
+    by: AlergiaScalarFieldEnum[] | AlergiaScalarFieldEnum
+    having?: AlergiaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AlergiaCountAggregateInputType | true
+    _min?: AlergiaMinAggregateInputType
+    _max?: AlergiaMaxAggregateInputType
+  }
+
+  export type AlergiaGroupByOutputType = {
+    id: string
+    doenteId: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas: string | null
+    criadaEm: Date
+    _count: AlergiaCountAggregateOutputType | null
+    _min: AlergiaMinAggregateOutputType | null
+    _max: AlergiaMaxAggregateOutputType | null
+  }
+
+  type GetAlergiaGroupByPayload<T extends AlergiaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AlergiaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AlergiaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AlergiaGroupByOutputType[P]>
+            : GetScalarType<T[P], AlergiaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AlergiaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    alergenio?: boolean
+    tipo?: boolean
+    severidade?: boolean
+    notas?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alergia"]>
+
+  export type AlergiaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    alergenio?: boolean
+    tipo?: boolean
+    severidade?: boolean
+    notas?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alergia"]>
+
+  export type AlergiaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    alergenio?: boolean
+    tipo?: boolean
+    severidade?: boolean
+    notas?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alergia"]>
+
+  export type AlergiaSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    alergenio?: boolean
+    tipo?: boolean
+    severidade?: boolean
+    notas?: boolean
+    criadaEm?: boolean
+  }
+
+  export type AlergiaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "alergenio" | "tipo" | "severidade" | "notas" | "criadaEm", ExtArgs["result"]["alergia"]>
+  export type AlergiaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type AlergiaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type AlergiaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+
+  export type $AlergiaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Alergia"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      alergenio: string
+      tipo: string
+      severidade: string
+      notas: string | null
+      criadaEm: Date
+    }, ExtArgs["result"]["alergia"]>
+    composites: {}
+  }
+
+  type AlergiaGetPayload<S extends boolean | null | undefined | AlergiaDefaultArgs> = $Result.GetResult<Prisma.$AlergiaPayload, S>
+
+  type AlergiaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlergiaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlergiaCountAggregateInputType | true
+    }
+
+  export interface AlergiaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Alergia'], meta: { name: 'Alergia' } }
+    /**
+     * Find zero or one Alergia that matches the filter.
+     * @param {AlergiaFindUniqueArgs} args - Arguments to find a Alergia
+     * @example
+     * // Get one Alergia
+     * const alergia = await prisma.alergia.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AlergiaFindUniqueArgs>(args: SelectSubset<T, AlergiaFindUniqueArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Alergia that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AlergiaFindUniqueOrThrowArgs} args - Arguments to find a Alergia
+     * @example
+     * // Get one Alergia
+     * const alergia = await prisma.alergia.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AlergiaFindUniqueOrThrowArgs>(args: SelectSubset<T, AlergiaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Alergia that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaFindFirstArgs} args - Arguments to find a Alergia
+     * @example
+     * // Get one Alergia
+     * const alergia = await prisma.alergia.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AlergiaFindFirstArgs>(args?: SelectSubset<T, AlergiaFindFirstArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Alergia that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaFindFirstOrThrowArgs} args - Arguments to find a Alergia
+     * @example
+     * // Get one Alergia
+     * const alergia = await prisma.alergia.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AlergiaFindFirstOrThrowArgs>(args?: SelectSubset<T, AlergiaFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Alergias that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Alergias
+     * const alergias = await prisma.alergia.findMany()
+     * 
+     * // Get first 10 Alergias
+     * const alergias = await prisma.alergia.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const alergiaWithIdOnly = await prisma.alergia.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AlergiaFindManyArgs>(args?: SelectSubset<T, AlergiaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Alergia.
+     * @param {AlergiaCreateArgs} args - Arguments to create a Alergia.
+     * @example
+     * // Create one Alergia
+     * const Alergia = await prisma.alergia.create({
+     *   data: {
+     *     // ... data to create a Alergia
+     *   }
+     * })
+     * 
+     */
+    create<T extends AlergiaCreateArgs>(args: SelectSubset<T, AlergiaCreateArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Alergias.
+     * @param {AlergiaCreateManyArgs} args - Arguments to create many Alergias.
+     * @example
+     * // Create many Alergias
+     * const alergia = await prisma.alergia.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AlergiaCreateManyArgs>(args?: SelectSubset<T, AlergiaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Alergias and returns the data saved in the database.
+     * @param {AlergiaCreateManyAndReturnArgs} args - Arguments to create many Alergias.
+     * @example
+     * // Create many Alergias
+     * const alergia = await prisma.alergia.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Alergias and only return the `id`
+     * const alergiaWithIdOnly = await prisma.alergia.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AlergiaCreateManyAndReturnArgs>(args?: SelectSubset<T, AlergiaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Alergia.
+     * @param {AlergiaDeleteArgs} args - Arguments to delete one Alergia.
+     * @example
+     * // Delete one Alergia
+     * const Alergia = await prisma.alergia.delete({
+     *   where: {
+     *     // ... filter to delete one Alergia
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AlergiaDeleteArgs>(args: SelectSubset<T, AlergiaDeleteArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Alergia.
+     * @param {AlergiaUpdateArgs} args - Arguments to update one Alergia.
+     * @example
+     * // Update one Alergia
+     * const alergia = await prisma.alergia.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AlergiaUpdateArgs>(args: SelectSubset<T, AlergiaUpdateArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Alergias.
+     * @param {AlergiaDeleteManyArgs} args - Arguments to filter Alergias to delete.
+     * @example
+     * // Delete a few Alergias
+     * const { count } = await prisma.alergia.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AlergiaDeleteManyArgs>(args?: SelectSubset<T, AlergiaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Alergias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Alergias
+     * const alergia = await prisma.alergia.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AlergiaUpdateManyArgs>(args: SelectSubset<T, AlergiaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Alergias and returns the data updated in the database.
+     * @param {AlergiaUpdateManyAndReturnArgs} args - Arguments to update many Alergias.
+     * @example
+     * // Update many Alergias
+     * const alergia = await prisma.alergia.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Alergias and only return the `id`
+     * const alergiaWithIdOnly = await prisma.alergia.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AlergiaUpdateManyAndReturnArgs>(args: SelectSubset<T, AlergiaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Alergia.
+     * @param {AlergiaUpsertArgs} args - Arguments to update or create a Alergia.
+     * @example
+     * // Update or create a Alergia
+     * const alergia = await prisma.alergia.upsert({
+     *   create: {
+     *     // ... data to create a Alergia
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Alergia we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AlergiaUpsertArgs>(args: SelectSubset<T, AlergiaUpsertArgs<ExtArgs>>): Prisma__AlergiaClient<$Result.GetResult<Prisma.$AlergiaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Alergias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaCountArgs} args - Arguments to filter Alergias to count.
+     * @example
+     * // Count the number of Alergias
+     * const count = await prisma.alergia.count({
+     *   where: {
+     *     // ... the filter for the Alergias we want to count
+     *   }
+     * })
+    **/
+    count<T extends AlergiaCountArgs>(
+      args?: Subset<T, AlergiaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AlergiaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Alergia.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AlergiaAggregateArgs>(args: Subset<T, AlergiaAggregateArgs>): Prisma.PrismaPromise<GetAlergiaAggregateType<T>>
+
+    /**
+     * Group by Alergia.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlergiaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AlergiaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AlergiaGroupByArgs['orderBy'] }
+        : { orderBy?: AlergiaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AlergiaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlergiaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Alergia model
+   */
+  readonly fields: AlergiaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Alergia.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AlergiaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Alergia model
+   */
+  interface AlergiaFieldRefs {
+    readonly id: FieldRef<"Alergia", 'String'>
+    readonly doenteId: FieldRef<"Alergia", 'String'>
+    readonly alergenio: FieldRef<"Alergia", 'String'>
+    readonly tipo: FieldRef<"Alergia", 'String'>
+    readonly severidade: FieldRef<"Alergia", 'String'>
+    readonly notas: FieldRef<"Alergia", 'String'>
+    readonly criadaEm: FieldRef<"Alergia", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Alergia findUnique
+   */
+  export type AlergiaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter, which Alergia to fetch.
+     */
+    where: AlergiaWhereUniqueInput
+  }
+
+  /**
+   * Alergia findUniqueOrThrow
+   */
+  export type AlergiaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter, which Alergia to fetch.
+     */
+    where: AlergiaWhereUniqueInput
+  }
+
+  /**
+   * Alergia findFirst
+   */
+  export type AlergiaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter, which Alergia to fetch.
+     */
+    where?: AlergiaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Alergias to fetch.
+     */
+    orderBy?: AlergiaOrderByWithRelationInput | AlergiaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Alergias.
+     */
+    cursor?: AlergiaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Alergias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Alergias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Alergias.
+     */
+    distinct?: AlergiaScalarFieldEnum | AlergiaScalarFieldEnum[]
+  }
+
+  /**
+   * Alergia findFirstOrThrow
+   */
+  export type AlergiaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter, which Alergia to fetch.
+     */
+    where?: AlergiaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Alergias to fetch.
+     */
+    orderBy?: AlergiaOrderByWithRelationInput | AlergiaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Alergias.
+     */
+    cursor?: AlergiaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Alergias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Alergias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Alergias.
+     */
+    distinct?: AlergiaScalarFieldEnum | AlergiaScalarFieldEnum[]
+  }
+
+  /**
+   * Alergia findMany
+   */
+  export type AlergiaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter, which Alergias to fetch.
+     */
+    where?: AlergiaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Alergias to fetch.
+     */
+    orderBy?: AlergiaOrderByWithRelationInput | AlergiaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Alergias.
+     */
+    cursor?: AlergiaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Alergias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Alergias.
+     */
+    skip?: number
+    distinct?: AlergiaScalarFieldEnum | AlergiaScalarFieldEnum[]
+  }
+
+  /**
+   * Alergia create
+   */
+  export type AlergiaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Alergia.
+     */
+    data: XOR<AlergiaCreateInput, AlergiaUncheckedCreateInput>
+  }
+
+  /**
+   * Alergia createMany
+   */
+  export type AlergiaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Alergias.
+     */
+    data: AlergiaCreateManyInput | AlergiaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Alergia createManyAndReturn
+   */
+  export type AlergiaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * The data used to create many Alergias.
+     */
+    data: AlergiaCreateManyInput | AlergiaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Alergia update
+   */
+  export type AlergiaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Alergia.
+     */
+    data: XOR<AlergiaUpdateInput, AlergiaUncheckedUpdateInput>
+    /**
+     * Choose, which Alergia to update.
+     */
+    where: AlergiaWhereUniqueInput
+  }
+
+  /**
+   * Alergia updateMany
+   */
+  export type AlergiaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Alergias.
+     */
+    data: XOR<AlergiaUpdateManyMutationInput, AlergiaUncheckedUpdateManyInput>
+    /**
+     * Filter which Alergias to update
+     */
+    where?: AlergiaWhereInput
+    /**
+     * Limit how many Alergias to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Alergia updateManyAndReturn
+   */
+  export type AlergiaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * The data used to update Alergias.
+     */
+    data: XOR<AlergiaUpdateManyMutationInput, AlergiaUncheckedUpdateManyInput>
+    /**
+     * Filter which Alergias to update
+     */
+    where?: AlergiaWhereInput
+    /**
+     * Limit how many Alergias to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Alergia upsert
+   */
+  export type AlergiaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Alergia to update in case it exists.
+     */
+    where: AlergiaWhereUniqueInput
+    /**
+     * In case the Alergia found by the `where` argument doesn't exist, create a new Alergia with this data.
+     */
+    create: XOR<AlergiaCreateInput, AlergiaUncheckedCreateInput>
+    /**
+     * In case the Alergia was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AlergiaUpdateInput, AlergiaUncheckedUpdateInput>
+  }
+
+  /**
+   * Alergia delete
+   */
+  export type AlergiaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+    /**
+     * Filter which Alergia to delete.
+     */
+    where: AlergiaWhereUniqueInput
+  }
+
+  /**
+   * Alergia deleteMany
+   */
+  export type AlergiaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Alergias to delete
+     */
+    where?: AlergiaWhereInput
+    /**
+     * Limit how many Alergias to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Alergia without action
+   */
+  export type AlergiaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Alergia
+     */
+    select?: AlergiaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Alergia
+     */
+    omit?: AlergiaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlergiaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ContactoEmergencia
+   */
+
+  export type AggregateContactoEmergencia = {
+    _count: ContactoEmergenciaCountAggregateOutputType | null
+    _min: ContactoEmergenciaMinAggregateOutputType | null
+    _max: ContactoEmergenciaMaxAggregateOutputType | null
+  }
+
+  export type ContactoEmergenciaMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    nome: string | null
+    relacao: string | null
+    telefone: string | null
+    principal: boolean | null
+  }
+
+  export type ContactoEmergenciaMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    nome: string | null
+    relacao: string | null
+    telefone: string | null
+    principal: boolean | null
+  }
+
+  export type ContactoEmergenciaCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    nome: number
+    relacao: number
+    telefone: number
+    principal: number
+    _all: number
+  }
+
+
+  export type ContactoEmergenciaMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nome?: true
+    relacao?: true
+    telefone?: true
+    principal?: true
+  }
+
+  export type ContactoEmergenciaMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nome?: true
+    relacao?: true
+    telefone?: true
+    principal?: true
+  }
+
+  export type ContactoEmergenciaCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nome?: true
+    relacao?: true
+    telefone?: true
+    principal?: true
+    _all?: true
+  }
+
+  export type ContactoEmergenciaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContactoEmergencia to aggregate.
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactoEmergencias to fetch.
+     */
+    orderBy?: ContactoEmergenciaOrderByWithRelationInput | ContactoEmergenciaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContactoEmergenciaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactoEmergencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactoEmergencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContactoEmergencias
+    **/
+    _count?: true | ContactoEmergenciaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContactoEmergenciaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContactoEmergenciaMaxAggregateInputType
+  }
+
+  export type GetContactoEmergenciaAggregateType<T extends ContactoEmergenciaAggregateArgs> = {
+        [P in keyof T & keyof AggregateContactoEmergencia]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContactoEmergencia[P]>
+      : GetScalarType<T[P], AggregateContactoEmergencia[P]>
+  }
+
+
+
+
+  export type ContactoEmergenciaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContactoEmergenciaWhereInput
+    orderBy?: ContactoEmergenciaOrderByWithAggregationInput | ContactoEmergenciaOrderByWithAggregationInput[]
+    by: ContactoEmergenciaScalarFieldEnum[] | ContactoEmergenciaScalarFieldEnum
+    having?: ContactoEmergenciaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContactoEmergenciaCountAggregateInputType | true
+    _min?: ContactoEmergenciaMinAggregateInputType
+    _max?: ContactoEmergenciaMaxAggregateInputType
+  }
+
+  export type ContactoEmergenciaGroupByOutputType = {
+    id: string
+    doenteId: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal: boolean
+    _count: ContactoEmergenciaCountAggregateOutputType | null
+    _min: ContactoEmergenciaMinAggregateOutputType | null
+    _max: ContactoEmergenciaMaxAggregateOutputType | null
+  }
+
+  type GetContactoEmergenciaGroupByPayload<T extends ContactoEmergenciaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContactoEmergenciaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContactoEmergenciaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContactoEmergenciaGroupByOutputType[P]>
+            : GetScalarType<T[P], ContactoEmergenciaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContactoEmergenciaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nome?: boolean
+    relacao?: boolean
+    telefone?: boolean
+    principal?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contactoEmergencia"]>
+
+  export type ContactoEmergenciaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nome?: boolean
+    relacao?: boolean
+    telefone?: boolean
+    principal?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contactoEmergencia"]>
+
+  export type ContactoEmergenciaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nome?: boolean
+    relacao?: boolean
+    telefone?: boolean
+    principal?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["contactoEmergencia"]>
+
+  export type ContactoEmergenciaSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    nome?: boolean
+    relacao?: boolean
+    telefone?: boolean
+    principal?: boolean
+  }
+
+  export type ContactoEmergenciaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nome" | "relacao" | "telefone" | "principal", ExtArgs["result"]["contactoEmergencia"]>
+  export type ContactoEmergenciaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type ContactoEmergenciaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type ContactoEmergenciaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+
+  export type $ContactoEmergenciaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContactoEmergencia"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      nome: string
+      relacao: string
+      telefone: string
+      principal: boolean
+    }, ExtArgs["result"]["contactoEmergencia"]>
+    composites: {}
+  }
+
+  type ContactoEmergenciaGetPayload<S extends boolean | null | undefined | ContactoEmergenciaDefaultArgs> = $Result.GetResult<Prisma.$ContactoEmergenciaPayload, S>
+
+  type ContactoEmergenciaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContactoEmergenciaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContactoEmergenciaCountAggregateInputType | true
+    }
+
+  export interface ContactoEmergenciaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContactoEmergencia'], meta: { name: 'ContactoEmergencia' } }
+    /**
+     * Find zero or one ContactoEmergencia that matches the filter.
+     * @param {ContactoEmergenciaFindUniqueArgs} args - Arguments to find a ContactoEmergencia
+     * @example
+     * // Get one ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContactoEmergenciaFindUniqueArgs>(args: SelectSubset<T, ContactoEmergenciaFindUniqueArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ContactoEmergencia that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContactoEmergenciaFindUniqueOrThrowArgs} args - Arguments to find a ContactoEmergencia
+     * @example
+     * // Get one ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContactoEmergenciaFindUniqueOrThrowArgs>(args: SelectSubset<T, ContactoEmergenciaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContactoEmergencia that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaFindFirstArgs} args - Arguments to find a ContactoEmergencia
+     * @example
+     * // Get one ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContactoEmergenciaFindFirstArgs>(args?: SelectSubset<T, ContactoEmergenciaFindFirstArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContactoEmergencia that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaFindFirstOrThrowArgs} args - Arguments to find a ContactoEmergencia
+     * @example
+     * // Get one ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContactoEmergenciaFindFirstOrThrowArgs>(args?: SelectSubset<T, ContactoEmergenciaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ContactoEmergencias that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContactoEmergencias
+     * const contactoEmergencias = await prisma.contactoEmergencia.findMany()
+     * 
+     * // Get first 10 ContactoEmergencias
+     * const contactoEmergencias = await prisma.contactoEmergencia.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contactoEmergenciaWithIdOnly = await prisma.contactoEmergencia.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContactoEmergenciaFindManyArgs>(args?: SelectSubset<T, ContactoEmergenciaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ContactoEmergencia.
+     * @param {ContactoEmergenciaCreateArgs} args - Arguments to create a ContactoEmergencia.
+     * @example
+     * // Create one ContactoEmergencia
+     * const ContactoEmergencia = await prisma.contactoEmergencia.create({
+     *   data: {
+     *     // ... data to create a ContactoEmergencia
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContactoEmergenciaCreateArgs>(args: SelectSubset<T, ContactoEmergenciaCreateArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ContactoEmergencias.
+     * @param {ContactoEmergenciaCreateManyArgs} args - Arguments to create many ContactoEmergencias.
+     * @example
+     * // Create many ContactoEmergencias
+     * const contactoEmergencia = await prisma.contactoEmergencia.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContactoEmergenciaCreateManyArgs>(args?: SelectSubset<T, ContactoEmergenciaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContactoEmergencias and returns the data saved in the database.
+     * @param {ContactoEmergenciaCreateManyAndReturnArgs} args - Arguments to create many ContactoEmergencias.
+     * @example
+     * // Create many ContactoEmergencias
+     * const contactoEmergencia = await prisma.contactoEmergencia.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContactoEmergencias and only return the `id`
+     * const contactoEmergenciaWithIdOnly = await prisma.contactoEmergencia.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContactoEmergenciaCreateManyAndReturnArgs>(args?: SelectSubset<T, ContactoEmergenciaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ContactoEmergencia.
+     * @param {ContactoEmergenciaDeleteArgs} args - Arguments to delete one ContactoEmergencia.
+     * @example
+     * // Delete one ContactoEmergencia
+     * const ContactoEmergencia = await prisma.contactoEmergencia.delete({
+     *   where: {
+     *     // ... filter to delete one ContactoEmergencia
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContactoEmergenciaDeleteArgs>(args: SelectSubset<T, ContactoEmergenciaDeleteArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ContactoEmergencia.
+     * @param {ContactoEmergenciaUpdateArgs} args - Arguments to update one ContactoEmergencia.
+     * @example
+     * // Update one ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContactoEmergenciaUpdateArgs>(args: SelectSubset<T, ContactoEmergenciaUpdateArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ContactoEmergencias.
+     * @param {ContactoEmergenciaDeleteManyArgs} args - Arguments to filter ContactoEmergencias to delete.
+     * @example
+     * // Delete a few ContactoEmergencias
+     * const { count } = await prisma.contactoEmergencia.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContactoEmergenciaDeleteManyArgs>(args?: SelectSubset<T, ContactoEmergenciaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContactoEmergencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContactoEmergencias
+     * const contactoEmergencia = await prisma.contactoEmergencia.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContactoEmergenciaUpdateManyArgs>(args: SelectSubset<T, ContactoEmergenciaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContactoEmergencias and returns the data updated in the database.
+     * @param {ContactoEmergenciaUpdateManyAndReturnArgs} args - Arguments to update many ContactoEmergencias.
+     * @example
+     * // Update many ContactoEmergencias
+     * const contactoEmergencia = await prisma.contactoEmergencia.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ContactoEmergencias and only return the `id`
+     * const contactoEmergenciaWithIdOnly = await prisma.contactoEmergencia.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContactoEmergenciaUpdateManyAndReturnArgs>(args: SelectSubset<T, ContactoEmergenciaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ContactoEmergencia.
+     * @param {ContactoEmergenciaUpsertArgs} args - Arguments to update or create a ContactoEmergencia.
+     * @example
+     * // Update or create a ContactoEmergencia
+     * const contactoEmergencia = await prisma.contactoEmergencia.upsert({
+     *   create: {
+     *     // ... data to create a ContactoEmergencia
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContactoEmergencia we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContactoEmergenciaUpsertArgs>(args: SelectSubset<T, ContactoEmergenciaUpsertArgs<ExtArgs>>): Prisma__ContactoEmergenciaClient<$Result.GetResult<Prisma.$ContactoEmergenciaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ContactoEmergencias.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaCountArgs} args - Arguments to filter ContactoEmergencias to count.
+     * @example
+     * // Count the number of ContactoEmergencias
+     * const count = await prisma.contactoEmergencia.count({
+     *   where: {
+     *     // ... the filter for the ContactoEmergencias we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContactoEmergenciaCountArgs>(
+      args?: Subset<T, ContactoEmergenciaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContactoEmergenciaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContactoEmergencia.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContactoEmergenciaAggregateArgs>(args: Subset<T, ContactoEmergenciaAggregateArgs>): Prisma.PrismaPromise<GetContactoEmergenciaAggregateType<T>>
+
+    /**
+     * Group by ContactoEmergencia.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactoEmergenciaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContactoEmergenciaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContactoEmergenciaGroupByArgs['orderBy'] }
+        : { orderBy?: ContactoEmergenciaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContactoEmergenciaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContactoEmergenciaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContactoEmergencia model
+   */
+  readonly fields: ContactoEmergenciaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContactoEmergencia.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContactoEmergenciaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContactoEmergencia model
+   */
+  interface ContactoEmergenciaFieldRefs {
+    readonly id: FieldRef<"ContactoEmergencia", 'String'>
+    readonly doenteId: FieldRef<"ContactoEmergencia", 'String'>
+    readonly nome: FieldRef<"ContactoEmergencia", 'String'>
+    readonly relacao: FieldRef<"ContactoEmergencia", 'String'>
+    readonly telefone: FieldRef<"ContactoEmergencia", 'String'>
+    readonly principal: FieldRef<"ContactoEmergencia", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContactoEmergencia findUnique
+   */
+  export type ContactoEmergenciaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter, which ContactoEmergencia to fetch.
+     */
+    where: ContactoEmergenciaWhereUniqueInput
+  }
+
+  /**
+   * ContactoEmergencia findUniqueOrThrow
+   */
+  export type ContactoEmergenciaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter, which ContactoEmergencia to fetch.
+     */
+    where: ContactoEmergenciaWhereUniqueInput
+  }
+
+  /**
+   * ContactoEmergencia findFirst
+   */
+  export type ContactoEmergenciaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter, which ContactoEmergencia to fetch.
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactoEmergencias to fetch.
+     */
+    orderBy?: ContactoEmergenciaOrderByWithRelationInput | ContactoEmergenciaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContactoEmergencias.
+     */
+    cursor?: ContactoEmergenciaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactoEmergencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactoEmergencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContactoEmergencias.
+     */
+    distinct?: ContactoEmergenciaScalarFieldEnum | ContactoEmergenciaScalarFieldEnum[]
+  }
+
+  /**
+   * ContactoEmergencia findFirstOrThrow
+   */
+  export type ContactoEmergenciaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter, which ContactoEmergencia to fetch.
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactoEmergencias to fetch.
+     */
+    orderBy?: ContactoEmergenciaOrderByWithRelationInput | ContactoEmergenciaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContactoEmergencias.
+     */
+    cursor?: ContactoEmergenciaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactoEmergencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactoEmergencias.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContactoEmergencias.
+     */
+    distinct?: ContactoEmergenciaScalarFieldEnum | ContactoEmergenciaScalarFieldEnum[]
+  }
+
+  /**
+   * ContactoEmergencia findMany
+   */
+  export type ContactoEmergenciaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter, which ContactoEmergencias to fetch.
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactoEmergencias to fetch.
+     */
+    orderBy?: ContactoEmergenciaOrderByWithRelationInput | ContactoEmergenciaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContactoEmergencias.
+     */
+    cursor?: ContactoEmergenciaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactoEmergencias from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactoEmergencias.
+     */
+    skip?: number
+    distinct?: ContactoEmergenciaScalarFieldEnum | ContactoEmergenciaScalarFieldEnum[]
+  }
+
+  /**
+   * ContactoEmergencia create
+   */
+  export type ContactoEmergenciaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ContactoEmergencia.
+     */
+    data: XOR<ContactoEmergenciaCreateInput, ContactoEmergenciaUncheckedCreateInput>
+  }
+
+  /**
+   * ContactoEmergencia createMany
+   */
+  export type ContactoEmergenciaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContactoEmergencias.
+     */
+    data: ContactoEmergenciaCreateManyInput | ContactoEmergenciaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContactoEmergencia createManyAndReturn
+   */
+  export type ContactoEmergenciaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * The data used to create many ContactoEmergencias.
+     */
+    data: ContactoEmergenciaCreateManyInput | ContactoEmergenciaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContactoEmergencia update
+   */
+  export type ContactoEmergenciaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ContactoEmergencia.
+     */
+    data: XOR<ContactoEmergenciaUpdateInput, ContactoEmergenciaUncheckedUpdateInput>
+    /**
+     * Choose, which ContactoEmergencia to update.
+     */
+    where: ContactoEmergenciaWhereUniqueInput
+  }
+
+  /**
+   * ContactoEmergencia updateMany
+   */
+  export type ContactoEmergenciaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContactoEmergencias.
+     */
+    data: XOR<ContactoEmergenciaUpdateManyMutationInput, ContactoEmergenciaUncheckedUpdateManyInput>
+    /**
+     * Filter which ContactoEmergencias to update
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * Limit how many ContactoEmergencias to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContactoEmergencia updateManyAndReturn
+   */
+  export type ContactoEmergenciaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * The data used to update ContactoEmergencias.
+     */
+    data: XOR<ContactoEmergenciaUpdateManyMutationInput, ContactoEmergenciaUncheckedUpdateManyInput>
+    /**
+     * Filter which ContactoEmergencias to update
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * Limit how many ContactoEmergencias to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ContactoEmergencia upsert
+   */
+  export type ContactoEmergenciaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ContactoEmergencia to update in case it exists.
+     */
+    where: ContactoEmergenciaWhereUniqueInput
+    /**
+     * In case the ContactoEmergencia found by the `where` argument doesn't exist, create a new ContactoEmergencia with this data.
+     */
+    create: XOR<ContactoEmergenciaCreateInput, ContactoEmergenciaUncheckedCreateInput>
+    /**
+     * In case the ContactoEmergencia was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContactoEmergenciaUpdateInput, ContactoEmergenciaUncheckedUpdateInput>
+  }
+
+  /**
+   * ContactoEmergencia delete
+   */
+  export type ContactoEmergenciaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+    /**
+     * Filter which ContactoEmergencia to delete.
+     */
+    where: ContactoEmergenciaWhereUniqueInput
+  }
+
+  /**
+   * ContactoEmergencia deleteMany
+   */
+  export type ContactoEmergenciaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContactoEmergencias to delete
+     */
+    where?: ContactoEmergenciaWhereInput
+    /**
+     * Limit how many ContactoEmergencias to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContactoEmergencia without action
+   */
+  export type ContactoEmergenciaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactoEmergencia
+     */
+    select?: ContactoEmergenciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactoEmergencia
+     */
+    omit?: ContactoEmergenciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContactoEmergenciaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AlertaClinico
+   */
+
+  export type AggregateAlertaClinico = {
+    _count: AlertaClinicoCountAggregateOutputType | null
+    _min: AlertaClinicoMinAggregateOutputType | null
+    _max: AlertaClinicoMaxAggregateOutputType | null
+  }
+
+  export type AlertaClinicoMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    tipo: string | null
+    mensagem: string | null
+    lido: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AlertaClinicoMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    tipo: string | null
+    mensagem: string | null
+    lido: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AlertaClinicoCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    tipo: number
+    mensagem: number
+    lido: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AlertaClinicoMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    mensagem?: true
+    lido?: true
+    criadoEm?: true
+  }
+
+  export type AlertaClinicoMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    mensagem?: true
+    lido?: true
+    criadoEm?: true
+  }
+
+  export type AlertaClinicoCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    mensagem?: true
+    lido?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AlertaClinicoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlertaClinico to aggregate.
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlertaClinicos to fetch.
+     */
+    orderBy?: AlertaClinicoOrderByWithRelationInput | AlertaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AlertaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlertaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlertaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AlertaClinicos
+    **/
+    _count?: true | AlertaClinicoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AlertaClinicoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AlertaClinicoMaxAggregateInputType
+  }
+
+  export type GetAlertaClinicoAggregateType<T extends AlertaClinicoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlertaClinico]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAlertaClinico[P]>
+      : GetScalarType<T[P], AggregateAlertaClinico[P]>
+  }
+
+
+
+
+  export type AlertaClinicoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlertaClinicoWhereInput
+    orderBy?: AlertaClinicoOrderByWithAggregationInput | AlertaClinicoOrderByWithAggregationInput[]
+    by: AlertaClinicoScalarFieldEnum[] | AlertaClinicoScalarFieldEnum
+    having?: AlertaClinicoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AlertaClinicoCountAggregateInputType | true
+    _min?: AlertaClinicoMinAggregateInputType
+    _max?: AlertaClinicoMaxAggregateInputType
+  }
+
+  export type AlertaClinicoGroupByOutputType = {
+    id: string
+    doenteId: string
+    tipo: string
+    mensagem: string
+    lido: boolean
+    criadoEm: Date
+    _count: AlertaClinicoCountAggregateOutputType | null
+    _min: AlertaClinicoMinAggregateOutputType | null
+    _max: AlertaClinicoMaxAggregateOutputType | null
+  }
+
+  type GetAlertaClinicoGroupByPayload<T extends AlertaClinicoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AlertaClinicoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AlertaClinicoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AlertaClinicoGroupByOutputType[P]>
+            : GetScalarType<T[P], AlertaClinicoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AlertaClinicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    mensagem?: boolean
+    lido?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alertaClinico"]>
+
+  export type AlertaClinicoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    mensagem?: boolean
+    lido?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alertaClinico"]>
+
+  export type AlertaClinicoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    mensagem?: boolean
+    lido?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alertaClinico"]>
+
+  export type AlertaClinicoSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    mensagem?: boolean
+    lido?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AlertaClinicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "mensagem" | "lido" | "criadoEm", ExtArgs["result"]["alertaClinico"]>
+  export type AlertaClinicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type AlertaClinicoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+  export type AlertaClinicoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+  }
+
+  export type $AlertaClinicoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AlertaClinico"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      tipo: string
+      mensagem: string
+      lido: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["alertaClinico"]>
+    composites: {}
+  }
+
+  type AlertaClinicoGetPayload<S extends boolean | null | undefined | AlertaClinicoDefaultArgs> = $Result.GetResult<Prisma.$AlertaClinicoPayload, S>
+
+  type AlertaClinicoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlertaClinicoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlertaClinicoCountAggregateInputType | true
+    }
+
+  export interface AlertaClinicoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AlertaClinico'], meta: { name: 'AlertaClinico' } }
+    /**
+     * Find zero or one AlertaClinico that matches the filter.
+     * @param {AlertaClinicoFindUniqueArgs} args - Arguments to find a AlertaClinico
+     * @example
+     * // Get one AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AlertaClinicoFindUniqueArgs>(args: SelectSubset<T, AlertaClinicoFindUniqueArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AlertaClinico that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AlertaClinicoFindUniqueOrThrowArgs} args - Arguments to find a AlertaClinico
+     * @example
+     * // Get one AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AlertaClinicoFindUniqueOrThrowArgs>(args: SelectSubset<T, AlertaClinicoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlertaClinico that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoFindFirstArgs} args - Arguments to find a AlertaClinico
+     * @example
+     * // Get one AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AlertaClinicoFindFirstArgs>(args?: SelectSubset<T, AlertaClinicoFindFirstArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlertaClinico that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoFindFirstOrThrowArgs} args - Arguments to find a AlertaClinico
+     * @example
+     * // Get one AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AlertaClinicoFindFirstOrThrowArgs>(args?: SelectSubset<T, AlertaClinicoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AlertaClinicos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AlertaClinicos
+     * const alertaClinicos = await prisma.alertaClinico.findMany()
+     * 
+     * // Get first 10 AlertaClinicos
+     * const alertaClinicos = await prisma.alertaClinico.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const alertaClinicoWithIdOnly = await prisma.alertaClinico.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AlertaClinicoFindManyArgs>(args?: SelectSubset<T, AlertaClinicoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AlertaClinico.
+     * @param {AlertaClinicoCreateArgs} args - Arguments to create a AlertaClinico.
+     * @example
+     * // Create one AlertaClinico
+     * const AlertaClinico = await prisma.alertaClinico.create({
+     *   data: {
+     *     // ... data to create a AlertaClinico
+     *   }
+     * })
+     * 
+     */
+    create<T extends AlertaClinicoCreateArgs>(args: SelectSubset<T, AlertaClinicoCreateArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AlertaClinicos.
+     * @param {AlertaClinicoCreateManyArgs} args - Arguments to create many AlertaClinicos.
+     * @example
+     * // Create many AlertaClinicos
+     * const alertaClinico = await prisma.alertaClinico.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AlertaClinicoCreateManyArgs>(args?: SelectSubset<T, AlertaClinicoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AlertaClinicos and returns the data saved in the database.
+     * @param {AlertaClinicoCreateManyAndReturnArgs} args - Arguments to create many AlertaClinicos.
+     * @example
+     * // Create many AlertaClinicos
+     * const alertaClinico = await prisma.alertaClinico.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AlertaClinicos and only return the `id`
+     * const alertaClinicoWithIdOnly = await prisma.alertaClinico.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AlertaClinicoCreateManyAndReturnArgs>(args?: SelectSubset<T, AlertaClinicoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AlertaClinico.
+     * @param {AlertaClinicoDeleteArgs} args - Arguments to delete one AlertaClinico.
+     * @example
+     * // Delete one AlertaClinico
+     * const AlertaClinico = await prisma.alertaClinico.delete({
+     *   where: {
+     *     // ... filter to delete one AlertaClinico
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AlertaClinicoDeleteArgs>(args: SelectSubset<T, AlertaClinicoDeleteArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AlertaClinico.
+     * @param {AlertaClinicoUpdateArgs} args - Arguments to update one AlertaClinico.
+     * @example
+     * // Update one AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AlertaClinicoUpdateArgs>(args: SelectSubset<T, AlertaClinicoUpdateArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AlertaClinicos.
+     * @param {AlertaClinicoDeleteManyArgs} args - Arguments to filter AlertaClinicos to delete.
+     * @example
+     * // Delete a few AlertaClinicos
+     * const { count } = await prisma.alertaClinico.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AlertaClinicoDeleteManyArgs>(args?: SelectSubset<T, AlertaClinicoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AlertaClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AlertaClinicos
+     * const alertaClinico = await prisma.alertaClinico.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AlertaClinicoUpdateManyArgs>(args: SelectSubset<T, AlertaClinicoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AlertaClinicos and returns the data updated in the database.
+     * @param {AlertaClinicoUpdateManyAndReturnArgs} args - Arguments to update many AlertaClinicos.
+     * @example
+     * // Update many AlertaClinicos
+     * const alertaClinico = await prisma.alertaClinico.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AlertaClinicos and only return the `id`
+     * const alertaClinicoWithIdOnly = await prisma.alertaClinico.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AlertaClinicoUpdateManyAndReturnArgs>(args: SelectSubset<T, AlertaClinicoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AlertaClinico.
+     * @param {AlertaClinicoUpsertArgs} args - Arguments to update or create a AlertaClinico.
+     * @example
+     * // Update or create a AlertaClinico
+     * const alertaClinico = await prisma.alertaClinico.upsert({
+     *   create: {
+     *     // ... data to create a AlertaClinico
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AlertaClinico we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AlertaClinicoUpsertArgs>(args: SelectSubset<T, AlertaClinicoUpsertArgs<ExtArgs>>): Prisma__AlertaClinicoClient<$Result.GetResult<Prisma.$AlertaClinicoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AlertaClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoCountArgs} args - Arguments to filter AlertaClinicos to count.
+     * @example
+     * // Count the number of AlertaClinicos
+     * const count = await prisma.alertaClinico.count({
+     *   where: {
+     *     // ... the filter for the AlertaClinicos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AlertaClinicoCountArgs>(
+      args?: Subset<T, AlertaClinicoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AlertaClinicoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AlertaClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AlertaClinicoAggregateArgs>(args: Subset<T, AlertaClinicoAggregateArgs>): Prisma.PrismaPromise<GetAlertaClinicoAggregateType<T>>
+
+    /**
+     * Group by AlertaClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlertaClinicoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AlertaClinicoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AlertaClinicoGroupByArgs['orderBy'] }
+        : { orderBy?: AlertaClinicoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AlertaClinicoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlertaClinicoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AlertaClinico model
+   */
+  readonly fields: AlertaClinicoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AlertaClinico.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AlertaClinicoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AlertaClinico model
+   */
+  interface AlertaClinicoFieldRefs {
+    readonly id: FieldRef<"AlertaClinico", 'String'>
+    readonly doenteId: FieldRef<"AlertaClinico", 'String'>
+    readonly tipo: FieldRef<"AlertaClinico", 'String'>
+    readonly mensagem: FieldRef<"AlertaClinico", 'String'>
+    readonly lido: FieldRef<"AlertaClinico", 'Boolean'>
+    readonly criadoEm: FieldRef<"AlertaClinico", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AlertaClinico findUnique
+   */
+  export type AlertaClinicoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlertaClinico to fetch.
+     */
+    where: AlertaClinicoWhereUniqueInput
+  }
+
+  /**
+   * AlertaClinico findUniqueOrThrow
+   */
+  export type AlertaClinicoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlertaClinico to fetch.
+     */
+    where: AlertaClinicoWhereUniqueInput
+  }
+
+  /**
+   * AlertaClinico findFirst
+   */
+  export type AlertaClinicoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlertaClinico to fetch.
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlertaClinicos to fetch.
+     */
+    orderBy?: AlertaClinicoOrderByWithRelationInput | AlertaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlertaClinicos.
+     */
+    cursor?: AlertaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlertaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlertaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlertaClinicos.
+     */
+    distinct?: AlertaClinicoScalarFieldEnum | AlertaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AlertaClinico findFirstOrThrow
+   */
+  export type AlertaClinicoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlertaClinico to fetch.
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlertaClinicos to fetch.
+     */
+    orderBy?: AlertaClinicoOrderByWithRelationInput | AlertaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlertaClinicos.
+     */
+    cursor?: AlertaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlertaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlertaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlertaClinicos.
+     */
+    distinct?: AlertaClinicoScalarFieldEnum | AlertaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AlertaClinico findMany
+   */
+  export type AlertaClinicoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlertaClinicos to fetch.
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlertaClinicos to fetch.
+     */
+    orderBy?: AlertaClinicoOrderByWithRelationInput | AlertaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AlertaClinicos.
+     */
+    cursor?: AlertaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlertaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlertaClinicos.
+     */
+    skip?: number
+    distinct?: AlertaClinicoScalarFieldEnum | AlertaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AlertaClinico create
+   */
+  export type AlertaClinicoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AlertaClinico.
+     */
+    data: XOR<AlertaClinicoCreateInput, AlertaClinicoUncheckedCreateInput>
+  }
+
+  /**
+   * AlertaClinico createMany
+   */
+  export type AlertaClinicoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AlertaClinicos.
+     */
+    data: AlertaClinicoCreateManyInput | AlertaClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AlertaClinico createManyAndReturn
+   */
+  export type AlertaClinicoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AlertaClinicos.
+     */
+    data: AlertaClinicoCreateManyInput | AlertaClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AlertaClinico update
+   */
+  export type AlertaClinicoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AlertaClinico.
+     */
+    data: XOR<AlertaClinicoUpdateInput, AlertaClinicoUncheckedUpdateInput>
+    /**
+     * Choose, which AlertaClinico to update.
+     */
+    where: AlertaClinicoWhereUniqueInput
+  }
+
+  /**
+   * AlertaClinico updateMany
+   */
+  export type AlertaClinicoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AlertaClinicos.
+     */
+    data: XOR<AlertaClinicoUpdateManyMutationInput, AlertaClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AlertaClinicos to update
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * Limit how many AlertaClinicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlertaClinico updateManyAndReturn
+   */
+  export type AlertaClinicoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to update AlertaClinicos.
+     */
+    data: XOR<AlertaClinicoUpdateManyMutationInput, AlertaClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AlertaClinicos to update
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * Limit how many AlertaClinicos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AlertaClinico upsert
+   */
+  export type AlertaClinicoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AlertaClinico to update in case it exists.
+     */
+    where: AlertaClinicoWhereUniqueInput
+    /**
+     * In case the AlertaClinico found by the `where` argument doesn't exist, create a new AlertaClinico with this data.
+     */
+    create: XOR<AlertaClinicoCreateInput, AlertaClinicoUncheckedCreateInput>
+    /**
+     * In case the AlertaClinico was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AlertaClinicoUpdateInput, AlertaClinicoUncheckedUpdateInput>
+  }
+
+  /**
+   * AlertaClinico delete
+   */
+  export type AlertaClinicoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter which AlertaClinico to delete.
+     */
+    where: AlertaClinicoWhereUniqueInput
+  }
+
+  /**
+   * AlertaClinico deleteMany
+   */
+  export type AlertaClinicoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlertaClinicos to delete
+     */
+    where?: AlertaClinicoWhereInput
+    /**
+     * Limit how many AlertaClinicos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlertaClinico without action
+   */
+  export type AlertaClinicoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlertaClinico
+     */
+    select?: AlertaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlertaClinico
+     */
+    omit?: AlertaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlertaClinicoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AvaliacaoRisco
+   */
+
+  export type AggregateAvaliacaoRisco = {
+    _count: AvaliacaoRiscoCountAggregateOutputType | null
+    _avg: AvaliacaoRiscoAvgAggregateOutputType | null
+    _sum: AvaliacaoRiscoSumAggregateOutputType | null
+    _min: AvaliacaoRiscoMinAggregateOutputType | null
+    _max: AvaliacaoRiscoMaxAggregateOutputType | null
+  }
+
+  export type AvaliacaoRiscoAvgAggregateOutputType = {
+    pontuacao: number | null
+  }
+
+  export type AvaliacaoRiscoSumAggregateOutputType = {
+    pontuacao: number | null
+  }
+
+  export type AvaliacaoRiscoMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    tipo: string | null
+    pontuacao: number | null
+    risco: string | null
+    registadoPorId: string | null
+    criadaEm: Date | null
+  }
+
+  export type AvaliacaoRiscoMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    tipo: string | null
+    pontuacao: number | null
+    risco: string | null
+    registadoPorId: string | null
+    criadaEm: Date | null
+  }
+
+  export type AvaliacaoRiscoCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    tipo: number
+    pontuacao: number
+    itens: number
+    risco: number
+    registadoPorId: number
+    criadaEm: number
+    _all: number
+  }
+
+
+  export type AvaliacaoRiscoAvgAggregateInputType = {
+    pontuacao?: true
+  }
+
+  export type AvaliacaoRiscoSumAggregateInputType = {
+    pontuacao?: true
+  }
+
+  export type AvaliacaoRiscoMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    pontuacao?: true
+    risco?: true
+    registadoPorId?: true
+    criadaEm?: true
+  }
+
+  export type AvaliacaoRiscoMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    pontuacao?: true
+    risco?: true
+    registadoPorId?: true
+    criadaEm?: true
+  }
+
+  export type AvaliacaoRiscoCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    tipo?: true
+    pontuacao?: true
+    itens?: true
+    risco?: true
+    registadoPorId?: true
+    criadaEm?: true
+    _all?: true
+  }
+
+  export type AvaliacaoRiscoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AvaliacaoRisco to aggregate.
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AvaliacaoRiscos to fetch.
+     */
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AvaliacaoRiscos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AvaliacaoRiscos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AvaliacaoRiscos
+    **/
+    _count?: true | AvaliacaoRiscoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AvaliacaoRiscoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AvaliacaoRiscoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AvaliacaoRiscoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AvaliacaoRiscoMaxAggregateInputType
+  }
+
+  export type GetAvaliacaoRiscoAggregateType<T extends AvaliacaoRiscoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAvaliacaoRisco]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAvaliacaoRisco[P]>
+      : GetScalarType<T[P], AggregateAvaliacaoRisco[P]>
+  }
+
+
+
+
+  export type AvaliacaoRiscoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AvaliacaoRiscoWhereInput
+    orderBy?: AvaliacaoRiscoOrderByWithAggregationInput | AvaliacaoRiscoOrderByWithAggregationInput[]
+    by: AvaliacaoRiscoScalarFieldEnum[] | AvaliacaoRiscoScalarFieldEnum
+    having?: AvaliacaoRiscoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AvaliacaoRiscoCountAggregateInputType | true
+    _avg?: AvaliacaoRiscoAvgAggregateInputType
+    _sum?: AvaliacaoRiscoSumAggregateInputType
+    _min?: AvaliacaoRiscoMinAggregateInputType
+    _max?: AvaliacaoRiscoMaxAggregateInputType
+  }
+
+  export type AvaliacaoRiscoGroupByOutputType = {
+    id: string
+    doenteId: string
+    tipo: string
+    pontuacao: number
+    itens: JsonValue
+    risco: string
+    registadoPorId: string
+    criadaEm: Date
+    _count: AvaliacaoRiscoCountAggregateOutputType | null
+    _avg: AvaliacaoRiscoAvgAggregateOutputType | null
+    _sum: AvaliacaoRiscoSumAggregateOutputType | null
+    _min: AvaliacaoRiscoMinAggregateOutputType | null
+    _max: AvaliacaoRiscoMaxAggregateOutputType | null
+  }
+
+  type GetAvaliacaoRiscoGroupByPayload<T extends AvaliacaoRiscoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AvaliacaoRiscoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AvaliacaoRiscoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AvaliacaoRiscoGroupByOutputType[P]>
+            : GetScalarType<T[P], AvaliacaoRiscoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AvaliacaoRiscoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    pontuacao?: boolean
+    itens?: boolean
+    risco?: boolean
+    registadoPorId?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["avaliacaoRisco"]>
+
+  export type AvaliacaoRiscoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    pontuacao?: boolean
+    itens?: boolean
+    risco?: boolean
+    registadoPorId?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["avaliacaoRisco"]>
+
+  export type AvaliacaoRiscoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    pontuacao?: boolean
+    itens?: boolean
+    risco?: boolean
+    registadoPorId?: boolean
+    criadaEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["avaliacaoRisco"]>
+
+  export type AvaliacaoRiscoSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    tipo?: boolean
+    pontuacao?: boolean
+    itens?: boolean
+    risco?: boolean
+    registadoPorId?: boolean
+    criadaEm?: boolean
+  }
+
+  export type AvaliacaoRiscoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "pontuacao" | "itens" | "risco" | "registadoPorId" | "criadaEm", ExtArgs["result"]["avaliacaoRisco"]>
+  export type AvaliacaoRiscoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AvaliacaoRiscoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AvaliacaoRiscoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $AvaliacaoRiscoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AvaliacaoRisco"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      tipo: string
+      pontuacao: number
+      itens: Prisma.JsonValue
+      risco: string
+      registadoPorId: string
+      criadaEm: Date
+    }, ExtArgs["result"]["avaliacaoRisco"]>
+    composites: {}
+  }
+
+  type AvaliacaoRiscoGetPayload<S extends boolean | null | undefined | AvaliacaoRiscoDefaultArgs> = $Result.GetResult<Prisma.$AvaliacaoRiscoPayload, S>
+
+  type AvaliacaoRiscoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AvaliacaoRiscoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AvaliacaoRiscoCountAggregateInputType | true
+    }
+
+  export interface AvaliacaoRiscoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AvaliacaoRisco'], meta: { name: 'AvaliacaoRisco' } }
+    /**
+     * Find zero or one AvaliacaoRisco that matches the filter.
+     * @param {AvaliacaoRiscoFindUniqueArgs} args - Arguments to find a AvaliacaoRisco
+     * @example
+     * // Get one AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AvaliacaoRiscoFindUniqueArgs>(args: SelectSubset<T, AvaliacaoRiscoFindUniqueArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AvaliacaoRisco that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AvaliacaoRiscoFindUniqueOrThrowArgs} args - Arguments to find a AvaliacaoRisco
+     * @example
+     * // Get one AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AvaliacaoRiscoFindUniqueOrThrowArgs>(args: SelectSubset<T, AvaliacaoRiscoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AvaliacaoRisco that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoFindFirstArgs} args - Arguments to find a AvaliacaoRisco
+     * @example
+     * // Get one AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AvaliacaoRiscoFindFirstArgs>(args?: SelectSubset<T, AvaliacaoRiscoFindFirstArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AvaliacaoRisco that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoFindFirstOrThrowArgs} args - Arguments to find a AvaliacaoRisco
+     * @example
+     * // Get one AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AvaliacaoRiscoFindFirstOrThrowArgs>(args?: SelectSubset<T, AvaliacaoRiscoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AvaliacaoRiscos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AvaliacaoRiscos
+     * const avaliacaoRiscos = await prisma.avaliacaoRisco.findMany()
+     * 
+     * // Get first 10 AvaliacaoRiscos
+     * const avaliacaoRiscos = await prisma.avaliacaoRisco.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const avaliacaoRiscoWithIdOnly = await prisma.avaliacaoRisco.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AvaliacaoRiscoFindManyArgs>(args?: SelectSubset<T, AvaliacaoRiscoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AvaliacaoRisco.
+     * @param {AvaliacaoRiscoCreateArgs} args - Arguments to create a AvaliacaoRisco.
+     * @example
+     * // Create one AvaliacaoRisco
+     * const AvaliacaoRisco = await prisma.avaliacaoRisco.create({
+     *   data: {
+     *     // ... data to create a AvaliacaoRisco
+     *   }
+     * })
+     * 
+     */
+    create<T extends AvaliacaoRiscoCreateArgs>(args: SelectSubset<T, AvaliacaoRiscoCreateArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AvaliacaoRiscos.
+     * @param {AvaliacaoRiscoCreateManyArgs} args - Arguments to create many AvaliacaoRiscos.
+     * @example
+     * // Create many AvaliacaoRiscos
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AvaliacaoRiscoCreateManyArgs>(args?: SelectSubset<T, AvaliacaoRiscoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AvaliacaoRiscos and returns the data saved in the database.
+     * @param {AvaliacaoRiscoCreateManyAndReturnArgs} args - Arguments to create many AvaliacaoRiscos.
+     * @example
+     * // Create many AvaliacaoRiscos
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AvaliacaoRiscos and only return the `id`
+     * const avaliacaoRiscoWithIdOnly = await prisma.avaliacaoRisco.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AvaliacaoRiscoCreateManyAndReturnArgs>(args?: SelectSubset<T, AvaliacaoRiscoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AvaliacaoRisco.
+     * @param {AvaliacaoRiscoDeleteArgs} args - Arguments to delete one AvaliacaoRisco.
+     * @example
+     * // Delete one AvaliacaoRisco
+     * const AvaliacaoRisco = await prisma.avaliacaoRisco.delete({
+     *   where: {
+     *     // ... filter to delete one AvaliacaoRisco
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AvaliacaoRiscoDeleteArgs>(args: SelectSubset<T, AvaliacaoRiscoDeleteArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AvaliacaoRisco.
+     * @param {AvaliacaoRiscoUpdateArgs} args - Arguments to update one AvaliacaoRisco.
+     * @example
+     * // Update one AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AvaliacaoRiscoUpdateArgs>(args: SelectSubset<T, AvaliacaoRiscoUpdateArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AvaliacaoRiscos.
+     * @param {AvaliacaoRiscoDeleteManyArgs} args - Arguments to filter AvaliacaoRiscos to delete.
+     * @example
+     * // Delete a few AvaliacaoRiscos
+     * const { count } = await prisma.avaliacaoRisco.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AvaliacaoRiscoDeleteManyArgs>(args?: SelectSubset<T, AvaliacaoRiscoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AvaliacaoRiscos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AvaliacaoRiscos
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AvaliacaoRiscoUpdateManyArgs>(args: SelectSubset<T, AvaliacaoRiscoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AvaliacaoRiscos and returns the data updated in the database.
+     * @param {AvaliacaoRiscoUpdateManyAndReturnArgs} args - Arguments to update many AvaliacaoRiscos.
+     * @example
+     * // Update many AvaliacaoRiscos
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AvaliacaoRiscos and only return the `id`
+     * const avaliacaoRiscoWithIdOnly = await prisma.avaliacaoRisco.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AvaliacaoRiscoUpdateManyAndReturnArgs>(args: SelectSubset<T, AvaliacaoRiscoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AvaliacaoRisco.
+     * @param {AvaliacaoRiscoUpsertArgs} args - Arguments to update or create a AvaliacaoRisco.
+     * @example
+     * // Update or create a AvaliacaoRisco
+     * const avaliacaoRisco = await prisma.avaliacaoRisco.upsert({
+     *   create: {
+     *     // ... data to create a AvaliacaoRisco
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AvaliacaoRisco we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AvaliacaoRiscoUpsertArgs>(args: SelectSubset<T, AvaliacaoRiscoUpsertArgs<ExtArgs>>): Prisma__AvaliacaoRiscoClient<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AvaliacaoRiscos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoCountArgs} args - Arguments to filter AvaliacaoRiscos to count.
+     * @example
+     * // Count the number of AvaliacaoRiscos
+     * const count = await prisma.avaliacaoRisco.count({
+     *   where: {
+     *     // ... the filter for the AvaliacaoRiscos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AvaliacaoRiscoCountArgs>(
+      args?: Subset<T, AvaliacaoRiscoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AvaliacaoRiscoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AvaliacaoRisco.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AvaliacaoRiscoAggregateArgs>(args: Subset<T, AvaliacaoRiscoAggregateArgs>): Prisma.PrismaPromise<GetAvaliacaoRiscoAggregateType<T>>
+
+    /**
+     * Group by AvaliacaoRisco.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AvaliacaoRiscoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AvaliacaoRiscoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AvaliacaoRiscoGroupByArgs['orderBy'] }
+        : { orderBy?: AvaliacaoRiscoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AvaliacaoRiscoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAvaliacaoRiscoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AvaliacaoRisco model
+   */
+  readonly fields: AvaliacaoRiscoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AvaliacaoRisco.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AvaliacaoRiscoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AvaliacaoRisco model
+   */
+  interface AvaliacaoRiscoFieldRefs {
+    readonly id: FieldRef<"AvaliacaoRisco", 'String'>
+    readonly doenteId: FieldRef<"AvaliacaoRisco", 'String'>
+    readonly tipo: FieldRef<"AvaliacaoRisco", 'String'>
+    readonly pontuacao: FieldRef<"AvaliacaoRisco", 'Int'>
+    readonly itens: FieldRef<"AvaliacaoRisco", 'Json'>
+    readonly risco: FieldRef<"AvaliacaoRisco", 'String'>
+    readonly registadoPorId: FieldRef<"AvaliacaoRisco", 'String'>
+    readonly criadaEm: FieldRef<"AvaliacaoRisco", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AvaliacaoRisco findUnique
+   */
+  export type AvaliacaoRiscoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter, which AvaliacaoRisco to fetch.
+     */
+    where: AvaliacaoRiscoWhereUniqueInput
+  }
+
+  /**
+   * AvaliacaoRisco findUniqueOrThrow
+   */
+  export type AvaliacaoRiscoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter, which AvaliacaoRisco to fetch.
+     */
+    where: AvaliacaoRiscoWhereUniqueInput
+  }
+
+  /**
+   * AvaliacaoRisco findFirst
+   */
+  export type AvaliacaoRiscoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter, which AvaliacaoRisco to fetch.
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AvaliacaoRiscos to fetch.
+     */
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AvaliacaoRiscos.
+     */
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AvaliacaoRiscos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AvaliacaoRiscos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AvaliacaoRiscos.
+     */
+    distinct?: AvaliacaoRiscoScalarFieldEnum | AvaliacaoRiscoScalarFieldEnum[]
+  }
+
+  /**
+   * AvaliacaoRisco findFirstOrThrow
+   */
+  export type AvaliacaoRiscoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter, which AvaliacaoRisco to fetch.
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AvaliacaoRiscos to fetch.
+     */
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AvaliacaoRiscos.
+     */
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AvaliacaoRiscos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AvaliacaoRiscos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AvaliacaoRiscos.
+     */
+    distinct?: AvaliacaoRiscoScalarFieldEnum | AvaliacaoRiscoScalarFieldEnum[]
+  }
+
+  /**
+   * AvaliacaoRisco findMany
+   */
+  export type AvaliacaoRiscoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter, which AvaliacaoRiscos to fetch.
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AvaliacaoRiscos to fetch.
+     */
+    orderBy?: AvaliacaoRiscoOrderByWithRelationInput | AvaliacaoRiscoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AvaliacaoRiscos.
+     */
+    cursor?: AvaliacaoRiscoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AvaliacaoRiscos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AvaliacaoRiscos.
+     */
+    skip?: number
+    distinct?: AvaliacaoRiscoScalarFieldEnum | AvaliacaoRiscoScalarFieldEnum[]
+  }
+
+  /**
+   * AvaliacaoRisco create
+   */
+  export type AvaliacaoRiscoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AvaliacaoRisco.
+     */
+    data: XOR<AvaliacaoRiscoCreateInput, AvaliacaoRiscoUncheckedCreateInput>
+  }
+
+  /**
+   * AvaliacaoRisco createMany
+   */
+  export type AvaliacaoRiscoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AvaliacaoRiscos.
+     */
+    data: AvaliacaoRiscoCreateManyInput | AvaliacaoRiscoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AvaliacaoRisco createManyAndReturn
+   */
+  export type AvaliacaoRiscoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AvaliacaoRiscos.
+     */
+    data: AvaliacaoRiscoCreateManyInput | AvaliacaoRiscoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AvaliacaoRisco update
+   */
+  export type AvaliacaoRiscoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AvaliacaoRisco.
+     */
+    data: XOR<AvaliacaoRiscoUpdateInput, AvaliacaoRiscoUncheckedUpdateInput>
+    /**
+     * Choose, which AvaliacaoRisco to update.
+     */
+    where: AvaliacaoRiscoWhereUniqueInput
+  }
+
+  /**
+   * AvaliacaoRisco updateMany
+   */
+  export type AvaliacaoRiscoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AvaliacaoRiscos.
+     */
+    data: XOR<AvaliacaoRiscoUpdateManyMutationInput, AvaliacaoRiscoUncheckedUpdateManyInput>
+    /**
+     * Filter which AvaliacaoRiscos to update
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * Limit how many AvaliacaoRiscos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AvaliacaoRisco updateManyAndReturn
+   */
+  export type AvaliacaoRiscoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * The data used to update AvaliacaoRiscos.
+     */
+    data: XOR<AvaliacaoRiscoUpdateManyMutationInput, AvaliacaoRiscoUncheckedUpdateManyInput>
+    /**
+     * Filter which AvaliacaoRiscos to update
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * Limit how many AvaliacaoRiscos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AvaliacaoRisco upsert
+   */
+  export type AvaliacaoRiscoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AvaliacaoRisco to update in case it exists.
+     */
+    where: AvaliacaoRiscoWhereUniqueInput
+    /**
+     * In case the AvaliacaoRisco found by the `where` argument doesn't exist, create a new AvaliacaoRisco with this data.
+     */
+    create: XOR<AvaliacaoRiscoCreateInput, AvaliacaoRiscoUncheckedCreateInput>
+    /**
+     * In case the AvaliacaoRisco was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AvaliacaoRiscoUpdateInput, AvaliacaoRiscoUncheckedUpdateInput>
+  }
+
+  /**
+   * AvaliacaoRisco delete
+   */
+  export type AvaliacaoRiscoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+    /**
+     * Filter which AvaliacaoRisco to delete.
+     */
+    where: AvaliacaoRiscoWhereUniqueInput
+  }
+
+  /**
+   * AvaliacaoRisco deleteMany
+   */
+  export type AvaliacaoRiscoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AvaliacaoRiscos to delete
+     */
+    where?: AvaliacaoRiscoWhereInput
+    /**
+     * Limit how many AvaliacaoRiscos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AvaliacaoRisco without action
+   */
+  export type AvaliacaoRiscoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AvaliacaoRisco
+     */
+    select?: AvaliacaoRiscoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AvaliacaoRisco
+     */
+    omit?: AvaliacaoRiscoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AvaliacaoRiscoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SumarioAlta
+   */
+
+  export type AggregateSumarioAlta = {
+    _count: SumarioAltaCountAggregateOutputType | null
+    _min: SumarioAltaMinAggregateOutputType | null
+    _max: SumarioAltaMaxAggregateOutputType | null
+  }
+
+  export type SumarioAltaMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    motivoAlta: string | null
+    destino: string | null
+    resumoClinical: string | null
+    prescricaoSaida: string | null
+    medicoFamilia: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type SumarioAltaMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    motivoAlta: string | null
+    destino: string | null
+    resumoClinical: string | null
+    prescricaoSaida: string | null
+    medicoFamilia: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type SumarioAltaCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    motivoAlta: number
+    destino: number
+    resumoClinical: number
+    prescricaoSaida: number
+    medicoFamilia: number
+    criadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type SumarioAltaMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    motivoAlta?: true
+    destino?: true
+    resumoClinical?: true
+    prescricaoSaida?: true
+    medicoFamilia?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type SumarioAltaMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    motivoAlta?: true
+    destino?: true
+    resumoClinical?: true
+    prescricaoSaida?: true
+    medicoFamilia?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type SumarioAltaCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    motivoAlta?: true
+    destino?: true
+    resumoClinical?: true
+    prescricaoSaida?: true
+    medicoFamilia?: true
+    criadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type SumarioAltaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SumarioAlta to aggregate.
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SumarioAltas to fetch.
+     */
+    orderBy?: SumarioAltaOrderByWithRelationInput | SumarioAltaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SumarioAltaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SumarioAltas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SumarioAltas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SumarioAltas
+    **/
+    _count?: true | SumarioAltaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SumarioAltaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SumarioAltaMaxAggregateInputType
+  }
+
+  export type GetSumarioAltaAggregateType<T extends SumarioAltaAggregateArgs> = {
+        [P in keyof T & keyof AggregateSumarioAlta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSumarioAlta[P]>
+      : GetScalarType<T[P], AggregateSumarioAlta[P]>
+  }
+
+
+
+
+  export type SumarioAltaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SumarioAltaWhereInput
+    orderBy?: SumarioAltaOrderByWithAggregationInput | SumarioAltaOrderByWithAggregationInput[]
+    by: SumarioAltaScalarFieldEnum[] | SumarioAltaScalarFieldEnum
+    having?: SumarioAltaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SumarioAltaCountAggregateInputType | true
+    _min?: SumarioAltaMinAggregateInputType
+    _max?: SumarioAltaMaxAggregateInputType
+  }
+
+  export type SumarioAltaGroupByOutputType = {
+    id: string
+    doenteId: string
+    motivoAlta: string
+    destino: string | null
+    resumoClinical: string
+    prescricaoSaida: string | null
+    medicoFamilia: string | null
+    criadoPorId: string
+    criadoEm: Date
+    _count: SumarioAltaCountAggregateOutputType | null
+    _min: SumarioAltaMinAggregateOutputType | null
+    _max: SumarioAltaMaxAggregateOutputType | null
+  }
+
+  type GetSumarioAltaGroupByPayload<T extends SumarioAltaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SumarioAltaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SumarioAltaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SumarioAltaGroupByOutputType[P]>
+            : GetScalarType<T[P], SumarioAltaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SumarioAltaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    motivoAlta?: boolean
+    destino?: boolean
+    resumoClinical?: boolean
+    prescricaoSaida?: boolean
+    medicoFamilia?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sumarioAlta"]>
+
+  export type SumarioAltaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    motivoAlta?: boolean
+    destino?: boolean
+    resumoClinical?: boolean
+    prescricaoSaida?: boolean
+    medicoFamilia?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sumarioAlta"]>
+
+  export type SumarioAltaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    motivoAlta?: boolean
+    destino?: boolean
+    resumoClinical?: boolean
+    prescricaoSaida?: boolean
+    medicoFamilia?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sumarioAlta"]>
+
+  export type SumarioAltaSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    motivoAlta?: boolean
+    destino?: boolean
+    resumoClinical?: boolean
+    prescricaoSaida?: boolean
+    medicoFamilia?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type SumarioAltaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "motivoAlta" | "destino" | "resumoClinical" | "prescricaoSaida" | "medicoFamilia" | "criadoPorId" | "criadoEm", ExtArgs["result"]["sumarioAlta"]>
+  export type SumarioAltaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SumarioAltaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SumarioAltaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $SumarioAltaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SumarioAlta"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      motivoAlta: string
+      destino: string | null
+      resumoClinical: string
+      prescricaoSaida: string | null
+      medicoFamilia: string | null
+      criadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["sumarioAlta"]>
+    composites: {}
+  }
+
+  type SumarioAltaGetPayload<S extends boolean | null | undefined | SumarioAltaDefaultArgs> = $Result.GetResult<Prisma.$SumarioAltaPayload, S>
+
+  type SumarioAltaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SumarioAltaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SumarioAltaCountAggregateInputType | true
+    }
+
+  export interface SumarioAltaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SumarioAlta'], meta: { name: 'SumarioAlta' } }
+    /**
+     * Find zero or one SumarioAlta that matches the filter.
+     * @param {SumarioAltaFindUniqueArgs} args - Arguments to find a SumarioAlta
+     * @example
+     * // Get one SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SumarioAltaFindUniqueArgs>(args: SelectSubset<T, SumarioAltaFindUniqueArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SumarioAlta that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SumarioAltaFindUniqueOrThrowArgs} args - Arguments to find a SumarioAlta
+     * @example
+     * // Get one SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SumarioAltaFindUniqueOrThrowArgs>(args: SelectSubset<T, SumarioAltaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SumarioAlta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaFindFirstArgs} args - Arguments to find a SumarioAlta
+     * @example
+     * // Get one SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SumarioAltaFindFirstArgs>(args?: SelectSubset<T, SumarioAltaFindFirstArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SumarioAlta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaFindFirstOrThrowArgs} args - Arguments to find a SumarioAlta
+     * @example
+     * // Get one SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SumarioAltaFindFirstOrThrowArgs>(args?: SelectSubset<T, SumarioAltaFindFirstOrThrowArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SumarioAltas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SumarioAltas
+     * const sumarioAltas = await prisma.sumarioAlta.findMany()
+     * 
+     * // Get first 10 SumarioAltas
+     * const sumarioAltas = await prisma.sumarioAlta.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sumarioAltaWithIdOnly = await prisma.sumarioAlta.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SumarioAltaFindManyArgs>(args?: SelectSubset<T, SumarioAltaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SumarioAlta.
+     * @param {SumarioAltaCreateArgs} args - Arguments to create a SumarioAlta.
+     * @example
+     * // Create one SumarioAlta
+     * const SumarioAlta = await prisma.sumarioAlta.create({
+     *   data: {
+     *     // ... data to create a SumarioAlta
+     *   }
+     * })
+     * 
+     */
+    create<T extends SumarioAltaCreateArgs>(args: SelectSubset<T, SumarioAltaCreateArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SumarioAltas.
+     * @param {SumarioAltaCreateManyArgs} args - Arguments to create many SumarioAltas.
+     * @example
+     * // Create many SumarioAltas
+     * const sumarioAlta = await prisma.sumarioAlta.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SumarioAltaCreateManyArgs>(args?: SelectSubset<T, SumarioAltaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SumarioAltas and returns the data saved in the database.
+     * @param {SumarioAltaCreateManyAndReturnArgs} args - Arguments to create many SumarioAltas.
+     * @example
+     * // Create many SumarioAltas
+     * const sumarioAlta = await prisma.sumarioAlta.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SumarioAltas and only return the `id`
+     * const sumarioAltaWithIdOnly = await prisma.sumarioAlta.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SumarioAltaCreateManyAndReturnArgs>(args?: SelectSubset<T, SumarioAltaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SumarioAlta.
+     * @param {SumarioAltaDeleteArgs} args - Arguments to delete one SumarioAlta.
+     * @example
+     * // Delete one SumarioAlta
+     * const SumarioAlta = await prisma.sumarioAlta.delete({
+     *   where: {
+     *     // ... filter to delete one SumarioAlta
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SumarioAltaDeleteArgs>(args: SelectSubset<T, SumarioAltaDeleteArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SumarioAlta.
+     * @param {SumarioAltaUpdateArgs} args - Arguments to update one SumarioAlta.
+     * @example
+     * // Update one SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SumarioAltaUpdateArgs>(args: SelectSubset<T, SumarioAltaUpdateArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SumarioAltas.
+     * @param {SumarioAltaDeleteManyArgs} args - Arguments to filter SumarioAltas to delete.
+     * @example
+     * // Delete a few SumarioAltas
+     * const { count } = await prisma.sumarioAlta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SumarioAltaDeleteManyArgs>(args?: SelectSubset<T, SumarioAltaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SumarioAltas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SumarioAltas
+     * const sumarioAlta = await prisma.sumarioAlta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SumarioAltaUpdateManyArgs>(args: SelectSubset<T, SumarioAltaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SumarioAltas and returns the data updated in the database.
+     * @param {SumarioAltaUpdateManyAndReturnArgs} args - Arguments to update many SumarioAltas.
+     * @example
+     * // Update many SumarioAltas
+     * const sumarioAlta = await prisma.sumarioAlta.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SumarioAltas and only return the `id`
+     * const sumarioAltaWithIdOnly = await prisma.sumarioAlta.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SumarioAltaUpdateManyAndReturnArgs>(args: SelectSubset<T, SumarioAltaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SumarioAlta.
+     * @param {SumarioAltaUpsertArgs} args - Arguments to update or create a SumarioAlta.
+     * @example
+     * // Update or create a SumarioAlta
+     * const sumarioAlta = await prisma.sumarioAlta.upsert({
+     *   create: {
+     *     // ... data to create a SumarioAlta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SumarioAlta we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SumarioAltaUpsertArgs>(args: SelectSubset<T, SumarioAltaUpsertArgs<ExtArgs>>): Prisma__SumarioAltaClient<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SumarioAltas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaCountArgs} args - Arguments to filter SumarioAltas to count.
+     * @example
+     * // Count the number of SumarioAltas
+     * const count = await prisma.sumarioAlta.count({
+     *   where: {
+     *     // ... the filter for the SumarioAltas we want to count
+     *   }
+     * })
+    **/
+    count<T extends SumarioAltaCountArgs>(
+      args?: Subset<T, SumarioAltaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SumarioAltaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SumarioAlta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SumarioAltaAggregateArgs>(args: Subset<T, SumarioAltaAggregateArgs>): Prisma.PrismaPromise<GetSumarioAltaAggregateType<T>>
+
+    /**
+     * Group by SumarioAlta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SumarioAltaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SumarioAltaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SumarioAltaGroupByArgs['orderBy'] }
+        : { orderBy?: SumarioAltaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SumarioAltaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSumarioAltaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SumarioAlta model
+   */
+  readonly fields: SumarioAltaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SumarioAlta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SumarioAltaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SumarioAlta model
+   */
+  interface SumarioAltaFieldRefs {
+    readonly id: FieldRef<"SumarioAlta", 'String'>
+    readonly doenteId: FieldRef<"SumarioAlta", 'String'>
+    readonly motivoAlta: FieldRef<"SumarioAlta", 'String'>
+    readonly destino: FieldRef<"SumarioAlta", 'String'>
+    readonly resumoClinical: FieldRef<"SumarioAlta", 'String'>
+    readonly prescricaoSaida: FieldRef<"SumarioAlta", 'String'>
+    readonly medicoFamilia: FieldRef<"SumarioAlta", 'String'>
+    readonly criadoPorId: FieldRef<"SumarioAlta", 'String'>
+    readonly criadoEm: FieldRef<"SumarioAlta", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SumarioAlta findUnique
+   */
+  export type SumarioAltaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter, which SumarioAlta to fetch.
+     */
+    where: SumarioAltaWhereUniqueInput
+  }
+
+  /**
+   * SumarioAlta findUniqueOrThrow
+   */
+  export type SumarioAltaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter, which SumarioAlta to fetch.
+     */
+    where: SumarioAltaWhereUniqueInput
+  }
+
+  /**
+   * SumarioAlta findFirst
+   */
+  export type SumarioAltaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter, which SumarioAlta to fetch.
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SumarioAltas to fetch.
+     */
+    orderBy?: SumarioAltaOrderByWithRelationInput | SumarioAltaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SumarioAltas.
+     */
+    cursor?: SumarioAltaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SumarioAltas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SumarioAltas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SumarioAltas.
+     */
+    distinct?: SumarioAltaScalarFieldEnum | SumarioAltaScalarFieldEnum[]
+  }
+
+  /**
+   * SumarioAlta findFirstOrThrow
+   */
+  export type SumarioAltaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter, which SumarioAlta to fetch.
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SumarioAltas to fetch.
+     */
+    orderBy?: SumarioAltaOrderByWithRelationInput | SumarioAltaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SumarioAltas.
+     */
+    cursor?: SumarioAltaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SumarioAltas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SumarioAltas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SumarioAltas.
+     */
+    distinct?: SumarioAltaScalarFieldEnum | SumarioAltaScalarFieldEnum[]
+  }
+
+  /**
+   * SumarioAlta findMany
+   */
+  export type SumarioAltaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter, which SumarioAltas to fetch.
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SumarioAltas to fetch.
+     */
+    orderBy?: SumarioAltaOrderByWithRelationInput | SumarioAltaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SumarioAltas.
+     */
+    cursor?: SumarioAltaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SumarioAltas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SumarioAltas.
+     */
+    skip?: number
+    distinct?: SumarioAltaScalarFieldEnum | SumarioAltaScalarFieldEnum[]
+  }
+
+  /**
+   * SumarioAlta create
+   */
+  export type SumarioAltaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SumarioAlta.
+     */
+    data: XOR<SumarioAltaCreateInput, SumarioAltaUncheckedCreateInput>
+  }
+
+  /**
+   * SumarioAlta createMany
+   */
+  export type SumarioAltaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SumarioAltas.
+     */
+    data: SumarioAltaCreateManyInput | SumarioAltaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SumarioAlta createManyAndReturn
+   */
+  export type SumarioAltaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * The data used to create many SumarioAltas.
+     */
+    data: SumarioAltaCreateManyInput | SumarioAltaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SumarioAlta update
+   */
+  export type SumarioAltaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SumarioAlta.
+     */
+    data: XOR<SumarioAltaUpdateInput, SumarioAltaUncheckedUpdateInput>
+    /**
+     * Choose, which SumarioAlta to update.
+     */
+    where: SumarioAltaWhereUniqueInput
+  }
+
+  /**
+   * SumarioAlta updateMany
+   */
+  export type SumarioAltaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SumarioAltas.
+     */
+    data: XOR<SumarioAltaUpdateManyMutationInput, SumarioAltaUncheckedUpdateManyInput>
+    /**
+     * Filter which SumarioAltas to update
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * Limit how many SumarioAltas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SumarioAlta updateManyAndReturn
+   */
+  export type SumarioAltaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * The data used to update SumarioAltas.
+     */
+    data: XOR<SumarioAltaUpdateManyMutationInput, SumarioAltaUncheckedUpdateManyInput>
+    /**
+     * Filter which SumarioAltas to update
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * Limit how many SumarioAltas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SumarioAlta upsert
+   */
+  export type SumarioAltaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SumarioAlta to update in case it exists.
+     */
+    where: SumarioAltaWhereUniqueInput
+    /**
+     * In case the SumarioAlta found by the `where` argument doesn't exist, create a new SumarioAlta with this data.
+     */
+    create: XOR<SumarioAltaCreateInput, SumarioAltaUncheckedCreateInput>
+    /**
+     * In case the SumarioAlta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SumarioAltaUpdateInput, SumarioAltaUncheckedUpdateInput>
+  }
+
+  /**
+   * SumarioAlta delete
+   */
+  export type SumarioAltaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+    /**
+     * Filter which SumarioAlta to delete.
+     */
+    where: SumarioAltaWhereUniqueInput
+  }
+
+  /**
+   * SumarioAlta deleteMany
+   */
+  export type SumarioAltaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SumarioAltas to delete
+     */
+    where?: SumarioAltaWhereInput
+    /**
+     * Limit how many SumarioAltas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SumarioAlta without action
+   */
+  export type SumarioAltaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SumarioAlta
+     */
+    select?: SumarioAltaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SumarioAlta
+     */
+    omit?: SumarioAltaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SumarioAltaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DispositivoToken
+   */
+
+  export type AggregateDispositivoToken = {
+    _count: DispositivoTokenCountAggregateOutputType | null
+    _min: DispositivoTokenMinAggregateOutputType | null
+    _max: DispositivoTokenMaxAggregateOutputType | null
+  }
+
+  export type DispositivoTokenMinAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    token: string | null
+    plataforma: string | null
+    criadoEm: Date | null
+  }
+
+  export type DispositivoTokenMaxAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    token: string | null
+    plataforma: string | null
+    criadoEm: Date | null
+  }
+
+  export type DispositivoTokenCountAggregateOutputType = {
+    id: number
+    utilizadorId: number
+    token: number
+    plataforma: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type DispositivoTokenMinAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    token?: true
+    plataforma?: true
+    criadoEm?: true
+  }
+
+  export type DispositivoTokenMaxAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    token?: true
+    plataforma?: true
+    criadoEm?: true
+  }
+
+  export type DispositivoTokenCountAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    token?: true
+    plataforma?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type DispositivoTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DispositivoToken to aggregate.
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DispositivoTokens to fetch.
+     */
+    orderBy?: DispositivoTokenOrderByWithRelationInput | DispositivoTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DispositivoTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DispositivoTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DispositivoTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DispositivoTokens
+    **/
+    _count?: true | DispositivoTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DispositivoTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DispositivoTokenMaxAggregateInputType
+  }
+
+  export type GetDispositivoTokenAggregateType<T extends DispositivoTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateDispositivoToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDispositivoToken[P]>
+      : GetScalarType<T[P], AggregateDispositivoToken[P]>
+  }
+
+
+
+
+  export type DispositivoTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DispositivoTokenWhereInput
+    orderBy?: DispositivoTokenOrderByWithAggregationInput | DispositivoTokenOrderByWithAggregationInput[]
+    by: DispositivoTokenScalarFieldEnum[] | DispositivoTokenScalarFieldEnum
+    having?: DispositivoTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DispositivoTokenCountAggregateInputType | true
+    _min?: DispositivoTokenMinAggregateInputType
+    _max?: DispositivoTokenMaxAggregateInputType
+  }
+
+  export type DispositivoTokenGroupByOutputType = {
+    id: string
+    utilizadorId: string
+    token: string
+    plataforma: string
+    criadoEm: Date
+    _count: DispositivoTokenCountAggregateOutputType | null
+    _min: DispositivoTokenMinAggregateOutputType | null
+    _max: DispositivoTokenMaxAggregateOutputType | null
+  }
+
+  type GetDispositivoTokenGroupByPayload<T extends DispositivoTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DispositivoTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DispositivoTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DispositivoTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], DispositivoTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DispositivoTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    token?: boolean
+    plataforma?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dispositivoToken"]>
+
+  export type DispositivoTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    token?: boolean
+    plataforma?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dispositivoToken"]>
+
+  export type DispositivoTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    token?: boolean
+    plataforma?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dispositivoToken"]>
+
+  export type DispositivoTokenSelectScalar = {
+    id?: boolean
+    utilizadorId?: boolean
+    token?: boolean
+    plataforma?: boolean
+    criadoEm?: boolean
+  }
+
+  export type DispositivoTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "token" | "plataforma" | "criadoEm", ExtArgs["result"]["dispositivoToken"]>
+  export type DispositivoTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type DispositivoTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type DispositivoTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $DispositivoTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DispositivoToken"
+    objects: {
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      utilizadorId: string
+      token: string
+      plataforma: string
+      criadoEm: Date
+    }, ExtArgs["result"]["dispositivoToken"]>
+    composites: {}
+  }
+
+  type DispositivoTokenGetPayload<S extends boolean | null | undefined | DispositivoTokenDefaultArgs> = $Result.GetResult<Prisma.$DispositivoTokenPayload, S>
+
+  type DispositivoTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DispositivoTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DispositivoTokenCountAggregateInputType | true
+    }
+
+  export interface DispositivoTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DispositivoToken'], meta: { name: 'DispositivoToken' } }
+    /**
+     * Find zero or one DispositivoToken that matches the filter.
+     * @param {DispositivoTokenFindUniqueArgs} args - Arguments to find a DispositivoToken
+     * @example
+     * // Get one DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DispositivoTokenFindUniqueArgs>(args: SelectSubset<T, DispositivoTokenFindUniqueArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DispositivoToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DispositivoTokenFindUniqueOrThrowArgs} args - Arguments to find a DispositivoToken
+     * @example
+     * // Get one DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DispositivoTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, DispositivoTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DispositivoToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenFindFirstArgs} args - Arguments to find a DispositivoToken
+     * @example
+     * // Get one DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DispositivoTokenFindFirstArgs>(args?: SelectSubset<T, DispositivoTokenFindFirstArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DispositivoToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenFindFirstOrThrowArgs} args - Arguments to find a DispositivoToken
+     * @example
+     * // Get one DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DispositivoTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, DispositivoTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DispositivoTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DispositivoTokens
+     * const dispositivoTokens = await prisma.dispositivoToken.findMany()
+     * 
+     * // Get first 10 DispositivoTokens
+     * const dispositivoTokens = await prisma.dispositivoToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dispositivoTokenWithIdOnly = await prisma.dispositivoToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DispositivoTokenFindManyArgs>(args?: SelectSubset<T, DispositivoTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DispositivoToken.
+     * @param {DispositivoTokenCreateArgs} args - Arguments to create a DispositivoToken.
+     * @example
+     * // Create one DispositivoToken
+     * const DispositivoToken = await prisma.dispositivoToken.create({
+     *   data: {
+     *     // ... data to create a DispositivoToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends DispositivoTokenCreateArgs>(args: SelectSubset<T, DispositivoTokenCreateArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DispositivoTokens.
+     * @param {DispositivoTokenCreateManyArgs} args - Arguments to create many DispositivoTokens.
+     * @example
+     * // Create many DispositivoTokens
+     * const dispositivoToken = await prisma.dispositivoToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DispositivoTokenCreateManyArgs>(args?: SelectSubset<T, DispositivoTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DispositivoTokens and returns the data saved in the database.
+     * @param {DispositivoTokenCreateManyAndReturnArgs} args - Arguments to create many DispositivoTokens.
+     * @example
+     * // Create many DispositivoTokens
+     * const dispositivoToken = await prisma.dispositivoToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DispositivoTokens and only return the `id`
+     * const dispositivoTokenWithIdOnly = await prisma.dispositivoToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DispositivoTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, DispositivoTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DispositivoToken.
+     * @param {DispositivoTokenDeleteArgs} args - Arguments to delete one DispositivoToken.
+     * @example
+     * // Delete one DispositivoToken
+     * const DispositivoToken = await prisma.dispositivoToken.delete({
+     *   where: {
+     *     // ... filter to delete one DispositivoToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DispositivoTokenDeleteArgs>(args: SelectSubset<T, DispositivoTokenDeleteArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DispositivoToken.
+     * @param {DispositivoTokenUpdateArgs} args - Arguments to update one DispositivoToken.
+     * @example
+     * // Update one DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DispositivoTokenUpdateArgs>(args: SelectSubset<T, DispositivoTokenUpdateArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DispositivoTokens.
+     * @param {DispositivoTokenDeleteManyArgs} args - Arguments to filter DispositivoTokens to delete.
+     * @example
+     * // Delete a few DispositivoTokens
+     * const { count } = await prisma.dispositivoToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DispositivoTokenDeleteManyArgs>(args?: SelectSubset<T, DispositivoTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DispositivoTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DispositivoTokens
+     * const dispositivoToken = await prisma.dispositivoToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DispositivoTokenUpdateManyArgs>(args: SelectSubset<T, DispositivoTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DispositivoTokens and returns the data updated in the database.
+     * @param {DispositivoTokenUpdateManyAndReturnArgs} args - Arguments to update many DispositivoTokens.
+     * @example
+     * // Update many DispositivoTokens
+     * const dispositivoToken = await prisma.dispositivoToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DispositivoTokens and only return the `id`
+     * const dispositivoTokenWithIdOnly = await prisma.dispositivoToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DispositivoTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, DispositivoTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DispositivoToken.
+     * @param {DispositivoTokenUpsertArgs} args - Arguments to update or create a DispositivoToken.
+     * @example
+     * // Update or create a DispositivoToken
+     * const dispositivoToken = await prisma.dispositivoToken.upsert({
+     *   create: {
+     *     // ... data to create a DispositivoToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DispositivoToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DispositivoTokenUpsertArgs>(args: SelectSubset<T, DispositivoTokenUpsertArgs<ExtArgs>>): Prisma__DispositivoTokenClient<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DispositivoTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenCountArgs} args - Arguments to filter DispositivoTokens to count.
+     * @example
+     * // Count the number of DispositivoTokens
+     * const count = await prisma.dispositivoToken.count({
+     *   where: {
+     *     // ... the filter for the DispositivoTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends DispositivoTokenCountArgs>(
+      args?: Subset<T, DispositivoTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DispositivoTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DispositivoToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DispositivoTokenAggregateArgs>(args: Subset<T, DispositivoTokenAggregateArgs>): Prisma.PrismaPromise<GetDispositivoTokenAggregateType<T>>
+
+    /**
+     * Group by DispositivoToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DispositivoTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DispositivoTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DispositivoTokenGroupByArgs['orderBy'] }
+        : { orderBy?: DispositivoTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DispositivoTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDispositivoTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DispositivoToken model
+   */
+  readonly fields: DispositivoTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DispositivoToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DispositivoTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DispositivoToken model
+   */
+  interface DispositivoTokenFieldRefs {
+    readonly id: FieldRef<"DispositivoToken", 'String'>
+    readonly utilizadorId: FieldRef<"DispositivoToken", 'String'>
+    readonly token: FieldRef<"DispositivoToken", 'String'>
+    readonly plataforma: FieldRef<"DispositivoToken", 'String'>
+    readonly criadoEm: FieldRef<"DispositivoToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DispositivoToken findUnique
+   */
+  export type DispositivoTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which DispositivoToken to fetch.
+     */
+    where: DispositivoTokenWhereUniqueInput
+  }
+
+  /**
+   * DispositivoToken findUniqueOrThrow
+   */
+  export type DispositivoTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which DispositivoToken to fetch.
+     */
+    where: DispositivoTokenWhereUniqueInput
+  }
+
+  /**
+   * DispositivoToken findFirst
+   */
+  export type DispositivoTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which DispositivoToken to fetch.
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DispositivoTokens to fetch.
+     */
+    orderBy?: DispositivoTokenOrderByWithRelationInput | DispositivoTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DispositivoTokens.
+     */
+    cursor?: DispositivoTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DispositivoTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DispositivoTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DispositivoTokens.
+     */
+    distinct?: DispositivoTokenScalarFieldEnum | DispositivoTokenScalarFieldEnum[]
+  }
+
+  /**
+   * DispositivoToken findFirstOrThrow
+   */
+  export type DispositivoTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which DispositivoToken to fetch.
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DispositivoTokens to fetch.
+     */
+    orderBy?: DispositivoTokenOrderByWithRelationInput | DispositivoTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DispositivoTokens.
+     */
+    cursor?: DispositivoTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DispositivoTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DispositivoTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DispositivoTokens.
+     */
+    distinct?: DispositivoTokenScalarFieldEnum | DispositivoTokenScalarFieldEnum[]
+  }
+
+  /**
+   * DispositivoToken findMany
+   */
+  export type DispositivoTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which DispositivoTokens to fetch.
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DispositivoTokens to fetch.
+     */
+    orderBy?: DispositivoTokenOrderByWithRelationInput | DispositivoTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DispositivoTokens.
+     */
+    cursor?: DispositivoTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DispositivoTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DispositivoTokens.
+     */
+    skip?: number
+    distinct?: DispositivoTokenScalarFieldEnum | DispositivoTokenScalarFieldEnum[]
+  }
+
+  /**
+   * DispositivoToken create
+   */
+  export type DispositivoTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DispositivoToken.
+     */
+    data: XOR<DispositivoTokenCreateInput, DispositivoTokenUncheckedCreateInput>
+  }
+
+  /**
+   * DispositivoToken createMany
+   */
+  export type DispositivoTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DispositivoTokens.
+     */
+    data: DispositivoTokenCreateManyInput | DispositivoTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DispositivoToken createManyAndReturn
+   */
+  export type DispositivoTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many DispositivoTokens.
+     */
+    data: DispositivoTokenCreateManyInput | DispositivoTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DispositivoToken update
+   */
+  export type DispositivoTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DispositivoToken.
+     */
+    data: XOR<DispositivoTokenUpdateInput, DispositivoTokenUncheckedUpdateInput>
+    /**
+     * Choose, which DispositivoToken to update.
+     */
+    where: DispositivoTokenWhereUniqueInput
+  }
+
+  /**
+   * DispositivoToken updateMany
+   */
+  export type DispositivoTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DispositivoTokens.
+     */
+    data: XOR<DispositivoTokenUpdateManyMutationInput, DispositivoTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which DispositivoTokens to update
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * Limit how many DispositivoTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DispositivoToken updateManyAndReturn
+   */
+  export type DispositivoTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update DispositivoTokens.
+     */
+    data: XOR<DispositivoTokenUpdateManyMutationInput, DispositivoTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which DispositivoTokens to update
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * Limit how many DispositivoTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DispositivoToken upsert
+   */
+  export type DispositivoTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DispositivoToken to update in case it exists.
+     */
+    where: DispositivoTokenWhereUniqueInput
+    /**
+     * In case the DispositivoToken found by the `where` argument doesn't exist, create a new DispositivoToken with this data.
+     */
+    create: XOR<DispositivoTokenCreateInput, DispositivoTokenUncheckedCreateInput>
+    /**
+     * In case the DispositivoToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DispositivoTokenUpdateInput, DispositivoTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * DispositivoToken delete
+   */
+  export type DispositivoTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+    /**
+     * Filter which DispositivoToken to delete.
+     */
+    where: DispositivoTokenWhereUniqueInput
+  }
+
+  /**
+   * DispositivoToken deleteMany
+   */
+  export type DispositivoTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DispositivoTokens to delete
+     */
+    where?: DispositivoTokenWhereInput
+    /**
+     * Limit how many DispositivoTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DispositivoToken without action
+   */
+  export type DispositivoTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DispositivoToken
+     */
+    select?: DispositivoTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DispositivoToken
+     */
+    omit?: DispositivoTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DispositivoTokenInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -21501,12 +31471,128 @@ export namespace Prisma {
   export type AtribuicaoHorarioTurnoScalarFieldEnum = (typeof AtribuicaoHorarioTurnoScalarFieldEnum)[keyof typeof AtribuicaoHorarioTurnoScalarFieldEnum]
 
 
+  export const SinalVitalScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    registadoPorId: 'registadoPorId',
+    data: 'data',
+    pressaoSistolica: 'pressaoSistolica',
+    pressaoDiastolica: 'pressaoDiastolica',
+    pulso: 'pulso',
+    temperatura: 'temperatura',
+    saturacaoO2: 'saturacaoO2',
+    frequenciaRespiratoria: 'frequenciaRespiratoria',
+    peso: 'peso',
+    notas: 'notas'
+  };
+
+  export type SinalVitalScalarFieldEnum = (typeof SinalVitalScalarFieldEnum)[keyof typeof SinalVitalScalarFieldEnum]
+
+
+  export const AuditLogScalarFieldEnum: {
+    id: 'id',
+    utilizadorId: 'utilizadorId',
+    acao: 'acao',
+    entidadeId: 'entidadeId',
+    entidadeTipo: 'entidadeTipo',
+    detalhes: 'detalhes',
+    ip: 'ip',
+    createdAt: 'createdAt'
+  };
+
+  export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+  export const AlergiaScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    alergenio: 'alergenio',
+    tipo: 'tipo',
+    severidade: 'severidade',
+    notas: 'notas',
+    criadaEm: 'criadaEm'
+  };
+
+  export type AlergiaScalarFieldEnum = (typeof AlergiaScalarFieldEnum)[keyof typeof AlergiaScalarFieldEnum]
+
+
+  export const ContactoEmergenciaScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    nome: 'nome',
+    relacao: 'relacao',
+    telefone: 'telefone',
+    principal: 'principal'
+  };
+
+  export type ContactoEmergenciaScalarFieldEnum = (typeof ContactoEmergenciaScalarFieldEnum)[keyof typeof ContactoEmergenciaScalarFieldEnum]
+
+
+  export const AlertaClinicoScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    tipo: 'tipo',
+    mensagem: 'mensagem',
+    lido: 'lido',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AlertaClinicoScalarFieldEnum = (typeof AlertaClinicoScalarFieldEnum)[keyof typeof AlertaClinicoScalarFieldEnum]
+
+
+  export const AvaliacaoRiscoScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    tipo: 'tipo',
+    pontuacao: 'pontuacao',
+    itens: 'itens',
+    risco: 'risco',
+    registadoPorId: 'registadoPorId',
+    criadaEm: 'criadaEm'
+  };
+
+  export type AvaliacaoRiscoScalarFieldEnum = (typeof AvaliacaoRiscoScalarFieldEnum)[keyof typeof AvaliacaoRiscoScalarFieldEnum]
+
+
+  export const SumarioAltaScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    motivoAlta: 'motivoAlta',
+    destino: 'destino',
+    resumoClinical: 'resumoClinical',
+    prescricaoSaida: 'prescricaoSaida',
+    medicoFamilia: 'medicoFamilia',
+    criadoPorId: 'criadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type SumarioAltaScalarFieldEnum = (typeof SumarioAltaScalarFieldEnum)[keyof typeof SumarioAltaScalarFieldEnum]
+
+
+  export const DispositivoTokenScalarFieldEnum: {
+    id: 'id',
+    utilizadorId: 'utilizadorId',
+    token: 'token',
+    plataforma: 'plataforma',
+    criadoEm: 'criadoEm'
+  };
+
+  export type DispositivoTokenScalarFieldEnum = (typeof DispositivoTokenScalarFieldEnum)[keyof typeof DispositivoTokenScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -21523,6 +31609,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -21703,6 +31798,20 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
   /**
    * Deep Input Types
    */
@@ -21738,6 +31847,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoListRelationFilter
     trocasRecebidas?: PedidoTrocaTurnoListRelationFilter
     trocasAprovadas?: PedidoTrocaTurnoListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    sinaisVitaisRegistados?: SinalVitalListRelationFilter
+    dispositivosTokens?: DispositivoTokenListRelationFilter
+    avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
+    sumariosAlta?: SumarioAltaListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -21767,6 +31881,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoOrderByRelationAggregateInput
     trocasRecebidas?: PedidoTrocaTurnoOrderByRelationAggregateInput
     trocasAprovadas?: PedidoTrocaTurnoOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
+    sinaisVitaisRegistados?: SinalVitalOrderByRelationAggregateInput
+    dispositivosTokens?: DispositivoTokenOrderByRelationAggregateInput
+    avaliacoesRisco?: AvaliacaoRiscoOrderByRelationAggregateInput
+    sumariosAlta?: SumarioAltaOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -21799,6 +31918,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoListRelationFilter
     trocasRecebidas?: PedidoTrocaTurnoListRelationFilter
     trocasAprovadas?: PedidoTrocaTurnoListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    sinaisVitaisRegistados?: SinalVitalListRelationFilter
+    dispositivosTokens?: DispositivoTokenListRelationFilter
+    avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
+    sumariosAlta?: SumarioAltaListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -21910,6 +32034,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoListRelationFilter
     notasTurno?: NotaTurnoListRelationFilter
     passagensTurno?: PassagemTurnoListRelationFilter
+    sinaisVitais?: SinalVitalListRelationFilter
+    alergias?: AlergiaListRelationFilter
+    contactosEmergencia?: ContactoEmergenciaListRelationFilter
+    alertasClinicos?: AlertaClinicoListRelationFilter
+    avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
+    sumarioAlta?: XOR<SumarioAltaNullableScalarRelationFilter, SumarioAltaWhereInput> | null
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -21934,6 +32064,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoOrderByRelationAggregateInput
     notasTurno?: NotaTurnoOrderByRelationAggregateInput
     passagensTurno?: PassagemTurnoOrderByRelationAggregateInput
+    sinaisVitais?: SinalVitalOrderByRelationAggregateInput
+    alergias?: AlergiaOrderByRelationAggregateInput
+    contactosEmergencia?: ContactoEmergenciaOrderByRelationAggregateInput
+    alertasClinicos?: AlertaClinicoOrderByRelationAggregateInput
+    avaliacoesRisco?: AvaliacaoRiscoOrderByRelationAggregateInput
+    sumarioAlta?: SumarioAltaOrderByWithRelationInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -21961,6 +32097,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoListRelationFilter
     notasTurno?: NotaTurnoListRelationFilter
     passagensTurno?: PassagemTurnoListRelationFilter
+    sinaisVitais?: SinalVitalListRelationFilter
+    alergias?: AlergiaListRelationFilter
+    contactosEmergencia?: ContactoEmergenciaListRelationFilter
+    alertasClinicos?: AlertaClinicoListRelationFilter
+    avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
+    sumarioAlta?: XOR<SumarioAltaNullableScalarRelationFilter, SumarioAltaWhereInput> | null
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -22879,6 +33021,564 @@ export namespace Prisma {
     atribuidoPorId?: StringWithAggregatesFilter<"AtribuicaoHorarioTurno"> | string
   }
 
+  export type SinalVitalWhereInput = {
+    AND?: SinalVitalWhereInput | SinalVitalWhereInput[]
+    OR?: SinalVitalWhereInput[]
+    NOT?: SinalVitalWhereInput | SinalVitalWhereInput[]
+    id?: StringFilter<"SinalVital"> | string
+    doenteId?: StringFilter<"SinalVital"> | string
+    registadoPorId?: StringFilter<"SinalVital"> | string
+    data?: DateTimeFilter<"SinalVital"> | Date | string
+    pressaoSistolica?: IntNullableFilter<"SinalVital"> | number | null
+    pressaoDiastolica?: IntNullableFilter<"SinalVital"> | number | null
+    pulso?: IntNullableFilter<"SinalVital"> | number | null
+    temperatura?: FloatNullableFilter<"SinalVital"> | number | null
+    saturacaoO2?: IntNullableFilter<"SinalVital"> | number | null
+    frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
+    peso?: FloatNullableFilter<"SinalVital"> | number | null
+    notas?: StringNullableFilter<"SinalVital"> | string | null
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type SinalVitalOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    registadoPorId?: SortOrder
+    data?: SortOrder
+    pressaoSistolica?: SortOrderInput | SortOrder
+    pressaoDiastolica?: SortOrderInput | SortOrder
+    pulso?: SortOrderInput | SortOrder
+    temperatura?: SortOrderInput | SortOrder
+    saturacaoO2?: SortOrderInput | SortOrder
+    frequenciaRespiratoria?: SortOrderInput | SortOrder
+    peso?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type SinalVitalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SinalVitalWhereInput | SinalVitalWhereInput[]
+    OR?: SinalVitalWhereInput[]
+    NOT?: SinalVitalWhereInput | SinalVitalWhereInput[]
+    doenteId?: StringFilter<"SinalVital"> | string
+    registadoPorId?: StringFilter<"SinalVital"> | string
+    data?: DateTimeFilter<"SinalVital"> | Date | string
+    pressaoSistolica?: IntNullableFilter<"SinalVital"> | number | null
+    pressaoDiastolica?: IntNullableFilter<"SinalVital"> | number | null
+    pulso?: IntNullableFilter<"SinalVital"> | number | null
+    temperatura?: FloatNullableFilter<"SinalVital"> | number | null
+    saturacaoO2?: IntNullableFilter<"SinalVital"> | number | null
+    frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
+    peso?: FloatNullableFilter<"SinalVital"> | number | null
+    notas?: StringNullableFilter<"SinalVital"> | string | null
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type SinalVitalOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    registadoPorId?: SortOrder
+    data?: SortOrder
+    pressaoSistolica?: SortOrderInput | SortOrder
+    pressaoDiastolica?: SortOrderInput | SortOrder
+    pulso?: SortOrderInput | SortOrder
+    temperatura?: SortOrderInput | SortOrder
+    saturacaoO2?: SortOrderInput | SortOrder
+    frequenciaRespiratoria?: SortOrderInput | SortOrder
+    peso?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    _count?: SinalVitalCountOrderByAggregateInput
+    _avg?: SinalVitalAvgOrderByAggregateInput
+    _max?: SinalVitalMaxOrderByAggregateInput
+    _min?: SinalVitalMinOrderByAggregateInput
+    _sum?: SinalVitalSumOrderByAggregateInput
+  }
+
+  export type SinalVitalScalarWhereWithAggregatesInput = {
+    AND?: SinalVitalScalarWhereWithAggregatesInput | SinalVitalScalarWhereWithAggregatesInput[]
+    OR?: SinalVitalScalarWhereWithAggregatesInput[]
+    NOT?: SinalVitalScalarWhereWithAggregatesInput | SinalVitalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SinalVital"> | string
+    doenteId?: StringWithAggregatesFilter<"SinalVital"> | string
+    registadoPorId?: StringWithAggregatesFilter<"SinalVital"> | string
+    data?: DateTimeWithAggregatesFilter<"SinalVital"> | Date | string
+    pressaoSistolica?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    pressaoDiastolica?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    pulso?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    temperatura?: FloatNullableWithAggregatesFilter<"SinalVital"> | number | null
+    saturacaoO2?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    frequenciaRespiratoria?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
+    peso?: FloatNullableWithAggregatesFilter<"SinalVital"> | number | null
+    notas?: StringNullableWithAggregatesFilter<"SinalVital"> | string | null
+  }
+
+  export type AuditLogWhereInput = {
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    utilizadorId?: StringFilter<"AuditLog"> | string
+    acao?: StringFilter<"AuditLog"> | string
+    entidadeId?: StringNullableFilter<"AuditLog"> | string | null
+    entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
+    detalhes?: StringNullableFilter<"AuditLog"> | string | null
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type AuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    acao?: SortOrder
+    entidadeId?: SortOrderInput | SortOrder
+    entidadeTipo?: SortOrderInput | SortOrder
+    detalhes?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    utilizador?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    utilizadorId?: StringFilter<"AuditLog"> | string
+    acao?: StringFilter<"AuditLog"> | string
+    entidadeId?: StringNullableFilter<"AuditLog"> | string | null
+    entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
+    detalhes?: StringNullableFilter<"AuditLog"> | string | null
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type AuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    acao?: SortOrder
+    entidadeId?: SortOrderInput | SortOrder
+    entidadeTipo?: SortOrderInput | SortOrder
+    detalhes?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AuditLogCountOrderByAggregateInput
+    _max?: AuditLogMaxOrderByAggregateInput
+    _min?: AuditLogMinOrderByAggregateInput
+  }
+
+  export type AuditLogScalarWhereWithAggregatesInput = {
+    AND?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    OR?: AuditLogScalarWhereWithAggregatesInput[]
+    NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditLog"> | string
+    utilizadorId?: StringWithAggregatesFilter<"AuditLog"> | string
+    acao?: StringWithAggregatesFilter<"AuditLog"> | string
+    entidadeId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    entidadeTipo?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    detalhes?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    ip?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
+  }
+
+  export type AlergiaWhereInput = {
+    AND?: AlergiaWhereInput | AlergiaWhereInput[]
+    OR?: AlergiaWhereInput[]
+    NOT?: AlergiaWhereInput | AlergiaWhereInput[]
+    id?: StringFilter<"Alergia"> | string
+    doenteId?: StringFilter<"Alergia"> | string
+    alergenio?: StringFilter<"Alergia"> | string
+    tipo?: StringFilter<"Alergia"> | string
+    severidade?: StringFilter<"Alergia"> | string
+    notas?: StringNullableFilter<"Alergia"> | string | null
+    criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }
+
+  export type AlergiaOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    alergenio?: SortOrder
+    tipo?: SortOrder
+    severidade?: SortOrder
+    notas?: SortOrderInput | SortOrder
+    criadaEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+  }
+
+  export type AlergiaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AlergiaWhereInput | AlergiaWhereInput[]
+    OR?: AlergiaWhereInput[]
+    NOT?: AlergiaWhereInput | AlergiaWhereInput[]
+    doenteId?: StringFilter<"Alergia"> | string
+    alergenio?: StringFilter<"Alergia"> | string
+    tipo?: StringFilter<"Alergia"> | string
+    severidade?: StringFilter<"Alergia"> | string
+    notas?: StringNullableFilter<"Alergia"> | string | null
+    criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }, "id">
+
+  export type AlergiaOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    alergenio?: SortOrder
+    tipo?: SortOrder
+    severidade?: SortOrder
+    notas?: SortOrderInput | SortOrder
+    criadaEm?: SortOrder
+    _count?: AlergiaCountOrderByAggregateInput
+    _max?: AlergiaMaxOrderByAggregateInput
+    _min?: AlergiaMinOrderByAggregateInput
+  }
+
+  export type AlergiaScalarWhereWithAggregatesInput = {
+    AND?: AlergiaScalarWhereWithAggregatesInput | AlergiaScalarWhereWithAggregatesInput[]
+    OR?: AlergiaScalarWhereWithAggregatesInput[]
+    NOT?: AlergiaScalarWhereWithAggregatesInput | AlergiaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Alergia"> | string
+    doenteId?: StringWithAggregatesFilter<"Alergia"> | string
+    alergenio?: StringWithAggregatesFilter<"Alergia"> | string
+    tipo?: StringWithAggregatesFilter<"Alergia"> | string
+    severidade?: StringWithAggregatesFilter<"Alergia"> | string
+    notas?: StringNullableWithAggregatesFilter<"Alergia"> | string | null
+    criadaEm?: DateTimeWithAggregatesFilter<"Alergia"> | Date | string
+  }
+
+  export type ContactoEmergenciaWhereInput = {
+    AND?: ContactoEmergenciaWhereInput | ContactoEmergenciaWhereInput[]
+    OR?: ContactoEmergenciaWhereInput[]
+    NOT?: ContactoEmergenciaWhereInput | ContactoEmergenciaWhereInput[]
+    id?: StringFilter<"ContactoEmergencia"> | string
+    doenteId?: StringFilter<"ContactoEmergencia"> | string
+    nome?: StringFilter<"ContactoEmergencia"> | string
+    relacao?: StringFilter<"ContactoEmergencia"> | string
+    telefone?: StringFilter<"ContactoEmergencia"> | string
+    principal?: BoolFilter<"ContactoEmergencia"> | boolean
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }
+
+  export type ContactoEmergenciaOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nome?: SortOrder
+    relacao?: SortOrder
+    telefone?: SortOrder
+    principal?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+  }
+
+  export type ContactoEmergenciaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ContactoEmergenciaWhereInput | ContactoEmergenciaWhereInput[]
+    OR?: ContactoEmergenciaWhereInput[]
+    NOT?: ContactoEmergenciaWhereInput | ContactoEmergenciaWhereInput[]
+    doenteId?: StringFilter<"ContactoEmergencia"> | string
+    nome?: StringFilter<"ContactoEmergencia"> | string
+    relacao?: StringFilter<"ContactoEmergencia"> | string
+    telefone?: StringFilter<"ContactoEmergencia"> | string
+    principal?: BoolFilter<"ContactoEmergencia"> | boolean
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }, "id">
+
+  export type ContactoEmergenciaOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nome?: SortOrder
+    relacao?: SortOrder
+    telefone?: SortOrder
+    principal?: SortOrder
+    _count?: ContactoEmergenciaCountOrderByAggregateInput
+    _max?: ContactoEmergenciaMaxOrderByAggregateInput
+    _min?: ContactoEmergenciaMinOrderByAggregateInput
+  }
+
+  export type ContactoEmergenciaScalarWhereWithAggregatesInput = {
+    AND?: ContactoEmergenciaScalarWhereWithAggregatesInput | ContactoEmergenciaScalarWhereWithAggregatesInput[]
+    OR?: ContactoEmergenciaScalarWhereWithAggregatesInput[]
+    NOT?: ContactoEmergenciaScalarWhereWithAggregatesInput | ContactoEmergenciaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ContactoEmergencia"> | string
+    doenteId?: StringWithAggregatesFilter<"ContactoEmergencia"> | string
+    nome?: StringWithAggregatesFilter<"ContactoEmergencia"> | string
+    relacao?: StringWithAggregatesFilter<"ContactoEmergencia"> | string
+    telefone?: StringWithAggregatesFilter<"ContactoEmergencia"> | string
+    principal?: BoolWithAggregatesFilter<"ContactoEmergencia"> | boolean
+  }
+
+  export type AlertaClinicoWhereInput = {
+    AND?: AlertaClinicoWhereInput | AlertaClinicoWhereInput[]
+    OR?: AlertaClinicoWhereInput[]
+    NOT?: AlertaClinicoWhereInput | AlertaClinicoWhereInput[]
+    id?: StringFilter<"AlertaClinico"> | string
+    doenteId?: StringFilter<"AlertaClinico"> | string
+    tipo?: StringFilter<"AlertaClinico"> | string
+    mensagem?: StringFilter<"AlertaClinico"> | string
+    lido?: BoolFilter<"AlertaClinico"> | boolean
+    criadoEm?: DateTimeFilter<"AlertaClinico"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }
+
+  export type AlertaClinicoOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    mensagem?: SortOrder
+    lido?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+  }
+
+  export type AlertaClinicoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AlertaClinicoWhereInput | AlertaClinicoWhereInput[]
+    OR?: AlertaClinicoWhereInput[]
+    NOT?: AlertaClinicoWhereInput | AlertaClinicoWhereInput[]
+    doenteId?: StringFilter<"AlertaClinico"> | string
+    tipo?: StringFilter<"AlertaClinico"> | string
+    mensagem?: StringFilter<"AlertaClinico"> | string
+    lido?: BoolFilter<"AlertaClinico"> | boolean
+    criadoEm?: DateTimeFilter<"AlertaClinico"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+  }, "id">
+
+  export type AlertaClinicoOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    mensagem?: SortOrder
+    lido?: SortOrder
+    criadoEm?: SortOrder
+    _count?: AlertaClinicoCountOrderByAggregateInput
+    _max?: AlertaClinicoMaxOrderByAggregateInput
+    _min?: AlertaClinicoMinOrderByAggregateInput
+  }
+
+  export type AlertaClinicoScalarWhereWithAggregatesInput = {
+    AND?: AlertaClinicoScalarWhereWithAggregatesInput | AlertaClinicoScalarWhereWithAggregatesInput[]
+    OR?: AlertaClinicoScalarWhereWithAggregatesInput[]
+    NOT?: AlertaClinicoScalarWhereWithAggregatesInput | AlertaClinicoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AlertaClinico"> | string
+    doenteId?: StringWithAggregatesFilter<"AlertaClinico"> | string
+    tipo?: StringWithAggregatesFilter<"AlertaClinico"> | string
+    mensagem?: StringWithAggregatesFilter<"AlertaClinico"> | string
+    lido?: BoolWithAggregatesFilter<"AlertaClinico"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"AlertaClinico"> | Date | string
+  }
+
+  export type AvaliacaoRiscoWhereInput = {
+    AND?: AvaliacaoRiscoWhereInput | AvaliacaoRiscoWhereInput[]
+    OR?: AvaliacaoRiscoWhereInput[]
+    NOT?: AvaliacaoRiscoWhereInput | AvaliacaoRiscoWhereInput[]
+    id?: StringFilter<"AvaliacaoRisco"> | string
+    doenteId?: StringFilter<"AvaliacaoRisco"> | string
+    tipo?: StringFilter<"AvaliacaoRisco"> | string
+    pontuacao?: IntFilter<"AvaliacaoRisco"> | number
+    itens?: JsonFilter<"AvaliacaoRisco">
+    risco?: StringFilter<"AvaliacaoRisco"> | string
+    registadoPorId?: StringFilter<"AvaliacaoRisco"> | string
+    criadaEm?: DateTimeFilter<"AvaliacaoRisco"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type AvaliacaoRiscoOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    pontuacao?: SortOrder
+    itens?: SortOrder
+    risco?: SortOrder
+    registadoPorId?: SortOrder
+    criadaEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type AvaliacaoRiscoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AvaliacaoRiscoWhereInput | AvaliacaoRiscoWhereInput[]
+    OR?: AvaliacaoRiscoWhereInput[]
+    NOT?: AvaliacaoRiscoWhereInput | AvaliacaoRiscoWhereInput[]
+    doenteId?: StringFilter<"AvaliacaoRisco"> | string
+    tipo?: StringFilter<"AvaliacaoRisco"> | string
+    pontuacao?: IntFilter<"AvaliacaoRisco"> | number
+    itens?: JsonFilter<"AvaliacaoRisco">
+    risco?: StringFilter<"AvaliacaoRisco"> | string
+    registadoPorId?: StringFilter<"AvaliacaoRisco"> | string
+    criadaEm?: DateTimeFilter<"AvaliacaoRisco"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type AvaliacaoRiscoOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    pontuacao?: SortOrder
+    itens?: SortOrder
+    risco?: SortOrder
+    registadoPorId?: SortOrder
+    criadaEm?: SortOrder
+    _count?: AvaliacaoRiscoCountOrderByAggregateInput
+    _avg?: AvaliacaoRiscoAvgOrderByAggregateInput
+    _max?: AvaliacaoRiscoMaxOrderByAggregateInput
+    _min?: AvaliacaoRiscoMinOrderByAggregateInput
+    _sum?: AvaliacaoRiscoSumOrderByAggregateInput
+  }
+
+  export type AvaliacaoRiscoScalarWhereWithAggregatesInput = {
+    AND?: AvaliacaoRiscoScalarWhereWithAggregatesInput | AvaliacaoRiscoScalarWhereWithAggregatesInput[]
+    OR?: AvaliacaoRiscoScalarWhereWithAggregatesInput[]
+    NOT?: AvaliacaoRiscoScalarWhereWithAggregatesInput | AvaliacaoRiscoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AvaliacaoRisco"> | string
+    doenteId?: StringWithAggregatesFilter<"AvaliacaoRisco"> | string
+    tipo?: StringWithAggregatesFilter<"AvaliacaoRisco"> | string
+    pontuacao?: IntWithAggregatesFilter<"AvaliacaoRisco"> | number
+    itens?: JsonWithAggregatesFilter<"AvaliacaoRisco">
+    risco?: StringWithAggregatesFilter<"AvaliacaoRisco"> | string
+    registadoPorId?: StringWithAggregatesFilter<"AvaliacaoRisco"> | string
+    criadaEm?: DateTimeWithAggregatesFilter<"AvaliacaoRisco"> | Date | string
+  }
+
+  export type SumarioAltaWhereInput = {
+    AND?: SumarioAltaWhereInput | SumarioAltaWhereInput[]
+    OR?: SumarioAltaWhereInput[]
+    NOT?: SumarioAltaWhereInput | SumarioAltaWhereInput[]
+    id?: StringFilter<"SumarioAlta"> | string
+    doenteId?: StringFilter<"SumarioAlta"> | string
+    motivoAlta?: StringFilter<"SumarioAlta"> | string
+    destino?: StringNullableFilter<"SumarioAlta"> | string | null
+    resumoClinical?: StringFilter<"SumarioAlta"> | string
+    prescricaoSaida?: StringNullableFilter<"SumarioAlta"> | string | null
+    medicoFamilia?: StringNullableFilter<"SumarioAlta"> | string | null
+    criadoPorId?: StringFilter<"SumarioAlta"> | string
+    criadoEm?: DateTimeFilter<"SumarioAlta"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type SumarioAltaOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    motivoAlta?: SortOrder
+    destino?: SortOrderInput | SortOrder
+    resumoClinical?: SortOrder
+    prescricaoSaida?: SortOrderInput | SortOrder
+    medicoFamilia?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    criadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type SumarioAltaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    doenteId?: string
+    AND?: SumarioAltaWhereInput | SumarioAltaWhereInput[]
+    OR?: SumarioAltaWhereInput[]
+    NOT?: SumarioAltaWhereInput | SumarioAltaWhereInput[]
+    motivoAlta?: StringFilter<"SumarioAlta"> | string
+    destino?: StringNullableFilter<"SumarioAlta"> | string | null
+    resumoClinical?: StringFilter<"SumarioAlta"> | string
+    prescricaoSaida?: StringNullableFilter<"SumarioAlta"> | string | null
+    medicoFamilia?: StringNullableFilter<"SumarioAlta"> | string | null
+    criadoPorId?: StringFilter<"SumarioAlta"> | string
+    criadoEm?: DateTimeFilter<"SumarioAlta"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id" | "doenteId">
+
+  export type SumarioAltaOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    motivoAlta?: SortOrder
+    destino?: SortOrderInput | SortOrder
+    resumoClinical?: SortOrder
+    prescricaoSaida?: SortOrderInput | SortOrder
+    medicoFamilia?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: SumarioAltaCountOrderByAggregateInput
+    _max?: SumarioAltaMaxOrderByAggregateInput
+    _min?: SumarioAltaMinOrderByAggregateInput
+  }
+
+  export type SumarioAltaScalarWhereWithAggregatesInput = {
+    AND?: SumarioAltaScalarWhereWithAggregatesInput | SumarioAltaScalarWhereWithAggregatesInput[]
+    OR?: SumarioAltaScalarWhereWithAggregatesInput[]
+    NOT?: SumarioAltaScalarWhereWithAggregatesInput | SumarioAltaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SumarioAlta"> | string
+    doenteId?: StringWithAggregatesFilter<"SumarioAlta"> | string
+    motivoAlta?: StringWithAggregatesFilter<"SumarioAlta"> | string
+    destino?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    resumoClinical?: StringWithAggregatesFilter<"SumarioAlta"> | string
+    prescricaoSaida?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    medicoFamilia?: StringNullableWithAggregatesFilter<"SumarioAlta"> | string | null
+    criadoPorId?: StringWithAggregatesFilter<"SumarioAlta"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"SumarioAlta"> | Date | string
+  }
+
+  export type DispositivoTokenWhereInput = {
+    AND?: DispositivoTokenWhereInput | DispositivoTokenWhereInput[]
+    OR?: DispositivoTokenWhereInput[]
+    NOT?: DispositivoTokenWhereInput | DispositivoTokenWhereInput[]
+    id?: StringFilter<"DispositivoToken"> | string
+    utilizadorId?: StringFilter<"DispositivoToken"> | string
+    token?: StringFilter<"DispositivoToken"> | string
+    plataforma?: StringFilter<"DispositivoToken"> | string
+    criadoEm?: DateTimeFilter<"DispositivoToken"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type DispositivoTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    token?: SortOrder
+    plataforma?: SortOrder
+    criadoEm?: SortOrder
+    utilizador?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type DispositivoTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: DispositivoTokenWhereInput | DispositivoTokenWhereInput[]
+    OR?: DispositivoTokenWhereInput[]
+    NOT?: DispositivoTokenWhereInput | DispositivoTokenWhereInput[]
+    utilizadorId?: StringFilter<"DispositivoToken"> | string
+    plataforma?: StringFilter<"DispositivoToken"> | string
+    criadoEm?: DateTimeFilter<"DispositivoToken"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id" | "token">
+
+  export type DispositivoTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    token?: SortOrder
+    plataforma?: SortOrder
+    criadoEm?: SortOrder
+    _count?: DispositivoTokenCountOrderByAggregateInput
+    _max?: DispositivoTokenMaxOrderByAggregateInput
+    _min?: DispositivoTokenMinOrderByAggregateInput
+  }
+
+  export type DispositivoTokenScalarWhereWithAggregatesInput = {
+    AND?: DispositivoTokenScalarWhereWithAggregatesInput | DispositivoTokenScalarWhereWithAggregatesInput[]
+    OR?: DispositivoTokenScalarWhereWithAggregatesInput[]
+    NOT?: DispositivoTokenScalarWhereWithAggregatesInput | DispositivoTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DispositivoToken"> | string
+    utilizadorId?: StringWithAggregatesFilter<"DispositivoToken"> | string
+    token?: StringWithAggregatesFilter<"DispositivoToken"> | string
+    plataforma?: StringWithAggregatesFilter<"DispositivoToken"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"DispositivoToken"> | Date | string
+  }
+
   export type UtilizadorCreateInput = {
     id?: string
     numeroFuncionario: string
@@ -22906,6 +33606,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -22935,6 +33640,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -22964,6 +33674,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -22993,6 +33708,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -23107,6 +33827,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -23129,6 +33855,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -23151,6 +33883,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -23173,6 +33911,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -24049,6 +34793,590 @@ export namespace Prisma {
     atribuidoPorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type SinalVitalCreateInput = {
+    id?: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+    doente: DoenteCreateNestedOneWithoutSinaisVitaisInput
+    registadoPor: UtilizadorCreateNestedOneWithoutSinaisVitaisRegistadosInput
+  }
+
+  export type SinalVitalUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    registadoPorId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type SinalVitalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    doente?: DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutSinaisVitaisRegistadosNestedInput
+  }
+
+  export type SinalVitalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SinalVitalCreateManyInput = {
+    id?: string
+    doenteId: string
+    registadoPorId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type SinalVitalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SinalVitalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AuditLogCreateInput = {
+    id?: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+    utilizador: UtilizadorCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateInput = {
+    id?: string
+    utilizadorId: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateManyInput = {
+    id?: string
+    utilizadorId: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlergiaCreateInput = {
+    id?: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutAlergiasInput
+  }
+
+  export type AlergiaUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type AlergiaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutAlergiasNestedInput
+  }
+
+  export type AlergiaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlergiaCreateManyInput = {
+    id?: string
+    doenteId: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type AlergiaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlergiaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContactoEmergenciaCreateInput = {
+    id?: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+    doente: DoenteCreateNestedOneWithoutContactosEmergenciaInput
+  }
+
+  export type ContactoEmergenciaUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+  }
+
+  export type ContactoEmergenciaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+    doente?: DoenteUpdateOneRequiredWithoutContactosEmergenciaNestedInput
+  }
+
+  export type ContactoEmergenciaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ContactoEmergenciaCreateManyInput = {
+    id?: string
+    doenteId: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+  }
+
+  export type ContactoEmergenciaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ContactoEmergenciaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AlertaClinicoCreateInput = {
+    id?: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutAlertasClinicosInput
+  }
+
+  export type AlertaClinicoUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AlertaClinicoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutAlertasClinicosNestedInput
+  }
+
+  export type AlertaClinicoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertaClinicoCreateManyInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AlertaClinicoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertaClinicoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoCreateInput = {
+    id?: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    criadaEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutAvaliacoesRiscoInput
+    registadoPor: UtilizadorCreateNestedOneWithoutAvaliacoesRiscoInput
+  }
+
+  export type AvaliacaoRiscoUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    registadoPorId: string
+    criadaEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoCreateManyInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    registadoPorId: string
+    criadaEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SumarioAltaCreateInput = {
+    id?: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutSumarioAltaInput
+    criadoPor: UtilizadorCreateNestedOneWithoutSumariosAltaInput
+  }
+
+  export type SumarioAltaUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type SumarioAltaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutSumarioAltaNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutSumariosAltaNestedInput
+  }
+
+  export type SumarioAltaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SumarioAltaCreateManyInput = {
+    id?: string
+    doenteId: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type SumarioAltaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SumarioAltaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DispositivoTokenCreateInput = {
+    id?: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+    utilizador: UtilizadorCreateNestedOneWithoutDispositivosTokensInput
+  }
+
+  export type DispositivoTokenUncheckedCreateInput = {
+    id?: string
+    utilizadorId: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+  }
+
+  export type DispositivoTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    utilizador?: UtilizadorUpdateOneRequiredWithoutDispositivosTokensNestedInput
+  }
+
+  export type DispositivoTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DispositivoTokenCreateManyInput = {
+    id?: string
+    utilizadorId: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+  }
+
+  export type DispositivoTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DispositivoTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24185,6 +35513,36 @@ export namespace Prisma {
     none?: PedidoTrocaTurnoWhereInput
   }
 
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
+  export type SinalVitalListRelationFilter = {
+    every?: SinalVitalWhereInput
+    some?: SinalVitalWhereInput
+    none?: SinalVitalWhereInput
+  }
+
+  export type DispositivoTokenListRelationFilter = {
+    every?: DispositivoTokenWhereInput
+    some?: DispositivoTokenWhereInput
+    none?: DispositivoTokenWhereInput
+  }
+
+  export type AvaliacaoRiscoListRelationFilter = {
+    every?: AvaliacaoRiscoWhereInput
+    some?: AvaliacaoRiscoWhereInput
+    none?: AvaliacaoRiscoWhereInput
+  }
+
+  export type SumarioAltaListRelationFilter = {
+    every?: SumarioAltaWhereInput
+    some?: SumarioAltaWhereInput
+    none?: SumarioAltaWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -24235,6 +35593,26 @@ export namespace Prisma {
   }
 
   export type PedidoTrocaTurnoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SinalVitalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DispositivoTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AvaliacaoRiscoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SumarioAltaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24446,7 +35824,42 @@ export namespace Prisma {
     none?: PassagemTurnoWhereInput
   }
 
+  export type AlergiaListRelationFilter = {
+    every?: AlergiaWhereInput
+    some?: AlergiaWhereInput
+    none?: AlergiaWhereInput
+  }
+
+  export type ContactoEmergenciaListRelationFilter = {
+    every?: ContactoEmergenciaWhereInput
+    some?: ContactoEmergenciaWhereInput
+    none?: ContactoEmergenciaWhereInput
+  }
+
+  export type AlertaClinicoListRelationFilter = {
+    every?: AlertaClinicoWhereInput
+    some?: AlertaClinicoWhereInput
+    none?: AlertaClinicoWhereInput
+  }
+
+  export type SumarioAltaNullableScalarRelationFilter = {
+    is?: SumarioAltaWhereInput | null
+    isNot?: SumarioAltaWhereInput | null
+  }
+
   export type PassagemTurnoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AlergiaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ContactoEmergenciaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AlertaClinicoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25064,6 +36477,363 @@ export namespace Prisma {
     atribuidoPorId?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type SinalVitalCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    registadoPorId?: SortOrder
+    data?: SortOrder
+    pressaoSistolica?: SortOrder
+    pressaoDiastolica?: SortOrder
+    pulso?: SortOrder
+    temperatura?: SortOrder
+    saturacaoO2?: SortOrder
+    frequenciaRespiratoria?: SortOrder
+    peso?: SortOrder
+    notas?: SortOrder
+  }
+
+  export type SinalVitalAvgOrderByAggregateInput = {
+    pressaoSistolica?: SortOrder
+    pressaoDiastolica?: SortOrder
+    pulso?: SortOrder
+    temperatura?: SortOrder
+    saturacaoO2?: SortOrder
+    frequenciaRespiratoria?: SortOrder
+    peso?: SortOrder
+  }
+
+  export type SinalVitalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    registadoPorId?: SortOrder
+    data?: SortOrder
+    pressaoSistolica?: SortOrder
+    pressaoDiastolica?: SortOrder
+    pulso?: SortOrder
+    temperatura?: SortOrder
+    saturacaoO2?: SortOrder
+    frequenciaRespiratoria?: SortOrder
+    peso?: SortOrder
+    notas?: SortOrder
+  }
+
+  export type SinalVitalMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    registadoPorId?: SortOrder
+    data?: SortOrder
+    pressaoSistolica?: SortOrder
+    pressaoDiastolica?: SortOrder
+    pulso?: SortOrder
+    temperatura?: SortOrder
+    saturacaoO2?: SortOrder
+    frequenciaRespiratoria?: SortOrder
+    peso?: SortOrder
+    notas?: SortOrder
+  }
+
+  export type SinalVitalSumOrderByAggregateInput = {
+    pressaoSistolica?: SortOrder
+    pressaoDiastolica?: SortOrder
+    pulso?: SortOrder
+    temperatura?: SortOrder
+    saturacaoO2?: SortOrder
+    frequenciaRespiratoria?: SortOrder
+    peso?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type AuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    acao?: SortOrder
+    entidadeId?: SortOrder
+    entidadeTipo?: SortOrder
+    detalhes?: SortOrder
+    ip?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    acao?: SortOrder
+    entidadeId?: SortOrder
+    entidadeTipo?: SortOrder
+    detalhes?: SortOrder
+    ip?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    acao?: SortOrder
+    entidadeId?: SortOrder
+    entidadeTipo?: SortOrder
+    detalhes?: SortOrder
+    ip?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AlergiaCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    alergenio?: SortOrder
+    tipo?: SortOrder
+    severidade?: SortOrder
+    notas?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type AlergiaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    alergenio?: SortOrder
+    tipo?: SortOrder
+    severidade?: SortOrder
+    notas?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type AlergiaMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    alergenio?: SortOrder
+    tipo?: SortOrder
+    severidade?: SortOrder
+    notas?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type ContactoEmergenciaCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nome?: SortOrder
+    relacao?: SortOrder
+    telefone?: SortOrder
+    principal?: SortOrder
+  }
+
+  export type ContactoEmergenciaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nome?: SortOrder
+    relacao?: SortOrder
+    telefone?: SortOrder
+    principal?: SortOrder
+  }
+
+  export type ContactoEmergenciaMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nome?: SortOrder
+    relacao?: SortOrder
+    telefone?: SortOrder
+    principal?: SortOrder
+  }
+
+  export type AlertaClinicoCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    mensagem?: SortOrder
+    lido?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AlertaClinicoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    mensagem?: SortOrder
+    lido?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AlertaClinicoMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    mensagem?: SortOrder
+    lido?: SortOrder
+    criadoEm?: SortOrder
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AvaliacaoRiscoCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    pontuacao?: SortOrder
+    itens?: SortOrder
+    risco?: SortOrder
+    registadoPorId?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type AvaliacaoRiscoAvgOrderByAggregateInput = {
+    pontuacao?: SortOrder
+  }
+
+  export type AvaliacaoRiscoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    pontuacao?: SortOrder
+    risco?: SortOrder
+    registadoPorId?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type AvaliacaoRiscoMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    tipo?: SortOrder
+    pontuacao?: SortOrder
+    risco?: SortOrder
+    registadoPorId?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type AvaliacaoRiscoSumOrderByAggregateInput = {
+    pontuacao?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type SumarioAltaCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    motivoAlta?: SortOrder
+    destino?: SortOrder
+    resumoClinical?: SortOrder
+    prescricaoSaida?: SortOrder
+    medicoFamilia?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type SumarioAltaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    motivoAlta?: SortOrder
+    destino?: SortOrder
+    resumoClinical?: SortOrder
+    prescricaoSaida?: SortOrder
+    medicoFamilia?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type SumarioAltaMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    motivoAlta?: SortOrder
+    destino?: SortOrder
+    resumoClinical?: SortOrder
+    prescricaoSaida?: SortOrder
+    medicoFamilia?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DispositivoTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    token?: SortOrder
+    plataforma?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DispositivoTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    token?: SortOrder
+    plataforma?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type DispositivoTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    token?: SortOrder
+    plataforma?: SortOrder
+    criadoEm?: SortOrder
+  }
+
   export type TurnoCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -25176,6 +36946,41 @@ export namespace Prisma {
     connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
   }
 
+  export type AuditLogCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput> | AuditLogCreateWithoutUtilizadorInput[] | AuditLogUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUtilizadorInput | AuditLogCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AuditLogCreateManyUtilizadorInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type SinalVitalCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput> | SinalVitalCreateWithoutRegistadoPorInput[] | SinalVitalUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutRegistadoPorInput | SinalVitalCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: SinalVitalCreateManyRegistadoPorInputEnvelope
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+  }
+
+  export type DispositivoTokenCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput> | DispositivoTokenCreateWithoutUtilizadorInput[] | DispositivoTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: DispositivoTokenCreateOrConnectWithoutUtilizadorInput | DispositivoTokenCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: DispositivoTokenCreateManyUtilizadorInputEnvelope
+    connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+  }
+
+  export type AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: AvaliacaoRiscoCreateManyRegistadoPorInputEnvelope
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+  }
+
+  export type SumarioAltaCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput> | SumarioAltaCreateWithoutCriadoPorInput[] | SumarioAltaUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutCriadoPorInput | SumarioAltaCreateOrConnectWithoutCriadoPorInput[]
+    createMany?: SumarioAltaCreateManyCriadoPorInputEnvelope
+    connect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -25286,6 +37091,41 @@ export namespace Prisma {
     connectOrCreate?: PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput | PedidoTrocaTurnoCreateOrConnectWithoutAprovadoPorInput[]
     createMany?: PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope
     connect?: PedidoTrocaTurnoWhereUniqueInput | PedidoTrocaTurnoWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput> | AuditLogCreateWithoutUtilizadorInput[] | AuditLogUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUtilizadorInput | AuditLogCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AuditLogCreateManyUtilizadorInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput> | SinalVitalCreateWithoutRegistadoPorInput[] | SinalVitalUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutRegistadoPorInput | SinalVitalCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: SinalVitalCreateManyRegistadoPorInputEnvelope
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+  }
+
+  export type DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput> | DispositivoTokenCreateWithoutUtilizadorInput[] | DispositivoTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: DispositivoTokenCreateOrConnectWithoutUtilizadorInput | DispositivoTokenCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: DispositivoTokenCreateManyUtilizadorInputEnvelope
+    connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+  }
+
+  export type AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: AvaliacaoRiscoCreateManyRegistadoPorInputEnvelope
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+  }
+
+  export type SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput> | SumarioAltaCreateWithoutCriadoPorInput[] | SumarioAltaUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutCriadoPorInput | SumarioAltaCreateOrConnectWithoutCriadoPorInput[]
+    createMany?: SumarioAltaCreateManyCriadoPorInputEnvelope
+    connect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -25540,6 +37380,76 @@ export namespace Prisma {
     deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
   }
 
+  export type AuditLogUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput> | AuditLogCreateWithoutUtilizadorInput[] | AuditLogUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUtilizadorInput | AuditLogCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUtilizadorInput | AuditLogUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AuditLogCreateManyUtilizadorInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUtilizadorInput | AuditLogUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUtilizadorInput | AuditLogUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type SinalVitalUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput> | SinalVitalCreateWithoutRegistadoPorInput[] | SinalVitalUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutRegistadoPorInput | SinalVitalCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: SinalVitalUpsertWithWhereUniqueWithoutRegistadoPorInput | SinalVitalUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: SinalVitalCreateManyRegistadoPorInputEnvelope
+    set?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    disconnect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    delete?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    update?: SinalVitalUpdateWithWhereUniqueWithoutRegistadoPorInput | SinalVitalUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: SinalVitalUpdateManyWithWhereWithoutRegistadoPorInput | SinalVitalUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+  }
+
+  export type DispositivoTokenUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput> | DispositivoTokenCreateWithoutUtilizadorInput[] | DispositivoTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: DispositivoTokenCreateOrConnectWithoutUtilizadorInput | DispositivoTokenCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput | DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: DispositivoTokenCreateManyUtilizadorInputEnvelope
+    set?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    disconnect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    delete?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    update?: DispositivoTokenUpdateWithWhereUniqueWithoutUtilizadorInput | DispositivoTokenUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: DispositivoTokenUpdateManyWithWhereWithoutUtilizadorInput | DispositivoTokenUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
+  }
+
+  export type AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput | AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: AvaliacaoRiscoCreateManyRegistadoPorInputEnvelope
+    set?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    disconnect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    delete?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    update?: AvaliacaoRiscoUpdateWithWhereUniqueWithoutRegistadoPorInput | AvaliacaoRiscoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: AvaliacaoRiscoUpdateManyWithWhereWithoutRegistadoPorInput | AvaliacaoRiscoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+  }
+
+  export type SumarioAltaUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput> | SumarioAltaCreateWithoutCriadoPorInput[] | SumarioAltaUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutCriadoPorInput | SumarioAltaCreateOrConnectWithoutCriadoPorInput[]
+    upsert?: SumarioAltaUpsertWithWhereUniqueWithoutCriadoPorInput | SumarioAltaUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: SumarioAltaCreateManyCriadoPorInputEnvelope
+    set?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    disconnect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    delete?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    connect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    update?: SumarioAltaUpdateWithWhereUniqueWithoutCriadoPorInput | SumarioAltaUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: SumarioAltaUpdateManyWithWhereWithoutCriadoPorInput | SumarioAltaUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: SumarioAltaScalarWhereInput | SumarioAltaScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -25764,6 +37674,76 @@ export namespace Prisma {
     deleteMany?: PedidoTrocaTurnoScalarWhereInput | PedidoTrocaTurnoScalarWhereInput[]
   }
 
+  export type AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput> | AuditLogCreateWithoutUtilizadorInput[] | AuditLogUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUtilizadorInput | AuditLogCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUtilizadorInput | AuditLogUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AuditLogCreateManyUtilizadorInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUtilizadorInput | AuditLogUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUtilizadorInput | AuditLogUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput> | SinalVitalCreateWithoutRegistadoPorInput[] | SinalVitalUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutRegistadoPorInput | SinalVitalCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: SinalVitalUpsertWithWhereUniqueWithoutRegistadoPorInput | SinalVitalUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: SinalVitalCreateManyRegistadoPorInputEnvelope
+    set?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    disconnect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    delete?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    update?: SinalVitalUpdateWithWhereUniqueWithoutRegistadoPorInput | SinalVitalUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: SinalVitalUpdateManyWithWhereWithoutRegistadoPorInput | SinalVitalUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+  }
+
+  export type DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput> | DispositivoTokenCreateWithoutUtilizadorInput[] | DispositivoTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: DispositivoTokenCreateOrConnectWithoutUtilizadorInput | DispositivoTokenCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput | DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: DispositivoTokenCreateManyUtilizadorInputEnvelope
+    set?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    disconnect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    delete?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
+    update?: DispositivoTokenUpdateWithWhereUniqueWithoutUtilizadorInput | DispositivoTokenUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: DispositivoTokenUpdateManyWithWhereWithoutUtilizadorInput | DispositivoTokenUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput | AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: AvaliacaoRiscoCreateManyRegistadoPorInputEnvelope
+    set?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    disconnect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    delete?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    update?: AvaliacaoRiscoUpdateWithWhereUniqueWithoutRegistadoPorInput | AvaliacaoRiscoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: AvaliacaoRiscoUpdateManyWithWhereWithoutRegistadoPorInput | AvaliacaoRiscoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+  }
+
+  export type SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput> | SumarioAltaCreateWithoutCriadoPorInput[] | SumarioAltaUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutCriadoPorInput | SumarioAltaCreateOrConnectWithoutCriadoPorInput[]
+    upsert?: SumarioAltaUpsertWithWhereUniqueWithoutCriadoPorInput | SumarioAltaUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: SumarioAltaCreateManyCriadoPorInputEnvelope
+    set?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    disconnect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    delete?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    connect?: SumarioAltaWhereUniqueInput | SumarioAltaWhereUniqueInput[]
+    update?: SumarioAltaUpdateWithWhereUniqueWithoutCriadoPorInput | SumarioAltaUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: SumarioAltaUpdateManyWithWhereWithoutCriadoPorInput | SumarioAltaUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: SumarioAltaScalarWhereInput | SumarioAltaScalarWhereInput[]
+  }
+
   export type DoenteCreateNestedOneWithoutCamaInput = {
     create?: XOR<DoenteCreateWithoutCamaInput, DoenteUncheckedCreateWithoutCamaInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutCamaInput
@@ -25861,6 +37841,47 @@ export namespace Prisma {
     connect?: PassagemTurnoWhereUniqueInput | PassagemTurnoWhereUniqueInput[]
   }
 
+  export type SinalVitalCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput> | SinalVitalCreateWithoutDoenteInput[] | SinalVitalUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutDoenteInput | SinalVitalCreateOrConnectWithoutDoenteInput[]
+    createMany?: SinalVitalCreateManyDoenteInputEnvelope
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+  }
+
+  export type AlergiaCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput> | AlergiaCreateWithoutDoenteInput[] | AlergiaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlergiaCreateOrConnectWithoutDoenteInput | AlergiaCreateOrConnectWithoutDoenteInput[]
+    createMany?: AlergiaCreateManyDoenteInputEnvelope
+    connect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+  }
+
+  export type ContactoEmergenciaCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput> | ContactoEmergenciaCreateWithoutDoenteInput[] | ContactoEmergenciaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ContactoEmergenciaCreateOrConnectWithoutDoenteInput | ContactoEmergenciaCreateOrConnectWithoutDoenteInput[]
+    createMany?: ContactoEmergenciaCreateManyDoenteInputEnvelope
+    connect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+  }
+
+  export type AlertaClinicoCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput> | AlertaClinicoCreateWithoutDoenteInput[] | AlertaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlertaClinicoCreateOrConnectWithoutDoenteInput | AlertaClinicoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AlertaClinicoCreateManyDoenteInputEnvelope
+    connect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+  }
+
+  export type AvaliacaoRiscoCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput> | AvaliacaoRiscoCreateWithoutDoenteInput[] | AvaliacaoRiscoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutDoenteInput | AvaliacaoRiscoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AvaliacaoRiscoCreateManyDoenteInputEnvelope
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+  }
+
+  export type SumarioAltaCreateNestedOneWithoutDoenteInput = {
+    create?: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutDoenteInput
+    connect?: SumarioAltaWhereUniqueInput
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -25908,6 +37929,47 @@ export namespace Prisma {
     connectOrCreate?: PassagemTurnoCreateOrConnectWithoutDoenteInput | PassagemTurnoCreateOrConnectWithoutDoenteInput[]
     createMany?: PassagemTurnoCreateManyDoenteInputEnvelope
     connect?: PassagemTurnoWhereUniqueInput | PassagemTurnoWhereUniqueInput[]
+  }
+
+  export type SinalVitalUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput> | SinalVitalCreateWithoutDoenteInput[] | SinalVitalUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutDoenteInput | SinalVitalCreateOrConnectWithoutDoenteInput[]
+    createMany?: SinalVitalCreateManyDoenteInputEnvelope
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+  }
+
+  export type AlergiaUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput> | AlergiaCreateWithoutDoenteInput[] | AlergiaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlergiaCreateOrConnectWithoutDoenteInput | AlergiaCreateOrConnectWithoutDoenteInput[]
+    createMany?: AlergiaCreateManyDoenteInputEnvelope
+    connect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+  }
+
+  export type ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput> | ContactoEmergenciaCreateWithoutDoenteInput[] | ContactoEmergenciaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ContactoEmergenciaCreateOrConnectWithoutDoenteInput | ContactoEmergenciaCreateOrConnectWithoutDoenteInput[]
+    createMany?: ContactoEmergenciaCreateManyDoenteInputEnvelope
+    connect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+  }
+
+  export type AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput> | AlertaClinicoCreateWithoutDoenteInput[] | AlertaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlertaClinicoCreateOrConnectWithoutDoenteInput | AlertaClinicoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AlertaClinicoCreateManyDoenteInputEnvelope
+    connect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+  }
+
+  export type AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput> | AvaliacaoRiscoCreateWithoutDoenteInput[] | AvaliacaoRiscoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutDoenteInput | AvaliacaoRiscoCreateOrConnectWithoutDoenteInput[]
+    createMany?: AvaliacaoRiscoCreateManyDoenteInputEnvelope
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+  }
+
+  export type SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput = {
+    create?: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutDoenteInput
+    connect?: SumarioAltaWhereUniqueInput
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -26032,6 +38094,86 @@ export namespace Prisma {
     deleteMany?: PassagemTurnoScalarWhereInput | PassagemTurnoScalarWhereInput[]
   }
 
+  export type SinalVitalUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput> | SinalVitalCreateWithoutDoenteInput[] | SinalVitalUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutDoenteInput | SinalVitalCreateOrConnectWithoutDoenteInput[]
+    upsert?: SinalVitalUpsertWithWhereUniqueWithoutDoenteInput | SinalVitalUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: SinalVitalCreateManyDoenteInputEnvelope
+    set?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    disconnect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    delete?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    update?: SinalVitalUpdateWithWhereUniqueWithoutDoenteInput | SinalVitalUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: SinalVitalUpdateManyWithWhereWithoutDoenteInput | SinalVitalUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+  }
+
+  export type AlergiaUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput> | AlergiaCreateWithoutDoenteInput[] | AlergiaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlergiaCreateOrConnectWithoutDoenteInput | AlergiaCreateOrConnectWithoutDoenteInput[]
+    upsert?: AlergiaUpsertWithWhereUniqueWithoutDoenteInput | AlergiaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AlergiaCreateManyDoenteInputEnvelope
+    set?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    disconnect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    delete?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    connect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    update?: AlergiaUpdateWithWhereUniqueWithoutDoenteInput | AlergiaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AlergiaUpdateManyWithWhereWithoutDoenteInput | AlergiaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AlergiaScalarWhereInput | AlergiaScalarWhereInput[]
+  }
+
+  export type ContactoEmergenciaUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput> | ContactoEmergenciaCreateWithoutDoenteInput[] | ContactoEmergenciaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ContactoEmergenciaCreateOrConnectWithoutDoenteInput | ContactoEmergenciaCreateOrConnectWithoutDoenteInput[]
+    upsert?: ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput | ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: ContactoEmergenciaCreateManyDoenteInputEnvelope
+    set?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    disconnect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    delete?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    connect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    update?: ContactoEmergenciaUpdateWithWhereUniqueWithoutDoenteInput | ContactoEmergenciaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: ContactoEmergenciaUpdateManyWithWhereWithoutDoenteInput | ContactoEmergenciaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: ContactoEmergenciaScalarWhereInput | ContactoEmergenciaScalarWhereInput[]
+  }
+
+  export type AlertaClinicoUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput> | AlertaClinicoCreateWithoutDoenteInput[] | AlertaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlertaClinicoCreateOrConnectWithoutDoenteInput | AlertaClinicoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AlertaClinicoUpsertWithWhereUniqueWithoutDoenteInput | AlertaClinicoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AlertaClinicoCreateManyDoenteInputEnvelope
+    set?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    disconnect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    delete?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    connect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    update?: AlertaClinicoUpdateWithWhereUniqueWithoutDoenteInput | AlertaClinicoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AlertaClinicoUpdateManyWithWhereWithoutDoenteInput | AlertaClinicoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AlertaClinicoScalarWhereInput | AlertaClinicoScalarWhereInput[]
+  }
+
+  export type AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput> | AvaliacaoRiscoCreateWithoutDoenteInput[] | AvaliacaoRiscoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutDoenteInput | AvaliacaoRiscoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AvaliacaoRiscoUpsertWithWhereUniqueWithoutDoenteInput | AvaliacaoRiscoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AvaliacaoRiscoCreateManyDoenteInputEnvelope
+    set?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    disconnect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    delete?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    update?: AvaliacaoRiscoUpdateWithWhereUniqueWithoutDoenteInput | AvaliacaoRiscoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AvaliacaoRiscoUpdateManyWithWhereWithoutDoenteInput | AvaliacaoRiscoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+  }
+
+  export type SumarioAltaUpdateOneWithoutDoenteNestedInput = {
+    create?: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutDoenteInput
+    upsert?: SumarioAltaUpsertWithoutDoenteInput
+    disconnect?: SumarioAltaWhereInput | boolean
+    delete?: SumarioAltaWhereInput | boolean
+    connect?: SumarioAltaWhereUniqueInput
+    update?: XOR<XOR<SumarioAltaUpdateToOneWithWhereWithoutDoenteInput, SumarioAltaUpdateWithoutDoenteInput>, SumarioAltaUncheckedUpdateWithoutDoenteInput>
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -26128,6 +38270,86 @@ export namespace Prisma {
     update?: PassagemTurnoUpdateWithWhereUniqueWithoutDoenteInput | PassagemTurnoUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: PassagemTurnoUpdateManyWithWhereWithoutDoenteInput | PassagemTurnoUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: PassagemTurnoScalarWhereInput | PassagemTurnoScalarWhereInput[]
+  }
+
+  export type SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput> | SinalVitalCreateWithoutDoenteInput[] | SinalVitalUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: SinalVitalCreateOrConnectWithoutDoenteInput | SinalVitalCreateOrConnectWithoutDoenteInput[]
+    upsert?: SinalVitalUpsertWithWhereUniqueWithoutDoenteInput | SinalVitalUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: SinalVitalCreateManyDoenteInputEnvelope
+    set?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    disconnect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    delete?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    connect?: SinalVitalWhereUniqueInput | SinalVitalWhereUniqueInput[]
+    update?: SinalVitalUpdateWithWhereUniqueWithoutDoenteInput | SinalVitalUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: SinalVitalUpdateManyWithWhereWithoutDoenteInput | SinalVitalUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+  }
+
+  export type AlergiaUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput> | AlergiaCreateWithoutDoenteInput[] | AlergiaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlergiaCreateOrConnectWithoutDoenteInput | AlergiaCreateOrConnectWithoutDoenteInput[]
+    upsert?: AlergiaUpsertWithWhereUniqueWithoutDoenteInput | AlergiaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AlergiaCreateManyDoenteInputEnvelope
+    set?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    disconnect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    delete?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    connect?: AlergiaWhereUniqueInput | AlergiaWhereUniqueInput[]
+    update?: AlergiaUpdateWithWhereUniqueWithoutDoenteInput | AlergiaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AlergiaUpdateManyWithWhereWithoutDoenteInput | AlergiaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AlergiaScalarWhereInput | AlergiaScalarWhereInput[]
+  }
+
+  export type ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput> | ContactoEmergenciaCreateWithoutDoenteInput[] | ContactoEmergenciaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ContactoEmergenciaCreateOrConnectWithoutDoenteInput | ContactoEmergenciaCreateOrConnectWithoutDoenteInput[]
+    upsert?: ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput | ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: ContactoEmergenciaCreateManyDoenteInputEnvelope
+    set?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    disconnect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    delete?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    connect?: ContactoEmergenciaWhereUniqueInput | ContactoEmergenciaWhereUniqueInput[]
+    update?: ContactoEmergenciaUpdateWithWhereUniqueWithoutDoenteInput | ContactoEmergenciaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: ContactoEmergenciaUpdateManyWithWhereWithoutDoenteInput | ContactoEmergenciaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: ContactoEmergenciaScalarWhereInput | ContactoEmergenciaScalarWhereInput[]
+  }
+
+  export type AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput> | AlertaClinicoCreateWithoutDoenteInput[] | AlertaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AlertaClinicoCreateOrConnectWithoutDoenteInput | AlertaClinicoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AlertaClinicoUpsertWithWhereUniqueWithoutDoenteInput | AlertaClinicoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AlertaClinicoCreateManyDoenteInputEnvelope
+    set?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    disconnect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    delete?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    connect?: AlertaClinicoWhereUniqueInput | AlertaClinicoWhereUniqueInput[]
+    update?: AlertaClinicoUpdateWithWhereUniqueWithoutDoenteInput | AlertaClinicoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AlertaClinicoUpdateManyWithWhereWithoutDoenteInput | AlertaClinicoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AlertaClinicoScalarWhereInput | AlertaClinicoScalarWhereInput[]
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput> | AvaliacaoRiscoCreateWithoutDoenteInput[] | AvaliacaoRiscoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutDoenteInput | AvaliacaoRiscoCreateOrConnectWithoutDoenteInput[]
+    upsert?: AvaliacaoRiscoUpsertWithWhereUniqueWithoutDoenteInput | AvaliacaoRiscoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: AvaliacaoRiscoCreateManyDoenteInputEnvelope
+    set?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    disconnect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    delete?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    connect?: AvaliacaoRiscoWhereUniqueInput | AvaliacaoRiscoWhereUniqueInput[]
+    update?: AvaliacaoRiscoUpdateWithWhereUniqueWithoutDoenteInput | AvaliacaoRiscoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: AvaliacaoRiscoUpdateManyWithWhereWithoutDoenteInput | AvaliacaoRiscoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+  }
+
+  export type SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput = {
+    create?: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: SumarioAltaCreateOrConnectWithoutDoenteInput
+    upsert?: SumarioAltaUpsertWithoutDoenteInput
+    disconnect?: SumarioAltaWhereInput | boolean
+    delete?: SumarioAltaWhereInput | boolean
+    connect?: SumarioAltaWhereUniqueInput
+    update?: XOR<XOR<SumarioAltaUpdateToOneWithWhereWithoutDoenteInput, SumarioAltaUpdateWithoutDoenteInput>, SumarioAltaUncheckedUpdateWithoutDoenteInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -27090,6 +39312,168 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAtribuicoesFeitasInput, UtilizadorUpdateWithoutAtribuicoesFeitasInput>, UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput>
   }
 
+  export type DoenteCreateNestedOneWithoutSinaisVitaisInput = {
+    create?: XOR<DoenteCreateWithoutSinaisVitaisInput, DoenteUncheckedCreateWithoutSinaisVitaisInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSinaisVitaisInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutSinaisVitaisRegistadosInput = {
+    create?: XOR<UtilizadorCreateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput = {
+    create?: XOR<DoenteCreateWithoutSinaisVitaisInput, DoenteUncheckedCreateWithoutSinaisVitaisInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSinaisVitaisInput
+    upsert?: DoenteUpsertWithoutSinaisVitaisInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutSinaisVitaisInput, DoenteUpdateWithoutSinaisVitaisInput>, DoenteUncheckedUpdateWithoutSinaisVitaisInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutSinaisVitaisRegistadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput
+    upsert?: UtilizadorUpsertWithoutSinaisVitaisRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutSinaisVitaisRegistadosInput, UtilizadorUpdateWithoutSinaisVitaisRegistadosInput>, UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<UtilizadorCreateWithoutAuditLogsInput, UtilizadorUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAuditLogsInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAuditLogsInput, UtilizadorUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAuditLogsInput
+    upsert?: UtilizadorUpsertWithoutAuditLogsInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAuditLogsInput, UtilizadorUpdateWithoutAuditLogsInput>, UtilizadorUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutAlergiasInput = {
+    create?: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAlergiasInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutAlergiasNestedInput = {
+    create?: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAlergiasInput
+    upsert?: DoenteUpsertWithoutAlergiasInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutAlergiasInput, DoenteUpdateWithoutAlergiasInput>, DoenteUncheckedUpdateWithoutAlergiasInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutContactosEmergenciaInput = {
+    create?: XOR<DoenteCreateWithoutContactosEmergenciaInput, DoenteUncheckedCreateWithoutContactosEmergenciaInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutContactosEmergenciaInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutContactosEmergenciaNestedInput = {
+    create?: XOR<DoenteCreateWithoutContactosEmergenciaInput, DoenteUncheckedCreateWithoutContactosEmergenciaInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutContactosEmergenciaInput
+    upsert?: DoenteUpsertWithoutContactosEmergenciaInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutContactosEmergenciaInput, DoenteUpdateWithoutContactosEmergenciaInput>, DoenteUncheckedUpdateWithoutContactosEmergenciaInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutAlertasClinicosInput = {
+    create?: XOR<DoenteCreateWithoutAlertasClinicosInput, DoenteUncheckedCreateWithoutAlertasClinicosInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAlertasClinicosInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutAlertasClinicosNestedInput = {
+    create?: XOR<DoenteCreateWithoutAlertasClinicosInput, DoenteUncheckedCreateWithoutAlertasClinicosInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAlertasClinicosInput
+    upsert?: DoenteUpsertWithoutAlertasClinicosInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutAlertasClinicosInput, DoenteUpdateWithoutAlertasClinicosInput>, DoenteUncheckedUpdateWithoutAlertasClinicosInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutAvaliacoesRiscoInput = {
+    create?: XOR<DoenteCreateWithoutAvaliacoesRiscoInput, DoenteUncheckedCreateWithoutAvaliacoesRiscoInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAvaliacoesRiscoInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAvaliacoesRiscoInput = {
+    create?: XOR<UtilizadorCreateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput = {
+    create?: XOR<DoenteCreateWithoutAvaliacoesRiscoInput, DoenteUncheckedCreateWithoutAvaliacoesRiscoInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutAvaliacoesRiscoInput
+    upsert?: DoenteUpsertWithoutAvaliacoesRiscoInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutAvaliacoesRiscoInput, DoenteUpdateWithoutAvaliacoesRiscoInput>, DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput
+    upsert?: UtilizadorUpsertWithoutAvaliacoesRiscoInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAvaliacoesRiscoInput, UtilizadorUpdateWithoutAvaliacoesRiscoInput>, UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutSumarioAltaInput = {
+    create?: XOR<DoenteCreateWithoutSumarioAltaInput, DoenteUncheckedCreateWithoutSumarioAltaInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSumarioAltaInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutSumariosAltaInput = {
+    create?: XOR<UtilizadorCreateWithoutSumariosAltaInput, UtilizadorUncheckedCreateWithoutSumariosAltaInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSumariosAltaInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutSumarioAltaNestedInput = {
+    create?: XOR<DoenteCreateWithoutSumarioAltaInput, DoenteUncheckedCreateWithoutSumarioAltaInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutSumarioAltaInput
+    upsert?: DoenteUpsertWithoutSumarioAltaInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutSumarioAltaInput, DoenteUpdateWithoutSumarioAltaInput>, DoenteUncheckedUpdateWithoutSumarioAltaInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutSumariosAltaNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutSumariosAltaInput, UtilizadorUncheckedCreateWithoutSumariosAltaInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSumariosAltaInput
+    upsert?: UtilizadorUpsertWithoutSumariosAltaInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutSumariosAltaInput, UtilizadorUpdateWithoutSumariosAltaInput>, UtilizadorUncheckedUpdateWithoutSumariosAltaInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutDispositivosTokensInput = {
+    create?: XOR<UtilizadorCreateWithoutDispositivosTokensInput, UtilizadorUncheckedCreateWithoutDispositivosTokensInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutDispositivosTokensInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutDispositivosTokensNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutDispositivosTokensInput, UtilizadorUncheckedCreateWithoutDispositivosTokensInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutDispositivosTokensInput
+    upsert?: UtilizadorUpsertWithoutDispositivosTokensInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDispositivosTokensInput, UtilizadorUpdateWithoutDispositivosTokensInput>, UtilizadorUncheckedUpdateWithoutDispositivosTokensInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -27427,6 +39811,45 @@ export namespace Prisma {
     _max?: NestedEnumEstadoPedidoTrocaFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type TurnoCreateWithoutChefeTurnoInput = {
     id?: string
     tipo: $Enums.TipoTurno
@@ -27678,6 +40101,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -27699,6 +40128,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -27912,6 +40347,160 @@ export namespace Prisma {
 
   export type PedidoTrocaTurnoCreateManyAprovadoPorInputEnvelope = {
     data: PedidoTrocaTurnoCreateManyAprovadoPorInput | PedidoTrocaTurnoCreateManyAprovadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AuditLogCreateWithoutUtilizadorInput = {
+    id?: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutUtilizadorInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AuditLogCreateManyUtilizadorInputEnvelope = {
+    data: AuditLogCreateManyUtilizadorInput | AuditLogCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SinalVitalCreateWithoutRegistadoPorInput = {
+    id?: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+    doente: DoenteCreateNestedOneWithoutSinaisVitaisInput
+  }
+
+  export type SinalVitalUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type SinalVitalCreateOrConnectWithoutRegistadoPorInput = {
+    where: SinalVitalWhereUniqueInput
+    create: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type SinalVitalCreateManyRegistadoPorInputEnvelope = {
+    data: SinalVitalCreateManyRegistadoPorInput | SinalVitalCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DispositivoTokenCreateWithoutUtilizadorInput = {
+    id?: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+  }
+
+  export type DispositivoTokenUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+  }
+
+  export type DispositivoTokenCreateOrConnectWithoutUtilizadorInput = {
+    where: DispositivoTokenWhereUniqueInput
+    create: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type DispositivoTokenCreateManyUtilizadorInputEnvelope = {
+    data: DispositivoTokenCreateManyUtilizadorInput | DispositivoTokenCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AvaliacaoRiscoCreateWithoutRegistadoPorInput = {
+    id?: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    criadaEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutAvaliacoesRiscoInput
+  }
+
+  export type AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    criadaEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    create: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type AvaliacaoRiscoCreateManyRegistadoPorInputEnvelope = {
+    data: AvaliacaoRiscoCreateManyRegistadoPorInput | AvaliacaoRiscoCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SumarioAltaCreateWithoutCriadoPorInput = {
+    id?: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutSumarioAltaInput
+  }
+
+  export type SumarioAltaUncheckedCreateWithoutCriadoPorInput = {
+    id?: string
+    doenteId: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type SumarioAltaCreateOrConnectWithoutCriadoPorInput = {
+    where: SumarioAltaWhereUniqueInput
+    create: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type SumarioAltaCreateManyCriadoPorInputEnvelope = {
+    data: SumarioAltaCreateManyCriadoPorInput | SumarioAltaCreateManyCriadoPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -28325,6 +40914,158 @@ export namespace Prisma {
     data: XOR<PedidoTrocaTurnoUpdateManyMutationInput, PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorInput>
   }
 
+  export type AuditLogUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUtilizadorInput, AuditLogUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<AuditLogCreateWithoutUtilizadorInput, AuditLogUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUtilizadorInput, AuditLogUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    utilizadorId?: StringFilter<"AuditLog"> | string
+    acao?: StringFilter<"AuditLog"> | string
+    entidadeId?: StringNullableFilter<"AuditLog"> | string | null
+    entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
+    detalhes?: StringNullableFilter<"AuditLog"> | string | null
+    ip?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+  }
+
+  export type SinalVitalUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: SinalVitalWhereUniqueInput
+    update: XOR<SinalVitalUpdateWithoutRegistadoPorInput, SinalVitalUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<SinalVitalCreateWithoutRegistadoPorInput, SinalVitalUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type SinalVitalUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: SinalVitalWhereUniqueInput
+    data: XOR<SinalVitalUpdateWithoutRegistadoPorInput, SinalVitalUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type SinalVitalUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: SinalVitalScalarWhereInput
+    data: XOR<SinalVitalUpdateManyMutationInput, SinalVitalUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type SinalVitalScalarWhereInput = {
+    AND?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+    OR?: SinalVitalScalarWhereInput[]
+    NOT?: SinalVitalScalarWhereInput | SinalVitalScalarWhereInput[]
+    id?: StringFilter<"SinalVital"> | string
+    doenteId?: StringFilter<"SinalVital"> | string
+    registadoPorId?: StringFilter<"SinalVital"> | string
+    data?: DateTimeFilter<"SinalVital"> | Date | string
+    pressaoSistolica?: IntNullableFilter<"SinalVital"> | number | null
+    pressaoDiastolica?: IntNullableFilter<"SinalVital"> | number | null
+    pulso?: IntNullableFilter<"SinalVital"> | number | null
+    temperatura?: FloatNullableFilter<"SinalVital"> | number | null
+    saturacaoO2?: IntNullableFilter<"SinalVital"> | number | null
+    frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
+    peso?: FloatNullableFilter<"SinalVital"> | number | null
+    notas?: StringNullableFilter<"SinalVital"> | string | null
+  }
+
+  export type DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: DispositivoTokenWhereUniqueInput
+    update: XOR<DispositivoTokenUpdateWithoutUtilizadorInput, DispositivoTokenUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<DispositivoTokenCreateWithoutUtilizadorInput, DispositivoTokenUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type DispositivoTokenUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: DispositivoTokenWhereUniqueInput
+    data: XOR<DispositivoTokenUpdateWithoutUtilizadorInput, DispositivoTokenUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type DispositivoTokenUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: DispositivoTokenScalarWhereInput
+    data: XOR<DispositivoTokenUpdateManyMutationInput, DispositivoTokenUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type DispositivoTokenScalarWhereInput = {
+    AND?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
+    OR?: DispositivoTokenScalarWhereInput[]
+    NOT?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
+    id?: StringFilter<"DispositivoToken"> | string
+    utilizadorId?: StringFilter<"DispositivoToken"> | string
+    token?: StringFilter<"DispositivoToken"> | string
+    plataforma?: StringFilter<"DispositivoToken"> | string
+    criadoEm?: DateTimeFilter<"DispositivoToken"> | Date | string
+  }
+
+  export type AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    update: XOR<AvaliacaoRiscoUpdateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type AvaliacaoRiscoUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    data: XOR<AvaliacaoRiscoUpdateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type AvaliacaoRiscoUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: AvaliacaoRiscoScalarWhereInput
+    data: XOR<AvaliacaoRiscoUpdateManyMutationInput, AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type AvaliacaoRiscoScalarWhereInput = {
+    AND?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+    OR?: AvaliacaoRiscoScalarWhereInput[]
+    NOT?: AvaliacaoRiscoScalarWhereInput | AvaliacaoRiscoScalarWhereInput[]
+    id?: StringFilter<"AvaliacaoRisco"> | string
+    doenteId?: StringFilter<"AvaliacaoRisco"> | string
+    tipo?: StringFilter<"AvaliacaoRisco"> | string
+    pontuacao?: IntFilter<"AvaliacaoRisco"> | number
+    itens?: JsonFilter<"AvaliacaoRisco">
+    risco?: StringFilter<"AvaliacaoRisco"> | string
+    registadoPorId?: StringFilter<"AvaliacaoRisco"> | string
+    criadaEm?: DateTimeFilter<"AvaliacaoRisco"> | Date | string
+  }
+
+  export type SumarioAltaUpsertWithWhereUniqueWithoutCriadoPorInput = {
+    where: SumarioAltaWhereUniqueInput
+    update: XOR<SumarioAltaUpdateWithoutCriadoPorInput, SumarioAltaUncheckedUpdateWithoutCriadoPorInput>
+    create: XOR<SumarioAltaCreateWithoutCriadoPorInput, SumarioAltaUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type SumarioAltaUpdateWithWhereUniqueWithoutCriadoPorInput = {
+    where: SumarioAltaWhereUniqueInput
+    data: XOR<SumarioAltaUpdateWithoutCriadoPorInput, SumarioAltaUncheckedUpdateWithoutCriadoPorInput>
+  }
+
+  export type SumarioAltaUpdateManyWithWhereWithoutCriadoPorInput = {
+    where: SumarioAltaScalarWhereInput
+    data: XOR<SumarioAltaUpdateManyMutationInput, SumarioAltaUncheckedUpdateManyWithoutCriadoPorInput>
+  }
+
+  export type SumarioAltaScalarWhereInput = {
+    AND?: SumarioAltaScalarWhereInput | SumarioAltaScalarWhereInput[]
+    OR?: SumarioAltaScalarWhereInput[]
+    NOT?: SumarioAltaScalarWhereInput | SumarioAltaScalarWhereInput[]
+    id?: StringFilter<"SumarioAlta"> | string
+    doenteId?: StringFilter<"SumarioAlta"> | string
+    motivoAlta?: StringFilter<"SumarioAlta"> | string
+    destino?: StringNullableFilter<"SumarioAlta"> | string | null
+    resumoClinical?: StringFilter<"SumarioAlta"> | string
+    prescricaoSaida?: StringNullableFilter<"SumarioAlta"> | string | null
+    medicoFamilia?: StringNullableFilter<"SumarioAlta"> | string | null
+    criadoPorId?: StringFilter<"SumarioAlta"> | string
+    criadoEm?: DateTimeFilter<"SumarioAlta"> | Date | string
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -28344,6 +41085,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -28365,6 +41112,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -28402,6 +41155,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -28423,6 +41182,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -28470,6 +41235,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -28498,6 +41268,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -28703,6 +41478,181 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SinalVitalCreateWithoutDoenteInput = {
+    id?: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+    registadoPor: UtilizadorCreateNestedOneWithoutSinaisVitaisRegistadosInput
+  }
+
+  export type SinalVitalUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    registadoPorId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type SinalVitalCreateOrConnectWithoutDoenteInput = {
+    where: SinalVitalWhereUniqueInput
+    create: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type SinalVitalCreateManyDoenteInputEnvelope = {
+    data: SinalVitalCreateManyDoenteInput | SinalVitalCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AlergiaCreateWithoutDoenteInput = {
+    id?: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type AlergiaUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type AlergiaCreateOrConnectWithoutDoenteInput = {
+    where: AlergiaWhereUniqueInput
+    create: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AlergiaCreateManyDoenteInputEnvelope = {
+    data: AlergiaCreateManyDoenteInput | AlergiaCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContactoEmergenciaCreateWithoutDoenteInput = {
+    id?: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+  }
+
+  export type ContactoEmergenciaUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+  }
+
+  export type ContactoEmergenciaCreateOrConnectWithoutDoenteInput = {
+    where: ContactoEmergenciaWhereUniqueInput
+    create: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type ContactoEmergenciaCreateManyDoenteInputEnvelope = {
+    data: ContactoEmergenciaCreateManyDoenteInput | ContactoEmergenciaCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AlertaClinicoCreateWithoutDoenteInput = {
+    id?: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AlertaClinicoUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AlertaClinicoCreateOrConnectWithoutDoenteInput = {
+    where: AlertaClinicoWhereUniqueInput
+    create: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AlertaClinicoCreateManyDoenteInputEnvelope = {
+    data: AlertaClinicoCreateManyDoenteInput | AlertaClinicoCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AvaliacaoRiscoCreateWithoutDoenteInput = {
+    id?: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    criadaEm?: Date | string
+    registadoPor: UtilizadorCreateNestedOneWithoutAvaliacoesRiscoInput
+  }
+
+  export type AvaliacaoRiscoUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    registadoPorId: string
+    criadaEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoCreateOrConnectWithoutDoenteInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    create: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AvaliacaoRiscoCreateManyDoenteInputEnvelope = {
+    data: AvaliacaoRiscoCreateManyDoenteInput | AvaliacaoRiscoCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SumarioAltaCreateWithoutDoenteInput = {
+    id?: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoEm?: Date | string
+    criadoPor: UtilizadorCreateNestedOneWithoutSumariosAltaInput
+  }
+
+  export type SumarioAltaUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type SumarioAltaCreateOrConnectWithoutDoenteInput = {
+    where: SumarioAltaWhereUniqueInput
+    create: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -28765,6 +41715,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -28793,6 +41748,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -28917,6 +41877,156 @@ export namespace Prisma {
     doenteId?: StringFilter<"PassagemTurno"> | string
   }
 
+  export type SinalVitalUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: SinalVitalWhereUniqueInput
+    update: XOR<SinalVitalUpdateWithoutDoenteInput, SinalVitalUncheckedUpdateWithoutDoenteInput>
+    create: XOR<SinalVitalCreateWithoutDoenteInput, SinalVitalUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type SinalVitalUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: SinalVitalWhereUniqueInput
+    data: XOR<SinalVitalUpdateWithoutDoenteInput, SinalVitalUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type SinalVitalUpdateManyWithWhereWithoutDoenteInput = {
+    where: SinalVitalScalarWhereInput
+    data: XOR<SinalVitalUpdateManyMutationInput, SinalVitalUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type AlergiaUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: AlergiaWhereUniqueInput
+    update: XOR<AlergiaUpdateWithoutDoenteInput, AlergiaUncheckedUpdateWithoutDoenteInput>
+    create: XOR<AlergiaCreateWithoutDoenteInput, AlergiaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AlergiaUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: AlergiaWhereUniqueInput
+    data: XOR<AlergiaUpdateWithoutDoenteInput, AlergiaUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type AlergiaUpdateManyWithWhereWithoutDoenteInput = {
+    where: AlergiaScalarWhereInput
+    data: XOR<AlergiaUpdateManyMutationInput, AlergiaUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type AlergiaScalarWhereInput = {
+    AND?: AlergiaScalarWhereInput | AlergiaScalarWhereInput[]
+    OR?: AlergiaScalarWhereInput[]
+    NOT?: AlergiaScalarWhereInput | AlergiaScalarWhereInput[]
+    id?: StringFilter<"Alergia"> | string
+    doenteId?: StringFilter<"Alergia"> | string
+    alergenio?: StringFilter<"Alergia"> | string
+    tipo?: StringFilter<"Alergia"> | string
+    severidade?: StringFilter<"Alergia"> | string
+    notas?: StringNullableFilter<"Alergia"> | string | null
+    criadaEm?: DateTimeFilter<"Alergia"> | Date | string
+  }
+
+  export type ContactoEmergenciaUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: ContactoEmergenciaWhereUniqueInput
+    update: XOR<ContactoEmergenciaUpdateWithoutDoenteInput, ContactoEmergenciaUncheckedUpdateWithoutDoenteInput>
+    create: XOR<ContactoEmergenciaCreateWithoutDoenteInput, ContactoEmergenciaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type ContactoEmergenciaUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: ContactoEmergenciaWhereUniqueInput
+    data: XOR<ContactoEmergenciaUpdateWithoutDoenteInput, ContactoEmergenciaUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type ContactoEmergenciaUpdateManyWithWhereWithoutDoenteInput = {
+    where: ContactoEmergenciaScalarWhereInput
+    data: XOR<ContactoEmergenciaUpdateManyMutationInput, ContactoEmergenciaUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type ContactoEmergenciaScalarWhereInput = {
+    AND?: ContactoEmergenciaScalarWhereInput | ContactoEmergenciaScalarWhereInput[]
+    OR?: ContactoEmergenciaScalarWhereInput[]
+    NOT?: ContactoEmergenciaScalarWhereInput | ContactoEmergenciaScalarWhereInput[]
+    id?: StringFilter<"ContactoEmergencia"> | string
+    doenteId?: StringFilter<"ContactoEmergencia"> | string
+    nome?: StringFilter<"ContactoEmergencia"> | string
+    relacao?: StringFilter<"ContactoEmergencia"> | string
+    telefone?: StringFilter<"ContactoEmergencia"> | string
+    principal?: BoolFilter<"ContactoEmergencia"> | boolean
+  }
+
+  export type AlertaClinicoUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: AlertaClinicoWhereUniqueInput
+    update: XOR<AlertaClinicoUpdateWithoutDoenteInput, AlertaClinicoUncheckedUpdateWithoutDoenteInput>
+    create: XOR<AlertaClinicoCreateWithoutDoenteInput, AlertaClinicoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AlertaClinicoUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: AlertaClinicoWhereUniqueInput
+    data: XOR<AlertaClinicoUpdateWithoutDoenteInput, AlertaClinicoUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type AlertaClinicoUpdateManyWithWhereWithoutDoenteInput = {
+    where: AlertaClinicoScalarWhereInput
+    data: XOR<AlertaClinicoUpdateManyMutationInput, AlertaClinicoUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type AlertaClinicoScalarWhereInput = {
+    AND?: AlertaClinicoScalarWhereInput | AlertaClinicoScalarWhereInput[]
+    OR?: AlertaClinicoScalarWhereInput[]
+    NOT?: AlertaClinicoScalarWhereInput | AlertaClinicoScalarWhereInput[]
+    id?: StringFilter<"AlertaClinico"> | string
+    doenteId?: StringFilter<"AlertaClinico"> | string
+    tipo?: StringFilter<"AlertaClinico"> | string
+    mensagem?: StringFilter<"AlertaClinico"> | string
+    lido?: BoolFilter<"AlertaClinico"> | boolean
+    criadoEm?: DateTimeFilter<"AlertaClinico"> | Date | string
+  }
+
+  export type AvaliacaoRiscoUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    update: XOR<AvaliacaoRiscoUpdateWithoutDoenteInput, AvaliacaoRiscoUncheckedUpdateWithoutDoenteInput>
+    create: XOR<AvaliacaoRiscoCreateWithoutDoenteInput, AvaliacaoRiscoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type AvaliacaoRiscoUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: AvaliacaoRiscoWhereUniqueInput
+    data: XOR<AvaliacaoRiscoUpdateWithoutDoenteInput, AvaliacaoRiscoUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type AvaliacaoRiscoUpdateManyWithWhereWithoutDoenteInput = {
+    where: AvaliacaoRiscoScalarWhereInput
+    data: XOR<AvaliacaoRiscoUpdateManyMutationInput, AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteInput>
+  }
+
+  export type SumarioAltaUpsertWithoutDoenteInput = {
+    update: XOR<SumarioAltaUpdateWithoutDoenteInput, SumarioAltaUncheckedUpdateWithoutDoenteInput>
+    create: XOR<SumarioAltaCreateWithoutDoenteInput, SumarioAltaUncheckedCreateWithoutDoenteInput>
+    where?: SumarioAltaWhereInput
+  }
+
+  export type SumarioAltaUpdateToOneWithWhereWithoutDoenteInput = {
+    where?: SumarioAltaWhereInput
+    data: XOR<SumarioAltaUpdateWithoutDoenteInput, SumarioAltaUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type SumarioAltaUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutSumariosAltaNestedInput
+  }
+
+  export type SumarioAltaUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     numeroFuncionario: string
@@ -28943,6 +42053,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -28971,6 +42086,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -29173,6 +42293,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -29201,6 +42326,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -29318,6 +42448,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -29339,6 +42475,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -29372,6 +42514,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -29400,6 +42547,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -29468,6 +42620,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -29489,6 +42647,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -29528,6 +42692,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -29556,6 +42725,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -29652,6 +42826,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -29680,6 +42859,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -29761,6 +42945,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -29789,6 +42978,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -29872,6 +43066,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -29893,6 +43093,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -30004,6 +43210,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -30025,6 +43237,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -30077,6 +43295,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -30098,6 +43322,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -30131,6 +43361,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -30159,6 +43394,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -30233,6 +43473,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -30254,6 +43500,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -30293,6 +43545,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -30321,6 +43578,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -30342,6 +43604,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -30363,6 +43631,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -30396,6 +43670,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -30424,6 +43703,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -30457,6 +43741,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -30485,6 +43774,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -30553,6 +43847,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -30574,6 +43874,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -30613,6 +43919,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -30641,6 +43952,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -30680,6 +43996,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -30708,6 +44029,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -30766,6 +44092,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -30787,6 +44119,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -30820,6 +44158,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -30848,6 +44191,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -30911,6 +44259,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -30932,6 +44286,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -30971,6 +44331,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -30999,6 +44364,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -31067,6 +44437,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -31088,6 +44464,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -31121,6 +44503,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -31149,6 +44536,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -31223,6 +44615,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -31244,6 +44642,12 @@ export namespace Prisma {
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -31283,6 +44687,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -31311,6 +44720,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -31339,6 +44753,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -31367,6 +44786,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -31439,6 +44863,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -31467,6 +44896,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -31712,6 +45146,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -31740,6 +45179,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -31813,6 +45257,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -31841,6 +45290,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -31869,6 +45323,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -31897,6 +45356,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -31930,6 +45394,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -31958,6 +45427,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -32014,6 +45488,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -32042,6 +45521,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -32086,6 +45570,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -32114,6 +45603,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -32153,6 +45647,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -32181,6 +45680,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -32249,6 +45753,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -32277,6 +45786,11 @@ export namespace Prisma {
     atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -32321,6 +45835,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -32342,6 +45862,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
     notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
     passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -32375,6 +45901,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -32403,6 +45934,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -32436,6 +45972,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -32464,6 +46005,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -32530,6 +46076,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -32551,6 +46103,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -32590,6 +46148,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -32618,6 +46181,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -32657,6 +46225,11 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -32685,6 +46258,1495 @@ export namespace Prisma {
     trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
     trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type DoenteCreateWithoutSinaisVitaisInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutSinaisVitaisInput, DoenteUncheckedCreateWithoutSinaisVitaisInput>
+  }
+
+  export type UtilizadorCreateWithoutSinaisVitaisRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput>
+  }
+
+  export type DoenteUpsertWithoutSinaisVitaisInput = {
+    update: XOR<DoenteUpdateWithoutSinaisVitaisInput, DoenteUncheckedUpdateWithoutSinaisVitaisInput>
+    create: XOR<DoenteCreateWithoutSinaisVitaisInput, DoenteUncheckedCreateWithoutSinaisVitaisInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutSinaisVitaisInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutSinaisVitaisInput, DoenteUncheckedUpdateWithoutSinaisVitaisInput>
+  }
+
+  export type DoenteUpdateWithoutSinaisVitaisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
+    update: XOR<UtilizadorUpdateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput>
+    create: XOR<UtilizadorCreateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutSinaisVitaisRegistadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutSinaisVitaisRegistadosInput, UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutSinaisVitaisRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutAuditLogsInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAuditLogsInput, UtilizadorUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type UtilizadorUpsertWithoutAuditLogsInput = {
+    update: XOR<UtilizadorUpdateWithoutAuditLogsInput, UtilizadorUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<UtilizadorCreateWithoutAuditLogsInput, UtilizadorUncheckedCreateWithoutAuditLogsInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAuditLogsInput, UtilizadorUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UtilizadorUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type DoenteCreateWithoutAlergiasInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutAlergiasInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutAlergiasInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
+  }
+
+  export type DoenteUpsertWithoutAlergiasInput = {
+    update: XOR<DoenteUpdateWithoutAlergiasInput, DoenteUncheckedUpdateWithoutAlergiasInput>
+    create: XOR<DoenteCreateWithoutAlergiasInput, DoenteUncheckedCreateWithoutAlergiasInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutAlergiasInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutAlergiasInput, DoenteUncheckedUpdateWithoutAlergiasInput>
+  }
+
+  export type DoenteUpdateWithoutAlergiasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutAlergiasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteCreateWithoutContactosEmergenciaInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutContactosEmergenciaInput, DoenteUncheckedCreateWithoutContactosEmergenciaInput>
+  }
+
+  export type DoenteUpsertWithoutContactosEmergenciaInput = {
+    update: XOR<DoenteUpdateWithoutContactosEmergenciaInput, DoenteUncheckedUpdateWithoutContactosEmergenciaInput>
+    create: XOR<DoenteCreateWithoutContactosEmergenciaInput, DoenteUncheckedCreateWithoutContactosEmergenciaInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutContactosEmergenciaInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutContactosEmergenciaInput, DoenteUncheckedUpdateWithoutContactosEmergenciaInput>
+  }
+
+  export type DoenteUpdateWithoutContactosEmergenciaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteCreateWithoutAlertasClinicosInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutAlertasClinicosInput, DoenteUncheckedCreateWithoutAlertasClinicosInput>
+  }
+
+  export type DoenteUpsertWithoutAlertasClinicosInput = {
+    update: XOR<DoenteUpdateWithoutAlertasClinicosInput, DoenteUncheckedUpdateWithoutAlertasClinicosInput>
+    create: XOR<DoenteCreateWithoutAlertasClinicosInput, DoenteUncheckedCreateWithoutAlertasClinicosInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutAlertasClinicosInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutAlertasClinicosInput, DoenteUncheckedUpdateWithoutAlertasClinicosInput>
+  }
+
+  export type DoenteUpdateWithoutAlertasClinicosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteCreateWithoutAvaliacoesRiscoInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutAvaliacoesRiscoInput, DoenteUncheckedCreateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type UtilizadorCreateWithoutAvaliacoesRiscoInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type DoenteUpsertWithoutAvaliacoesRiscoInput = {
+    update: XOR<DoenteUpdateWithoutAvaliacoesRiscoInput, DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput>
+    create: XOR<DoenteCreateWithoutAvaliacoesRiscoInput, DoenteUncheckedCreateWithoutAvaliacoesRiscoInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutAvaliacoesRiscoInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutAvaliacoesRiscoInput, DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type DoenteUpdateWithoutAvaliacoesRiscoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
+    update: XOR<UtilizadorUpdateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput>
+    create: XOR<UtilizadorCreateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAvaliacoesRiscoInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAvaliacoesRiscoInput, UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput>
+  }
+
+  export type UtilizadorUpdateWithoutAvaliacoesRiscoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type DoenteCreateWithoutSumarioAltaInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutSumarioAltaInput, DoenteUncheckedCreateWithoutSumarioAltaInput>
+  }
+
+  export type UtilizadorCreateWithoutSumariosAltaInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutSumariosAltaInput, UtilizadorUncheckedCreateWithoutSumariosAltaInput>
+  }
+
+  export type DoenteUpsertWithoutSumarioAltaInput = {
+    update: XOR<DoenteUpdateWithoutSumarioAltaInput, DoenteUncheckedUpdateWithoutSumarioAltaInput>
+    create: XOR<DoenteCreateWithoutSumarioAltaInput, DoenteUncheckedCreateWithoutSumarioAltaInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutSumarioAltaInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutSumarioAltaInput, DoenteUncheckedUpdateWithoutSumarioAltaInput>
+  }
+
+  export type DoenteUpdateWithoutSumarioAltaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutSumariosAltaInput = {
+    update: XOR<UtilizadorUpdateWithoutSumariosAltaInput, UtilizadorUncheckedUpdateWithoutSumariosAltaInput>
+    create: XOR<UtilizadorCreateWithoutSumariosAltaInput, UtilizadorUncheckedCreateWithoutSumariosAltaInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutSumariosAltaInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutSumariosAltaInput, UtilizadorUncheckedUpdateWithoutSumariosAltaInput>
+  }
+
+  export type UtilizadorUpdateWithoutSumariosAltaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutDispositivosTokensInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutDispositivosTokensInput, UtilizadorUncheckedCreateWithoutDispositivosTokensInput>
+  }
+
+  export type UtilizadorUpsertWithoutDispositivosTokensInput = {
+    update: XOR<UtilizadorUpdateWithoutDispositivosTokensInput, UtilizadorUncheckedUpdateWithoutDispositivosTokensInput>
+    create: XOR<UtilizadorCreateWithoutDispositivosTokensInput, UtilizadorUncheckedCreateWithoutDispositivosTokensInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutDispositivosTokensInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutDispositivosTokensInput, UtilizadorUncheckedUpdateWithoutDispositivosTokensInput>
+  }
+
+  export type UtilizadorUpdateWithoutDispositivosTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
   }
 
   export type TurnoCreateManyChefeTurnoInput = {
@@ -32834,6 +47896,58 @@ export namespace Prisma {
     solicitanteId: string
     turnoId: string
     destinatarioId: string
+  }
+
+  export type AuditLogCreateManyUtilizadorInput = {
+    id?: string
+    acao: string
+    entidadeId?: string | null
+    entidadeTipo?: string | null
+    detalhes?: string | null
+    ip?: string | null
+    createdAt?: Date | string
+  }
+
+  export type SinalVitalCreateManyRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type DispositivoTokenCreateManyUtilizadorInput = {
+    id?: string
+    token: string
+    plataforma: string
+    criadoEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoCreateManyRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    criadaEm?: Date | string
+  }
+
+  export type SumarioAltaCreateManyCriadoPorInput = {
+    id?: string
+    doenteId: string
+    motivoAlta: string
+    destino?: string | null
+    resumoClinical: string
+    prescricaoSaida?: string | null
+    medicoFamilia?: string | null
+    criadoEm?: Date | string
   }
 
   export type TurnoUpdateWithoutChefeTurnoInput = {
@@ -33091,6 +48205,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -33112,6 +48232,12 @@ export namespace Prisma {
     registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
     notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -33313,6 +48439,162 @@ export namespace Prisma {
     destinatarioId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AuditLogUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    acao?: StringFieldUpdateOperationsInput | string
+    entidadeId?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
+    detalhes?: NullableStringFieldUpdateOperationsInput | string | null
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SinalVitalUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    doente?: DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput
+  }
+
+  export type SinalVitalUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SinalVitalUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DispositivoTokenUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DispositivoTokenUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DispositivoTokenUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    plataforma?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SumarioAltaUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutSumarioAltaNestedInput
+  }
+
+  export type SumarioAltaUncheckedUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SumarioAltaUncheckedUpdateManyWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    motivoAlta?: StringFieldUpdateOperationsInput | string
+    destino?: NullableStringFieldUpdateOperationsInput | string | null
+    resumoClinical?: StringFieldUpdateOperationsInput | string
+    prescricaoSaida?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoFamilia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyDoenteInput = {
     id?: string
     enfermeiroId: string
@@ -33374,6 +48656,55 @@ export namespace Prisma {
     id?: string
     turnoAnteriorId: string
     turnoAtualId: string
+  }
+
+  export type SinalVitalCreateManyDoenteInput = {
+    id?: string
+    registadoPorId: string
+    data?: Date | string
+    pressaoSistolica?: number | null
+    pressaoDiastolica?: number | null
+    pulso?: number | null
+    temperatura?: number | null
+    saturacaoO2?: number | null
+    frequenciaRespiratoria?: number | null
+    peso?: number | null
+    notas?: string | null
+  }
+
+  export type AlergiaCreateManyDoenteInput = {
+    id?: string
+    alergenio: string
+    tipo: string
+    severidade: string
+    notas?: string | null
+    criadaEm?: Date | string
+  }
+
+  export type ContactoEmergenciaCreateManyDoenteInput = {
+    id?: string
+    nome: string
+    relacao: string
+    telefone: string
+    principal?: boolean
+  }
+
+  export type AlertaClinicoCreateManyDoenteInput = {
+    id?: string
+    tipo: string
+    mensagem: string
+    lido?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AvaliacaoRiscoCreateManyDoenteInput = {
+    id?: string
+    tipo: string
+    pontuacao: number
+    itens: JsonNullValueInput | InputJsonValue
+    risco: string
+    registadoPorId: string
+    criadaEm?: Date | string
   }
 
   export type AtribuicaoDoenteUpdateWithoutDoenteInput = {
@@ -33565,6 +48896,153 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     turnoAnteriorId?: StringFieldUpdateOperationsInput | string
     turnoAtualId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SinalVitalUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutSinaisVitaisRegistadosNestedInput
+  }
+
+  export type SinalVitalUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SinalVitalUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    pressaoSistolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pressaoDiastolica?: NullableIntFieldUpdateOperationsInput | number | null
+    pulso?: NullableIntFieldUpdateOperationsInput | number | null
+    temperatura?: NullableFloatFieldUpdateOperationsInput | number | null
+    saturacaoO2?: NullableIntFieldUpdateOperationsInput | number | null
+    frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
+    peso?: NullableFloatFieldUpdateOperationsInput | number | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AlergiaUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlergiaUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlergiaUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    alergenio?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    severidade?: StringFieldUpdateOperationsInput | string
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContactoEmergenciaUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ContactoEmergenciaUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ContactoEmergenciaUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    relacao?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    principal?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AlertaClinicoUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertaClinicoUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AlertaClinicoUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    mensagem?: StringFieldUpdateOperationsInput | string
+    lido?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutAvaliacoesRiscoNestedInput
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    itens?: JsonNullValueInput | InputJsonValue
+    risco?: StringFieldUpdateOperationsInput | string
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AtribuicaoDoenteCreateManyTurnoInput = {

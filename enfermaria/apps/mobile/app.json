@@ -31,6 +31,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Permitir acesso à câmara para ler QR codes dos doentes"
+        }
       ]
     ]
   }

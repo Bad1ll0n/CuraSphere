@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert,
+  View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Platform,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { logout, Utilizador } from '../lib/auth';
 import HorariosScreen from './HorariosScreen';
 import AtribuicoesScreen from './AtribuicoesScreen';
 import CamasScreen from './CamasScreen';
 import TrocasScreen from './TrocasScreen';
 import UtilizadoresScreen from './UtilizadoresScreen';
+import TurnoScreen from './TurnoScreen';
+import PassagemTurnoScreen from './PassagemTurnoScreen';
 
-type SubTela = null | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores';
+type SubTela = null | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'turno' | 'passagem';
 
 const roleLabel: Record<string, string> = {
   enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
@@ -24,17 +27,26 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
 
   const voltar = () => setSubTela(null);
 
-  if (subTela === 'horarios')    return <HorariosScreen utilizador={utilizador} onVoltar={voltar} />;
-  if (subTela === 'atribuicoes') return <AtribuicoesScreen utilizador={utilizador} onVoltar={voltar} />;
-  if (subTela === 'camas')       return <CamasScreen utilizador={utilizador} onVoltar={voltar} />;
-  if (subTela === 'trocas')      return <TrocasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'horarios')     return <HorariosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'atribuicoes')  return <AtribuicoesScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'camas')        return <CamasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'trocas')       return <TrocasScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'utilizadores') return <UtilizadoresScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'turno')        return <TurnoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'passagem')     return <PassagemTurnoScreen utilizador={utilizador} onVoltar={voltar} />;
 
-  const confirmarLogout = () => {
-    Alert.alert('Sair', 'Tem a certeza que quer sair?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Sair', style: 'destructive', onPress: async () => { await logout(); onLogout(); } },
-    ]);
+  const confirmarLogout = async () => {
+    if (Platform.OS === 'web') {
+      if ((window as any).confirm('Tem a certeza que quer terminar a sessão?')) {
+        await logout();
+        onLogout();
+      }
+    } else {
+      Alert.alert('Sair', 'Tem a certeza que quer sair?', [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Sair', style: 'destructive', onPress: async () => { await logout(); onLogout(); } },
+      ]);
+    }
   };
 
   const isAdmin = utilizador.role === 'administrativo';
@@ -43,12 +55,14 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   const podeVerAtribuicoes = ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno', 'enfermeiro', 'medico', 'auxiliar'].includes(utilizador.role);
   const podeGerir = isAdmin || isChefe;
 
-  const itens: { key: SubTela; emoji: string; titulo: string; sub: string; visivel: boolean }[] = [
-    { key: 'horarios',     emoji: '📅', titulo: 'Horários',      sub: 'Escala mensal de turnos',       visivel: true },
-    { key: 'atribuicoes',  emoji: '📋', titulo: 'Atribuições',   sub: 'Doentes por profissional',      visivel: podeVerAtribuicoes },
-    { key: 'camas',        emoji: '🛏️', titulo: 'Camas',          sub: 'Mapa de camas e quartos',       visivel: true },
-    { key: 'trocas',       emoji: '🔁', titulo: 'Trocas de Turno', sub: 'Pedidos de cobertura',         visivel: true },
-    { key: 'utilizadores', emoji: '👥', titulo: 'Utilizadores',  sub: 'Gestão de profissionais',       visivel: podeVerUtilizadores },
+  const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean }[] = [
+    { key: 'turno',        icon: 'time-outline',            cor: '#8b5cf6', titulo: 'Turno',           sub: 'Doentes e tarefas do meu turno',  visivel: true },
+    { key: 'passagem',     icon: 'git-merge-outline',       cor: '#06b6d4', titulo: 'Passagem de Turno', sub: 'Informação do turno anterior',    visivel: true },
+    { key: 'horarios',     icon: 'calendar-outline',        cor: '#6366f1', titulo: 'Horários',        sub: 'Escala mensal de turnos',        visivel: true },
+    { key: 'atribuicoes',  icon: 'clipboard-outline',       cor: '#0ea5e9', titulo: 'Atribuições',     sub: 'Doentes por profissional',       visivel: podeVerAtribuicoes },
+    { key: 'camas',        icon: 'bed-outline',             cor: '#22c55e', titulo: 'Camas',           sub: 'Mapa de camas e quartos',        visivel: true },
+    { key: 'trocas',       icon: 'swap-horizontal-outline', cor: '#f59e0b', titulo: 'Trocas de Turno', sub: 'Pedidos de cobertura',           visivel: true },
+    { key: 'utilizadores', icon: 'people-outline',          cor: '#ec4899', titulo: 'Utilizadores',    sub: 'Gestão de profissionais',        visivel: podeVerUtilizadores },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);
@@ -78,8 +92,8 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
               onPress={() => setSubTela(item.key)}
               activeOpacity={0.7}
             >
-              <View style={s.menuEmoji}>
-                <Text style={s.menuEmojiTexto}>{item.emoji}</Text>
+              <View style={[s.menuIconBox, { backgroundColor: item.cor + '18' }]}>
+                <Ionicons name={item.icon} size={20} color={item.cor} />
               </View>
               <View style={s.menuTextos}>
                 <Text style={s.menuTitulo}>{item.titulo}</Text>
@@ -117,8 +131,7 @@ const s = StyleSheet.create({
   menuCard: { backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 2 },
   menuItem: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
   menuItemBorder: { borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
-  menuEmoji: { width: 42, height: 42, borderRadius: 12, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' },
-  menuEmojiTexto: { fontSize: 20 },
+  menuIconBox: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   menuTextos: { flex: 1 },
   menuTitulo: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
   menuSub: { fontSize: 12, color: '#94a3b8', marginTop: 2 },

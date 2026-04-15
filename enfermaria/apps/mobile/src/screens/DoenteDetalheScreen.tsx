@@ -31,7 +31,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const [loading, setLoading] = useState(true);
   const [nota, setNota] = useState('');
   const [gravandoNota, setGravandoNota] = useState(false);
-  const [abaAtiva, setAbaAtiva] = useState<'info' | 'tarefas' | 'medicacao' | 'notas'>('info');
+  const [abaAtiva, setAbaAtiva] = useState<'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas'>('info');
   const [emTurno, setEmTurno] = useState(false);
   const [alterandoEstado, setAlterandoEstado] = useState(false);
   const [salvando, setSalvando] = useState(false);
@@ -60,6 +60,62 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const [medHistorico, setMedHistorico] = useState<any[]>([]);
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
 
+  // Alergias
+  const [alergias, setAlergias] = useState<any[]>([]);
+  const [modalAlergia, setModalAlergia] = useState(false);
+  const [alergenio, setAlergenio] = useState('');
+  const [alergiaTipo, setAlergiaTipo] = useState('medicamento');
+  const [alergiaSev, setAlergiaSev] = useState('moderada');
+  const [alergiaNotas, setAlergiaNotas] = useState('');
+  const [salvandoAlergia, setSalvandoAlergia] = useState(false);
+
+  // Contactos de emergência
+  const [contactos, setContactos] = useState<any[]>([]);
+  const [modalContacto, setModalContacto] = useState(false);
+  const [contactoNome, setContactoNome] = useState('');
+  const [contactoRelacao, setContactoRelacao] = useState('');
+  const [contactoTel, setContactoTel] = useState('');
+  const [contactoPrincipal, setContactoPrincipal] = useState(false);
+  const [salvandoContacto, setSalvandoContacto] = useState(false);
+
+  // Alertas clínicos
+  const [alertas, setAlertas] = useState<any[]>([]);
+
+  // Escalas de risco
+  const [escalas, setEscalas] = useState<{ braden: any; morse: any }>({ braden: null, morse: null });
+  const [modalEscala, setModalEscala] = useState<'braden' | 'morse' | null>(null);
+  const [escalaItens, setEscalaItens] = useState<Record<string, number>>({});
+  const [salvandoEscala, setSalvandoEscala] = useState(false);
+
+  // Editar dados do doente
+  const [modalEditarDoente, setModalEditarDoente] = useState(false);
+  const [editDiagnostico, setEditDiagnostico] = useState('');
+  const [editAltaPrevista, setEditAltaPrevista] = useState('');
+  const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+
+  // Alta estruturada
+  const [modalAltaEstruturada, setModalAltaEstruturada] = useState(false);
+  const [altaMotivo, setAltaMotivo] = useState('melhoria');
+  const [altaDestino, setAltaDestino] = useState('domicilio');
+  const [altaResumo, setAltaResumo] = useState('');
+  const [altaPrescricao, setAltaPrescricao] = useState('');
+  const [altaMedFamilia, setAltaMedFamilia] = useState('');
+  const [salvandoAlta, setSalvandoAlta] = useState(false);
+
+  // Sinais vitais
+  const [sinaisVitais, setSinaisVitais] = useState<any[]>([]);
+  const [loadingVitais, setLoadingVitais] = useState(false);
+  const [modalVitais, setModalVitais] = useState(false);
+  const [salvandoVitais, setSalvandoVitais] = useState(false);
+  const [vPressaoS, setVPressaoS] = useState('');
+  const [vPressaoD, setVPressaoD] = useState('');
+  const [vPulso, setVPulso] = useState('');
+  const [vTemp, setVTemp] = useState('');
+  const [vSpO2, setVSpO2] = useState('');
+  const [vFreqResp, setVFreqResp] = useState('');
+  const [vPeso, setVPeso] = useState('');
+  const [vNotas, setVNotas] = useState('');
+
   const role = utilizador.role;
 
   const meuGrupoChave = ['medico', 'chefe_medicos'].includes(role) ? 'medico'
@@ -70,12 +126,152 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const podeAlterarEstado = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
   const podeCriarTarefa = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'auxiliar'].includes(role);
+  const podeRegistarVitais = ['enfermeiro', 'auxiliar', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
+  const podeDarAlta = ['medico', 'chefe_medicos', 'chefe_turno'].includes(role);
+  const podeEditarDoente = ['medico', 'chefe_medicos', 'chefe_turno', 'chefe_enfermeiros', 'administrativo'].includes(role);
 
   const gruposDisponiveis = (() => {
     if (['medico', 'chefe_medicos'].includes(role)) return ['medico', 'enfermeiro'];
     if (role === 'auxiliar') return ['auxiliar'];
     return ['enfermeiro', 'auxiliar'];
   })();
+
+  const carregarAlergias = async () => {
+    try { const r = await api.get(`/alergias/${doenteId}`); setAlergias(r.data); } catch { setAlergias([]); }
+  };
+
+  const carregarContactos = async () => {
+    try { const r = await api.get(`/contactos/${doenteId}`); setContactos(r.data); } catch { setContactos([]); }
+  };
+
+  const carregarAlertas = async () => {
+    try { const r = await api.get(`/alertas/${doenteId}`); setAlertas(r.data); } catch { setAlertas([]); }
+  };
+
+  const carregarEscalas = async () => {
+    try { const r = await api.get(`/escalas/${doenteId}`); setEscalas(r.data); } catch { }
+  };
+
+  const abrirEditarDoente = () => {
+    setEditDiagnostico(doente?.diagnosticoPrincipal ?? '');
+    setEditAltaPrevista(doente?.dataAltaPrevista ? doente.dataAltaPrevista.split('T')[0] : '');
+    setModalEditarDoente(true);
+  };
+
+  const submeterEdicaoDoente = async () => {
+    setSalvandoEdicao(true);
+    try {
+      await api.patch(`/doentes/${doenteId}`, {
+        diagnosticoPrincipal: editDiagnostico || undefined,
+        dataAltaPrevista: editAltaPrevista ? new Date(editAltaPrevista) : null,
+      });
+      setModalEditarDoente(false);
+      await carregar();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao editar doente');
+    } finally { setSalvandoEdicao(false); }
+  };
+
+  const submeterEscala = async () => {
+    if (!modalEscala) return;
+    setSalvandoEscala(true);
+    try {
+      await api.post(`/escalas/${doenteId}`, { tipo: modalEscala, itens: escalaItens });
+      setModalEscala(null); setEscalaItens({});
+      await carregarEscalas();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao registar escala');
+    } finally { setSalvandoEscala(false); }
+  };
+
+  const submeterAltaEstruturada = async () => {
+    if (!altaResumo.trim()) { Alert.alert('Atenção', 'O resumo clínico é obrigatório'); return; }
+    setSalvandoAlta(true);
+    try {
+      await api.post(`/doentes/${doenteId}/alta-estruturada`, {
+        motivoAlta: altaMotivo,
+        destino: altaMotivo !== 'obito' ? altaDestino : undefined,
+        resumoClinical: altaResumo,
+        prescricaoSaida: altaPrescricao || undefined,
+        medicoFamilia: altaMedFamilia || undefined,
+      });
+      setModalAltaEstruturada(false);
+      onVoltar();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao dar alta');
+    } finally { setSalvandoAlta(false); }
+  };
+
+  const submeterAlergia = async () => {
+    if (!alergenio.trim()) return;
+    setSalvandoAlergia(true);
+    try {
+      await api.post(`/alergias/${doenteId}`, { alergenio, tipo: alergiaTipo, severidade: alergiaSev, notas: alergiaNotas || undefined });
+      setModalAlergia(false);
+      await carregarAlergias();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao registar alergia');
+    } finally { setSalvandoAlergia(false); }
+  };
+
+  const removerAlergia = async (id: string) => {
+    try { await api.delete(`/alergias/${id}`); await carregarAlergias(); }
+    catch { Alert.alert('Erro', 'Não foi possível remover a alergia'); }
+  };
+
+  const submeterContacto = async () => {
+    if (!contactoNome.trim() || !contactoTel.trim()) return;
+    setSalvandoContacto(true);
+    try {
+      await api.post(`/contactos/${doenteId}`, { nome: contactoNome, relacao: contactoRelacao || 'outro', telefone: contactoTel, principal: contactoPrincipal });
+      setModalContacto(false);
+      await carregarContactos();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao guardar contacto');
+    } finally { setSalvandoContacto(false); }
+  };
+
+  const removerContacto = async (id: string) => {
+    try { await api.delete(`/contactos/${id}`); await carregarContactos(); }
+    catch { Alert.alert('Erro', 'Não foi possível remover o contacto'); }
+  };
+
+  const carregarVitais = async () => {
+    setLoadingVitais(true);
+    try {
+      const r = await api.get(`/sinais-vitais/${doenteId}`);
+      setSinaisVitais(r.data);
+    } catch { setSinaisVitais([]); }
+    finally { setLoadingVitais(false); }
+  };
+
+  const abrirModalVitais = () => {
+    setVPressaoS(''); setVPressaoD(''); setVPulso(''); setVTemp('');
+    setVSpO2(''); setVFreqResp(''); setVPeso(''); setVNotas('');
+    setModalVitais(true);
+  };
+
+  const submeterVitais = async () => {
+    setSalvandoVitais(true);
+    try {
+      await api.post(`/sinais-vitais/${doenteId}`, {
+        pressaoSistolica:       vPressaoS  ? parseInt(vPressaoS)   : undefined,
+        pressaoDiastolica:      vPressaoD  ? parseInt(vPressaoD)   : undefined,
+        pulso:                  vPulso     ? parseInt(vPulso)      : undefined,
+        temperatura:            vTemp      ? parseFloat(vTemp)     : undefined,
+        saturacaoO2:            vSpO2      ? parseInt(vSpO2)       : undefined,
+        frequenciaRespiratoria: vFreqResp  ? parseInt(vFreqResp)   : undefined,
+        peso:                   vPeso      ? parseFloat(vPeso)     : undefined,
+        notas:                  vNotas || undefined,
+      });
+      setModalVitais(false);
+      await carregarVitais();
+    } catch (e: any) {
+      Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao registar sinais vitais');
+    } finally {
+      setSalvandoVitais(false);
+    }
+  };
 
   const verificarTurnoAtivo = async () => {
     const agora = new Date();
@@ -110,6 +306,11 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   useFocusEffect(useCallback(() => {
     carregar();
     verificarTurnoAtivo();
+    carregarVitais();
+    carregarAlergias();
+    carregarContactos();
+    carregarAlertas();
+    carregarEscalas();
   }, [doenteId]));
 
   const gravarNota = async () => {
@@ -243,6 +444,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     { key: 'tarefas', label: `Tarefas (${tarefas.length})` },
     { key: 'medicacao', label: `Med. (${medicacoesAtivas.length})` },
     { key: 'notas', label: 'Notas' },
+    { key: 'vitais', label: 'Vitais' },
+    { key: 'escalas', label: 'Escalas' },
   ];
 
   return (
@@ -250,7 +453,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
       {/* Header */}
       <View style={s.header}>
         <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
-          <Text style={s.voltarTexto}>← Voltar</Text>
+          <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerInfo}>
           <Text style={s.headerNome}>{doente.nome}</Text>
@@ -267,6 +470,25 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         <Text style={s.headerSub}>Cama {doente.cama?.quarto}/{doente.cama?.numero} · Proc. {doente.numeroProcesso}</Text>
       </View>
 
+      {/* Banner de Alergias */}
+      {alergias.length > 0 && (
+        <View style={s.bannerAlergia}>
+          <Text style={s.bannerAlergiaTexto}>
+            ⚠ ALERGIA: {alergias.map((a: any) => `${a.alergenio} (${a.severidade})`).join(', ')}
+          </Text>
+        </View>
+      )}
+
+      {/* Banner de Alertas Clínicos */}
+      {alertas.length > 0 && (
+        <TouchableOpacity
+          style={s.bannerAlerta}
+          onPress={async () => { await api.patch(`/alertas/${doenteId}/ler-todos`); setAlertas([]); }}
+        >
+          <Text style={s.bannerAlertaTexto}>🚨 {alertas[0].mensagem}{alertas.length > 1 ? ` (+${alertas.length - 1})` : ''} — Toque para dispensar</Text>
+        </TouchableOpacity>
+      )}
+
       {/* Abas */}
       <View style={s.abas}>
         {abas.map((a) => (
@@ -281,6 +503,14 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         {/* Aba Info */}
         {abaAtiva === 'info' && (
           <View style={s.secao}>
+            {podeEditarDoente && (
+              <View style={s.secaoHeader}>
+                <Text style={s.secaoTitulo}>Dados Clínicos</Text>
+                <TouchableOpacity style={[s.iconBotao, s.iconBotaoAzul]} onPress={abrirEditarDoente}>
+                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '700' }}>✎</Text>
+                </TouchableOpacity>
+              </View>
+            )}
             <View style={s.infoCard}>
               <Text style={s.infoLabel}>Diagnóstico Principal</Text>
               <Text style={s.infoValor}>{doente.diagnosticoPrincipal}</Text>
@@ -349,6 +579,76 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
               </View>
             )}
           </View>
+
+          {/* Alergias */}
+          <View style={s.infoCard}>
+            <View style={s.secaoHeader}>
+              <Text style={s.infoLabel}>ALERGIAS</Text>
+              {podeRegistarVitais && (
+                <TouchableOpacity onPress={() => { setAlergenio(''); setAlergiaTipo('medicamento'); setAlergiaSev('moderada'); setAlergiaNotas(''); setModalAlergia(true); }} style={[s.iconBotao, s.iconBotaoAzul]}>
+                  <Text style={s.iconBotaoTextoAzul}>+</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {alergias.length === 0 ? (
+              <Text style={s.vazioTexto}>Sem alergias registadas</Text>
+            ) : alergias.map((a: any) => {
+              const cor = a.severidade === 'anafilaxia' ? '#ef4444' : a.severidade === 'grave' ? '#f97316' : a.severidade === 'moderada' ? '#f59e0b' : '#64748b';
+              return (
+                <View key={a.id} style={s.alergiaRow}>
+                  <View style={[s.alergiaBadge, { backgroundColor: cor + '20' }]}>
+                    <Text style={[s.alergiaBadgeTexto, { color: cor }]}>{a.severidade}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.alergiaNome}>{a.alergenio}</Text>
+                    <Text style={s.alergiaTipo}>{a.tipo}</Text>
+                  </View>
+                  {podeRegistarVitais && (
+                    <TouchableOpacity onPress={() => Alert.alert('Remover', `Remover alergia "${a.alergenio}"?`, [{ text: 'Cancelar', style: 'cancel' }, { text: 'Remover', style: 'destructive', onPress: () => removerAlergia(a.id) }])}>
+                      <Text style={{ color: '#ef4444', fontSize: 16, paddingHorizontal: 4 }}>✕</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Contactos de Emergência */}
+          <View style={s.infoCard}>
+            <View style={s.secaoHeader}>
+              <Text style={s.infoLabel}>CONTACTOS DE EMERGÊNCIA</Text>
+              <TouchableOpacity onPress={() => { setContactoNome(''); setContactoRelacao(''); setContactoTel(''); setContactoPrincipal(false); setModalContacto(true); }} style={[s.iconBotao, s.iconBotaoAzul]}>
+                <Text style={s.iconBotaoTextoAzul}>+</Text>
+              </TouchableOpacity>
+            </View>
+            {contactos.length === 0 ? (
+              <Text style={s.vazioTexto}>Sem contactos registados</Text>
+            ) : contactos.map((c: any) => (
+              <View key={c.id} style={s.contactoRow}>
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    <Text style={s.contactoNome}>{c.nome}</Text>
+                    {c.principal && <View style={s.contactoPrincipalBadge}><Text style={s.contactoPrincipalTexto}>Principal</Text></View>}
+                  </View>
+                  <Text style={s.contactoMeta}>{c.relacao} · {c.telefone}</Text>
+                </View>
+                <TouchableOpacity onPress={() => Alert.alert('Remover', `Remover contacto "${c.nome}"?`, [{ text: 'Cancelar', style: 'cancel' }, { text: 'Remover', style: 'destructive', onPress: () => removerContacto(c.id) }])}>
+                  <Text style={{ color: '#ef4444', fontSize: 16, paddingHorizontal: 4 }}>✕</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+
+          {/* Botão Dar Alta */}
+          {podeDarAlta && !doente.dataAlta && (
+            <TouchableOpacity
+              style={{ backgroundColor: '#dc2626', borderRadius: 12, paddingVertical: 14, alignItems: 'center', marginTop: 8, marginHorizontal: 16, marginBottom: 16 }}
+              onPress={() => { setAltaMotivo('melhoria'); setAltaDestino('domicilio'); setAltaResumo(''); setAltaPrescricao(''); setAltaMedFamilia(''); setModalAltaEstruturada(true); }}
+            >
+              <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15 }}>Dar Alta ao Doente</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         )}
 
         {/* Aba Tarefas — todos vêem, só o responsável pode concluir */}
@@ -445,6 +745,168 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
                 </View>
               </View>
             ))}
+          </View>
+        )}
+
+        {/* Aba Vitais */}
+        {abaAtiva === 'vitais' && (
+          <View style={s.secao}>
+            <View style={s.secaoHeader}>
+              <Text style={s.secaoTitulo}>Sinais Vitais</Text>
+              {podeRegistarVitais && (
+                <TouchableOpacity onPress={abrirModalVitais} style={[s.iconBotao, s.iconBotaoAzul]}>
+                  <Text style={s.iconBotaoTextoAzul}>+</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {loadingVitais ? (
+              <ActivityIndicator color="#2563eb" style={{ padding: 20 }} />
+            ) : sinaisVitais.length === 0 ? (
+              <Text style={s.vazioTexto}>Sem registos de sinais vitais</Text>
+            ) : sinaisVitais.map((sv: any, i: number) => {
+              const taCor = (() => {
+                const s = sv.pressaoSistolica;
+                if (!s) return '#94a3b8';
+                if (s >= 160 || s < 80) return '#ef4444';
+                if (s >= 140 || s < 90) return '#f59e0b';
+                return '#22c55e';
+              })();
+              const pulsoCor = (() => {
+                const p = sv.pulso;
+                if (!p) return '#94a3b8';
+                if (p > 120 || p < 50) return '#ef4444';
+                if (p > 100 || p < 60) return '#f59e0b';
+                return '#22c55e';
+              })();
+              const tempCor = (() => {
+                const t = sv.temperatura;
+                if (!t) return '#94a3b8';
+                if (t > 38.5 || t < 35) return '#ef4444';
+                if (t > 37.5) return '#f59e0b';
+                return '#22c55e';
+              })();
+              const spO2Cor = (() => {
+                const o = sv.saturacaoO2;
+                if (!o) return '#94a3b8';
+                if (o < 90) return '#ef4444';
+                if (o < 95) return '#f59e0b';
+                return '#22c55e';
+              })();
+
+              return (
+                <View key={sv.id} style={s.vitaisCard}>
+                  <View style={s.vitaisCardHeader}>
+                    <Text style={s.vitaisData}>
+                      {new Date(sv.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                    </Text>
+                    <Text style={s.vitaisAutor}>{sv.registadoPor?.nome}</Text>
+                  </View>
+                  <View style={s.vitaisGrid}>
+                    {sv.pressaoSistolica != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: taCor }]}>
+                        <Text style={s.vitaisLabel}>TA</Text>
+                        <Text style={[s.vitaisValor, { color: taCor }]}>{sv.pressaoSistolica}/{sv.pressaoDiastolica}</Text>
+                        <Text style={s.vitaisUnidade}>mmHg</Text>
+                      </View>
+                    )}
+                    {sv.pulso != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: pulsoCor }]}>
+                        <Text style={s.vitaisLabel}>Pulso</Text>
+                        <Text style={[s.vitaisValor, { color: pulsoCor }]}>{sv.pulso}</Text>
+                        <Text style={s.vitaisUnidade}>bpm</Text>
+                      </View>
+                    )}
+                    {sv.temperatura != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: tempCor }]}>
+                        <Text style={s.vitaisLabel}>Temp.</Text>
+                        <Text style={[s.vitaisValor, { color: tempCor }]}>{sv.temperatura.toFixed(1)}</Text>
+                        <Text style={s.vitaisUnidade}>ºC</Text>
+                      </View>
+                    )}
+                    {sv.saturacaoO2 != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: spO2Cor }]}>
+                        <Text style={s.vitaisLabel}>SpO₂</Text>
+                        <Text style={[s.vitaisValor, { color: spO2Cor }]}>{sv.saturacaoO2}%</Text>
+                        <Text style={s.vitaisUnidade}>O₂</Text>
+                      </View>
+                    )}
+                    {sv.frequenciaRespiratoria != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: '#64748b' }]}>
+                        <Text style={s.vitaisLabel}>FR</Text>
+                        <Text style={[s.vitaisValor, { color: '#64748b' }]}>{sv.frequenciaRespiratoria}</Text>
+                        <Text style={s.vitaisUnidade}>rpm</Text>
+                      </View>
+                    )}
+                    {sv.peso != null && (
+                      <View style={[s.vitaisItem, { borderLeftColor: '#64748b' }]}>
+                        <Text style={s.vitaisLabel}>Peso</Text>
+                        <Text style={[s.vitaisValor, { color: '#64748b' }]}>{sv.peso}</Text>
+                        <Text style={s.vitaisUnidade}>kg</Text>
+                      </View>
+                    )}
+                  </View>
+                  {sv.notas ? <Text style={s.vitaisNota}>{sv.notas}</Text> : null}
+                </View>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Aba Escalas */}
+        {abaAtiva === 'escalas' && (
+          <View style={s.secao}>
+            {/* Braden */}
+            <View style={s.escalaCard}>
+              <View style={s.escalaCardHeader}>
+                <View>
+                  <Text style={s.escalaTitulo}>Escala de Braden</Text>
+                  <Text style={s.escalaSubtitulo}>Risco de úlcera de pressão</Text>
+                </View>
+                <TouchableOpacity style={s.avaliarBotao} onPress={() => { setModalEscala('braden'); setEscalaItens({}); }}>
+                  <Text style={s.avaliarBotaoTexto}>+ Avaliar</Text>
+                </TouchableOpacity>
+              </View>
+              {escalas.braden ? (
+                <View style={s.escalaResultado}>
+                  <View style={[s.escalaBadge, { backgroundColor: escalas.braden.risco === 'baixo' ? '#dcfce7' : escalas.braden.risco === 'moderado' ? '#fef9c3' : escalas.braden.risco === 'alto' ? '#ffedd5' : '#fee2e2' }]}>
+                    <Text style={[s.escalaBadgeTexto, { color: escalas.braden.risco === 'baixo' ? '#16a34a' : escalas.braden.risco === 'moderado' ? '#92400e' : escalas.braden.risco === 'alto' ? '#c2410c' : '#b91c1c' }]}>
+                      {escalas.braden.risco === 'muito_alto' ? 'Muito Alto' : escalas.braden.risco === 'alto' ? 'Alto' : escalas.braden.risco === 'moderado' ? 'Moderado' : 'Baixo'}
+                    </Text>
+                  </View>
+                  <Text style={s.escalaPontuacao}>{escalas.braden.pontuacao} pts</Text>
+                  <Text style={s.escalaData}>{new Date(escalas.braden.criadaEm).toLocaleDateString('pt-PT')}</Text>
+                </View>
+              ) : (
+                <Text style={s.escalaSemDados}>Sem avaliação registada</Text>
+              )}
+            </View>
+
+            {/* Morse */}
+            <View style={s.escalaCard}>
+              <View style={s.escalaCardHeader}>
+                <View>
+                  <Text style={s.escalaTitulo}>Escala de Morse</Text>
+                  <Text style={s.escalaSubtitulo}>Risco de queda</Text>
+                </View>
+                <TouchableOpacity style={s.avaliarBotao} onPress={() => { setModalEscala('morse'); setEscalaItens({}); }}>
+                  <Text style={s.avaliarBotaoTexto}>+ Avaliar</Text>
+                </TouchableOpacity>
+              </View>
+              {escalas.morse ? (
+                <View style={s.escalaResultado}>
+                  <View style={[s.escalaBadge, { backgroundColor: escalas.morse.risco === 'baixo' ? '#dcfce7' : escalas.morse.risco === 'moderado' ? '#fef9c3' : '#fee2e2' }]}>
+                    <Text style={[s.escalaBadgeTexto, { color: escalas.morse.risco === 'baixo' ? '#16a34a' : escalas.morse.risco === 'moderado' ? '#92400e' : '#b91c1c' }]}>
+                      {escalas.morse.risco === 'alto' ? 'Alto' : escalas.morse.risco === 'moderado' ? 'Moderado' : 'Baixo'}
+                    </Text>
+                  </View>
+                  <Text style={s.escalaPontuacao}>{escalas.morse.pontuacao} pts</Text>
+                  <Text style={s.escalaData}>{new Date(escalas.morse.criadaEm).toLocaleDateString('pt-PT')}</Text>
+                </View>
+              ) : (
+                <Text style={s.escalaSemDados}>Sem avaliação registada</Text>
+              )}
+            </View>
           </View>
         )}
 
@@ -655,6 +1117,321 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         </View>
       </Modal>
 
+      {/* Modal: Registar Alergia */}
+      <Modal visible={modalAlergia} transparent animationType="slide" onRequestClose={() => setModalAlergia(false)}>
+        <View style={s.overlay}>
+          <View style={s.modalSheet}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>Registar Alergia</Text>
+              <TouchableOpacity onPress={() => setModalAlergia(false)}><Text style={s.fecharTexto}>✕</Text></TouchableOpacity>
+            </View>
+            <Text style={s.formLabel}>Agente alérgeno *</Text>
+            <TextInput style={s.formInput} value={alergenio} onChangeText={setAlergenio} placeholder="Ex: Penicilina, Ibuprofeno..." />
+            <Text style={s.formLabel}>Tipo</Text>
+            <View style={s.seletorRow}>
+              {(['medicamento', 'alimento', 'ambiental', 'outro'] as const).map((t) => (
+                <TouchableOpacity key={t} style={[s.seletorOpcao, alergiaTipo === t && s.seletorAtivo]} onPress={() => setAlergiaTipo(t)}>
+                  <Text style={[s.seletorTexto, alergiaTipo === t && s.seletorTextoAtivo]}>{t === 'medicamento' ? 'Med.' : t === 'alimento' ? 'Alim.' : t === 'ambiental' ? 'Amb.' : 'Outro'}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={s.formLabel}>Severidade</Text>
+            <View style={s.seletorRow}>
+              {(['ligeira', 'moderada', 'grave', 'anafilaxia'] as const).map((sev) => (
+                <TouchableOpacity key={sev} style={[s.seletorOpcao, alergiaSev === sev && s.seletorAtivo]} onPress={() => setAlergiaSev(sev)}>
+                  <Text style={[s.seletorTexto, alergiaSev === sev && s.seletorTextoAtivo]}>{sev === 'ligeira' ? 'Ligeira' : sev === 'moderada' ? 'Moder.' : sev === 'grave' ? 'Grave' : 'Anafilax.'}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={s.formLabel}>Notas</Text>
+            <TextInput style={s.formInput} value={alergiaNotas} onChangeText={setAlergiaNotas} placeholder="Observações..." />
+            <View style={s.modalBotoes}>
+              <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalAlergia(false)}><Text style={s.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+              <TouchableOpacity style={[s.submeterBotao, (!alergenio.trim() || salvandoAlergia) && s.submeterDesativado]} onPress={submeterAlergia} disabled={!alergenio.trim() || salvandoAlergia}>
+                <Text style={s.submeterTexto}>{salvandoAlergia ? 'A guardar...' : 'Registar'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal: Contacto de Emergência */}
+      <Modal visible={modalContacto} transparent animationType="slide" onRequestClose={() => setModalContacto(false)}>
+        <View style={s.overlay}>
+          <View style={s.modalSheet}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>Contacto de Emergência</Text>
+              <TouchableOpacity onPress={() => setModalContacto(false)}><Text style={s.fecharTexto}>✕</Text></TouchableOpacity>
+            </View>
+            <Text style={s.formLabel}>Nome *</Text>
+            <TextInput style={s.formInput} value={contactoNome} onChangeText={setContactoNome} placeholder="Nome completo" />
+            <Text style={s.formLabel}>Relação</Text>
+            <View style={s.seletorRow}>
+              {(['cônjuge', 'filho/a', 'pai/mãe', 'outro'] as const).map((r) => (
+                <TouchableOpacity key={r} style={[s.seletorOpcao, contactoRelacao === r && s.seletorAtivo]} onPress={() => setContactoRelacao(r)}>
+                  <Text style={[s.seletorTexto, contactoRelacao === r && s.seletorTextoAtivo]}>{r}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={s.formLabel}>Telefone *</Text>
+            <TextInput style={s.formInput} value={contactoTel} onChangeText={setContactoTel} placeholder="9xx xxx xxx" keyboardType="phone-pad" />
+            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 }} onPress={() => setContactoPrincipal(!contactoPrincipal)}>
+              <View style={{ width: 20, height: 20, borderRadius: 4, borderWidth: 2, borderColor: '#2563eb', backgroundColor: contactoPrincipal ? '#2563eb' : 'transparent', alignItems: 'center', justifyContent: 'center' }}>
+                {contactoPrincipal && <Text style={{ color: '#fff', fontSize: 12, fontWeight: '700' }}>✓</Text>}
+              </View>
+              <Text style={{ fontSize: 14, color: '#1e293b' }}>Contacto principal</Text>
+            </TouchableOpacity>
+            <View style={s.modalBotoes}>
+              <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalContacto(false)}><Text style={s.cancelarTexto}>Cancelar</Text></TouchableOpacity>
+              <TouchableOpacity style={[s.submeterBotao, (!contactoNome.trim() || !contactoTel.trim() || salvandoContacto) && s.submeterDesativado]} onPress={submeterContacto} disabled={!contactoNome.trim() || !contactoTel.trim() || salvandoContacto}>
+                <Text style={s.submeterTexto}>{salvandoContacto ? 'A guardar...' : 'Guardar'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal: Registar Sinais Vitais */}
+      <Modal visible={modalVitais} transparent animationType="slide" onRequestClose={() => setModalVitais(false)}>
+        <View style={s.overlay}>
+          <View style={[s.modalSheet, s.modalSheetTall]}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>Registar Sinais Vitais</Text>
+              <TouchableOpacity onPress={() => setModalVitais(false)}>
+                <Text style={s.fecharTexto}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={s.vitaisFormRow}>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>TA Sistólica (mmHg)</Text>
+                  <TextInput style={s.formInput} value={vPressaoS} onChangeText={setVPressaoS} keyboardType="numeric" placeholder="120" />
+                </View>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>TA Diastólica (mmHg)</Text>
+                  <TextInput style={s.formInput} value={vPressaoD} onChangeText={setVPressaoD} keyboardType="numeric" placeholder="80" />
+                </View>
+              </View>
+              <View style={s.vitaisFormRow}>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>Pulso (bpm)</Text>
+                  <TextInput style={s.formInput} value={vPulso} onChangeText={setVPulso} keyboardType="numeric" placeholder="72" />
+                </View>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>Temperatura (ºC)</Text>
+                  <TextInput style={s.formInput} value={vTemp} onChangeText={setVTemp} keyboardType="decimal-pad" placeholder="36.5" />
+                </View>
+              </View>
+              <View style={s.vitaisFormRow}>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>SpO₂ (%)</Text>
+                  <TextInput style={s.formInput} value={vSpO2} onChangeText={setVSpO2} keyboardType="numeric" placeholder="98" />
+                </View>
+                <View style={s.vitaisFormItem}>
+                  <Text style={s.formLabel}>Freq. Resp. (rpm)</Text>
+                  <TextInput style={s.formInput} value={vFreqResp} onChangeText={setVFreqResp} keyboardType="numeric" placeholder="16" />
+                </View>
+              </View>
+              <Text style={s.formLabel}>Peso (kg)</Text>
+              <TextInput style={s.formInput} value={vPeso} onChangeText={setVPeso} keyboardType="decimal-pad" placeholder="70.5" />
+              <Text style={s.formLabel}>Notas</Text>
+              <TextInput
+                style={[s.formInput, { minHeight: 50, textAlignVertical: 'top' }]}
+                value={vNotas}
+                onChangeText={setVNotas}
+                placeholder="Observações adicionais..."
+                multiline
+              />
+            </ScrollView>
+            <View style={s.modalBotoes}>
+              <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalVitais(false)}>
+                <Text style={s.cancelarTexto}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[s.submeterBotao, salvandoVitais && s.submeterDesativado]}
+                onPress={submeterVitais}
+                disabled={salvandoVitais}
+              >
+                <Text style={s.submeterTexto}>{salvandoVitais ? 'A guardar...' : 'Guardar'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal: Alta Estruturada */}
+      <Modal visible={modalAltaEstruturada} transparent animationType="slide" onRequestClose={() => setModalAltaEstruturada(false)}>
+        <View style={s.overlay}>
+          <View style={[s.modalSheet, s.modalSheetTall]}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>Alta do Doente</Text>
+              <TouchableOpacity onPress={() => setModalAltaEstruturada(false)}>
+                <Text style={s.fecharTexto}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Text style={s.formLabel}>Motivo de Alta *</Text>
+              <View style={s.seletorRow}>
+                {([['melhoria', 'Melhoria Clínica'], ['transferencia', 'Transferência'], ['pedido_proprio', 'Pedido Próprio'], ['obito', 'Óbito']] as const).map(([k, label]) => (
+                  <TouchableOpacity key={k} style={[s.seletorOpcao, altaMotivo === k && s.seletorAtivo]} onPress={() => setAltaMotivo(k)}>
+                    <Text style={[s.seletorTexto, altaMotivo === k && s.seletorTextoAtivo]}>{label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {altaMotivo !== 'obito' && (
+                <>
+                  <Text style={s.formLabel}>Destino</Text>
+                  <View style={s.seletorRow}>
+                    {([['domicilio', 'Domicílio'], ['outro_hospital', 'Outro Hospital'], ['lar', 'Lar'], ['outro', 'Outro']] as const).map(([k, label]) => (
+                      <TouchableOpacity key={k} style={[s.seletorOpcao, altaDestino === k && s.seletorAtivo]} onPress={() => setAltaDestino(k)}>
+                        <Text style={[s.seletorTexto, altaDestino === k && s.seletorTextoAtivo]}>{label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </>
+              )}
+
+              <Text style={s.formLabel}>Resumo Clínico *</Text>
+              <TextInput
+                style={[s.formInput, { minHeight: 90, textAlignVertical: 'top' }]}
+                value={altaResumo}
+                onChangeText={setAltaResumo}
+                placeholder="Descrever evolução clínica e estado à saída..."
+                multiline
+              />
+
+              <Text style={s.formLabel}>Prescrição de Saída</Text>
+              <TextInput
+                style={[s.formInput, { minHeight: 70, textAlignVertical: 'top' }]}
+                value={altaPrescricao}
+                onChangeText={setAltaPrescricao}
+                placeholder="Medicação prescrita para o domicílio (opcional)"
+                multiline
+              />
+
+              <Text style={s.formLabel}>Médico de Família / Referenciação</Text>
+              <TextInput
+                style={s.formInput}
+                value={altaMedFamilia}
+                onChangeText={setAltaMedFamilia}
+                placeholder="Nome ou contacto (opcional)"
+              />
+
+              <View style={s.modalBotoes}>
+                <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalAltaEstruturada(false)}>
+                  <Text style={s.cancelarTexto}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[s.submeterBotao, { backgroundColor: '#dc2626' }, (salvandoAlta || !altaResumo.trim()) && s.submeterDesativado]}
+                  onPress={submeterAltaEstruturada}
+                  disabled={salvandoAlta || !altaResumo.trim()}
+                >
+                  <Text style={s.submeterTexto}>{salvandoAlta ? 'A processar...' : 'Confirmar Alta'}</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal: Avaliação de Escala */}
+      <Modal visible={modalEscala !== null} transparent animationType="slide" onRequestClose={() => setModalEscala(null)}>
+        <View style={s.overlay}>
+          <View style={[s.modalSheet, s.modalSheetTall]}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>{modalEscala === 'braden' ? 'Escala de Braden' : 'Escala de Morse'}</Text>
+              <TouchableOpacity onPress={() => setModalEscala(null)}>
+                <Text style={s.fecharTexto}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {modalEscala === 'braden' && (
+                <>
+                  {([
+                    { key: 'percepcaoSensorial', label: 'Percepção Sensorial', opts: [[1,'Completamente limitada'],[2,'Muito limitada'],[3,'Ligeiramente limitada'],[4,'Sem limitação']] },
+                    { key: 'humidade', label: 'Humidade', opts: [[1,'Permanentemente húmido'],[2,'Muito húmido'],[3,'Ocasionalmente húmido'],[4,'Raramente húmido']] },
+                    { key: 'atividade', label: 'Atividade', opts: [[1,'Acamado'],[2,'Sentado'],[3,'Anda ocasionalmente'],[4,'Anda frequentemente']] },
+                    { key: 'mobilidade', label: 'Mobilidade', opts: [[1,'Imóvel'],[2,'Muito limitada'],[3,'Ligeiramente limitada'],[4,'Sem limitação']] },
+                    { key: 'nutricao', label: 'Nutrição', opts: [[1,'Muito pobre'],[2,'Provavelmente inadequada'],[3,'Adequada'],[4,'Excelente']] },
+                    { key: 'friccaoCisalhamento', label: 'Fricção e Cisalhamento', opts: [[1,'Problema'],[2,'Problema potencial'],[3,'Sem problema aparente']] },
+                  ] as { key: string; label: string; opts: [number, string][] }[]).map((item) => (
+                    <View key={item.key} style={{ marginBottom: 14 }}>
+                      <Text style={s.formLabel}>{item.label}</Text>
+                      <View style={{ gap: 4 }}>
+                        {item.opts.map(([val, desc]) => (
+                          <TouchableOpacity
+                            key={val}
+                            style={[s.escalaOpcao, escalaItens[item.key] === val && s.escalaOpcaoAtiva]}
+                            onPress={() => setEscalaItens(prev => ({ ...prev, [item.key]: val }))}
+                          >
+                            <Text style={[s.escalaOpcaoNum, escalaItens[item.key] === val && { color: '#fff' }]}>{val}</Text>
+                            <Text style={[s.escalaOpcaoDesc, escalaItens[item.key] === val && { color: '#fff' }]}>{desc}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                  <View style={s.escalaPontuacaoRow}>
+                    <Text style={s.escalaPontuacaoLabel}>Pontuação total:</Text>
+                    <Text style={s.escalaPontuacaoValor}>
+                      {Object.values(escalaItens).reduce((a: number, b: number) => a + b, 0)} / 23
+                    </Text>
+                  </View>
+                </>
+              )}
+
+              {modalEscala === 'morse' && (
+                <>
+                  {([
+                    { key: 'historiaQueda', label: 'Histórico de Quedas (últimos 3 meses)', opts: [[0,'Não (0)'],[25,'Sim (25)']] },
+                    { key: 'diagnosticoSecundario', label: 'Diagnóstico Secundário', opts: [[0,'Não (0)'],[15,'Sim (15)']] },
+                    { key: 'ajudaMarcha', label: 'Ajuda na Marcha', opts: [[0,'Nenhuma / Acamado (0)'],[15,'Canadiana / Andarilho (15)'],[30,'Segura em móveis (30)']] },
+                    { key: 'heparinaIV', label: 'Terapia Intravenosa / Heparina', opts: [[0,'Não (0)'],[20,'Sim (20)']] },
+                    { key: 'marchaTransferencia', label: 'Marcha / Transferência', opts: [[0,'Normal / Acamado (0)'],[10,'Debilitado (10)'],[20,'Comprometido (20)']] },
+                    { key: 'estadoMental', label: 'Estado Mental', opts: [[0,'Orientado (0)'],[15,'Confuso / Esquece limitações (15)']] },
+                  ] as { key: string; label: string; opts: [number, string][] }[]).map((item) => (
+                    <View key={item.key} style={{ marginBottom: 14 }}>
+                      <Text style={s.formLabel}>{item.label}</Text>
+                      <View style={s.seletorRow}>
+                        {item.opts.map(([val, desc]) => (
+                          <TouchableOpacity
+                            key={val}
+                            style={[s.seletorOpcao, escalaItens[item.key] === val && s.seletorAtivo]}
+                            onPress={() => setEscalaItens(prev => ({ ...prev, [item.key]: val }))}
+                          >
+                            <Text style={[s.seletorTexto, escalaItens[item.key] === val && s.seletorTextoAtivo]}>{desc}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                  <View style={s.escalaPontuacaoRow}>
+                    <Text style={s.escalaPontuacaoLabel}>Pontuação total:</Text>
+                    <Text style={s.escalaPontuacaoValor}>
+                      {Object.values(escalaItens).reduce((a: number, b: number) => a + b, 0)} / 125
+                    </Text>
+                  </View>
+                </>
+              )}
+
+              <View style={s.modalBotoes}>
+                <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalEscala(null)}>
+                  <Text style={s.cancelarTexto}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[s.submeterBotao, salvandoEscala && s.submeterDesativado]}
+                  onPress={submeterEscala}
+                  disabled={salvandoEscala}
+                >
+                  <Text style={s.submeterTexto}>{salvandoEscala ? 'A registar...' : 'Registar'}</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
       {/* Modal: Histórico Medicação */}
       <Modal visible={modalHistoricoMed} transparent animationType="slide" onRequestClose={() => setModalHistoricoMed(false)}>
         <View style={s.overlay}>
@@ -687,6 +1464,48 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
           </View>
         </View>
       </Modal>
+
+      {/* Modal: Editar Dados do Doente */}
+      <Modal visible={modalEditarDoente} transparent animationType="slide" onRequestClose={() => setModalEditarDoente(false)}>
+        <View style={s.overlay}>
+          <View style={s.modalSheet}>
+            <View style={s.sheetCabecalho}>
+              <Text style={s.sheetTitulo}>Editar Dados Clínicos</Text>
+              <TouchableOpacity onPress={() => setModalEditarDoente(false)}>
+                <Text style={s.fecharTexto}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={s.formLabel}>Diagnóstico Principal</Text>
+            <TextInput
+              style={[s.formInput, { minHeight: 60, textAlignVertical: 'top' }]}
+              value={editDiagnostico}
+              onChangeText={setEditDiagnostico}
+              placeholder="Diagnóstico principal..."
+              multiline
+            />
+            <Text style={s.formLabel}>Alta Prevista (AAAA-MM-DD)</Text>
+            <TextInput
+              style={s.formInput}
+              value={editAltaPrevista}
+              onChangeText={setEditAltaPrevista}
+              placeholder="Ex: 2026-04-20"
+              keyboardType="numeric"
+            />
+            <View style={s.modalBotoes}>
+              <TouchableOpacity style={s.cancelarBotao} onPress={() => setModalEditarDoente(false)}>
+                <Text style={s.cancelarTexto}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[s.submeterBotao, salvandoEdicao && s.submeterDesativado]}
+                onPress={submeterEdicaoDoente}
+                disabled={salvandoEdicao}
+              >
+                <Text style={s.submeterTexto}>{salvandoEdicao ? 'A guardar...' : 'Guardar'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -695,8 +1514,8 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
-  voltarBotao: { marginBottom: 10 },
-  voltarTexto: { color: '#94a3b8', fontSize: 14 },
+  voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, marginBottom: 12 },
+  voltarTexto: { color: '#fff', fontSize: 14, fontWeight: '600' },
   headerInfo: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   headerNome: { fontSize: 20, fontWeight: '700', color: '#fff', flex: 1, marginRight: 12 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
@@ -705,7 +1524,7 @@ const s = StyleSheet.create({
   abas: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
   aba: { flex: 1, paddingVertical: 12, alignItems: 'center' },
   abaAtiva: { borderBottomWidth: 2, borderBottomColor: '#2563eb' },
-  abaTexto: { fontSize: 12, color: '#94a3b8', fontWeight: '500' },
+  abaTexto: { fontSize: 11, color: '#94a3b8', fontWeight: '500' },
   abaTextoAtivo: { color: '#2563eb', fontWeight: '700' },
   conteudo: { flex: 1 },
   secao: { padding: 16 },
@@ -736,6 +1555,36 @@ const s = StyleSheet.create({
   // Medicação
   medicacaoCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 8, flexDirection: 'row', alignItems: 'center' },
   medicacaoInfo: { flex: 1 },
+  // Banners
+  bannerAlergia: { backgroundColor: '#fef2f2', borderBottomWidth: 1, borderBottomColor: '#fecaca', paddingHorizontal: 16, paddingVertical: 8 },
+  bannerAlergiaTexto: { fontSize: 12, fontWeight: '700', color: '#dc2626' },
+  bannerAlerta: { backgroundColor: '#fef9c3', borderBottomWidth: 1, borderBottomColor: '#fde047', paddingHorizontal: 16, paddingVertical: 8 },
+  bannerAlertaTexto: { fontSize: 12, fontWeight: '700', color: '#92400e' },
+  // Alergias
+  alergiaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
+  alergiaBadge: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 8 },
+  alergiaBadgeTexto: { fontSize: 10, fontWeight: '700', textTransform: 'uppercase' },
+  alergiaNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
+  alergiaTipo: { fontSize: 11, color: '#64748b' },
+  // Contactos
+  contactoRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
+  contactoNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
+  contactoMeta: { fontSize: 12, color: '#64748b', marginTop: 1 },
+  contactoPrincipalBadge: { backgroundColor: '#eff6ff', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
+  contactoPrincipalTexto: { fontSize: 10, fontWeight: '700', color: '#2563eb' },
+  // Sinais Vitais
+  vitaisCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 10 },
+  vitaisCardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  vitaisData: { fontSize: 13, fontWeight: '700', color: '#1e293b' },
+  vitaisAutor: { fontSize: 11, color: '#94a3b8' },
+  vitaisGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  vitaisItem: { backgroundColor: '#f8fafc', borderRadius: 10, padding: 10, minWidth: 80, alignItems: 'center', borderLeftWidth: 3 },
+  vitaisLabel: { fontSize: 10, fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: 0.4 },
+  vitaisValor: { fontSize: 18, fontWeight: '800', marginTop: 2 },
+  vitaisUnidade: { fontSize: 10, color: '#94a3b8', marginTop: 1 },
+  vitaisNota: { fontSize: 12, color: '#64748b', marginTop: 8, fontStyle: 'italic' },
+  vitaisFormRow: { flexDirection: 'row', gap: 10, marginBottom: 0 },
+  vitaisFormItem: { flex: 1 },
   medicacaoNome: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
   medicacaoDetalhe: { fontSize: 13, color: '#64748b', marginTop: 2 },
   medicacaoBotoes: { flexDirection: 'row', gap: 6, alignItems: 'center' },
@@ -784,4 +1633,24 @@ const s = StyleSheet.create({
   historicoItem: { paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   historicoDescricao: { fontSize: 14, color: '#334155', fontWeight: '500' },
   historicoMeta: { fontSize: 12, color: '#94a3b8', marginTop: 3 },
+  // Escalas
+  escalaCard: { backgroundColor: '#fff', borderRadius: 12, padding: 14, marginBottom: 12 },
+  escalaCardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
+  escalaTitulo: { fontSize: 15, fontWeight: '700', color: '#1e293b' },
+  escalaSubtitulo: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
+  avaliarBotao: { backgroundColor: '#2563eb', paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20 },
+  avaliarBotaoTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  escalaResultado: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  escalaBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
+  escalaBadgeTexto: { fontSize: 12, fontWeight: '700' },
+  escalaPontuacao: { fontSize: 16, fontWeight: '700', color: '#1e293b' },
+  escalaData: { fontSize: 12, color: '#94a3b8', marginLeft: 'auto' },
+  escalaSemDados: { fontSize: 13, color: '#94a3b8', fontStyle: 'italic' },
+  escalaOpcao: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10, borderRadius: 10, backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0' },
+  escalaOpcaoAtiva: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
+  escalaOpcaoNum: { fontSize: 14, fontWeight: '800', color: '#2563eb', width: 20, textAlign: 'center' },
+  escalaOpcaoDesc: { fontSize: 13, color: '#334155', flex: 1 },
+  escalaPontuacaoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderTopWidth: 1, borderTopColor: '#e2e8f0', marginTop: 8 },
+  escalaPontuacaoLabel: { fontSize: 13, fontWeight: '600', color: '#475569' },
+  escalaPontuacaoValor: { fontSize: 20, fontWeight: '800', color: '#2563eb' },
 });

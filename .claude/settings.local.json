@@ -54,7 +54,21 @@
       "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\src\\\\app\\\\atribuicoes\\\\atribuicoes.controller.ts' -Pattern 'Roles|chefe' | Select-Object LineNumber, Line\")",
       "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\src\\\\app\\\\medicacao\\\\medicacao.controller.ts' -Pattern '.' | Select-Object Line\")",
       "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\src\\\\app\\\\medicacao\\\\medicacao.service.ts' -Pattern 'listarPorDoente|descontinuar|ativo' | Select-Object LineNumber, Line\")",
-      "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\web\\\\src\\\\app\\\\\\(dashboard\\)\\\\doentes\\\\[id]\\\\page.tsx' -Pattern 'turno-ativo|abrirModal|rolesPermit|setUtilizadores' | Select-Object LineNumber, Line\")"
+      "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\web\\\\src\\\\app\\\\\\(dashboard\\)\\\\doentes\\\\[id]\\\\page.tsx' -Pattern 'turno-ativo|abrirModal|rolesPermit|setUtilizadores' | Select-Object LineNumber, Line\")",
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+      "Bash(xargs grep:*)",
+      "Bash(cat /c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/api/.env*)",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts',{}\\), indent=2\\)\\)\")",
+      "Bash(npx tsc:*)",
+      "Bash(find \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\src\\\\app\\\\medicacao\\\\\" -type f -name \"*.ts\" -o -name \"*.tsx\" -o -name \"*.json\" 2>/dev/null | head -20)",
+      "Bash(rm -f \"/c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/web/src/app/\\(dashboard\\)/doentes/[id]/print/page.tsx\" \"/c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/web/src/app/\\(dashboard\\)/doentes/[id]/print/layout.tsx\")",
+      "Bash(rmdir \"/c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/web/src/app/\\(dashboard\\)/doentes/[id]/print\")",
+      "Bash(awk '{print $NF}')",
+      "Read(//c/Users/Badillon/.claude/plans/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",
+      "c:\\Users\\Badillon\\.claude\\plans"
     ]
   }
 }

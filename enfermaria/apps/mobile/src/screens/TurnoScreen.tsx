@@ -37,9 +37,9 @@ const grupoLabel: Record<string, string> = {
   medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
 };
 
-interface Props { utilizador: Utilizador }
+interface Props { utilizador: Utilizador; onVoltar?: () => void }
 
-export default function TurnoScreen({ utilizador }: Props) {
+export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [tarefasPorDoente, setTarefasPorDoente] = useState<Record<string, Tarefa[]>>({});
   const [loading, setLoading] = useState(true);
@@ -80,13 +80,26 @@ export default function TurnoScreen({ utilizador }: Props) {
   };
 
   if (loading) return (
-    <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
+    <View style={{ flex: 1, backgroundColor: '#f1f5f9' }}>
+      <View style={s.header}>
+        {onVoltar && <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}><Text style={s.voltarTexto}>‹  Voltar</Text></TouchableOpacity>}
+        <Text style={s.headerTitulo}>O Meu Turno</Text>
+      </View>
+      <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>
+    </View>
   );
 
   if (doentes.length === 0) return (
-    <View style={s.centro}>
-      <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
-      <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
+    <View style={{ flex: 1, backgroundColor: '#f1f5f9' }}>
+      <View style={s.header}>
+        {onVoltar && <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}><Text style={s.voltarTexto}>‹  Voltar</Text></TouchableOpacity>}
+        <Text style={s.headerTitulo}>O Meu Turno</Text>
+        <Text style={s.headerSubtitulo}>Sem doentes atribuídos</Text>
+      </View>
+      <View style={s.centro}>
+        <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
+        <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
+      </View>
     </View>
   );
 
@@ -96,6 +109,11 @@ export default function TurnoScreen({ utilizador }: Props) {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); carregar(); }} />}
     >
       <View style={s.header}>
+        {onVoltar && (
+          <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
+            <Text style={s.voltarTexto}>‹  Voltar</Text>
+          </TouchableOpacity>
+        )}
         <Text style={s.headerTitulo}>O Meu Turno</Text>
         <Text style={s.headerSubtitulo}>{doentes.length} doente{doentes.length !== 1 ? 's' : ''} atribuído{doentes.length !== 1 ? 's' : ''}</Text>
       </View>
@@ -179,9 +197,11 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, backgroundColor: '#f1f5f9' },
   semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: '#1e293b', textAlign: 'center', marginBottom: 8 },
   semTurnoSub: { fontSize: 15, color: '#64748b', textAlign: 'center', lineHeight: 22 },
-  header: { padding: 20, paddingBottom: 12 },
-  headerTitulo: { fontSize: 22, fontWeight: '700', color: '#1e293b' },
-  headerSubtitulo: { fontSize: 14, color: '#64748b', marginTop: 2 },
+  header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
+  voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, marginBottom: 12 },
+  voltarTexto: { color: '#fff', fontSize: 14, fontWeight: '600' },
+  headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
+  headerSubtitulo: { fontSize: 14, color: '#94a3b8', marginTop: 2 },
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cartaoCabecalhoEsq: { flex: 1, marginRight: 12 },

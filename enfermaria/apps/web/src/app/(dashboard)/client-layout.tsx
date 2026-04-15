@@ -2,11 +2,12 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../../lib/auth-context';
+import api from '../../lib/api';
 
 const navItems = [
   {
@@ -89,6 +90,16 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    href: '/auditoria',
+    label: 'Auditoria',
+    roles: ['administrativo'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
 ];
 
 const roleLabel: Record<string, string> = {
@@ -124,6 +135,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { utilizador, loading, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+
+  const [modalPwd, setModalPwd] = useState(false);
+  const [senhaAtual, setSenhaAtual] = useState('');
+  const [novaSenha, setNovaSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [salvandoPwd, setSalvandoPwd] = useState(false);
+  const [pwdErro, setPwdErro] = useState('');
+
+  const alterarPassword = async () => {
+    if (novaSenha !== confirmarSenha) { setPwdErro('As passwords não coincidem'); return; }
+    if (novaSenha.length < 6) { setPwdErro('A nova password deve ter pelo menos 6 caracteres'); return; }
+    setSalvandoPwd(true); setPwdErro('');
+    try {
+      await api.patch('/auth/alterar-password', { senhaAtual, novaSenha });
+      setModalPwd(false); setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha('');
+      alert('Password alterada com sucesso!');
+    } catch (e: any) {
+      setPwdErro(e.response?.data?.message ?? 'Erro ao alterar password');
+    } finally { setSalvandoPwd(false); }
+  };
 
   useEffect(() => {
     if (!loading && !utilizador) router.push('/login');
@@ -198,6 +229,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
           <button
+            onClick={() => { setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setPwdErro(''); setModalPwd(true); }}
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/5 rounded-xl text-sm transition-all"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+            Alterar Password
+          </button>
+          <button
             onClick={logout}
             className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-red-400 hover:bg-red-400/5 rounded-xl text-sm transition-all"
           >
@@ -213,6 +253,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main className="flex-1 overflow-auto">
         {children}
       </main>
+
+      {/* Modal: Alterar Password */}
+      {modalPwd && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Alterar Password</h2>
+              <button onClick={() => setModalPwd(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            {(['Password Atual', 'Nova Password', 'Confirmar Nova Password'] as const).map((label, i) => {
+              const val = i === 0 ? senhaAtual : i === 1 ? novaSenha : confirmarSenha;
+              const setter = i === 0 ? setSenhaAtual : i === 1 ? setNovaSenha : setConfirmarSenha;
+              return (
+                <div key={label} style={{ marginBottom: '14px' }}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                  <input type="password" value={val} onChange={(e) => setter(e.target.value)}
+                    className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{ padding: '10px 14px' }} />
+                </div>
+              );
+            })}
+            {pwdErro && <p className="text-red-600 text-sm" style={{ marginBottom: '12px' }}>{pwdErro}</p>}
+            <div className="flex gap-3" style={{ marginTop: '8px' }}>
+              <button onClick={() => setModalPwd(false)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={alterarPassword} disabled={salvandoPwd || !senhaAtual || !novaSenha || !confirmarSenha}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px' }}>
+                {salvandoPwd ? 'A guardar...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

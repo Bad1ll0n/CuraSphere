@@ -111,9 +111,9 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
   };
 
   const pendentesResposta = pedidos.filter((p) => p.estado === 'pendente_destinatario' && p.destinatario.id === utilizador.id);
-  const meusEnviados = pedidos.filter((p) => p.solicitante.id === utilizador.id);
+  const meusEnviados = pedidos.filter((p) => p.solicitante.id === utilizador.id && ['pendente_destinatario', 'pendente_chefe'].includes(p.estado));
   const pendentesAprovacao = pedidos.filter((p) => p.estado === 'pendente_chefe');
-  const historico = pedidos.filter((p) => ['aprovado', 'rejeitado'].includes(p.estado));
+  const historico = pedidos.filter((p) => p.solicitante.id === utilizador.id && ['aprovado', 'rejeitado'].includes(p.estado));
 
   const PedidoCard = ({ p }: { p: any }) => {
     const cfg = estadoConfig[p.estado] ?? estadoConfig.rejeitado;
@@ -172,7 +172,7 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
       {/* Header */}
       <View style={s.header}>
         <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
-          <Text style={s.voltarTexto}>← Voltar</Text>
+          <Text style={s.voltarTexto}>‹  Voltar</Text>
         </TouchableOpacity>
         <View style={s.headerRow}>
           <View>
@@ -321,8 +321,8 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
-  voltarBotao: { marginBottom: 10 },
-  voltarTexto: { color: '#94a3b8', fontSize: 14 },
+  voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, marginBottom: 12 },
+  voltarTexto: { color: '#fff', fontSize: 14, fontWeight: '600' },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   titulo: { fontSize: 20, fontWeight: '700', color: '#fff' },
   subtituloH: { fontSize: 13, color: '#94a3b8', marginTop: 2 },

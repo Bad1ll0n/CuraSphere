@@ -38,6 +38,12 @@ export class DoenteController {
     return this.doenteService.admitir({ ...body, administrativoAdmissaoId: req.user.sub });
   }
 
+  @Roles(Role.medico, Role.chefe_medicos, Role.chefe_turno, Role.chefe_enfermeiros, Role.administrativo)
+  @Patch(':id')
+  editar(@Param('id') id: string, @Body() body: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
+    return this.doenteService.editar(id, body);
+  }
+
   @Roles(Role.enfermeiro, Role.medico, Role.chefe_turno)
   @Patch(':id/estado')
   atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoDoente }) {
@@ -76,6 +82,20 @@ export class DoenteController {
     @Request() req: any,
   ) {
     return this.doenteService.apagarNota(notaId, req.user.sub);
+  }
+
+  @Post(':id/alta-estruturada')
+  altaEstruturada(
+    @Param('id') doenteId: string,
+    @Body() body: Record<string, any>,
+    @Request() req: any,
+  ) {
+    return this.doenteService.altaEstruturada(doenteId, req.user.sub, req.user.role, body);
+  }
+
+  @Get(':id/sumario-alta')
+  getSumarioAlta(@Param('id') doenteId: string) {
+    return this.doenteService.getSumarioAlta(doenteId);
   }
 
   @Post(':id/tarefa')

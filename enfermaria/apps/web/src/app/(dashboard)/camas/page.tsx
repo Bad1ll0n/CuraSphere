@@ -45,6 +45,7 @@ export default function CamasPagina() {
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [mostrarFormCama, setMostrarFormCama] = useState(false);
   const [novaCama, setNovaCama] = useState({ numero: '', quarto: '' });
+  const [qrCama, setQrCama] = useState<Cama | null>(null);
 
   const podeGerir = ['administrativo', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador?.role ?? '');
   const podeCriar = ['administrativo', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
@@ -151,6 +152,17 @@ export default function CamasPagina() {
                           {estadoDoenteLabel[cama.doente.estado]}
                         </p>
                         <p className="text-xs text-slate-400 truncate" style={{ marginTop: '2px' }}>{cama.doente.diagnosticoPrincipal}</p>
+                        <button
+                          onClick={() => setQrCama(cama)}
+                          title="Gerar QR do doente"
+                          className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          style={{ marginTop: '10px', padding: '4px 8px' }}
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 3.5A7.5 7.5 0 116.5 9M9 3H5a2 2 0 00-2 2v4m6-6h4m6 6v4m-6 0h4" />
+                          </svg>
+                          QR Doente
+                        </button>
                       </div>
                     ) : (
                       <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>Sem doente</p>
@@ -221,6 +233,37 @@ export default function CamasPagina() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal QR Doente */}
+      {qrCama && qrCama.doente && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', textAlign: 'center', maxWidth: '320px', width: '100%', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <h2 className="text-lg font-bold text-slate-900">QR — Doente</h2>
+              <button onClick={() => setQrCama(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{qrCama.doente.nome}</p>
+            <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Quarto {qrCama.quarto} · Cama {qrCama.numero}</p>
+            {/* QR gerado com API pública */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?data=${qrCama.doente.id}&size=200x200&margin=10`}
+              alt="QR Code do doente"
+              width={200}
+              height={200}
+              style={{ margin: '0 auto 16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}
+            />
+            <p className="text-xs text-slate-400" style={{ marginBottom: '20px' }}>Aponta a câmara da app mobile para aceder à ficha do doente</p>
+            <button
+              onClick={() => window.print()}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+              style={{ padding: '11px' }}
+            >
+              Imprimir QR
+            </button>
           </div>
         </div>
       )}

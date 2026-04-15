@@ -135,6 +135,19 @@ export class DoenteService {
     }, { isolationLevel: 'Serializable' });
   }
 
+  async editar(id: string, dto: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
+    await this.buscarPorId(id);
+    return this.prisma.doente.update({
+      where: { id },
+      data: {
+        ...(dto.diagnosticoPrincipal !== undefined && { diagnosticoPrincipal: dto.diagnosticoPrincipal }),
+        ...(dto.dataAltaPrevista !== undefined && { dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : null }),
+        ...(dto.numeroProcesso !== undefined && { numeroProcesso: dto.numeroProcesso }),
+      },
+      select: { id: true, nome: true, diagnosticoPrincipal: true, dataAltaPrevista: true, numeroProcesso: true },
+    });
+  }
+
   async atualizarEstado(id: string, estado: EstadoDoente) {
     await this.buscarPorId(id);
     return this.prisma.doente.update({
@@ -332,6 +345,46 @@ export class DoenteService {
       throw new ForbiddenException('Nota bloqueada — turno já passou');
 
     return this.prisma.notaTurno.delete({ where: { id: notaId } });
+  }
+
+  async altaEstruturada(doenteId: string, criadoPorId: string, role: string, body: Record<string, any>) {
+    const ROLES_ALTA = ['medico', 'chefe_medicos', 'chefe_turno', 'administrativo', 'chefe_enfermeiros'];
+    if (!ROLES_ALTA.includes(role)) throw new ForbiddenException('Sem permissão para dar alta');
+
+    const doente = await this.buscarPorId(doenteId);
+
+    return this.prisma.$transaction(async (tx) => {
+      const sumario = await tx.sumarioAlta.create({
+        data: {
+          doenteId,
+          criadoPorId,
+          motivoAlta:      body['motivoAlta'] as string,
+          destino:         body['destino'] as string | undefined,
+          resumoClinical:  body['resumoClinical'] as string,
+          prescricaoSaida: body['prescricaoSaida'] as string | undefined,
+          medicoFamilia:   body['medicoFamilia'] as string | undefined,
+        },
+      });
+
+      await tx.doente.update({
+        where: { id: doenteId },
+        data: { ativo: false, dataAlta: new Date() },
+      });
+
+      await tx.cama.update({
+        where: { id: doente.camaId },
+        data: { estado: 'em_limpeza' },
+      });
+
+      return sumario;
+    });
+  }
+
+  async getSumarioAlta(doenteId: string) {
+    return this.prisma.sumarioAlta.findUnique({
+      where: { doenteId },
+      include: { criadoPor: { select: { nome: true, role: true } } },
+    });
   }
 
   async historico(id: string) {

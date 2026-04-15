@@ -49,6 +49,11 @@ model Utilizador {
   trocasSolicitadas         PedidoTrocaTurno[]       @relation("TrocaSolicitante")
   trocasRecebidas           PedidoTrocaTurno[]       @relation("TrocaDestinatario")
   trocasAprovadas           PedidoTrocaTurno[]       @relation("TrocaAprovadoPor")
+  auditLogs                 AuditLog[]
+  sinaisVitaisRegistados    SinalVital[]             @relation("SinaisVitaisRegistados")
+  dispositivosTokens        DispositivoToken[]
+  avaliacoesRisco           AvaliacaoRisco[]
+  sumariosAlta              SumarioAlta[]
 
   @@map("utilizadores")
 }
@@ -108,6 +113,12 @@ model Doente {
   registosMedicacao RegistoMedicacao[]
   notasTurno       NotaTurno[]
   passagensTurno   PassagemTurno[]
+  sinaisVitais     SinalVital[]
+  alergias         Alergia[]
+  contactosEmergencia ContactoEmergencia[]
+  alertasClinicos  AlertaClinico[]
+  avaliacoesRisco  AvaliacaoRisco[]
+  sumarioAlta      SumarioAlta?
 
   @@map("doentes")
 }
@@ -364,4 +375,132 @@ model AtribuicaoHorarioTurno {
 
   @@unique([horarioTurnoId, doenteId, utilizadorId])
   @@map("atribuicoes_horario_turno")
+}
+
+// ─── Sinais Vitais ────────────────────────────────────────────────────────────
+
+model SinalVital {
+  id                    String     @id @default(uuid())
+  doenteId              String
+  doente                Doente     @relation(fields: [doenteId], references: [id])
+  registadoPorId        String
+  registadoPor          Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id])
+  data                  DateTime   @default(now())
+  pressaoSistolica      Int?
+  pressaoDiastolica     Int?
+  pulso                 Int?
+  temperatura           Float?
+  saturacaoO2           Int?
+  frequenciaRespiratoria Int?
+  peso                  Float?
+  notas                 String?
+
+  @@map("sinais_vitais")
+}
+
+// ─── Audit Log ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  acao         String
+  entidadeId   String?
+  entidadeTipo String?
+  detalhes     String?
+  ip           String?
+  createdAt    DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+// ─── Alergias ─────────────────────────────────────────────────────────────────
+
+model Alergia {
+  id         String   @id @default(uuid())
+  doenteId   String
+  doente     Doente   @relation(fields: [doenteId], references: [id])
+  alergenio  String
+  tipo       String
+  severidade String
+  notas      String?
+  criadaEm   DateTime @default(now())
+
+  @@map("alergias")
+}
+
+// ─── Contactos de Emergência ──────────────────────────────────────────────────
+
+model ContactoEmergencia {
+  id        String  @id @default(uuid())
+  doenteId  String
+  doente    Doente  @relation(fields: [doenteId], references: [id])
+  nome      String
+  relacao   String
+  telefone  String
+  principal Boolean @default(false)
+
+  @@map("contactos_emergencia")
+}
+
+// ─── Alertas Clínicos ─────────────────────────────────────────────────────────
+
+model AlertaClinico {
+  id        String   @id @default(uuid())
+  doenteId  String
+  doente    Doente   @relation(fields: [doenteId], references: [id])
+  tipo      String
+  mensagem  String
+  lido      Boolean  @default(false)
+  criadoEm  DateTime @default(now())
+
+  @@map("alertas_clinicos")
+}
+
+// ─── Avaliações de Risco Clínico ─────────────────────────────────────────────
+
+model AvaliacaoRisco {
+  id             String     @id @default(uuid())
+  doenteId       String
+  doente         Doente     @relation(fields: [doenteId], references: [id])
+  tipo           String     // "braden" | "morse"
+  pontuacao      Int
+  itens          Json       // valores de cada item da escala
+  risco          String     // "baixo" | "moderado" | "alto" | "muito_alto"
+  registadoPorId String
+  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id])
+  criadaEm       DateTime   @default(now())
+
+  @@map("avaliacoes_risco")
+}
+
+// ─── Sumário de Alta ──────────────────────────────────────────────────────────
+
+model SumarioAlta {
+  id              String     @id @default(uuid())
+  doenteId        String     @unique
+  doente          Doente     @relation(fields: [doenteId], references: [id])
+  motivoAlta      String     // "melhoria" | "transferencia" | "pedido_proprio" | "obito"
+  destino         String?    // "domicilio" | "outro_hospital" | "lar" | "outro"
+  resumoClinical  String
+  prescricaoSaida String?
+  medicoFamilia   String?
+  criadoPorId     String
+  criadoPor       Utilizador @relation(fields: [criadoPorId], references: [id])
+  criadoEm        DateTime   @default(now())
+
+  @@map("sumarios_alta")
+}
+
+// ─── Dispositivos / Push Tokens ───────────────────────────────────────────────
+
+model DispositivoToken {
+  id           String   @id @default(uuid())
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  token        String   @unique
+  plataforma   String
+  criadoEm    DateTime @default(now())
+
+  @@map("dispositivos_tokens")
 }

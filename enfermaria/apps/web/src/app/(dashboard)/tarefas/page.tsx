@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
@@ -47,12 +47,27 @@ const estadoTarefaLabel: Record<string, string> = {
   pendente: 'Pendente', em_progresso: 'Em progresso',
 };
 
+const ROLES_CRIAR_TAREFA = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
+
 export default function TarefasPage() {
   const { utilizador } = useAuth();
   const router = useRouter();
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState(true);
   const [atualizando, setAtualizando] = useState<string | null>(null);
+
+  // Modal nova tarefa
+  const [modalNovaTarefa, setModalNovaTarefa] = useState(false);
+  const [doentes, setDoentes] = useState<{ id: string; nome: string; cama: { quarto: string; numero: string } }[]>([]);
+  const [searchDoente, setSearchDoente] = useState('');
+  const [doenteSelId, setDoenteSelId] = useState('');
+  const [tDesc, setTDesc] = useState('');
+  const [tTipo, setTTipo] = useState<'clinica' | 'logistica'>('clinica');
+  const [tPrioridade, setTPrioridade] = useState<'baixa' | 'media' | 'alta' | 'urgente'>('media');
+  const [tGrupo, setTGrupo] = useState<'enfermeiro' | 'medico' | 'auxiliar'>('enfermeiro');
+  const [tPrazo, setTPrazo] = useState('');
+  const [criando, setCriando] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const carregar = async () => {
     setLoading(true);
@@ -65,6 +80,37 @@ export default function TarefasPage() {
   };
 
   useEffect(() => { carregar(); }, []);
+
+  const abrirModalNovaTarefa = async () => {
+    setTDesc(''); setDoenteSelId(''); setSearchDoente('');
+    setTTipo('clinica'); setTPrioridade('media'); setTGrupo('enfermeiro'); setTPrazo('');
+    setModalNovaTarefa(true);
+    try {
+      const r = await api.get('/doentes?todos=true');
+      setDoentes(r.data);
+    } catch { setDoentes([]); }
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const criarTarefa = async () => {
+    if (!doenteSelId || !tDesc.trim()) return;
+    setCriando(true);
+    try {
+      await api.post(`/doentes/${doenteSelId}/tarefa`, {
+        descricao: tDesc,
+        tipo: tTipo,
+        prioridade: tPrioridade,
+        grupoResponsavel: tGrupo,
+        prazo: tPrazo ? new Date(tPrazo) : undefined,
+      });
+      setModalNovaTarefa(false);
+      await carregar();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao criar tarefa');
+    } finally {
+      setCriando(false);
+    }
+  };
 
   const marcarProgresso = async (tarefa: Tarefa) => {
     setAtualizando(tarefa.id);
@@ -111,14 +157,26 @@ export default function TarefasPage() {
           </div>
           <p className="text-slate-500 text-sm">Tarefas pendentes dos teus doentes neste turno</p>
         </div>
-        <button onClick={carregar}
-          className="flex items-center gap-2 border border-slate-200 text-slate-500 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
-          style={{ padding: '9px 16px' }}>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          Atualizar
-        </button>
+        <div className="flex items-center gap-3">
+          {ROLES_CRIAR_TAREFA.includes(utilizador?.role ?? '') && (
+            <button onClick={abrirModalNovaTarefa}
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
+              style={{ padding: '9px 18px' }}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Nova Tarefa
+            </button>
+          )}
+          <button onClick={carregar}
+            className="flex items-center gap-2 border border-slate-200 text-slate-500 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+            style={{ padding: '9px 16px' }}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Atualizar
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -171,6 +229,113 @@ export default function TarefasPage() {
           })}
         </div>
       )}
+
+      {/* Modal Nova Tarefa */}
+      {modalNovaTarefa && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
+              <button onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+
+            {/* Doente */}
+            <div style={{ marginBottom: '16px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Pesquisar doente..."
+                value={searchDoente}
+                onChange={(e) => { setSearchDoente(e.target.value); setDoenteSelId(''); }}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '10px 14px' }}
+              />
+              {searchDoente.length >= 2 && !doenteSelId && (
+                <div className="border border-slate-200 rounded-xl bg-white shadow-lg" style={{ maxHeight: '160px', overflowY: 'auto', marginTop: '4px' }}>
+                  {doentes.filter((d) => d.nome.toLowerCase().includes(searchDoente.toLowerCase())).slice(0, 8).map((d) => (
+                    <button key={d.id} onClick={() => { setDoenteSelId(d.id); setSearchDoente(d.nome); }}
+                      className="w-full text-left text-sm hover:bg-slate-50 transition-colors"
+                      style={{ padding: '10px 14px', borderBottom: '1px solid #f1f5f9' }}>
+                      <span className="font-medium text-slate-800">{d.nome}</span>
+                      <span className="text-slate-400 text-xs" style={{ marginLeft: '8px' }}>Q{d.cama.quarto}/C{d.cama.numero}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Descrição */}
+            <div style={{ marginBottom: '16px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea value={tDesc} onChange={(e) => setTDesc(e.target.value)}
+                placeholder="Descrever a tarefa..."
+                rows={3}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                style={{ padding: '10px 14px' }} />
+            </div>
+
+            {/* Tipo + Prioridade */}
+            <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+                <div className="flex gap-2">
+                  {(['clinica', 'logistica'] as const).map((t) => (
+                    <button key={t} onClick={() => setTTipo(t)}
+                      className={`flex-1 text-xs font-semibold rounded-lg border py-2 transition-colors ${tTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}`}>
+                      {t === 'clinica' ? 'Clínica' : 'Logística'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
+                <select value={tPrioridade} onChange={(e) => setTPrioridade(e.target.value as any)}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '8px 12px' }}>
+                  <option value="baixa">Baixa</option>
+                  <option value="media">Média</option>
+                  <option value="alta">Alta</option>
+                  <option value="urgente">Urgente</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Grupo + Prazo */}
+            <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '24px' }}>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
+                <select value={tGrupo} onChange={(e) => setTGrupo(e.target.value as any)}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '8px 12px' }}>
+                  <option value="enfermeiro">Enfermagem</option>
+                  <option value="medico">Médico</option>
+                  <option value="auxiliar">Auxiliar</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
+                <input type="datetime-local" value={tPrazo} onChange={(e) => setTPrazo(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '8px 12px' }} />
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setModalNovaTarefa(false)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>
+                Cancelar
+              </button>
+              <button onClick={criarTarefa} disabled={criando || !doenteSelId || !tDesc.trim()}
+                className="flex-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ padding: '11px 24px', flex: 2 }}>
+                {criando ? 'A criar...' : 'Criar Tarefa'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -184,7 +349,6 @@ function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onCon
 }) {
   const prazoDate = tarefa.prazo ? new Date(tarefa.prazo) : null;
   const atrasada = prazoDate && prazoDate < new Date();
-  const cfg = prioridadeConfig[tarefa.prioridade];
 
   return (
     <div className={`bg-white rounded-2xl border shadow-sm ${atrasada ? 'border-red-200' : 'border-slate-100'}`}

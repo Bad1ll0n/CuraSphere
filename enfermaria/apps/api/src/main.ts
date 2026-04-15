@@ -1,13 +1,19 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as helmet from 'helmet';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Headers de segurança HTTP
+  app.use((helmet as any).default());
+
+  // Rejeita campos desconhecidos e converte tipos automaticamente
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
   app.enableCors({
-    origin: (origin, callback) => {
-      // Permite qualquer origem localhost em desenvolvimento
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       if (!origin || origin.startsWith('http://localhost')) {
         callback(null, true);
       } else {

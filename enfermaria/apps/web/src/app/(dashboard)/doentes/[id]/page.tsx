@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import QRCode from 'react-qr-code';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../../../../lib/auth-context';
 import api from '../../../../lib/api';
 
@@ -121,10 +123,10 @@ export default function DoenteDetalhe() {
   const [doente, setDoente] = useState<Doente | null>(null);
   const [loading, setLoading] = useState(true);
   const [alterandoEstado, setAlterandoEstado] = useState(false);
-  const [confirmandoAlta, setConfirmandoAlta] = useState(false);
   const [salvandoAlta, setSalvandoAlta] = useState(false);
 
   // Modals
+  const [modalQR, setModalQR] = useState(false);
   const [modalNota, setModalNota] = useState(false);
   const [modalTarefa, setModalTarefa] = useState(false);
   const [modalMed, setModalMed] = useState(false);
@@ -136,6 +138,53 @@ export default function DoenteDetalhe() {
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erroModal, setErroModal] = useState('');
+
+  // Sinais Vitais
+  const [sinaisVitais, setSinaisVitais] = useState<any[]>([]);
+  const [modalSinalVital, setModalSinalVital] = useState(false);
+  const [svPressaoS, setSvPressaoS] = useState('');
+  const [svPressaoD, setSvPressaoD] = useState('');
+  const [svPulso, setSvPulso] = useState('');
+  const [svTemp, setSvTemp] = useState('');
+  const [svSpO2, setSvSpO2] = useState('');
+  const [svFreqResp, setSvFreqResp] = useState('');
+  const [svPeso, setSvPeso] = useState('');
+  const [svNotas, setSvNotas] = useState('');
+
+  // Alergias
+  const [alergias, setAlergias] = useState<any[]>([]);
+  const [modalAlergia, setModalAlergia] = useState(false);
+  const [alergenio, setAlergenio] = useState('');
+  const [alergiaTipo, setAlergiaTipo] = useState('medicamento');
+  const [alergiaSev, setAlergiaSev] = useState('moderada');
+  const [alergiaNotas, setAlergiaNotas] = useState('');
+
+  // Contactos
+  const [contactos, setContactos] = useState<any[]>([]);
+  const [modalContacto, setModalContacto] = useState(false);
+  const [ctNome, setCtNome] = useState('');
+  const [ctRelacao, setCtRelacao] = useState('cônjuge');
+  const [ctTel, setCtTel] = useState('');
+  const [ctPrincipal, setCtPrincipal] = useState(false);
+
+  // Escalas clínicas
+  const [escalas, setEscalas] = useState<{ braden: any; morse: any }>({ braden: null, morse: null });
+  const [modalEscala, setModalEscala] = useState<'braden' | 'morse' | null>(null);
+  const [escalaItens, setEscalaItens] = useState<Record<string, number>>({});
+
+  // Editar doente
+  const [modalEditarDoente, setModalEditarDoente] = useState(false);
+  const [editDiagnostico, setEditDiagnostico] = useState('');
+  const [editAltaPrevista, setEditAltaPrevista] = useState('');
+  const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+
+  // Alta estruturada
+  const [modalAltaEstruturada, setModalAltaEstruturada] = useState(false);
+  const [altaMotivo, setAltaMotivo] = useState('melhoria');
+  const [altaDestino, setAltaDestino] = useState('domicilio');
+  const [altaResumo, setAltaResumo] = useState('');
+  const [altaPrescricao, setAltaPrescricao] = useState('');
+  const [altaMedicoFamilia, setAltaMedicoFamilia] = useState('');
 
   // Nota form
   const [notaTexto, setNotaTexto] = useState('');
@@ -230,9 +279,132 @@ export default function DoenteDetalhe() {
       .finally(() => setLoading(false));
   };
 
+  const carregarSinaisVitais = () =>
+    api.get(`/sinais-vitais/${id}`).then((r) => setSinaisVitais(r.data)).catch(() => setSinaisVitais([]));
+
+  const carregarAlergias = () =>
+    api.get(`/alergias/${id}`).then((r) => setAlergias(r.data)).catch(() => setAlergias([]));
+
+  const carregarContactos = () =>
+    api.get(`/contactos/${id}`).then((r) => setContactos(r.data)).catch(() => setContactos([]));
+
+  const carregarEscalas = () =>
+    api.get(`/escalas/${id}`).then((r) => setEscalas(r.data)).catch(() => {});
+
+  const abrirEditarDoente = () => {
+    if (!doente) return;
+    setEditDiagnostico(doente.diagnosticoPrincipal);
+    setEditAltaPrevista(doente.dataAltaPrevista ? doente.dataAltaPrevista.split('T')[0] : '');
+    setModalEditarDoente(true);
+  };
+
+  const submeterEdicaoDoente = async () => {
+    setSalvandoEdicao(true);
+    try {
+      await api.patch(`/doentes/${id}`, {
+        diagnosticoPrincipal: editDiagnostico || undefined,
+        dataAltaPrevista: editAltaPrevista ? new Date(editAltaPrevista) : null,
+      });
+      setModalEditarDoente(false);
+      await carregar();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao editar doente');
+    } finally { setSalvandoEdicao(false); }
+  };
+
+  const submeterEscala = async () => {
+    if (!modalEscala) return;
+    setSalvando(true);
+    try {
+      await api.post(`/escalas/${id}`, { tipo: modalEscala, itens: escalaItens });
+      setModalEscala(null); setEscalaItens({});
+      carregarEscalas();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao registar escala');
+    } finally { setSalvando(false); }
+  };
+
+  const submeterAltaEstruturada = async () => {
+    if (!altaResumo.trim()) return;
+    setSalvandoAlta(true);
+    try {
+      await api.post(`/doentes/${id}/alta-estruturada`, {
+        motivoAlta: altaMotivo,
+        destino: altaMotivo !== 'obito' ? altaDestino : undefined,
+        resumoClinical: altaResumo,
+        prescricaoSaida: altaPrescricao || undefined,
+        medicoFamilia: altaMedicoFamilia || undefined,
+      });
+      setModalAltaEstruturada(false);
+      router.push('/doentes');
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao registar alta');
+    } finally { setSalvandoAlta(false); }
+  };
+
+  const submeterSinalVital = async () => {
+    setSalvando(true);
+    try {
+      await api.post(`/sinais-vitais/${id}`, {
+        pressaoSistolica:       svPressaoS  ? parseInt(svPressaoS)  : undefined,
+        pressaoDiastolica:      svPressaoD  ? parseInt(svPressaoD)  : undefined,
+        pulso:                  svPulso     ? parseInt(svPulso)     : undefined,
+        temperatura:            svTemp      ? parseFloat(svTemp)    : undefined,
+        saturacaoO2:            svSpO2      ? parseInt(svSpO2)      : undefined,
+        frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
+        peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
+        notas: svNotas || undefined,
+      });
+      setModalSinalVital(false);
+      carregarSinaisVitais();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao registar sinais vitais');
+    } finally { setSalvando(false); }
+  };
+
+  const submeterAlergia = async () => {
+    if (!alergenio.trim()) return;
+    setSalvando(true);
+    try {
+      await api.post(`/alergias/${id}`, { alergenio, tipo: alergiaTipo, severidade: alergiaSev, notas: alergiaNotas || undefined });
+      setModalAlergia(false); setAlergenio(''); setAlergiaNotas('');
+      carregarAlergias();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao registar alergia');
+    } finally { setSalvando(false); }
+  };
+
+  const removerAlergia = async (alergiaId: string) => {
+    if (!confirm('Remover esta alergia?')) return;
+    await api.delete(`/alergias/${alergiaId}`);
+    carregarAlergias();
+  };
+
+  const submeterContacto = async () => {
+    if (!ctNome.trim() || !ctTel.trim()) return;
+    setSalvando(true);
+    try {
+      await api.post(`/contactos/${id}`, { nome: ctNome, relacao: ctRelacao, telefone: ctTel, principal: ctPrincipal });
+      setModalContacto(false); setCtNome(''); setCtTel(''); setCtPrincipal(false);
+      carregarContactos();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao guardar contacto');
+    } finally { setSalvando(false); }
+  };
+
+  const removerContacto = async (ctId: string) => {
+    if (!confirm('Remover este contacto?')) return;
+    await api.delete(`/contactos/${ctId}`);
+    carregarContactos();
+  };
+
   useEffect(() => {
     carregar();
     verificarTurnoAtivo();
+    carregarSinaisVitais();
+    carregarAlergias();
+    carregarContactos();
+    carregarEscalas();
   }, [id]);
 
   const verificarTurnoAtivo = async () => {
@@ -260,17 +432,6 @@ export default function DoenteDetalhe() {
     await api.patch(`/doentes/${id}/estado`, { estado: novoEstado });
     setAlterandoEstado(false);
     carregar();
-  };
-
-  const darAlta = async () => {
-    setSalvandoAlta(true);
-    try {
-      await api.patch(`/doentes/${id}/alta`);
-      router.push('/doentes');
-    } finally {
-      setSalvandoAlta(false);
-      setConfirmandoAlta(false);
-    }
   };
 
   // Deadline de edição com base no turno real:
@@ -430,13 +591,32 @@ export default function DoenteDetalhe() {
           <p className="text-slate-400 text-sm font-mono">{doente.numeroProcesso}</p>
         </div>
 
-        {podeDarAlta && doente.ativo && (
-          <button onClick={() => setConfirmandoAlta(true)}
-            className="border border-slate-200 text-slate-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50 text-sm font-medium rounded-xl transition-all"
-            style={{ padding: '10px 20px' }}>
-            Dar Alta
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.open(`/doentes/${id}/print`, '_blank')}
+            className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-xl transition-all"
+            style={{ padding: '10px 16px' }}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            PDF
           </button>
-        )}
+          <button onClick={() => setModalQR(true)}
+            className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 text-sm font-medium rounded-xl transition-all"
+            style={{ padding: '10px 16px' }}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 3.5V16M4 4h4v4H4V4zm12 0h4v4h-4V4zm-12 12h4v4H4v-4z" />
+            </svg>
+            QR Code
+          </button>
+          {podeDarAlta && doente.ativo && (
+            <button onClick={() => setModalAltaEstruturada(true)}
+              className="border border-slate-200 text-slate-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50 text-sm font-medium rounded-xl transition-all"
+              style={{ padding: '10px 20px' }}>
+              Dar Alta
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Info grid */}
@@ -461,13 +641,25 @@ export default function DoenteDetalhe() {
 
         {/* Clínico */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
-          <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
-            <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
-              <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+          <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
             </div>
-            <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
+            {['medico', 'chefe_medicos', 'chefe_turno', 'chefe_enfermeiros', 'administrativo'].includes(utilizador?.role ?? '') && (
+              <button onClick={abrirEditarDoente}
+                className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                style={{ padding: '4px 8px' }}>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Editar
+              </button>
+            )}
           </div>
           <InfoRow label="Diagnóstico Principal" value={doente.diagnosticoPrincipal} />
         </div>
@@ -752,6 +944,300 @@ export default function DoenteDetalhe() {
         })()}
       </div>
 
+      {/* Alergias + Contactos de Emergência */}
+      <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px', marginTop: '24px' }}>
+        {/* Alergias */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: '16px' }}>
+            <div className="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+              <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <span className="text-sm font-semibold text-slate-700">Alergias</span>
+            <BtnAdd onClick={() => { setAlergenio(''); setAlergiaNotas(''); setModalAlergia(true); }} />
+          </div>
+          {alergias.length === 0 ? (
+            <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem alergias registadas</p>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {alergias.map((a: any) => {
+                const sevCor: Record<string, string> = { anafilaxia: 'bg-red-100 text-red-700', grave: 'bg-orange-100 text-orange-700', moderada: 'bg-yellow-100 text-yellow-700', ligeira: 'bg-slate-100 text-slate-600' };
+                return (
+                  <div key={a.id} className="flex items-center gap-3 rounded-lg bg-slate-50" style={{ padding: '10px 12px' }}>
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${sevCor[a.severidade] ?? 'bg-slate-100 text-slate-600'}`}>{a.severidade}</span>
+                    <div className="flex-1">
+                      <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
+                      <span className="text-xs text-slate-400 ml-2">{a.tipo}</span>
+                    </div>
+                    <button onClick={() => removerAlergia(a.id)} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Contactos de Emergência */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: '16px' }}>
+            <div className="w-7 h-7 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
+              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <span className="text-sm font-semibold text-slate-700">Contactos de Emergência</span>
+            <BtnAdd onClick={() => { setCtNome(''); setCtTel(''); setCtRelacao('cônjuge'); setCtPrincipal(false); setModalContacto(true); }} />
+          </div>
+          {contactos.length === 0 ? (
+            <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem contactos registados</p>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {contactos.map((c: any) => (
+                <div key={c.id} className="flex items-center gap-3 rounded-lg bg-slate-50" style={{ padding: '10px 12px' }}>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-slate-800">{c.nome}</span>
+                      {c.principal && <span className="text-xs bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">Principal</span>}
+                    </div>
+                    <span className="text-xs text-slate-400">{c.relacao} · {c.telefone}</span>
+                  </div>
+                  <button onClick={() => removerContacto(c.id)} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Sinais Vitais */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+          <div className="w-7 h-7 rounded-lg bg-rose-50 flex items-center justify-center shrink-0">
+            <svg className="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
+          {['enfermeiro', 'auxiliar', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '') && (
+            <BtnAdd onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setModalSinalVital(true); }} />
+          )}
+        </div>
+        {sinaisVitais.length === 0 ? (
+          <p className="text-sm text-slate-400 text-center" style={{ padding: '24px 0' }}>Sem registos de sinais vitais</p>
+        ) : (
+          <>
+            {/* Gráfico */}
+            {sinaisVitais.length > 1 && (
+              <div style={{ marginBottom: '24px' }}>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={[...sinaisVitais].reverse().map((sv) => ({
+                    hora: new Date(sv.data).toLocaleTimeString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                    TA: sv.pressaoSistolica ?? null,
+                    Pulso: sv.pulso ?? null,
+                    'SpO₂': sv.saturacaoO2 ?? null,
+                    'Temp': sv.temperatura ?? null,
+                  }))}>
+                    <XAxis dataKey="hora" tick={{ fontSize: 10 }} />
+                    <YAxis tick={{ fontSize: 10 }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="TA" stroke="#ef4444" dot={false} strokeWidth={2} connectNulls />
+                    <Line type="monotone" dataKey="Pulso" stroke="#f97316" dot={false} strokeWidth={2} connectNulls />
+                    <Line type="monotone" dataKey="SpO₂" stroke="#3b82f6" dot={false} strokeWidth={2} connectNulls />
+                    <Line type="monotone" dataKey="Temp" stroke="#8b5cf6" dot={false} strokeWidth={2} connectNulls />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+            {/* Tabela */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-xs text-slate-400 font-semibold uppercase tracking-wide border-b border-slate-100">
+                    <th className="text-left pb-2">Data/Hora</th>
+                    <th className="text-center pb-2">TA (mmHg)</th>
+                    <th className="text-center pb-2">Pulso</th>
+                    <th className="text-center pb-2">Temp ºC</th>
+                    <th className="text-center pb-2">SpO₂ %</th>
+                    <th className="text-center pb-2">FR</th>
+                    <th className="text-left pb-2">Registado por</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sinaisVitais.map((sv: any) => {
+                    const taCrit = sv.pressaoSistolica != null && (sv.pressaoSistolica >= 160 || sv.pressaoSistolica < 80);
+                    const pulsoCrit = sv.pulso != null && (sv.pulso > 120 || sv.pulso < 50);
+                    const tempCrit = sv.temperatura != null && (sv.temperatura > 38.5 || sv.temperatura < 35);
+                    const spO2Crit = sv.saturacaoO2 != null && sv.saturacaoO2 < 90;
+                    return (
+                      <tr key={sv.id} className="border-b border-slate-50 hover:bg-slate-50">
+                        <td className="py-2.5 text-slate-500 text-xs">{new Date(sv.data).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                        <td className={`py-2.5 text-center font-semibold ${taCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pressaoSistolica != null ? `${sv.pressaoSistolica}/${sv.pressaoDiastolica}` : '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${pulsoCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.pulso ?? '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${tempCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
+                        <td className={`py-2.5 text-center font-semibold ${spO2Crit ? 'text-red-600' : 'text-slate-700'}`}>{sv.saturacaoO2 != null ? `${sv.saturacaoO2}%` : '—'}</td>
+                        <td className="py-2.5 text-center text-slate-600">{sv.frequenciaRespiratoria ?? '—'}</td>
+                        <td className="py-2.5 text-slate-400 text-xs">{sv.registadoPor?.nome}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ── Escalas de Risco ── */}
+      {(() => {
+        const riscoConfig: Record<string, { cor: string; label: string }> = {
+          muito_alto: { cor: 'bg-red-100 text-red-700',    label: 'Muito Alto' },
+          alto:       { cor: 'bg-orange-100 text-orange-700', label: 'Alto' },
+          moderado:   { cor: 'bg-yellow-100 text-yellow-700', label: 'Moderado' },
+          baixo:      { cor: 'bg-green-100 text-green-700',  label: 'Baixo' },
+        };
+        const podeAvaliar = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
+        return (
+          <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
+            {(['braden', 'morse'] as const).map((tipo) => {
+              const av = tipo === 'braden' ? escalas.braden : escalas.morse;
+              const titulo = tipo === 'braden' ? 'Escala de Braden' : 'Escala de Morse';
+              const subtitulo = tipo === 'braden' ? 'Risco úlceras de pressão' : 'Risco de queda';
+              return (
+                <div key={tipo} className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+                  <div className="flex items-center gap-2" style={{ marginBottom: '16px' }}>
+                    <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+                      <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-sm font-semibold text-slate-700">{titulo}</span>
+                      <p className="text-xs text-slate-400">{subtitulo}</p>
+                    </div>
+                    {podeAvaliar && (
+                      <button
+                        onClick={() => { setEscalaItens({}); setModalEscala(tipo); }}
+                        className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:bg-indigo-50 rounded-lg transition-colors"
+                        style={{ padding: '4px 10px' }}>
+                        + Avaliar
+                      </button>
+                    )}
+                  </div>
+                  {av ? (
+                    <div className="flex items-center gap-4">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-slate-900">{av.pontuacao}</div>
+                        <div className="text-xs text-slate-400" style={{ marginTop: '2px' }}>pontos</div>
+                      </div>
+                      <div className="flex-1">
+                        <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${riscoConfig[av.risco]?.cor ?? 'bg-slate-100 text-slate-600'}`}>
+                          {riscoConfig[av.risco]?.label ?? av.risco}
+                        </span>
+                        <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
+                          Avaliado por {av.registadoPor?.nome?.split(' ')[0]} · {new Date(av.criadaEm).toLocaleDateString('pt-PT')}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem avaliação registada</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })()}
+
+      {/* ── Modal Alergia ── */}
+      {modalAlergia && (
+        <Modal titulo="Registar Alergia" onClose={() => setModalAlergia(false)}>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente alérgeno *</label>
+            <input type="text" value={alergenio} onChange={(e) => setAlergenio(e.target.value)} placeholder="Ex: Penicilina, Ibuprofeno..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+            <div className="flex gap-2 flex-wrap">
+              {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
+                <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
+            <div className="flex gap-2 flex-wrap">
+              {['ligeira', 'moderada', 'grave', 'anafilaxia'].map((s) => (
+                <button key={s} onClick={() => setAlergiaSev(s)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
+            <input type="text" value={alergiaNotas} onChange={(e) => setAlergiaNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+          </div>
+          <ModalFooter onCancel={() => setModalAlergia(false)} onConfirm={submeterAlergia} loading={salvando} disabled={!alergenio.trim() || salvando} labelConfirm="Registar" />
+        </Modal>
+      )}
+
+      {/* ── Modal Contacto ── */}
+      {modalContacto && (
+        <Modal titulo="Contacto de Emergência" onClose={() => setModalContacto(false)}>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Nome *</label>
+            <input type="text" value={ctNome} onChange={(e) => setCtNome(e.target.value)} placeholder="Nome completo" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</label>
+            <div className="flex gap-2 flex-wrap">
+              {['cônjuge', 'filho/a', 'pai/mãe', 'outro'].map((r) => (
+                <button key={r} onClick={() => setCtRelacao(r)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Telefone *</label>
+            <input type="tel" value={ctTel} onChange={(e) => setCtTel(e.target.value)} placeholder="9xx xxx xxx" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+          </div>
+          <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer" style={{ marginBottom: '16px' }}>
+            <input type="checkbox" checked={ctPrincipal} onChange={(e) => setCtPrincipal(e.target.checked)} className="w-4 h-4 rounded" />
+            Contacto principal
+          </label>
+          <ModalFooter onCancel={() => setModalContacto(false)} onConfirm={submeterContacto} loading={salvando} disabled={!ctNome.trim() || !ctTel.trim() || salvando} labelConfirm="Guardar" />
+        </Modal>
+      )}
+
+      {/* ── Modal Sinal Vital ── */}
+      {modalSinalVital && (
+        <Modal titulo="Registar Sinais Vitais" onClose={() => setModalSinalVital(false)}>
+          <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
+            {[
+              { label: 'TA Sistólica (mmHg)', val: svPressaoS, set: setSvPressaoS, ph: '120' },
+              { label: 'TA Diastólica (mmHg)', val: svPressaoD, set: setSvPressaoD, ph: '80' },
+              { label: 'Pulso (bpm)', val: svPulso, set: setSvPulso, ph: '72' },
+              { label: 'Temperatura (ºC)', val: svTemp, set: setSvTemp, ph: '36.5' },
+              { label: 'SpO₂ (%)', val: svSpO2, set: setSvSpO2, ph: '98' },
+              { label: 'Freq. Resp. (rpm)', val: svFreqResp, set: setSvFreqResp, ph: '16' },
+            ].map(({ label, val, set, ph }) => (
+              <div key={label}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{label}</label>
+                <input type="number" value={val} onChange={(e) => set(e.target.value)} placeholder={ph} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+              </div>
+            ))}
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
+            <input type="number" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
+            <textarea rows={2} value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
+          </div>
+          <ModalFooter onCancel={() => setModalSinalVital(false)} onConfirm={submeterSinalVital} loading={salvando} disabled={salvando} labelConfirm="Guardar" />
+        </Modal>
+      )}
+
       {/* ── Modal Nota ── */}
       {modalNota && (
         <Modal titulo="Adicionar Nota de Turno" onClose={() => setModalNota(false)}>
@@ -1022,27 +1508,206 @@ export default function DoenteDetalhe() {
         </div>
       )}
 
-      {/* Modal confirmar alta */}
-      {confirmandoAlta && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px' }}>
-            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center" style={{ marginBottom: '20px' }}>
-              <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+      {/* Modal Editar Doente */}
+      {modalEditarDoente && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Editar Dados Clínicos</h2>
+              <button onClick={() => setModalEditarDoente(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
-            <h3 className="text-lg font-bold text-slate-900" style={{ marginBottom: '8px' }}>Confirmar Alta</h3>
-            <p className="text-slate-500 text-sm" style={{ marginBottom: '28px' }}>
-              Tem a certeza que pretende dar alta a <strong>{doente.nome}</strong>? Esta ação irá libertar a cama e não pode ser revertida.
-            </p>
+            <div style={{ marginBottom: '16px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Diagnóstico Principal</label>
+              <input type="text" value={editDiagnostico} onChange={(e) => setEditDiagnostico(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '10px 14px' }} />
+            </div>
+            <div style={{ marginBottom: '24px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Alta Prevista</label>
+              <input type="date" value={editAltaPrevista} onChange={(e) => setEditAltaPrevista(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '10px 14px' }} />
+            </div>
             <div className="flex gap-3">
-              <button onClick={() => setConfirmandoAlta(false)}
+              <button onClick={() => setModalEditarDoente(false)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={submeterEdicaoDoente} disabled={salvandoEdicao}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px' }}>
+                {salvandoEdicao ? 'A guardar...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal QR Code */}
+      {modalQR && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '32px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h3 className="text-lg font-bold text-slate-900">QR Code do Doente</h3>
+              <button onClick={() => setModalQR(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* QR Code */}
+            <div id="qr-print-area" className="flex flex-col items-center" style={{ gap: '16px' }}>
+              <div className="bg-white border border-slate-100 rounded-2xl" style={{ padding: '20px' }}>
+                <QRCode value={doente.id} size={180} />
+              </div>
+              <div className="text-center">
+                <p className="font-bold text-slate-900" style={{ fontSize: '15px' }}>{doente.nome}</p>
+                <p className="text-slate-400 font-mono text-xs" style={{ marginTop: '4px' }}>{doente.numeroProcesso}</p>
+                <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>Cama {doente.cama.quarto}/{doente.cama.numero}</p>
+              </div>
+            </div>
+
+            {/* Ações */}
+            <div className="flex gap-3" style={{ marginTop: '24px' }}>
+              <button onClick={() => setModalQR(false)}
+                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>
+                Fechar
+              </button>
+              <button
+                onClick={() => {
+                  const win = window.open('', '_blank');
+                  if (!win) return;
+                  win.document.write(`
+                    <html><head><title>QR - ${doente.nome}</title>
+                    <style>
+                      body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; gap: 12px; }
+                      .nome { font-size: 18px; font-weight: 700; color: #0f172a; }
+                      .sub { font-size: 12px; color: #94a3b8; font-family: monospace; }
+                    </style></head>
+                    <body>
+                      <div id="qr"></div>
+                      <p class="nome">${doente.nome}</p>
+                      <p class="sub">${doente.numeroProcesso} · Cama ${doente.cama.quarto}/${doente.cama.numero}</p>
+                      <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+                      <script>QRCode.toCanvas(document.getElementById('qr'), '${doente.id}', { width: 220 }, function() { window.print(); window.close(); });</script>
+                    </body></html>
+                  `);
+                  win.document.close();
+                }}
+                className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2"
+                style={{ padding: '11px' }}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Imprimir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal Alta Estruturada ── */}
+      {modalAltaEstruturada && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '540px', padding: '32px', maxHeight: '90vh' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-xl font-bold text-slate-900">Dar Alta — {doente.nome}</h2>
+              <button onClick={() => setModalAltaEstruturada(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            {/* Motivo */}
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo de Alta</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { value: 'melhoria', label: 'Melhoria Clínica' },
+                  { value: 'transferencia', label: 'Transferência' },
+                  { value: 'pedido_proprio', label: 'Pedido Próprio' },
+                  { value: 'obito', label: 'Óbito' },
+                ].map((op) => (
+                  <button key={op.value} type="button"
+                    onClick={() => setAltaMotivo(op.value)}
+                    className={`text-sm font-medium rounded-xl border transition-all text-left ${altaMotivo === op.value ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}
+                    style={{ padding: '10px 14px' }}>
+                    {op.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Destino (se não for óbito) */}
+            {altaMotivo !== 'obito' && (
+              <div style={{ marginBottom: '20px' }}>
+                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Destino</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { value: 'domicilio', label: 'Domicílio' },
+                    { value: 'outro_hospital', label: 'Outro Hospital' },
+                    { value: 'lar', label: 'Lar/Institucional' },
+                    { value: 'outro', label: 'Outro' },
+                  ].map((op) => (
+                    <button key={op.value} type="button"
+                      onClick={() => setAltaDestino(op.value)}
+                      className={`text-sm font-medium rounded-xl border transition-all ${altaDestino === op.value ? 'bg-slate-700 text-white border-slate-700' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                      style={{ padding: '6px 14px' }}>
+                      {op.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Resumo clínico */}
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>
+                Resumo Clínico <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                value={altaResumo}
+                onChange={(e) => setAltaResumo(e.target.value)}
+                rows={4}
+                placeholder="Descreva o internamento, evolução e estado à data de alta..."
+                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition resize-none"
+                style={{ padding: '10px 14px' }}
+              />
+            </div>
+
+            {/* Prescrição de saída */}
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Prescrição de Saída <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <textarea
+                value={altaPrescricao}
+                onChange={(e) => setAltaPrescricao(e.target.value)}
+                rows={2}
+                placeholder="Ex: Amoxicilina 500mg 3×/dia 7 dias, Ibuprofeno 400mg SOS..."
+                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition resize-none"
+                style={{ padding: '10px 14px' }}
+              />
+            </div>
+
+            {/* Médico de família */}
+            <div style={{ marginBottom: '28px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Médico de Família / Referenciação <span className="text-slate-400 font-normal text-xs">(opcional)</span></label>
+              <input
+                value={altaMedicoFamilia}
+                onChange={(e) => setAltaMedicoFamilia(e.target.value)}
+                placeholder="Nome ou contacto do médico de família..."
+                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                style={{ padding: '10px 14px' }}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setModalAltaEstruturada(false)}
                 className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>
                 Cancelar
               </button>
-              <button onClick={darAlta} disabled={salvandoAlta}
-                className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-60 transition-colors"
+              <button onClick={submeterAltaEstruturada} disabled={salvandoAlta || !altaResumo.trim()}
+                className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50 transition-colors"
                 style={{ padding: '11px' }}>
                 {salvandoAlta ? 'A processar...' : 'Confirmar Alta'}
               </button>
@@ -1050,6 +1715,85 @@ export default function DoenteDetalhe() {
           </div>
         </div>
       )}
+
+      {/* ── Modal Avaliação de Escala ── */}
+      {modalEscala && (() => {
+        const isBraden = modalEscala === 'braden';
+        const bradenItens = [
+          { key: 'percepcaoSensorial', label: 'Perceção Sensorial', opcoes: [{ v: 1, l: '1 — Completamente limitada' }, { v: 2, l: '2 — Muito limitada' }, { v: 3, l: '3 — Ligeiramente limitada' }, { v: 4, l: '4 — Sem limitação' }] },
+          { key: 'humidade', label: 'Humidade', opcoes: [{ v: 1, l: '1 — Constantemente húmida' }, { v: 2, l: '2 — Muito húmida' }, { v: 3, l: '3 — Ocasionalmente húmida' }, { v: 4, l: '4 — Raramente húmida' }] },
+          { key: 'atividade', label: 'Atividade', opcoes: [{ v: 1, l: '1 — Acamado' }, { v: 2, l: '2 — Cadeirante' }, { v: 3, l: '3 — Anda ocasionalmente' }, { v: 4, l: '4 — Anda frequentemente' }] },
+          { key: 'mobilidade', label: 'Mobilidade', opcoes: [{ v: 1, l: '1 — Completamente imóvel' }, { v: 2, l: '2 — Muito limitada' }, { v: 3, l: '3 — Ligeiramente limitada' }, { v: 4, l: '4 — Sem limitações' }] },
+          { key: 'nutricao', label: 'Nutrição', opcoes: [{ v: 1, l: '1 — Muito pobre' }, { v: 2, l: '2 — Provavelmente inadequada' }, { v: 3, l: '3 — Adequada' }, { v: 4, l: '4 — Excelente' }] },
+          { key: 'friccaoCisalhamento', label: 'Fricção e Cisalhamento', opcoes: [{ v: 1, l: '1 — Problema' }, { v: 2, l: '2 — Problema potencial' }, { v: 3, l: '3 — Sem problema' }] },
+        ];
+        const morseItens = [
+          { key: 'historiaQueda', label: 'História de queda nos últimos 3 meses', opcoes: [{ v: 0, l: 'Não — 0 pts' }, { v: 25, l: 'Sim — 25 pts' }] },
+          { key: 'diagnosticoSecundario', label: 'Diagnóstico secundário', opcoes: [{ v: 0, l: 'Não — 0 pts' }, { v: 15, l: 'Sim — 15 pts' }] },
+          { key: 'ajudaMarcha', label: 'Ajuda na marcha', opcoes: [{ v: 0, l: 'Nenhuma / repouso / cadeira de rodas — 0' }, { v: 15, l: 'Bengala / muleta / andarilho — 15' }, { v: 30, l: 'Apoio em mobiliário — 30' }] },
+          { key: 'heparinaIV', label: 'Heparina IV / cateter salinizado', opcoes: [{ v: 0, l: 'Não — 0 pts' }, { v: 20, l: 'Sim — 20 pts' }] },
+          { key: 'marchaTransferencia', label: 'Marcha / transferência', opcoes: [{ v: 0, l: 'Normal / repouso / imóvel — 0' }, { v: 10, l: 'Débil — 10' }, { v: 20, l: 'Comprometida — 20' }] },
+          { key: 'estadoMental', label: 'Estado mental', opcoes: [{ v: 0, l: 'Consciente das limitações — 0' }, { v: 15, l: 'Sobrestima capacidades — 15' }] },
+        ];
+        const itensConfig = isBraden ? bradenItens : morseItens;
+        const total = itensConfig.reduce((s, it) => s + (escalaItens[it.key] ?? 0), 0);
+        const preenchido = itensConfig.every((it) => escalaItens[it.key] !== undefined);
+
+        return (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+            <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
+                <h2 className="text-xl font-bold text-slate-900">
+                  {isBraden ? 'Escala de Braden' : 'Escala de Morse'}
+                </h2>
+                <button onClick={() => setModalEscala(null)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <p className="text-sm text-slate-400" style={{ marginBottom: '24px' }}>
+                {isBraden ? 'Avaliação do risco de úlceras de pressão (6–23 pts)' : 'Avaliação do risco de queda (0–125 pts)'}
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+                {itensConfig.map((item) => (
+                  <div key={item.key}>
+                    <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>{item.label}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      {item.opcoes.map((op) => (
+                        <button key={op.v} type="button"
+                          onClick={() => setEscalaItens((prev) => ({ ...prev, [item.key]: op.v }))}
+                          className={`text-left text-sm rounded-lg border transition-all ${escalaItens[item.key] === op.v ? 'bg-indigo-600 text-white border-indigo-600' : 'border-slate-200 text-slate-600 hover:border-indigo-300'}`}
+                          style={{ padding: '8px 12px' }}>
+                          {op.l}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pontuação em tempo real */}
+              <div className="bg-slate-50 rounded-xl flex items-center justify-between" style={{ padding: '14px 18px', marginBottom: '20px' }}>
+                <span className="text-sm font-semibold text-slate-600">Pontuação total</span>
+                <span className="text-2xl font-bold text-indigo-700">{total}</span>
+              </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => setModalEscala(null)}
+                  className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                  style={{ padding: '11px' }}>
+                  Cancelar
+                </button>
+                <button onClick={submeterEscala} disabled={salvando || !preenchido}
+                  className="flex-1 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                  style={{ padding: '11px' }}>
+                  {salvando ? 'A guardar...' : 'Guardar Avaliação'}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

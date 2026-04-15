@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import {
+  AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, CartesianGrid, Legend,
+} from 'recharts';
 
 interface Ocupacao {
   total: number;
@@ -10,6 +14,12 @@ interface Ocupacao {
   livres: number;
   emLimpeza: number;
   reservadas: number;
+}
+
+interface Analytics {
+  ocupacaoDiaria: Array<{ data: string; total: number; ocupadas: number }>;
+  cargaEnfermeiros: Array<{ nome: string; numDoentes: number; tarefasPendentes: number }>;
+  tarefasHoje: { total: number; concluidas: number; urgentesAtraso: number };
 }
 
 interface Doente {
@@ -39,10 +49,13 @@ const statCards = [
   { key: 'emLimpeza', label: 'Em Limpeza',       color: 'bg-amber-500',   text: 'text-amber-600' },
 ];
 
+const ROLES_ANALYTICS = ['administrativo', 'chefe_enfermeiros', 'chefe_turno', 'chefe_medicos'];
+
 export default function DashboardPage() {
   const { utilizador } = useAuth();
   const [ocupacao, setOcupacao] = useState<Ocupacao | null>(null);
   const [doentes, setDoentes] = useState<Doente[]>([]);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,6 +68,11 @@ export default function DashboardPage() {
       finally { setLoading(false); }
     })();
   }, []);
+
+  useEffect(() => {
+    if (!utilizador || !ROLES_ANALYTICS.includes(utilizador.role)) return;
+    api.get<Analytics>('/dashboard/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
+  }, [utilizador]);
 
   const altasHoje = doentes.filter((d) =>
     d.dataAltaPrevista && new Date(d.dataAltaPrevista).toDateString() === new Date().toDateString()
@@ -195,6 +213,103 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+          {/* ── Analytics (só para gestão) ── */}
+          {utilizador && ROLES_ANALYTICS.includes(utilizador.role) && analytics && (
+            <div style={{ marginBottom: '40px' }}>
+              <h2 className="text-lg font-semibold text-slate-800" style={{ marginBottom: '20px' }}>Análises e Métricas</h2>
+
+              {/* Linha 1: gráficos */}
+              <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '20px' }}>
+
+                {/* Ocupação últimas 2 semanas */}
+                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+                  <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '20px' }}>Ocupação — Últimas 2 semanas</p>
+                  <ResponsiveContainer width="100%" height={200}>
+                    <AreaChart data={analytics.ocupacaoDiaria} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="gradOcup" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#2563eb" stopOpacity={0.15} />
+                          <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis
+                        dataKey="data"
+                        tick={{ fontSize: 10, fill: '#94a3b8' }}
+                        tickFormatter={(v) => new Date(v).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
+                      />
+                      <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} allowDecimals={false} />
+                      <Tooltip
+                        formatter={(v, name) => [v, name === 'ocupadas' ? 'Ocupadas' : 'Total']}
+                        labelFormatter={(l) => new Date(l).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long' })}
+                      />
+                      <Legend formatter={(v) => v === 'ocupadas' ? 'Ocupadas' : 'Total'} />
+                      <Area type="monotone" dataKey="total" stroke="#e2e8f0" fill="none" strokeDasharray="4 2" strokeWidth={1.5} dot={false} />
+                      <Area type="monotone" dataKey="ocupadas" stroke="#2563eb" fill="url(#gradOcup)" strokeWidth={2} dot={false} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Carga por enfermeiro */}
+                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+                  <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '20px' }}>Carga por Enfermeiro — Turno Atual</p>
+                  {analytics.cargaEnfermeiros.length === 0 ? (
+                    <div className="flex items-center justify-center h-48 text-slate-400 text-sm">Sem atribuições no turno atual</div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height={200}>
+                      <BarChart data={analytics.cargaEnfermeiros} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
+                        <XAxis type="number" tick={{ fontSize: 10, fill: '#94a3b8' }} allowDecimals={false} />
+                        <YAxis
+                          type="category"
+                          dataKey="nome"
+                          width={100}
+                          tick={{ fontSize: 10, fill: '#64748b' }}
+                          tickFormatter={(v: string) => v.split(' ')[0]}
+                        />
+                        <Tooltip formatter={(v, name) => [v, name === 'numDoentes' ? 'Doentes' : 'Tarefas pendentes']} />
+                        <Legend formatter={(v) => v === 'numDoentes' ? 'Doentes' : 'Tarefas pendentes'} />
+                        <Bar dataKey="numDoentes" fill="#2563eb" radius={[0, 4, 4, 0]} />
+                        <Bar dataKey="tarefasPendentes" fill="#f59e0b" radius={[0, 4, 4, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </div>
+              </div>
+
+              {/* Linha 2: tarefas hoje */}
+              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+                <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
+                  <p className="text-sm font-semibold text-slate-700">Tarefas de Hoje</p>
+                  {analytics.tarefasHoje.urgentesAtraso > 0 && (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-full" style={{ padding: '4px 12px' }}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                      {analytics.tarefasHoje.urgentesAtraso} urgente{analytics.tarefasHoje.urgentesAtraso !== 1 ? 's' : ''} em atraso
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="h-3 rounded-full bg-blue-500 transition-all"
+                        style={{ width: `${analytics.tarefasHoje.total > 0 ? Math.round((analytics.tarefasHoje.concluidas / analytics.tarefasHoje.total) * 100) : 0}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className="text-sm font-semibold text-slate-700 shrink-0">
+                    {analytics.tarefasHoje.concluidas}/{analytics.tarefasHoje.total} concluídas
+                    {analytics.tarefasHoje.total > 0 && (
+                      <span className="text-slate-400 font-normal">
+                        {' '}({Math.round((analytics.tarefasHoje.concluidas / analytics.tarefasHoje.total) * 100)}%)
+                      </span>
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Tabela ── */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

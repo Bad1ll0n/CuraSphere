@@ -273,9 +273,98 @@ exports.Prisma.AtribuicaoHorarioTurnoScalarFieldEnum = {
   atribuidoPorId: 'atribuidoPorId'
 };
 
+exports.Prisma.SinalVitalScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  registadoPorId: 'registadoPorId',
+  data: 'data',
+  pressaoSistolica: 'pressaoSistolica',
+  pressaoDiastolica: 'pressaoDiastolica',
+  pulso: 'pulso',
+  temperatura: 'temperatura',
+  saturacaoO2: 'saturacaoO2',
+  frequenciaRespiratoria: 'frequenciaRespiratoria',
+  peso: 'peso',
+  notas: 'notas'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  acao: 'acao',
+  entidadeId: 'entidadeId',
+  entidadeTipo: 'entidadeTipo',
+  detalhes: 'detalhes',
+  ip: 'ip',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AlergiaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  alergenio: 'alergenio',
+  tipo: 'tipo',
+  severidade: 'severidade',
+  notas: 'notas',
+  criadaEm: 'criadaEm'
+};
+
+exports.Prisma.ContactoEmergenciaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  nome: 'nome',
+  relacao: 'relacao',
+  telefone: 'telefone',
+  principal: 'principal'
+};
+
+exports.Prisma.AlertaClinicoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  mensagem: 'mensagem',
+  lido: 'lido',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AvaliacaoRiscoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  pontuacao: 'pontuacao',
+  itens: 'itens',
+  risco: 'risco',
+  registadoPorId: 'registadoPorId',
+  criadaEm: 'criadaEm'
+};
+
+exports.Prisma.SumarioAltaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  motivoAlta: 'motivoAlta',
+  destino: 'destino',
+  resumoClinical: 'resumoClinical',
+  prescricaoSaida: 'prescricaoSaida',
+  medicoFamilia: 'medicoFamilia',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.DispositivoTokenScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  token: 'token',
+  plataforma: 'plataforma',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -286,6 +375,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Role = exports.$Enums.Role = {
   enfermeiro: 'enfermeiro',
@@ -359,7 +454,15 @@ exports.Prisma.ModelName = {
   HorarioTurno: 'HorarioTurno',
   HorarioTurnoProfissional: 'HorarioTurnoProfissional',
   PedidoTrocaTurno: 'PedidoTrocaTurno',
-  AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno'
+  AtribuicaoHorarioTurno: 'AtribuicaoHorarioTurno',
+  SinalVital: 'SinalVital',
+  AuditLog: 'AuditLog',
+  Alergia: 'Alergia',
+  ContactoEmergencia: 'ContactoEmergencia',
+  AlertaClinico: 'AlertaClinico',
+  AvaliacaoRisco: 'AvaliacaoRisco',
+  SumarioAlta: 'SumarioAlta',
+  DispositivoToken: 'DispositivoToken'
 };
 
 /**
