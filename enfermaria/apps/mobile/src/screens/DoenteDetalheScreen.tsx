@@ -578,7 +578,6 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
                 })()}
               </View>
             )}
-          </View>
 
           {/* Alergias */}
           <View style={s.infoCard}>

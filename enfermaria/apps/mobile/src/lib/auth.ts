@@ -18,7 +18,8 @@ export async function login(numeroFuncionario: string, password: string): Promis
 
 export async function logout() {
   setMemToken(null);
-  await AsyncStorage.multiRemove(['token', 'utilizador']);
+  await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('utilizador');
 }
 
 export async function getUtilizador(): Promise<Utilizador | null> {
@@ -28,7 +29,8 @@ export async function getUtilizador(): Promise<Utilizador | null> {
   ]);
   // Sem token = sessão inválida, força novo login
   if (!stored || !token) {
-    await AsyncStorage.multiRemove(['token', 'utilizador']);
+    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('utilizador');
     return null;
   }
   setMemToken(token);

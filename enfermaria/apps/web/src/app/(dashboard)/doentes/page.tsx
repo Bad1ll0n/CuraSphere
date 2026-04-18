@@ -33,12 +33,23 @@ export default function DoentesPagina() {
   const [doentes, setDoentes] = useState<Doente[]>([]);
   const [loading, setLoading] = useState(true);
   const [pesquisa, setPesquisa] = useState('');
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+  const [total, setTotal] = useState(0);
+  const LIMIT = 25;
 
   const podeAdmitir = ['administrativo', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador?.role ?? '');
 
   useEffect(() => {
-    api.get('/doentes').then((r) => setDoentes(r.data)).finally(() => setLoading(false));
-  }, []);
+    setLoading(true);
+    api.get(`/doentes?page=${pagina}&limit=${LIMIT}`)
+      .then((r) => {
+        setDoentes(r.data.data ?? r.data);
+        setTotal(r.data.total ?? r.data.length);
+        setTotalPaginas(r.data.totalPaginas ?? 1);
+      })
+      .finally(() => setLoading(false));
+  }, [pagina]);
 
   const filtrados = doentes.filter((d) =>
     d.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
@@ -54,7 +65,7 @@ export default function DoentesPagina() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Doentes</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
-            {doentes.length} {doentes.length === 1 ? 'doente internado' : 'doentes internados'}
+            {total} {total === 1 ? 'doente internado' : 'doentes internados'}
           </p>
         </div>
         {podeAdmitir && (
@@ -177,6 +188,37 @@ export default function DoentesPagina() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Paginação */}
+        {!loading && totalPaginas > 1 && (
+          <div className="flex items-center justify-between border-t border-slate-100" style={{ padding: '16px 24px' }}>
+            <span className="text-xs text-slate-500">
+              Página {pagina} de {totalPaginas} · {total} doentes
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPagina((p) => Math.max(1, p - 1))}
+                disabled={pagina === 1}
+                className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                style={{ padding: '7px 12px' }}>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Anterior
+              </button>
+              <button
+                onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
+                disabled={pagina === totalPaginas}
+                className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                style={{ padding: '7px 12px' }}>
+                Próxima
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
       </div>

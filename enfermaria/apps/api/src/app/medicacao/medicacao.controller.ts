@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, ForbiddenException } from '@nestjs/common';
 import { MedicacaoService } from './medicacao.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -50,5 +50,31 @@ export class MedicacaoController {
   @Patch(':id/descontinuar')
   descontinuar(@Param('id') id: string) {
     return this.medicacaoService.descontinuar(id);
+  }
+
+  @Get('mar')
+  mar(@Request() req: any) {
+    return this.medicacaoService.mar(req.user.sub);
+  }
+
+  @Get('pendentes-validacao')
+  pendentesValidacao(@Request() req: any) {
+    const roles = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
+    if (!roles.includes(req.user.role)) throw new ForbiddenException();
+    return this.medicacaoService.pendentesValidacao();
+  }
+
+  @Patch(':id/validar')
+  validar(@Param('id') id: string, @Request() req: any) {
+    const roles = ['farmaceutico', 'farmaceutico_clinico'];
+    if (!roles.includes(req.user.role)) throw new ForbiddenException();
+    return this.medicacaoService.validarPrescricao(id, req.user.sub);
+  }
+
+  @Patch(':id/rejeitar')
+  rejeitar(@Param('id') id: string, @Body() body: { motivoRejeicao: string }, @Request() req: any) {
+    const roles = ['farmaceutico', 'farmaceutico_clinico'];
+    if (!roles.includes(req.user.role)) throw new ForbiddenException();
+    return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, body.motivoRejeicao);
   }
 }

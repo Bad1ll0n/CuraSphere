@@ -3,20 +3,22 @@ import { UtilizadoresService } from './utilizadores.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { Role } from '../common/enums';
+import { Role, SubRole, Servico } from '../common/enums';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('utilizadores')
 export class UtilizadoresController {
   constructor(private readonly utilizadoresService: UtilizadoresService) {}
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.it_admin)
   @Post()
   criar(@Body() body: {
     numeroFuncionario: string;
     nome: string;
     password: string;
     role: Role;
+    subRole?: SubRole;
+    servico?: Servico;
     ordemExperiencia?: number;
   }) {
     return this.utilizadoresService.criar(body);
@@ -33,16 +35,16 @@ export class UtilizadoresController {
     return this.utilizadoresService.buscarPorId(id);
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.it_admin)
   @Patch(':id')
   atualizar(
     @Param('id') id: string,
-    @Body() body: { nome?: string; ordemExperiencia?: number; role?: Role; equipa?: string },
+    @Body() body: { nome?: string; ordemExperiencia?: number; role?: Role; subRole?: SubRole | null; servico?: Servico; equipa?: string },
   ) {
     return this.utilizadoresService.atualizar(id, body);
   }
 
-  @Roles(Role.chefe_enfermeiros)
+  @Roles(Role.it_admin)
   @Delete(':id')
   desativar(@Param('id') id: string) {
     return this.utilizadoresService.desativar(id);

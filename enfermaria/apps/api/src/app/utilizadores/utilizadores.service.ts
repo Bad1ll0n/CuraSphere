@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Role } from '../common/enums';
+import { Role, SubRole, Servico } from '../common/enums';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -12,6 +12,8 @@ export class UtilizadoresService {
     nome: string;
     password: string;
     role: Role;
+    subRole?: SubRole;
+    servico?: Servico;
     ordemExperiencia?: number;
   }) {
     const existe = await this.prisma.utilizador.findUnique({
@@ -30,6 +32,8 @@ export class UtilizadoresService {
         nome: data.nome,
         passwordHash,
         role: data.role,
+        subRole: data.subRole,
+        servico: data.servico ?? Servico.internamento,
         ordemExperiencia: data.ordemExperiencia,
       },
       select: {
@@ -37,6 +41,8 @@ export class UtilizadoresService {
         numeroFuncionario: true,
         nome: true,
         role: true,
+        subRole: true,
+        servico: true,
         ordemExperiencia: true,
         equipa: true,
         ativo: true,
@@ -59,6 +65,8 @@ export class UtilizadoresService {
         numeroFuncionario: true,
         nome: true,
         role: true,
+        subRole: true,
+        servico: true,
         ordemExperiencia: true,
         equipa: true,
         ativo: true,
@@ -76,6 +84,8 @@ export class UtilizadoresService {
         numeroFuncionario: true,
         nome: true,
         role: true,
+        subRole: true,
+        servico: true,
         ordemExperiencia: true,
         equipa: true,
         ativo: true,
@@ -87,7 +97,7 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: Role; equipa?: string }) {
+  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: Role; subRole?: SubRole | null; servico?: Servico; equipa?: string }) {
     await this.buscarPorId(id);
     return this.prisma.utilizador.update({
       where: { id },
@@ -97,6 +107,8 @@ export class UtilizadoresService {
         numeroFuncionario: true,
         nome: true,
         role: true,
+        subRole: true,
+        servico: true,
         ordemExperiencia: true,
         equipa: true,
         ativo: true,

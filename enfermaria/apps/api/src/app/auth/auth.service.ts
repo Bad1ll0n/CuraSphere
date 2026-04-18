@@ -28,6 +28,8 @@ export class AuthService {
       sub: utilizador.id,
       numeroFuncionario: utilizador.numeroFuncionario,
       role: utilizador.role,
+      subRole: utilizador.subRole ?? undefined,
+      servico: utilizador.servico,
     };
 
     return {
@@ -37,6 +39,8 @@ export class AuthService {
         nome: utilizador.nome,
         numeroFuncionario: utilizador.numeroFuncionario,
         role: utilizador.role,
+        subRole: utilizador.subRole ?? undefined,
+        servico: utilizador.servico,
       },
     };
   }

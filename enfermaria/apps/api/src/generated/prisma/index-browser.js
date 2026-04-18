@@ -127,6 +127,8 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   nome: 'nome',
   passwordHash: 'passwordHash',
   role: 'role',
+  subRole: 'subRole',
+  servico: 'servico',
   ordemExperiencia: 'ordemExperiencia',
   equipa: 'equipa',
   ativo: 'ativo',
@@ -152,6 +154,8 @@ exports.Prisma.DoenteScalarFieldEnum = {
   dataAltaPrevista: 'dataAltaPrevista',
   dataAlta: 'dataAlta',
   ativo: 'ativo',
+  emIsolamento: 'emIsolamento',
+  motivoIsolamento: 'motivoIsolamento',
   camaId: 'camaId',
   administrativoAdmissaoId: 'administrativoAdmissaoId'
 };
@@ -184,6 +188,30 @@ exports.Prisma.PassagemTurnoScalarFieldEnum = {
   turnoAnteriorId: 'turnoAnteriorId',
   turnoAtualId: 'turnoAtualId',
   doenteId: 'doenteId'
+};
+
+exports.Prisma.NotaClinicaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  autorId: 'autorId',
+  subjetivo: 'subjetivo',
+  objetivo: 'objetivo',
+  avaliacao: 'avaliacao',
+  plano: 'plano',
+  criadaEm: 'criadaEm',
+  editadaEm: 'editadaEm'
+};
+
+exports.Prisma.EscalaClinicaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  registadoPorId: 'registadoPorId',
+  tipo: 'tipo',
+  valores: 'valores',
+  pontuacao: 'pontuacao',
+  classificacao: 'classificacao',
+  observacoes: 'observacoes',
+  registadaEm: 'registadaEm'
 };
 
 exports.Prisma.NotaTurnoScalarFieldEnum = {
@@ -222,7 +250,11 @@ exports.Prisma.MedicacaoScalarFieldEnum = {
   iniciadoEm: 'iniciadoEm',
   terminadoEm: 'terminadoEm',
   doenteId: 'doenteId',
-  prescritoPorId: 'prescritoPorId'
+  prescritoPorId: 'prescritoPorId',
+  estadoValidacao: 'estadoValidacao',
+  validadoPorId: 'validadoPorId',
+  validadaEm: 'validadaEm',
+  motivoRejeicao: 'motivoRejeicao'
 };
 
 exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
@@ -358,12 +390,226 @@ exports.Prisma.DispositivoTokenScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.ExameScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  solicitadoPorId: 'solicitadoPorId',
+  tipo: 'tipo',
+  descricao: 'descricao',
+  urgente: 'urgente',
+  estado: 'estado',
+  resultado: 'resultado',
+  dataResultado: 'dataResultado',
+  observacoes: 'observacoes',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.FicheiroExameScalarFieldEnum = {
+  id: 'id',
+  exameId: 'exameId',
+  nome: 'nome',
+  url: 'url',
+  mimeType: 'mimeType'
+};
+
+exports.Prisma.EpisodioUrgenciaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  nomeTemporario: 'nomeTemporario',
+  queixaPrincipal: 'queixaPrincipal',
+  triagem: 'triagem',
+  estadoEpisodio: 'estadoEpisodio',
+  triadoPorId: 'triadoPorId',
+  medicoResponsavelId: 'medicoResponsavelId',
+  dataEntrada: 'dataEntrada',
+  dataSaida: 'dataSaida',
+  notas: 'notas',
+  sinaisVitaisTriagem: 'sinaisVitaisTriagem'
+};
+
+exports.Prisma.CirurgiaProgramadaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  designacao: 'designacao',
+  dataHora: 'dataHora',
+  duracaoPrevista: 'duracaoPrevista',
+  sala: 'sala',
+  estado: 'estado',
+  cirurgiaoId: 'cirurgiaoId',
+  anestesistaId: 'anestesistaId',
+  equipa: 'equipa',
+  notasPreOperatorio: 'notasPreOperatorio',
+  notasPosOperatorio: 'notasPosOperatorio',
+  complicacoes: 'complicacoes',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.ChecklistCirurgiaScalarFieldEnum = {
+  id: 'id',
+  cirurgiaId: 'cirurgiaId',
+  signInEm: 'signInEm',
+  signInPorId: 'signInPorId',
+  signInDados: 'signInDados',
+  timeOutEm: 'timeOutEm',
+  timeOutPorId: 'timeOutPorId',
+  timeOutDados: 'timeOutDados',
+  signOutEm: 'signOutEm',
+  signOutPorId: 'signOutPorId',
+  signOutDados: 'signOutDados'
+};
+
+exports.Prisma.ConsultaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  nomeDoente: 'nomeDoente',
+  medicoId: 'medicoId',
+  especialidade: 'especialidade',
+  dataHora: 'dataHora',
+  duracao: 'duracao',
+  estado: 'estado',
+  notas: 'notas',
+  diagnostico: 'diagnostico',
+  proximaConsulta: 'proximaConsulta',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.CheckinSalaEsperaScalarFieldEnum = {
+  id: 'id',
+  nomeDoente: 'nomeDoente',
+  dataNascimento: 'dataNascimento',
+  numeroUtente: 'numeroUtente',
+  motivo: 'motivo',
+  prioridade: 'prioridade',
+  estado: 'estado',
+  chegadaEm: 'chegadaEm',
+  chamadoEm: 'chamadoEm',
+  atendidoEm: 'atendidoEm',
+  rececionistadoPorId: 'rececionistadoPorId',
+  medicoId: 'medicoId',
+  observacoes: 'observacoes'
+};
+
+exports.Prisma.StockItemScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  tipo: 'tipo',
+  quantidade: 'quantidade',
+  quantidadeMinima: 'quantidadeMinima',
+  unidade: 'unidade',
+  validade: 'validade',
+  servico: 'servico',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.PedidoFarmaciaScalarFieldEnum = {
+  id: 'id',
+  stockItemId: 'stockItemId',
+  quantidade: 'quantidade',
+  servico: 'servico',
+  estado: 'estado',
+  solicitadoPorId: 'solicitadoPorId',
+  processadoPorId: 'processadoPorId',
+  observacoes: 'observacoes',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.PlanoReabilitacaoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  fisioterapeutaId: 'fisioterapeutaId',
+  objetivos: 'objetivos',
+  dataInicio: 'dataInicio',
+  dataFimPrevista: 'dataFimPrevista',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.SessaoFisioterapiaScalarFieldEnum = {
+  id: 'id',
+  planoId: 'planoId',
+  doenteId: 'doenteId',
+  fisioterapeutaId: 'fisioterapeutaId',
+  data: 'data',
+  duracao: 'duracao',
+  descricao: 'descricao',
+  evolucao: 'evolucao',
+  estado: 'estado'
+};
+
+exports.Prisma.PedidoInternoScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  doenteId: 'doenteId',
+  localOrigem: 'localOrigem',
+  localDestino: 'localDestino',
+  descricao: 'descricao',
+  prioridade: 'prioridade',
+  estado: 'estado',
+  solicitadoPorId: 'solicitadoPorId',
+  executadoPorId: 'executadoPorId',
+  servicoOrigem: 'servicoOrigem',
+  criadoEm: 'criadoEm',
+  concluidoEm: 'concluidoEm'
+};
+
+exports.Prisma.AnuncioScalarFieldEnum = {
+  id: 'id',
+  autorId: 'autorId',
+  titulo: 'titulo',
+  texto: 'texto',
+  servico: 'servico',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm',
+  expiraEm: 'expiraEm'
+};
+
+exports.Prisma.MensagemInternaScalarFieldEnum = {
+  id: 'id',
+  remetenteId: 'remetenteId',
+  destinatarioId: 'destinatarioId',
+  assunto: 'assunto',
+  texto: 'texto',
+  lida: 'lida',
+  criadaEm: 'criadaEm'
+};
+
+exports.Prisma.InterconsultaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  requisitanteId: 'requisitanteId',
+  especialidadeAlvo: 'especialidadeAlvo',
+  motivo: 'motivo',
+  urgente: 'urgente',
+  estado: 'estado',
+  medicoRespostaId: 'medicoRespostaId',
+  resposta: 'resposta',
+  criadaEm: 'criadaEm',
+  respondidaEm: 'respondidaEm'
+};
+
+exports.Prisma.DispositivoInvasivoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  localizacao: 'localizacao',
+  dataInsercao: 'dataInsercao',
+  dataRemocao: 'dataRemocao',
+  ativo: 'ativo',
+  observacoes: 'observacoes',
+  inseridoPorId: 'inseridoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -383,12 +629,144 @@ exports.Prisma.JsonNullValueFilter = {
   AnyNull: Prisma.AnyNull
 };
 exports.Role = exports.$Enums.Role = {
-  enfermeiro: 'enfermeiro',
-  auxiliar: 'auxiliar',
+  diretor_geral: 'diretor_geral',
+  diretor_clinico: 'diretor_clinico',
+  diretor_enfermagem: 'diretor_enfermagem',
+  diretor_financeiro: 'diretor_financeiro',
+  diretor_operacional: 'diretor_operacional',
+  diretor_rh: 'diretor_rh',
+  diretor_ti: 'diretor_ti',
+  diretor_qualidade: 'diretor_qualidade',
   medico: 'medico',
+  medico_especialista: 'medico_especialista',
+  cirurgiao: 'cirurgiao',
+  anestesiologista: 'anestesiologista',
+  radiologista: 'radiologista',
+  patologista: 'patologista',
+  enfermeiro: 'enfermeiro',
+  enfermeiro_especialista: 'enfermeiro_especialista',
+  enfermeiro_gestor: 'enfermeiro_gestor',
+  auxiliar_saude: 'auxiliar_saude',
+  tecnico: 'tecnico',
+  fisioterapeuta: 'fisioterapeuta',
+  terapeuta_fala: 'terapeuta_fala',
+  nutricionista: 'nutricionista',
+  psicologo: 'psicologo',
+  farmaceutico: 'farmaceutico',
+  farmaceutico_clinico: 'farmaceutico_clinico',
+  tecnico_farmacia: 'tecnico_farmacia',
+  rececionista: 'rececionista',
+  secretario_clinico: 'secretario_clinico',
+  assistente_administrativo: 'assistente_administrativo',
+  gestor_agendamento: 'gestor_agendamento',
+  faturacao: 'faturacao',
+  rh: 'rh',
+  compras: 'compras',
+  maqueiro: 'maqueiro',
+  assistente_operacional: 'assistente_operacional',
+  esterilizacao: 'esterilizacao',
+  limpeza: 'limpeza',
+  lavandaria: 'lavandaria',
+  engenheiro_biomedico: 'engenheiro_biomedico',
+  tecnico_manutencao: 'tecnico_manutencao',
+  seguranca: 'seguranca',
+  sst: 'sst',
+  it_admin: 'it_admin',
+  analista_sistemas: 'analista_sistemas',
+  dba: 'dba',
+  ciberseguranca: 'ciberseguranca',
+  bi_analyst: 'bi_analyst',
+  dpo: 'dpo',
+  gestor_qualidade: 'gestor_qualidade',
+  compliance_officer: 'compliance_officer',
+  controlo_infecao: 'controlo_infecao',
+  auditor_interno: 'auditor_interno',
+  auxiliar: 'auxiliar',
+  administrativo: 'administrativo',
   chefe_turno: 'chefe_turno',
   chefe_enfermeiros: 'chefe_enfermeiros',
   chefe_medicos: 'chefe_medicos',
+  triador: 'triador',
+  anestesista: 'anestesista',
+  instrumentista: 'instrumentista',
+  secretaria: 'secretaria'
+};
+
+exports.SubRole = exports.$Enums.SubRole = {
+  ceo_hospitalar: 'ceo_hospitalar',
+  diretor_medico: 'diretor_medico',
+  head_nurse: 'head_nurse',
+  cfo: 'cfo',
+  coo: 'coo',
+  hr_director: 'hr_director',
+  cio: 'cio',
+  compliance_director: 'compliance_director',
+  clinico_geral: 'clinico_geral',
+  cardiologista: 'cardiologista',
+  urologista: 'urologista',
+  ortopedista: 'ortopedista',
+  neurologista: 'neurologista',
+  ginecologista: 'ginecologista',
+  pediatra: 'pediatra',
+  oncologista: 'oncologista',
+  cirurgiao_geral: 'cirurgiao_geral',
+  medico_anestesia: 'medico_anestesia',
+  medico_imagem: 'medico_imagem',
+  anatomia_patologica: 'anatomia_patologica',
+  generalista: 'generalista',
+  enf_uci: 'enf_uci',
+  enf_bloco: 'enf_bloco',
+  enf_obstetricia: 'enf_obstetricia',
+  enf_pediatria: 'enf_pediatria',
+  supervisor_enfermagem: 'supervisor_enfermagem',
+  tae: 'tae',
+  tecnico_radiologia: 'tecnico_radiologia',
+  tecnico_tac_rm: 'tecnico_tac_rm',
+  tecnico_analises_clinicas: 'tecnico_analises_clinicas',
+  tecnico_cardiopneumologia: 'tecnico_cardiopneumologia',
+  reabilitacao_fisica: 'reabilitacao_fisica',
+  reabilitacao_fala: 'reabilitacao_fala',
+  nutricao_clinica: 'nutricao_clinica',
+  psicologia_clinica: 'psicologia_clinica',
+  farmaceutico_hospitalar: 'farmaceutico_hospitalar',
+  farmaceutico_oncologico: 'farmaceutico_oncologico',
+  tecnico_farmacia_assist: 'tecnico_farmacia_assist',
+  front_desk: 'front_desk',
+  secretariado: 'secretariado',
+  backoffice: 'backoffice',
+  scheduling: 'scheduling',
+  billing_officer: 'billing_officer',
+  hr_specialist: 'hr_specialist',
+  procurement: 'procurement',
+  transporte_interno: 'transporte_interno',
+  apoio_geral: 'apoio_geral',
+  cssd: 'cssd',
+  higiene_hospitalar: 'higiene_hospitalar',
+  gestao_textil: 'gestao_textil',
+  equipamentos_medicos: 'equipamentos_medicos',
+  facilities: 'facilities',
+  vigilancia: 'vigilancia',
+  seguranca_trabalho: 'seguranca_trabalho',
+  sysadmin: 'sysadmin',
+  his_erp: 'his_erp',
+  database_admin: 'database_admin',
+  security_officer: 'security_officer',
+  dados_clinicos: 'dados_clinicos',
+  dpo_role: 'dpo_role',
+  quality_manager: 'quality_manager',
+  compliance: 'compliance',
+  infection_control: 'infection_control',
+  internal_audit: 'internal_audit'
+};
+
+exports.Servico = exports.$Enums.Servico = {
+  internamento: 'internamento',
+  urgencia: 'urgencia',
+  bloco_operatorio: 'bloco_operatorio',
+  consultas_externas: 'consultas_externas',
+  farmacia: 'farmacia',
+  fisioterapia: 'fisioterapia',
+  transporte: 'transporte',
   administrativo: 'administrativo'
 };
 
@@ -410,6 +788,23 @@ exports.TipoTurno = exports.$Enums.TipoTurno = {
   manha: 'manha',
   tarde: 'tarde',
   noite: 'noite'
+};
+
+exports.TipoEscalaClinica = exports.$Enums.TipoEscalaClinica = {
+  RASS: 'RASS',
+  CPOT: 'CPOT',
+  SOFA: 'SOFA',
+  CTG: 'CTG',
+  Apgar: 'Apgar',
+  PEWS: 'PEWS',
+  FLACC: 'FLACC',
+  Barthel: 'Barthel',
+  FIM: 'FIM',
+  MRC: 'MRC',
+  FOIS: 'FOIS',
+  NRS2002: 'NRS2002',
+  PHQ9: 'PHQ9',
+  GAD7: 'GAD7'
 };
 
 exports.TipoTarefa = exports.$Enums.TipoTarefa = {
@@ -438,6 +833,117 @@ exports.EstadoPedidoTroca = exports.$Enums.EstadoPedidoTroca = {
   rejeitado: 'rejeitado'
 };
 
+exports.TipoExame = exports.$Enums.TipoExame = {
+  analise_clinica: 'analise_clinica',
+  rx: 'rx',
+  eco: 'eco',
+  tc: 'tc',
+  rmn: 'rmn',
+  ecg: 'ecg',
+  outro: 'outro'
+};
+
+exports.EstadoExame = exports.$Enums.EstadoExame = {
+  solicitado: 'solicitado',
+  em_progresso: 'em_progresso',
+  resultado_disponivel: 'resultado_disponivel',
+  cancelado: 'cancelado'
+};
+
+exports.CorTriagem = exports.$Enums.CorTriagem = {
+  vermelho: 'vermelho',
+  laranja: 'laranja',
+  amarelo: 'amarelo',
+  verde: 'verde',
+  azul: 'azul'
+};
+
+exports.EstadoEpisodio = exports.$Enums.EstadoEpisodio = {
+  triagem: 'triagem',
+  sala_espera: 'sala_espera',
+  em_atendimento: 'em_atendimento',
+  alta_urgencia: 'alta_urgencia',
+  internado: 'internado',
+  transferido: 'transferido'
+};
+
+exports.EstadoCirurgia = exports.$Enums.EstadoCirurgia = {
+  agendada: 'agendada',
+  em_curso: 'em_curso',
+  concluida: 'concluida',
+  cancelada: 'cancelada',
+  adiada: 'adiada'
+};
+
+exports.EstadoConsulta = exports.$Enums.EstadoConsulta = {
+  agendada: 'agendada',
+  realizada: 'realizada',
+  faltou: 'faltou',
+  cancelada: 'cancelada'
+};
+
+exports.EstadoCheckin = exports.$Enums.EstadoCheckin = {
+  aguardando: 'aguardando',
+  em_atendimento: 'em_atendimento',
+  atendido: 'atendido',
+  desistiu: 'desistiu',
+  ausente: 'ausente'
+};
+
+exports.TipoStock = exports.$Enums.TipoStock = {
+  medicamento: 'medicamento',
+  material: 'material',
+  consumivel: 'consumivel'
+};
+
+exports.EstadoPedidoFarmacia = exports.$Enums.EstadoPedidoFarmacia = {
+  pendente: 'pendente',
+  aprovado: 'aprovado',
+  dispensado: 'dispensado',
+  cancelado: 'cancelado'
+};
+
+exports.EstadoSessao = exports.$Enums.EstadoSessao = {
+  agendada: 'agendada',
+  realizada: 'realizada',
+  cancelada: 'cancelada',
+  faltou: 'faltou'
+};
+
+exports.TipoPedidoInterno = exports.$Enums.TipoPedidoInterno = {
+  transporte: 'transporte',
+  esterilizacao: 'esterilizacao',
+  equipamento: 'equipamento',
+  limpeza: 'limpeza'
+};
+
+exports.EstadoPedidoInterno = exports.$Enums.EstadoPedidoInterno = {
+  pendente: 'pendente',
+  em_curso: 'em_curso',
+  concluido: 'concluido',
+  cancelado: 'cancelado'
+};
+
+exports.EstadoInterconsulta = exports.$Enums.EstadoInterconsulta = {
+  pendente: 'pendente',
+  aceite: 'aceite',
+  respondida: 'respondida',
+  cancelada: 'cancelada'
+};
+
+exports.TipoDispositivoInvasivo = exports.$Enums.TipoDispositivoInvasivo = {
+  cateter_venoso_central: 'cateter_venoso_central',
+  cateter_venoso_periferico: 'cateter_venoso_periferico',
+  cateter_arterial: 'cateter_arterial',
+  sonda_vesical: 'sonda_vesical',
+  tubo_orotaqueal: 'tubo_orotaqueal',
+  traqueostomia: 'traqueostomia',
+  dreno_toracico: 'dreno_toracico',
+  sonda_nasogastrica: 'sonda_nasogastrica',
+  linha_epidural: 'linha_epidural',
+  outro: 'outro'
+};
+
 exports.Prisma.ModelName = {
   Utilizador: 'Utilizador',
   Cama: 'Cama',
@@ -446,6 +952,8 @@ exports.Prisma.ModelName = {
   AtribuicaoDoente: 'AtribuicaoDoente',
   HorarioEntrada: 'HorarioEntrada',
   PassagemTurno: 'PassagemTurno',
+  NotaClinica: 'NotaClinica',
+  EscalaClinica: 'EscalaClinica',
   NotaTurno: 'NotaTurno',
   Tarefa: 'Tarefa',
   Medicacao: 'Medicacao',
@@ -462,7 +970,23 @@ exports.Prisma.ModelName = {
   AlertaClinico: 'AlertaClinico',
   AvaliacaoRisco: 'AvaliacaoRisco',
   SumarioAlta: 'SumarioAlta',
-  DispositivoToken: 'DispositivoToken'
+  DispositivoToken: 'DispositivoToken',
+  Exame: 'Exame',
+  FicheiroExame: 'FicheiroExame',
+  EpisodioUrgencia: 'EpisodioUrgencia',
+  CirurgiaProgramada: 'CirurgiaProgramada',
+  ChecklistCirurgia: 'ChecklistCirurgia',
+  Consulta: 'Consulta',
+  CheckinSalaEspera: 'CheckinSalaEspera',
+  StockItem: 'StockItem',
+  PedidoFarmacia: 'PedidoFarmacia',
+  PlanoReabilitacao: 'PlanoReabilitacao',
+  SessaoFisioterapia: 'SessaoFisioterapia',
+  PedidoInterno: 'PedidoInterno',
+  Anuncio: 'Anuncio',
+  MensagemInterna: 'MensagemInterna',
+  Interconsulta: 'Interconsulta',
+  DispositivoInvasivo: 'DispositivoInvasivo'
 };
 
 /**

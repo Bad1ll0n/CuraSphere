@@ -81,4 +81,73 @@ export class MedicacaoService {
       orderBy: { administradoEm: 'desc' },
     });
   }
+
+  async mar(utilizadorId: string) {
+    const agora = new Date();
+    const min = agora.getHours() * 60 + agora.getMinutes();
+    let tipo: string;
+    const dataRef = new Date(agora);
+    if (min >= 8 * 60 && min < 16 * 60 + 30) tipo = 'manha';
+    else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
+    else { tipo = 'noite'; if (min < 8 * 60 + 30) dataRef.setDate(dataRef.getDate() - 1); }
+
+    const diaStr = dataRef.toISOString().split('T')[0];
+    const dataInicio = new Date(diaStr + 'T00:00:00.000Z');
+    const dataFim = new Date(diaStr + 'T23:59:59.999Z');
+
+    const atribuicoes = await this.prisma.atribuicaoHorarioTurno.findMany({
+      where: {
+        utilizadorId,
+        horarioTurno: { tipo: tipo as any, data: { gte: dataInicio, lte: dataFim } },
+      },
+      select: { doenteId: true },
+    });
+
+    const doenteIds = [...new Set(atribuicoes.map((a) => a.doenteId))];
+
+    return this.prisma.medicacao.findMany({
+      where: { doenteId: { in: doenteIds }, ativo: true },
+      include: {
+        doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
+        prescritoPor: { select: { nome: true } },
+        registos: {
+          include: { administradoPor: { select: { nome: true } } },
+          orderBy: { administradoEm: 'desc' },
+          take: 5,
+        },
+      },
+      orderBy: [{ doenteId: 'asc' }, { iniciadoEm: 'asc' }],
+    });
+  }
+
+  async pendentesValidacao() {
+    return this.prisma.medicacao.findMany({
+      where: { ativo: true, estadoValidacao: null },
+      include: {
+        doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
+        prescritoPor: { select: { nome: true, role: true } },
+      },
+      orderBy: { iniciadoEm: 'desc' },
+    });
+  }
+
+  async validarPrescricao(id: string, validadoPorId: string) {
+    const med = await this.prisma.medicacao.findUnique({ where: { id } });
+    if (!med) throw new NotFoundException('Medicação não encontrada');
+    return this.prisma.medicacao.update({
+      where: { id },
+      data: { estadoValidacao: 'aprovada', validadoPorId, validadaEm: new Date() },
+      select: { id: true, nome: true, estadoValidacao: true, validadaEm: true },
+    });
+  }
+
+  async rejeitarPrescricao(id: string, validadoPorId: string, motivoRejeicao: string) {
+    const med = await this.prisma.medicacao.findUnique({ where: { id } });
+    if (!med) throw new NotFoundException('Medicação não encontrada');
+    return this.prisma.medicacao.update({
+      where: { id },
+      data: { estadoValidacao: 'rejeitada', validadoPorId, validadaEm: new Date(), motivoRejeicao },
+      select: { id: true, nome: true, estadoValidacao: true, motivoRejeicao: true },
+    });
+  }
 }

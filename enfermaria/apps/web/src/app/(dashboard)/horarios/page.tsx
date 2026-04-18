@@ -48,7 +48,7 @@ export default function HorariosPagina() {
   const [mes, setMes] = useState(hoje.getMonth() + 1);
   const [ano, setAno] = useState(hoje.getFullYear());
   const [escala, setEscala] = useState<Escala | null>(null);
-  const [meuHorario, setMeuHorario] = useState<any[]>([]);
+  const [_meuHorario, setMeuHorario] = useState<any[]>([]);
   const [profissionais, setProfissionais] = useState<Utilizador[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState('');

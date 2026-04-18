@@ -1,8 +1,10 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('dashboard')
 export class DashboardController {
   constructor(private readonly prisma: PrismaService) {}
@@ -124,6 +126,76 @@ export class DashboardController {
       ocupacaoDiaria,
       cargaEnfermeiros,
       tarefasHoje: { total: tarefasTotal, concluidas: tarefasConcluidas, urgentesAtraso },
+    };
+  }
+
+  @Get('ti')
+  @Roles('diretor_ti', 'administrativo', 'chefe_medicos', 'chefe_enfermeiros')
+  async dashboardTI() {
+    const agora = new Date();
+    const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
+    const semanaAtras = new Date(agora); semanaAtras.setDate(semanaAtras.getDate() - 7);
+
+    const [
+      totalUtilizadores,
+      utilizadoresPorRole,
+      sessoesMobile,
+      acoesHoje,
+      acoesUltimaSemana,
+      acoesRecentes,
+      totalDoentes,
+      totalCamas,
+      camasOcupadas,
+      isolados,
+    ] = await Promise.all([
+      this.prisma.utilizador.count({ where: { ativo: true } }),
+      this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
+      this.prisma.dispositivoToken.count(),
+      this.prisma.auditLog.count({ where: { createdAt: { gte: hoje } } }),
+      this.prisma.auditLog.groupBy({
+        by: ['acao'],
+        where: { createdAt: { gte: semanaAtras } },
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+        take: 10,
+      }),
+      this.prisma.auditLog.findMany({
+        where: { createdAt: { gte: hoje } },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+        include: { utilizador: { select: { nome: true, role: true } } },
+      }),
+      this.prisma.doente.count({ where: { ativo: true } }),
+      this.prisma.cama.count(),
+      this.prisma.cama.count({ where: { estado: 'ocupada' } }),
+      this.prisma.doente.count({ where: { ativo: true, emIsolamento: true } }),
+    ]);
+
+    return {
+      utilizadores: {
+        total: totalUtilizadores,
+        porRole: utilizadoresPorRole.map(r => ({ role: r.role, total: r._count.id })),
+        sessoesMobile,
+      },
+      auditoria: {
+        acoesHoje,
+        topAcoes: acoesUltimaSemana.map(a => ({ acao: a.acao, total: a._count.id })),
+        recentes: acoesRecentes.map(a => ({
+          id: a.id,
+          acao: a.acao,
+          entidadeTipo: a.entidadeTipo,
+          utilizador: a.utilizador,
+          createdAt: a.createdAt,
+          ip: a.ip,
+        })),
+      },
+      infraestrutura: {
+        totalDoentes,
+        totalCamas,
+        camasOcupadas,
+        taxaOcupacao: totalCamas > 0 ? Math.round((camasOcupadas / totalCamas) * 100) : 0,
+        isolados,
+      },
     };
   }
 }

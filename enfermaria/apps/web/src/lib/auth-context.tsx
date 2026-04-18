@@ -9,6 +9,8 @@ interface Utilizador {
   nome: string;
   numeroFuncionario: string;
   role: string;
+  subRole?: string;
+  servico: string;
 }
 
 interface AuthContextType {

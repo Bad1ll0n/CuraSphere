@@ -25,6 +25,19 @@ import { AuditController } from './common/audit.controller';
 import { AuditInterceptor } from './common/audit.interceptor';
 import { EscalasModule } from './escalas/escalas.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ExamesModule } from './exames/exames.module';
+import { UrgenciaModule } from './urgencia/urgencia.module';
+import { BlocoModule } from './bloco/bloco.module';
+import { ConsultasModule } from './consultas/consultas.module';
+import { FarmaciaModule } from './farmacia/farmacia.module';
+import { FisioterapiaModule } from './fisioterapia/fisioterapia.module';
+import { PedidosInternosModule } from './pedidos-internos/pedidos-internos.module';
+import { ComunicacaoModule } from './comunicacao/comunicacao.module';
+import { NotasClinicasModule } from './notas-clinicas/notas-clinicas.module';
+import { EscalasClinicasModule } from './escalas-clinicas/escalas-clinicas.module';
+import { InterconsultasModule } from './interconsultas/interconsultas.module';
+import { DispositivosInvasivosModule } from './dispositivos-invasivos/dispositivos-invasivos.module';
+import { SalaEsperaModule } from './sala-espera/sala-espera.module';
 
 @Module({
   imports: [
@@ -48,6 +61,19 @@ import { DashboardModule } from './dashboard/dashboard.module';
     NotificacoesModule,
     EscalasModule,
     DashboardModule,
+    ExamesModule,
+    UrgenciaModule,
+    BlocoModule,
+    ConsultasModule,
+    FarmaciaModule,
+    FisioterapiaModule,
+    PedidosInternosModule,
+    ComunicacaoModule,
+    NotasClinicasModule,
+    EscalasClinicasModule,
+    InterconsultasModule,
+    DispositivosInvasivosModule,
+    SalaEsperaModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

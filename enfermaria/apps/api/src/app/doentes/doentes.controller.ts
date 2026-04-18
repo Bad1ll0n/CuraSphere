@@ -11,9 +11,19 @@ export class DoenteController {
   constructor(private readonly doenteService: DoenteService) {}
 
   @Get()
-  listar(@Request() req: any, @Query('todos') todos?: string) {
+  listar(
+    @Request() req: any,
+    @Query('todos') todos?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
     const ignorarFiltro = todos === 'true';
-    return this.doenteService.listar(req.user.sub, ignorarFiltro ? 'todos' : req.user.role);
+    return this.doenteService.listar(
+      req.user.sub,
+      ignorarFiltro ? 'todos' : req.user.role,
+      page ? parseInt(page, 10) : 1,
+      limit ? parseInt(limit, 10) : 25,
+    );
   }
 
   @Get(':id')
@@ -111,5 +121,20 @@ export class DoenteController {
     @Request() req: any,
   ) {
     return this.doenteService.criarTarefa(doenteId, req.user.sub, body);
+  }
+
+  @Get('iacs/isolados')
+  listarIsolados() {
+    return this.doenteService.listarIsolados();
+  }
+
+  @Patch(':id/isolamento')
+  @Roles('medico', 'enfermeiro', 'chefe_turno', 'enf_uci')
+  atualizarIsolamento(
+    @Param('id') id: string,
+    @Body('emIsolamento') emIsolamento: boolean,
+    @Body('motivoIsolamento') motivoIsolamento?: string,
+  ) {
+    return this.doenteService.atualizarIsolamento(id, emIsolamento, motivoIsolamento);
   }
 }

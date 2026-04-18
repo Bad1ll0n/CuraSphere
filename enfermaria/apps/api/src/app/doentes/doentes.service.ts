@@ -6,15 +6,22 @@ import { EstadoDoente } from '../common/enums';
 export class DoenteService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listar(utilizadorId: string, role: string) {
+  async listar(utilizadorId: string, role: string, page = 1, limit = 25) {
+    const skip = (page - 1) * limit;
     const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 
     if (!restritos.includes(role)) {
-      return this.prisma.doente.findMany({
-        where: { ativo: true },
-        include: { cama: true },
-        orderBy: { dataAdmissao: 'desc' },
-      });
+      const [data, total] = await this.prisma.$transaction([
+        this.prisma.doente.findMany({
+          where: { ativo: true },
+          include: { cama: true },
+          orderBy: { dataAdmissao: 'desc' },
+          take: limit,
+          skip,
+        }),
+        this.prisma.doente.count({ where: { ativo: true } }),
+      ]);
+      return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
     }
 
     // Determina turno ativo actual
@@ -25,7 +32,6 @@ export class DoenteService {
     else if (min >= 16 * 60 && min < 23 * 60 + 30) tipo = 'tarde';
     else tipo = 'noite';
 
-    // Para o turno de noite após meia-noite, o horário foi criado no dia anterior
     const diaStr = agora.toISOString().split('T')[0];
     const dataHoje = new Date(diaStr + 'T00:00:00.000Z');
     const dataBase = tipo === 'noite' && min < 8 * 60 + 30
@@ -33,22 +39,30 @@ export class DoenteService {
       : dataHoje;
     const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
 
-    return this.prisma.doente.findMany({
-      where: {
-        ativo: true,
-        atribuicoesHorario: {
-          some: {
-            utilizadorId,
-            horarioTurno: {
-              tipo: tipo as any,
-              data: { gte: dataBase, lte: dataFim },
-            },
+    const where = {
+      ativo: true,
+      atribuicoesHorario: {
+        some: {
+          utilizadorId,
+          horarioTurno: {
+            tipo: tipo as any,
+            data: { gte: dataBase, lte: dataFim },
           },
         },
       },
-      include: { cama: true },
-      orderBy: { dataAdmissao: 'desc' },
-    });
+    };
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.doente.findMany({
+        where,
+        include: { cama: true },
+        orderBy: { dataAdmissao: 'desc' },
+        take: limit,
+        skip,
+      }),
+      this.prisma.doente.count({ where }),
+    ]);
+    return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
   }
 
   async buscarPorId(id: string) {
@@ -384,6 +398,27 @@ export class DoenteService {
     return this.prisma.sumarioAlta.findUnique({
       where: { doenteId },
       include: { criadoPor: { select: { nome: true, role: true } } },
+    });
+  }
+
+  async atualizarIsolamento(id: string, emIsolamento: boolean, motivoIsolamento?: string) {
+    await this.buscarPorId(id);
+    return this.prisma.doente.update({
+      where: { id },
+      data: { emIsolamento, motivoIsolamento: emIsolamento ? (motivoIsolamento ?? null) : null },
+      select: { id: true, emIsolamento: true, motivoIsolamento: true },
+    });
+  }
+
+  async listarIsolados() {
+    return this.prisma.doente.findMany({
+      where: { ativo: true, emIsolamento: true },
+      select: {
+        id: true, nome: true, emIsolamento: true, motivoIsolamento: true,
+        cama: { select: { numero: true, quarto: true } },
+        diagnosticoPrincipal: true, estado: true,
+      },
+      orderBy: { nome: 'asc' },
     });
   }
 

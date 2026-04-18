@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import QRCode from 'react-qr-code';
@@ -86,6 +86,184 @@ const roleLabel: Record<string, string> = {
   chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros', administrativo: 'Administrativo',
 };
 
+// Escalas clínicas — configuração de itens, cálculo e classificação
+const ESCALA_CONFIG: Record<string, {
+  label: string; cor: string;
+  itens: { key: string; label: string; opcoes: { v: number | string; l: string }[] }[];
+  calcularPontuacao: (v: Record<string, any>) => number;
+  classificar: (p: number) => string;
+}> = {
+  RASS: {
+    label: 'RASS', cor: 'violet',
+    itens: [{ key: 'nivel', label: 'Nível de Sedação/Agitação', opcoes: [
+      { v: 4, l: '+4 — Combativo' }, { v: 3, l: '+3 — Muito agitado' }, { v: 2, l: '+2 — Agitado' },
+      { v: 1, l: '+1 — Inquieto' }, { v: 0, l: '0 — Alerta e calmo' }, { v: -1, l: '-1 — Sonolento' },
+      { v: -2, l: '-2 — Sedação leve' }, { v: -3, l: '-3 — Sedação moderada' },
+      { v: -4, l: '-4 — Sedação profunda' }, { v: -5, l: '-5 — Não despertável' },
+    ]}],
+    calcularPontuacao: (v) => v.nivel as number ?? 0,
+    classificar: (p) => p >= 1 ? 'Agitação' : p === 0 ? 'Alerta e calmo' : p >= -2 ? 'Sedação leve' : p >= -4 ? 'Sedação profunda' : 'Não despertável',
+  },
+  CPOT: {
+    label: 'CPOT', cor: 'rose',
+    itens: [
+      { key: 'expressao', label: 'Expressão Facial', opcoes: [{ v: 0, l: '0 — Relaxada' }, { v: 1, l: '1 — Tensa' }, { v: 2, l: '2 — Franzida/Crispada' }] },
+      { key: 'movimento', label: 'Movimentos Corporais', opcoes: [{ v: 0, l: '0 — Ausência de movimentos' }, { v: 1, l: '1 — Proteção' }, { v: 2, l: '2 — Agitação' }] },
+      { key: 'ventilacao', label: 'Compliância Ventilatória', opcoes: [{ v: 0, l: '0 — Tolerante' }, { v: 1, l: '1 — Tosse, mas tolerante' }, { v: 2, l: '2 — Luta com o ventilador' }] },
+      { key: 'tensao', label: 'Tensão Muscular', opcoes: [{ v: 0, l: '0 — Relaxada' }, { v: 1, l: '1 — Tensa/Rígida' }, { v: 2, l: '2 — Muito tensa/Rígida' }] },
+    ],
+    calcularPontuacao: (v) => (['expressao', 'movimento', 'ventilacao', 'tensao'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p === 0 ? 'Sem dor' : p <= 2 ? 'Dor leve' : p <= 4 ? 'Dor moderada' : 'Dor intensa',
+  },
+  SOFA: {
+    label: 'SOFA', cor: 'red',
+    itens: [
+      { key: 'respiratorio', label: 'Respiratório (PaO₂/FiO₂)', opcoes: [{ v: 0, l: '0 — ≥400' }, { v: 1, l: '1 — 300-399' }, { v: 2, l: '2 — 200-299' }, { v: 3, l: '3 — 100-199' }, { v: 4, l: '4 — <100' }] },
+      { key: 'coagulacao', label: 'Coagulação (Plaquetas ×10³)', opcoes: [{ v: 0, l: '0 — ≥150' }, { v: 1, l: '1 — 100-149' }, { v: 2, l: '2 — 50-99' }, { v: 3, l: '3 — 20-49' }, { v: 4, l: '4 — <20' }] },
+      { key: 'hepatico', label: 'Hepático (Bilirrubina mg/dL)', opcoes: [{ v: 0, l: '0 — <1,2' }, { v: 1, l: '1 — 1,2-1,9' }, { v: 2, l: '2 — 2,0-5,9' }, { v: 3, l: '3 — 6,0-11,9' }, { v: 4, l: '4 — ≥12' }] },
+      { key: 'cardiovascular', label: 'Cardiovascular (PAM/Vasopressores)', opcoes: [{ v: 0, l: '0 — PAM ≥70' }, { v: 1, l: '1 — PAM <70' }, { v: 2, l: '2 — Dopamina ≤5' }, { v: 3, l: '3 — Dopamina >5' }, { v: 4, l: '4 — Adrenalina >0,1' }] },
+      { key: 'neurologico', label: 'Neurológico (GCS)', opcoes: [{ v: 0, l: '0 — GCS 15' }, { v: 1, l: '1 — GCS 13-14' }, { v: 2, l: '2 — GCS 10-12' }, { v: 3, l: '3 — GCS 6-9' }, { v: 4, l: '4 — GCS <6' }] },
+      { key: 'renal', label: 'Renal (Creatinina mg/dL)', opcoes: [{ v: 0, l: '0 — <1,2' }, { v: 1, l: '1 — 1,2-1,9' }, { v: 2, l: '2 — 2,0-3,4' }, { v: 3, l: '3 — 3,5-4,9' }, { v: 4, l: '4 — >5' }] },
+    ],
+    calcularPontuacao: (v) => (['respiratorio', 'coagulacao', 'hepatico', 'cardiovascular', 'neurologico', 'renal'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 6 ? 'Baixo risco' : p <= 9 ? 'Risco moderado' : p <= 12 ? 'Risco alto' : 'Risco muito alto',
+  },
+  Apgar: {
+    label: 'Apgar', cor: 'blue',
+    itens: [
+      { key: 'cor', label: 'Cor da Pele', opcoes: [{ v: 0, l: '0 — Cianose total' }, { v: 1, l: '1 — Cianose periférica' }, { v: 2, l: '2 — Rosada' }] },
+      { key: 'frequencia', label: 'Frequência Cardíaca', opcoes: [{ v: 0, l: '0 — Ausente' }, { v: 1, l: '1 — <100 bpm' }, { v: 2, l: '2 — ≥100 bpm' }] },
+      { key: 'reflexo', label: 'Reflexo de Irritabilidade', opcoes: [{ v: 0, l: '0 — Ausente' }, { v: 1, l: '1 — Esgar' }, { v: 2, l: '2 — Choro' }] },
+      { key: 'tono', label: 'Tónus Muscular', opcoes: [{ v: 0, l: '0 — Flácido' }, { v: 1, l: '1 — Alguma flexão' }, { v: 2, l: '2 — Movimentos ativos' }] },
+      { key: 'respiracao', label: 'Respiração', opcoes: [{ v: 0, l: '0 — Ausente' }, { v: 1, l: '1 — Irregular/fraca' }, { v: 2, l: '2 — Vigorosa/choro' }] },
+    ],
+    calcularPontuacao: (v) => (['cor', 'frequencia', 'reflexo', 'tono', 'respiracao'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p >= 7 ? 'Normal' : p >= 4 ? 'Depressão moderada' : 'Depressão grave',
+  },
+  PEWS: {
+    label: 'PEWS', cor: 'amber',
+    itens: [
+      { key: 'comportamento', label: 'Comportamento', opcoes: [{ v: 0, l: '0 — Brincando/Adequado' }, { v: 1, l: '1 — Dormindo' }, { v: 2, l: '2 — Irritável' }, { v: 3, l: '3 — Reduzido/Letárgico' }] },
+      { key: 'cardiovascular', label: 'Cardiovascular', opcoes: [{ v: 0, l: '0 — Rosado/Recapilar 1-2s' }, { v: 1, l: '1 — Pálido/Recapilar 3s' }, { v: 2, l: '2 — Cinzento/Recapilar 4s' }, { v: 3, l: '3 — Cinzento/Recapilar ≥5s' }] },
+      { key: 'respiratorio', label: 'Respiratório', opcoes: [{ v: 0, l: '0 — Normal' }, { v: 1, l: '1 — >10 acima do normal' }, { v: 2, l: '2 — >20 acima + uso de músculos' }, { v: 3, l: '3 — 5 abaixo com retração' }] },
+    ],
+    calcularPontuacao: (v) => (['comportamento', 'cardiovascular', 'respiratorio'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 2 ? 'Baixo risco' : p <= 4 ? 'Médio risco' : 'Alto risco — Avisar médico',
+  },
+  FLACC: {
+    label: 'FLACC', cor: 'orange',
+    itens: [
+      { key: 'face', label: 'Face', opcoes: [{ v: 0, l: '0 — Sem expressão particular' }, { v: 1, l: '1 — Careta ocasional' }, { v: 2, l: '2 — Maxilar tenso/mandíbula' }] },
+      { key: 'pernas', label: 'Pernas', opcoes: [{ v: 0, l: '0 — Relaxadas/normais' }, { v: 1, l: '1 — Desconfortáveis/agitadas' }, { v: 2, l: '2 — Chutando/contraídas' }] },
+      { key: 'atividade', label: 'Atividade', opcoes: [{ v: 0, l: '0 — Deitado tranquilamente' }, { v: 1, l: '1 — Contraída/tensa' }, { v: 2, l: '2 — Arquejando/curvada' }] },
+      { key: 'choro', label: 'Choro', opcoes: [{ v: 0, l: '0 — Sem choro' }, { v: 1, l: '1 — Gemidos/queixas' }, { v: 2, l: '2 — Choro constante' }] },
+      { key: 'consolabilidade', label: 'Consolabilidade', opcoes: [{ v: 0, l: '0 — Contente/relaxado' }, { v: 1, l: '1 — Distrai com toque' }, { v: 2, l: '2 — Difícil de consolar' }] },
+    ],
+    calcularPontuacao: (v) => (['face', 'pernas', 'atividade', 'choro', 'consolabilidade'] as const).reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p === 0 ? 'Sem dor' : p <= 3 ? 'Dor leve' : p <= 6 ? 'Dor moderada' : 'Dor intensa',
+  },
+  CTG: {
+    label: 'CTG', cor: 'pink',
+    itens: [
+      { key: 'linha_base', label: 'Linha de Base (bpm)', opcoes: [{ v: 'normal', l: 'Normal (110-160)' }, { v: 'taquicardia', l: 'Taquicardia (>160)' }, { v: 'bradicardia', l: 'Bradicardia (<110)' }] },
+      { key: 'variabilidade', label: 'Variabilidade', opcoes: [{ v: 'normal', l: 'Normal (6-25)' }, { v: 'reduzida', l: 'Reduzida (<6)' }, { v: 'saltatorio', l: 'Saltatório (>25)' }] },
+      { key: 'aceleracoes', label: 'Acelerações', opcoes: [{ v: 'presentes', l: 'Presentes' }, { v: 'ausentes', l: 'Ausentes' }] },
+      { key: 'desaceleracoes', label: 'Desacelerações', opcoes: [{ v: 'ausentes', l: 'Ausentes' }, { v: 'precoces', l: 'Precoces (DIP I)' }, { v: 'tardias', l: 'Tardias (DIP II)' }, { v: 'variaveis', l: 'Variáveis' }] },
+    ],
+    calcularPontuacao: (_v) => 0,
+    classificar: (v: any) => {
+      if (typeof v === 'object') return 'Ver avaliação';
+      return v === 0 ? 'Normal' : 'Patológico';
+    },
+  },
+  Barthel: {
+    label: 'Barthel', cor: 'green',
+    itens: [
+      { key: 'alimentacao', label: 'Alimentação', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Precisa de ajuda' }, { v: 10, l: '10 — Independente' }] },
+      { key: 'banho', label: 'Banho', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Independente' }] },
+      { key: 'toalete', label: 'Toalete', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Independente' }] },
+      { key: 'vestir', label: 'Vestir', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Precisa de ajuda' }, { v: 10, l: '10 — Independente' }] },
+      { key: 'intestino', label: 'Intestino', opcoes: [{ v: 0, l: '0 — Incontinente' }, { v: 5, l: '5 — Acidente ocasional' }, { v: 10, l: '10 — Continente' }] },
+      { key: 'bexiga', label: 'Bexiga', opcoes: [{ v: 0, l: '0 — Incontinente' }, { v: 5, l: '5 — Acidente ocasional' }, { v: 10, l: '10 — Continente' }] },
+      { key: 'wc', label: 'Uso WC', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Precisa de ajuda' }, { v: 10, l: '10 — Independente' }] },
+      { key: 'transferencia', label: 'Transferência', opcoes: [{ v: 0, l: '0 — Incapaz' }, { v: 5, l: '5 — Grande ajuda' }, { v: 10, l: '10 — Pequena ajuda' }, { v: 15, l: '15 — Independente' }] },
+      { key: 'mobilidade', label: 'Mobilidade', opcoes: [{ v: 0, l: '0 — Imóvel' }, { v: 5, l: '5 — Cadeira de rodas' }, { v: 10, l: '10 — Anda com ajuda' }, { v: 15, l: '15 — Independente' }] },
+      { key: 'escadas', label: 'Escadas', opcoes: [{ v: 0, l: '0 — Dependente' }, { v: 5, l: '5 — Precisa de ajuda' }, { v: 10, l: '10 — Independente' }] },
+    ],
+    calcularPontuacao: (v) => ['alimentacao','banho','toalete','vestir','intestino','bexiga','wc','transferencia','mobilidade','escadas'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 20 ? 'Dependência total' : p <= 35 ? 'Dependência grave' : p <= 55 ? 'Dependência moderada' : p <= 90 ? 'Dependência leve' : 'Independente',
+  },
+  MRC: {
+    label: 'MRC (Força)', cor: 'blue',
+    itens: [
+      { key: 'abd_esq', label: 'Abdução ombro E', opcoes: [{ v: 0, l: '0 — Sem contração' }, { v: 1, l: '1 — Traço de contração' }, { v: 2, l: '2 — Movimento sem gravidade' }, { v: 3, l: '3 — Contra gravidade' }, { v: 4, l: '4 — Contra resistência parcial' }, { v: 5, l: '5 — Força normal' }] },
+      { key: 'abd_dir', label: 'Abdução ombro D', opcoes: [{ v: 0, l: '0 — Sem contração' }, { v: 1, l: '1 — Traço' }, { v: 2, l: '2 — Sem gravidade' }, { v: 3, l: '3 — Contra gravidade' }, { v: 4, l: '4 — Contra resistência' }, { v: 5, l: '5 — Normal' }] },
+      { key: 'flex_esq', label: 'Flexão cotovelo E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'flex_dir', label: 'Flexão cotovelo D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'dors_esq', label: 'Dorsiflexão tornozelo E', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+      { key: 'dors_dir', label: 'Dorsiflexão tornozelo D', opcoes: [{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }, { v: 3, l: '3' }, { v: 4, l: '4' }, { v: 5, l: '5' }] },
+    ],
+    calcularPontuacao: (v) => ['abd_esq','abd_dir','flex_esq','flex_dir','dors_esq','dors_dir'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 24 ? 'Fraqueza grave (≤4/grupo)' : p <= 36 ? 'Fraqueza moderada' : p <= 48 ? 'Fraqueza leve' : 'Força normal',
+  },
+  NRS2002: {
+    label: 'NRS-2002 (Nutrição)', cor: 'amber',
+    itens: [
+      { key: 'estado_nutricional', label: 'Estado Nutricional', opcoes: [{ v: 0, l: '0 — Normal' }, { v: 1, l: '1 — Perda de peso >5% em 3 meses' }, { v: 2, l: '2 — Perda de peso >5% em 2 meses ou IMC 18,5-20,5' }, { v: 3, l: '3 — Perda >5% em 1 mês ou IMC <18,5' }] },
+      { key: 'gravidade', label: 'Gravidade da Doença', opcoes: [{ v: 0, l: '0 — Normal' }, { v: 1, l: '1 — Fratura da anca, DPOC, hemodiálise' }, { v: 2, l: '2 — Cirurgia abdominal, AVC, pneumonia grave' }, { v: 3, l: '3 — TCE, transplante, UCI (APACHE>10)' }] },
+      { key: 'idade', label: 'Idade', opcoes: [{ v: 0, l: '0 — < 70 anos' }, { v: 1, l: '1 — ≥ 70 anos' }] },
+    ],
+    calcularPontuacao: (v) => ['estado_nutricional', 'gravidade', 'idade'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p < 3 ? 'Risco baixo — reavaliar' : 'Em risco — iniciar suporte nutricional',
+  },
+  PHQ9: {
+    label: 'PHQ-9 (Depressão)', cor: 'purple',
+    itens: [
+      { key: 'anedonia', label: 'Interesse/prazer nas atividades', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'humor', label: 'Sentiu-se deprimido/sem esperança', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'sono', label: 'Problemas de sono', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'energia', label: 'Cansaço/falta de energia', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'apetite', label: 'Problemas com apetite', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'autoestima', label: 'Sentiu-se mal consigo próprio', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'concentracao', label: 'Dificuldade de concentração', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'psicomotor', label: 'Lentidão ou agitação psicomotora', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'suicidio', label: 'Pensamentos de automutilação', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+    ],
+    calcularPontuacao: (v) => ['anedonia','humor','sono','energia','apetite','autoestima','concentracao','psicomotor','suicidio'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 4 ? 'Mínimo' : p <= 9 ? 'Leve' : p <= 14 ? 'Moderado' : p <= 19 ? 'Moderadamente grave' : 'Grave',
+  },
+  GAD7: {
+    label: 'GAD-7 (Ansiedade)', cor: 'teal',
+    itens: [
+      { key: 'nervoso', label: 'Sentiu-se nervoso/ansioso', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'controlo', label: 'Incapaz de parar/controlar preocupações', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'preocupacao', label: 'Preocupação excessiva', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'relaxar', label: 'Dificuldade em relaxar', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'inquieto', label: 'Tão inquieto que não para quieto', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'irritavel', label: 'Facilmente irritável', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+      { key: 'medo', label: 'Sentiu medo de que algo terrível pudesse acontecer', opcoes: [{ v: 0, l: '0 — Nunca' }, { v: 1, l: '1 — Vários dias' }, { v: 2, l: '2 — Mais de metade dos dias' }, { v: 3, l: '3 — Quase todos os dias' }] },
+    ],
+    calcularPontuacao: (v) => ['nervoso','controlo','preocupacao','relaxar','inquieto','irritavel','medo'].reduce((s, k) => s + ((v[k] as number) ?? 0), 0),
+    classificar: (p) => p <= 4 ? 'Mínimo' : p <= 9 ? 'Leve' : p <= 14 ? 'Moderado' : 'Grave',
+  },
+  FOIS: {
+    label: 'FOIS (Ingestão Oral Funcional)', cor: 'teal',
+    itens: [
+      { key: 'nivel', label: 'Nível de Ingestão Oral', opcoes: [
+        { v: 1, l: '1 — Sem ingestão oral' },
+        { v: 2, l: '2 — Dependente de sonda, tentativas mínimas de alimentos/líquidos' },
+        { v: 3, l: '3 — Dependente de sonda com ingestão oral consistente' },
+        { v: 4, l: '4 — Dieta sólida e líquidos de uma consistência' },
+        { v: 5, l: '5 — Dieta sólida e líquidos de múltiplas consistências, necessita preparação especial' },
+        { v: 6, l: '6 — Ingestão oral total sem restrições especiais, mas com modificações' },
+        { v: 7, l: '7 — Ingestão oral total sem restrições' },
+      ] },
+    ],
+    calcularPontuacao: (v) => (v['nivel'] as number) ?? 1,
+    classificar: (p) => p <= 2 ? 'Sem/mínima ingestão oral' : p <= 4 ? 'Ingestão oral parcial' : p <= 6 ? 'Ingestão oral com restrições' : 'Ingestão oral normal',
+  },
+};
+
 function calcIdade(dataNascimento: string) {
   const hoje = new Date();
   const nasc = new Date(dataNascimento);
@@ -104,12 +282,12 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function BtnAdd({ onClick }: { onClick: () => void }) {
+function BtnAdd({ onClick, label = 'Adicionar' }: { onClick: () => void; label?: string }) {
   return (
-    <button onClick={onClick}
+    <button onClick={onClick} aria-label={label}
       className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
       style={{ marginLeft: 'auto' }}>
-      <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg aria-hidden="true" className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
       </svg>
     </button>
@@ -177,6 +355,46 @@ export default function DoenteDetalhe() {
   const [editDiagnostico, setEditDiagnostico] = useState('');
   const [editAltaPrevista, setEditAltaPrevista] = useState('');
   const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+
+  // Exames
+  const [exames, setExames] = useState<any[]>([]);
+  const [modalExame, setModalExame] = useState(false);
+  const [exameForm, setExameForm] = useState({ tipo: 'analise_clinica', descricao: '', urgente: false });
+  const [resultadoModal, setResultadoModal] = useState<any>(null);
+  const [resultadoTexto, setResultadoTexto] = useState('');
+  const [salvandoExame, setSalvandoExame] = useState(false);
+
+  // Notas Clínicas SOAP
+  const [notasClincias, setNotasClincias] = useState<any[]>([]);
+  const [modalNotaClinica, setModalNotaClinica] = useState(false);
+  const [soapForm, setSoapForm] = useState({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
+  const [salvandoSoap, setSalvandoSoap] = useState(false);
+  const [notaSoapEditandoId, setNotaSoapEditandoId] = useState<string | null>(null);
+
+  // Escalas Clínicas Especializadas
+  const [escalasClinicas, setEscalasClinicas] = useState<any[]>([]);
+  const [modalEscalaClinica, setModalEscalaClinica] = useState(false);
+  const [tipoEscalaClinica, setTipoEscalaClinica] = useState('RASS');
+  const [valoresEscalaClinica, setValoresEscalaClinica] = useState<Record<string, any>>({});
+  const [salvandoEscalaClinica, setSalvandoEscalaClinica] = useState(false);
+
+  // Interconsultas
+  const [interconsultas, setInterconsultas] = useState<any[]>([]);
+  const [modalInterconsulta, setModalInterconsulta] = useState(false);
+  const [intercEspecialidade, setIntercEspecialidade] = useState('Cardiologia');
+  const [intercMotivo, setIntercMotivo] = useState('');
+  const [intercUrgente, setIntercUrgente] = useState(false);
+  const [salvandoInterc, setSalvandoInterc] = useState(false);
+  const [modalIntercResposta, setModalIntercResposta] = useState<string | null>(null);
+  const [intercResposta, setIntercResposta] = useState('');
+
+  // Dispositivos Invasivos
+  const [dispositivos, setDispositivos] = useState<any[]>([]);
+  const [modalDispositivo, setModalDispositivo] = useState(false);
+  const [dispTipo, setDispTipo] = useState('cateter_venoso_central');
+  const [dispLocalizacao, setDispLocalizacao] = useState('');
+  const [dispObservacoes, setDispObservacoes] = useState('');
+  const [salvandoDisp, setSalvandoDisp] = useState(false);
 
   // Alta estruturada
   const [modalAltaEstruturada, setModalAltaEstruturada] = useState(false);
@@ -291,6 +509,21 @@ export default function DoenteDetalhe() {
   const carregarEscalas = () =>
     api.get(`/escalas/${id}`).then((r) => setEscalas(r.data)).catch(() => {});
 
+  const carregarExames = () =>
+    api.get(`/exames/${id}`).then((r) => setExames(r.data)).catch(() => setExames([]));
+
+  const carregarNotasClincias = () =>
+    api.get(`/notas-clinicas/${id}`).then((r) => setNotasClincias(r.data)).catch(() => setNotasClincias([]));
+
+  const carregarEscalasClinicas = () =>
+    api.get(`/escalas-clinicas/${id}`).then((r) => setEscalasClinicas(r.data)).catch(() => setEscalasClinicas([]));
+
+  const carregarInterconsultas = () =>
+    api.get(`/interconsultas/doente/${id}`).then((r) => setInterconsultas(r.data)).catch(() => setInterconsultas([]));
+
+  const carregarDispositivos = () =>
+    api.get(`/dispositivos-invasivos/doente/${id}`).then((r) => setDispositivos(r.data)).catch(() => setDispositivos([]));
+
   const abrirEditarDoente = () => {
     if (!doente) return;
     setEditDiagnostico(doente.diagnosticoPrincipal);
@@ -399,12 +632,19 @@ export default function DoenteDetalhe() {
   };
 
   useEffect(() => {
-    carregar();
-    verificarTurnoAtivo();
-    carregarSinaisVitais();
-    carregarAlergias();
-    carregarContactos();
-    carregarEscalas();
+    Promise.all([
+      carregar(),
+      verificarTurnoAtivo(),
+      carregarSinaisVitais(),
+      carregarAlergias(),
+      carregarContactos(),
+      carregarEscalas(),
+      carregarExames(),
+      carregarNotasClincias(),
+      carregarEscalasClinicas(),
+      carregarInterconsultas(),
+      carregarDispositivos(),
+    ]);
   }, [id]);
 
   const verificarTurnoAtivo = async () => {
@@ -525,6 +765,87 @@ export default function DoenteDetalhe() {
     } catch (e: any) {
       setErroModal(e.response?.data?.message ?? 'Erro ao prescrever medicação');
     } finally { setSalvando(false); }
+  };
+
+  const submeterNotaClinica = async () => {
+    const { subjetivo, objetivo, avaliacao, plano } = soapForm;
+    if (!subjetivo.trim() || !objetivo.trim() || !avaliacao.trim() || !plano.trim()) return;
+    setSalvandoSoap(true);
+    try {
+      if (notaSoapEditandoId) {
+        await api.patch(`/notas-clinicas/${notaSoapEditandoId}`, soapForm);
+        setNotaSoapEditandoId(null);
+      } else {
+        await api.post(`/notas-clinicas/${id}`, soapForm);
+      }
+      setModalNotaClinica(false);
+      setSoapForm({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
+      carregarNotasClincias();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao guardar nota');
+    } finally { setSalvandoSoap(false); }
+  };
+
+  const apagarNotaClinica = async (notaId: string) => {
+    if (!confirm('Apagar esta nota clínica?')) return;
+    await api.delete(`/notas-clinicas/${notaId}`);
+    carregarNotasClincias();
+  };
+
+  const submeterEscalaClinica = async () => {
+    setSalvandoEscalaClinica(true);
+    try {
+      const config = ESCALA_CONFIG[tipoEscalaClinica];
+      const pontuacao = config ? config.calcularPontuacao(valoresEscalaClinica) : undefined;
+      const classificacao = config && pontuacao !== undefined ? config.classificar(pontuacao) : undefined;
+      await api.post(`/escalas-clinicas/${id}`, {
+        tipo: tipoEscalaClinica, valores: valoresEscalaClinica, pontuacao, classificacao,
+      });
+      setModalEscalaClinica(false);
+      setValoresEscalaClinica({});
+      carregarEscalasClinicas();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao registar escala');
+    } finally { setSalvandoEscalaClinica(false); }
+  };
+
+  const submeterInterconsulta = async () => {
+    setSalvandoInterc(true);
+    try {
+      await api.post(`/interconsultas/doente/${id}`, {
+        especialidadeAlvo: intercEspecialidade, motivo: intercMotivo, urgente: intercUrgente,
+      });
+      setModalInterconsulta(false);
+      setIntercMotivo(''); setIntercUrgente(false);
+      carregarInterconsultas();
+    } finally { setSalvandoInterc(false); }
+  };
+
+  const submeterResposta = async (intercId: string) => {
+    if (!intercResposta.trim()) return;
+    try {
+      await api.patch(`/interconsultas/${intercId}/responder`, { resposta: intercResposta });
+      setModalIntercResposta(null); setIntercResposta('');
+      carregarInterconsultas();
+    } catch (e: any) { alert(e.response?.data?.message ?? 'Erro'); }
+  };
+
+  const submeterDispositivo = async () => {
+    setSalvandoDisp(true);
+    try {
+      await api.post(`/dispositivos-invasivos/doente/${id}`, {
+        tipo: dispTipo, localizacao: dispLocalizacao || undefined, observacoes: dispObservacoes || undefined,
+      });
+      setModalDispositivo(false);
+      setDispLocalizacao(''); setDispObservacoes('');
+      carregarDispositivos();
+    } finally { setSalvandoDisp(false); }
+  };
+
+  const removerDispositivo = async (dispId: string) => {
+    if (!confirm('Confirmar remoção do dispositivo?')) return;
+    await api.patch(`/dispositivos-invasivos/${dispId}/remover`);
+    carregarDispositivos();
   };
 
   if (loading) return (
@@ -738,7 +1059,7 @@ export default function DoenteDetalhe() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </button>
-              {podePrescreveMed && <BtnAdd onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
+              {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
             </div>
           </div>
           {doente.medicacoes.length === 0 ? (
@@ -793,7 +1114,7 @@ export default function DoenteDetalhe() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </button>
-              {podeCriarTarefa && <BtnAdd onClick={abrirModalTarefa} />}
+              {podeCriarTarefa && <BtnAdd label="Adicionar tarefa" onClick={abrirModalTarefa} />}
             </div>
           </div>
           {doente.tarefas.length === 0 ? (
@@ -873,7 +1194,7 @@ export default function DoenteDetalhe() {
             </svg>
           </div>
           <span className="text-sm font-semibold text-slate-700">Notas de Turno</span>
-          {podeCriarNota && <BtnAdd onClick={() => { setNotaTexto(''); setErroModal(''); setModalNota(true); }} />}
+          {podeCriarNota && <BtnAdd label="Adicionar nota de turno" onClick={() => { setNotaTexto(''); setErroModal(''); setModalNota(true); }} />}
         </div>
         {(() => {
           const notasFiltradas = doente.notasTurno.filter((n) => meuGrupo.includes(n.autor.role));
@@ -955,7 +1276,7 @@ export default function DoenteDetalhe() {
               </svg>
             </div>
             <span className="text-sm font-semibold text-slate-700">Alergias</span>
-            <BtnAdd onClick={() => { setAlergenio(''); setAlergiaNotas(''); setModalAlergia(true); }} />
+            <BtnAdd label="Registar alergia" onClick={() => { setAlergenio(''); setAlergiaNotas(''); setModalAlergia(true); }} />
           </div>
           {alergias.length === 0 ? (
             <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem alergias registadas</p>
@@ -987,7 +1308,7 @@ export default function DoenteDetalhe() {
               </svg>
             </div>
             <span className="text-sm font-semibold text-slate-700">Contactos de Emergência</span>
-            <BtnAdd onClick={() => { setCtNome(''); setCtTel(''); setCtRelacao('cônjuge'); setCtPrincipal(false); setModalContacto(true); }} />
+            <BtnAdd label="Adicionar contacto de emergência" onClick={() => { setCtNome(''); setCtTel(''); setCtRelacao('cônjuge'); setCtPrincipal(false); setModalContacto(true); }} />
           </div>
           {contactos.length === 0 ? (
             <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem contactos registados</p>
@@ -1020,7 +1341,7 @@ export default function DoenteDetalhe() {
           </div>
           <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
           {['enfermeiro', 'auxiliar', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '') && (
-            <BtnAdd onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setModalSinalVital(true); }} />
+            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setModalSinalVital(true); }} />
           )}
         </div>
         {sinaisVitais.length === 0 ? (
@@ -1146,6 +1467,480 @@ export default function DoenteDetalhe() {
                 </div>
               );
             })}
+          </div>
+        );
+      })()}
+
+      {/* ── Exames Complementares ── */}
+      {(() => {
+        const TIPO_EXAME_LABELS: Record<string, string> = {
+          analise_clinica: 'Análise Clínica', rx: 'Raio-X', eco: 'Ecografia',
+          tc: 'TC', rmn: 'RMN', ecg: 'ECG', outro: 'Outro',
+        };
+        const ESTADO_EXAME_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
+          solicitado:            { label: 'Solicitado',            bg: 'bg-blue-50',   text: 'text-blue-700' },
+          em_progresso:         { label: 'Em Progresso',          bg: 'bg-amber-50',  text: 'text-amber-700' },
+          resultado_disponivel: { label: 'Resultado Disponível',  bg: 'bg-green-50',  text: 'text-green-700' },
+          cancelado:            { label: 'Cancelado',             bg: 'bg-slate-100', text: 'text-slate-600' },
+        };
+        const podeSolicitar = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '');
+        const podeRegistarResultado = ['medico', 'chefe_medicos', 'tecnico_farmacia', 'administrativo'].includes(utilizador?.role ?? '');
+
+        const solicitarExame = async () => {
+          if (!exameForm.descricao.trim()) return;
+          setSalvandoExame(true);
+          try {
+            await api.post(`/exames/${id}`, exameForm);
+            setModalExame(false);
+            setExameForm({ tipo: 'analise_clinica', descricao: '', urgente: false });
+            carregarExames();
+          } finally { setSalvandoExame(false); }
+        };
+
+        const registarResultado = async () => {
+          if (!resultadoModal || !resultadoTexto.trim()) return;
+          setSalvandoExame(true);
+          try {
+            await api.patch(`/exames/${resultadoModal.id}/resultado`, { resultado: resultadoTexto });
+            setResultadoModal(null);
+            setResultadoTexto('');
+            carregarExames();
+          } finally { setSalvandoExame(false); }
+        };
+
+        const cancelarExame = async (exameId: string) => {
+          if (!confirm('Cancelar este exame?')) return;
+          await api.patch(`/exames/${exameId}/cancelar`);
+          carregarExames();
+        };
+
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Exames Complementares</span>
+              {podeSolicitar && <BtnAdd label="Solicitar exame" onClick={() => { setExameForm({ tipo: 'analise_clinica', descricao: '', urgente: false }); setModalExame(true); }} />}
+            </div>
+            {exames.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>Sem exames solicitados</p>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {exames.map((e: any) => {
+                  const cfg = ESTADO_EXAME_CONFIG[e.estado] ?? ESTADO_EXAME_CONFIG.solicitado;
+                  return (
+                    <div key={e.id} className="flex items-start justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '14px 16px' }}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
+                          <span className="text-xs font-semibold text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">{TIPO_EXAME_LABELS[e.tipo] ?? e.tipo}</span>
+                          {e.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">URGENTE</span>}
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                        </div>
+                        <p className="text-sm text-slate-700">{e.descricao}</p>
+                        {e.resultado && (
+                          <p className="text-sm text-slate-600 bg-green-50 rounded-lg border border-green-100 mt-2" style={{ padding: '8px 12px' }}>
+                            <span className="font-semibold text-green-700">Resultado:</span> {e.resultado}
+                          </p>
+                        )}
+                        <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
+                          Por {e.solicitadoPor?.nome} · {new Date(e.criadoEm).toLocaleDateString('pt-PT')}
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5 shrink-0">
+                        {podeRegistarResultado && ['solicitado', 'em_progresso'].includes(e.estado) && (
+                          <button onClick={() => { setResultadoModal(e); setResultadoTexto(''); }}
+                            className="text-xs font-semibold bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition-colors"
+                            style={{ padding: '6px 12px' }}>
+                            Resultado
+                          </button>
+                        )}
+                        {podeSolicitar && e.estado === 'solicitado' && (
+                          <button onClick={() => cancelarExame(e.id)}
+                            className="text-xs font-medium border border-slate-200 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+                            style={{ padding: '6px 12px' }}>
+                            Cancelar
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Modal: Solicitar Exame */}
+            {modalExame && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+                  <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+                    <h2 className="text-lg font-bold text-slate-900">Solicitar Exame</h2>
+                    <button onClick={() => setModalExame(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+                  </div>
+                  <div style={{ marginBottom: '14px' }}>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Exame</label>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(TIPO_EXAME_LABELS).map(([v, l]) => (
+                        <button key={v} onClick={() => setExameForm(f => ({ ...f, tipo: v }))}
+                          className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${exameForm.tipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+                          {l}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: '14px' }}>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+                    <textarea value={exameForm.descricao} onChange={e => setExameForm(f => ({ ...f, descricao: e.target.value }))}
+                      rows={3} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                      style={{ padding: '10px 14px' }} placeholder="Descreva o exame solicitado..." />
+                  </div>
+                  <div className="flex items-center gap-2" style={{ marginBottom: '24px' }}>
+                    <input type="checkbox" id="exameUrgente" checked={exameForm.urgente} onChange={e => setExameForm(f => ({ ...f, urgente: e.target.checked }))}
+                      className="w-4 h-4 accent-red-600" />
+                    <label htmlFor="exameUrgente" className="text-sm font-medium text-red-600">Urgente</label>
+                  </div>
+                  <div className="flex gap-3">
+                    <button onClick={() => setModalExame(false)}
+                      className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                      style={{ padding: '11px' }}>Cancelar</button>
+                    <button onClick={solicitarExame} disabled={salvandoExame || !exameForm.descricao.trim()}
+                      className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                      style={{ padding: '11px' }}>
+                      {salvandoExame ? 'A solicitar...' : 'Solicitar'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Modal: Registar Resultado */}
+            {resultadoModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+                  <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+                    <h2 className="text-lg font-bold text-slate-900">Registar Resultado</h2>
+                    <button onClick={() => setResultadoModal(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+                  </div>
+                  <p className="text-slate-600 text-sm" style={{ marginBottom: '20px' }}>
+                    {TIPO_EXAME_LABELS[resultadoModal.tipo] ?? resultadoModal.tipo} — {resultadoModal.descricao}
+                  </p>
+                  <div style={{ marginBottom: '24px' }}>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resultado *</label>
+                    <textarea value={resultadoTexto} onChange={e => setResultadoTexto(e.target.value)}
+                      rows={4} className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                      style={{ padding: '10px 14px' }} placeholder="Descreva o resultado do exame..." />
+                  </div>
+                  <div className="flex gap-3">
+                    <button onClick={() => setResultadoModal(null)}
+                      className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                      style={{ padding: '11px' }}>Cancelar</button>
+                    <button onClick={registarResultado} disabled={salvandoExame || !resultadoTexto.trim()}
+                      className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                      style={{ padding: '11px' }}>
+                      {salvandoExame ? 'A guardar...' : 'Guardar Resultado'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Notas Clínicas SOAP ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const podeCriarNotaClinica = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista',
+          'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros'].includes(role);
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Notas Clínicas SOAP</span>
+              {notasClincias.length > 0 && (
+                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {notasClincias.length}
+                </span>
+              )}
+              {podeCriarNotaClinica && (
+                <BtnAdd label="Adicionar nota clínica SOAP" onClick={() => {
+                  setSoapForm({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
+                  setNotaSoapEditandoId(null);
+                  setModalNotaClinica(true);
+                }} />
+              )}
+            </div>
+            {notasClincias.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>
+                {podeCriarNotaClinica ? 'Sem notas SOAP — clica em + para adicionar' : 'Sem notas clínicas registadas'}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {notasClincias.map((n: any) => (
+                  <div key={n.id} className="rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '16px' }}>
+                    <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-slate-500">{n.autor?.nome}</span>
+                        <span className="text-slate-300 text-xs">·</span>
+                        <span className="text-xs text-slate-400">
+                          {new Date(n.criadaEm).toLocaleDateString('pt-PT')} {new Date(n.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        {n.editadaEm && <span className="text-xs text-slate-400 italic">(editada)</span>}
+                      </div>
+                      {podeCriarNotaClinica && n.autor?.id === utilizador?.id && (
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => { setSoapForm({ subjetivo: n.subjetivo, objetivo: n.objetivo, avaliacao: n.avaliacao, plano: n.plano }); setNotaSoapEditandoId(n.id); setModalNotaClinica(true); }}
+                            className="text-xs text-slate-400 hover:text-emerald-600 transition-colors" style={{ padding: '4px 8px' }}>Editar</button>
+                          <button onClick={() => apagarNotaClinica(n.id)}
+                            className="text-xs text-slate-400 hover:text-red-500 transition-colors" style={{ padding: '4px 8px' }}>Apagar</button>
+                        </div>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { key: 'subjetivo', label: 'S — Subjetivo', cor: 'blue' },
+                        { key: 'objetivo', label: 'O — Objetivo', cor: 'purple' },
+                        { key: 'avaliacao', label: 'A — Avaliação', cor: 'amber' },
+                        { key: 'plano', label: 'P — Plano', cor: 'green' },
+                      ].map(({ key, label, cor }) => (
+                        <div key={key} className={`rounded-lg bg-${cor}-50 border border-${cor}-100`} style={{ padding: '10px 12px' }}>
+                          <p className={`text-xs font-bold text-${cor}-600 uppercase tracking-wide`} style={{ marginBottom: '4px' }}>{label}</p>
+                          <p className="text-sm text-slate-700 whitespace-pre-wrap">{(n as any)[key]}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Escalas Clínicas Especializadas ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const subRole = utilizador?.subRole ?? '';
+        const podeRegistarEscala = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor',
+          'chefe_enfermeiros', 'medico', 'medico_especialista', 'chefe_medicos'].includes(role);
+
+        const escalasDisponiveis = (() => {
+          if (['enf_uci'].includes(subRole)) return ['RASS', 'CPOT', 'SOFA'];
+          if (['enf_obstetricia', 'ginecologista'].includes(subRole)) return ['CTG', 'Apgar'];
+          if (['enf_pediatria', 'pediatra'].includes(subRole)) return ['Apgar', 'PEWS', 'FLACC'];
+          if (['fisioterapeuta', 'reabilitacao_fisica', 'reabilitacao_fala'].includes(subRole)) return ['Barthel', 'MRC', 'FOIS'];
+          if (['nutricao_clinica'].includes(subRole)) return ['NRS2002', 'Barthel'];
+          if (['psicologia_clinica'].includes(subRole)) return ['PHQ9', 'GAD7'];
+          return Object.keys(ESCALA_CONFIG);
+        })();
+
+        const COR_ESCALAS: Record<string, string> = {
+          RASS: 'violet', CPOT: 'rose', SOFA: 'red', CTG: 'pink', Apgar: 'blue', PEWS: 'amber', FLACC: 'orange',
+          Barthel: 'green', MRC: 'blue', FOIS: 'teal', NRS2002: 'amber', PHQ9: 'purple', GAD7: 'teal',
+        };
+
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Escalas Clínicas</span>
+              {escalasClinicas.length > 0 && (
+                <span className="text-xs font-medium text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {escalasClinicas.length} registos
+                </span>
+              )}
+              {podeRegistarEscala && (
+                <BtnAdd label="Registar escala clínica" onClick={() => {
+                  setTipoEscalaClinica(escalasDisponiveis[0] ?? 'RASS');
+                  setValoresEscalaClinica({});
+                  setModalEscalaClinica(true);
+                }} />
+              )}
+            </div>
+            {escalasClinicas.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '20px 0' }}>
+                {podeRegistarEscala ? 'Sem escalas registadas — clica em + para adicionar' : 'Sem escalas registadas'}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {escalasClinicas.map((e: any) => {
+                  const cor = COR_ESCALAS[e.tipo] ?? 'slate';
+                  return (
+                    <div key={e.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '14px 16px' }}>
+                      <div className="flex items-center gap-3">
+                        <span className={`text-xs font-bold px-2.5 py-1 rounded-lg bg-${cor}-100 text-${cor}-700`}>{e.tipo}</span>
+                        <div>
+                          {e.pontuacao !== null && e.pontuacao !== undefined && (
+                            <p className="text-sm font-semibold text-slate-800">
+                              Pontuação: <span className={`text-${cor}-700`}>{e.pontuacao}</span>
+                            </p>
+                          )}
+                          {e.classificacao && (
+                            <p className="text-xs text-slate-500">{e.classificacao}</p>
+                          )}
+                          <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
+                            {e.registadoPor?.nome} · {new Date(e.registadaEm).toLocaleDateString('pt-PT')} {new Date(e.registadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Interconsultas ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const podeCriarInterc = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'chefe_medicos'].includes(role);
+        const podeResponder = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'chefe_medicos'].includes(role);
+        const estadoCor: Record<string, string> = {
+          pendente: 'bg-amber-50 text-amber-700',
+          aceite: 'bg-blue-50 text-blue-700',
+          respondida: 'bg-green-50 text-green-700',
+          cancelada: 'bg-slate-100 text-slate-500',
+        };
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Interconsultas</span>
+              {interconsultas.filter((i: any) => i.estado === 'pendente').length > 0 && (
+                <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {interconsultas.filter((i: any) => i.estado === 'pendente').length} pendente(s)
+                </span>
+              )}
+              {podeCriarInterc && (
+                <BtnAdd label="Solicitar interconsulta" onClick={() => { setIntercMotivo(''); setIntercUrgente(false); setModalInterconsulta(true); }} />
+              )}
+            </div>
+            {interconsultas.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem interconsultas registadas</p>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {interconsultas.map((ic: any) => (
+                  <div key={ic.id} className="border border-slate-100 rounded-xl" style={{ padding: '14px 16px' }}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm font-semibold text-slate-800">{ic.especialidadeAlvo}</span>
+                          {ic.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Urgente</span>}
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${estadoCor[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>{ic.estado}</span>
+                        </div>
+                        <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{ic.motivo}</p>
+                        <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
+                          Por {ic.requisitante?.nome} · {new Date(ic.criadaEm).toLocaleDateString('pt-PT')}
+                        </p>
+                        {ic.resposta && (
+                          <div className="bg-green-50 rounded-lg" style={{ padding: '10px 12px', marginTop: '8px' }}>
+                            <p className="text-xs font-semibold text-green-700" style={{ marginBottom: '2px' }}>Resposta de {ic.medicoResposta?.nome}</p>
+                            <p className="text-xs text-green-800">{ic.resposta}</p>
+                          </div>
+                        )}
+                      </div>
+                      {podeResponder && ic.estado !== 'respondida' && ic.estado !== 'cancelada' && (
+                        <button onClick={() => { setModalIntercResposta(ic.id); setIntercResposta(''); }}
+                          className="shrink-0 text-xs font-medium text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:bg-indigo-50 rounded-lg transition-colors"
+                          style={{ padding: '6px 12px' }}>Responder</button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Dispositivos Invasivos ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const visivel = ['enfermeiro', 'enfermeiro_especialista', 'medico', 'medico_especialista',
+          'cirurgiao', 'anestesiologista', 'chefe_medicos', 'chefe_enfermeiros'].includes(role);
+        if (!visivel) return null;
+        const podeRegistar = ['enfermeiro', 'enfermeiro_especialista', 'chefe_enfermeiros', 'medico', 'medico_especialista', 'cirurgiao', 'anestesiologista'].includes(role);
+
+        const TIPOS_DISP: Record<string, string> = {
+          cateter_venoso_central: 'CVC', cateter_venoso_periferico: 'CVP', cateter_arterial: 'Cateter Arterial',
+          sonda_vesical: 'Sonda Vesical', tubo_orotaqueal: 'TOT', traqueostomia: 'Traqueostomia',
+          dreno_toracico: 'Dreno Torácico', sonda_nasogastrica: 'SNG', linha_epidural: 'Linha Epidural', outro: 'Outro',
+        };
+        const COR_TIPO: Record<string, string> = {
+          cateter_venoso_central: 'bg-blue-50 text-blue-700', cateter_venoso_periferico: 'bg-sky-50 text-sky-700',
+          cateter_arterial: 'bg-red-50 text-red-700', sonda_vesical: 'bg-yellow-50 text-yellow-700',
+          tubo_orotaqueal: 'bg-orange-50 text-orange-700', traqueostomia: 'bg-orange-50 text-orange-700',
+          dreno_toracico: 'bg-purple-50 text-purple-700', sonda_nasogastrica: 'bg-teal-50 text-teal-700',
+          linha_epidural: 'bg-green-50 text-green-700', outro: 'bg-slate-100 text-slate-600',
+        };
+
+        const ativos = dispositivos.filter((d: any) => d.ativo);
+        const diasInsercao = (data: string) => Math.floor((Date.now() - new Date(data).getTime()) / 86400000);
+
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Dispositivos Invasivos</span>
+              {ativos.length > 0 && (
+                <span className="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {ativos.length} ativo{ativos.length !== 1 ? 's' : ''}
+                </span>
+              )}
+              {podeRegistar && (
+                <BtnAdd label="Registar dispositivo invasivo" onClick={() => { setDispTipo('cateter_venoso_central'); setDispLocalizacao(''); setDispObservacoes(''); setModalDispositivo(true); }} />
+              )}
+            </div>
+            {ativos.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem dispositivos invasivos ativos</p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {ativos.map((d: any) => {
+                  const dias = diasInsercao(d.dataInsercao);
+                  return (
+                    <div key={d.id} className="flex items-center gap-3 border border-slate-100 rounded-xl" style={{ padding: '12px 16px' }}>
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg shrink-0 ${COR_TIPO[d.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
+                        {TIPOS_DISP[d.tipo] ?? d.tipo}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        {d.localizacao && <p className="text-xs text-slate-600">{d.localizacao}</p>}
+                        <p className="text-xs text-slate-400">
+                          Inserido há {dias} dia{dias !== 1 ? 's' : ''} · {d.inseridoPor?.nome}
+                        </p>
+                        {dias >= 3 && (
+                          <p className="text-xs text-amber-600 font-medium" style={{ marginTop: '2px' }}>⚠ Avaliar substituição</p>
+                        )}
+                      </div>
+                      {podeRegistar && (
+                        <button onClick={() => removerDispositivo(d.id)}
+                          className="shrink-0 text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:bg-red-50 rounded-lg transition-colors"
+                          style={{ padding: '5px 10px' }}>Remover</button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })()}
@@ -1794,18 +2589,268 @@ export default function DoenteDetalhe() {
           </div>
         );
       })()}
+
+      {/* ── Modal Nota Clínica SOAP ── */}
+      {modalNotaClinica && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
+              <button onClick={() => setModalNotaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            {[
+              { key: 'subjetivo', label: 'S — Subjetivo', placeholder: 'O que o doente refere: queixas, sintomas, história...', cor: 'blue' },
+              { key: 'objetivo', label: 'O — Objetivo', placeholder: 'Dados objetivos: exame físico, sinais vitais, resultados de exames...', cor: 'purple' },
+              { key: 'avaliacao', label: 'A — Avaliação', placeholder: 'Avaliação clínica, diagnóstico diferencial, raciocínio...', cor: 'amber' },
+              { key: 'plano', label: 'P — Plano', placeholder: 'Plano de ação: tratamento, exames a pedir, consultas, alta...', cor: 'green' },
+            ].map(({ key, label, placeholder, cor }) => (
+              <div key={key} style={{ marginBottom: '16px' }}>
+                <label className={`block text-xs font-bold text-${cor}-600 uppercase tracking-wide`} style={{ marginBottom: '6px' }}>{label}</label>
+                <textarea value={(soapForm as any)[key]} onChange={e => setSoapForm(f => ({ ...f, [key]: e.target.value }))}
+                  rows={3} placeholder={placeholder}
+                  className={`w-full border border-${cor}-200 rounded-xl text-sm bg-${cor}-50 focus:outline-none focus:ring-2 focus:ring-${cor}-400 resize-none`}
+                  style={{ padding: '10px 14px' }} />
+              </div>
+            ))}
+            <div className="flex gap-3" style={{ marginTop: '8px' }}>
+              <button onClick={() => setModalNotaClinica(false)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={submeterNotaClinica} disabled={salvandoSoap || !soapForm.subjetivo.trim() || !soapForm.objetivo.trim() || !soapForm.avaliacao.trim() || !soapForm.plano.trim()}
+                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px' }}>
+                {salvandoSoap ? 'A guardar...' : 'Guardar Nota'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal Escala Clínica ── */}
+      {modalEscalaClinica && (() => {
+        const subRole = utilizador?.subRole ?? '';
+        const escalasDisponiveis = (() => {
+          if (['enf_uci'].includes(subRole)) return ['RASS', 'CPOT', 'SOFA'];
+          if (['enf_obstetricia', 'ginecologista'].includes(subRole)) return ['CTG', 'Apgar'];
+          if (['enf_pediatria', 'pediatra'].includes(subRole)) return ['Apgar', 'PEWS', 'FLACC'];
+          if (['fisioterapeuta', 'reabilitacao_fisica', 'reabilitacao_fala'].includes(subRole)) return ['Barthel', 'MRC', 'FOIS'];
+          if (['nutricao_clinica'].includes(subRole)) return ['NRS2002', 'Barthel'];
+          if (['psicologia_clinica'].includes(subRole)) return ['PHQ9', 'GAD7'];
+          return Object.keys(ESCALA_CONFIG);
+        })();
+
+        const cfg = ESCALA_CONFIG[tipoEscalaClinica];
+        const pontuacaoAtual = cfg && tipoEscalaClinica !== 'CTG' ? cfg.calcularPontuacao(valoresEscalaClinica) : null;
+        const classificacaoAtual = pontuacaoAtual !== null && cfg ? cfg.classificar(pontuacaoAtual) : '';
+        const preenchido = cfg ? cfg.itens.every(it => valoresEscalaClinica[it.key] !== undefined) : false;
+
+        return (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+            <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '560px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
+                <h2 className="text-xl font-bold text-slate-900">Registar Escala Clínica</h2>
+                <button onClick={() => setModalEscalaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+
+              {/* Seletor de tipo */}
+              <div className="flex flex-wrap gap-2" style={{ marginBottom: '24px' }}>
+                {escalasDisponiveis.map(tipo => (
+                  <button key={tipo} onClick={() => { setTipoEscalaClinica(tipo); setValoresEscalaClinica({}); }}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${tipoEscalaClinica === tipo ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
+                    {tipo}
+                  </button>
+                ))}
+              </div>
+
+              {cfg && (
+                <>
+                  <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
+                    {cfg.itens.map(item => (
+                      <div key={item.key}>
+                        <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>{item.label}</p>
+                        <div className="flex flex-col gap-2">
+                          {item.opcoes.map(op => (
+                            <button key={String(op.v)} type="button"
+                              onClick={() => setValoresEscalaClinica(prev => ({ ...prev, [item.key]: op.v }))}
+                              className={`text-left text-sm rounded-lg border transition-all ${valoresEscalaClinica[item.key] === op.v ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}
+                              style={{ padding: '8px 12px' }}>
+                              {op.l}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {pontuacaoAtual !== null && (
+                    <div className="bg-violet-50 rounded-xl flex items-center justify-between" style={{ padding: '14px 18px', marginBottom: '16px' }}>
+                      <div>
+                        <span className="text-sm font-semibold text-violet-700">Pontuação total</span>
+                        {classificacaoAtual && <p className="text-xs text-violet-500" style={{ marginTop: '2px' }}>{classificacaoAtual}</p>}
+                      </div>
+                      <span className="text-3xl font-bold text-violet-700">{pontuacaoAtual}</span>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button onClick={() => setModalEscalaClinica(false)}
+                      className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                      style={{ padding: '11px' }}>Cancelar</button>
+                    <button onClick={submeterEscalaClinica} disabled={salvandoEscalaClinica || !preenchido}
+                      className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                      style={{ padding: '11px' }}>
+                      {salvandoEscalaClinica ? 'A guardar...' : 'Registar Escala'}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Modal Interconsulta ── */}
+      {modalInterconsulta && (
+        <Modal titulo="Solicitar Interconsulta" onClose={() => setModalInterconsulta(false)}>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Especialidade *</label>
+            <select value={intercEspecialidade} onChange={(e) => setIntercEspecialidade(e.target.value)}
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ padding: '10px 14px' }}>
+              {['Cardiologia','Neurologia','Nefrologia','Gastrenterologia','Pneumologia','Endocrinologia',
+                'Ortopedia','Cirurgia Geral','Anestesiologia','Psiquiatria','Dermatologia','Medicina Interna',
+                'Oncologia','Hematologia','Reumatologia','Urologia','Ginecologia','Pediatria','Oftalmologia'].map((e) => (
+                <option key={e} value={e}>{e}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+            <textarea value={intercMotivo} onChange={(e) => setIntercMotivo(e.target.value)}
+              placeholder="Descreva o motivo da interconsulta..."
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              style={{ padding: '10px 14px', marginBottom: '0' }} rows={3} />
+          </div>
+          <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+            <input type="checkbox" id="interc-urgente" checked={intercUrgente} onChange={(e) => setIntercUrgente(e.target.checked)}
+              className="w-4 h-4 rounded accent-red-600" />
+            <label htmlFor="interc-urgente" className="text-sm font-medium text-red-600">Urgente</label>
+          </div>
+          <ModalFooter onCancel={() => setModalInterconsulta(false)} onConfirm={submeterInterconsulta}
+            loading={salvandoInterc} disabled={!intercMotivo.trim() || salvandoInterc} labelConfirm="Solicitar" />
+        </Modal>
+      )}
+
+      {/* ── Modal Resposta Interconsulta ── */}
+      {modalIntercResposta && (
+        <Modal titulo="Responder Interconsulta" onClose={() => setModalIntercResposta(null)}>
+          <div style={{ marginBottom: '20px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Resposta clínica *</label>
+            <textarea value={intercResposta} onChange={(e) => setIntercResposta(e.target.value)}
+              placeholder="Escreva a sua avaliação e recomendações..."
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              style={{ padding: '10px 14px' }} rows={5} />
+          </div>
+          <ModalFooter onCancel={() => setModalIntercResposta(null)}
+            onConfirm={() => submeterResposta(modalIntercResposta)}
+            loading={false} disabled={!intercResposta.trim()} labelConfirm="Responder" />
+        </Modal>
+      )}
+
+      {/* ── Modal Dispositivo Invasivo ── */}
+      {modalDispositivo && (
+        <Modal titulo="Registar Dispositivo Invasivo" onClose={() => setModalDispositivo(false)}>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo *</label>
+            <select value={dispTipo} onChange={(e) => setDispTipo(e.target.value)}
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ padding: '10px 14px' }}>
+              {[
+                ['cateter_venoso_central','Cateter Venoso Central (CVC)'],
+                ['cateter_venoso_periferico','Cateter Venoso Periférico (CVP)'],
+                ['cateter_arterial','Cateter Arterial'],
+                ['sonda_vesical','Sonda Vesical'],
+                ['tubo_orotaqueal','Tubo Orotaqueal (TOT)'],
+                ['traqueostomia','Traqueostomia'],
+                ['dreno_toracico','Dreno Torácico'],
+                ['sonda_nasogastrica','Sonda Nasogástrica (SNG)'],
+                ['linha_epidural','Linha Epidural'],
+                ['outro','Outro'],
+              ].map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Localização / Acesso</label>
+            <input type="text" value={dispLocalizacao} onChange={(e) => setDispLocalizacao(e.target.value)}
+              placeholder="Ex: Subclávia D, Femoral E, Dorso mão esq..."
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ padding: '10px 14px' }} />
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+            <textarea value={dispObservacoes} onChange={(e) => setDispObservacoes(e.target.value)}
+              placeholder="Calibre, lúmen, intercorrências..."
+              className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              style={{ padding: '10px 14px' }} rows={2} />
+          </div>
+          <ModalFooter onCancel={() => setModalDispositivo(false)} onConfirm={submeterDispositivo}
+            loading={salvandoDisp} disabled={salvandoDisp} labelConfirm="Registar Dispositivo" />
+        </Modal>
+      )}
     </div>
   );
 }
 
 function Modal({ titulo, onClose, children }: { titulo: string; onClose: () => void; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement as HTMLElement;
+    const firstFocusable = ref.current?.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    firstFocusable?.focus();
+    return () => previousFocus?.focus();
+  }, []);
+
+  useEffect(() => {
+    const trap = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab') return;
+      const focusable = ref.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      }
+    };
+    document.addEventListener('keydown', trap);
+    return () => document.removeEventListener('keydown', trap);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
-      <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+         style={{ backdropFilter: 'blur(4px)' }}
+         onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div ref={ref}
+           role="dialog"
+           aria-modal="true"
+           aria-labelledby="modal-titulo"
+           className="bg-white rounded-2xl shadow-2xl w-full"
+           style={{ maxWidth: '480px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
-          <h2 className="text-xl font-bold text-slate-900">{titulo}</h2>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 id="modal-titulo" className="text-xl font-bold text-slate-900">{titulo}</h2>
+          <button onClick={onClose} aria-label="Fechar modal"
+            className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center transition-colors">
+            <svg aria-hidden="true" className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
