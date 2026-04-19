@@ -50,13 +50,14 @@ export default function DoentesScreen({ utilizador }: Props) {
 
   const carregar = async () => {
     try {
-      const { data } = await api.get('/doentes');
+      const { data: resp } = await api.get('/doentes');
+      const data = resp.data ?? resp;
       setDoentes(data);
       if (isAdmin) {
         setTodos(data);
       } else {
-        const todosR = await api.get('/doentes?todos=true').catch(() => ({ data }));
-        setTodos(todosR.data);
+        const todosR = await api.get('/doentes?todos=true').catch(() => ({ data: { data } }));
+        setTodos(todosR.data.data ?? todosR.data);
       }
     } finally {
       setLoading(false);

@@ -9,14 +9,26 @@ import Image from 'next/image';
 import { useAuth } from '../../lib/auth-context';
 import api from '../../lib/api';
 
-// servicos: quais serviços vêem este item | roles: opcional, filtra dentro do serviço
+// Grupos de roles para filtrar a navegação
+const ROLES_MEDICO = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'radiologista', 'patologista', 'chefe_medicos', 'triador', 'anestesista'];
+const ROLES_ENFERMAGEM = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude', 'instrumentista', 'auxiliar'];
+const ROLES_CLINICO_OUTRO = ['fisioterapeuta', 'terapeuta_fala', 'nutricionista', 'psicologo', 'tecnico'];
+const ROLES_FARMACIA = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
+const ROLES_ADMIN = ['rececionista', 'secretario_clinico', 'assistente_administrativo', 'gestor_agendamento', 'administrativo', 'secretaria'];
+const ROLES_OPERACIONAL = ['maqueiro', 'assistente_operacional', 'esterilizacao', 'limpeza', 'lavandaria', 'tecnico_manutencao', 'engenheiro_biomedico', 'seguranca', 'sst'];
+const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
+const ROLES_QUALIDADE = ['controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo'];
+const ROLES_DIRECAO = ['diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh'];
+const ROLES_CLINICO = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA];
+
+// servicos: null = todos os serviços | roles: null = todos os roles do serviço
 const navItems = [
-  // — Universal / Administrativo
+  // — Dashboard Clínico
   {
     href: '/dashboard',
     label: 'Dashboard',
-    servicos: ['internamento', 'urgencia', 'bloco_operatorio', 'consultas_externas', 'farmacia', 'fisioterapia', 'transporte', 'administrativo'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -27,8 +39,8 @@ const navItems = [
   {
     href: '/doentes',
     label: 'Doentes',
-    servicos: ['internamento', 'administrativo'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -38,8 +50,8 @@ const navItems = [
   {
     href: '/camas',
     label: 'Camas',
-    servicos: ['internamento', 'administrativo'],
-    roles: ['administrativo', 'chefe_enfermeiros', 'chefe_turno', 'chefe_medicos'],
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -49,8 +61,8 @@ const navItems = [
   {
     href: '/horarios',
     label: 'Horários',
-    servicos: ['internamento', 'administrativo'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -60,8 +72,8 @@ const navItems = [
   {
     href: '/tarefas',
     label: 'Tarefas',
-    servicos: ['internamento', 'urgencia', 'bloco_operatorio'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_OPERACIONAL],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h.01M9 16h.01m6-4h-3" />
@@ -71,8 +83,8 @@ const navItems = [
   {
     href: '/trocas',
     label: 'Trocas de Turno',
-    servicos: ['internamento'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -82,8 +94,8 @@ const navItems = [
   {
     href: '/atribuicoes',
     label: 'Atribuições',
-    servicos: ['internamento'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -94,8 +106,8 @@ const navItems = [
   {
     href: '/urgencia',
     label: 'Urgência',
-    servicos: ['urgencia'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -106,8 +118,8 @@ const navItems = [
   {
     href: '/bloco',
     label: 'Bloco Operatório',
-    servicos: ['bloco_operatorio'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
@@ -118,8 +130,8 @@ const navItems = [
   {
     href: '/consultas',
     label: 'Consultas',
-    servicos: ['consultas_externas'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -130,8 +142,8 @@ const navItems = [
   {
     href: '/farmacia',
     label: 'Farmácia',
-    servicos: ['farmacia'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_FARMACIA],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -142,8 +154,8 @@ const navItems = [
   {
     href: '/fisioterapia',
     label: 'Fisioterapia',
-    servicos: ['fisioterapia'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_CLINICO_OUTRO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -154,7 +166,7 @@ const navItems = [
   {
     href: '/mar',
     label: 'MAR',
-    servicos: ['internamento', 'urgencia'],
+    servicos: null,
     roles: ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude'],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,8 +178,8 @@ const navItems = [
   {
     href: '/iacs',
     label: 'IACS',
-    servicos: ['internamento', 'urgencia'],
-    roles: ['medico', 'medico_especialista', 'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'chefe_enfermeiros', 'chefe_turno', 'enf_uci'],
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_QUALIDADE],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -178,8 +190,8 @@ const navItems = [
   {
     href: '/worklist',
     label: 'Worklist',
-    servicos: ['internamento', 'urgencia', 'bloco_operatorio', 'consultas_externas', 'farmacia', 'fisioterapia', 'transporte', 'administrativo'],
-    roles: ['radiologista', 'patologista', 'tecnico', 'medico', 'medico_especialista', 'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'chefe_enfermeiros'],
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -190,8 +202,8 @@ const navItems = [
   {
     href: '/sala-espera',
     label: 'Sala de Espera',
-    servicos: ['consultas_externas', 'urgencia', 'internamento'],
-    roles: ['administrativo', 'rececionista', 'chefe_turno', 'auxiliar_saude', 'medico', 'medico_especialista', 'enfermeiro', 'enfermeiro_especialista'],
+    servicos: null,
+    roles: [...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -202,19 +214,19 @@ const navItems = [
   {
     href: '/dashboard-ti',
     label: 'Dashboard TI',
-    servicos: ['internamento', 'urgencia', 'bloco_operatorio', 'consultas_externas', 'farmacia', 'fisioterapia', 'transporte', 'administrativo'],
-    roles: ['diretor_ti', 'administrativo', 'chefe_medicos', 'chefe_enfermeiros'],
+    servicos: null,
+    roles: [...ROLES_TI, ...ROLES_DIRECAO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
       </svg>
     ),
   },
-  // — Comunicação (todos os serviços)
+  // — Comunicação (universal)
   {
     href: '/comunicacao',
     label: 'Comunicação',
-    servicos: ['internamento', 'urgencia', 'bloco_operatorio', 'consultas_externas', 'farmacia', 'fisioterapia', 'transporte', 'administrativo'],
+    servicos: null,
     roles: null,
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -222,12 +234,12 @@ const navItems = [
       </svg>
     ),
   },
-  // — Pedidos Internos (transporte + administrativo)
+  // — Pedidos Internos
   {
     href: '/pedidos-internos',
     label: 'Pedidos Internos',
-    servicos: ['transporte', 'administrativo', 'internamento', 'urgencia', 'bloco_operatorio', 'consultas_externas', 'farmacia', 'fisioterapia'],
-    roles: null,
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA, ...ROLES_ADMIN, ...ROLES_OPERACIONAL],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -235,6 +247,17 @@ const navItems = [
     ),
   },
   // — TI
+  {
+    href: '/incidentes-ti',
+    label: 'Incidentes TI',
+    servicos: null,
+    roles: [...ROLES_TI],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    ),
+  },
   {
     href: '/utilizadores',
     label: 'Utilizadores',
@@ -249,8 +272,8 @@ const navItems = [
   {
     href: '/auditoria',
     label: 'Auditoria',
-    servicos: ['administrativo'],
-    roles: ['administrativo'],
+    servicos: null,
+    roles: [...ROLES_TI, ...ROLES_QUALIDADE],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -468,7 +491,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 
   const itemsVisiveis = navItems.filter((item) => {
-    const servicoOk = item.servicos.includes(utilizador.servico ?? 'internamento');
+    const servicoOk = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
     const roleOk = !item.roles || item.roles.includes(utilizador.role);
     return servicoOk && roleOk;
   });

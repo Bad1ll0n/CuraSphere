@@ -3,17 +3,15 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
+  Logger,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { AuditService } from './audit.service';
 
 const METODOS_AUDITADOS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
 
-// Extrai o id da entidade do path: /doentes/abc-123/... → "abc-123"
 function extrairEntidadeId(url: string): string | undefined {
   const partes = url.split('?')[0].split('/').filter(Boolean);
-  // partes: ['doentes', 'abc-123', 'medicacoes', ...]
-  // Procura a primeira parte que pareça um UUID ou id após o recurso
   for (let i = 1; i < partes.length; i++) {
     if (/^[0-9a-f-]{8,}$/i.test(partes[i])) return partes[i];
   }
@@ -21,8 +19,7 @@ function extrairEntidadeId(url: string): string | undefined {
 }
 
 function extrairEntidadeTipo(url: string): string | undefined {
-  const partes = url.split('?')[0].split('/').filter(Boolean);
-  return partes[0] ?? undefined;
+  return url.split('?')[0].split('/').filter(Boolean)[0] ?? undefined;
 }
 
 function anonimizarAcao(method: string, url: string): string {
@@ -38,25 +35,36 @@ function anonimizarAcao(method: string, url: string): string {
 
 @Injectable()
 export class AuditInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(AuditInterceptor.name);
+
   constructor(private audit: AuditService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
-    const { method, url, user, ip } = req;
+    const { method, url, user, ip, headers } = req;
+    const userAgent: string | undefined = headers['user-agent'];
 
     if (!METODOS_AUDITADOS.has(method) || !user?.sub) {
       return next.handle();
     }
 
     return next.handle().pipe(
-      tap(() => {
-        this.audit.registar({
-          utilizadorId: user.sub,
-          acao: anonimizarAcao(method, url),
-          entidadeId: extrairEntidadeId(url),
-          entidadeTipo: extrairEntidadeTipo(url),
-          ip: ip ?? undefined,
-        });
+      tap({
+        next: () => {
+          this.audit.registar({
+            utilizadorId: user.sub,
+            acao: anonimizarAcao(method, url),
+            entidadeId: extrairEntidadeId(url),
+            entidadeTipo: extrairEntidadeTipo(url),
+            ip: ip ?? undefined,
+            userAgent,
+          });
+        },
+        error: (err) => {
+          this.logger.warn(
+            `Operação falhada — ${method} ${url} | utilizador: ${user.sub} | status: ${err?.status ?? 'erro'} | ip: ${ip}`,
+          );
+        },
       }),
     );
   }

@@ -10,21 +10,50 @@ import { getUtilizador, logout, Utilizador } from '../lib/auth';
 import api, { setUnauthorizedCallback } from '../lib/api';
 import LoginScreen from '../screens/LoginScreen';
 import DashboardScreen from '../screens/DashboardScreen';
+import DashboardTIScreen from '../screens/DashboardTIScreen';
+import IncidentesSubRoleScreen from '../screens/IncidentesSubRoleScreen';
 import TarefasScreen from '../screens/TarefasScreen';
+import PedidosTIScreen from '../screens/PedidosTIScreen';
 import DoentesScreen from '../screens/DoentesScreen';
 import MaisScreen from '../screens/MaisScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import DoenteDetalheScreen from '../screens/DoenteDetalheScreen';
+import AuditoriaScreen from '../screens/AuditoriaScreen';
 
 const Tab = createBottomTabNavigator();
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
+const ROLES_MEDICO = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'radiologista', 'patologista', 'chefe_medicos', 'triador', 'anestesista'];
+const ROLES_ENFERMAGEM = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude', 'instrumentista', 'auxiliar'];
+const ROLES_CLINICO_OUTRO = ['fisioterapeuta', 'terapeuta_fala', 'nutricionista', 'psicologo', 'tecnico'];
+const ROLES_FARMACIA = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
+const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
+const ROLES_QUALIDADE = ['controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo'];
+const ROLES_DIRECAO = ['diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh'];
+const ROLES_ADMIN = ['rececionista', 'secretario_clinico', 'assistente_administrativo', 'gestor_agendamento', 'administrativo', 'secretaria'];
+const ROLES_OPERACIONAL = ['maqueiro', 'assistente_operacional', 'esterilizacao', 'limpeza', 'lavandaria', 'tecnico_manutencao', 'engenheiro_biomedico', 'seguranca', 'sst', 'faturacao', 'rh', 'compras'];
+const ROLES_CLINICO = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA];
+
+function grupoRole(role: string): 'clinical' | 'ti' | 'admin' | 'operacional' | 'direcao' | 'qualidade' {
+  if (ROLES_CLINICO.includes(role)) return 'clinical';
+  if (ROLES_TI.includes(role)) return 'ti';
+  if (ROLES_ADMIN.includes(role)) return 'admin';
+  if (ROLES_OPERACIONAL.includes(role)) return 'operacional';
+  if (ROLES_DIRECAO.includes(role)) return 'direcao';
+  if (ROLES_QUALIDADE.includes(role)) return 'qualidade';
+  return 'clinical';
+}
+
 const TAB_ICONS: Record<string, { ativo: IoniconName; inativo: IoniconName }> = {
-  Dashboard: { ativo: 'grid',     inativo: 'grid-outline' },
-  Doentes:   { ativo: 'medkit',   inativo: 'medkit-outline' },
-  Tarefas:   { ativo: 'checkbox', inativo: 'checkbox-outline' },
-  Mais:      { ativo: 'menu',     inativo: 'menu-outline' },
+  Dashboard:    { ativo: 'grid',          inativo: 'grid-outline' },
+  Doentes:      { ativo: 'medkit',        inativo: 'medkit-outline' },
+  Tarefas:      { ativo: 'checkbox',      inativo: 'checkbox-outline' },
+  Incidentes:   { ativo: 'alert-circle',  inativo: 'alert-circle-outline' },
+  Pedidos:      { ativo: 'layers',        inativo: 'layers-outline' },
+  Mais:         { ativo: 'menu',          inativo: 'menu-outline' },
+  Utilizadores: { ativo: 'people',        inativo: 'people-outline' },
+  Auditoria:    { ativo: 'document-text', inativo: 'document-text-outline' },
 };
 
 function TabIcon({ label, ativo }: { label: string; ativo: boolean }) {
@@ -138,60 +167,94 @@ export default function App() {
       )}
 
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-            tabBarShowLabel: false,
-            tabBarStyle: estilos.tabBar,
-            tabBarItemStyle: estilos.tabItem,
-          }}
-        >
-          <Tab.Screen
-            name="Dashboard"
-            options={{ tabBarIcon: ({ focused }) => <TabIcon label="Dashboard" ativo={focused} /> }}
-          >
-            {() => <DashboardScreen utilizador={utilizador} />}
-          </Tab.Screen>
-
-          <Tab.Screen
-            name="Doentes"
-            options={{ tabBarIcon: ({ focused }) => <TabIcon label="Doentes" ativo={focused} /> }}
-          >
-            {() => <DoentesScreen utilizador={utilizador} />}
-          </Tab.Screen>
-
-          {/* Botão Scan central */}
-          <Tab.Screen
-            name="Scan"
-            component={() => null}
-            options={{
-              tabBarButton: () => (
-                <TouchableOpacity
-                  style={estilos.scanBotaoWrapper}
-                  onPress={() => setScannerAberto(true)}
-                  activeOpacity={0.85}
-                >
-                  <View style={estilos.scanCirculo}>
-                    <Ionicons name="qr-code-outline" size={24} color="#fff" />
-                  </View>
-                </TouchableOpacity>
-              ),
-            }}
-          />
-
-          <Tab.Screen
-            name="Tarefas"
-            component={TarefasScreen}
-            options={{ tabBarIcon: ({ focused }) => <TabIcon label="Tarefas" ativo={focused} /> }}
-          />
-
-          <Tab.Screen
-            name="Mais"
-            options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}
-          >
-            {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
-          </Tab.Screen>
-        </Tab.Navigator>
+        {grupoRole(utilizador.role) === 'ti' ? (
+          /* ── Navigator TI ──────────────────────────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Dashboard" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Dashboard" ativo={focused} /> }}>
+              {() => <DashboardTIScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Incidentes" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Incidentes" ativo={focused} /> }}>
+              {() => <IncidentesSubRoleScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Pedidos" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Pedidos" ativo={focused} /> }}>
+              {() => <PedidosTIScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        ) : grupoRole(utilizador.role) === 'direcao' ? (
+          /* ── Navigator Direção ─────────────────────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Dashboard" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Dashboard" ativo={focused} /> }}>
+              {() => <DashboardTIScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        ) : grupoRole(utilizador.role) === 'qualidade' ? (
+          /* ── Navigator Qualidade / Compliance ──────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Auditoria" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Auditoria" ativo={focused} /> }}>
+              {() => <AuditoriaScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        ) : grupoRole(utilizador.role) === 'operacional' ? (
+          /* ── Navigator Operacional / Fin-RH ────────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Tarefas" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Tarefas" ativo={focused} /> }}>
+              {() => <TarefasScreen />}
+            </Tab.Screen>
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        ) : grupoRole(utilizador.role) === 'admin' ? (
+          /* ── Navigator Administrativo ───────────────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Doentes" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Doentes" ativo={focused} /> }}>
+              {() => <DoentesScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Tarefas" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Tarefas" ativo={focused} /> }}>
+              {() => <TarefasScreen />}
+            </Tab.Screen>
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        ) : (
+          /* ── Navigator Clínico (padrão) ─────────────────── */
+          <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: estilos.tabBar, tabBarItemStyle: estilos.tabItem }}>
+            <Tab.Screen name="Dashboard" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Dashboard" ativo={focused} /> }}>
+              {() => <DashboardScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            <Tab.Screen name="Doentes" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Doentes" ativo={focused} /> }}>
+              {() => <DoentesScreen utilizador={utilizador} />}
+            </Tab.Screen>
+            {/* Botão Scan central */}
+            <Tab.Screen
+              name="Scan"
+              component={() => null}
+              options={{
+                tabBarButton: () => (
+                  <TouchableOpacity style={estilos.scanBotaoWrapper} onPress={() => setScannerAberto(true)} activeOpacity={0.85}>
+                    <View style={estilos.scanCirculo}>
+                      <Ionicons name="qr-code-outline" size={24} color="#fff" />
+                    </View>
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Tab.Screen name="Tarefas" component={TarefasScreen} options={{ tabBarIcon: ({ focused }) => <TabIcon label="Tarefas" ativo={focused} /> }} />
+            <Tab.Screen name="Mais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Mais" ativo={focused} /> }}>
+              {() => <MaisScreen utilizador={utilizador} onLogout={() => setUtilizador(null)} />}
+            </Tab.Screen>
+          </Tab.Navigator>
+        )}
       </NavigationContainer>
     </SafeAreaProvider>
   );

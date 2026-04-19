@@ -328,6 +328,7 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   entidadeTipo: 'entidadeTipo',
   detalhes: 'detalhes',
   ip: 'ip',
+  userAgent: 'userAgent',
   createdAt: 'createdAt'
 };
 
@@ -597,6 +598,42 @@ exports.Prisma.DispositivoInvasivoScalarFieldEnum = {
   ativo: 'ativo',
   observacoes: 'observacoes',
   inseridoPorId: 'inseridoPorId'
+};
+
+exports.Prisma.IncidenteTIScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  descricao: 'descricao',
+  tipo: 'tipo',
+  subRoleAlvo: 'subRoleAlvo',
+  prioridade: 'prioridade',
+  estado: 'estado',
+  criadoPorId: 'criadoPorId',
+  responsavelId: 'responsavelId',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
+exports.Prisma.PedidoTIScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  descricao: 'descricao',
+  tipo: 'tipo',
+  estado: 'estado',
+  urgente: 'urgente',
+  criadoEm: 'criadoEm',
+  resolvidoEm: 'resolvidoEm',
+  criadoPorId: 'criadoPorId',
+  responsavelId: 'responsavelId'
+};
+
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  utilizadorId: 'utilizadorId',
+  expiresAt: 'expiresAt',
+  revogado: 'revogado',
+  criadoEm: 'criadoEm'
 };
 
 exports.Prisma.SortOrder = {
@@ -944,6 +981,46 @@ exports.TipoDispositivoInvasivo = exports.$Enums.TipoDispositivoInvasivo = {
   outro: 'outro'
 };
 
+exports.TipoIncidenteTI = exports.$Enums.TipoIncidenteTI = {
+  infraestrutura: 'infraestrutura',
+  rede: 'rede',
+  his_erp: 'his_erp',
+  base_dados: 'base_dados',
+  seguranca: 'seguranca',
+  dados_clinicos: 'dados_clinicos',
+  outro: 'outro'
+};
+
+exports.PrioridadeIncidenteTI = exports.$Enums.PrioridadeIncidenteTI = {
+  baixa: 'baixa',
+  media: 'media',
+  alta: 'alta',
+  critica: 'critica'
+};
+
+exports.EstadoIncidenteTI = exports.$Enums.EstadoIncidenteTI = {
+  aberto: 'aberto',
+  em_analise: 'em_analise',
+  resolvido: 'resolvido',
+  fechado: 'fechado'
+};
+
+exports.TipoPedidoTI = exports.$Enums.TipoPedidoTI = {
+  listagem_dados: 'listagem_dados',
+  relatorio: 'relatorio',
+  acesso_sistema: 'acesso_sistema',
+  backup: 'backup',
+  auditoria_dados: 'auditoria_dados',
+  outro: 'outro'
+};
+
+exports.EstadoPedidoTI = exports.$Enums.EstadoPedidoTI = {
+  pendente: 'pendente',
+  em_curso: 'em_curso',
+  concluido: 'concluido',
+  recusado: 'recusado'
+};
+
 exports.Prisma.ModelName = {
   Utilizador: 'Utilizador',
   Cama: 'Cama',
@@ -986,7 +1063,10 @@ exports.Prisma.ModelName = {
   Anuncio: 'Anuncio',
   MensagemInterna: 'MensagemInterna',
   Interconsulta: 'Interconsulta',
-  DispositivoInvasivo: 'DispositivoInvasivo'
+  DispositivoInvasivo: 'DispositivoInvasivo',
+  IncidenteTI: 'IncidenteTI',
+  PedidoTI: 'PedidoTI',
+  RefreshToken: 'RefreshToken'
 };
 
 /**

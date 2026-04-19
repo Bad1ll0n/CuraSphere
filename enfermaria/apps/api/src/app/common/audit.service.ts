@@ -8,6 +8,7 @@ interface AuditParams {
   entidadeTipo?: string;
   detalhes?: string;
   ip?: string;
+  userAgent?: string;
 }
 
 @Injectable()

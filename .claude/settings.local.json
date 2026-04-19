@@ -80,7 +80,10 @@
       "Bash(node -e \"const n=require\\('./node_modules/next/dist/server/config-shared.js'\\); const keys=Object.keys\\(n.defaultConfig||{}\\); console.log\\(keys.filter\\(k=>k.includes\\('undle'\\)||k.includes\\('turbo'\\)||k.includes\\('webpack'\\)\\).join\\('\\\\n'\\)\\)\")",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in d.get\\('properties',{}\\).items\\(\\) if 'webpack' in k.lower\\(\\) or 'turbo' in k.lower\\(\\)}, indent=2\\)\\)\")",
       "Bash(python3 -c ' *)",
-      "Bash(grep -v \"\\\\.map$\")"
+      "Bash(grep -v \"\\\\.map$\")",
+      "Bash(xargs ls *)",
+      "Bash(grep -r 'rawQuery\\\\|queryRaw\\\\|executeRaw\\\\|$queryRaw' /c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/api/src '--include=*.ts')",
+      "Bash(xargs head *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

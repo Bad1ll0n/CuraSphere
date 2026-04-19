@@ -4,6 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { Role, SubRole, Servico } from '../common/enums';
+import { CriarUtilizadorDto } from './dto/criar-utilizador.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('utilizadores')
@@ -12,15 +13,7 @@ export class UtilizadoresController {
 
   @Roles(Role.it_admin)
   @Post()
-  criar(@Body() body: {
-    numeroFuncionario: string;
-    nome: string;
-    password: string;
-    role: Role;
-    subRole?: SubRole;
-    servico?: Servico;
-    ordemExperiencia?: number;
-  }) {
+  criar(@Body() body: CriarUtilizadorDto) {
     return this.utilizadoresService.criar(body);
   }
 

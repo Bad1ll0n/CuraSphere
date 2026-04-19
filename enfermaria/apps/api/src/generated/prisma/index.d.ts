@@ -223,6 +223,21 @@ export type Interconsulta = $Result.DefaultSelection<Prisma.$InterconsultaPayloa
  * 
  */
 export type DispositivoInvasivo = $Result.DefaultSelection<Prisma.$DispositivoInvasivoPayload>
+/**
+ * Model IncidenteTI
+ * 
+ */
+export type IncidenteTI = $Result.DefaultSelection<Prisma.$IncidenteTIPayload>
+/**
+ * Model PedidoTI
+ * 
+ */
+export type PedidoTI = $Result.DefaultSelection<Prisma.$PedidoTIPayload>
+/**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
 
 /**
  * Enums
@@ -618,6 +633,61 @@ export const TipoDispositivoInvasivo: {
 
 export type TipoDispositivoInvasivo = (typeof TipoDispositivoInvasivo)[keyof typeof TipoDispositivoInvasivo]
 
+
+export const TipoIncidenteTI: {
+  infraestrutura: 'infraestrutura',
+  rede: 'rede',
+  his_erp: 'his_erp',
+  base_dados: 'base_dados',
+  seguranca: 'seguranca',
+  dados_clinicos: 'dados_clinicos',
+  outro: 'outro'
+};
+
+export type TipoIncidenteTI = (typeof TipoIncidenteTI)[keyof typeof TipoIncidenteTI]
+
+
+export const EstadoIncidenteTI: {
+  aberto: 'aberto',
+  em_analise: 'em_analise',
+  resolvido: 'resolvido',
+  fechado: 'fechado'
+};
+
+export type EstadoIncidenteTI = (typeof EstadoIncidenteTI)[keyof typeof EstadoIncidenteTI]
+
+
+export const PrioridadeIncidenteTI: {
+  baixa: 'baixa',
+  media: 'media',
+  alta: 'alta',
+  critica: 'critica'
+};
+
+export type PrioridadeIncidenteTI = (typeof PrioridadeIncidenteTI)[keyof typeof PrioridadeIncidenteTI]
+
+
+export const TipoPedidoTI: {
+  listagem_dados: 'listagem_dados',
+  relatorio: 'relatorio',
+  acesso_sistema: 'acesso_sistema',
+  backup: 'backup',
+  auditoria_dados: 'auditoria_dados',
+  outro: 'outro'
+};
+
+export type TipoPedidoTI = (typeof TipoPedidoTI)[keyof typeof TipoPedidoTI]
+
+
+export const EstadoPedidoTI: {
+  pendente: 'pendente',
+  em_curso: 'em_curso',
+  concluido: 'concluido',
+  recusado: 'recusado'
+};
+
+export type EstadoPedidoTI = (typeof EstadoPedidoTI)[keyof typeof EstadoPedidoTI]
+
 }
 
 export type Role = $Enums.Role
@@ -719,6 +789,26 @@ export const EstadoInterconsulta: typeof $Enums.EstadoInterconsulta
 export type TipoDispositivoInvasivo = $Enums.TipoDispositivoInvasivo
 
 export const TipoDispositivoInvasivo: typeof $Enums.TipoDispositivoInvasivo
+
+export type TipoIncidenteTI = $Enums.TipoIncidenteTI
+
+export const TipoIncidenteTI: typeof $Enums.TipoIncidenteTI
+
+export type EstadoIncidenteTI = $Enums.EstadoIncidenteTI
+
+export const EstadoIncidenteTI: typeof $Enums.EstadoIncidenteTI
+
+export type PrioridadeIncidenteTI = $Enums.PrioridadeIncidenteTI
+
+export const PrioridadeIncidenteTI: typeof $Enums.PrioridadeIncidenteTI
+
+export type TipoPedidoTI = $Enums.TipoPedidoTI
+
+export const TipoPedidoTI: typeof $Enums.TipoPedidoTI
+
+export type EstadoPedidoTI = $Enums.EstadoPedidoTI
+
+export const EstadoPedidoTI: typeof $Enums.EstadoPedidoTI
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1257,6 +1347,36 @@ export class PrismaClient<
     * ```
     */
   get dispositivoInvasivo(): Prisma.DispositivoInvasivoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incidenteTI`: Exposes CRUD operations for the **IncidenteTI** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncidenteTIS
+    * const incidenteTIS = await prisma.incidenteTI.findMany()
+    * ```
+    */
+  get incidenteTI(): Prisma.IncidenteTIDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pedidoTI`: Exposes CRUD operations for the **PedidoTI** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PedidoTIS
+    * const pedidoTIS = await prisma.pedidoTI.findMany()
+    * ```
+    */
+  get pedidoTI(): Prisma.PedidoTIDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.refreshToken`: Exposes CRUD operations for the **RefreshToken** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RefreshTokens
+    * const refreshTokens = await prisma.refreshToken.findMany()
+    * ```
+    */
+  get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1739,7 +1859,10 @@ export namespace Prisma {
     Anuncio: 'Anuncio',
     MensagemInterna: 'MensagemInterna',
     Interconsulta: 'Interconsulta',
-    DispositivoInvasivo: 'DispositivoInvasivo'
+    DispositivoInvasivo: 'DispositivoInvasivo',
+    IncidenteTI: 'IncidenteTI',
+    PedidoTI: 'PedidoTI',
+    RefreshToken: 'RefreshToken'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1758,7 +1881,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo"
+      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "refreshToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4870,6 +4993,228 @@ export namespace Prisma {
           }
         }
       }
+      IncidenteTI: {
+        payload: Prisma.$IncidenteTIPayload<ExtArgs>
+        fields: Prisma.IncidenteTIFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncidenteTIFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncidenteTIFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          findFirst: {
+            args: Prisma.IncidenteTIFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncidenteTIFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          findMany: {
+            args: Prisma.IncidenteTIFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>[]
+          }
+          create: {
+            args: Prisma.IncidenteTICreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          createMany: {
+            args: Prisma.IncidenteTICreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.IncidenteTICreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>[]
+          }
+          delete: {
+            args: Prisma.IncidenteTIDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          update: {
+            args: Prisma.IncidenteTIUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          deleteMany: {
+            args: Prisma.IncidenteTIDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncidenteTIUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.IncidenteTIUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>[]
+          }
+          upsert: {
+            args: Prisma.IncidenteTIUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidenteTIPayload>
+          }
+          aggregate: {
+            args: Prisma.IncidenteTIAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncidenteTI>
+          }
+          groupBy: {
+            args: Prisma.IncidenteTIGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncidenteTIGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncidenteTICountArgs<ExtArgs>
+            result: $Utils.Optional<IncidenteTICountAggregateOutputType> | number
+          }
+        }
+      }
+      PedidoTI: {
+        payload: Prisma.$PedidoTIPayload<ExtArgs>
+        fields: Prisma.PedidoTIFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PedidoTIFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PedidoTIFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          findFirst: {
+            args: Prisma.PedidoTIFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PedidoTIFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          findMany: {
+            args: Prisma.PedidoTIFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>[]
+          }
+          create: {
+            args: Prisma.PedidoTICreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          createMany: {
+            args: Prisma.PedidoTICreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PedidoTICreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>[]
+          }
+          delete: {
+            args: Prisma.PedidoTIDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          update: {
+            args: Prisma.PedidoTIUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          deleteMany: {
+            args: Prisma.PedidoTIDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PedidoTIUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PedidoTIUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>[]
+          }
+          upsert: {
+            args: Prisma.PedidoTIUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PedidoTIPayload>
+          }
+          aggregate: {
+            args: Prisma.PedidoTIAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePedidoTI>
+          }
+          groupBy: {
+            args: Prisma.PedidoTIGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PedidoTIGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PedidoTICountArgs<ExtArgs>
+            result: $Utils.Optional<PedidoTICountAggregateOutputType> | number
+          }
+        }
+      }
+      RefreshToken: {
+        payload: Prisma.$RefreshTokenPayload<ExtArgs>
+        fields: Prisma.RefreshTokenFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RefreshTokenFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RefreshTokenFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          findFirst: {
+            args: Prisma.RefreshTokenFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RefreshTokenFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          findMany: {
+            args: Prisma.RefreshTokenFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          create: {
+            args: Prisma.RefreshTokenCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          createMany: {
+            args: Prisma.RefreshTokenCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RefreshTokenCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          delete: {
+            args: Prisma.RefreshTokenDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          update: {
+            args: Prisma.RefreshTokenUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          deleteMany: {
+            args: Prisma.RefreshTokenDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RefreshTokenUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RefreshTokenUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>[]
+          }
+          upsert: {
+            args: Prisma.RefreshTokenUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RefreshTokenPayload>
+          }
+          aggregate: {
+            args: Prisma.RefreshTokenAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRefreshToken>
+          }
+          groupBy: {
+            args: Prisma.RefreshTokenGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RefreshTokenGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RefreshTokenCountArgs<ExtArgs>
+            result: $Utils.Optional<RefreshTokenCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -5008,6 +5353,9 @@ export namespace Prisma {
     mensagemInterna?: MensagemInternaOmit
     interconsulta?: InterconsultaOmit
     dispositivoInvasivo?: DispositivoInvasivoOmit
+    incidenteTI?: IncidenteTIOmit
+    pedidoTI?: PedidoTIOmit
+    refreshToken?: RefreshTokenOmit
   }
 
   /* Types for Logging */
@@ -5135,6 +5483,11 @@ export namespace Prisma {
     checklistsSignOut: number
     checkinsRececionados: number
     checkinsAtendidos: number
+    refreshTokens: number
+    incidentesCriados: number
+    incidentesAtribuidos: number
+    pedidosTICriados: number
+    pedidosTIAtribuidos: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5185,6 +5538,11 @@ export namespace Prisma {
     checklistsSignOut?: boolean | UtilizadorCountOutputTypeCountChecklistsSignOutArgs
     checkinsRececionados?: boolean | UtilizadorCountOutputTypeCountCheckinsRececionadosArgs
     checkinsAtendidos?: boolean | UtilizadorCountOutputTypeCountCheckinsAtendidosArgs
+    refreshTokens?: boolean | UtilizadorCountOutputTypeCountRefreshTokensArgs
+    incidentesCriados?: boolean | UtilizadorCountOutputTypeCountIncidentesCriadosArgs
+    incidentesAtribuidos?: boolean | UtilizadorCountOutputTypeCountIncidentesAtribuidosArgs
+    pedidosTICriados?: boolean | UtilizadorCountOutputTypeCountPedidosTICriadosArgs
+    pedidosTIAtribuidos?: boolean | UtilizadorCountOutputTypeCountPedidosTIAtribuidosArgs
   }
 
   // Custom InputTypes
@@ -5525,6 +5883,41 @@ export namespace Prisma {
    */
   export type UtilizadorCountOutputTypeCountCheckinsAtendidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CheckinSalaEsperaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountRefreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefreshTokenWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountIncidentesCriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidenteTIWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountIncidentesAtribuidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidenteTIWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountPedidosTICriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTIWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountPedidosTIAtribuidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTIWhereInput
   }
 
 
@@ -6342,6 +6735,11 @@ export namespace Prisma {
     checklistsSignOut?: boolean | Utilizador$checklistsSignOutArgs<ExtArgs>
     checkinsRececionados?: boolean | Utilizador$checkinsRececionadosArgs<ExtArgs>
     checkinsAtendidos?: boolean | Utilizador$checkinsAtendidosArgs<ExtArgs>
+    refreshTokens?: boolean | Utilizador$refreshTokensArgs<ExtArgs>
+    incidentesCriados?: boolean | Utilizador$incidentesCriadosArgs<ExtArgs>
+    incidentesAtribuidos?: boolean | Utilizador$incidentesAtribuidosArgs<ExtArgs>
+    pedidosTICriados?: boolean | Utilizador$pedidosTICriadosArgs<ExtArgs>
+    pedidosTIAtribuidos?: boolean | Utilizador$pedidosTIAtribuidosArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -6439,6 +6837,11 @@ export namespace Prisma {
     checklistsSignOut?: boolean | Utilizador$checklistsSignOutArgs<ExtArgs>
     checkinsRececionados?: boolean | Utilizador$checkinsRececionadosArgs<ExtArgs>
     checkinsAtendidos?: boolean | Utilizador$checkinsAtendidosArgs<ExtArgs>
+    refreshTokens?: boolean | Utilizador$refreshTokensArgs<ExtArgs>
+    incidentesCriados?: boolean | Utilizador$incidentesCriadosArgs<ExtArgs>
+    incidentesAtribuidos?: boolean | Utilizador$incidentesAtribuidosArgs<ExtArgs>
+    pedidosTICriados?: boolean | Utilizador$pedidosTICriadosArgs<ExtArgs>
+    pedidosTIAtribuidos?: boolean | Utilizador$pedidosTIAtribuidosArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6494,6 +6897,11 @@ export namespace Prisma {
       checklistsSignOut: Prisma.$ChecklistCirurgiaPayload<ExtArgs>[]
       checkinsRececionados: Prisma.$CheckinSalaEsperaPayload<ExtArgs>[]
       checkinsAtendidos: Prisma.$CheckinSalaEsperaPayload<ExtArgs>[]
+      refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+      incidentesCriados: Prisma.$IncidenteTIPayload<ExtArgs>[]
+      incidentesAtribuidos: Prisma.$IncidenteTIPayload<ExtArgs>[]
+      pedidosTICriados: Prisma.$PedidoTIPayload<ExtArgs>[]
+      pedidosTIAtribuidos: Prisma.$PedidoTIPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6949,6 +7357,11 @@ export namespace Prisma {
     checklistsSignOut<T extends Utilizador$checklistsSignOutArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$checklistsSignOutArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChecklistCirurgiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     checkinsRececionados<T extends Utilizador$checkinsRececionadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$checkinsRececionadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CheckinSalaEsperaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     checkinsAtendidos<T extends Utilizador$checkinsAtendidosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$checkinsAtendidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CheckinSalaEsperaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    refreshTokens<T extends Utilizador$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incidentesCriados<T extends Utilizador$incidentesCriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$incidentesCriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incidentesAtribuidos<T extends Utilizador$incidentesAtribuidosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$incidentesAtribuidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pedidosTICriados<T extends Utilizador$pedidosTICriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pedidosTICriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pedidosTIAtribuidos<T extends Utilizador$pedidosTIAtribuidosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pedidosTIAtribuidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8503,6 +8916,126 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CheckinSalaEsperaScalarFieldEnum | CheckinSalaEsperaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.refreshTokens
+   */
+  export type Utilizador$refreshTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    where?: RefreshTokenWhereInput
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    cursor?: RefreshTokenWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.incidentesCriados
+   */
+  export type Utilizador$incidentesCriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    where?: IncidenteTIWhereInput
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    cursor?: IncidenteTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncidenteTIScalarFieldEnum | IncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.incidentesAtribuidos
+   */
+  export type Utilizador$incidentesAtribuidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    where?: IncidenteTIWhereInput
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    cursor?: IncidenteTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncidenteTIScalarFieldEnum | IncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.pedidosTICriados
+   */
+  export type Utilizador$pedidosTICriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    where?: PedidoTIWhereInput
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    cursor?: PedidoTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTIScalarFieldEnum | PedidoTIScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.pedidosTIAtribuidos
+   */
+  export type Utilizador$pedidosTIAtribuidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    where?: PedidoTIWhereInput
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    cursor?: PedidoTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoTIScalarFieldEnum | PedidoTIScalarFieldEnum[]
   }
 
   /**
@@ -29517,6 +30050,7 @@ export namespace Prisma {
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
+    userAgent: string | null
     createdAt: Date | null
   }
 
@@ -29528,6 +30062,7 @@ export namespace Prisma {
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
+    userAgent: string | null
     createdAt: Date | null
   }
 
@@ -29539,6 +30074,7 @@ export namespace Prisma {
     entidadeTipo: number
     detalhes: number
     ip: number
+    userAgent: number
     createdAt: number
     _all: number
   }
@@ -29552,6 +30088,7 @@ export namespace Prisma {
     entidadeTipo?: true
     detalhes?: true
     ip?: true
+    userAgent?: true
     createdAt?: true
   }
 
@@ -29563,6 +30100,7 @@ export namespace Prisma {
     entidadeTipo?: true
     detalhes?: true
     ip?: true
+    userAgent?: true
     createdAt?: true
   }
 
@@ -29574,6 +30112,7 @@ export namespace Prisma {
     entidadeTipo?: true
     detalhes?: true
     ip?: true
+    userAgent?: true
     createdAt?: true
     _all?: true
   }
@@ -29658,6 +30197,7 @@ export namespace Prisma {
     entidadeTipo: string | null
     detalhes: string | null
     ip: string | null
+    userAgent: string | null
     createdAt: Date
     _count: AuditLogCountAggregateOutputType | null
     _min: AuditLogMinAggregateOutputType | null
@@ -29686,6 +30226,7 @@ export namespace Prisma {
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -29698,6 +30239,7 @@ export namespace Prisma {
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -29710,6 +30252,7 @@ export namespace Prisma {
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
@@ -29722,10 +30265,11 @@ export namespace Prisma {
     entidadeTipo?: boolean
     detalhes?: boolean
     ip?: boolean
+    userAgent?: boolean
     createdAt?: boolean
   }
 
-  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "acao" | "entidadeId" | "entidadeTipo" | "detalhes" | "ip" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "acao" | "entidadeId" | "entidadeTipo" | "detalhes" | "ip" | "userAgent" | "createdAt", ExtArgs["result"]["auditLog"]>
   export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
@@ -29749,6 +30293,7 @@ export namespace Prisma {
       entidadeTipo: string | null
       detalhes: string | null
       ip: string | null
+      userAgent: string | null
       createdAt: Date
     }, ExtArgs["result"]["auditLog"]>
     composites: {}
@@ -30181,6 +30726,7 @@ export namespace Prisma {
     readonly entidadeTipo: FieldRef<"AuditLog", 'String'>
     readonly detalhes: FieldRef<"AuditLog", 'String'>
     readonly ip: FieldRef<"AuditLog", 'String'>
+    readonly userAgent: FieldRef<"AuditLog", 'String'>
     readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
   }
     
@@ -55813,6 +56359,3390 @@ export namespace Prisma {
 
 
   /**
+   * Model IncidenteTI
+   */
+
+  export type AggregateIncidenteTI = {
+    _count: IncidenteTICountAggregateOutputType | null
+    _min: IncidenteTIMinAggregateOutputType | null
+    _max: IncidenteTIMaxAggregateOutputType | null
+  }
+
+  export type IncidenteTIMinAggregateOutputType = {
+    id: string | null
+    titulo: string | null
+    descricao: string | null
+    tipo: $Enums.TipoIncidenteTI | null
+    subRoleAlvo: string | null
+    prioridade: $Enums.PrioridadeIncidenteTI | null
+    estado: $Enums.EstadoIncidenteTI | null
+    criadoPorId: string | null
+    responsavelId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type IncidenteTIMaxAggregateOutputType = {
+    id: string | null
+    titulo: string | null
+    descricao: string | null
+    tipo: $Enums.TipoIncidenteTI | null
+    subRoleAlvo: string | null
+    prioridade: $Enums.PrioridadeIncidenteTI | null
+    estado: $Enums.EstadoIncidenteTI | null
+    criadoPorId: string | null
+    responsavelId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type IncidenteTICountAggregateOutputType = {
+    id: number
+    titulo: number
+    descricao: number
+    tipo: number
+    subRoleAlvo: number
+    prioridade: number
+    estado: number
+    criadoPorId: number
+    responsavelId: number
+    criadoEm: number
+    atualizadoEm: number
+    _all: number
+  }
+
+
+  export type IncidenteTIMinAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    subRoleAlvo?: true
+    prioridade?: true
+    estado?: true
+    criadoPorId?: true
+    responsavelId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type IncidenteTIMaxAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    subRoleAlvo?: true
+    prioridade?: true
+    estado?: true
+    criadoPorId?: true
+    responsavelId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type IncidenteTICountAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    subRoleAlvo?: true
+    prioridade?: true
+    estado?: true
+    criadoPorId?: true
+    responsavelId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+    _all?: true
+  }
+
+  export type IncidenteTIAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidenteTI to aggregate.
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidenteTIS to fetch.
+     */
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncidenteTIS
+    **/
+    _count?: true | IncidenteTICountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncidenteTIMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncidenteTIMaxAggregateInputType
+  }
+
+  export type GetIncidenteTIAggregateType<T extends IncidenteTIAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncidenteTI]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncidenteTI[P]>
+      : GetScalarType<T[P], AggregateIncidenteTI[P]>
+  }
+
+
+
+
+  export type IncidenteTIGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidenteTIWhereInput
+    orderBy?: IncidenteTIOrderByWithAggregationInput | IncidenteTIOrderByWithAggregationInput[]
+    by: IncidenteTIScalarFieldEnum[] | IncidenteTIScalarFieldEnum
+    having?: IncidenteTIScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncidenteTICountAggregateInputType | true
+    _min?: IncidenteTIMinAggregateInputType
+    _max?: IncidenteTIMaxAggregateInputType
+  }
+
+  export type IncidenteTIGroupByOutputType = {
+    id: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo: string | null
+    prioridade: $Enums.PrioridadeIncidenteTI
+    estado: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    responsavelId: string | null
+    criadoEm: Date
+    atualizadoEm: Date
+    _count: IncidenteTICountAggregateOutputType | null
+    _min: IncidenteTIMinAggregateOutputType | null
+    _max: IncidenteTIMaxAggregateOutputType | null
+  }
+
+  type GetIncidenteTIGroupByPayload<T extends IncidenteTIGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncidenteTIGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncidenteTIGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncidenteTIGroupByOutputType[P]>
+            : GetScalarType<T[P], IncidenteTIGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncidenteTISelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    subRoleAlvo?: boolean
+    prioridade?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["incidenteTI"]>
+
+  export type IncidenteTISelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    subRoleAlvo?: boolean
+    prioridade?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["incidenteTI"]>
+
+  export type IncidenteTISelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    subRoleAlvo?: boolean
+    prioridade?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["incidenteTI"]>
+
+  export type IncidenteTISelectScalar = {
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    subRoleAlvo?: boolean
+    prioridade?: boolean
+    estado?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+  }
+
+  export type IncidenteTIOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "descricao" | "tipo" | "subRoleAlvo" | "prioridade" | "estado" | "criadoPorId" | "responsavelId" | "criadoEm" | "atualizadoEm", ExtArgs["result"]["incidenteTI"]>
+  export type IncidenteTIInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }
+  export type IncidenteTIIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }
+  export type IncidenteTIIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+  }
+
+  export type $IncidenteTIPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncidenteTI"
+    objects: {
+      criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      responsavel: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      titulo: string
+      descricao: string
+      tipo: $Enums.TipoIncidenteTI
+      subRoleAlvo: string | null
+      prioridade: $Enums.PrioridadeIncidenteTI
+      estado: $Enums.EstadoIncidenteTI
+      criadoPorId: string
+      responsavelId: string | null
+      criadoEm: Date
+      atualizadoEm: Date
+    }, ExtArgs["result"]["incidenteTI"]>
+    composites: {}
+  }
+
+  type IncidenteTIGetPayload<S extends boolean | null | undefined | IncidenteTIDefaultArgs> = $Result.GetResult<Prisma.$IncidenteTIPayload, S>
+
+  type IncidenteTICountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncidenteTIFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncidenteTICountAggregateInputType | true
+    }
+
+  export interface IncidenteTIDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncidenteTI'], meta: { name: 'IncidenteTI' } }
+    /**
+     * Find zero or one IncidenteTI that matches the filter.
+     * @param {IncidenteTIFindUniqueArgs} args - Arguments to find a IncidenteTI
+     * @example
+     * // Get one IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncidenteTIFindUniqueArgs>(args: SelectSubset<T, IncidenteTIFindUniqueArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncidenteTI that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncidenteTIFindUniqueOrThrowArgs} args - Arguments to find a IncidenteTI
+     * @example
+     * // Get one IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncidenteTIFindUniqueOrThrowArgs>(args: SelectSubset<T, IncidenteTIFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncidenteTI that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIFindFirstArgs} args - Arguments to find a IncidenteTI
+     * @example
+     * // Get one IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncidenteTIFindFirstArgs>(args?: SelectSubset<T, IncidenteTIFindFirstArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncidenteTI that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIFindFirstOrThrowArgs} args - Arguments to find a IncidenteTI
+     * @example
+     * // Get one IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncidenteTIFindFirstOrThrowArgs>(args?: SelectSubset<T, IncidenteTIFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncidenteTIS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncidenteTIS
+     * const incidenteTIS = await prisma.incidenteTI.findMany()
+     * 
+     * // Get first 10 IncidenteTIS
+     * const incidenteTIS = await prisma.incidenteTI.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incidenteTIWithIdOnly = await prisma.incidenteTI.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncidenteTIFindManyArgs>(args?: SelectSubset<T, IncidenteTIFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncidenteTI.
+     * @param {IncidenteTICreateArgs} args - Arguments to create a IncidenteTI.
+     * @example
+     * // Create one IncidenteTI
+     * const IncidenteTI = await prisma.incidenteTI.create({
+     *   data: {
+     *     // ... data to create a IncidenteTI
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncidenteTICreateArgs>(args: SelectSubset<T, IncidenteTICreateArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncidenteTIS.
+     * @param {IncidenteTICreateManyArgs} args - Arguments to create many IncidenteTIS.
+     * @example
+     * // Create many IncidenteTIS
+     * const incidenteTI = await prisma.incidenteTI.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncidenteTICreateManyArgs>(args?: SelectSubset<T, IncidenteTICreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many IncidenteTIS and returns the data saved in the database.
+     * @param {IncidenteTICreateManyAndReturnArgs} args - Arguments to create many IncidenteTIS.
+     * @example
+     * // Create many IncidenteTIS
+     * const incidenteTI = await prisma.incidenteTI.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many IncidenteTIS and only return the `id`
+     * const incidenteTIWithIdOnly = await prisma.incidenteTI.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends IncidenteTICreateManyAndReturnArgs>(args?: SelectSubset<T, IncidenteTICreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a IncidenteTI.
+     * @param {IncidenteTIDeleteArgs} args - Arguments to delete one IncidenteTI.
+     * @example
+     * // Delete one IncidenteTI
+     * const IncidenteTI = await prisma.incidenteTI.delete({
+     *   where: {
+     *     // ... filter to delete one IncidenteTI
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncidenteTIDeleteArgs>(args: SelectSubset<T, IncidenteTIDeleteArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncidenteTI.
+     * @param {IncidenteTIUpdateArgs} args - Arguments to update one IncidenteTI.
+     * @example
+     * // Update one IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncidenteTIUpdateArgs>(args: SelectSubset<T, IncidenteTIUpdateArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncidenteTIS.
+     * @param {IncidenteTIDeleteManyArgs} args - Arguments to filter IncidenteTIS to delete.
+     * @example
+     * // Delete a few IncidenteTIS
+     * const { count } = await prisma.incidenteTI.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncidenteTIDeleteManyArgs>(args?: SelectSubset<T, IncidenteTIDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncidenteTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncidenteTIS
+     * const incidenteTI = await prisma.incidenteTI.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncidenteTIUpdateManyArgs>(args: SelectSubset<T, IncidenteTIUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncidenteTIS and returns the data updated in the database.
+     * @param {IncidenteTIUpdateManyAndReturnArgs} args - Arguments to update many IncidenteTIS.
+     * @example
+     * // Update many IncidenteTIS
+     * const incidenteTI = await prisma.incidenteTI.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more IncidenteTIS and only return the `id`
+     * const incidenteTIWithIdOnly = await prisma.incidenteTI.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends IncidenteTIUpdateManyAndReturnArgs>(args: SelectSubset<T, IncidenteTIUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one IncidenteTI.
+     * @param {IncidenteTIUpsertArgs} args - Arguments to update or create a IncidenteTI.
+     * @example
+     * // Update or create a IncidenteTI
+     * const incidenteTI = await prisma.incidenteTI.upsert({
+     *   create: {
+     *     // ... data to create a IncidenteTI
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncidenteTI we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncidenteTIUpsertArgs>(args: SelectSubset<T, IncidenteTIUpsertArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncidenteTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTICountArgs} args - Arguments to filter IncidenteTIS to count.
+     * @example
+     * // Count the number of IncidenteTIS
+     * const count = await prisma.incidenteTI.count({
+     *   where: {
+     *     // ... the filter for the IncidenteTIS we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncidenteTICountArgs>(
+      args?: Subset<T, IncidenteTICountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncidenteTICountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncidenteTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncidenteTIAggregateArgs>(args: Subset<T, IncidenteTIAggregateArgs>): Prisma.PrismaPromise<GetIncidenteTIAggregateType<T>>
+
+    /**
+     * Group by IncidenteTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidenteTIGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncidenteTIGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncidenteTIGroupByArgs['orderBy'] }
+        : { orderBy?: IncidenteTIGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncidenteTIGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncidenteTIGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncidenteTI model
+   */
+  readonly fields: IncidenteTIFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncidenteTI.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncidenteTIClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    responsavel<T extends IncidenteTI$responsavelArgs<ExtArgs> = {}>(args?: Subset<T, IncidenteTI$responsavelArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncidenteTI model
+   */
+  interface IncidenteTIFieldRefs {
+    readonly id: FieldRef<"IncidenteTI", 'String'>
+    readonly titulo: FieldRef<"IncidenteTI", 'String'>
+    readonly descricao: FieldRef<"IncidenteTI", 'String'>
+    readonly tipo: FieldRef<"IncidenteTI", 'TipoIncidenteTI'>
+    readonly subRoleAlvo: FieldRef<"IncidenteTI", 'String'>
+    readonly prioridade: FieldRef<"IncidenteTI", 'PrioridadeIncidenteTI'>
+    readonly estado: FieldRef<"IncidenteTI", 'EstadoIncidenteTI'>
+    readonly criadoPorId: FieldRef<"IncidenteTI", 'String'>
+    readonly responsavelId: FieldRef<"IncidenteTI", 'String'>
+    readonly criadoEm: FieldRef<"IncidenteTI", 'DateTime'>
+    readonly atualizadoEm: FieldRef<"IncidenteTI", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncidenteTI findUnique
+   */
+  export type IncidenteTIFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidenteTI to fetch.
+     */
+    where: IncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * IncidenteTI findUniqueOrThrow
+   */
+  export type IncidenteTIFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidenteTI to fetch.
+     */
+    where: IncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * IncidenteTI findFirst
+   */
+  export type IncidenteTIFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidenteTI to fetch.
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidenteTIS to fetch.
+     */
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidenteTIS.
+     */
+    cursor?: IncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidenteTIS.
+     */
+    distinct?: IncidenteTIScalarFieldEnum | IncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * IncidenteTI findFirstOrThrow
+   */
+  export type IncidenteTIFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidenteTI to fetch.
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidenteTIS to fetch.
+     */
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidenteTIS.
+     */
+    cursor?: IncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidenteTIS.
+     */
+    distinct?: IncidenteTIScalarFieldEnum | IncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * IncidenteTI findMany
+   */
+  export type IncidenteTIFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidenteTIS to fetch.
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidenteTIS to fetch.
+     */
+    orderBy?: IncidenteTIOrderByWithRelationInput | IncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncidenteTIS.
+     */
+    cursor?: IncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidenteTIS.
+     */
+    skip?: number
+    distinct?: IncidenteTIScalarFieldEnum | IncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * IncidenteTI create
+   */
+  export type IncidenteTICreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IncidenteTI.
+     */
+    data: XOR<IncidenteTICreateInput, IncidenteTIUncheckedCreateInput>
+  }
+
+  /**
+   * IncidenteTI createMany
+   */
+  export type IncidenteTICreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncidenteTIS.
+     */
+    data: IncidenteTICreateManyInput | IncidenteTICreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncidenteTI createManyAndReturn
+   */
+  export type IncidenteTICreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * The data used to create many IncidenteTIS.
+     */
+    data: IncidenteTICreateManyInput | IncidenteTICreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IncidenteTI update
+   */
+  export type IncidenteTIUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IncidenteTI.
+     */
+    data: XOR<IncidenteTIUpdateInput, IncidenteTIUncheckedUpdateInput>
+    /**
+     * Choose, which IncidenteTI to update.
+     */
+    where: IncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * IncidenteTI updateMany
+   */
+  export type IncidenteTIUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncidenteTIS.
+     */
+    data: XOR<IncidenteTIUpdateManyMutationInput, IncidenteTIUncheckedUpdateManyInput>
+    /**
+     * Filter which IncidenteTIS to update
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * Limit how many IncidenteTIS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidenteTI updateManyAndReturn
+   */
+  export type IncidenteTIUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * The data used to update IncidenteTIS.
+     */
+    data: XOR<IncidenteTIUpdateManyMutationInput, IncidenteTIUncheckedUpdateManyInput>
+    /**
+     * Filter which IncidenteTIS to update
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * Limit how many IncidenteTIS to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * IncidenteTI upsert
+   */
+  export type IncidenteTIUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IncidenteTI to update in case it exists.
+     */
+    where: IncidenteTIWhereUniqueInput
+    /**
+     * In case the IncidenteTI found by the `where` argument doesn't exist, create a new IncidenteTI with this data.
+     */
+    create: XOR<IncidenteTICreateInput, IncidenteTIUncheckedCreateInput>
+    /**
+     * In case the IncidenteTI was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncidenteTIUpdateInput, IncidenteTIUncheckedUpdateInput>
+  }
+
+  /**
+   * IncidenteTI delete
+   */
+  export type IncidenteTIDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter which IncidenteTI to delete.
+     */
+    where: IncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * IncidenteTI deleteMany
+   */
+  export type IncidenteTIDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidenteTIS to delete
+     */
+    where?: IncidenteTIWhereInput
+    /**
+     * Limit how many IncidenteTIS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidenteTI.responsavel
+   */
+  export type IncidenteTI$responsavelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * IncidenteTI without action
+   */
+  export type IncidenteTIDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTI
+     */
+    select?: IncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidenteTI
+     */
+    omit?: IncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidenteTIInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PedidoTI
+   */
+
+  export type AggregatePedidoTI = {
+    _count: PedidoTICountAggregateOutputType | null
+    _min: PedidoTIMinAggregateOutputType | null
+    _max: PedidoTIMaxAggregateOutputType | null
+  }
+
+  export type PedidoTIMinAggregateOutputType = {
+    id: string | null
+    titulo: string | null
+    descricao: string | null
+    tipo: $Enums.TipoPedidoTI | null
+    estado: $Enums.EstadoPedidoTI | null
+    urgente: boolean | null
+    criadoEm: Date | null
+    resolvidoEm: Date | null
+    criadoPorId: string | null
+    responsavelId: string | null
+  }
+
+  export type PedidoTIMaxAggregateOutputType = {
+    id: string | null
+    titulo: string | null
+    descricao: string | null
+    tipo: $Enums.TipoPedidoTI | null
+    estado: $Enums.EstadoPedidoTI | null
+    urgente: boolean | null
+    criadoEm: Date | null
+    resolvidoEm: Date | null
+    criadoPorId: string | null
+    responsavelId: string | null
+  }
+
+  export type PedidoTICountAggregateOutputType = {
+    id: number
+    titulo: number
+    descricao: number
+    tipo: number
+    estado: number
+    urgente: number
+    criadoEm: number
+    resolvidoEm: number
+    criadoPorId: number
+    responsavelId: number
+    _all: number
+  }
+
+
+  export type PedidoTIMinAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    urgente?: true
+    criadoEm?: true
+    resolvidoEm?: true
+    criadoPorId?: true
+    responsavelId?: true
+  }
+
+  export type PedidoTIMaxAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    urgente?: true
+    criadoEm?: true
+    resolvidoEm?: true
+    criadoPorId?: true
+    responsavelId?: true
+  }
+
+  export type PedidoTICountAggregateInputType = {
+    id?: true
+    titulo?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    urgente?: true
+    criadoEm?: true
+    resolvidoEm?: true
+    criadoPorId?: true
+    responsavelId?: true
+    _all?: true
+  }
+
+  export type PedidoTIAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PedidoTI to aggregate.
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTIS to fetch.
+     */
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PedidoTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PedidoTIS
+    **/
+    _count?: true | PedidoTICountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PedidoTIMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PedidoTIMaxAggregateInputType
+  }
+
+  export type GetPedidoTIAggregateType<T extends PedidoTIAggregateArgs> = {
+        [P in keyof T & keyof AggregatePedidoTI]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePedidoTI[P]>
+      : GetScalarType<T[P], AggregatePedidoTI[P]>
+  }
+
+
+
+
+  export type PedidoTIGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoTIWhereInput
+    orderBy?: PedidoTIOrderByWithAggregationInput | PedidoTIOrderByWithAggregationInput[]
+    by: PedidoTIScalarFieldEnum[] | PedidoTIScalarFieldEnum
+    having?: PedidoTIScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PedidoTICountAggregateInputType | true
+    _min?: PedidoTIMinAggregateInputType
+    _max?: PedidoTIMaxAggregateInputType
+  }
+
+  export type PedidoTIGroupByOutputType = {
+    id: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado: $Enums.EstadoPedidoTI
+    urgente: boolean
+    criadoEm: Date
+    resolvidoEm: Date | null
+    criadoPorId: string
+    responsavelId: string | null
+    _count: PedidoTICountAggregateOutputType | null
+    _min: PedidoTIMinAggregateOutputType | null
+    _max: PedidoTIMaxAggregateOutputType | null
+  }
+
+  type GetPedidoTIGroupByPayload<T extends PedidoTIGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PedidoTIGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PedidoTIGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PedidoTIGroupByOutputType[P]>
+            : GetScalarType<T[P], PedidoTIGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PedidoTISelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    urgente?: boolean
+    criadoEm?: boolean
+    resolvidoEm?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTI"]>
+
+  export type PedidoTISelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    urgente?: boolean
+    criadoEm?: boolean
+    resolvidoEm?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTI"]>
+
+  export type PedidoTISelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    urgente?: boolean
+    criadoEm?: boolean
+    resolvidoEm?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }, ExtArgs["result"]["pedidoTI"]>
+
+  export type PedidoTISelectScalar = {
+    id?: boolean
+    titulo?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    urgente?: boolean
+    criadoEm?: boolean
+    resolvidoEm?: boolean
+    criadoPorId?: boolean
+    responsavelId?: boolean
+  }
+
+  export type PedidoTIOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "titulo" | "descricao" | "tipo" | "estado" | "urgente" | "criadoEm" | "resolvidoEm" | "criadoPorId" | "responsavelId", ExtArgs["result"]["pedidoTI"]>
+  export type PedidoTIInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }
+  export type PedidoTIIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }
+  export type PedidoTIIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    responsavel?: boolean | PedidoTI$responsavelArgs<ExtArgs>
+  }
+
+  export type $PedidoTIPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PedidoTI"
+    objects: {
+      criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      responsavel: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      titulo: string
+      descricao: string
+      tipo: $Enums.TipoPedidoTI
+      estado: $Enums.EstadoPedidoTI
+      urgente: boolean
+      criadoEm: Date
+      resolvidoEm: Date | null
+      criadoPorId: string
+      responsavelId: string | null
+    }, ExtArgs["result"]["pedidoTI"]>
+    composites: {}
+  }
+
+  type PedidoTIGetPayload<S extends boolean | null | undefined | PedidoTIDefaultArgs> = $Result.GetResult<Prisma.$PedidoTIPayload, S>
+
+  type PedidoTICountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PedidoTIFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PedidoTICountAggregateInputType | true
+    }
+
+  export interface PedidoTIDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PedidoTI'], meta: { name: 'PedidoTI' } }
+    /**
+     * Find zero or one PedidoTI that matches the filter.
+     * @param {PedidoTIFindUniqueArgs} args - Arguments to find a PedidoTI
+     * @example
+     * // Get one PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PedidoTIFindUniqueArgs>(args: SelectSubset<T, PedidoTIFindUniqueArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PedidoTI that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PedidoTIFindUniqueOrThrowArgs} args - Arguments to find a PedidoTI
+     * @example
+     * // Get one PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PedidoTIFindUniqueOrThrowArgs>(args: SelectSubset<T, PedidoTIFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PedidoTI that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIFindFirstArgs} args - Arguments to find a PedidoTI
+     * @example
+     * // Get one PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PedidoTIFindFirstArgs>(args?: SelectSubset<T, PedidoTIFindFirstArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PedidoTI that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIFindFirstOrThrowArgs} args - Arguments to find a PedidoTI
+     * @example
+     * // Get one PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PedidoTIFindFirstOrThrowArgs>(args?: SelectSubset<T, PedidoTIFindFirstOrThrowArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PedidoTIS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PedidoTIS
+     * const pedidoTIS = await prisma.pedidoTI.findMany()
+     * 
+     * // Get first 10 PedidoTIS
+     * const pedidoTIS = await prisma.pedidoTI.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pedidoTIWithIdOnly = await prisma.pedidoTI.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PedidoTIFindManyArgs>(args?: SelectSubset<T, PedidoTIFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PedidoTI.
+     * @param {PedidoTICreateArgs} args - Arguments to create a PedidoTI.
+     * @example
+     * // Create one PedidoTI
+     * const PedidoTI = await prisma.pedidoTI.create({
+     *   data: {
+     *     // ... data to create a PedidoTI
+     *   }
+     * })
+     * 
+     */
+    create<T extends PedidoTICreateArgs>(args: SelectSubset<T, PedidoTICreateArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PedidoTIS.
+     * @param {PedidoTICreateManyArgs} args - Arguments to create many PedidoTIS.
+     * @example
+     * // Create many PedidoTIS
+     * const pedidoTI = await prisma.pedidoTI.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PedidoTICreateManyArgs>(args?: SelectSubset<T, PedidoTICreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PedidoTIS and returns the data saved in the database.
+     * @param {PedidoTICreateManyAndReturnArgs} args - Arguments to create many PedidoTIS.
+     * @example
+     * // Create many PedidoTIS
+     * const pedidoTI = await prisma.pedidoTI.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PedidoTIS and only return the `id`
+     * const pedidoTIWithIdOnly = await prisma.pedidoTI.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PedidoTICreateManyAndReturnArgs>(args?: SelectSubset<T, PedidoTICreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PedidoTI.
+     * @param {PedidoTIDeleteArgs} args - Arguments to delete one PedidoTI.
+     * @example
+     * // Delete one PedidoTI
+     * const PedidoTI = await prisma.pedidoTI.delete({
+     *   where: {
+     *     // ... filter to delete one PedidoTI
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PedidoTIDeleteArgs>(args: SelectSubset<T, PedidoTIDeleteArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PedidoTI.
+     * @param {PedidoTIUpdateArgs} args - Arguments to update one PedidoTI.
+     * @example
+     * // Update one PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PedidoTIUpdateArgs>(args: SelectSubset<T, PedidoTIUpdateArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PedidoTIS.
+     * @param {PedidoTIDeleteManyArgs} args - Arguments to filter PedidoTIS to delete.
+     * @example
+     * // Delete a few PedidoTIS
+     * const { count } = await prisma.pedidoTI.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PedidoTIDeleteManyArgs>(args?: SelectSubset<T, PedidoTIDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PedidoTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PedidoTIS
+     * const pedidoTI = await prisma.pedidoTI.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PedidoTIUpdateManyArgs>(args: SelectSubset<T, PedidoTIUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PedidoTIS and returns the data updated in the database.
+     * @param {PedidoTIUpdateManyAndReturnArgs} args - Arguments to update many PedidoTIS.
+     * @example
+     * // Update many PedidoTIS
+     * const pedidoTI = await prisma.pedidoTI.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PedidoTIS and only return the `id`
+     * const pedidoTIWithIdOnly = await prisma.pedidoTI.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PedidoTIUpdateManyAndReturnArgs>(args: SelectSubset<T, PedidoTIUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PedidoTI.
+     * @param {PedidoTIUpsertArgs} args - Arguments to update or create a PedidoTI.
+     * @example
+     * // Update or create a PedidoTI
+     * const pedidoTI = await prisma.pedidoTI.upsert({
+     *   create: {
+     *     // ... data to create a PedidoTI
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PedidoTI we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PedidoTIUpsertArgs>(args: SelectSubset<T, PedidoTIUpsertArgs<ExtArgs>>): Prisma__PedidoTIClient<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PedidoTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTICountArgs} args - Arguments to filter PedidoTIS to count.
+     * @example
+     * // Count the number of PedidoTIS
+     * const count = await prisma.pedidoTI.count({
+     *   where: {
+     *     // ... the filter for the PedidoTIS we want to count
+     *   }
+     * })
+    **/
+    count<T extends PedidoTICountArgs>(
+      args?: Subset<T, PedidoTICountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PedidoTICountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PedidoTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PedidoTIAggregateArgs>(args: Subset<T, PedidoTIAggregateArgs>): Prisma.PrismaPromise<GetPedidoTIAggregateType<T>>
+
+    /**
+     * Group by PedidoTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PedidoTIGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PedidoTIGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PedidoTIGroupByArgs['orderBy'] }
+        : { orderBy?: PedidoTIGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PedidoTIGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPedidoTIGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PedidoTI model
+   */
+  readonly fields: PedidoTIFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PedidoTI.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PedidoTIClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    responsavel<T extends PedidoTI$responsavelArgs<ExtArgs> = {}>(args?: Subset<T, PedidoTI$responsavelArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PedidoTI model
+   */
+  interface PedidoTIFieldRefs {
+    readonly id: FieldRef<"PedidoTI", 'String'>
+    readonly titulo: FieldRef<"PedidoTI", 'String'>
+    readonly descricao: FieldRef<"PedidoTI", 'String'>
+    readonly tipo: FieldRef<"PedidoTI", 'TipoPedidoTI'>
+    readonly estado: FieldRef<"PedidoTI", 'EstadoPedidoTI'>
+    readonly urgente: FieldRef<"PedidoTI", 'Boolean'>
+    readonly criadoEm: FieldRef<"PedidoTI", 'DateTime'>
+    readonly resolvidoEm: FieldRef<"PedidoTI", 'DateTime'>
+    readonly criadoPorId: FieldRef<"PedidoTI", 'String'>
+    readonly responsavelId: FieldRef<"PedidoTI", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PedidoTI findUnique
+   */
+  export type PedidoTIFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTI to fetch.
+     */
+    where: PedidoTIWhereUniqueInput
+  }
+
+  /**
+   * PedidoTI findUniqueOrThrow
+   */
+  export type PedidoTIFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTI to fetch.
+     */
+    where: PedidoTIWhereUniqueInput
+  }
+
+  /**
+   * PedidoTI findFirst
+   */
+  export type PedidoTIFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTI to fetch.
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTIS to fetch.
+     */
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PedidoTIS.
+     */
+    cursor?: PedidoTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PedidoTIS.
+     */
+    distinct?: PedidoTIScalarFieldEnum | PedidoTIScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTI findFirstOrThrow
+   */
+  export type PedidoTIFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTI to fetch.
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTIS to fetch.
+     */
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PedidoTIS.
+     */
+    cursor?: PedidoTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PedidoTIS.
+     */
+    distinct?: PedidoTIScalarFieldEnum | PedidoTIScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTI findMany
+   */
+  export type PedidoTIFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter, which PedidoTIS to fetch.
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PedidoTIS to fetch.
+     */
+    orderBy?: PedidoTIOrderByWithRelationInput | PedidoTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PedidoTIS.
+     */
+    cursor?: PedidoTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PedidoTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PedidoTIS.
+     */
+    skip?: number
+    distinct?: PedidoTIScalarFieldEnum | PedidoTIScalarFieldEnum[]
+  }
+
+  /**
+   * PedidoTI create
+   */
+  export type PedidoTICreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PedidoTI.
+     */
+    data: XOR<PedidoTICreateInput, PedidoTIUncheckedCreateInput>
+  }
+
+  /**
+   * PedidoTI createMany
+   */
+  export type PedidoTICreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PedidoTIS.
+     */
+    data: PedidoTICreateManyInput | PedidoTICreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PedidoTI createManyAndReturn
+   */
+  export type PedidoTICreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * The data used to create many PedidoTIS.
+     */
+    data: PedidoTICreateManyInput | PedidoTICreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PedidoTI update
+   */
+  export type PedidoTIUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PedidoTI.
+     */
+    data: XOR<PedidoTIUpdateInput, PedidoTIUncheckedUpdateInput>
+    /**
+     * Choose, which PedidoTI to update.
+     */
+    where: PedidoTIWhereUniqueInput
+  }
+
+  /**
+   * PedidoTI updateMany
+   */
+  export type PedidoTIUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PedidoTIS.
+     */
+    data: XOR<PedidoTIUpdateManyMutationInput, PedidoTIUncheckedUpdateManyInput>
+    /**
+     * Filter which PedidoTIS to update
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * Limit how many PedidoTIS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PedidoTI updateManyAndReturn
+   */
+  export type PedidoTIUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * The data used to update PedidoTIS.
+     */
+    data: XOR<PedidoTIUpdateManyMutationInput, PedidoTIUncheckedUpdateManyInput>
+    /**
+     * Filter which PedidoTIS to update
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * Limit how many PedidoTIS to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PedidoTI upsert
+   */
+  export type PedidoTIUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PedidoTI to update in case it exists.
+     */
+    where: PedidoTIWhereUniqueInput
+    /**
+     * In case the PedidoTI found by the `where` argument doesn't exist, create a new PedidoTI with this data.
+     */
+    create: XOR<PedidoTICreateInput, PedidoTIUncheckedCreateInput>
+    /**
+     * In case the PedidoTI was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PedidoTIUpdateInput, PedidoTIUncheckedUpdateInput>
+  }
+
+  /**
+   * PedidoTI delete
+   */
+  export type PedidoTIDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+    /**
+     * Filter which PedidoTI to delete.
+     */
+    where: PedidoTIWhereUniqueInput
+  }
+
+  /**
+   * PedidoTI deleteMany
+   */
+  export type PedidoTIDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PedidoTIS to delete
+     */
+    where?: PedidoTIWhereInput
+    /**
+     * Limit how many PedidoTIS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PedidoTI.responsavel
+   */
+  export type PedidoTI$responsavelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * PedidoTI without action
+   */
+  export type PedidoTIDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoTI
+     */
+    select?: PedidoTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoTI
+     */
+    omit?: PedidoTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoTIInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RefreshToken
+   */
+
+  export type AggregateRefreshToken = {
+    _count: RefreshTokenCountAggregateOutputType | null
+    _min: RefreshTokenMinAggregateOutputType | null
+    _max: RefreshTokenMaxAggregateOutputType | null
+  }
+
+  export type RefreshTokenMinAggregateOutputType = {
+    id: string | null
+    token: string | null
+    utilizadorId: string | null
+    expiresAt: Date | null
+    revogado: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type RefreshTokenMaxAggregateOutputType = {
+    id: string | null
+    token: string | null
+    utilizadorId: string | null
+    expiresAt: Date | null
+    revogado: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type RefreshTokenCountAggregateOutputType = {
+    id: number
+    token: number
+    utilizadorId: number
+    expiresAt: number
+    revogado: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type RefreshTokenMinAggregateInputType = {
+    id?: true
+    token?: true
+    utilizadorId?: true
+    expiresAt?: true
+    revogado?: true
+    criadoEm?: true
+  }
+
+  export type RefreshTokenMaxAggregateInputType = {
+    id?: true
+    token?: true
+    utilizadorId?: true
+    expiresAt?: true
+    revogado?: true
+    criadoEm?: true
+  }
+
+  export type RefreshTokenCountAggregateInputType = {
+    id?: true
+    token?: true
+    utilizadorId?: true
+    expiresAt?: true
+    revogado?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type RefreshTokenAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RefreshToken to aggregate.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RefreshTokens
+    **/
+    _count?: true | RefreshTokenCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RefreshTokenMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RefreshTokenMaxAggregateInputType
+  }
+
+  export type GetRefreshTokenAggregateType<T extends RefreshTokenAggregateArgs> = {
+        [P in keyof T & keyof AggregateRefreshToken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRefreshToken[P]>
+      : GetScalarType<T[P], AggregateRefreshToken[P]>
+  }
+
+
+
+
+  export type RefreshTokenGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefreshTokenWhereInput
+    orderBy?: RefreshTokenOrderByWithAggregationInput | RefreshTokenOrderByWithAggregationInput[]
+    by: RefreshTokenScalarFieldEnum[] | RefreshTokenScalarFieldEnum
+    having?: RefreshTokenScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RefreshTokenCountAggregateInputType | true
+    _min?: RefreshTokenMinAggregateInputType
+    _max?: RefreshTokenMaxAggregateInputType
+  }
+
+  export type RefreshTokenGroupByOutputType = {
+    id: string
+    token: string
+    utilizadorId: string
+    expiresAt: Date
+    revogado: boolean
+    criadoEm: Date
+    _count: RefreshTokenCountAggregateOutputType | null
+    _min: RefreshTokenMinAggregateOutputType | null
+    _max: RefreshTokenMaxAggregateOutputType | null
+  }
+
+  type GetRefreshTokenGroupByPayload<T extends RefreshTokenGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RefreshTokenGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RefreshTokenGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RefreshTokenGroupByOutputType[P]>
+            : GetScalarType<T[P], RefreshTokenGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RefreshTokenSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    utilizadorId?: boolean
+    expiresAt?: boolean
+    revogado?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    utilizadorId?: boolean
+    expiresAt?: boolean
+    revogado?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    utilizadorId?: boolean
+    expiresAt?: boolean
+    revogado?: boolean
+    criadoEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["refreshToken"]>
+
+  export type RefreshTokenSelectScalar = {
+    id?: boolean
+    token?: boolean
+    utilizadorId?: boolean
+    expiresAt?: boolean
+    revogado?: boolean
+    criadoEm?: boolean
+  }
+
+  export type RefreshTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "token" | "utilizadorId" | "expiresAt" | "revogado" | "criadoEm", ExtArgs["result"]["refreshToken"]>
+  export type RefreshTokenInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type RefreshTokenIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type RefreshTokenIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $RefreshTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RefreshToken"
+    objects: {
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      token: string
+      utilizadorId: string
+      expiresAt: Date
+      revogado: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["refreshToken"]>
+    composites: {}
+  }
+
+  type RefreshTokenGetPayload<S extends boolean | null | undefined | RefreshTokenDefaultArgs> = $Result.GetResult<Prisma.$RefreshTokenPayload, S>
+
+  type RefreshTokenCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RefreshTokenFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RefreshTokenCountAggregateInputType | true
+    }
+
+  export interface RefreshTokenDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RefreshToken'], meta: { name: 'RefreshToken' } }
+    /**
+     * Find zero or one RefreshToken that matches the filter.
+     * @param {RefreshTokenFindUniqueArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RefreshTokenFindUniqueArgs>(args: SelectSubset<T, RefreshTokenFindUniqueArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RefreshToken that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RefreshTokenFindUniqueOrThrowArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RefreshTokenFindUniqueOrThrowArgs>(args: SelectSubset<T, RefreshTokenFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RefreshToken that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindFirstArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RefreshTokenFindFirstArgs>(args?: SelectSubset<T, RefreshTokenFindFirstArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RefreshToken that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindFirstOrThrowArgs} args - Arguments to find a RefreshToken
+     * @example
+     * // Get one RefreshToken
+     * const refreshToken = await prisma.refreshToken.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RefreshTokenFindFirstOrThrowArgs>(args?: SelectSubset<T, RefreshTokenFindFirstOrThrowArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RefreshTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RefreshTokens
+     * const refreshTokens = await prisma.refreshToken.findMany()
+     * 
+     * // Get first 10 RefreshTokens
+     * const refreshTokens = await prisma.refreshToken.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RefreshTokenFindManyArgs>(args?: SelectSubset<T, RefreshTokenFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RefreshToken.
+     * @param {RefreshTokenCreateArgs} args - Arguments to create a RefreshToken.
+     * @example
+     * // Create one RefreshToken
+     * const RefreshToken = await prisma.refreshToken.create({
+     *   data: {
+     *     // ... data to create a RefreshToken
+     *   }
+     * })
+     * 
+     */
+    create<T extends RefreshTokenCreateArgs>(args: SelectSubset<T, RefreshTokenCreateArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RefreshTokens.
+     * @param {RefreshTokenCreateManyArgs} args - Arguments to create many RefreshTokens.
+     * @example
+     * // Create many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RefreshTokenCreateManyArgs>(args?: SelectSubset<T, RefreshTokenCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RefreshTokens and returns the data saved in the database.
+     * @param {RefreshTokenCreateManyAndReturnArgs} args - Arguments to create many RefreshTokens.
+     * @example
+     * // Create many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RefreshTokens and only return the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RefreshTokenCreateManyAndReturnArgs>(args?: SelectSubset<T, RefreshTokenCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RefreshToken.
+     * @param {RefreshTokenDeleteArgs} args - Arguments to delete one RefreshToken.
+     * @example
+     * // Delete one RefreshToken
+     * const RefreshToken = await prisma.refreshToken.delete({
+     *   where: {
+     *     // ... filter to delete one RefreshToken
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RefreshTokenDeleteArgs>(args: SelectSubset<T, RefreshTokenDeleteArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RefreshToken.
+     * @param {RefreshTokenUpdateArgs} args - Arguments to update one RefreshToken.
+     * @example
+     * // Update one RefreshToken
+     * const refreshToken = await prisma.refreshToken.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RefreshTokenUpdateArgs>(args: SelectSubset<T, RefreshTokenUpdateArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RefreshTokens.
+     * @param {RefreshTokenDeleteManyArgs} args - Arguments to filter RefreshTokens to delete.
+     * @example
+     * // Delete a few RefreshTokens
+     * const { count } = await prisma.refreshToken.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RefreshTokenDeleteManyArgs>(args?: SelectSubset<T, RefreshTokenDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RefreshTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RefreshTokenUpdateManyArgs>(args: SelectSubset<T, RefreshTokenUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RefreshTokens and returns the data updated in the database.
+     * @param {RefreshTokenUpdateManyAndReturnArgs} args - Arguments to update many RefreshTokens.
+     * @example
+     * // Update many RefreshTokens
+     * const refreshToken = await prisma.refreshToken.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RefreshTokens and only return the `id`
+     * const refreshTokenWithIdOnly = await prisma.refreshToken.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RefreshTokenUpdateManyAndReturnArgs>(args: SelectSubset<T, RefreshTokenUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RefreshToken.
+     * @param {RefreshTokenUpsertArgs} args - Arguments to update or create a RefreshToken.
+     * @example
+     * // Update or create a RefreshToken
+     * const refreshToken = await prisma.refreshToken.upsert({
+     *   create: {
+     *     // ... data to create a RefreshToken
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RefreshToken we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RefreshTokenUpsertArgs>(args: SelectSubset<T, RefreshTokenUpsertArgs<ExtArgs>>): Prisma__RefreshTokenClient<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RefreshTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenCountArgs} args - Arguments to filter RefreshTokens to count.
+     * @example
+     * // Count the number of RefreshTokens
+     * const count = await prisma.refreshToken.count({
+     *   where: {
+     *     // ... the filter for the RefreshTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends RefreshTokenCountArgs>(
+      args?: Subset<T, RefreshTokenCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RefreshTokenCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RefreshToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RefreshTokenAggregateArgs>(args: Subset<T, RefreshTokenAggregateArgs>): Prisma.PrismaPromise<GetRefreshTokenAggregateType<T>>
+
+    /**
+     * Group by RefreshToken.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RefreshTokenGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RefreshTokenGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RefreshTokenGroupByArgs['orderBy'] }
+        : { orderBy?: RefreshTokenGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RefreshTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRefreshTokenGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RefreshToken model
+   */
+  readonly fields: RefreshTokenFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RefreshToken.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RefreshTokenClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RefreshToken model
+   */
+  interface RefreshTokenFieldRefs {
+    readonly id: FieldRef<"RefreshToken", 'String'>
+    readonly token: FieldRef<"RefreshToken", 'String'>
+    readonly utilizadorId: FieldRef<"RefreshToken", 'String'>
+    readonly expiresAt: FieldRef<"RefreshToken", 'DateTime'>
+    readonly revogado: FieldRef<"RefreshToken", 'Boolean'>
+    readonly criadoEm: FieldRef<"RefreshToken", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RefreshToken findUnique
+   */
+  export type RefreshTokenFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken findUniqueOrThrow
+   */
+  export type RefreshTokenFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken findFirst
+   */
+  export type RefreshTokenFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RefreshTokens.
+     */
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken findFirstOrThrow
+   */
+  export type RefreshTokenFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshToken to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RefreshTokens.
+     */
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken findMany
+   */
+  export type RefreshTokenFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter, which RefreshTokens to fetch.
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RefreshTokens to fetch.
+     */
+    orderBy?: RefreshTokenOrderByWithRelationInput | RefreshTokenOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RefreshTokens.
+     */
+    cursor?: RefreshTokenWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RefreshTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RefreshTokens.
+     */
+    skip?: number
+    distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * RefreshToken create
+   */
+  export type RefreshTokenCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RefreshToken.
+     */
+    data: XOR<RefreshTokenCreateInput, RefreshTokenUncheckedCreateInput>
+  }
+
+  /**
+   * RefreshToken createMany
+   */
+  export type RefreshTokenCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RefreshTokens.
+     */
+    data: RefreshTokenCreateManyInput | RefreshTokenCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RefreshToken createManyAndReturn
+   */
+  export type RefreshTokenCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * The data used to create many RefreshTokens.
+     */
+    data: RefreshTokenCreateManyInput | RefreshTokenCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RefreshToken update
+   */
+  export type RefreshTokenUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RefreshToken.
+     */
+    data: XOR<RefreshTokenUpdateInput, RefreshTokenUncheckedUpdateInput>
+    /**
+     * Choose, which RefreshToken to update.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken updateMany
+   */
+  export type RefreshTokenUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RefreshTokens.
+     */
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which RefreshTokens to update
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RefreshToken updateManyAndReturn
+   */
+  export type RefreshTokenUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * The data used to update RefreshTokens.
+     */
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyInput>
+    /**
+     * Filter which RefreshTokens to update
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RefreshToken upsert
+   */
+  export type RefreshTokenUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RefreshToken to update in case it exists.
+     */
+    where: RefreshTokenWhereUniqueInput
+    /**
+     * In case the RefreshToken found by the `where` argument doesn't exist, create a new RefreshToken with this data.
+     */
+    create: XOR<RefreshTokenCreateInput, RefreshTokenUncheckedCreateInput>
+    /**
+     * In case the RefreshToken was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RefreshTokenUpdateInput, RefreshTokenUncheckedUpdateInput>
+  }
+
+  /**
+   * RefreshToken delete
+   */
+  export type RefreshTokenDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+    /**
+     * Filter which RefreshToken to delete.
+     */
+    where: RefreshTokenWhereUniqueInput
+  }
+
+  /**
+   * RefreshToken deleteMany
+   */
+  export type RefreshTokenDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RefreshTokens to delete
+     */
+    where?: RefreshTokenWhereInput
+    /**
+     * Limit how many RefreshTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RefreshToken without action
+   */
+  export type RefreshTokenDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefreshToken
+     */
+    select?: RefreshTokenSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RefreshToken
+     */
+    omit?: RefreshTokenOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefreshTokenInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -56090,6 +60020,7 @@ export namespace Prisma {
     entidadeTipo: 'entidadeTipo',
     detalhes: 'detalhes',
     ip: 'ip',
+    userAgent: 'userAgent',
     createdAt: 'createdAt'
   };
 
@@ -56428,6 +60359,51 @@ export namespace Prisma {
   };
 
   export type DispositivoInvasivoScalarFieldEnum = (typeof DispositivoInvasivoScalarFieldEnum)[keyof typeof DispositivoInvasivoScalarFieldEnum]
+
+
+  export const IncidenteTIScalarFieldEnum: {
+    id: 'id',
+    titulo: 'titulo',
+    descricao: 'descricao',
+    tipo: 'tipo',
+    subRoleAlvo: 'subRoleAlvo',
+    prioridade: 'prioridade',
+    estado: 'estado',
+    criadoPorId: 'criadoPorId',
+    responsavelId: 'responsavelId',
+    criadoEm: 'criadoEm',
+    atualizadoEm: 'atualizadoEm'
+  };
+
+  export type IncidenteTIScalarFieldEnum = (typeof IncidenteTIScalarFieldEnum)[keyof typeof IncidenteTIScalarFieldEnum]
+
+
+  export const PedidoTIScalarFieldEnum: {
+    id: 'id',
+    titulo: 'titulo',
+    descricao: 'descricao',
+    tipo: 'tipo',
+    estado: 'estado',
+    urgente: 'urgente',
+    criadoEm: 'criadoEm',
+    resolvidoEm: 'resolvidoEm',
+    criadoPorId: 'criadoPorId',
+    responsavelId: 'responsavelId'
+  };
+
+  export type PedidoTIScalarFieldEnum = (typeof PedidoTIScalarFieldEnum)[keyof typeof PedidoTIScalarFieldEnum]
+
+
+  export const RefreshTokenScalarFieldEnum: {
+    id: 'id',
+    token: 'token',
+    utilizadorId: 'utilizadorId',
+    expiresAt: 'expiresAt',
+    revogado: 'revogado',
+    criadoEm: 'criadoEm'
+  };
+
+  export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -56908,6 +60884,76 @@ export namespace Prisma {
    */
   export type ListEnumTipoDispositivoInvasivoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoDispositivoInvasivo[]'>
     
+
+
+  /**
+   * Reference to a field of type 'TipoIncidenteTI'
+   */
+  export type EnumTipoIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoIncidenteTI'>
+    
+
+
+  /**
+   * Reference to a field of type 'TipoIncidenteTI[]'
+   */
+  export type ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoIncidenteTI[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PrioridadeIncidenteTI'
+   */
+  export type EnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PrioridadeIncidenteTI'>
+    
+
+
+  /**
+   * Reference to a field of type 'PrioridadeIncidenteTI[]'
+   */
+  export type ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PrioridadeIncidenteTI[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoIncidenteTI'
+   */
+  export type EnumEstadoIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoIncidenteTI'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoIncidenteTI[]'
+   */
+  export type ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoIncidenteTI[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TipoPedidoTI'
+   */
+  export type EnumTipoPedidoTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoPedidoTI'>
+    
+
+
+  /**
+   * Reference to a field of type 'TipoPedidoTI[]'
+   */
+  export type ListEnumTipoPedidoTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoPedidoTI[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoPedidoTI'
+   */
+  export type EnumEstadoPedidoTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPedidoTI'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoPedidoTI[]'
+   */
+  export type ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPedidoTI[]'>
+    
   /**
    * Deep Input Types
    */
@@ -56976,6 +61022,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaListRelationFilter
     checkinsRececionados?: CheckinSalaEsperaListRelationFilter
     checkinsAtendidos?: CheckinSalaEsperaListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
+    incidentesCriados?: IncidenteTIListRelationFilter
+    incidentesAtribuidos?: IncidenteTIListRelationFilter
+    pedidosTICriados?: PedidoTIListRelationFilter
+    pedidosTIAtribuidos?: PedidoTIListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -57038,6 +61089,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaOrderByRelationAggregateInput
     checkinsRececionados?: CheckinSalaEsperaOrderByRelationAggregateInput
     checkinsAtendidos?: CheckinSalaEsperaOrderByRelationAggregateInput
+    refreshTokens?: RefreshTokenOrderByRelationAggregateInput
+    incidentesCriados?: IncidenteTIOrderByRelationAggregateInput
+    incidentesAtribuidos?: IncidenteTIOrderByRelationAggregateInput
+    pedidosTICriados?: PedidoTIOrderByRelationAggregateInput
+    pedidosTIAtribuidos?: PedidoTIOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -57103,6 +61159,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaListRelationFilter
     checkinsRececionados?: CheckinSalaEsperaListRelationFilter
     checkinsAtendidos?: CheckinSalaEsperaListRelationFilter
+    refreshTokens?: RefreshTokenListRelationFilter
+    incidentesCriados?: IncidenteTIListRelationFilter
+    incidentesAtribuidos?: IncidenteTIListRelationFilter
+    pedidosTICriados?: PedidoTIListRelationFilter
+    pedidosTIAtribuidos?: PedidoTIListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -58535,6 +62596,7 @@ export namespace Prisma {
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
     utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }
@@ -58547,6 +62609,7 @@ export namespace Prisma {
     entidadeTipo?: SortOrderInput | SortOrder
     detalhes?: SortOrderInput | SortOrder
     ip?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     utilizador?: UtilizadorOrderByWithRelationInput
   }
@@ -58562,6 +62625,7 @@ export namespace Prisma {
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
     utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }, "id">
@@ -58574,6 +62638,7 @@ export namespace Prisma {
     entidadeTipo?: SortOrderInput | SortOrder
     detalhes?: SortOrderInput | SortOrder
     ip?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AuditLogCountOrderByAggregateInput
     _max?: AuditLogMaxOrderByAggregateInput
@@ -58591,6 +62656,7 @@ export namespace Prisma {
     entidadeTipo?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     detalhes?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     ip?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
   }
 
@@ -60356,6 +64422,237 @@ export namespace Prisma {
     inseridoPorId?: StringWithAggregatesFilter<"DispositivoInvasivo"> | string
   }
 
+  export type IncidenteTIWhereInput = {
+    AND?: IncidenteTIWhereInput | IncidenteTIWhereInput[]
+    OR?: IncidenteTIWhereInput[]
+    NOT?: IncidenteTIWhereInput | IncidenteTIWhereInput[]
+    id?: StringFilter<"IncidenteTI"> | string
+    titulo?: StringFilter<"IncidenteTI"> | string
+    descricao?: StringFilter<"IncidenteTI"> | string
+    tipo?: EnumTipoIncidenteTIFilter<"IncidenteTI"> | $Enums.TipoIncidenteTI
+    subRoleAlvo?: StringNullableFilter<"IncidenteTI"> | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFilter<"IncidenteTI"> | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFilter<"IncidenteTI"> | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFilter<"IncidenteTI"> | string
+    responsavelId?: StringNullableFilter<"IncidenteTI"> | string | null
+    criadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+    atualizadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type IncidenteTIOrderByWithRelationInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    subRoleAlvo?: SortOrderInput | SortOrder
+    prioridade?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    criadoPor?: UtilizadorOrderByWithRelationInput
+    responsavel?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type IncidenteTIWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: IncidenteTIWhereInput | IncidenteTIWhereInput[]
+    OR?: IncidenteTIWhereInput[]
+    NOT?: IncidenteTIWhereInput | IncidenteTIWhereInput[]
+    titulo?: StringFilter<"IncidenteTI"> | string
+    descricao?: StringFilter<"IncidenteTI"> | string
+    tipo?: EnumTipoIncidenteTIFilter<"IncidenteTI"> | $Enums.TipoIncidenteTI
+    subRoleAlvo?: StringNullableFilter<"IncidenteTI"> | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFilter<"IncidenteTI"> | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFilter<"IncidenteTI"> | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFilter<"IncidenteTI"> | string
+    responsavelId?: StringNullableFilter<"IncidenteTI"> | string | null
+    criadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+    atualizadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type IncidenteTIOrderByWithAggregationInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    subRoleAlvo?: SortOrderInput | SortOrder
+    prioridade?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    _count?: IncidenteTICountOrderByAggregateInput
+    _max?: IncidenteTIMaxOrderByAggregateInput
+    _min?: IncidenteTIMinOrderByAggregateInput
+  }
+
+  export type IncidenteTIScalarWhereWithAggregatesInput = {
+    AND?: IncidenteTIScalarWhereWithAggregatesInput | IncidenteTIScalarWhereWithAggregatesInput[]
+    OR?: IncidenteTIScalarWhereWithAggregatesInput[]
+    NOT?: IncidenteTIScalarWhereWithAggregatesInput | IncidenteTIScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncidenteTI"> | string
+    titulo?: StringWithAggregatesFilter<"IncidenteTI"> | string
+    descricao?: StringWithAggregatesFilter<"IncidenteTI"> | string
+    tipo?: EnumTipoIncidenteTIWithAggregatesFilter<"IncidenteTI"> | $Enums.TipoIncidenteTI
+    subRoleAlvo?: StringNullableWithAggregatesFilter<"IncidenteTI"> | string | null
+    prioridade?: EnumPrioridadeIncidenteTIWithAggregatesFilter<"IncidenteTI"> | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIWithAggregatesFilter<"IncidenteTI"> | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringWithAggregatesFilter<"IncidenteTI"> | string
+    responsavelId?: StringNullableWithAggregatesFilter<"IncidenteTI"> | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"IncidenteTI"> | Date | string
+    atualizadoEm?: DateTimeWithAggregatesFilter<"IncidenteTI"> | Date | string
+  }
+
+  export type PedidoTIWhereInput = {
+    AND?: PedidoTIWhereInput | PedidoTIWhereInput[]
+    OR?: PedidoTIWhereInput[]
+    NOT?: PedidoTIWhereInput | PedidoTIWhereInput[]
+    id?: StringFilter<"PedidoTI"> | string
+    titulo?: StringFilter<"PedidoTI"> | string
+    descricao?: StringFilter<"PedidoTI"> | string
+    tipo?: EnumTipoPedidoTIFilter<"PedidoTI"> | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFilter<"PedidoTI"> | $Enums.EstadoPedidoTI
+    urgente?: BoolFilter<"PedidoTI"> | boolean
+    criadoEm?: DateTimeFilter<"PedidoTI"> | Date | string
+    resolvidoEm?: DateTimeNullableFilter<"PedidoTI"> | Date | string | null
+    criadoPorId?: StringFilter<"PedidoTI"> | string
+    responsavelId?: StringNullableFilter<"PedidoTI"> | string | null
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type PedidoTIOrderByWithRelationInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    urgente?: SortOrder
+    criadoEm?: SortOrder
+    resolvidoEm?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    criadoPor?: UtilizadorOrderByWithRelationInput
+    responsavel?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type PedidoTIWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PedidoTIWhereInput | PedidoTIWhereInput[]
+    OR?: PedidoTIWhereInput[]
+    NOT?: PedidoTIWhereInput | PedidoTIWhereInput[]
+    titulo?: StringFilter<"PedidoTI"> | string
+    descricao?: StringFilter<"PedidoTI"> | string
+    tipo?: EnumTipoPedidoTIFilter<"PedidoTI"> | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFilter<"PedidoTI"> | $Enums.EstadoPedidoTI
+    urgente?: BoolFilter<"PedidoTI"> | boolean
+    criadoEm?: DateTimeFilter<"PedidoTI"> | Date | string
+    resolvidoEm?: DateTimeNullableFilter<"PedidoTI"> | Date | string | null
+    criadoPorId?: StringFilter<"PedidoTI"> | string
+    responsavelId?: StringNullableFilter<"PedidoTI"> | string | null
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type PedidoTIOrderByWithAggregationInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    urgente?: SortOrder
+    criadoEm?: SortOrder
+    resolvidoEm?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrderInput | SortOrder
+    _count?: PedidoTICountOrderByAggregateInput
+    _max?: PedidoTIMaxOrderByAggregateInput
+    _min?: PedidoTIMinOrderByAggregateInput
+  }
+
+  export type PedidoTIScalarWhereWithAggregatesInput = {
+    AND?: PedidoTIScalarWhereWithAggregatesInput | PedidoTIScalarWhereWithAggregatesInput[]
+    OR?: PedidoTIScalarWhereWithAggregatesInput[]
+    NOT?: PedidoTIScalarWhereWithAggregatesInput | PedidoTIScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PedidoTI"> | string
+    titulo?: StringWithAggregatesFilter<"PedidoTI"> | string
+    descricao?: StringWithAggregatesFilter<"PedidoTI"> | string
+    tipo?: EnumTipoPedidoTIWithAggregatesFilter<"PedidoTI"> | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIWithAggregatesFilter<"PedidoTI"> | $Enums.EstadoPedidoTI
+    urgente?: BoolWithAggregatesFilter<"PedidoTI"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"PedidoTI"> | Date | string
+    resolvidoEm?: DateTimeNullableWithAggregatesFilter<"PedidoTI"> | Date | string | null
+    criadoPorId?: StringWithAggregatesFilter<"PedidoTI"> | string
+    responsavelId?: StringNullableWithAggregatesFilter<"PedidoTI"> | string | null
+  }
+
+  export type RefreshTokenWhereInput = {
+    AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    OR?: RefreshTokenWhereInput[]
+    NOT?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    id?: StringFilter<"RefreshToken"> | string
+    token?: StringFilter<"RefreshToken"> | string
+    utilizadorId?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    revogado?: BoolFilter<"RefreshToken"> | boolean
+    criadoEm?: DateTimeFilter<"RefreshToken"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type RefreshTokenOrderByWithRelationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    utilizadorId?: SortOrder
+    expiresAt?: SortOrder
+    revogado?: SortOrder
+    criadoEm?: SortOrder
+    utilizador?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type RefreshTokenWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    OR?: RefreshTokenWhereInput[]
+    NOT?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
+    utilizadorId?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    revogado?: BoolFilter<"RefreshToken"> | boolean
+    criadoEm?: DateTimeFilter<"RefreshToken"> | Date | string
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id" | "token">
+
+  export type RefreshTokenOrderByWithAggregationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    utilizadorId?: SortOrder
+    expiresAt?: SortOrder
+    revogado?: SortOrder
+    criadoEm?: SortOrder
+    _count?: RefreshTokenCountOrderByAggregateInput
+    _max?: RefreshTokenMaxOrderByAggregateInput
+    _min?: RefreshTokenMinOrderByAggregateInput
+  }
+
+  export type RefreshTokenScalarWhereWithAggregatesInput = {
+    AND?: RefreshTokenScalarWhereWithAggregatesInput | RefreshTokenScalarWhereWithAggregatesInput[]
+    OR?: RefreshTokenScalarWhereWithAggregatesInput[]
+    NOT?: RefreshTokenScalarWhereWithAggregatesInput | RefreshTokenScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RefreshToken"> | string
+    token?: StringWithAggregatesFilter<"RefreshToken"> | string
+    utilizadorId?: StringWithAggregatesFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
+    revogado?: BoolWithAggregatesFilter<"RefreshToken"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
+  }
+
   export type UtilizadorCreateInput = {
     id?: string
     numeroFuncionario: string
@@ -60416,6 +64713,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -60478,6 +64780,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -60540,6 +64847,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -60602,6 +64914,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -62047,6 +66364,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
     utilizador: UtilizadorCreateNestedOneWithoutAuditLogsInput
   }
@@ -62059,6 +66377,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -62069,6 +66388,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     utilizador?: UtilizadorUpdateOneRequiredWithoutAuditLogsNestedInput
   }
@@ -62081,6 +66401,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -62092,6 +66413,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -62102,6 +66424,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -62113,6 +66436,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -63964,6 +68288,253 @@ export namespace Prisma {
     inseridoPorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type IncidenteTICreateInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    criadoPor: UtilizadorCreateNestedOneWithoutIncidentesCriadosInput
+    responsavel?: UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput
+  }
+
+  export type IncidenteTIUncheckedCreateInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    responsavelId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTIUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput
+  }
+
+  export type IncidenteTIUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTICreateManyInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    responsavelId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTIUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTIUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PedidoTICreateInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPor: UtilizadorCreateNestedOneWithoutPedidosTICriadosInput
+    responsavel?: UtilizadorCreateNestedOneWithoutPedidosTIAtribuidosInput
+  }
+
+  export type PedidoTIUncheckedCreateInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPorId: string
+    responsavelId?: string | null
+  }
+
+  export type PedidoTIUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutPedidosTICriadosNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutPedidosTIAtribuidosNestedInput
+  }
+
+  export type PedidoTIUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTICreateManyInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPorId: string
+    responsavelId?: string | null
+  }
+
+  export type PedidoTIUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PedidoTIUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RefreshTokenCreateInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+    utilizador: UtilizadorCreateNestedOneWithoutRefreshTokensInput
+  }
+
+  export type RefreshTokenUncheckedCreateInput = {
+    id?: string
+    token: string
+    utilizadorId: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type RefreshTokenUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    utilizador?: UtilizadorUpdateOneRequiredWithoutRefreshTokensNestedInput
+  }
+
+  export type RefreshTokenUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenCreateManyInput = {
+    id?: string
+    token: string
+    utilizadorId: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type RefreshTokenUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -64240,6 +68811,24 @@ export namespace Prisma {
     none?: CheckinSalaEsperaWhereInput
   }
 
+  export type RefreshTokenListRelationFilter = {
+    every?: RefreshTokenWhereInput
+    some?: RefreshTokenWhereInput
+    none?: RefreshTokenWhereInput
+  }
+
+  export type IncidenteTIListRelationFilter = {
+    every?: IncidenteTIWhereInput
+    some?: IncidenteTIWhereInput
+    none?: IncidenteTIWhereInput
+  }
+
+  export type PedidoTIListRelationFilter = {
+    every?: PedidoTIWhereInput
+    some?: PedidoTIWhereInput
+    none?: PedidoTIWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -64374,6 +68963,18 @@ export namespace Prisma {
   }
 
   export type CheckinSalaEsperaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RefreshTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type IncidenteTIOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PedidoTIOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -65526,6 +70127,7 @@ export namespace Prisma {
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -65537,6 +70139,7 @@ export namespace Prisma {
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -65548,6 +70151,7 @@ export namespace Prisma {
     entidadeTipo?: SortOrder
     detalhes?: SortOrder
     ip?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -66750,6 +71354,199 @@ export namespace Prisma {
     _max?: NestedEnumTipoDispositivoInvasivoFilter<$PrismaModel>
   }
 
+  export type EnumTipoIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoIncidenteTI | EnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoIncidenteTIFilter<$PrismaModel> | $Enums.TipoIncidenteTI
+  }
+
+  export type EnumPrioridadeIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.PrioridadeIncidenteTI | EnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel> | $Enums.PrioridadeIncidenteTI
+  }
+
+  export type EnumEstadoIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoIncidenteTI | EnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel> | $Enums.EstadoIncidenteTI
+  }
+
+  export type IncidenteTICountOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    subRoleAlvo?: SortOrder
+    prioridade?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type IncidenteTIMaxOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    subRoleAlvo?: SortOrder
+    prioridade?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type IncidenteTIMinOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    subRoleAlvo?: SortOrder
+    prioridade?: SortOrder
+    estado?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type EnumTipoIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoIncidenteTI | EnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.TipoIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTipoIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumTipoIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type EnumPrioridadeIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PrioridadeIncidenteTI | EnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumPrioridadeIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.PrioridadeIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type EnumEstadoIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoIncidenteTI | EnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.EstadoIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type EnumTipoPedidoTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoPedidoTI | EnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoPedidoTIFilter<$PrismaModel> | $Enums.TipoPedidoTI
+  }
+
+  export type EnumEstadoPedidoTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTI | EnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTIFilter<$PrismaModel> | $Enums.EstadoPedidoTI
+  }
+
+  export type PedidoTICountOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    urgente?: SortOrder
+    criadoEm?: SortOrder
+    resolvidoEm?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+  }
+
+  export type PedidoTIMaxOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    urgente?: SortOrder
+    criadoEm?: SortOrder
+    resolvidoEm?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+  }
+
+  export type PedidoTIMinOrderByAggregateInput = {
+    id?: SortOrder
+    titulo?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    urgente?: SortOrder
+    criadoEm?: SortOrder
+    resolvidoEm?: SortOrder
+    criadoPorId?: SortOrder
+    responsavelId?: SortOrder
+  }
+
+  export type EnumTipoPedidoTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoPedidoTI | EnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoPedidoTIWithAggregatesFilter<$PrismaModel> | $Enums.TipoPedidoTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTipoPedidoTIFilter<$PrismaModel>
+    _max?: NestedEnumTipoPedidoTIFilter<$PrismaModel>
+  }
+
+  export type EnumEstadoPedidoTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTI | EnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTIWithAggregatesFilter<$PrismaModel> | $Enums.EstadoPedidoTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
+    _max?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
+  }
+
+  export type RefreshTokenCountOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    utilizadorId?: SortOrder
+    expiresAt?: SortOrder
+    revogado?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type RefreshTokenMaxOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    utilizadorId?: SortOrder
+    expiresAt?: SortOrder
+    revogado?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type RefreshTokenMinOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    utilizadorId?: SortOrder
+    expiresAt?: SortOrder
+    revogado?: SortOrder
+    criadoEm?: SortOrder
+  }
+
   export type TurnoCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -67079,6 +71876,41 @@ export namespace Prisma {
     connect?: CheckinSalaEsperaWhereUniqueInput | CheckinSalaEsperaWhereUniqueInput[]
   }
 
+  export type RefreshTokenCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput> | RefreshTokenCreateWithoutUtilizadorInput[] | RefreshTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUtilizadorInput | RefreshTokenCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: RefreshTokenCreateManyUtilizadorInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type IncidenteTICreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput> | IncidenteTICreateWithoutCriadoPorInput[] | IncidenteTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutCriadoPorInput | IncidenteTICreateOrConnectWithoutCriadoPorInput[]
+    createMany?: IncidenteTICreateManyCriadoPorInputEnvelope
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+  }
+
+  export type IncidenteTICreateNestedManyWithoutResponsavelInput = {
+    create?: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput> | IncidenteTICreateWithoutResponsavelInput[] | IncidenteTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutResponsavelInput | IncidenteTICreateOrConnectWithoutResponsavelInput[]
+    createMany?: IncidenteTICreateManyResponsavelInputEnvelope
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+  }
+
+  export type PedidoTICreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput> | PedidoTICreateWithoutCriadoPorInput[] | PedidoTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutCriadoPorInput | PedidoTICreateOrConnectWithoutCriadoPorInput[]
+    createMany?: PedidoTICreateManyCriadoPorInputEnvelope
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+  }
+
+  export type PedidoTICreateNestedManyWithoutResponsavelInput = {
+    create?: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput> | PedidoTICreateWithoutResponsavelInput[] | PedidoTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutResponsavelInput | PedidoTICreateOrConnectWithoutResponsavelInput[]
+    createMany?: PedidoTICreateManyResponsavelInputEnvelope
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -67406,6 +72238,41 @@ export namespace Prisma {
     connectOrCreate?: CheckinSalaEsperaCreateOrConnectWithoutMedicoInput | CheckinSalaEsperaCreateOrConnectWithoutMedicoInput[]
     createMany?: CheckinSalaEsperaCreateManyMedicoInputEnvelope
     connect?: CheckinSalaEsperaWhereUniqueInput | CheckinSalaEsperaWhereUniqueInput[]
+  }
+
+  export type RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput> | RefreshTokenCreateWithoutUtilizadorInput[] | RefreshTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUtilizadorInput | RefreshTokenCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: RefreshTokenCreateManyUtilizadorInputEnvelope
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput> | IncidenteTICreateWithoutCriadoPorInput[] | IncidenteTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutCriadoPorInput | IncidenteTICreateOrConnectWithoutCriadoPorInput[]
+    createMany?: IncidenteTICreateManyCriadoPorInputEnvelope
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+  }
+
+  export type IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput = {
+    create?: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput> | IncidenteTICreateWithoutResponsavelInput[] | IncidenteTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutResponsavelInput | IncidenteTICreateOrConnectWithoutResponsavelInput[]
+    createMany?: IncidenteTICreateManyResponsavelInputEnvelope
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+  }
+
+  export type PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput> | PedidoTICreateWithoutCriadoPorInput[] | PedidoTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutCriadoPorInput | PedidoTICreateOrConnectWithoutCriadoPorInput[]
+    createMany?: PedidoTICreateManyCriadoPorInputEnvelope
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+  }
+
+  export type PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput = {
+    create?: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput> | PedidoTICreateWithoutResponsavelInput[] | PedidoTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutResponsavelInput | PedidoTICreateOrConnectWithoutResponsavelInput[]
+    createMany?: PedidoTICreateManyResponsavelInputEnvelope
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -68102,6 +72969,76 @@ export namespace Prisma {
     deleteMany?: CheckinSalaEsperaScalarWhereInput | CheckinSalaEsperaScalarWhereInput[]
   }
 
+  export type RefreshTokenUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput> | RefreshTokenCreateWithoutUtilizadorInput[] | RefreshTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUtilizadorInput | RefreshTokenCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUtilizadorInput | RefreshTokenUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: RefreshTokenCreateManyUtilizadorInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUtilizadorInput | RefreshTokenUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUtilizadorInput | RefreshTokenUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
+  export type IncidenteTIUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput> | IncidenteTICreateWithoutCriadoPorInput[] | IncidenteTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutCriadoPorInput | IncidenteTICreateOrConnectWithoutCriadoPorInput[]
+    upsert?: IncidenteTIUpsertWithWhereUniqueWithoutCriadoPorInput | IncidenteTIUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: IncidenteTICreateManyCriadoPorInputEnvelope
+    set?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    disconnect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    delete?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    update?: IncidenteTIUpdateWithWhereUniqueWithoutCriadoPorInput | IncidenteTIUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: IncidenteTIUpdateManyWithWhereWithoutCriadoPorInput | IncidenteTIUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+  }
+
+  export type IncidenteTIUpdateManyWithoutResponsavelNestedInput = {
+    create?: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput> | IncidenteTICreateWithoutResponsavelInput[] | IncidenteTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutResponsavelInput | IncidenteTICreateOrConnectWithoutResponsavelInput[]
+    upsert?: IncidenteTIUpsertWithWhereUniqueWithoutResponsavelInput | IncidenteTIUpsertWithWhereUniqueWithoutResponsavelInput[]
+    createMany?: IncidenteTICreateManyResponsavelInputEnvelope
+    set?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    disconnect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    delete?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    update?: IncidenteTIUpdateWithWhereUniqueWithoutResponsavelInput | IncidenteTIUpdateWithWhereUniqueWithoutResponsavelInput[]
+    updateMany?: IncidenteTIUpdateManyWithWhereWithoutResponsavelInput | IncidenteTIUpdateManyWithWhereWithoutResponsavelInput[]
+    deleteMany?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+  }
+
+  export type PedidoTIUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput> | PedidoTICreateWithoutCriadoPorInput[] | PedidoTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutCriadoPorInput | PedidoTICreateOrConnectWithoutCriadoPorInput[]
+    upsert?: PedidoTIUpsertWithWhereUniqueWithoutCriadoPorInput | PedidoTIUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: PedidoTICreateManyCriadoPorInputEnvelope
+    set?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    disconnect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    delete?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    update?: PedidoTIUpdateWithWhereUniqueWithoutCriadoPorInput | PedidoTIUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: PedidoTIUpdateManyWithWhereWithoutCriadoPorInput | PedidoTIUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
+  }
+
+  export type PedidoTIUpdateManyWithoutResponsavelNestedInput = {
+    create?: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput> | PedidoTICreateWithoutResponsavelInput[] | PedidoTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutResponsavelInput | PedidoTICreateOrConnectWithoutResponsavelInput[]
+    upsert?: PedidoTIUpsertWithWhereUniqueWithoutResponsavelInput | PedidoTIUpsertWithWhereUniqueWithoutResponsavelInput[]
+    createMany?: PedidoTICreateManyResponsavelInputEnvelope
+    set?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    disconnect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    delete?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    update?: PedidoTIUpdateWithWhereUniqueWithoutResponsavelInput | PedidoTIUpdateWithWhereUniqueWithoutResponsavelInput[]
+    updateMany?: PedidoTIUpdateManyWithWhereWithoutResponsavelInput | PedidoTIUpdateManyWithWhereWithoutResponsavelInput[]
+    deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -68758,6 +73695,76 @@ export namespace Prisma {
     update?: CheckinSalaEsperaUpdateWithWhereUniqueWithoutMedicoInput | CheckinSalaEsperaUpdateWithWhereUniqueWithoutMedicoInput[]
     updateMany?: CheckinSalaEsperaUpdateManyWithWhereWithoutMedicoInput | CheckinSalaEsperaUpdateManyWithWhereWithoutMedicoInput[]
     deleteMany?: CheckinSalaEsperaScalarWhereInput | CheckinSalaEsperaScalarWhereInput[]
+  }
+
+  export type RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput> | RefreshTokenCreateWithoutUtilizadorInput[] | RefreshTokenUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: RefreshTokenCreateOrConnectWithoutUtilizadorInput | RefreshTokenCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: RefreshTokenUpsertWithWhereUniqueWithoutUtilizadorInput | RefreshTokenUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: RefreshTokenCreateManyUtilizadorInputEnvelope
+    set?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    disconnect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    delete?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+    update?: RefreshTokenUpdateWithWhereUniqueWithoutUtilizadorInput | RefreshTokenUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: RefreshTokenUpdateManyWithWhereWithoutUtilizadorInput | RefreshTokenUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+  }
+
+  export type IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput> | IncidenteTICreateWithoutCriadoPorInput[] | IncidenteTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutCriadoPorInput | IncidenteTICreateOrConnectWithoutCriadoPorInput[]
+    upsert?: IncidenteTIUpsertWithWhereUniqueWithoutCriadoPorInput | IncidenteTIUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: IncidenteTICreateManyCriadoPorInputEnvelope
+    set?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    disconnect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    delete?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    update?: IncidenteTIUpdateWithWhereUniqueWithoutCriadoPorInput | IncidenteTIUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: IncidenteTIUpdateManyWithWhereWithoutCriadoPorInput | IncidenteTIUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+  }
+
+  export type IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput = {
+    create?: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput> | IncidenteTICreateWithoutResponsavelInput[] | IncidenteTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutResponsavelInput | IncidenteTICreateOrConnectWithoutResponsavelInput[]
+    upsert?: IncidenteTIUpsertWithWhereUniqueWithoutResponsavelInput | IncidenteTIUpsertWithWhereUniqueWithoutResponsavelInput[]
+    createMany?: IncidenteTICreateManyResponsavelInputEnvelope
+    set?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    disconnect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    delete?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    connect?: IncidenteTIWhereUniqueInput | IncidenteTIWhereUniqueInput[]
+    update?: IncidenteTIUpdateWithWhereUniqueWithoutResponsavelInput | IncidenteTIUpdateWithWhereUniqueWithoutResponsavelInput[]
+    updateMany?: IncidenteTIUpdateManyWithWhereWithoutResponsavelInput | IncidenteTIUpdateManyWithWhereWithoutResponsavelInput[]
+    deleteMany?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+  }
+
+  export type PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput> | PedidoTICreateWithoutCriadoPorInput[] | PedidoTIUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutCriadoPorInput | PedidoTICreateOrConnectWithoutCriadoPorInput[]
+    upsert?: PedidoTIUpsertWithWhereUniqueWithoutCriadoPorInput | PedidoTIUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: PedidoTICreateManyCriadoPorInputEnvelope
+    set?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    disconnect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    delete?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    update?: PedidoTIUpdateWithWhereUniqueWithoutCriadoPorInput | PedidoTIUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: PedidoTIUpdateManyWithWhereWithoutCriadoPorInput | PedidoTIUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
+  }
+
+  export type PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput = {
+    create?: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput> | PedidoTICreateWithoutResponsavelInput[] | PedidoTIUncheckedCreateWithoutResponsavelInput[]
+    connectOrCreate?: PedidoTICreateOrConnectWithoutResponsavelInput | PedidoTICreateOrConnectWithoutResponsavelInput[]
+    upsert?: PedidoTIUpsertWithWhereUniqueWithoutResponsavelInput | PedidoTIUpsertWithWhereUniqueWithoutResponsavelInput[]
+    createMany?: PedidoTICreateManyResponsavelInputEnvelope
+    set?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    disconnect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    delete?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+    update?: PedidoTIUpdateWithWhereUniqueWithoutResponsavelInput | PedidoTIUpdateWithWhereUniqueWithoutResponsavelInput[]
+    updateMany?: PedidoTIUpdateManyWithWhereWithoutResponsavelInput | PedidoTIUpdateManyWithWhereWithoutResponsavelInput[]
+    deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
   }
 
   export type DoenteCreateNestedOneWithoutCamaInput = {
@@ -71780,6 +76787,100 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDispositivosInseridosInput, UtilizadorUpdateWithoutDispositivosInseridosInput>, UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput>
   }
 
+  export type UtilizadorCreateNestedOneWithoutIncidentesCriadosInput = {
+    create?: XOR<UtilizadorCreateWithoutIncidentesCriadosInput, UtilizadorUncheckedCreateWithoutIncidentesCriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutIncidentesCriadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput = {
+    create?: XOR<UtilizadorCreateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EnumTipoIncidenteTIFieldUpdateOperationsInput = {
+    set?: $Enums.TipoIncidenteTI
+  }
+
+  export type EnumPrioridadeIncidenteTIFieldUpdateOperationsInput = {
+    set?: $Enums.PrioridadeIncidenteTI
+  }
+
+  export type EnumEstadoIncidenteTIFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoIncidenteTI
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutIncidentesCriadosInput, UtilizadorUncheckedCreateWithoutIncidentesCriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutIncidentesCriadosInput
+    upsert?: UtilizadorUpsertWithoutIncidentesCriadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutIncidentesCriadosInput, UtilizadorUpdateWithoutIncidentesCriadosInput>, UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput
+    upsert?: UtilizadorUpsertWithoutIncidentesAtribuidosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutIncidentesAtribuidosInput, UtilizadorUpdateWithoutIncidentesAtribuidosInput>, UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutPedidosTICriadosInput = {
+    create?: XOR<UtilizadorCreateWithoutPedidosTICriadosInput, UtilizadorUncheckedCreateWithoutPedidosTICriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPedidosTICriadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutPedidosTIAtribuidosInput = {
+    create?: XOR<UtilizadorCreateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EnumTipoPedidoTIFieldUpdateOperationsInput = {
+    set?: $Enums.TipoPedidoTI
+  }
+
+  export type EnumEstadoPedidoTIFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoPedidoTI
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutPedidosTICriadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutPedidosTICriadosInput, UtilizadorUncheckedCreateWithoutPedidosTICriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPedidosTICriadosInput
+    upsert?: UtilizadorUpsertWithoutPedidosTICriadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPedidosTICriadosInput, UtilizadorUpdateWithoutPedidosTICriadosInput>, UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutPedidosTIAtribuidosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput
+    upsert?: UtilizadorUpsertWithoutPedidosTIAtribuidosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPedidosTIAtribuidosInput, UtilizadorUpdateWithoutPedidosTIAtribuidosInput>, UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutRefreshTokensInput = {
+    create?: XOR<UtilizadorCreateWithoutRefreshTokensInput, UtilizadorUncheckedCreateWithoutRefreshTokensInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutRefreshTokensInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutRefreshTokensInput, UtilizadorUncheckedCreateWithoutRefreshTokensInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutRefreshTokensInput
+    upsert?: UtilizadorUpsertWithoutRefreshTokensInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutRefreshTokensInput, UtilizadorUpdateWithoutRefreshTokensInput>, UtilizadorUncheckedUpdateWithoutRefreshTokensInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -72484,6 +77585,91 @@ export namespace Prisma {
     _max?: NestedEnumTipoDispositivoInvasivoFilter<$PrismaModel>
   }
 
+  export type NestedEnumTipoIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoIncidenteTI | EnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoIncidenteTIFilter<$PrismaModel> | $Enums.TipoIncidenteTI
+  }
+
+  export type NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.PrioridadeIncidenteTI | EnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel> | $Enums.PrioridadeIncidenteTI
+  }
+
+  export type NestedEnumEstadoIncidenteTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoIncidenteTI | EnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel> | $Enums.EstadoIncidenteTI
+  }
+
+  export type NestedEnumTipoIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoIncidenteTI | EnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoIncidenteTI[] | ListEnumTipoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.TipoIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTipoIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumTipoIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPrioridadeIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PrioridadeIncidenteTI | EnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PrioridadeIncidenteTI[] | ListEnumPrioridadeIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumPrioridadeIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.PrioridadeIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumPrioridadeIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEstadoIncidenteTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoIncidenteTI | EnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoIncidenteTI[] | ListEnumEstadoIncidenteTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoIncidenteTIWithAggregatesFilter<$PrismaModel> | $Enums.EstadoIncidenteTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel>
+    _max?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTipoPedidoTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoPedidoTI | EnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoPedidoTIFilter<$PrismaModel> | $Enums.TipoPedidoTI
+  }
+
+  export type NestedEnumEstadoPedidoTIFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTI | EnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTIFilter<$PrismaModel> | $Enums.EstadoPedidoTI
+  }
+
+  export type NestedEnumTipoPedidoTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TipoPedidoTI | EnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumTipoPedidoTIWithAggregatesFilter<$PrismaModel> | $Enums.TipoPedidoTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTipoPedidoTIFilter<$PrismaModel>
+    _max?: NestedEnumTipoPedidoTIFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEstadoPedidoTIWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoPedidoTI | EnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoPedidoTI[] | ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoPedidoTIWithAggregatesFilter<$PrismaModel> | $Enums.EstadoPedidoTI
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
+    _max?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
+  }
+
   export type TurnoCreateWithoutChefeTurnoInput = {
     id?: string
     tipo: $Enums.TipoTurno
@@ -73025,6 +78211,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -73035,6 +78222,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -74106,6 +79294,172 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RefreshTokenCreateWithoutUtilizadorInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type RefreshTokenUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type RefreshTokenCreateOrConnectWithoutUtilizadorInput = {
+    where: RefreshTokenWhereUniqueInput
+    create: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type RefreshTokenCreateManyUtilizadorInputEnvelope = {
+    data: RefreshTokenCreateManyUtilizadorInput | RefreshTokenCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncidenteTICreateWithoutCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    responsavel?: UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput
+  }
+
+  export type IncidenteTIUncheckedCreateWithoutCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    responsavelId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTICreateOrConnectWithoutCriadoPorInput = {
+    where: IncidenteTIWhereUniqueInput
+    create: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type IncidenteTICreateManyCriadoPorInputEnvelope = {
+    data: IncidenteTICreateManyCriadoPorInput | IncidenteTICreateManyCriadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncidenteTICreateWithoutResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    criadoPor: UtilizadorCreateNestedOneWithoutIncidentesCriadosInput
+  }
+
+  export type IncidenteTIUncheckedCreateWithoutResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTICreateOrConnectWithoutResponsavelInput = {
+    where: IncidenteTIWhereUniqueInput
+    create: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput>
+  }
+
+  export type IncidenteTICreateManyResponsavelInputEnvelope = {
+    data: IncidenteTICreateManyResponsavelInput | IncidenteTICreateManyResponsavelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTICreateWithoutCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    responsavel?: UtilizadorCreateNestedOneWithoutPedidosTIAtribuidosInput
+  }
+
+  export type PedidoTIUncheckedCreateWithoutCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    responsavelId?: string | null
+  }
+
+  export type PedidoTICreateOrConnectWithoutCriadoPorInput = {
+    where: PedidoTIWhereUniqueInput
+    create: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type PedidoTICreateManyCriadoPorInputEnvelope = {
+    data: PedidoTICreateManyCriadoPorInput | PedidoTICreateManyCriadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoTICreateWithoutResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPor: UtilizadorCreateNestedOneWithoutPedidosTICriadosInput
+  }
+
+  export type PedidoTIUncheckedCreateWithoutResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPorId: string
+  }
+
+  export type PedidoTICreateOrConnectWithoutResponsavelInput = {
+    where: PedidoTIWhereUniqueInput
+    create: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput>
+  }
+
+  export type PedidoTICreateManyResponsavelInputEnvelope = {
+    data: PedidoTICreateManyResponsavelInput | PedidoTICreateManyResponsavelInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TurnoUpsertWithWhereUniqueWithoutChefeTurnoInput = {
     where: TurnoWhereUniqueInput
     update: XOR<TurnoUpdateWithoutChefeTurnoInput, TurnoUncheckedUpdateWithoutChefeTurnoInput>
@@ -74549,6 +79903,7 @@ export namespace Prisma {
     entidadeTipo?: StringNullableFilter<"AuditLog"> | string | null
     detalhes?: StringNullableFilter<"AuditLog"> | string | null
     ip?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
@@ -75351,6 +80706,131 @@ export namespace Prisma {
     data: XOR<CheckinSalaEsperaUpdateManyMutationInput, CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoInput>
   }
 
+  export type RefreshTokenUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: RefreshTokenWhereUniqueInput
+    update: XOR<RefreshTokenUpdateWithoutUtilizadorInput, RefreshTokenUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<RefreshTokenCreateWithoutUtilizadorInput, RefreshTokenUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type RefreshTokenUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: RefreshTokenWhereUniqueInput
+    data: XOR<RefreshTokenUpdateWithoutUtilizadorInput, RefreshTokenUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type RefreshTokenUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: RefreshTokenScalarWhereInput
+    data: XOR<RefreshTokenUpdateManyMutationInput, RefreshTokenUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type RefreshTokenScalarWhereInput = {
+    AND?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    OR?: RefreshTokenScalarWhereInput[]
+    NOT?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
+    id?: StringFilter<"RefreshToken"> | string
+    token?: StringFilter<"RefreshToken"> | string
+    utilizadorId?: StringFilter<"RefreshToken"> | string
+    expiresAt?: DateTimeFilter<"RefreshToken"> | Date | string
+    revogado?: BoolFilter<"RefreshToken"> | boolean
+    criadoEm?: DateTimeFilter<"RefreshToken"> | Date | string
+  }
+
+  export type IncidenteTIUpsertWithWhereUniqueWithoutCriadoPorInput = {
+    where: IncidenteTIWhereUniqueInput
+    update: XOR<IncidenteTIUpdateWithoutCriadoPorInput, IncidenteTIUncheckedUpdateWithoutCriadoPorInput>
+    create: XOR<IncidenteTICreateWithoutCriadoPorInput, IncidenteTIUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type IncidenteTIUpdateWithWhereUniqueWithoutCriadoPorInput = {
+    where: IncidenteTIWhereUniqueInput
+    data: XOR<IncidenteTIUpdateWithoutCriadoPorInput, IncidenteTIUncheckedUpdateWithoutCriadoPorInput>
+  }
+
+  export type IncidenteTIUpdateManyWithWhereWithoutCriadoPorInput = {
+    where: IncidenteTIScalarWhereInput
+    data: XOR<IncidenteTIUpdateManyMutationInput, IncidenteTIUncheckedUpdateManyWithoutCriadoPorInput>
+  }
+
+  export type IncidenteTIScalarWhereInput = {
+    AND?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+    OR?: IncidenteTIScalarWhereInput[]
+    NOT?: IncidenteTIScalarWhereInput | IncidenteTIScalarWhereInput[]
+    id?: StringFilter<"IncidenteTI"> | string
+    titulo?: StringFilter<"IncidenteTI"> | string
+    descricao?: StringFilter<"IncidenteTI"> | string
+    tipo?: EnumTipoIncidenteTIFilter<"IncidenteTI"> | $Enums.TipoIncidenteTI
+    subRoleAlvo?: StringNullableFilter<"IncidenteTI"> | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFilter<"IncidenteTI"> | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFilter<"IncidenteTI"> | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFilter<"IncidenteTI"> | string
+    responsavelId?: StringNullableFilter<"IncidenteTI"> | string | null
+    criadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+    atualizadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
+  }
+
+  export type IncidenteTIUpsertWithWhereUniqueWithoutResponsavelInput = {
+    where: IncidenteTIWhereUniqueInput
+    update: XOR<IncidenteTIUpdateWithoutResponsavelInput, IncidenteTIUncheckedUpdateWithoutResponsavelInput>
+    create: XOR<IncidenteTICreateWithoutResponsavelInput, IncidenteTIUncheckedCreateWithoutResponsavelInput>
+  }
+
+  export type IncidenteTIUpdateWithWhereUniqueWithoutResponsavelInput = {
+    where: IncidenteTIWhereUniqueInput
+    data: XOR<IncidenteTIUpdateWithoutResponsavelInput, IncidenteTIUncheckedUpdateWithoutResponsavelInput>
+  }
+
+  export type IncidenteTIUpdateManyWithWhereWithoutResponsavelInput = {
+    where: IncidenteTIScalarWhereInput
+    data: XOR<IncidenteTIUpdateManyMutationInput, IncidenteTIUncheckedUpdateManyWithoutResponsavelInput>
+  }
+
+  export type PedidoTIUpsertWithWhereUniqueWithoutCriadoPorInput = {
+    where: PedidoTIWhereUniqueInput
+    update: XOR<PedidoTIUpdateWithoutCriadoPorInput, PedidoTIUncheckedUpdateWithoutCriadoPorInput>
+    create: XOR<PedidoTICreateWithoutCriadoPorInput, PedidoTIUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type PedidoTIUpdateWithWhereUniqueWithoutCriadoPorInput = {
+    where: PedidoTIWhereUniqueInput
+    data: XOR<PedidoTIUpdateWithoutCriadoPorInput, PedidoTIUncheckedUpdateWithoutCriadoPorInput>
+  }
+
+  export type PedidoTIUpdateManyWithWhereWithoutCriadoPorInput = {
+    where: PedidoTIScalarWhereInput
+    data: XOR<PedidoTIUpdateManyMutationInput, PedidoTIUncheckedUpdateManyWithoutCriadoPorInput>
+  }
+
+  export type PedidoTIScalarWhereInput = {
+    AND?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
+    OR?: PedidoTIScalarWhereInput[]
+    NOT?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
+    id?: StringFilter<"PedidoTI"> | string
+    titulo?: StringFilter<"PedidoTI"> | string
+    descricao?: StringFilter<"PedidoTI"> | string
+    tipo?: EnumTipoPedidoTIFilter<"PedidoTI"> | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFilter<"PedidoTI"> | $Enums.EstadoPedidoTI
+    urgente?: BoolFilter<"PedidoTI"> | boolean
+    criadoEm?: DateTimeFilter<"PedidoTI"> | Date | string
+    resolvidoEm?: DateTimeNullableFilter<"PedidoTI"> | Date | string | null
+    criadoPorId?: StringFilter<"PedidoTI"> | string
+    responsavelId?: StringNullableFilter<"PedidoTI"> | string | null
+  }
+
+  export type PedidoTIUpsertWithWhereUniqueWithoutResponsavelInput = {
+    where: PedidoTIWhereUniqueInput
+    update: XOR<PedidoTIUpdateWithoutResponsavelInput, PedidoTIUncheckedUpdateWithoutResponsavelInput>
+    create: XOR<PedidoTICreateWithoutResponsavelInput, PedidoTIUncheckedCreateWithoutResponsavelInput>
+  }
+
+  export type PedidoTIUpdateWithWhereUniqueWithoutResponsavelInput = {
+    where: PedidoTIWhereUniqueInput
+    data: XOR<PedidoTIUpdateWithoutResponsavelInput, PedidoTIUncheckedUpdateWithoutResponsavelInput>
+  }
+
+  export type PedidoTIUpdateManyWithWhereWithoutResponsavelInput = {
+    where: PedidoTIScalarWhereInput
+    data: XOR<PedidoTIUpdateManyMutationInput, PedidoTIUncheckedUpdateManyWithoutResponsavelInput>
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -75605,6 +81085,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -75666,6 +81151,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -76543,6 +82033,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -76604,6 +82099,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -77113,6 +82613,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -77174,6 +82679,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -77409,6 +82919,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -77470,6 +82985,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -77712,6 +83232,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -77773,6 +83298,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -77972,6 +83502,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -78033,6 +83568,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -78162,6 +83702,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -78223,6 +83768,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -78337,6 +83887,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -78398,6 +83953,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -78856,6 +84416,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -78917,6 +84482,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -79085,6 +84655,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -79146,6 +84721,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -79292,6 +84872,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -79353,6 +84938,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -79521,6 +85111,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -79582,6 +85177,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -79759,6 +85359,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -79820,6 +85425,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -80025,6 +85635,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -80086,6 +85701,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -80232,6 +85852,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -80293,6 +85918,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -80359,6 +85989,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -80420,6 +86055,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -80619,6 +86259,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -80680,6 +86325,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -80752,6 +86402,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -80813,6 +86468,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -80996,6 +86656,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -81057,6 +86722,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -81123,6 +86793,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -81184,6 +86859,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -81378,6 +87058,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -81439,6 +87124,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -81511,6 +87201,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -81572,6 +87267,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -81773,6 +87473,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -81834,6 +87539,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -82047,6 +87757,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -82108,6 +87823,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -82169,6 +87889,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -82230,6 +87955,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -82335,6 +88065,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -82396,6 +88131,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -82674,6 +88414,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -82735,6 +88480,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -82841,6 +88591,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -82902,6 +88657,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -82963,6 +88723,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -83024,6 +88789,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -83090,6 +88860,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -83151,6 +88926,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -83240,6 +89020,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -83301,6 +89086,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -83378,6 +89168,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -83439,6 +89234,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -83511,6 +89311,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -83572,6 +89377,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -83673,6 +89483,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -83734,6 +89549,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -83903,6 +89723,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -83964,6 +89789,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -84030,6 +89860,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -84091,6 +89926,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -84288,6 +90128,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -84349,6 +90194,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -84421,6 +90271,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -84482,6 +90337,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -84628,6 +90488,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -84689,6 +90554,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -84857,6 +90727,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -84918,6 +90793,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -84979,6 +90859,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -85040,6 +90925,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -85117,6 +91007,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -85178,6 +91073,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -85852,6 +91752,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -85913,6 +91818,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -86081,6 +91991,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -86142,6 +92057,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -86288,6 +92208,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -86349,6 +92274,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -86517,6 +92447,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -86578,6 +92513,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -86639,6 +92579,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -86700,6 +92645,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -86777,6 +92727,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -86838,6 +92793,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -86984,6 +92944,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -87045,6 +93010,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -87237,6 +93207,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -87298,6 +93273,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -87543,6 +93523,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -87604,6 +93589,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -87670,6 +93660,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -87731,6 +93726,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -87899,6 +93899,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -87960,6 +93965,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -88032,6 +94042,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -88093,6 +94108,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -88239,6 +94259,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -88300,6 +94325,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -88366,6 +94396,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -88427,6 +94462,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -88626,6 +94666,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -88687,6 +94732,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -88759,6 +94809,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -88820,6 +94875,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -88957,6 +95017,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -89018,6 +95083,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -89084,6 +95154,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -89145,6 +95220,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -89211,6 +95291,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -89272,6 +95357,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -89394,6 +95484,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -89455,6 +95550,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -89527,6 +95627,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -89588,6 +95693,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -89660,6 +95770,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -89721,6 +95836,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -89867,6 +95987,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -89928,6 +96053,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -90096,6 +96226,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -90157,6 +96292,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -90218,6 +96358,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -90279,6 +96424,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -90345,6 +96495,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -90406,6 +96561,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -90483,6 +96643,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -90544,6 +96709,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -90616,6 +96786,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -90677,6 +96852,11 @@ export namespace Prisma {
     checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type PedidoFarmaciaCreateWithoutStockItemInput = {
@@ -90815,6 +96995,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -90876,6 +97061,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -90942,6 +97132,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -91003,6 +97198,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -91115,6 +97315,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -91176,6 +97381,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -91248,6 +97458,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -91309,6 +97524,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -91455,6 +97675,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -91516,6 +97741,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -91716,6 +97946,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -91777,6 +98012,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -91966,6 +98206,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -92027,6 +98272,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -92228,6 +98478,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -92289,6 +98544,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -92435,6 +98695,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -92496,6 +98761,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -92562,6 +98832,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -92623,6 +98898,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -92791,6 +99071,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -92852,6 +99137,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -92924,6 +99214,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -92985,6 +99280,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -93046,6 +99346,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -93107,6 +99412,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -93184,6 +99494,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -93245,6 +99560,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -93306,6 +99626,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -93367,6 +99692,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -93433,6 +99763,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -93494,6 +99829,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -93571,6 +99911,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -93632,6 +99977,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -93704,6 +100054,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -93765,6 +100120,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -93911,6 +100271,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -93972,6 +100337,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -94038,6 +100408,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -94099,6 +100474,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -94267,6 +100647,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -94328,6 +100713,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -94400,6 +100790,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -94461,6 +100856,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -94607,6 +101007,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -94668,6 +101073,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -94836,6 +101246,11 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -94897,6 +101312,1411 @@ export namespace Prisma {
     checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
     checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
     checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorCreateWithoutIncidentesCriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutIncidentesCriadosInput, UtilizadorUncheckedCreateWithoutIncidentesCriadosInput>
+  }
+
+  export type UtilizadorCreateWithoutIncidentesAtribuidosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput>
+  }
+
+  export type UtilizadorUpsertWithoutIncidentesCriadosInput = {
+    update: XOR<UtilizadorUpdateWithoutIncidentesCriadosInput, UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput>
+    create: XOR<UtilizadorCreateWithoutIncidentesCriadosInput, UtilizadorUncheckedCreateWithoutIncidentesCriadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutIncidentesCriadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutIncidentesCriadosInput, UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutIncidentesCriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
+    update: XOR<UtilizadorUpdateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput>
+    create: XOR<UtilizadorCreateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutIncidentesAtribuidosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput>
+  }
+
+  export type UtilizadorUpdateWithoutIncidentesAtribuidosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorCreateWithoutPedidosTICriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutPedidosTICriadosInput, UtilizadorUncheckedCreateWithoutPedidosTICriadosInput>
+  }
+
+  export type UtilizadorCreateWithoutPedidosTIAtribuidosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput>
+  }
+
+  export type UtilizadorUpsertWithoutPedidosTICriadosInput = {
+    update: XOR<UtilizadorUpdateWithoutPedidosTICriadosInput, UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput>
+    create: XOR<UtilizadorCreateWithoutPedidosTICriadosInput, UtilizadorUncheckedCreateWithoutPedidosTICriadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutPedidosTICriadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutPedidosTICriadosInput, UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutPedidosTICriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
+    update: XOR<UtilizadorUpdateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput>
+    create: XOR<UtilizadorCreateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutPedidosTIAtribuidosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutPedidosTIAtribuidosInput, UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput>
+  }
+
+  export type UtilizadorUpdateWithoutPedidosTIAtribuidosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutRefreshTokensInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: $Enums.Role
+    subRole?: $Enums.SubRole | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutRefreshTokensInput, UtilizadorUncheckedCreateWithoutRefreshTokensInput>
+  }
+
+  export type UtilizadorUpsertWithoutRefreshTokensInput = {
+    update: XOR<UtilizadorUpdateWithoutRefreshTokensInput, UtilizadorUncheckedUpdateWithoutRefreshTokensInput>
+    create: XOR<UtilizadorCreateWithoutRefreshTokensInput, UtilizadorUncheckedCreateWithoutRefreshTokensInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutRefreshTokensInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutRefreshTokensInput, UtilizadorUncheckedUpdateWithoutRefreshTokensInput>
+  }
+
+  export type UtilizadorUpdateWithoutRefreshTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
   }
 
   export type TurnoCreateManyChefeTurnoInput = {
@@ -95061,6 +102881,7 @@ export namespace Prisma {
     entidadeTipo?: string | null
     detalhes?: string | null
     ip?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -95436,6 +103257,64 @@ export namespace Prisma {
     atendidoEm?: Date | string | null
     rececionistadoPorId?: string | null
     observacoes?: string | null
+  }
+
+  export type RefreshTokenCreateManyUtilizadorInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    revogado?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type IncidenteTICreateManyCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    responsavelId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTICreateManyResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type PedidoTICreateManyCriadoPorInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    responsavelId?: string | null
+  }
+
+  export type PedidoTICreateManyResponsavelInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoPedidoTI
+    estado?: $Enums.EstadoPedidoTI
+    urgente?: boolean
+    criadoEm?: Date | string
+    resolvidoEm?: Date | string | null
+    criadoPorId: string
   }
 
   export type TurnoUpdateWithoutChefeTurnoInput = {
@@ -95974,6 +103853,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -95984,6 +103864,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -95994,6 +103875,7 @@ export namespace Prisma {
     entidadeTipo?: NullableStringFieldUpdateOperationsInput | string | null
     detalhes?: NullableStringFieldUpdateOperationsInput | string | null
     ip?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -97127,6 +105009,180 @@ export namespace Prisma {
     atendidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     rececionistadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RefreshTokenUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefreshTokenUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    revogado?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTIUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    responsavel?: UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput
+  }
+
+  export type IncidenteTIUncheckedUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTIUncheckedUpdateManyWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTIUpdateWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput
+  }
+
+  export type IncidenteTIUncheckedUpdateWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidenteTIUncheckedUpdateManyWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PedidoTIUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    responsavel?: UtilizadorUpdateOneWithoutPedidosTIAtribuidosNestedInput
+  }
+
+  export type PedidoTIUncheckedUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTIUncheckedUpdateManyWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PedidoTIUpdateWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutPedidosTICriadosNestedInput
+  }
+
+  export type PedidoTIUncheckedUpdateWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PedidoTIUncheckedUpdateManyWithoutResponsavelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoPedidoTIFieldUpdateOperationsInput | $Enums.TipoPedidoTI
+    estado?: EnumEstadoPedidoTIFieldUpdateOperationsInput | $Enums.EstadoPedidoTI
+    urgente?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
   export type AtribuicaoDoenteCreateManyDoenteInput = {

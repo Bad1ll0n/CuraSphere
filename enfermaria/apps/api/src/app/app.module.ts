@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UtilizadoresModule } from './utilizadores/utilizadores.module';
@@ -38,11 +38,13 @@ import { EscalasClinicasModule } from './escalas-clinicas/escalas-clinicas.modul
 import { InterconsultasModule } from './interconsultas/interconsultas.module';
 import { DispositivosInvasivosModule } from './dispositivos-invasivos/dispositivos-invasivos.module';
 import { SalaEsperaModule } from './sala-espera/sala-espera.module';
+import { IncidentesTIModule } from './incidentes-ti/incidentes-ti.module';
+import { PedidosTIModule } from './pedidos-ti/pedidos-ti.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: 5 }]),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     PrismaModule,
     AuthModule,
     UtilizadoresModule,
@@ -74,12 +76,15 @@ import { SalaEsperaModule } from './sala-espera/sala-espera.module';
     InterconsultasModule,
     DispositivosInvasivosModule,
     SalaEsperaModule,
+    IncidentesTIModule,
+    PedidosTIModule,
   ],
   controllers: [AppController, AuditController],
   providers: [
     AppService,
     AuditService,
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
 export class AppModule {}

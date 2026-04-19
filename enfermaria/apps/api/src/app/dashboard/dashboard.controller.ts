@@ -130,7 +130,7 @@ export class DashboardController {
   }
 
   @Get('ti')
-  @Roles('diretor_ti', 'administrativo', 'chefe_medicos', 'chefe_enfermeiros')
+  @Roles('diretor_ti', 'it_admin', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst', 'diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh', 'diretor_qualidade')
   async dashboardTI() {
     const agora = new Date();
     const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
@@ -143,10 +143,13 @@ export class DashboardController {
       acoesHoje,
       acoesUltimaSemana,
       acoesRecentes,
-      totalDoentes,
-      totalCamas,
-      camasOcupadas,
-      isolados,
+      incidentesAbertos,
+      incidentesEmAnalise,
+      incidentesCriticos,
+      incidentesResolvidosHoje,
+      incidentesPorSubRole,
+      incidentesPorTipo,
+      incidentesRecentes,
     ] = await Promise.all([
       this.prisma.utilizador.count({ where: { ativo: true } }),
       this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
@@ -165,10 +168,25 @@ export class DashboardController {
         take: 20,
         include: { utilizador: { select: { nome: true, role: true } } },
       }),
-      this.prisma.doente.count({ where: { ativo: true } }),
-      this.prisma.cama.count(),
-      this.prisma.cama.count({ where: { estado: 'ocupada' } }),
-      this.prisma.doente.count({ where: { ativo: true, emIsolamento: true } }),
+      this.prisma.incidenteTI.count({ where: { estado: 'aberto' } }),
+      this.prisma.incidenteTI.count({ where: { estado: 'em_analise' } }),
+      this.prisma.incidenteTI.count({ where: { prioridade: 'critica', estado: { in: ['aberto', 'em_analise'] } } }),
+      this.prisma.incidenteTI.count({ where: { estado: 'resolvido', atualizadoEm: { gte: hoje } } }),
+      this.prisma.incidenteTI.groupBy({
+        by: ['subRoleAlvo'],
+        where: { estado: { in: ['aberto', 'em_analise'] } },
+        _count: { id: true },
+      }),
+      this.prisma.incidenteTI.groupBy({
+        by: ['tipo'],
+        where: { estado: { in: ['aberto', 'em_analise'] } },
+        _count: { id: true },
+      }),
+      this.prisma.incidenteTI.findMany({
+        orderBy: { criadoEm: 'desc' },
+        take: 10,
+        include: { criadoPor: { select: { id: true, nome: true, role: true } } },
+      }),
     ]);
 
     return {
@@ -189,12 +207,14 @@ export class DashboardController {
           ip: a.ip,
         })),
       },
-      infraestrutura: {
-        totalDoentes,
-        totalCamas,
-        camasOcupadas,
-        taxaOcupacao: totalCamas > 0 ? Math.round((camasOcupadas / totalCamas) * 100) : 0,
-        isolados,
+      incidentes: {
+        abertos: incidentesAbertos,
+        emAnalise: incidentesEmAnalise,
+        criticos: incidentesCriticos,
+        resolvidosHoje: incidentesResolvidosHoje,
+        porSubRole: incidentesPorSubRole.map(g => ({ subRole: g.subRoleAlvo ?? 'sem_atribuicao', total: g._count.id })),
+        porTipo: incidentesPorTipo.map(g => ({ tipo: g.tipo, total: g._count.id })),
+        recentes: incidentesRecentes,
       },
     };
   }

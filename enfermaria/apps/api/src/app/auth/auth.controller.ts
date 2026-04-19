@@ -1,9 +1,16 @@
 import { Controller, Post, Get, Body, Patch, UseGuards, Request } from '@nestjs/common';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard, SkipThrottle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { IsString, IsNotEmpty } from 'class-validator';
+
+class RefreshDto {
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
+}
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +23,21 @@ export class AuthController {
     return this.authService.login(dto.numeroFuncionario, dto.password);
   }
 
+  @SkipThrottle()
+  @Post('refresh')
+  refresh(@Body() dto: RefreshDto) {
+    return this.authService.refresh(dto.refreshToken);
+  }
+
   @UseGuards(JwtAuthGuard)
+  @SkipThrottle()
+  @Post('logout')
+  logout(@Body() dto: RefreshDto) {
+    return this.authService.logout(dto.refreshToken);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @SkipThrottle()
   @Get('me')
   me(@Request() req: any) {
     return req.user;

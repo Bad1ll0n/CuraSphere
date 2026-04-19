@@ -29,10 +29,22 @@ async function main() {
     },
   });
 
+  const itAdmin = await prisma.utilizador.upsert({
+    where: { numeroFuncionario: '00003' },
+    update: {},
+    create: {
+      nome: 'IT Admin',
+      numeroFuncionario: '00003',
+      passwordHash: hash,
+      role: 'it_admin',
+    },
+  });
+
   console.log('Utilizadores criados:');
   console.log(' -', admin.nome, '| Nº', admin.numeroFuncionario, '| Role:', admin.role);
   console.log(' -', admin2.nome, '| Nº', admin2.numeroFuncionario, '| Role:', admin2.role);
-  console.log('Password de ambos: admin123');
+  console.log(' -', itAdmin.nome, '| Nº', itAdmin.numeroFuncionario, '| Role:', itAdmin.role);
+  console.log('Password de todos: admin123');
 }
 
 main()

@@ -1,22 +1,24 @@
-import { Controller, Get, Query, UseGuards, ForbiddenException, Request } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from './enums';
 import { PrismaService } from '../prisma/prisma.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.it_admin, Role.dpo, Role.auditor_interno, Role.gestor_qualidade, Role.compliance_officer, Role.controlo_infecao)
 @Controller('audit')
 export class AuditController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get('logs')
   async logs(
-    @Request() req: any,
     @Query('utilizadorId') utilizadorId?: string,
     @Query('acao') acao?: string,
     @Query('de') de?: string,
     @Query('ate') ate?: string,
     @Query('page') page = '1',
   ) {
-    if (req.user.role !== 'administrativo') throw new ForbiddenException('Acesso restrito a administradores');
 
     const take = 20;
     const skip = (parseInt(page) - 1) * take;

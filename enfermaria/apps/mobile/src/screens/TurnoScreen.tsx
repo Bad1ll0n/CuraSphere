@@ -52,7 +52,8 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   const carregar = async () => {
     try {
       // Doentes atribuídos no turno actual (filtrado pelo backend)
-      const { data: doentesData } = await api.get('/doentes');
+      const { data: doentesResp } = await api.get('/doentes');
+      const doentesData = doentesResp.data ?? doentesResp;
       setDoentes(doentesData);
 
       // Buscar tarefas de cada doente

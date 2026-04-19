@@ -59,7 +59,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
       ]);
       const lista: any[] = turnosR.data;
       setTurnos(lista);
-      setDoentes(doentesR.data);
+      setDoentes(doentesR.data.data ?? doentesR.data);
 
       if (lista.length > 0) {
         const agora = new Date();

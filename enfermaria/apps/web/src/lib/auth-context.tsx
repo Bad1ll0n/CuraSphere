@@ -37,13 +37,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (numeroFuncionario: string, password: string) => {
     const { data } = await api.post('/auth/login', { numeroFuncionario, password });
     localStorage.setItem('token', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('utilizador', JSON.stringify(data.utilizador));
     setUtilizador(data.utilizador);
     router.push('/');
   };
 
   const logout = () => {
+    const rt = localStorage.getItem('refreshToken');
+    if (rt) api.post('/auth/logout', { refreshToken: rt }).catch(() => {});
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('utilizador');
     setUtilizador(null);
     router.push('/login');

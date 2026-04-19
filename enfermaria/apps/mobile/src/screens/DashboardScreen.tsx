@@ -42,7 +42,7 @@ export default function DashboardScreen({ utilizador }: Props) {
         api.get('/doentes?todos=true'),
       ]);
       setOcupacao(ocup.data);
-      setDoentes(doc.data);
+      setDoentes(doc.data.data ?? doc.data);
     } catch {} finally {
       setLoading(false);
       setRefreshing(false);

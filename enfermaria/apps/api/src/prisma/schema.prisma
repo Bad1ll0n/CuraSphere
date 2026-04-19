@@ -245,6 +245,11 @@ model Utilizador {
   // Novos — Fase 8C Sala de Espera
   checkinsRececionados       CheckinSalaEspera[]       @relation("CheckinRececionista")
   checkinsAtendidos          CheckinSalaEspera[]       @relation("CheckinMedico")
+  refreshTokens              RefreshToken[]
+  incidentesCriados          IncidenteTI[]              @relation("IncidentesCriados")
+  incidentesAtribuidos       IncidenteTI[]              @relation("IncidentesAtribuidos")
+  pedidosTICriados           PedidoTI[]                 @relation("PedidosTICriados")
+  pedidosTIAtribuidos        PedidoTI[]                 @relation("PedidosTIAtribuidos")
 
   @@map("utilizadores")
 }
@@ -683,6 +688,7 @@ model AuditLog {
   entidadeTipo String?
   detalhes     String?
   ip           String?
+  userAgent    String?
   createdAt    DateTime   @default(now())
 
   @@index([utilizadorId, createdAt])
@@ -1210,4 +1216,105 @@ model DispositivoInvasivo {
 
   @@index([doenteId, ativo])
   @@map("dispositivos_invasivos")
+}
+
+// ─── Incidentes TI ───────────────────────────────────────────────────────────
+
+enum TipoIncidenteTI {
+  infraestrutura
+  rede
+  his_erp
+  base_dados
+  seguranca
+  dados_clinicos
+  outro
+}
+
+enum EstadoIncidenteTI {
+  aberto
+  em_analise
+  resolvido
+  fechado
+}
+
+enum PrioridadeIncidenteTI {
+  baixa
+  media
+  alta
+  critica
+}
+
+model IncidenteTI {
+  id            String                @id @default(uuid())
+  titulo        String
+  descricao     String
+  tipo          TipoIncidenteTI
+  subRoleAlvo   String?
+  prioridade    PrioridadeIncidenteTI @default(media)
+  estado        EstadoIncidenteTI     @default(aberto)
+  criadoPorId   String
+  criadoPor     Utilizador            @relation("IncidentesCriados", fields: [criadoPorId], references: [id])
+  responsavelId String?
+  responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id])
+  criadoEm     DateTime              @default(now())
+  atualizadoEm DateTime              @updatedAt
+
+  @@index([estado])
+  @@index([subRoleAlvo])
+  @@map("incidentes_ti")
+}
+
+// ─── Pedidos TI ───────────────────────────────────────────────────────────────
+
+enum TipoPedidoTI {
+  listagem_dados
+  relatorio
+  acesso_sistema
+  backup
+  auditoria_dados
+  outro
+}
+
+enum EstadoPedidoTI {
+  pendente
+  em_curso
+  concluido
+  recusado
+}
+
+model PedidoTI {
+  id            String         @id @default(cuid())
+  titulo        String
+  descricao     String
+  tipo          TipoPedidoTI
+  estado        EstadoPedidoTI @default(pendente)
+  urgente       Boolean        @default(false)
+  criadoEm      DateTime       @default(now())
+  resolvidoEm   DateTime?
+
+  criadoPorId   String
+  criadoPor     Utilizador  @relation("PedidosTICriados", fields: [criadoPorId], references: [id])
+
+  responsavelId String?
+  responsavel   Utilizador? @relation("PedidosTIAtribuidos", fields: [responsavelId], references: [id])
+
+  @@index([estado])
+  @@index([criadoPorId])
+  @@map("pedidos_ti")
+}
+
+// ─── Refresh Tokens ──────────────────────────────────────────────────────────
+
+model RefreshToken {
+  id           String     @id @default(uuid())
+  token        String     @unique
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  revogado     Boolean    @default(false)
+  criadoEm    DateTime   @default(now())
+
+  @@index([utilizadorId])
+  @@index([token])
+  @@map("refresh_tokens")
 }
