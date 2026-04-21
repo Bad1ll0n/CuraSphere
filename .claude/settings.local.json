@@ -83,7 +83,9 @@
       "Bash(grep -v \"\\\\.map$\")",
       "Bash(xargs ls *)",
       "Bash(grep -r 'rawQuery\\\\|queryRaw\\\\|executeRaw\\\\|$queryRaw' /c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/api/src '--include=*.ts')",
-      "Bash(xargs head *)"
+      "Bash(xargs head *)",
+      "Bash(sed -i \"s/paddingHorizontal: 14,/paddingHorizontal: 10,/; s/paddingVertical: 7,/paddingVertical: 5,/; s/borderRadius: 20,/borderRadius: 14,/; s/marginBottom: 12,/marginBottom: 10,/\" \"c:/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/mobile/src/screens/HorariosScreen.tsx\")",
+      "Bash(sed -i \"s/voltarTexto: { color: '#fff', fontSize: 14, fontWeight: '600' }/voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' }/\" \"c:/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/mobile/src/screens/HorariosScreen.tsx\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

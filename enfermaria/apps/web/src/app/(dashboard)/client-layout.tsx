@@ -475,8 +475,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   useEffect(() => {
-    if (!loading && !utilizador) router.push('/login');
-  }, [utilizador, loading, router]);
+    if (!loading && !utilizador) { router.push('/login'); return; }
+    if (!loading && utilizador && pathname === '/dashboard') {
+      if (ROLES_TI.includes(utilizador.role)) router.replace('/dashboard-ti');
+    }
+  }, [utilizador, loading, router, pathname]);
 
   if (loading || !utilizador) return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50">

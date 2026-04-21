@@ -5,51 +5,70 @@ import api from '../../../lib/api';
 import { useAuth } from '../../../lib/auth-context';
 
 const TIPOS = [
-  { value: 'infraestrutura', label: 'Infraestrutura / Servidores' },
+  { value: 'infraestrutura', label: 'Infraestrutura' },
   { value: 'rede', label: 'Rede' },
   { value: 'his_erp', label: 'HIS / ERP' },
   { value: 'base_dados', label: 'Base de Dados' },
-  { value: 'seguranca', label: 'Segurança / Cibersegurança' },
-  { value: 'dados_clinicos', label: 'Dados Clínicos / BI' },
+  { value: 'seguranca', label: 'Segurança' },
+  { value: 'dados_clinicos', label: 'Dados Clínicos' },
   { value: 'outro', label: 'Outro' },
 ];
 
 const PRIORIDADES = [
-  { value: 'baixa', label: 'Baixa', cor: 'bg-green-100 text-green-700' },
-  { value: 'media', label: 'Média', cor: 'bg-yellow-100 text-yellow-700' },
-  { value: 'alta', label: 'Alta', cor: 'bg-orange-100 text-orange-700' },
-  { value: 'critica', label: 'Crítica', cor: 'bg-red-100 text-red-700' },
+  { value: 'baixa',  label: 'Baixa',   cor: 'bg-green-100 text-green-700',   borda: '#22c55e' },
+  { value: 'media',  label: 'Média',   cor: 'bg-yellow-100 text-yellow-700', borda: '#eab308' },
+  { value: 'alta',   label: 'Alta',    cor: 'bg-orange-100 text-orange-700', borda: '#f97316' },
+  { value: 'critica',label: 'Crítica', cor: 'bg-red-100 text-red-700',       borda: '#ef4444' },
 ];
 
 const ESTADOS = [
-  { value: 'aberto', label: 'Aberto', cor: 'bg-red-100 text-red-700' },
-  { value: 'em_analise', label: 'Em Análise', cor: 'bg-yellow-100 text-yellow-700' },
-  { value: 'resolvido', label: 'Resolvido', cor: 'bg-green-100 text-green-700' },
-  { value: 'fechado', label: 'Fechado', cor: 'bg-slate-100 text-slate-500' },
+  { value: 'aberto',    label: 'Aberto',      cor: 'bg-red-100 text-red-700',     icone: '🔴' },
+  { value: 'em_analise',label: 'Em Análise',  cor: 'bg-amber-100 text-amber-700', icone: '🟡' },
+  { value: 'resolvido', label: 'Resolvido',   cor: 'bg-green-100 text-green-700', icone: '🟢' },
+  { value: 'fechado',   label: 'Fechado',     cor: 'bg-slate-100 text-slate-500', icone: '⚫' },
 ];
+
+const ACOES_TI: Record<string, { label: string; proximo: string; cor: string }[]> = {
+  aberto:     [{ label: 'Iniciar Análise', proximo: 'em_analise', cor: 'bg-amber-500 hover:bg-amber-600 text-white' }],
+  em_analise: [{ label: 'Marcar Resolvido', proximo: 'resolvido', cor: 'bg-green-600 hover:bg-green-700 text-white' }],
+  resolvido:  [{ label: 'Fechar', proximo: 'fechado', cor: 'bg-slate-500 hover:bg-slate-600 text-white' }],
+  fechado:    [],
+};
 
 const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
 
 interface Incidente {
-  id: string;
-  titulo: string;
-  descricao: string;
-  tipo: string;
-  subRoleAlvo: string | null;
-  prioridade: string;
-  estado: string;
-  criadoEm: string;
+  id: string; titulo: string; descricao: string; tipo: string;
+  subRoleAlvo: string | null; prioridade: string; estado: string; criadoEm: string;
   criadoPor: { id: string; nome: string; role: string } | null;
   responsavel: { id: string; nome: string; role: string } | null;
 }
 
-function Badge({ value, options }: { value: string; options: { value: string; label: string; cor: string }[] }) {
-  const opt = options.find(o => o.value === value);
-  return (
-    <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full ${opt?.cor ?? 'bg-slate-100 text-slate-500'}`}>
-      {opt?.label ?? value}
-    </span>
-  );
+function getBorda(prioridade: string) {
+  return PRIORIDADES.find(p => p.value === prioridade)?.borda ?? '#94a3b8';
+}
+function getPrioridadeCor(prioridade: string) {
+  return PRIORIDADES.find(p => p.value === prioridade)?.cor ?? 'bg-slate-100 text-slate-500';
+}
+function getEstadoCor(estado: string) {
+  return ESTADOS.find(e => e.value === estado)?.cor ?? 'bg-slate-100 text-slate-500';
+}
+function getEstadoLabel(estado: string) {
+  return ESTADOS.find(e => e.value === estado)?.label ?? estado;
+}
+function getPrioridadeLabel(prioridade: string) {
+  return PRIORIDADES.find(p => p.value === prioridade)?.label ?? prioridade;
+}
+function getTipoLabel(tipo: string) {
+  return TIPOS.find(t => t.value === tipo)?.label ?? tipo;
+}
+function tempoRelativo(data: string) {
+  const diff = Date.now() - new Date(data).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `há ${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `há ${hrs}h`;
+  return `há ${Math.floor(hrs / 24)}d`;
 }
 
 export default function IncidentesTIPage() {
@@ -57,10 +76,11 @@ export default function IncidentesTIPage() {
   const [incidentes, setIncidentes] = useState<Incidente[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalAberto, setModalAberto] = useState(false);
+  const [expandido, setExpandido] = useState<string | null>(null);
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
+  const [atualizando, setAtualizando] = useState<string | null>(null);
 
-  // Form state
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [tipo, setTipo] = useState('infraestrutura');
@@ -89,16 +109,16 @@ export default function IncidentesTIPage() {
       await carregar();
     } catch (e: any) {
       setErro(e.response?.data?.message ?? 'Erro ao criar incidente');
-    } finally {
-      setSalvando(false);
-    }
+    } finally { setSalvando(false); }
   };
 
   const atualizarEstado = async (id: string, estado: string) => {
+    setAtualizando(id);
     try {
       await api.patch(`/incidentes-ti/${id}`, { estado });
-      await carregar();
+      setIncidentes(prev => prev.map(i => i.id === id ? { ...i, estado } : i));
     } catch { /* silencioso */ }
+    finally { setAtualizando(null); }
   };
 
   const eTI = utilizador && ROLES_TI.includes(utilizador.role);
@@ -109,184 +129,345 @@ export default function IncidentesTIPage() {
     return true;
   });
 
-  const tipoLabel = (t: string) => TIPOS.find(x => x.value === t)?.label ?? t;
+  const counts = {
+    abertos:    incidentes.filter(i => i.estado === 'aberto').length,
+    emAnalise:  incidentes.filter(i => i.estado === 'em_analise').length,
+    resolvidos: incidentes.filter(i => i.estado === 'resolvido').length,
+    criticos:   incidentes.filter(i => i.prioridade === 'critica' && i.estado !== 'fechado').length,
+  };
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      {/* Cabeçalho */}
-      <div className="flex items-center justify-between mb-8">
+    <div style={{ padding: '32px 40px', maxWidth: '1280px', margin: '0 auto' }}>
+
+      {/* ── Cabeçalho ── */}
+      <div className="flex items-start justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Incidentes TI</h1>
-          <p className="text-slate-500 text-sm mt-1">Reporte e acompanhe problemas técnicos</p>
+          <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Reporte, acompanhe e resolva problemas técnicos</p>
         </div>
         <button
           onClick={() => { setModalAberto(true); setErro(''); }}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl text-sm transition-colors"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-sm transition-colors flex items-center gap-2"
+          style={{ padding: '10px 20px' }}
         >
-          + Novo Incidente
+          <span className="text-lg leading-none">+</span> Novo Incidente
         </button>
       </div>
 
-      {/* Filtros */}
-      <div className="flex gap-3 mb-6 flex-wrap">
-        <select
-          value={filtroEstado}
-          onChange={e => setFiltroEstado(e.target.value)}
-          className="border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Todos os estados</option>
-          {ESTADOS.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
-        </select>
+      {/* ── Stats ── */}
+      <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+        {[
+          { label: 'Abertos',     value: counts.abertos,    cor: 'text-red-600',    bg: 'bg-red-50',    borda: 'border-red-200',    filtro: 'aberto' },
+          { label: 'Em Análise',  value: counts.emAnalise,  cor: 'text-amber-600',  bg: 'bg-amber-50',  borda: 'border-amber-200',  filtro: 'em_analise' },
+          { label: 'Resolvidos',  value: counts.resolvidos, cor: 'text-green-600',  bg: 'bg-green-50',  borda: 'border-green-200',  filtro: 'resolvido' },
+          { label: 'Críticos',    value: counts.criticos,   cor: 'text-red-700',    bg: 'bg-red-50',    borda: 'border-red-300',    filtro: '' },
+        ].map(s => (
+          <button
+            key={s.label}
+            onClick={() => s.filtro ? setFiltroEstado(filtroEstado === s.filtro ? '' : s.filtro) : undefined}
+            className={`text-left rounded-2xl border ${s.bg} ${s.borda} transition-all hover:shadow-sm ${s.filtro && filtroEstado === s.filtro ? 'ring-2 ring-blue-400' : ''}`}
+            style={{ padding: '16px 20px' }}
+          >
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{s.label}</p>
+            <p className={`text-3xl font-bold ${s.cor}`} style={{ marginTop: '4px' }}>{s.value}</p>
+          </button>
+        ))}
+      </div>
+
+      {/* ── Filtros ── */}
+      <div className="flex items-center gap-3" style={{ marginBottom: '20px' }}>
+        <div className="flex gap-2 bg-slate-100 rounded-xl p-1">
+          {[{ value: '', label: 'Todos' }, ...ESTADOS].map(e => (
+            <button
+              key={e.value}
+              onClick={() => setFiltroEstado(e.value)}
+              className={`text-xs font-semibold rounded-lg px-3 py-1.5 transition-all ${filtroEstado === e.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              {'label' in e ? e.label : e.value}
+            </button>
+          ))}
+        </div>
         <select
           value={filtroTipo}
           onChange={e => setFiltroTipo(e.target.value)}
-          className="border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-slate-200 rounded-xl text-xs text-slate-600 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ padding: '7px 12px' }}
         >
           <option value="">Todos os tipos</option>
           {TIPOS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
         </select>
         {(filtroEstado || filtroTipo) && (
-          <button onClick={() => { setFiltroEstado(''); setFiltroTipo(''); }} className="text-slate-400 hover:text-slate-600 text-sm">
-            Limpar filtros
+          <button onClick={() => { setFiltroEstado(''); setFiltroTipo(''); }} className="text-xs text-slate-400 hover:text-slate-600 underline">
+            Limpar
           </button>
         )}
+        <span className="text-xs text-slate-400 ml-auto">{visiveis.length} incidente{visiveis.length !== 1 ? 's' : ''}</span>
       </div>
 
-      {/* Tabela */}
+      {/* ── Lista ── */}
       {loading ? (
-        <div className="flex items-center justify-center py-20 text-slate-400">A carregar...</div>
+        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          <span className="text-sm">A carregar...</span>
+        </div>
       ) : visiveis.length === 0 ? (
-        <div className="text-center py-20 text-slate-400">
-          <p className="text-lg font-medium">Nenhum incidente encontrado</p>
-          <p className="text-sm mt-1">Crie um novo incidente para começar</p>
+        <div className="text-center bg-white rounded-2xl border border-slate-100" style={{ padding: '72px 32px' }}>
+          <div className="text-5xl" style={{ marginBottom: '16px' }}>✅</div>
+          <p className="text-lg font-semibold text-slate-700">Tudo limpo por aqui</p>
+          <p className="text-sm text-slate-400" style={{ marginTop: '6px' }}>
+            {filtroEstado || filtroTipo ? 'Sem incidentes com este filtro' : 'Nenhum incidente registado. Clique em "Novo Incidente" para começar.'}
+          </p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-100">
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-6 py-3">Incidente</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Tipo</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Prioridade</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Estado</th>
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Criado por</th>
-                {eTI && <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Ações</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {visiveis.map((inc, i) => (
-                <tr key={inc.id} className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${i === visiveis.length - 1 ? 'border-b-0' : ''}`}>
-                  <td className="px-6 py-4">
-                    <p className="font-medium text-slate-900 text-sm">{inc.titulo}</p>
-                    <p className="text-slate-400 text-xs mt-0.5 line-clamp-1">{inc.descricao}</p>
-                    <p className="text-slate-300 text-xs mt-0.5">{new Date(inc.criadoEm).toLocaleDateString('pt-PT')}</p>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-xs text-slate-600">{tipoLabel(inc.tipo)}</span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <Badge value={inc.prioridade} options={PRIORIDADES} />
-                  </td>
-                  <td className="px-4 py-4">
-                    <Badge value={inc.estado} options={ESTADOS} />
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-xs text-slate-600">{inc.criadoPor?.nome ?? '—'}</span>
-                  </td>
-                  {eTI && (
-                    <td className="px-4 py-4">
-                      <select
-                        value={inc.estado}
-                        onChange={e => atualizarEstado(inc.id, e.target.value)}
-                        className="border border-slate-200 rounded-lg px-2 py-1 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      >
-                        {ESTADOS.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
-                      </select>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex flex-col gap-3">
+          {visiveis.map(inc => {
+            const aberto = expandido === inc.id;
+            const acoes = eTI ? (ACOES_TI[inc.estado] ?? []) : [];
+            const borda = getBorda(inc.prioridade);
+            return (
+              <div
+                key={inc.id}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+                style={{ borderLeft: `4px solid ${borda}` }}
+              >
+                {/* Linha principal */}
+                <div
+                  className="flex items-center gap-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                  style={{ padding: '16px 20px' }}
+                  onClick={() => setExpandido(aberto ? null : inc.id)}
+                >
+                  {/* Título + meta */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
+                      <p className="font-semibold text-slate-900 text-sm truncate">{inc.titulo}</p>
+                      {inc.prioridade === 'critica' && (
+                        <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 rounded px-1.5 py-0.5">⚠ Crítico</span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-400 truncate">{inc.descricao}</p>
+                  </div>
+
+                  {/* Badges */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-slate-500 bg-slate-100 rounded-lg px-2 py-1">{getTipoLabel(inc.tipo)}</span>
+                    <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${getPrioridadeCor(inc.prioridade)}`}>
+                      {getPrioridadeLabel(inc.prioridade)}
+                    </span>
+                    <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${getEstadoCor(inc.estado)}`}>
+                      {getEstadoLabel(inc.estado)}
+                    </span>
+                  </div>
+
+                  {/* Meta */}
+                  <div className="text-right shrink-0" style={{ minWidth: '80px' }}>
+                    <p className="text-xs text-slate-500">{inc.criadoPor?.nome ?? '—'}</p>
+                    <p className="text-xs text-slate-300">{tempoRelativo(inc.criadoEm)}</p>
+                  </div>
+
+                  {/* Chevron */}
+                  <svg className={`w-4 h-4 text-slate-400 transition-transform shrink-0 ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                {/* Detalhe expandido */}
+                {aberto && (
+                  <div className="border-t border-slate-100" style={{ padding: '20px 24px', backgroundColor: '#f8fafc' }}>
+                    <div className="grid grid-cols-3 gap-6">
+                      {/* Descrição completa */}
+                      <div className="col-span-2">
+                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição</p>
+                        <p className="text-sm text-slate-700 leading-relaxed">{inc.descricao}</p>
+
+                        {inc.responsavel && (
+                          <div style={{ marginTop: '16px' }}>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Responsável</p>
+                            <p className="text-sm text-slate-700">{inc.responsavel.nome}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Info + Ações */}
+                      <div>
+                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Detalhes</p>
+                        <div className="flex flex-col gap-2" style={{ marginBottom: '16px' }}>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">Tipo</span>
+                            <span className="text-slate-700 font-medium">{getTipoLabel(inc.tipo)}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">Prioridade</span>
+                            <span className={`font-semibold rounded-full px-2 py-0.5 ${getPrioridadeCor(inc.prioridade)}`}>{getPrioridadeLabel(inc.prioridade)}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">Estado</span>
+                            <span className={`font-semibold rounded-full px-2 py-0.5 ${getEstadoCor(inc.estado)}`}>{getEstadoLabel(inc.estado)}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">Criado por</span>
+                            <span className="text-slate-700 font-medium">{inc.criadoPor?.nome ?? '—'}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-500">Data</span>
+                            <span className="text-slate-700">{new Date(inc.criadoEm).toLocaleDateString('pt-PT')}</span>
+                          </div>
+                          {inc.subRoleAlvo && (
+                            <div className="flex justify-between text-xs">
+                              <span className="text-slate-500">Equipa</span>
+                              <span className="text-slate-700 font-medium">{inc.subRoleAlvo}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Ações TI */}
+                        {eTI && acoes.length > 0 && (
+                          <div className="flex flex-col gap-2">
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Ações</p>
+                            {acoes.map(a => (
+                              <button
+                                key={a.proximo}
+                                onClick={() => atualizarEstado(inc.id, a.proximo)}
+                                disabled={atualizando === inc.id}
+                                className={`w-full text-sm font-semibold rounded-xl transition-colors disabled:opacity-50 ${a.cor}`}
+                                style={{ padding: '10px' }}
+                              >
+                                {atualizando === inc.id ? 'A atualizar...' : a.label}
+                              </button>
+                            ))}
+                            {/* Reabrir se resolvido/fechado */}
+                            {(inc.estado === 'resolvido' || inc.estado === 'fechado') && (
+                              <button
+                                onClick={() => atualizarEstado(inc.id, 'aberto')}
+                                disabled={atualizando === inc.id}
+                                className="w-full text-xs font-semibold rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50"
+                                style={{ padding: '8px' }}
+                              >
+                                Reabrir
+                              </button>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Estado completo para todos os roles TI */}
+                        {eTI && acoes.length === 0 && inc.estado !== 'fechado' && (
+                          <button
+                            onClick={() => atualizarEstado(inc.id, 'aberto')}
+                            disabled={atualizando === inc.id}
+                            className="w-full text-xs font-semibold rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors"
+                            style={{ padding: '8px' }}
+                          >
+                            Reabrir
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* Modal criar incidente */}
+      {/* ── Modal Novo Incidente ── */}
       {modalAberto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '500px', padding: '32px', margin: '0 16px' }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
-              <h2 className="text-lg font-bold text-slate-900">Novo Incidente TI</h2>
-              <button onClick={() => setModalAberto(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(15,23,42,0.6)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '520px', margin: '0 16px' }}>
+            {/* Header modal */}
+            <div className="flex items-center justify-between border-b border-slate-100" style={{ padding: '20px 28px' }}>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Novo Incidente TI</h2>
+                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Será encaminhado automaticamente à equipa responsável</p>
+              </div>
+              <button onClick={() => setModalAberto(false)} className="text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" style={{ padding: '6px' }}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
-            <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
-              <input
-                type="text"
-                value={titulo}
-                onChange={e => setTitulo(e.target.value)}
-                placeholder="Resumo do problema"
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                style={{ padding: '10px 14px' }}
-              />
-            </div>
+            <div style={{ padding: '24px 28px' }}>
+              {/* Prioridade selector visual */}
+              <div style={{ marginBottom: '18px' }}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Prioridade</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {PRIORIDADES.map(p => (
+                    <button
+                      key={p.value}
+                      onClick={() => setPrioridade(p.value)}
+                      className={`text-xs font-semibold rounded-xl py-2 border-2 transition-all ${prioridade === p.value ? `${p.cor} border-current` : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
-              <textarea
-                value={descricao}
-                onChange={e => setDescricao(e.target.value)}
-                placeholder="Descreva o problema com detalhe..."
-                rows={3}
-                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                style={{ padding: '10px 14px' }}
-              />
-            </div>
-
-            <div className="flex gap-3" style={{ marginBottom: '14px' }}>
-              <div style={{ flex: 1 }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
+              {/* Tipo */}
+              <div style={{ marginBottom: '14px' }}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo de Problema</label>
                 <select
                   value={tipo}
                   onChange={e => setTipo(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }}
                 >
                   {TIPOS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
               </div>
-              <div style={{ flex: 1 }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
-                <select
-                  value={prioridade}
-                  onChange={e => setPrioridade(e.target.value)}
+
+              {/* Título */}
+              <div style={{ marginBottom: '14px' }}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Título</label>
+                <input
+                  type="text"
+                  value={titulo}
+                  onChange={e => setTitulo(e.target.value)}
+                  placeholder="Resumo claro do problema"
                   className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ padding: '10px 14px' }}
-                >
-                  {PRIORIDADES.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
-                </select>
+                />
               </div>
-            </div>
 
-            {erro && <p className="text-red-600 text-sm" style={{ marginBottom: '12px' }}>{erro}</p>}
+              {/* Descrição */}
+              <div style={{ marginBottom: '18px' }}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição</label>
+                <textarea
+                  value={descricao}
+                  onChange={e => setDescricao(e.target.value)}
+                  placeholder="Descreva o problema: o que aconteceu, quando, impacto..."
+                  rows={4}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  style={{ padding: '10px 14px' }}
+                />
+              </div>
 
-            <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button
-                onClick={() => setModalAberto(false)}
-                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={criarIncidente}
-                disabled={salvando || !titulo.trim() || !descricao.trim()}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
-                style={{ padding: '11px' }}
-              >
-                {salvando ? 'A criar...' : 'Criar Incidente'}
-              </button>
+              {erro && (
+                <div className="bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm" style={{ padding: '10px 14px', marginBottom: '14px' }}>
+                  {erro}
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setModalAberto(false)}
+                  className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+                  style={{ padding: '11px' }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={criarIncidente}
+                  disabled={salvando || !titulo.trim() || !descricao.trim()}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 text-sm"
+                  style={{ padding: '11px' }}
+                >
+                  {salvando ? 'A criar...' : 'Criar Incidente'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

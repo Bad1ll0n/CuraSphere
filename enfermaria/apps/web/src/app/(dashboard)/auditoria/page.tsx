@@ -88,9 +88,14 @@ export default function AuditoriaPagina() {
   const [filtroDe, setFiltroDe] = useState('');
   const [filtroAte, setFiltroAte] = useState('');
 
-  // Guard: só administrativo
+  const ROLES_AUDITORIA = [
+    'administrativo', 'it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst',
+    'controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo',
+    'diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh',
+  ];
+
   useEffect(() => {
-    if (!authLoading && utilizador && utilizador.role !== 'administrativo') {
+    if (!authLoading && utilizador && !ROLES_AUDITORIA.includes(utilizador.role)) {
       router.replace('/dashboard');
     }
   }, [utilizador, authLoading, router]);
@@ -121,7 +126,7 @@ export default function AuditoriaPagina() {
   }, [filtroUtilizador, filtroAcao, filtroDe, filtroAte]);
 
   useEffect(() => {
-    if (utilizador?.role === 'administrativo') carregar(1);
+    if (utilizador && ROLES_AUDITORIA.includes(utilizador.role)) carregar(1);
   }, [utilizador, carregar]);
 
   const aplicarFiltros = (e: React.FormEvent) => {
@@ -137,7 +142,7 @@ export default function AuditoriaPagina() {
   };
 
   if (authLoading || !utilizador) return null;
-  if (utilizador.role !== 'administrativo') return null;
+  if (!ROLES_AUDITORIA.includes(utilizador.role)) return null;
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: '1400px', margin: '0 auto' }}>
