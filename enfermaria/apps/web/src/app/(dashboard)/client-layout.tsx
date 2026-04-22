@@ -9,19 +9,18 @@ import Image from 'next/image';
 import { useAuth } from '../../lib/auth-context';
 import api from '../../lib/api';
 
-// Grupos de roles para filtrar a navegação
-const ROLES_MEDICO = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'radiologista', 'patologista', 'chefe_medicos', 'triador', 'anestesista'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude', 'instrumentista', 'auxiliar'];
-const ROLES_CLINICO_OUTRO = ['fisioterapeuta', 'terapeuta_fala', 'nutricionista', 'psicologo', 'tecnico'];
-const ROLES_FARMACIA = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
-const ROLES_ADMIN = ['rececionista', 'secretario_clinico', 'assistente_administrativo', 'gestor_agendamento', 'administrativo', 'secretaria'];
-const ROLES_OPERACIONAL = ['maqueiro', 'assistente_operacional', 'esterilizacao', 'limpeza', 'lavandaria', 'tecnico_manutencao', 'engenheiro_biomedico', 'seguranca', 'sst'];
-const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
-const ROLES_QUALIDADE = ['controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo'];
-const ROLES_DIRECAO = ['diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh'];
-const ROLES_CLINICO = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA];
+// 10 roles-categoria fixas
+const ROLES_MEDICO     = ['medico'];
+const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
+const ROLES_SAUDE      = ['tecnico_saude'];
+const ROLES_FARMACIA   = ['farmaceutico'];
+const ROLES_ADMIN      = ['administrativo'];
+const ROLES_OPERACIONAL= ['operacional'];
+const ROLES_TI         = ['ti'];
+const ROLES_QUALIDADE  = ['qualidade'];
+const ROLES_DIRECAO    = ['direcao'];
+const ROLES_CLINICO    = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA];
 
-// servicos: null = todos os serviços | roles: null = todos os roles do serviço
 const navItems = [
   // — Dashboard Clínico
   {
@@ -40,7 +39,7 @@ const navItems = [
     href: '/doentes',
     label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_ADMIN],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -50,7 +49,7 @@ const navItems = [
   {
     href: '/camas',
     label: 'Camas',
-    servicos: null,
+    servicos: ['internamento', 'urgencia'],
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +72,7 @@ const navItems = [
     href: '/tarefas',
     label: 'Tarefas',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_OPERACIONAL],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_OPERACIONAL],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h.01M9 16h.01m6-4h-3" />
@@ -84,7 +83,7 @@ const navItems = [
     href: '/trocas',
     label: 'Trocas de Turno',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA],
+    roles: [...ROLES_CLINICO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -106,7 +105,7 @@ const navItems = [
   {
     href: '/urgencia',
     label: 'Urgência',
-    servicos: null,
+    servicos: ['urgencia'],
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +117,7 @@ const navItems = [
   {
     href: '/bloco',
     label: 'Bloco Operatório',
-    servicos: null,
+    servicos: ['bloco_operatorio'],
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +129,7 @@ const navItems = [
   {
     href: '/consultas',
     label: 'Consultas',
-    servicos: null,
+    servicos: ['consultas_externas'],
     roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,19 +154,19 @@ const navItems = [
     href: '/fisioterapia',
     label: 'Fisioterapia',
     servicos: null,
-    roles: [...ROLES_CLINICO_OUTRO],
+    roles: [...ROLES_SAUDE],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     ),
   },
-  // — MAR (Medication Administration Record)
+  // — MAR
   {
     href: '/mar',
     label: 'MAR',
     servicos: null,
-    roles: ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude'],
+    roles: [...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8l2 2 4-4" />
@@ -179,7 +178,7 @@ const navItems = [
     href: '/iacs',
     label: 'IACS',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_QUALIDADE],
+    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro'],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -191,7 +190,7 @@ const navItems = [
     href: '/worklist',
     label: 'Worklist',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO],
+    roles: [...ROLES_SAUDE, ...ROLES_MEDICO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -202,7 +201,7 @@ const navItems = [
   {
     href: '/sala-espera',
     label: 'Sala de Espera',
-    servicos: null,
+    servicos: ['urgencia'],
     roles: [...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +238,7 @@ const navItems = [
     href: '/pedidos-internos',
     label: 'Pedidos Internos',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA, ...ROLES_ADMIN, ...ROLES_OPERACIONAL],
+    roles: [...ROLES_CLINICO, ...ROLES_ADMIN, ...ROLES_OPERACIONAL],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -247,6 +246,17 @@ const navItems = [
     ),
   },
   // — TI
+  {
+    href: '/pedidos-ti',
+    label: 'Pedidos TI',
+    servicos: null,
+    roles: [...ROLES_TI],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+    ),
+  },
   {
     href: '/incidentes-ti',
     label: 'Incidentes TI',
@@ -258,14 +268,28 @@ const navItems = [
       </svg>
     ),
   },
+  // — Gestão (it_admin only)
   {
     href: '/utilizadores',
     label: 'Utilizadores',
     servicos: null,
-    roles: ['it_admin'],
+    roles: [...ROLES_TI],
+    subRoles: ['it_admin'],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/configuracoes',
+    label: 'Configurações',
+    servicos: null,
+    roles: [...ROLES_TI],
+    subRoles: ['it_admin'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
   },
@@ -283,161 +307,78 @@ const navItems = [
 ];
 
 const roleLabel: Record<string, string> = {
-  // Direção
-  diretor_geral:             'Diretor Geral',
-  diretor_clinico:           'Diretor Clínico',
-  diretor_enfermagem:        'Diretor de Enfermagem',
-  diretor_financeiro:        'Diretor Financeiro',
-  diretor_operacional:       'Diretor Operacional',
-  diretor_rh:                'Diretor de RH',
-  diretor_ti:                'Diretor de TI',
-  diretor_qualidade:         'Diretor de Qualidade',
-  // Clínico — Médicos
-  medico:                    'Médico',
-  medico_especialista:       'Médico Especialista',
-  cirurgiao:                 'Cirurgião',
-  anestesiologista:          'Anestesiologista',
-  radiologista:              'Radiologista',
-  patologista:               'Patologista',
-  // Clínico — Enfermagem
-  enfermeiro:                'Enfermeiro',
-  enfermeiro_especialista:   'Enfermeiro Especialista',
-  enfermeiro_gestor:         'Enfermeiro Gestor',
-  // Clínico — Outros
-  auxiliar_saude:            'Auxiliar de Saúde',
-  tecnico:                   'Técnico',
-  fisioterapeuta:            'Fisioterapeuta',
-  terapeuta_fala:            'Terapeuta da Fala',
-  nutricionista:             'Nutricionista',
-  psicologo:                 'Psicólogo',
-  // Farmácia
-  farmaceutico:              'Farmacêutico',
-  farmaceutico_clinico:      'Farmacêutico Clínico',
-  tecnico_farmacia:          'Técnico de Farmácia',
-  // Administrativo
-  rececionista:              'Rececionista',
-  secretario_clinico:        'Secretário Clínico',
-  assistente_administrativo: 'Assistente Administrativo',
-  gestor_agendamento:        'Gestor de Agendamento',
-  faturacao:                 'Faturação',
-  rh:                        'RH',
-  compras:                   'Compras',
-  // Operacional
-  maqueiro:                  'Maqueiro',
-  assistente_operacional:    'Assistente Operacional',
-  esterilizacao:             'Esterilização',
-  limpeza:                   'Limpeza',
-  lavandaria:                'Lavandaria',
-  // Engenharia / TI / Compliance
-  engenheiro_biomedico:      'Engenheiro Biomédico',
-  tecnico_manutencao:        'Técnico de Manutenção',
-  seguranca:                 'Segurança',
-  sst:                       'SST',
-  it_admin:                  'IT Admin',
-  analista_sistemas:         'Analista de Sistemas',
-  dba:                       'DBA',
-  ciberseguranca:            'Cibersegurança',
-  bi_analyst:                'BI Analyst',
-  dpo:                       'DPO',
-  gestor_qualidade:          'Gestor de Qualidade',
-  compliance_officer:        'Compliance Officer',
-  controlo_infecao:          'Controlo de Infeção',
-  auditor_interno:           'Auditor Interno',
-  // Legado
-  auxiliar:          'Auxiliar',
-  administrativo:    'Administrativo',
-  chefe_turno:       'Chefe de Turno',
-  chefe_enfermeiros: 'Chefe de Enfermeiros',
-  chefe_medicos:     'Chefe de Médicos',
-  triador:           'Triador',
-  anestesista:       'Anestesista',
-  instrumentista:    'Instrumentista',
-  secretaria:        'Secretária',
+  medico:         'Médico',
+  enfermeiro:     'Enfermeiro',
+  auxiliar:       'Auxiliar',
+  tecnico_saude:  'Técnico de Saúde',
+  farmaceutico:   'Farmacêutico',
+  administrativo: 'Administrativo',
+  operacional:    'Operacional',
+  ti:             'TI',
+  qualidade:      'Qualidade',
+  direcao:        'Direção',
 };
 
 const subRoleLabel: Record<string, string> = {
-  ceo_hospitalar: 'CEO Hospitalar', diretor_medico: 'Diretor Médico', head_nurse: 'Head Nurse',
-  cfo: 'CFO', coo: 'COO', hr_director: 'HR Director', cio: 'CIO', compliance_director: 'Compliance Director',
-  clinico_geral: 'Clínico Geral',
-  cardiologista: 'Cardiologista', urologista: 'Urologista', ortopedista: 'Ortopedista',
-  neurologista: 'Neurologista', ginecologista: 'Ginecologista', pediatra: 'Pediatra', oncologista: 'Oncologista',
-  cirurgiao_geral: 'Cirurgião Geral', medico_anestesia: 'Médico Anestesia',
-  medico_imagem: 'Médico Imagem', anatomia_patologica: 'Anatomia Patológica',
-  generalista: 'Generalista',
-  enf_uci: 'UCI', enf_bloco: 'Bloco Operatório', enf_obstetricia: 'Obstetrícia', enf_pediatria: 'Pediatria',
-  supervisor_enfermagem: 'Supervisor',
-  tae: 'TAE',
-  tecnico_radiologia: 'Radiologia', tecnico_tac_rm: 'TAC/RM',
-  tecnico_analises_clinicas: 'Análises Clínicas', tecnico_cardiopneumologia: 'Cardiopneumologia',
-  reabilitacao_fisica: 'Reabilitação Física', reabilitacao_fala: 'Reabilitação Fala',
-  nutricao_clinica: 'Nutrição Clínica', psicologia_clinica: 'Psicologia Clínica',
-  farmaceutico_hospitalar: 'Hospitalar', farmaceutico_oncologico: 'Oncológico', tecnico_farmacia_assist: 'Assistente',
-  front_desk: 'Front Desk', secretariado: 'Secretariado', backoffice: 'Backoffice',
-  scheduling: 'Scheduling', billing_officer: 'Billing Officer', hr_specialist: 'HR Specialist', procurement: 'Procurement',
-  transporte_interno: 'Transporte Interno', apoio_geral: 'Apoio Geral', cssd: 'CSSD',
-  higiene_hospitalar: 'Higiene Hospitalar', gestao_textil: 'Gestão Têxtil',
-  equipamentos_medicos: 'Equipamentos Médicos', facilities: 'Facilities',
-  vigilancia: 'Vigilância', seguranca_trabalho: 'Segurança Trabalho',
-  sysadmin: 'SysAdmin', his_erp: 'HIS/ERP', database_admin: 'Database Admin',
-  security_officer: 'Security Officer', dados_clinicos: 'Dados Clínicos',
-  dpo_role: 'DPO', quality_manager: 'Quality Manager', compliance: 'Compliance',
-  infection_control: 'Infection Control', internal_audit: 'Internal Audit',
+  // medico
+  clinico_geral: 'Clínico Geral', cirurgiao_geral: 'Cirurgião Geral',
+  medico_anestesia: 'Anestesiologista', medico_imagem: 'Radiologista',
+  anatomia_patologica: 'Patologista', medico_gestor: 'Médico Gestor',
+  // enfermeiro
+  generalista: 'Generalista', supervisor_enfermagem: 'Supervisor',
+  triador: 'Triador', instrumentista: 'Instrumentista',
+  // auxiliar
+  apoio_geral: 'Apoio Geral',
+  // tecnico_saude
+  tae: 'TAE', reabilitacao_fisica: 'Fisioterapeuta',
+  reabilitacao_fala: 'Terapeuta da Fala', nutricao_clinica: 'Nutricionista',
+  psicologia_clinica: 'Psicólogo',
+  // farmaceutico
+  farmaceutico_hospitalar: 'Hospitalar', farmaceutico_oncologico: 'Oncológico',
+  tecnico_farmacia_assist: 'Técnico',
+  // administrativo
+  front_desk: 'Rececionista', secretariado: 'Secretário', backoffice: 'Backoffice',
+  scheduling: 'Agenda', billing_officer: 'Faturação', hr_specialist: 'RH', procurement: 'Compras',
+  // operacional
+  transporte_interno: 'Maqueiro', cssd: 'Esterilização',
+  higiene_hospitalar: 'Limpeza', gestao_textil: 'Lavandaria',
+  equipamentos_medicos: 'Eng. Biomédico', facilities: 'Manutenção',
+  vigilancia: 'Segurança', seguranca_trabalho: 'SST',
+  // ti
+  it_admin: 'IT Admin', cio: 'CIO', his_erp: 'HIS/ERP',
+  database_admin: 'DBA', security_officer: 'Cibersegurança', dados_clinicos: 'BI/Dados',
+  // qualidade
+  quality_manager: 'Gestor Qualidade', compliance: 'Compliance',
+  infection_control: 'Controlo Infeção', internal_audit: 'Auditoria', dpo_role: 'DPO',
+  compliance_director: 'Dir. Qualidade',
+  // direcao
+  ceo_hospitalar: 'Diretor Geral', diretor_medico: 'Dir. Clínico',
+  head_nurse: 'Dir. Enfermagem', cfo: 'Dir. Financeiro',
+  coo: 'Dir. Operacional', hr_director: 'Dir. RH',
 };
 
 const servicoLabel: Record<string, string> = {
-  internamento:        'Internamento',
-  urgencia:            'Urgência',
-  bloco_operatorio:    'Bloco Operatório',
-  consultas_externas:  'Consultas Externas',
-  farmacia:            'Farmácia',
-  fisioterapia:        'Fisioterapia',
-  transporte:          'Transporte',
-  administrativo:      'Administrativo',
+  internamento:       'Internamento',
+  urgencia:           'Urgência',
+  bloco_operatorio:   'Bloco Operatório',
+  consultas_externas: 'Consultas Externas',
+  farmacia:           'Farmácia',
+  fisioterapia:       'Fisioterapia',
+  transporte:         'Transporte',
+  administrativo:     'Administrativo',
 };
 
 const roleColor: Record<string, string> = {
-  // Direção
-  diretor_geral: 'bg-yellow-500/15 text-yellow-400', diretor_clinico: 'bg-violet-500/15 text-violet-400',
-  diretor_enfermagem: 'bg-teal-500/15 text-teal-400', diretor_financeiro: 'bg-emerald-500/15 text-emerald-400',
-  diretor_operacional: 'bg-orange-500/15 text-orange-400', diretor_rh: 'bg-pink-500/15 text-pink-400',
-  diretor_ti: 'bg-cyan-500/15 text-cyan-400', diretor_qualidade: 'bg-indigo-500/15 text-indigo-400',
-  // Médicos
-  medico: 'bg-violet-500/15 text-violet-400', medico_especialista: 'bg-purple-500/15 text-purple-400',
-  cirurgiao: 'bg-red-500/15 text-red-400', anestesiologista: 'bg-indigo-500/15 text-indigo-400',
-  radiologista: 'bg-blue-500/15 text-blue-400', patologista: 'bg-slate-500/15 text-slate-400',
-  // Enfermagem
-  enfermeiro: 'bg-teal-500/15 text-teal-400', enfermeiro_especialista: 'bg-cyan-500/15 text-cyan-400',
-  enfermeiro_gestor: 'bg-blue-500/15 text-blue-400',
-  // Outros clínicos
-  auxiliar_saude: 'bg-slate-500/15 text-slate-400', tecnico: 'bg-sky-500/15 text-sky-400',
-  fisioterapeuta: 'bg-lime-500/15 text-lime-400', terapeuta_fala: 'bg-green-500/15 text-green-400',
-  nutricionista: 'bg-emerald-500/15 text-emerald-400', psicologo: 'bg-rose-500/15 text-rose-400',
-  // Farmácia
-  farmaceutico: 'bg-emerald-500/15 text-emerald-400', farmaceutico_clinico: 'bg-green-500/15 text-green-400',
-  tecnico_farmacia: 'bg-teal-500/15 text-teal-400',
-  // Administrativo
-  rececionista: 'bg-pink-500/15 text-pink-400', secretario_clinico: 'bg-rose-500/15 text-rose-400',
-  assistente_administrativo: 'bg-pink-500/15 text-pink-400', gestor_agendamento: 'bg-fuchsia-500/15 text-fuchsia-400',
-  faturacao: 'bg-amber-500/15 text-amber-400', rh: 'bg-orange-500/15 text-orange-400',
-  compras: 'bg-yellow-500/15 text-yellow-400',
-  // Operacional
-  maqueiro: 'bg-slate-500/15 text-slate-400', assistente_operacional: 'bg-slate-500/15 text-slate-400',
-  esterilizacao: 'bg-blue-500/15 text-blue-400', limpeza: 'bg-sky-500/15 text-sky-400',
-  lavandaria: 'bg-cyan-500/15 text-cyan-400',
-  // TI / Compliance
-  engenheiro_biomedico: 'bg-violet-500/15 text-violet-400', tecnico_manutencao: 'bg-slate-500/15 text-slate-400',
-  seguranca: 'bg-red-500/15 text-red-400', sst: 'bg-orange-500/15 text-orange-400',
-  it_admin: 'bg-cyan-500/15 text-cyan-400', analista_sistemas: 'bg-blue-500/15 text-blue-400',
-  dba: 'bg-indigo-500/15 text-indigo-400', ciberseguranca: 'bg-red-500/15 text-red-400',
-  bi_analyst: 'bg-purple-500/15 text-purple-400', dpo: 'bg-slate-500/15 text-slate-400',
-  gestor_qualidade: 'bg-emerald-500/15 text-emerald-400', compliance_officer: 'bg-indigo-500/15 text-indigo-400',
-  controlo_infecao: 'bg-orange-500/15 text-orange-400', auditor_interno: 'bg-amber-500/15 text-amber-400',
-  // Legado
-  auxiliar: 'bg-slate-500/15 text-slate-400', administrativo: 'bg-pink-500/15 text-pink-400',
-  chefe_turno: 'bg-amber-500/15 text-amber-400', chefe_enfermeiros: 'bg-blue-500/15 text-blue-400',
-  chefe_medicos: 'bg-purple-500/15 text-purple-400', triador: 'bg-orange-500/15 text-orange-400',
-  anestesista: 'bg-indigo-500/15 text-indigo-400', instrumentista: 'bg-cyan-500/15 text-cyan-400',
-  secretaria: 'bg-rose-500/15 text-rose-400',
+  medico:         'bg-violet-500/15 text-violet-400',
+  enfermeiro:     'bg-teal-500/15 text-teal-400',
+  auxiliar:       'bg-slate-500/15 text-slate-400',
+  tecnico_saude:  'bg-sky-500/15 text-sky-400',
+  farmaceutico:   'bg-emerald-500/15 text-emerald-400',
+  administrativo: 'bg-pink-500/15 text-pink-400',
+  operacional:    'bg-orange-500/15 text-orange-400',
+  ti:             'bg-cyan-500/15 text-cyan-400',
+  qualidade:      'bg-indigo-500/15 text-indigo-400',
+  direcao:        'bg-yellow-500/15 text-yellow-400',
 };
 
 function Avatar({ nome }: { nome: string }) {
@@ -477,7 +418,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     if (!loading && !utilizador) { router.push('/login'); return; }
     if (!loading && utilizador && pathname === '/dashboard') {
-      if (ROLES_TI.includes(utilizador.role)) router.replace('/dashboard-ti');
+      if (utilizador.role === 'ti') router.replace('/dashboard-ti');
     }
   }, [utilizador, loading, router, pathname]);
 
@@ -495,8 +436,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const itemsVisiveis = navItems.filter((item) => {
     const servicoOk = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
-    const roleOk = !item.roles || item.roles.includes(utilizador.role);
-    return servicoOk && roleOk;
+    const roleOk    = !item.roles    || item.roles.includes(utilizador.role);
+    // subRoles: se o item exige subRole específico, o utilizador deve tê-lo
+    const subRoleOk = !(item as any).subRoles || (item as any).subRoles.includes(utilizador.subRole);
+    return servicoOk && roleOk && subRoleOk;
   });
 
   return (

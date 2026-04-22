@@ -3,7 +3,7 @@ import { HorariosService } from './horarios.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { Role, TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/enums';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('horarios')
@@ -30,13 +30,13 @@ export class HorariosController {
     );
   }
 
-  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
+  @Roles('enfermeiro', 'medico')
   @Post()
   criar(@Body() body: { mes: number; ano: number }, @Request() req: any) {
     return this.horariosService.criar({ ...body, criadaPorId: req.user.sub });
   }
 
-  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
+  @Roles('enfermeiro', 'medico')
   @Post(':escalId/turno')
   adicionarTurno(
     @Param('escalId') escalId: string,
@@ -45,7 +45,7 @@ export class HorariosController {
     return this.horariosService.adicionarTurno({ ...body, escalId });
   }
 
-  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
+  @Roles('enfermeiro', 'medico')
   @Patch('turno/:turnoId')
   editarTurno(
     @Param('turnoId') turnoId: string,
@@ -54,7 +54,7 @@ export class HorariosController {
     return this.horariosService.editarTurno(turnoId, body);
   }
 
-  @Roles(Role.chefe_enfermeiros, Role.chefe_medicos)
+  @Roles('enfermeiro', 'medico')
   @Delete('turno/:turnoId')
   apagarTurno(@Param('turnoId') turnoId: string) {
     return this.horariosService.apagarTurno(turnoId);

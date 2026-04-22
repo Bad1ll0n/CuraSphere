@@ -9,7 +9,7 @@ export class TrocasController {
 
   @Get()
   listar(@Request() req: any) {
-    return this.service.listar(req.user.sub, req.user.role);
+    return this.service.listar(req.user.sub);
   }
 
   @Get('colegas')

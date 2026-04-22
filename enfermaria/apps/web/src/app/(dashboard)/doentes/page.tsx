@@ -38,7 +38,7 @@ export default function DoentesPagina() {
   const [total, setTotal] = useState(0);
   const LIMIT = 25;
 
-  const podeAdmitir = ['administrativo', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador?.role ?? '');
+  const podeAdmitir = ['administrativo', 'enfermeiro', 'medico'].includes(utilizador?.role ?? '');
 
   useEffect(() => {
     setLoading(true);

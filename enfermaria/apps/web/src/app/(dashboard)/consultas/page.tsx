@@ -72,7 +72,7 @@ export default function ConsultasPage() {
     carregar();
   };
 
-  const podeAgendar = ['medico', 'secretaria', 'administrativo', 'chefe_medicos'].includes(utilizador?.role ?? '');
+  const podeAgendar = ['medico', 'administrativo'].includes(utilizador?.role ?? '');
 
   return (
     <div style={{ padding: '32px 40px' }}>

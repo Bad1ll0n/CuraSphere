@@ -45,7 +45,7 @@ export default function IacsPage() {
 
   useEffect(() => { carregar(); }, []);
 
-  const podeEditar = ['medico', 'enfermeiro', 'chefe_turno', 'enf_uci'].includes(utilizador?.role ?? '');
+  const podeEditar = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
 
   const ativarIsolamento = (d: DoenteIsolado) => {
     setMotivo('');

@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator';
-import { Role } from '../common/enums';
+import { Roles, SubRoles } from '../auth/roles.decorator';
 import { IncidentesTIService } from './incidentes-ti.service';
 import { CriarIncidenteDto } from './dto/criar-incidente.dto';
 import { AtualizarIncidenteDto } from './dto/atualizar-incidente.dto';
@@ -33,7 +32,8 @@ export class IncidentesTIController {
   }
 
   @Delete(':id')
-  @Roles(Role.it_admin)
+  @Roles('ti')
+  @SubRoles('it_admin')
   eliminar(@Param('id') id: string) {
     return this.service.eliminar(id);
   }

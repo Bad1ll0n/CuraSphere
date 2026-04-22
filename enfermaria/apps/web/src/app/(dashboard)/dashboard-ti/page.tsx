@@ -34,12 +34,16 @@ const FILTROS: Record<Exclude<FiltroKey, null>, Filtro> = {
 };
 
 const ROLE_LABELS: Record<string, string> = {
-  medico: 'Médico', medico_especialista: 'Médico Especialista', chefe_medicos: 'Chefe Médicos',
-  enfermeiro: 'Enfermeiro', enfermeiro_especialista: 'Enf. Especialista', chefe_enfermeiros: 'Chefe Enfermeiros',
-  chefe_turno: 'Chefe de Turno', administrativo: 'Administrativo', auxiliar_saude: 'Auxiliar',
-  it_admin: 'IT Admin', diretor_ti: 'Diretor TI', analista_sistemas: 'Analista Sistemas',
-  dba: 'DBA', ciberseguranca: 'Cibersegurança', bi_analyst: 'BI Analyst',
-  rececionista: 'Rececionista',
+  medico:        'Médico',
+  enfermeiro:    'Enfermeiro',
+  auxiliar:      'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde',
+  farmaceutico:  'Farmacêutico',
+  administrativo:'Administrativo',
+  operacional:   'Operacional',
+  ti:            'TI',
+  qualidade:     'Qualidade',
+  direcao:       'Direção',
 };
 
 const TIPO_LABEL: Record<string, string> = {

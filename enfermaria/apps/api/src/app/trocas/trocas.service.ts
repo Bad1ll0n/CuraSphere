@@ -12,19 +12,77 @@ const include = {
 export class TrocasService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listar(utilizadorId: string, role: string) {
-    if (role === 'chefe_enfermeiros') {
-      return this.prisma.pedidoTrocaTurno.findMany({
-        where: { estado: 'pendente_chefe' },
+  async listar(utilizadorId: string) {
+    // Verificar se o utilizador é chefe de algum turno (menor ordemExperiencia no grupo)
+    const turnosComoChefe = await this._turnosOndeEChefe(utilizadorId);
+    const turnoIds = turnosComoChefe.map((t) => t.id);
+
+    const [meusPedidos, paraAprovar] = await Promise.all([
+      this.prisma.pedidoTrocaTurno.findMany({
+        where: { OR: [{ solicitanteId: utilizadorId }, { destinatarioId: utilizadorId }] },
         include,
         orderBy: { criadoEm: 'desc' },
-      });
-    }
-    return this.prisma.pedidoTrocaTurno.findMany({
-      where: { OR: [{ solicitanteId: utilizadorId }, { destinatarioId: utilizadorId }] },
-      include,
-      orderBy: { criadoEm: 'desc' },
+      }),
+      turnoIds.length > 0
+        ? this.prisma.pedidoTrocaTurno.findMany({
+            where: { estado: 'pendente_chefe', turnoId: { in: turnoIds } },
+            include,
+            orderBy: { criadoEm: 'desc' },
+          })
+        : Promise.resolve([]),
+    ]);
+
+    // Merge sem duplicados
+    const vistos = new Set(meusPedidos.map((p) => p.id));
+    const extras = paraAprovar.filter((p) => !vistos.has(p.id));
+    return [...meusPedidos, ...extras];
+  }
+
+  // Devolve os turnos onde o utilizador tem menor ordemExperiencia no seu grupo (role)
+  private async _turnosOndeEChefe(utilizadorId: string) {
+    const eu = await this.prisma.utilizador.findUnique({
+      where: { id: utilizadorId },
+      select: { role: true, ordemExperiencia: true },
     });
+    if (!eu) return [];
+
+    // Todos os turnos onde participa
+    const participacoes = await this.prisma.horarioTurnoProfissional.findMany({
+      where: { utilizadorId },
+      select: {
+        horarioTurno: {
+          select: {
+            id: true,
+            profissionais: {
+              include: { utilizador: { select: { id: true, role: true, ordemExperiencia: true } } },
+            },
+          },
+        },
+      },
+    });
+
+    const turnosChefe: { id: string }[] = [];
+    for (const { horarioTurno: turno } of participacoes) {
+      const grupo = turno.profissionais
+        .filter((p) => p.utilizador.role === eu.role)
+        .sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999));
+      if (grupo[0]?.utilizador.id === utilizadorId) {
+        turnosChefe.push({ id: turno.id });
+      }
+    }
+    return turnosChefe;
+  }
+
+  // Verifica se o utilizador é o chefe do turno do pedido
+  private async _eChefeDoPedido(pedidoId: string, utilizadorId: string) {
+    const pedido = await this.prisma.pedidoTrocaTurno.findUnique({
+      where: { id: pedidoId },
+      select: { turnoId: true },
+    });
+    if (!pedido) return false;
+    const turnoId = pedido.turnoId;
+    const turnosComoChefe = await this._turnosOndeEChefe(utilizadorId);
+    return turnosComoChefe.some((t) => t.id === turnoId);
   }
 
   // Colegas do mesmo role no mesmo turno ou na mesma escala
@@ -45,7 +103,7 @@ export class TrocasService {
 
     // Buscar todos os utilizadores do mesmo role ativos (excluindo o próprio)
     return this.prisma.utilizador.findMany({
-      where: { role: role as any, ativo: true, id: { not: solicitanteId } },
+      where: { role, ativo: true, id: { not: solicitanteId } },
       select: { id: true, nome: true, role: true, equipa: true, ordemExperiencia: true },
       orderBy: [{ equipa: 'asc' }, { ordemExperiencia: 'asc' }],
     });
@@ -89,6 +147,9 @@ export class TrocasService {
     const pedido = await this.prisma.pedidoTrocaTurno.findUnique({ where: { id: pedidoId } });
     if (!pedido) throw new NotFoundException('Pedido não encontrado');
     if (pedido.estado !== 'pendente_chefe') throw new BadRequestException('Pedido não está pendente de aprovação');
+
+    const eChefe = await this._eChefeDoPedido(pedidoId, chefeId);
+    if (!eChefe) throw new ForbiddenException('Apenas o chefe do turno pode aprovar esta troca');
 
     if (!aprovar) {
       return this.prisma.pedidoTrocaTurno.update({

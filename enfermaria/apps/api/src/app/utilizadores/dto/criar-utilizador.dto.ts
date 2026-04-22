@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, MinLength, Matches, IsEnum, IsOptional, IsInt, Min } from 'class-validator';
-import { Role, SubRole, Servico } from '../../common/enums';
+import { Servico } from '../../common/enums';
 
 export class CriarUtilizadorDto {
   @IsString()
@@ -17,12 +17,13 @@ export class CriarUtilizadorDto {
   })
   password: string;
 
-  @IsEnum(Role)
-  role: Role;
+  @IsString()
+  @IsNotEmpty()
+  role: string;
 
   @IsOptional()
-  @IsEnum(SubRole)
-  subRole?: SubRole;
+  @IsString()
+  subRole?: string;
 
   @IsOptional()
   @IsEnum(Servico)

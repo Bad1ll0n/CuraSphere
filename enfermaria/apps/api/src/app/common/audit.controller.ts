@@ -2,11 +2,10 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { Role } from './enums';
 import { PrismaService } from '../prisma/prisma.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.it_admin, Role.dpo, Role.auditor_interno, Role.gestor_qualidade, Role.compliance_officer, Role.controlo_infecao)
+@Roles('ti', 'qualidade')
 @Controller('audit')
 export class AuditController {
   constructor(private readonly prisma: PrismaService) {}

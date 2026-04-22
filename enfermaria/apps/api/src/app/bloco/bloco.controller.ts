@@ -10,7 +10,7 @@ export class BlocoController {
   constructor(private readonly service: BlocoService) {}
 
   @Post('cirurgia')
-  @Roles('cirurgiao', 'chefe_turno', 'administrativo', 'chefe_medicos')
+  @Roles('medico', 'enfermeiro', 'administrativo')
   agendar(@Body() dto: any, @Request() req: any) {
     return this.service.agendar({ cirurgiaoId: req.user.sub, ...dto });
   }
@@ -26,13 +26,13 @@ export class BlocoController {
   }
 
   @Patch('cirurgia/:id/estado')
-  @Roles('cirurgiao', 'anestesista', 'instrumentista', 'enfermeiro', 'chefe_turno', 'administrativo')
+  @Roles('medico', 'enfermeiro', 'administrativo')
   atualizarEstado(@Param('id') id: string, @Body('estado') estado: string) {
     return this.service.atualizarEstado(id, estado);
   }
 
   @Patch('cirurgia/:id/notas-pos')
-  @Roles('cirurgiao', 'chefe_medicos')
+  @Roles('medico')
   registarNotasPos(@Param('id') id: string, @Body() dto: any) {
     return this.service.registarNotasPos(id, dto);
   }
@@ -43,19 +43,19 @@ export class BlocoController {
   }
 
   @Post('cirurgia/:id/checklist/sign-in')
-  @Roles('cirurgiao', 'anestesista', 'enfermeiro', 'enf_bloco', 'instrumentista')
+  @Roles('medico', 'enfermeiro')
   signIn(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
     return this.service.completarFase(id, 'signIn', req.user.sub, dto);
   }
 
   @Post('cirurgia/:id/checklist/time-out')
-  @Roles('cirurgiao', 'anestesista', 'enfermeiro', 'enf_bloco', 'instrumentista')
+  @Roles('medico', 'enfermeiro')
   timeOut(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
     return this.service.completarFase(id, 'timeOut', req.user.sub, dto);
   }
 
   @Post('cirurgia/:id/checklist/sign-out')
-  @Roles('cirurgiao', 'anestesista', 'enfermeiro', 'enf_bloco', 'instrumentista')
+  @Roles('medico', 'enfermeiro')
   signOut(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
     return this.service.completarFase(id, 'signOut', req.user.sub, dto);
   }

@@ -10,7 +10,7 @@ export class FisioterapiaController {
   constructor(private readonly service: FisioterapiaService) {}
 
   @Post('plano/:doenteId')
-  @Roles('fisioterapeuta')
+  @Roles('tecnico_saude')
   criarPlano(@Param('doenteId') doenteId: string, @Body() dto: any, @Request() req: any) {
     return this.service.criarPlano(doenteId, dto, req.user.sub);
   }
@@ -21,13 +21,13 @@ export class FisioterapiaController {
   }
 
   @Post('sessao')
-  @Roles('fisioterapeuta')
+  @Roles('tecnico_saude')
   agendarSessao(@Body() dto: any, @Request() req: any) {
     return this.service.agendarSessao(dto, req.user.sub);
   }
 
   @Patch('sessao/:id/realizar')
-  @Roles('fisioterapeuta')
+  @Roles('tecnico_saude')
   realizarSessao(@Param('id') id: string, @Body() dto: any) {
     return this.service.realizarSessao(id, dto);
   }

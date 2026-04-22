@@ -10,17 +10,31 @@ import { Utilizador } from '../lib/auth';
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe de Turno', chefe_enfermeiros: 'Chefe de Enfermeiros',
-  chefe_medicos: 'Chefe de Médicos', administrativo: 'Administrativo',
+  medico:        'Médico',
+  enfermeiro:    'Enfermeiro',
+  auxiliar:      'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde',
+  farmaceutico:  'Farmacêutico',
+  administrativo:'Administrativo',
+  operacional:   'Operacional',
+  ti:            'Tecnologias de Informação',
+  qualidade:     'Qualidade',
+  direcao:       'Direção',
 };
 const roleCor: Record<string, string> = {
-  enfermeiro: '#0d9488', auxiliar: '#64748b', medico: '#7c3aed',
-  chefe_turno: '#d97706', chefe_enfermeiros: '#2563eb',
-  chefe_medicos: '#9333ea', administrativo: '#ec4899',
+  medico:        '#7c3aed',
+  enfermeiro:    '#0d9488',
+  auxiliar:      '#64748b',
+  tecnico_saude: '#0ea5e9',
+  farmaceutico:  '#059669',
+  administrativo:'#ec4899',
+  operacional:   '#f59e0b',
+  ti:            '#2563eb',
+  qualidade:     '#6366f1',
+  direcao:       '#dc2626',
 };
 
-const roles = ['enfermeiro', 'auxiliar', 'medico', 'chefe_enfermeiros', 'chefe_medicos', 'administrativo'];
+const roles = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico', 'administrativo', 'operacional', 'ti', 'qualidade', 'direcao'];
 
 export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
   const [utilizadores, setUtilizadores] = useState<any[]>([]);

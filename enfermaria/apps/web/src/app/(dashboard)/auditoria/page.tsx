@@ -36,13 +36,16 @@ interface UtilizadorOpcao {
 }
 
 const roleLabel: Record<string, string> = {
-  enfermeiro:        'Enfermeiro',
-  auxiliar:          'Auxiliar',
-  medico:            'Médico',
-  chefe_turno:       'Chefe de Turno',
-  chefe_enfermeiros: 'Chefe de Enfermeiros',
-  chefe_medicos:     'Chefe de Médicos',
-  administrativo:    'Administrativo',
+  medico:        'Médico',
+  enfermeiro:    'Enfermeiro',
+  auxiliar:      'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde',
+  farmaceutico:  'Farmacêutico',
+  administrativo:'Administrativo',
+  operacional:   'Operacional',
+  ti:            'Tecnologias de Informação',
+  qualidade:     'Qualidade',
+  direcao:       'Direção',
 };
 
 function formatarData(iso: string) {
@@ -88,11 +91,7 @@ export default function AuditoriaPagina() {
   const [filtroDe, setFiltroDe] = useState('');
   const [filtroAte, setFiltroAte] = useState('');
 
-  const ROLES_AUDITORIA = [
-    'administrativo', 'it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst',
-    'controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo',
-    'diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh',
-  ];
+  const ROLES_AUDITORIA = ['ti', 'qualidade', 'direcao', 'administrativo'];
 
   useEffect(() => {
     if (!authLoading && utilizador && !ROLES_AUDITORIA.includes(utilizador.role)) {

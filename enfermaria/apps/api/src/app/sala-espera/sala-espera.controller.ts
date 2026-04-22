@@ -20,19 +20,19 @@ export class SalaEsperaController {
   }
 
   @Post()
-  @Roles('administrativo', 'rececionista', 'chefe_turno', 'auxiliar_saude')
+  @Roles('administrativo', 'auxiliar')
   registar(@Body() dto: any, @Request() req: any) {
     return this.service.registar(dto, req.user.sub);
   }
 
   @Patch(':id/chamar')
-  @Roles('medico', 'medico_especialista', 'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista')
+  @Roles('medico', 'enfermeiro')
   chamar(@Param('id') id: string, @Request() req: any) {
     return this.service.chamar(id, req.user.sub);
   }
 
   @Patch(':id/concluir')
-  @Roles('medico', 'medico_especialista', 'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'administrativo', 'rececionista')
+  @Roles('medico', 'enfermeiro', 'administrativo')
   concluir(@Param('id') id: string, @Body('estado') estado: 'atendido' | 'desistiu' | 'ausente') {
     return this.service.concluir(id, estado);
   }

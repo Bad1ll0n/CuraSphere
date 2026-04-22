@@ -35,7 +35,7 @@ const ACOES_TI: Record<string, { label: string; proximo: string; cor: string }[]
   fechado:    [],
 };
 
-const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
+// role === 'ti' check used inline
 
 interface Incidente {
   id: string; titulo: string; descricao: string; tipo: string;
@@ -121,7 +121,7 @@ export default function IncidentesTIPage() {
     finally { setAtualizando(null); }
   };
 
-  const eTI = utilizador && ROLES_TI.includes(utilizador.role);
+  const eTI = utilizador?.role === 'ti';
 
   const visiveis = incidentes.filter(i => {
     if (filtroEstado && i.estado !== filtroEstado) return false;

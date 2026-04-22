@@ -32,7 +32,10 @@ export default function TrocasScreen({ utilizador, onVoltar }: Props) {
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState('');
 
-  const isChefe = utilizador.role === 'chefe_enfermeiros';
+  // Chefe é determinado pelo servidor via ordemExperiencia no turno
+  const isChefe = pedidos.some(
+    (p: any) => p.estado === 'pendente_chefe' && p.solicitante.id !== utilizador.id && p.destinatario.id !== utilizador.id
+  );
 
   const carregar = async () => {
     try {

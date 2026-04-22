@@ -81,7 +81,7 @@ export default function UrgenciaPage() {
   const ORDEM_CORES = ['vermelho', 'laranja', 'amarelo', 'verde', 'azul'];
   const ativos = episodios.filter(e => !['alta_urgencia', 'internado', 'transferido'].includes(e.estadoEpisodio));
 
-  const podeRegistar = ['triador', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador?.role ?? '');
+  const podeRegistar = ['enfermeiro'].includes(utilizador?.role ?? '');
 
   return (
     <div style={{ padding: '32px 40px' }}>

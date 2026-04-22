@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Role, SubRole, Servico } from '../common/enums';
+import { Servico } from '../common/enums';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class UtilizadoresService {
     numeroFuncionario: string;
     nome: string;
     password: string;
-    role: Role;
-    subRole?: SubRole;
+    role: string;
+    subRole?: string;
     servico?: Servico;
     ordemExperiencia?: number;
   }) {
@@ -53,7 +53,7 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async listar(role?: Role, roles?: Role[]) {
+  async listar(role?: string, roles?: string[]) {
     let whereRole: any = {};
     if (roles && roles.length > 0) whereRole = { role: { in: roles } };
     else if (role) whereRole = { role };
@@ -97,7 +97,7 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: Role; subRole?: SubRole | null; servico?: Servico; equipa?: string }) {
+  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string }) {
     await this.buscarPorId(id);
     return this.prisma.utilizador.update({
       where: { id },

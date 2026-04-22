@@ -10,7 +10,7 @@ export class ConsultasController {
   constructor(private readonly service: ConsultasService) {}
 
   @Post()
-  @Roles('secretaria', 'medico', 'chefe_medicos', 'administrativo')
+  @Roles('medico', 'administrativo')
   agendar(@Body() dto: any, @Request() req: any) {
     return this.service.agendar({ medicoId: req.user.sub, ...dto });
   }
@@ -26,13 +26,13 @@ export class ConsultasController {
   }
 
   @Patch(':id/realizar')
-  @Roles('medico', 'chefe_medicos')
+  @Roles('medico')
   realizar(@Param('id') id: string, @Body() dto: any) {
     return this.service.realizar(id, dto);
   }
 
   @Patch(':id/estado')
-  @Roles('secretaria', 'medico', 'chefe_medicos', 'administrativo')
+  @Roles('medico', 'administrativo')
   atualizarEstado(@Param('id') id: string, @Body('estado') estado: string) {
     return this.service.atualizarEstado(id, estado);
   }

@@ -40,6 +40,7 @@ import { DispositivosInvasivosModule } from './dispositivos-invasivos/dispositiv
 import { SalaEsperaModule } from './sala-espera/sala-espera.module';
 import { IncidentesTIModule } from './incidentes-ti/incidentes-ti.module';
 import { PedidosTIModule } from './pedidos-ti/pedidos-ti.module';
+import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { PedidosTIModule } from './pedidos-ti/pedidos-ti.module';
     SalaEsperaModule,
     IncidentesTIModule,
     PedidosTIModule,
+    ConfiguracoesModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

@@ -169,8 +169,8 @@ export default function BlocoPage() {
     } finally { setEnviando(false); }
   };
 
-  const podeAgendar = ['cirurgiao', 'chefe_turno', 'administrativo'].includes(utilizador?.role ?? '');
-  const podeChecklist = ['cirurgiao', 'anestesista', 'enfermeiro', 'enf_bloco', 'instrumentista'].includes(utilizador?.role ?? '');
+  const podeAgendar = ['medico', 'administrativo'].includes(utilizador?.role ?? '');
+  const podeChecklist = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
   const salas = [...new Set(cirurgias.map(c => c.sala))].sort();
 
   const corFase = (fase: Fase) => {

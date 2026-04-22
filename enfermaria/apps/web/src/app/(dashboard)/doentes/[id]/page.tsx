@@ -82,8 +82,10 @@ const prioridadeLabel: Record<string, string> = {
 };
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros', administrativo: 'Administrativo',
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde', farmaceutico: 'Farmacêutico',
+  administrativo: 'Administrativo', operacional: 'Operacional',
+  ti: 'TI', qualidade: 'Qualidade', direcao: 'Direção',
 };
 
 // Escalas clínicas — configuração de itens, cálculo e classificação
@@ -428,21 +430,21 @@ export default function DoenteDetalhe() {
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
 
-  const podeAlterarEstado = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
-  const podeDarAlta = ['administrativo', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
-  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
-  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'auxiliar'].includes(utilizador?.role ?? '');
-  const podePrescreveMed = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '');
+  const podeAlterarEstado = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
+  const podeDarAlta = ['administrativo', 'medico'].includes(utilizador?.role ?? '');
+  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
+  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
+  const podePrescreveMed = utilizador?.role === 'medico';
 
   // Grupo de role: médicos vêem só médicos; enfermagem vê só enfermagem
-  const grupoMedico = ['medico', 'chefe_medicos'];
-  const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
+  const grupoMedico = ['medico'];
+  const grupoEnfermagem = ['enfermeiro', 'auxiliar'];
   const meuGrupo = grupoMedico.includes(utilizador?.role ?? '') ? grupoMedico : grupoEnfermagem;
 
   // Chave do grupo para filtrar tarefas por grupoResponsavel
   const meuGrupoChave = (() => {
     const role = utilizador?.role ?? '';
-    if (['medico', 'chefe_medicos'].includes(role)) return 'medico';
+    if (role === 'medico') return 'medico';
     if (role === 'auxiliar') return 'auxiliar';
     return 'enfermeiro';
   })();
@@ -450,7 +452,7 @@ export default function DoenteDetalhe() {
   // Grupos que cada role pode escolher ao criar tarefa
   const gruposDisponiveis = (() => {
     const role = utilizador?.role ?? '';
-    if (['medico', 'chefe_medicos'].includes(role)) return ['medico', 'enfermeiro'];
+    if (role === 'medico') return ['medico', 'enfermeiro'];
     if (role === 'auxiliar') return ['auxiliar'];
     return ['enfermeiro', 'auxiliar'];
   })();
@@ -971,7 +973,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Informação Clínica</span>
             </div>
-            {['medico', 'chefe_medicos', 'chefe_turno', 'chefe_enfermeiros', 'administrativo'].includes(utilizador?.role ?? '') && (
+            {['medico', 'enfermeiro', 'administrativo'].includes(utilizador?.role ?? '') && (
               <button onClick={abrirEditarDoente}
                 className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                 style={{ padding: '4px 8px' }}>
@@ -1340,7 +1342,7 @@ export default function DoenteDetalhe() {
             </svg>
           </div>
           <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
-          {['enfermeiro', 'auxiliar', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '') && (
+          {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
             <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setModalSinalVital(true); }} />
           )}
         </div>
@@ -1418,7 +1420,7 @@ export default function DoenteDetalhe() {
           moderado:   { cor: 'bg-yellow-100 text-yellow-700', label: 'Moderado' },
           baixo:      { cor: 'bg-green-100 text-green-700',  label: 'Baixo' },
         };
-        const podeAvaliar = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
+        const podeAvaliar = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
         return (
           <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
             {(['braden', 'morse'] as const).map((tipo) => {
@@ -1483,8 +1485,8 @@ export default function DoenteDetalhe() {
           resultado_disponivel: { label: 'Resultado Disponível',  bg: 'bg-green-50',  text: 'text-green-700' },
           cancelado:            { label: 'Cancelado',             bg: 'bg-slate-100', text: 'text-slate-600' },
         };
-        const podeSolicitar = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '');
-        const podeRegistarResultado = ['medico', 'chefe_medicos', 'tecnico_farmacia', 'administrativo'].includes(utilizador?.role ?? '');
+        const podeSolicitar = utilizador?.role === 'medico';
+        const podeRegistarResultado = ['medico', 'tecnico_saude', 'administrativo'].includes(utilizador?.role ?? '');
 
         const solicitarExame = async () => {
           if (!exameForm.descricao.trim()) return;
@@ -1652,8 +1654,7 @@ export default function DoenteDetalhe() {
       {/* ── Notas Clínicas SOAP ── */}
       {(() => {
         const role = utilizador?.role ?? '';
-        const podeCriarNotaClinica = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista',
-          'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros'].includes(role);
+        const podeCriarNotaClinica = ['medico', 'enfermeiro'].includes(role);
         return (
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
             <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
@@ -1727,8 +1728,7 @@ export default function DoenteDetalhe() {
       {(() => {
         const role = utilizador?.role ?? '';
         const subRole = utilizador?.subRole ?? '';
-        const podeRegistarEscala = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor',
-          'chefe_enfermeiros', 'medico', 'medico_especialista', 'chefe_medicos'].includes(role);
+        const podeRegistarEscala = ['enfermeiro', 'medico'].includes(role);
 
         const escalasDisponiveis = (() => {
           if (['enf_uci'].includes(subRole)) return ['RASS', 'CPOT', 'SOFA'];
@@ -1805,8 +1805,8 @@ export default function DoenteDetalhe() {
       {/* ── Interconsultas ── */}
       {(() => {
         const role = utilizador?.role ?? '';
-        const podeCriarInterc = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'chefe_medicos'].includes(role);
-        const podeResponder = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'chefe_medicos'].includes(role);
+        const podeCriarInterc = role === 'medico';
+        const podeResponder = role === 'medico';
         const estadoCor: Record<string, string> = {
           pendente: 'bg-amber-50 text-amber-700',
           aceite: 'bg-blue-50 text-blue-700',
@@ -1872,10 +1872,9 @@ export default function DoenteDetalhe() {
       {/* ── Dispositivos Invasivos ── */}
       {(() => {
         const role = utilizador?.role ?? '';
-        const visivel = ['enfermeiro', 'enfermeiro_especialista', 'medico', 'medico_especialista',
-          'cirurgiao', 'anestesiologista', 'chefe_medicos', 'chefe_enfermeiros'].includes(role);
+        const visivel = ['enfermeiro', 'medico'].includes(role);
         if (!visivel) return null;
-        const podeRegistar = ['enfermeiro', 'enfermeiro_especialista', 'chefe_enfermeiros', 'medico', 'medico_especialista', 'cirurgiao', 'anestesiologista'].includes(role);
+        const podeRegistar = ['enfermeiro', 'medico'].includes(role);
 
         const TIPOS_DISP: Record<string, string> = {
           cateter_venoso_central: 'CVC', cateter_venoso_periferico: 'CVP', cateter_arterial: 'Cateter Arterial',

@@ -46,7 +46,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   const [refreshing, setRefreshing] = useState(false);
   const [doenteAberto, setDoenteAberto] = useState<string | null>(null);
 
-  const meuGrupoChave = ['medico', 'chefe_medicos'].includes(utilizador.role) ? 'medico'
+  const meuGrupoChave = utilizador.role === 'medico' ? 'medico'
     : utilizador.role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
 
   const carregar = async () => {

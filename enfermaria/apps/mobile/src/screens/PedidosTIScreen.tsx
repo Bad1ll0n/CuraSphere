@@ -32,7 +32,7 @@ const ESTADO_LABEL: Record<string, string> = {
 
 const ESTADOS_ACAO = ['pendente', 'em_curso', 'concluido', 'recusado'];
 
-const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
+// TI role check
 
 interface Pedido {
   id: string;
@@ -56,7 +56,7 @@ export default function PedidosTIScreen({ utilizador }: Props) {
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<'todos' | 'pendente' | 'em_curso' | 'concluido'>('todos');
 
-  const eTI = ROLES_TI.includes(utilizador.role);
+  const eTI = utilizador.role === 'ti';
 
   const carregar = async () => {
     try {

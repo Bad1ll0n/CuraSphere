@@ -4,13 +4,16 @@ import { logout, Utilizador } from '../lib/auth';
 import api from '../lib/api';
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro',
-  auxiliar: 'Auxiliar',
-  medico: 'Médico',
-  chefe_turno: 'Chefe de Turno',
-  chefe_enfermeiros: 'Chefe de Enfermeiros',
-  chefe_medicos: 'Chefe de Médicos',
-  administrativo: 'Administrativo',
+  medico:        'Médico',
+  enfermeiro:    'Enfermeiro',
+  auxiliar:      'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde',
+  farmaceutico:  'Farmacêutico',
+  administrativo:'Administrativo',
+  operacional:   'Operacional',
+  ti:            'Tecnologias de Informação',
+  qualidade:     'Qualidade',
+  direcao:       'Direção',
 };
 
 interface Props { utilizador: Utilizador; onLogout: () => void }

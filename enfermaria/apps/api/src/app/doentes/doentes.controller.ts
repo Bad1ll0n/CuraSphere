@@ -3,7 +3,7 @@ import { DoenteService } from './doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { Role, EstadoDoente } from '../common/enums';
+import { EstadoDoente } from '../common/enums';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -36,7 +36,7 @@ export class DoenteController {
     return this.doenteService.historico(id);
   }
 
-  @Roles(Role.administrativo, Role.chefe_enfermeiros, Role.chefe_turno)
+  @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
   admitir(@Body() body: {
     nome: string;
@@ -48,19 +48,19 @@ export class DoenteController {
     return this.doenteService.admitir({ ...body, administrativoAdmissaoId: req.user.sub });
   }
 
-  @Roles(Role.medico, Role.chefe_medicos, Role.chefe_turno, Role.chefe_enfermeiros, Role.administrativo)
+  @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
   editar(@Param('id') id: string, @Body() body: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
     return this.doenteService.editar(id, body);
   }
 
-  @Roles(Role.enfermeiro, Role.medico, Role.chefe_turno)
+  @Roles('enfermeiro', 'medico')
   @Patch(':id/estado')
   atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoDoente }) {
     return this.doenteService.atualizarEstado(id, body.estado);
   }
 
-  @Roles(Role.administrativo, Role.chefe_enfermeiros)
+  @Roles('administrativo', 'enfermeiro')
   @Patch(':id/alta')
   darAlta(@Param('id') id: string, @Request() req: any) {
     return this.doenteService.darAlta(id, req.user.sub);
@@ -129,7 +129,7 @@ export class DoenteController {
   }
 
   @Patch(':id/isolamento')
-  @Roles('medico', 'enfermeiro', 'chefe_turno', 'enf_uci')
+  @Roles('medico', 'enfermeiro')
   atualizarIsolamento(
     @Param('id') id: string,
     @Body('emIsolamento') emIsolamento: boolean,

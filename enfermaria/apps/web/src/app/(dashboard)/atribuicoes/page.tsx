@@ -53,12 +53,9 @@ const estadoLabel: Record<string, string> = {
 };
 
 const grupoRoles: Record<string, string[]> = {
-  medico:            ['medico', 'chefe_medicos'],
-  chefe_medicos:     ['medico', 'chefe_medicos'],
-  enfermeiro:        ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  chefe_turno:       ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  chefe_enfermeiros: ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  auxiliar:          ['auxiliar'],
+  medico:    ['medico'],
+  enfermeiro:['enfermeiro'],
+  auxiliar:  ['auxiliar'],
 };
 
 export default function AtribuicoesPage() {
@@ -69,7 +66,7 @@ export default function AtribuicoesPage() {
   const [loading, setLoading] = useState(true);
   const [salvando, setSalvando] = useState(false);
 
-  const meuGrupo = grupoRoles[utilizador?.role ?? ''] ?? ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'];
+  const meuGrupo = grupoRoles[utilizador?.role ?? ''] ?? ['enfermeiro'];
 
   // Encontra o turno do tipo correto para o grupo do utilizador
   const turnoDoGrupo = (lista: HorarioTurno[], tipo: string): HorarioTurno | undefined =>
@@ -107,8 +104,7 @@ export default function AtribuicoesPage() {
 
   const chefeDeTurno = (turno: HorarioTurno): Utilizador | null => {
     const doGrupo = turno.profissionais.filter((p) => meuGrupo.includes(p.utilizador.role));
-    // Prioridade: chefe_enfermeiros ou chefe_medicos; depois menor ordemExperiencia
-    const chefe = doGrupo.find((p) => ['chefe_enfermeiros', 'chefe_medicos'].includes(p.utilizador.role));
+    const chefe = doGrupo.find((p) => p.utilizador.id === (turno as any).chefeTurnoId);
     if (chefe) return chefe.utilizador;
     return doGrupo.sort((a, b) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999))[0]?.utilizador ?? null;
   };

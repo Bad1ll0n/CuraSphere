@@ -19,12 +19,9 @@ const estadoLabel: Record<string, string> = {
 };
 
 const grupoRoles: Record<string, string[]> = {
-  medico:            ['medico', 'chefe_medicos'],
-  chefe_medicos:     ['medico', 'chefe_medicos'],
-  enfermeiro:        ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  chefe_turno:       ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  chefe_enfermeiros: ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'],
-  auxiliar:          ['auxiliar'],
+  medico:    ['medico'],
+  enfermeiro:['enfermeiro'],
+  auxiliar:  ['auxiliar'],
 };
 
 export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
@@ -38,7 +35,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
   // Modal: escolher profissional para doente
   const [modalDoente, setModalDoente] = useState<any>(null);
 
-  const meuGrupo = grupoRoles[utilizador.role] ?? ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'];
+  const meuGrupo = grupoRoles[utilizador.role] ?? ['enfermeiro'];
 
   const turnoDoGrupo = (lista: any[], tipo: string) =>
     lista.find((t) => t.tipo === tipo && t.profissionais.some((p: any) => meuGrupo.includes(p.utilizador.role)))
@@ -46,7 +43,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
 
   const chefeDeTurno = (turno: any): any => {
     const doGrupo = turno.profissionais.filter((p: any) => meuGrupo.includes(p.utilizador.role));
-    const chefe = doGrupo.find((p: any) => ['chefe_enfermeiros', 'chefe_medicos'].includes(p.utilizador.role));
+    const chefe = doGrupo.find((p: any) => p.utilizador.id === turno.chefeTurnoId);
     if (chefe) return chefe.utilizador;
     return doGrupo.sort((a: any, b: any) => (a.utilizador.ordemExperiencia ?? 999) - (b.utilizador.ordemExperiencia ?? 999))[0]?.utilizador ?? null;
   };

@@ -17,27 +17,23 @@ import PedidosTIScreen from './PedidosTIScreen';
 
 type SubTela = null | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti';
 
-const ROLES_MEDICO = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'radiologista', 'patologista', 'chefe_medicos', 'triador', 'anestesista'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude', 'instrumentista', 'auxiliar'];
-const ROLES_CLINICO_OUTRO = ['fisioterapeuta', 'terapeuta_fala', 'nutricionista', 'psicologo', 'tecnico'];
-const ROLES_FARMACIA = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
-const ROLES_ADMIN = ['rececionista', 'secretario_clinico', 'assistente_administrativo', 'gestor_agendamento', 'administrativo', 'secretaria'];
-const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
-const ROLES_QUALIDADE = ['controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo'];
-const ROLES_DIRECAO = ['diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh'];
-const ROLES_CLINICO = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA];
+const ROLES_MEDICO     = ['medico'];
+const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
+const ROLES_CLINICO    = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
+const ROLES_ADMIN      = ['administrativo'];
+const ROLES_QUALIDADE  = ['qualidade'];
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe de Turno', chefe_enfermeiros: 'Chefe de Enfermeiros',
-  chefe_medicos: 'Chefe de Médicos', administrativo: 'Administrativo',
-  it_admin: 'IT Admin', diretor_ti: 'Diretor TI', analista_sistemas: 'Analista de Sistemas',
-  dba: 'DBA', ciberseguranca: 'Cibersegurança', bi_analyst: 'BI Analyst',
-  controlo_infecao: 'Controlo de Infeção', gestor_qualidade: 'Gestor Qualidade',
-  compliance_officer: 'Compliance', auditor_interno: 'Auditor', dpo: 'DPO',
-  diretor_geral: 'Diretor Geral', diretor_clinico: 'Diretor Clínico',
-  diretor_enfermagem: 'Diretor Enfermagem', diretor_operacional: 'Diretor Operacional',
-  rececionista: 'Rececionista', secretario_clinico: 'Secretário Clínico',
+  medico:       'Médico',
+  enfermeiro:   'Enfermeiro',
+  auxiliar:     'Auxiliar',
+  tecnico_saude:'Técnico de Saúde',
+  farmaceutico: 'Farmacêutico',
+  administrativo:'Administrativo',
+  operacional:  'Operacional',
+  ti:           'Tecnologias de Informação',
+  qualidade:    'Qualidade',
+  direcao:      'Direção',
 };
 
 interface Props { utilizador: Utilizador; onLogout: () => void }
@@ -73,14 +69,15 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   };
 
   const role = utilizador.role;
+  const subRole = utilizador.subRole;
   const eClinical = ROLES_CLINICO.includes(role);
   const eMedico = ROLES_MEDICO.includes(role);
   const eEnfermagem = ROLES_ENFERMAGEM.includes(role);
-  const eTI = ROLES_TI.includes(role);
+  const eTI = role === 'ti';
 
   const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean }[] = [
     // — TI
-    { key: 'utilizadores', icon: 'people-outline',          cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',         visivel: role === 'it_admin' },
+    { key: 'utilizadores', icon: 'people-outline',          cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',         visivel: eTI && subRole === 'it_admin' },
     { key: 'auditoria',    icon: 'document-text-outline',   cor: '#64748b', titulo: 'Auditoria',         sub: 'Logs de acesso e ações',          visivel: eTI || ROLES_QUALIDADE.includes(role) },
     // — Clínico
     { key: 'turno',        icon: 'time-outline',            cor: '#8b5cf6', titulo: 'Turno',             sub: 'Doentes e tarefas do meu turno',  visivel: eClinical },

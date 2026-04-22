@@ -70,8 +70,8 @@ export default function SalaEsperaPage() {
 
   useEffect(() => { carregar(); }, [carregar]);
 
-  const podeRegistar = ['administrativo', 'rececionista', 'chefe_turno', 'auxiliar_saude', 'enfermeiro'].includes(utilizador?.role ?? '');
-  const podeChamar   = ['medico', 'medico_especialista', 'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista'].includes(utilizador?.role ?? '');
+  const podeRegistar = ['administrativo', 'auxiliar', 'enfermeiro'].includes(utilizador?.role ?? '');
+  const podeChamar   = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
 
   const registar = async () => {
     if (!form.nomeDoente.trim() || !form.motivo.trim()) return;

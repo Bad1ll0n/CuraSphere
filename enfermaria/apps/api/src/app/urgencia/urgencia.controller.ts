@@ -10,7 +10,7 @@ export class UrgenciaController {
   constructor(private readonly service: UrgenciaService) {}
 
   @Post('episodio')
-  @Roles('triador', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
+  @Roles('enfermeiro')
   registarEntrada(@Body() dto: any, @Request() req: any) {
     return this.service.registarEntrada(dto, req.user.sub);
   }
@@ -26,13 +26,13 @@ export class UrgenciaController {
   }
 
   @Patch(':id/estado')
-  @Roles('triador', 'enfermeiro', 'medico', 'chefe_enfermeiros', 'chefe_medicos', 'chefe_turno', 'administrativo')
+  @Roles('enfermeiro', 'medico', 'administrativo')
   atualizarEstado(@Param('id') id: string, @Body('estado') estado: string) {
     return this.service.atualizarEstado(id, estado);
   }
 
   @Patch(':id/atribuir-medico')
-  @Roles('medico', 'chefe_medicos', 'chefe_turno', 'administrativo')
+  @Roles('medico', 'administrativo')
   atribuirMedico(@Param('id') id: string, @Body('medicoResponsavelId') medicoId: string) {
     return this.service.atribuirMedico(id, medicoId);
   }

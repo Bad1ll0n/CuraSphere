@@ -15,7 +15,7 @@ export class ComunicacaoController {
   }
 
   @UseGuards(RolesGuard)
-  @Roles('chefe_enfermeiros', 'chefe_medicos', 'chefe_turno', 'administrativo')
+  @Roles('enfermeiro', 'medico', 'administrativo', 'direcao')
   @Post('anuncios')
   publicarAnuncio(@Body() dto: any, @Request() req: any) {
     return this.service.publicarAnuncio(dto, req.user.sub);

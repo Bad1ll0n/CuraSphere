@@ -22,27 +22,10 @@ const hoje = new Date().toLocaleDateString('pt-PT', { weekday: 'long', day: 'num
 const hojeISO = new Date().toISOString().split('T')[0];
 
 const roleLabel: Record<string, string> = {
-  diretor_geral: 'Diretor Geral', diretor_clinico: 'Diretor Clínico', diretor_enfermagem: 'Diretor de Enfermagem',
-  diretor_financeiro: 'Diretor Financeiro', diretor_operacional: 'Diretor Operacional', diretor_rh: 'Diretor de RH',
-  diretor_ti: 'Diretor de TI', diretor_qualidade: 'Diretor de Qualidade',
-  medico: 'Médico', medico_especialista: 'Médico Especialista', cirurgiao: 'Cirurgião',
-  anestesiologista: 'Anestesiologista', radiologista: 'Radiologista', patologista: 'Patologista',
-  enfermeiro: 'Enfermeiro', enfermeiro_especialista: 'Enfermeiro Especialista', enfermeiro_gestor: 'Enfermeiro Gestor',
-  auxiliar_saude: 'Auxiliar de Saúde', tecnico: 'Técnico', fisioterapeuta: 'Fisioterapeuta',
-  terapeuta_fala: 'Terapeuta da Fala', nutricionista: 'Nutricionista', psicologo: 'Psicólogo',
-  farmaceutico: 'Farmacêutico', farmaceutico_clinico: 'Farmacêutico Clínico', tecnico_farmacia: 'Técnico de Farmácia',
-  rececionista: 'Rececionista', secretario_clinico: 'Secretário Clínico', assistente_administrativo: 'Assistente Administrativo',
-  gestor_agendamento: 'Gestor de Agendamento', faturacao: 'Faturação', rh: 'RH', compras: 'Compras',
-  maqueiro: 'Maqueiro', assistente_operacional: 'Assistente Operacional', esterilizacao: 'Esterilização',
-  limpeza: 'Limpeza', lavandaria: 'Lavandaria', engenheiro_biomedico: 'Engenheiro Biomédico',
-  tecnico_manutencao: 'Técnico de Manutenção', seguranca: 'Segurança', sst: 'SST',
-  it_admin: 'IT Admin', analista_sistemas: 'Analista de Sistemas', dba: 'DBA',
-  ciberseguranca: 'Cibersegurança', bi_analyst: 'BI Analyst', dpo: 'DPO',
-  gestor_qualidade: 'Gestor de Qualidade', compliance_officer: 'Compliance Officer',
-  controlo_infecao: 'Controlo de Infeção', auditor_interno: 'Auditor Interno',
-  auxiliar: 'Auxiliar', administrativo: 'Administrativo', chefe_turno: 'Chefe de Turno',
-  chefe_enfermeiros: 'Chefe de Enfermeiros', chefe_medicos: 'Chefe de Médicos',
-  triador: 'Triador', anestesista: 'Anestesista', instrumentista: 'Instrumentista', secretaria: 'Secretária',
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde', farmaceutico: 'Farmacêutico',
+  administrativo: 'Administrativo', operacional: 'Operacional',
+  ti: 'TI', qualidade: 'Qualidade', direcao: 'Direção',
 };
 
 const subRoleLabel: Record<string, string> = {
@@ -176,7 +159,7 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
       api.get('/doentes?todos=true').catch(() => ({ data: [] })),
       api.get('/tarefas/minhas').catch(() => ({ data: [] })),
     ]).then(([d, t]) => {
-      setDoentes(d.data ?? []);
+      setDoentes(d.data?.data ?? []);
       setTarefas((t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'));
     }).finally(() => setLoading(false));
   }, []);
@@ -468,7 +451,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
       api.get('/turnos/ativo').catch(() => ({ data: null })),
       api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
     ]).then(([d, t, turnoR, msg]) => {
-      setDoentes(d.data ?? []);
+      setDoentes(d.data?.data ?? []);
       setTarefas((t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'));
       setTurno(turnoR.data);
       setMensagensNaoLidas(msg.data?.count ?? msg.data?.length ?? 0);
@@ -566,7 +549,7 @@ function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
       api.get('/trocas').catch(() => ({ data: [] })),
     ]).then(([o, d, a, t]) => {
       setOcupacao(o.data);
-      setDoentes(d.data ?? []);
+      setDoentes(d.data?.data ?? []);
       setAnalytics(a.data);
       setTrocas((t.data ?? []).filter((x: any) => x.estado === 'pendente_chefe'));
     }).finally(() => setLoading(false));
@@ -1022,7 +1005,7 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
       api.get('/dashboard/analytics').catch(() => ({ data: null })),
     ]).then(([o, d, u, c, co, fa, a]) => {
       setOcupacao(o.data);
-      setDoentes(d.data ?? []);
+      setDoentes(d.data?.data ?? []);
       setUrgencia(u.data);
       setCirurgias(c.data ?? []);
       const hoje = new Date().toDateString();
@@ -1146,13 +1129,13 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const ROLES_ANALYTICS = ['administrativo', 'chefe_enfermeiros', 'chefe_turno', 'chefe_medicos', 'assistente_administrativo'];
+  const ROLES_ANALYTICS = ['administrativo', 'enfermeiro', 'medico', 'direcao'];
 
   useEffect(() => {
     Promise.all([
       api.get('/camas/ocupacao').catch(() => ({ data: null })),
       api.get('/doentes?todos=true').catch(() => ({ data: [] })),
-    ]).then(([o, d]) => { setOcupacao(o.data); setDoentes(d.data ?? []); }).finally(() => setLoading(false));
+    ]).then(([o, d]) => { setOcupacao(o.data); setDoentes(d.data?.data ?? []); }).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -1317,19 +1300,9 @@ function Spinner() {
 
 // ─── Router principal ─────────────────────────────────────────────────────────
 
-const ROLES_MEDICO = ['cardiologista','urologista','ortopedista','neurologista','ginecologista','pediatra','oncologista','clinico_geral','medico','medico_especialista'];
-const ROLES_BLOCO = ['cirurgiao_geral','medico_anestesia','cirurgiao','anestesiologista','anestesista'];
-const ROLES_IMAG = ['medico_imagem','anatomia_patologica','tecnico_radiologia','tecnico_tac_rm','tecnico_analises_clinicas','tecnico_cardiopneumologia','radiologista','patologista'];
-const ROLES_ENF = ['generalista','enf_uci','enf_bloco','enf_obstetricia','enf_pediatria','enfermeiro','enfermeiro_especialista'];
-const ROLES_CHEFE_ENF = ['supervisor_enfermagem','chefe_turno','chefe_enfermeiros','enfermeiro_gestor','chefe_medicos'];
-const ROLES_REAB = ['reabilitacao_fisica','reabilitacao_fala','nutricao_clinica','psicologia_clinica','fisioterapeuta','terapeuta_fala','nutricionista','psicologo'];
-const ROLES_FARM = ['farmaceutico_hospitalar','farmaceutico_oncologico','tecnico_farmacia_assist','farmaceutico','farmaceutico_clinico','tecnico_farmacia'];
-const ROLES_RECEC = ['front_desk','secretariado','scheduling','rececionista','secretario_clinico','gestor_agendamento','secretaria'];
-const ROLES_TRANSP = ['transporte_interno','maqueiro'];
-const ROLES_TI = ['sysadmin','database_admin','security_officer','it_admin','analista_sistemas','dba','ciberseguranca','bi_analyst','cio'];
-const ROLES_QUAL = ['quality_manager','compliance','infection_control','internal_audit','dpo_role','gestor_qualidade','compliance_officer','controlo_infecao','auditor_interno','dpo'];
-const ROLES_EXEC = ['ceo_hospitalar','cfo','coo','hr_director','compliance_director','diretor_medico','head_nurse',
-  'diretor_geral','diretor_clinico','diretor_financeiro','diretor_operacional','diretor_rh','diretor_ti','diretor_qualidade','diretor_enfermagem'];
+const SUBROLES_BLOCO = ['cirurgiao_geral', 'medico_anestesia'];
+const SUBROLES_IMAG  = ['medico_imagem', 'anatomia_patologica'];
+const SUBROLES_SUPERVISOR = ['supervisor_enfermagem', 'medico_gestor'];
 
 export default function DashboardPage() {
   const { utilizador, loading } = useAuth();
@@ -1340,22 +1313,28 @@ export default function DashboardPage() {
     </div>
   );
 
-  const sr = utilizador.subRole ?? utilizador.role;
+  const role = utilizador.role;
+  const subRole = utilizador.subRole ?? '';
   const props = { utilizador };
 
   const renderVista = () => {
-    if (ROLES_MEDICO.includes(sr))     return <DashboardMedico {...props} />;
-    if (ROLES_BLOCO.includes(sr))      return <DashboardBloco {...props} />;
-    if (ROLES_IMAG.includes(sr))       return <DashboardImagiologia {...props} />;
-    if (ROLES_ENF.includes(sr))        return <DashboardEnfermeiro {...props} />;
-    if (ROLES_CHEFE_ENF.includes(sr))  return <DashboardChefeEnfermagem {...props} />;
-    if (ROLES_REAB.includes(sr))       return <DashboardReabilitacao {...props} />;
-    if (ROLES_FARM.includes(sr))       return <DashboardFarmacia {...props} />;
-    if (ROLES_RECEC.includes(sr))      return <DashboardRececao {...props} />;
-    if (ROLES_TRANSP.includes(sr))     return <DashboardTransporte {...props} />;
-    if (ROLES_TI.includes(sr))         return <DashboardTI {...props} />;
-    if (ROLES_QUAL.includes(sr))       return <DashboardQualidade {...props} />;
-    if (ROLES_EXEC.includes(sr))       return <DashboardExecutivo {...props} />;
+    if (role === 'medico') {
+      if (SUBROLES_BLOCO.includes(subRole))  return <DashboardBloco {...props} />;
+      if (SUBROLES_IMAG.includes(subRole))   return <DashboardImagiologia {...props} />;
+      return <DashboardMedico {...props} />;
+    }
+    if (role === 'enfermeiro') {
+      if (SUBROLES_SUPERVISOR.includes(subRole)) return <DashboardChefeEnfermagem {...props} />;
+      return <DashboardEnfermeiro {...props} />;
+    }
+    if (role === 'auxiliar')      return <DashboardEnfermeiro {...props} />;
+    if (role === 'tecnico_saude') return <DashboardReabilitacao {...props} />;
+    if (role === 'farmaceutico')  return <DashboardFarmacia {...props} />;
+    if (role === 'administrativo')return <DashboardRececao {...props} />;
+    if (role === 'operacional')   return <DashboardTransporte {...props} />;
+    if (role === 'ti')            return <DashboardTI {...props} />;
+    if (role === 'qualidade')     return <DashboardQualidade {...props} />;
+    if (role === 'direcao')       return <DashboardExecutivo {...props} />;
     return <DashboardGenerico {...props} />;
   };
 

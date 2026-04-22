@@ -6,6 +6,7 @@ export interface Utilizador {
   nome: string;
   numeroFuncionario: string;
   role: string;
+  subRole?: string | null;
 }
 
 export async function login(numeroFuncionario: string, password: string): Promise<Utilizador> {

@@ -118,20 +118,20 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
 
   const role = utilizador.role;
 
-  const meuGrupoChave = ['medico', 'chefe_medicos'].includes(role) ? 'medico'
+  const meuGrupoChave = role === 'medico' ? 'medico'
     : role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
 
-  const podePrescreveMed = ['medico', 'chefe_medicos'].includes(role);
-  const podeRegistarMed = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'].includes(role);
-  const podeAlterarEstado = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
-  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
-  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'auxiliar'].includes(role);
-  const podeRegistarVitais = ['enfermeiro', 'auxiliar', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'].includes(role);
-  const podeDarAlta = ['medico', 'chefe_medicos', 'chefe_turno'].includes(role);
-  const podeEditarDoente = ['medico', 'chefe_medicos', 'chefe_turno', 'chefe_enfermeiros', 'administrativo'].includes(role);
+  const podePrescreveMed = role === 'medico';
+  const podeRegistarMed = ['enfermeiro', 'auxiliar'].includes(role);
+  const podeAlterarEstado = ['enfermeiro', 'medico'].includes(role);
+  const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(role);
+  const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(role);
+  const podeRegistarVitais = ['enfermeiro', 'auxiliar', 'medico'].includes(role);
+  const podeDarAlta = role === 'medico';
+  const podeEditarDoente = ['medico', 'enfermeiro', 'administrativo'].includes(role);
 
   const gruposDisponiveis = (() => {
-    if (['medico', 'chefe_medicos'].includes(role)) return ['medico', 'enfermeiro'];
+    if (role === 'medico') return ['medico', 'enfermeiro'];
     if (role === 'auxiliar') return ['auxiliar'];
     return ['enfermeiro', 'auxiliar'];
   })();
@@ -543,8 +543,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
                   const todos = Array.from(map.values());
                   const turnoLabel = (tipo: string) => tipo === 'manha' ? 'Manhã' : tipo === 'tarde' ? 'Tarde' : 'Noite';
                   const dataLabel = (data: string) => new Date(data).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
-                  const medicos = todos.filter((a: any) => ['medico', 'chefe_medicos'].includes(a.utilizador.role));
-                  const enfermagem = todos.filter((a: any) => !['medico', 'chefe_medicos'].includes(a.utilizador.role));
+                  const medicos = todos.filter((a: any) => a.utilizador.role === 'medico');
+                  const enfermagem = todos.filter((a: any) => a.utilizador.role !== 'medico');
 
                   const renderLinha = (a: any) => (
                     <View key={a.utilizador.id} style={s.atribLinha}>

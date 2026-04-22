@@ -3,7 +3,7 @@ import { TurnosService } from './turnos.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { Role, TipoTurno } from '../common/enums';
+import { TipoTurno } from '../common/enums';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -30,7 +30,7 @@ export class TurnosController {
     return this.turnosService.confirmarPassagemTurno(req.user.sub);
   }
 
-  @Roles(Role.chefe_turno, Role.chefe_enfermeiros)
+  @Roles('enfermeiro')
   @Post(':id/atribuir-doentes')
   atribuirDoentes(
     @Param('id') turnoId: string,
@@ -47,7 +47,7 @@ export class TurnosController {
     return this.turnosService.adicionarNota({ ...body, autorId: req.user.sub });
   }
 
-  @Roles(Role.chefe_enfermeiros, Role.administrativo)
+  @Roles('enfermeiro', 'administrativo')
   @Post()
   criar(@Body() body: {
     tipo: TipoTurno;

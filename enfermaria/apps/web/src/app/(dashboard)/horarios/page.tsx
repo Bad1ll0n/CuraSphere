@@ -34,9 +34,10 @@ const tipoCor: Record<string, { pill: string; cal: string }> = {
 };
 
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros',
-  chefe_medicos: 'Chefe Médicos', administrativo: 'Administrativo',
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde', farmaceutico: 'Farmacêutico',
+  administrativo: 'Administrativo', operacional: 'Operacional',
+  ti: 'TI', qualidade: 'Qualidade', direcao: 'Direção',
 };
 
 const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -68,13 +69,12 @@ export default function HorariosPagina() {
   const [salvandoEdit, setSalvandoEdit] = useState(false);
   const [erroEdit, setErroEdit] = useState('');
 
-  const isChefe = ['chefe_enfermeiros', 'chefe_medicos'].includes(utilizador?.role ?? '');
-  const verApenasSeus = ['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '');
+  const isChefe = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
+  const verApenasSeus = ['enfermeiro', 'auxiliar', 'medico', 'tecnico_saude', 'farmaceutico'].includes(utilizador?.role ?? '');
 
-  // Grupo de roles visíveis consoante o tipo de utilizador
-  const grupoDoChefe = ['medico', 'chefe_medicos'].includes(utilizador?.role ?? '')
-    ? ['medico', 'chefe_medicos']
-    : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
+  const grupoDoChefe = utilizador?.role === 'medico'
+    ? ['medico']
+    : ['enfermeiro', 'auxiliar'];
 
   const carregar = async () => {
     setLoading(true);
@@ -560,7 +560,7 @@ export default function HorariosPagina() {
               {chefe && (
                 <div style={{ marginBottom: '20px' }}>
                   <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
-                    {utilizador?.role === 'chefe_medicos' ? 'Chefe de Médicos' : 'Chefe de Turno'}
+                    Chefe de Turno
                   </p>
                   <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl" style={{ padding: '12px 16px' }}>
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
@@ -569,7 +569,7 @@ export default function HorariosPagina() {
                     <div>
                       <p className="text-sm font-semibold text-slate-800">{chefe.nome}</p>
                       <p className="text-xs text-blue-600 font-medium" style={{ marginTop: '2px' }}>
-                        {utilizador?.role === 'chefe_medicos' ? 'Chefe de Médicos' : 'Chefe de Turno'}
+                        Chefe de Turno
                       </p>
                     </div>
                     {chefe.id === utilizador?.id && (
@@ -583,7 +583,7 @@ export default function HorariosPagina() {
               {outros.length > 0 && (
                 <div style={{ marginBottom: '24px' }}>
                   <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
-                    {utilizador?.role === 'chefe_medicos' ? 'Médicos' : 'Enfermeiros'}
+                    {utilizador?.role === 'medico' ? 'Médicos' : 'Enfermeiros'}
                   </p>
                   <div className="flex flex-col gap-2">
                     {outros.map((p) => {

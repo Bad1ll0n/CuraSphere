@@ -67,7 +67,7 @@ export default function FarmaciaPage() {
   const [modalRejeitar, setModalRejeitar] = useState<string | null>(null);
   const [motivoRejeicao, setMotivoRejeicao] = useState('');
 
-  const isFarmaceutico = ['farmaceutico', 'farmaceutico_clinico'].includes(utilizador?.role ?? '');
+  const isFarmaceutico = utilizador?.role === 'farmaceutico';
 
   const carregar = async () => {
     try {

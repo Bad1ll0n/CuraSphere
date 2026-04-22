@@ -10,9 +10,7 @@ export class NotasClinicasController {
   constructor(private readonly service: NotasClinicasService) {}
 
   @Post(':doenteId')
-  @Roles('medico', 'medico_especialista', 'cirurgiao', 'anestesiologista',
-         'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor',
-         'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro')
   criar(@Param('doenteId') doenteId: string, @Body() dto: any, @Request() req: any) {
     return this.service.criar(doenteId, dto, req.user.sub);
   }
@@ -23,15 +21,13 @@ export class NotasClinicasController {
   }
 
   @Patch(':id')
-  @Roles('medico', 'medico_especialista', 'cirurgiao', 'anestesiologista',
-         'chefe_medicos', 'enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor',
-         'chefe_enfermeiros')
+  @Roles('medico', 'enfermeiro')
   atualizar(@Param('id') id: string, @Body() dto: any) {
     return this.service.atualizar(id, dto);
   }
 
   @Delete(':id')
-  @Roles('medico', 'medico_especialista', 'chefe_medicos')
+  @Roles('medico')
   apagar(@Param('id') id: string) {
     return this.service.apagar(id);
   }

@@ -15,13 +15,13 @@ export class FarmaciaController {
   }
 
   @Post('stock')
-  @Roles('farmaceutico', 'tecnico_farmacia', 'administrativo')
+  @Roles('farmaceutico', 'administrativo')
   criarStockItem(@Body() dto: any) {
     return this.service.criarStockItem(dto);
   }
 
   @Patch('stock/:id')
-  @Roles('farmaceutico', 'tecnico_farmacia')
+  @Roles('farmaceutico')
   atualizarQuantidade(@Param('id') id: string, @Body('quantidade') quantidade: number) {
     return this.service.atualizarQuantidade(id, quantidade);
   }
@@ -38,13 +38,13 @@ export class FarmaciaController {
   }
 
   @Patch('pedido/:id/dispensar')
-  @Roles('farmaceutico', 'tecnico_farmacia')
+  @Roles('farmaceutico')
   dispensar(@Param('id') id: string, @Request() req: any) {
     return this.service.dispensar(id, req.user.sub);
   }
 
   @Get('alertas')
-  @Roles('farmaceutico', 'tecnico_farmacia', 'administrativo', 'chefe_enfermeiros', 'chefe_medicos')
+  @Roles('farmaceutico', 'administrativo', 'enfermeiro', 'medico')
   alertas() {
     return this.service.alertas();
   }

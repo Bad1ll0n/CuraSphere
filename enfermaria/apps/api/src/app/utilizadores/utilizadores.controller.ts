@@ -2,8 +2,8 @@ import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } f
 import { UtilizadoresService } from './utilizadores.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator';
-import { Role, SubRole, Servico } from '../common/enums';
+import { Roles, SubRoles } from '../auth/roles.decorator';
+import { Servico } from '../common/enums';
 import { CriarUtilizadorDto } from './dto/criar-utilizador.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -11,15 +11,16 @@ import { CriarUtilizadorDto } from './dto/criar-utilizador.dto';
 export class UtilizadoresController {
   constructor(private readonly utilizadoresService: UtilizadoresService) {}
 
-  @Roles(Role.it_admin)
+  @Roles('ti')
+  @SubRoles('it_admin')
   @Post()
   criar(@Body() body: CriarUtilizadorDto) {
     return this.utilizadoresService.criar(body);
   }
 
   @Get()
-  listar(@Query('role') role?: Role, @Query('roles') rolesParam?: string) {
-    const roles = rolesParam ? (rolesParam.split(',') as Role[]) : undefined;
+  listar(@Query('role') role?: string, @Query('roles') rolesParam?: string) {
+    const roles = rolesParam ? rolesParam.split(',') : undefined;
     return this.utilizadoresService.listar(role, roles);
   }
 
@@ -28,16 +29,18 @@ export class UtilizadoresController {
     return this.utilizadoresService.buscarPorId(id);
   }
 
-  @Roles(Role.it_admin)
+  @Roles('ti')
+  @SubRoles('it_admin')
   @Patch(':id')
   atualizar(
     @Param('id') id: string,
-    @Body() body: { nome?: string; ordemExperiencia?: number; role?: Role; subRole?: SubRole | null; servico?: Servico; equipa?: string },
+    @Body() body: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string },
   ) {
     return this.utilizadoresService.atualizar(id, body);
   }
 
-  @Roles(Role.it_admin)
+  @Roles('ti')
+  @SubRoles('it_admin')
   @Delete(':id')
   desativar(@Param('id') id: string) {
     return this.utilizadoresService.desativar(id);

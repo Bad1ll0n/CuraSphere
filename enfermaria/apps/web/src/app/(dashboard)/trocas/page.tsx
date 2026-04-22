@@ -41,7 +41,10 @@ export default function TrocasPage() {
   const { utilizador } = useAuth();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
-  const isChefe = utilizador?.role === 'chefe_enfermeiros';
+  // O servidor já filtra — se há pendente_chefe que o user não é parte, é porque é chefe desse turno
+  const isChefe = pedidos.some(
+    (p) => p.estado === 'pendente_chefe' && p.solicitante.id !== utilizador?.id && p.destinatario.id !== utilizador?.id
+  );
 
   // Modal
   const [modalAberto, setModalAberto] = useState(false);
@@ -101,7 +104,7 @@ export default function TrocasPage() {
   };
 
   const pendentesResposta = pedidos.filter((p) => p.estado === 'pendente_destinatario' && p.destinatario.id === utilizador?.id);
-  const meusEnviados = pedidos.filter((p) => p.solicitante.id === utilizador?.id);
+  const meusEnviados = pedidos.filter((p) => p.solicitante.id === utilizador?.id && !['aprovado', 'rejeitado'].includes(p.estado));
   const pendentesAprovacao = pedidos.filter((p) => p.estado === 'pendente_chefe');
   const historico = pedidos.filter((p) => ['aprovado', 'rejeitado'].includes(p.estado));
 
@@ -112,11 +115,10 @@ export default function TrocasPage() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Trocas de Turno</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
-            {isChefe ? 'Pedidos pendentes de aprovação' : 'Pede a um colega para cobrir o teu turno'}
+            Pede a um colega para cobrir o teu turno
           </p>
         </div>
-        {!isChefe && (
-          <button onClick={abrirModal}
+        <button onClick={abrirModal}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors flex items-center gap-2"
             style={{ padding: '11px 22px', fontSize: '14px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +126,6 @@ export default function TrocasPage() {
             </svg>
             Pedir Cobertura
           </button>
-        )}
       </div>
 
       {loading ? (
@@ -159,7 +160,7 @@ export default function TrocasPage() {
           )}
 
           {/* Pedidos recebidos */}
-          {!isChefe && pendentesResposta.length > 0 && (
+          {pendentesResposta.length > 0 && (
             <Section titulo="Pedidos Recebidos" count={pendentesResposta.length} cor="amber">
               {pendentesResposta.map((p) => (
                 <PedidoRow key={p.id} pedido={p} utilizadorId={utilizador?.id ?? ''}>
@@ -177,8 +178,7 @@ export default function TrocasPage() {
           )}
 
           {/* Meus pedidos enviados */}
-          {!isChefe && (
-            <Section titulo="Meus Pedidos" count={meusEnviados.length} cor="slate">
+          <Section titulo="Meus Pedidos" count={meusEnviados.length} cor="slate">
               {meusEnviados.length === 0 ? <Empty texto="Sem pedidos enviados" /> :
                 meusEnviados.map((p) => (
                   <PedidoRow key={p.id} pedido={p} utilizadorId={utilizador?.id ?? ''}>
@@ -191,7 +191,6 @@ export default function TrocasPage() {
                 ))
               }
             </Section>
-          )}
 
           {/* Histórico */}
           {historico.length > 0 && (
@@ -200,7 +199,7 @@ export default function TrocasPage() {
             </Section>
           )}
 
-          {pedidos.length === 0 && !isChefe && (
+          {pedidos.length === 0 && (
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
               <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center" style={{ marginBottom: '16px' }}>
                 <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

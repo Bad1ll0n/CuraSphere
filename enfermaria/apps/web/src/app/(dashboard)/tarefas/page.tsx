@@ -47,7 +47,7 @@ const estadoTarefaLabel: Record<string, string> = {
   pendente: 'Pendente', em_progresso: 'Em progresso',
 };
 
-const ROLES_CRIAR_TAREFA = ['enfermeiro', 'medico', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
+const ROLES_CRIAR_TAREFA = ['enfermeiro', 'medico'];
 
 export default function TarefasPage() {
   const { utilizador } = useAuth();

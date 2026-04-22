@@ -45,7 +45,7 @@ export default function DoentesScreen({ utilizador }: Props) {
   const [erroAdmitir, setErroAdmitir] = useState('');
 
   const isAdmin = utilizador.role === 'administrativo';
-  const isChefe = ['chefe_enfermeiros', 'chefe_medicos'].includes(utilizador.role);
+  const isChefe = ['enfermeiro', 'medico'].includes(utilizador.role);
   const podeAdmitir = isAdmin || isChefe;
 
   const carregar = async () => {

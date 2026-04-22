@@ -12,9 +12,10 @@ interface Props { utilizador: Utilizador; onVoltar: () => void }
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
 const tipoCor: Record<string, string> = { manha: '#f59e0b', tarde: '#f97316', noite: '#6366f1' };
 const roleLabel: Record<string, string> = {
-  enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar', medico: 'Médico',
-  chefe_turno: 'Chefe Turno', chefe_enfermeiros: 'Chefe Enfermeiros',
-  chefe_medicos: 'Chefe Médicos', administrativo: 'Administrativo',
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde', farmaceutico: 'Farmacêutico',
+  administrativo: 'Administrativo', operacional: 'Operacional',
+  ti: 'TI', qualidade: 'Qualidade', direcao: 'Direção',
 };
 const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -29,12 +30,12 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const isChefe = ['chefe_enfermeiros', 'chefe_medicos'].includes(utilizador.role);
-  const verSeus = ['enfermeiro', 'auxiliar', 'medico'].includes(utilizador.role);
+  const isChefe = ['enfermeiro', 'medico'].includes(utilizador.role);
+  const verSeus = ['enfermeiro', 'auxiliar', 'medico', 'tecnico_saude', 'farmaceutico'].includes(utilizador.role);
 
-  const grupoDoChefe = ['medico', 'chefe_medicos'].includes(utilizador.role)
-    ? ['medico', 'chefe_medicos']
-    : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
+  const grupoDoChefe = utilizador.role === 'medico'
+    ? ['medico']
+    : ['enfermeiro', 'auxiliar'];
 
   // Modal criar turno
   const [modalDia, setModalDia] = useState<string | null>(null);

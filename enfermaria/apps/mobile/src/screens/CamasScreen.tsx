@@ -36,8 +36,8 @@ export default function CamasScreen({ utilizador, onVoltar }: Props) {
   // Modal alterar estado da cama
   const [camaEditando, setCamaEditando] = useState<any>(null);
 
-  const podeGerir = ['administrativo', 'chefe_enfermeiros', 'chefe_turno'].includes(utilizador.role);
-  const podeCriar = ['administrativo', 'chefe_enfermeiros'].includes(utilizador.role);
+  const podeGerir = ['administrativo', 'enfermeiro'].includes(utilizador.role);
+  const podeCriar = utilizador.role === 'administrativo';
 
   const carregar = async () => {
     try {

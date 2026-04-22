@@ -24,24 +24,17 @@ const Tab = createBottomTabNavigator();
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
-const ROLES_MEDICO = ['medico', 'medico_especialista', 'cirurgiao', 'anestesiologista', 'radiologista', 'patologista', 'chefe_medicos', 'triador', 'anestesista'];
-const ROLES_ENFERMAGEM = ['enfermeiro', 'enfermeiro_especialista', 'enfermeiro_gestor', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar_saude', 'instrumentista', 'auxiliar'];
-const ROLES_CLINICO_OUTRO = ['fisioterapeuta', 'terapeuta_fala', 'nutricionista', 'psicologo', 'tecnico'];
-const ROLES_FARMACIA = ['farmaceutico', 'farmaceutico_clinico', 'tecnico_farmacia'];
-const ROLES_TI = ['it_admin', 'diretor_ti', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst'];
-const ROLES_QUALIDADE = ['controlo_infecao', 'gestor_qualidade', 'compliance_officer', 'auditor_interno', 'diretor_qualidade', 'dpo'];
-const ROLES_DIRECAO = ['diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh'];
-const ROLES_ADMIN = ['rececionista', 'secretario_clinico', 'assistente_administrativo', 'gestor_agendamento', 'administrativo', 'secretaria'];
-const ROLES_OPERACIONAL = ['maqueiro', 'assistente_operacional', 'esterilizacao', 'limpeza', 'lavandaria', 'tecnico_manutencao', 'engenheiro_biomedico', 'seguranca', 'sst', 'faturacao', 'rh', 'compras'];
-const ROLES_CLINICO = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_CLINICO_OUTRO, ...ROLES_FARMACIA];
+const ROLES_MEDICO     = ['medico'];
+const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
+const ROLES_CLINICO    = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'];
 
 function grupoRole(role: string): 'clinical' | 'ti' | 'admin' | 'operacional' | 'direcao' | 'qualidade' {
   if (ROLES_CLINICO.includes(role)) return 'clinical';
-  if (ROLES_TI.includes(role)) return 'ti';
-  if (ROLES_ADMIN.includes(role)) return 'admin';
-  if (ROLES_OPERACIONAL.includes(role)) return 'operacional';
-  if (ROLES_DIRECAO.includes(role)) return 'direcao';
-  if (ROLES_QUALIDADE.includes(role)) return 'qualidade';
+  if (role === 'ti') return 'ti';
+  if (role === 'administrativo') return 'admin';
+  if (role === 'operacional') return 'operacional';
+  if (role === 'direcao') return 'direcao';
+  if (role === 'qualidade') return 'qualidade';
   return 'clinical';
 }
 

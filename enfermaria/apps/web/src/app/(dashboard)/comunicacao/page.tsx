@@ -23,7 +23,7 @@ interface Mensagem {
   remetente: { id: string; nome: string; role: string; servico: string };
 }
 
-const ROLES_ANUNCIO = ['chefe_enfermeiros', 'chefe_medicos', 'chefe_turno', 'administrativo'];
+const ROLES_ANUNCIO = ['enfermeiro', 'medico', 'administrativo', 'direcao'];
 
 export default function ComunicacaoPage() {
   const { utilizador } = useAuth();

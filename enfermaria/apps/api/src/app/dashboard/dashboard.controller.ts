@@ -64,7 +64,7 @@ export class DashboardController {
           data: { gte: dataInicio, lte: dataFimDia },
         },
         utilizador: {
-          role: { in: ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros'] as any },
+          role: { in: ['enfermeiro'] },
         },
       },
       include: {
@@ -130,7 +130,7 @@ export class DashboardController {
   }
 
   @Get('ti')
-  @Roles('diretor_ti', 'it_admin', 'analista_sistemas', 'dba', 'ciberseguranca', 'bi_analyst', 'diretor_geral', 'diretor_clinico', 'diretor_enfermagem', 'diretor_operacional', 'diretor_financeiro', 'diretor_rh', 'diretor_qualidade')
+  @Roles('ti', 'direcao')
   async dashboardTI() {
     const agora = new Date();
     const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
