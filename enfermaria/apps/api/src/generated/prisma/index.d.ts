@@ -14,6 +14,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model RoleConfig
+ * 
+ */
+export type RoleConfig = $Result.DefaultSelection<Prisma.$RoleConfigPayload>
+/**
+ * Model SubRoleConfig
+ * 
+ */
+export type SubRoleConfig = $Result.DefaultSelection<Prisma.$SubRoleConfigPayload>
+/**
  * Model Utilizador
  * 
  */
@@ -243,144 +253,7 @@ export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
  * Enums
  */
 export namespace $Enums {
-  export const Role: {
-  diretor_geral: 'diretor_geral',
-  diretor_clinico: 'diretor_clinico',
-  diretor_enfermagem: 'diretor_enfermagem',
-  diretor_financeiro: 'diretor_financeiro',
-  diretor_operacional: 'diretor_operacional',
-  diretor_rh: 'diretor_rh',
-  diretor_ti: 'diretor_ti',
-  diretor_qualidade: 'diretor_qualidade',
-  medico: 'medico',
-  medico_especialista: 'medico_especialista',
-  cirurgiao: 'cirurgiao',
-  anestesiologista: 'anestesiologista',
-  radiologista: 'radiologista',
-  patologista: 'patologista',
-  enfermeiro: 'enfermeiro',
-  enfermeiro_especialista: 'enfermeiro_especialista',
-  enfermeiro_gestor: 'enfermeiro_gestor',
-  auxiliar_saude: 'auxiliar_saude',
-  tecnico: 'tecnico',
-  fisioterapeuta: 'fisioterapeuta',
-  terapeuta_fala: 'terapeuta_fala',
-  nutricionista: 'nutricionista',
-  psicologo: 'psicologo',
-  farmaceutico: 'farmaceutico',
-  farmaceutico_clinico: 'farmaceutico_clinico',
-  tecnico_farmacia: 'tecnico_farmacia',
-  rececionista: 'rececionista',
-  secretario_clinico: 'secretario_clinico',
-  assistente_administrativo: 'assistente_administrativo',
-  gestor_agendamento: 'gestor_agendamento',
-  faturacao: 'faturacao',
-  rh: 'rh',
-  compras: 'compras',
-  maqueiro: 'maqueiro',
-  assistente_operacional: 'assistente_operacional',
-  esterilizacao: 'esterilizacao',
-  limpeza: 'limpeza',
-  lavandaria: 'lavandaria',
-  engenheiro_biomedico: 'engenheiro_biomedico',
-  tecnico_manutencao: 'tecnico_manutencao',
-  seguranca: 'seguranca',
-  sst: 'sst',
-  it_admin: 'it_admin',
-  analista_sistemas: 'analista_sistemas',
-  dba: 'dba',
-  ciberseguranca: 'ciberseguranca',
-  bi_analyst: 'bi_analyst',
-  dpo: 'dpo',
-  gestor_qualidade: 'gestor_qualidade',
-  compliance_officer: 'compliance_officer',
-  controlo_infecao: 'controlo_infecao',
-  auditor_interno: 'auditor_interno',
-  auxiliar: 'auxiliar',
-  administrativo: 'administrativo',
-  chefe_turno: 'chefe_turno',
-  chefe_enfermeiros: 'chefe_enfermeiros',
-  chefe_medicos: 'chefe_medicos',
-  triador: 'triador',
-  anestesista: 'anestesista',
-  instrumentista: 'instrumentista',
-  secretaria: 'secretaria'
-};
-
-export type Role = (typeof Role)[keyof typeof Role]
-
-
-export const SubRole: {
-  ceo_hospitalar: 'ceo_hospitalar',
-  diretor_medico: 'diretor_medico',
-  head_nurse: 'head_nurse',
-  cfo: 'cfo',
-  coo: 'coo',
-  hr_director: 'hr_director',
-  cio: 'cio',
-  compliance_director: 'compliance_director',
-  clinico_geral: 'clinico_geral',
-  cardiologista: 'cardiologista',
-  urologista: 'urologista',
-  ortopedista: 'ortopedista',
-  neurologista: 'neurologista',
-  ginecologista: 'ginecologista',
-  pediatra: 'pediatra',
-  oncologista: 'oncologista',
-  cirurgiao_geral: 'cirurgiao_geral',
-  medico_anestesia: 'medico_anestesia',
-  medico_imagem: 'medico_imagem',
-  anatomia_patologica: 'anatomia_patologica',
-  generalista: 'generalista',
-  enf_uci: 'enf_uci',
-  enf_bloco: 'enf_bloco',
-  enf_obstetricia: 'enf_obstetricia',
-  enf_pediatria: 'enf_pediatria',
-  supervisor_enfermagem: 'supervisor_enfermagem',
-  tae: 'tae',
-  tecnico_radiologia: 'tecnico_radiologia',
-  tecnico_tac_rm: 'tecnico_tac_rm',
-  tecnico_analises_clinicas: 'tecnico_analises_clinicas',
-  tecnico_cardiopneumologia: 'tecnico_cardiopneumologia',
-  reabilitacao_fisica: 'reabilitacao_fisica',
-  reabilitacao_fala: 'reabilitacao_fala',
-  nutricao_clinica: 'nutricao_clinica',
-  psicologia_clinica: 'psicologia_clinica',
-  farmaceutico_hospitalar: 'farmaceutico_hospitalar',
-  farmaceutico_oncologico: 'farmaceutico_oncologico',
-  tecnico_farmacia_assist: 'tecnico_farmacia_assist',
-  front_desk: 'front_desk',
-  secretariado: 'secretariado',
-  backoffice: 'backoffice',
-  scheduling: 'scheduling',
-  billing_officer: 'billing_officer',
-  hr_specialist: 'hr_specialist',
-  procurement: 'procurement',
-  transporte_interno: 'transporte_interno',
-  apoio_geral: 'apoio_geral',
-  cssd: 'cssd',
-  higiene_hospitalar: 'higiene_hospitalar',
-  gestao_textil: 'gestao_textil',
-  equipamentos_medicos: 'equipamentos_medicos',
-  facilities: 'facilities',
-  vigilancia: 'vigilancia',
-  seguranca_trabalho: 'seguranca_trabalho',
-  sysadmin: 'sysadmin',
-  his_erp: 'his_erp',
-  database_admin: 'database_admin',
-  security_officer: 'security_officer',
-  dados_clinicos: 'dados_clinicos',
-  dpo_role: 'dpo_role',
-  quality_manager: 'quality_manager',
-  compliance: 'compliance',
-  infection_control: 'infection_control',
-  internal_audit: 'internal_audit'
-};
-
-export type SubRole = (typeof SubRole)[keyof typeof SubRole]
-
-
-export const Servico: {
+  export const Servico: {
   internamento: 'internamento',
   urgencia: 'urgencia',
   bloco_operatorio: 'bloco_operatorio',
@@ -690,14 +563,6 @@ export type EstadoPedidoTI = (typeof EstadoPedidoTI)[keyof typeof EstadoPedidoTI
 
 }
 
-export type Role = $Enums.Role
-
-export const Role: typeof $Enums.Role
-
-export type SubRole = $Enums.SubRole
-
-export const SubRole: typeof $Enums.SubRole
-
 export type Servico = $Enums.Servico
 
 export const Servico: typeof $Enums.Servico
@@ -817,8 +682,8 @@ export const EstadoPedidoTI: typeof $Enums.EstadoPedidoTI
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Utilizadors
- * const utilizadors = await prisma.utilizador.findMany()
+ * // Fetch zero or more RoleConfigs
+ * const roleConfigs = await prisma.roleConfig.findMany()
  * ```
  *
  *
@@ -838,8 +703,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Utilizadors
-   * const utilizadors = await prisma.utilizador.findMany()
+   * // Fetch zero or more RoleConfigs
+   * const roleConfigs = await prisma.roleConfig.findMany()
    * ```
    *
    *
@@ -929,6 +794,26 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.roleConfig`: Exposes CRUD operations for the **RoleConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoleConfigs
+    * const roleConfigs = await prisma.roleConfig.findMany()
+    * ```
+    */
+  get roleConfig(): Prisma.RoleConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subRoleConfig`: Exposes CRUD operations for the **SubRoleConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SubRoleConfigs
+    * const subRoleConfigs = await prisma.subRoleConfig.findMany()
+    * ```
+    */
+  get subRoleConfig(): Prisma.SubRoleConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.utilizador`: Exposes CRUD operations for the **Utilizador** model.
     * Example usage:
     * ```ts
@@ -1818,6 +1703,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    RoleConfig: 'RoleConfig',
+    SubRoleConfig: 'SubRoleConfig',
     Utilizador: 'Utilizador',
     Cama: 'Cama',
     Doente: 'Doente',
@@ -1881,10 +1768,158 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "refreshToken"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "refreshToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      RoleConfig: {
+        payload: Prisma.$RoleConfigPayload<ExtArgs>
+        fields: Prisma.RoleConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoleConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoleConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.RoleConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoleConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          findMany: {
+            args: Prisma.RoleConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          create: {
+            args: Prisma.RoleConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          createMany: {
+            args: Prisma.RoleConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoleConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.RoleConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          update: {
+            args: Prisma.RoleConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoleConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoleConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoleConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoleConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.RoleConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoleConfig>
+          }
+          groupBy: {
+            args: Prisma.RoleConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoleConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoleConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<RoleConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      SubRoleConfig: {
+        payload: Prisma.$SubRoleConfigPayload<ExtArgs>
+        fields: Prisma.SubRoleConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubRoleConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubRoleConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.SubRoleConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubRoleConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          findMany: {
+            args: Prisma.SubRoleConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>[]
+          }
+          create: {
+            args: Prisma.SubRoleConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          createMany: {
+            args: Prisma.SubRoleConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubRoleConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.SubRoleConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          update: {
+            args: Prisma.SubRoleConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubRoleConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubRoleConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubRoleConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubRoleConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubRoleConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.SubRoleConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubRoleConfig>
+          }
+          groupBy: {
+            args: Prisma.SubRoleConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubRoleConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubRoleConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<SubRoleConfigCountAggregateOutputType> | number
+          }
+        }
+      }
       Utilizador: {
         payload: Prisma.$UtilizadorPayload<ExtArgs>
         fields: Prisma.UtilizadorFieldRefs
@@ -5311,6 +5346,8 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    roleConfig?: RoleConfigOmit
+    subRoleConfig?: SubRoleConfigOmit
     utilizador?: UtilizadorOmit
     cama?: CamaOmit
     doente?: DoenteOmit
@@ -5429,6 +5466,37 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type RoleConfigCountOutputType
+   */
+
+  export type RoleConfigCountOutputType = {
+    subRoles: number
+  }
+
+  export type RoleConfigCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subRoles?: boolean | RoleConfigCountOutputTypeCountSubRolesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoleConfigCountOutputType without action
+   */
+  export type RoleConfigCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfigCountOutputType
+     */
+    select?: RoleConfigCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoleConfigCountOutputType without action
+   */
+  export type RoleConfigCountOutputTypeCountSubRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubRoleConfigWhereInput
+  }
 
 
   /**
@@ -6435,6 +6503,2228 @@ export namespace Prisma {
    */
 
   /**
+   * Model RoleConfig
+   */
+
+  export type AggregateRoleConfig = {
+    _count: RoleConfigCountAggregateOutputType | null
+    _avg: RoleConfigAvgAggregateOutputType | null
+    _sum: RoleConfigSumAggregateOutputType | null
+    _min: RoleConfigMinAggregateOutputType | null
+    _max: RoleConfigMaxAggregateOutputType | null
+  }
+
+  export type RoleConfigAvgAggregateOutputType = {
+    ordem: number | null
+  }
+
+  export type RoleConfigSumAggregateOutputType = {
+    ordem: number | null
+  }
+
+  export type RoleConfigMinAggregateOutputType = {
+    id: string | null
+    chave: string | null
+    label: string | null
+    categoria: string | null
+    ativo: boolean | null
+    ordem: number | null
+  }
+
+  export type RoleConfigMaxAggregateOutputType = {
+    id: string | null
+    chave: string | null
+    label: string | null
+    categoria: string | null
+    ativo: boolean | null
+    ordem: number | null
+  }
+
+  export type RoleConfigCountAggregateOutputType = {
+    id: number
+    chave: number
+    label: number
+    categoria: number
+    ativo: number
+    ordem: number
+    _all: number
+  }
+
+
+  export type RoleConfigAvgAggregateInputType = {
+    ordem?: true
+  }
+
+  export type RoleConfigSumAggregateInputType = {
+    ordem?: true
+  }
+
+  export type RoleConfigMinAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    categoria?: true
+    ativo?: true
+    ordem?: true
+  }
+
+  export type RoleConfigMaxAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    categoria?: true
+    ativo?: true
+    ordem?: true
+  }
+
+  export type RoleConfigCountAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    categoria?: true
+    ativo?: true
+    ordem?: true
+    _all?: true
+  }
+
+  export type RoleConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoleConfig to aggregate.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoleConfigs
+    **/
+    _count?: true | RoleConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoleConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoleConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoleConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoleConfigMaxAggregateInputType
+  }
+
+  export type GetRoleConfigAggregateType<T extends RoleConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoleConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoleConfig[P]>
+      : GetScalarType<T[P], AggregateRoleConfig[P]>
+  }
+
+
+
+
+  export type RoleConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoleConfigWhereInput
+    orderBy?: RoleConfigOrderByWithAggregationInput | RoleConfigOrderByWithAggregationInput[]
+    by: RoleConfigScalarFieldEnum[] | RoleConfigScalarFieldEnum
+    having?: RoleConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoleConfigCountAggregateInputType | true
+    _avg?: RoleConfigAvgAggregateInputType
+    _sum?: RoleConfigSumAggregateInputType
+    _min?: RoleConfigMinAggregateInputType
+    _max?: RoleConfigMaxAggregateInputType
+  }
+
+  export type RoleConfigGroupByOutputType = {
+    id: string
+    chave: string
+    label: string
+    categoria: string
+    ativo: boolean
+    ordem: number
+    _count: RoleConfigCountAggregateOutputType | null
+    _avg: RoleConfigAvgAggregateOutputType | null
+    _sum: RoleConfigSumAggregateOutputType | null
+    _min: RoleConfigMinAggregateOutputType | null
+    _max: RoleConfigMaxAggregateOutputType | null
+  }
+
+  type GetRoleConfigGroupByPayload<T extends RoleConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoleConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoleConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoleConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], RoleConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoleConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    categoria?: boolean
+    ativo?: boolean
+    ordem?: boolean
+    subRoles?: boolean | RoleConfig$subRolesArgs<ExtArgs>
+    _count?: boolean | RoleConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    categoria?: boolean
+    ativo?: boolean
+    ordem?: boolean
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    categoria?: boolean
+    ativo?: boolean
+    ordem?: boolean
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectScalar = {
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    categoria?: boolean
+    ativo?: boolean
+    ordem?: boolean
+  }
+
+  export type RoleConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "chave" | "label" | "categoria" | "ativo" | "ordem", ExtArgs["result"]["roleConfig"]>
+  export type RoleConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subRoles?: boolean | RoleConfig$subRolesArgs<ExtArgs>
+    _count?: boolean | RoleConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoleConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RoleConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RoleConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoleConfig"
+    objects: {
+      subRoles: Prisma.$SubRoleConfigPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      chave: string
+      label: string
+      categoria: string
+      ativo: boolean
+      ordem: number
+    }, ExtArgs["result"]["roleConfig"]>
+    composites: {}
+  }
+
+  type RoleConfigGetPayload<S extends boolean | null | undefined | RoleConfigDefaultArgs> = $Result.GetResult<Prisma.$RoleConfigPayload, S>
+
+  type RoleConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoleConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoleConfigCountAggregateInputType | true
+    }
+
+  export interface RoleConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoleConfig'], meta: { name: 'RoleConfig' } }
+    /**
+     * Find zero or one RoleConfig that matches the filter.
+     * @param {RoleConfigFindUniqueArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoleConfigFindUniqueArgs>(args: SelectSubset<T, RoleConfigFindUniqueArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoleConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoleConfigFindUniqueOrThrowArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoleConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, RoleConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoleConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindFirstArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoleConfigFindFirstArgs>(args?: SelectSubset<T, RoleConfigFindFirstArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoleConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindFirstOrThrowArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoleConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, RoleConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoleConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoleConfigs
+     * const roleConfigs = await prisma.roleConfig.findMany()
+     * 
+     * // Get first 10 RoleConfigs
+     * const roleConfigs = await prisma.roleConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roleConfigWithIdOnly = await prisma.roleConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoleConfigFindManyArgs>(args?: SelectSubset<T, RoleConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoleConfig.
+     * @param {RoleConfigCreateArgs} args - Arguments to create a RoleConfig.
+     * @example
+     * // Create one RoleConfig
+     * const RoleConfig = await prisma.roleConfig.create({
+     *   data: {
+     *     // ... data to create a RoleConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoleConfigCreateArgs>(args: SelectSubset<T, RoleConfigCreateArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoleConfigs.
+     * @param {RoleConfigCreateManyArgs} args - Arguments to create many RoleConfigs.
+     * @example
+     * // Create many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoleConfigCreateManyArgs>(args?: SelectSubset<T, RoleConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoleConfigs and returns the data saved in the database.
+     * @param {RoleConfigCreateManyAndReturnArgs} args - Arguments to create many RoleConfigs.
+     * @example
+     * // Create many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoleConfigs and only return the `id`
+     * const roleConfigWithIdOnly = await prisma.roleConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoleConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, RoleConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoleConfig.
+     * @param {RoleConfigDeleteArgs} args - Arguments to delete one RoleConfig.
+     * @example
+     * // Delete one RoleConfig
+     * const RoleConfig = await prisma.roleConfig.delete({
+     *   where: {
+     *     // ... filter to delete one RoleConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoleConfigDeleteArgs>(args: SelectSubset<T, RoleConfigDeleteArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoleConfig.
+     * @param {RoleConfigUpdateArgs} args - Arguments to update one RoleConfig.
+     * @example
+     * // Update one RoleConfig
+     * const roleConfig = await prisma.roleConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoleConfigUpdateArgs>(args: SelectSubset<T, RoleConfigUpdateArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoleConfigs.
+     * @param {RoleConfigDeleteManyArgs} args - Arguments to filter RoleConfigs to delete.
+     * @example
+     * // Delete a few RoleConfigs
+     * const { count } = await prisma.roleConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoleConfigDeleteManyArgs>(args?: SelectSubset<T, RoleConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoleConfigUpdateManyArgs>(args: SelectSubset<T, RoleConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoleConfigs and returns the data updated in the database.
+     * @param {RoleConfigUpdateManyAndReturnArgs} args - Arguments to update many RoleConfigs.
+     * @example
+     * // Update many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoleConfigs and only return the `id`
+     * const roleConfigWithIdOnly = await prisma.roleConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoleConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, RoleConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoleConfig.
+     * @param {RoleConfigUpsertArgs} args - Arguments to update or create a RoleConfig.
+     * @example
+     * // Update or create a RoleConfig
+     * const roleConfig = await prisma.roleConfig.upsert({
+     *   create: {
+     *     // ... data to create a RoleConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoleConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoleConfigUpsertArgs>(args: SelectSubset<T, RoleConfigUpsertArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigCountArgs} args - Arguments to filter RoleConfigs to count.
+     * @example
+     * // Count the number of RoleConfigs
+     * const count = await prisma.roleConfig.count({
+     *   where: {
+     *     // ... the filter for the RoleConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoleConfigCountArgs>(
+      args?: Subset<T, RoleConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoleConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoleConfigAggregateArgs>(args: Subset<T, RoleConfigAggregateArgs>): Prisma.PrismaPromise<GetRoleConfigAggregateType<T>>
+
+    /**
+     * Group by RoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoleConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoleConfigGroupByArgs['orderBy'] }
+        : { orderBy?: RoleConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoleConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoleConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoleConfig model
+   */
+  readonly fields: RoleConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoleConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoleConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    subRoles<T extends RoleConfig$subRolesArgs<ExtArgs> = {}>(args?: Subset<T, RoleConfig$subRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoleConfig model
+   */
+  interface RoleConfigFieldRefs {
+    readonly id: FieldRef<"RoleConfig", 'String'>
+    readonly chave: FieldRef<"RoleConfig", 'String'>
+    readonly label: FieldRef<"RoleConfig", 'String'>
+    readonly categoria: FieldRef<"RoleConfig", 'String'>
+    readonly ativo: FieldRef<"RoleConfig", 'Boolean'>
+    readonly ordem: FieldRef<"RoleConfig", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoleConfig findUnique
+   */
+  export type RoleConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig findUniqueOrThrow
+   */
+  export type RoleConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig findFirst
+   */
+  export type RoleConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoleConfigs.
+     */
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig findFirstOrThrow
+   */
+  export type RoleConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoleConfigs.
+     */
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig findMany
+   */
+  export type RoleConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfigs to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig create
+   */
+  export type RoleConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoleConfig.
+     */
+    data: XOR<RoleConfigCreateInput, RoleConfigUncheckedCreateInput>
+  }
+
+  /**
+   * RoleConfig createMany
+   */
+  export type RoleConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoleConfigs.
+     */
+    data: RoleConfigCreateManyInput | RoleConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoleConfig createManyAndReturn
+   */
+  export type RoleConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoleConfigs.
+     */
+    data: RoleConfigCreateManyInput | RoleConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoleConfig update
+   */
+  export type RoleConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoleConfig.
+     */
+    data: XOR<RoleConfigUpdateInput, RoleConfigUncheckedUpdateInput>
+    /**
+     * Choose, which RoleConfig to update.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig updateMany
+   */
+  export type RoleConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoleConfigs.
+     */
+    data: XOR<RoleConfigUpdateManyMutationInput, RoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which RoleConfigs to update
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig updateManyAndReturn
+   */
+  export type RoleConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update RoleConfigs.
+     */
+    data: XOR<RoleConfigUpdateManyMutationInput, RoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which RoleConfigs to update
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig upsert
+   */
+  export type RoleConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoleConfig to update in case it exists.
+     */
+    where: RoleConfigWhereUniqueInput
+    /**
+     * In case the RoleConfig found by the `where` argument doesn't exist, create a new RoleConfig with this data.
+     */
+    create: XOR<RoleConfigCreateInput, RoleConfigUncheckedCreateInput>
+    /**
+     * In case the RoleConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoleConfigUpdateInput, RoleConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * RoleConfig delete
+   */
+  export type RoleConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter which RoleConfig to delete.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig deleteMany
+   */
+  export type RoleConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoleConfigs to delete
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig.subRoles
+   */
+  export type RoleConfig$subRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    where?: SubRoleConfigWhereInput
+    orderBy?: SubRoleConfigOrderByWithRelationInput | SubRoleConfigOrderByWithRelationInput[]
+    cursor?: SubRoleConfigWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubRoleConfigScalarFieldEnum | SubRoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig without action
+   */
+  export type RoleConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SubRoleConfig
+   */
+
+  export type AggregateSubRoleConfig = {
+    _count: SubRoleConfigCountAggregateOutputType | null
+    _avg: SubRoleConfigAvgAggregateOutputType | null
+    _sum: SubRoleConfigSumAggregateOutputType | null
+    _min: SubRoleConfigMinAggregateOutputType | null
+    _max: SubRoleConfigMaxAggregateOutputType | null
+  }
+
+  export type SubRoleConfigAvgAggregateOutputType = {
+    ordem: number | null
+  }
+
+  export type SubRoleConfigSumAggregateOutputType = {
+    ordem: number | null
+  }
+
+  export type SubRoleConfigMinAggregateOutputType = {
+    id: string | null
+    chave: string | null
+    label: string | null
+    roleChave: string | null
+    ativo: boolean | null
+    ordem: number | null
+  }
+
+  export type SubRoleConfigMaxAggregateOutputType = {
+    id: string | null
+    chave: string | null
+    label: string | null
+    roleChave: string | null
+    ativo: boolean | null
+    ordem: number | null
+  }
+
+  export type SubRoleConfigCountAggregateOutputType = {
+    id: number
+    chave: number
+    label: number
+    roleChave: number
+    ativo: number
+    ordem: number
+    _all: number
+  }
+
+
+  export type SubRoleConfigAvgAggregateInputType = {
+    ordem?: true
+  }
+
+  export type SubRoleConfigSumAggregateInputType = {
+    ordem?: true
+  }
+
+  export type SubRoleConfigMinAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    roleChave?: true
+    ativo?: true
+    ordem?: true
+  }
+
+  export type SubRoleConfigMaxAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    roleChave?: true
+    ativo?: true
+    ordem?: true
+  }
+
+  export type SubRoleConfigCountAggregateInputType = {
+    id?: true
+    chave?: true
+    label?: true
+    roleChave?: true
+    ativo?: true
+    ordem?: true
+    _all?: true
+  }
+
+  export type SubRoleConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubRoleConfig to aggregate.
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubRoleConfigs to fetch.
+     */
+    orderBy?: SubRoleConfigOrderByWithRelationInput | SubRoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubRoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubRoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubRoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SubRoleConfigs
+    **/
+    _count?: true | SubRoleConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubRoleConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubRoleConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubRoleConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubRoleConfigMaxAggregateInputType
+  }
+
+  export type GetSubRoleConfigAggregateType<T extends SubRoleConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubRoleConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubRoleConfig[P]>
+      : GetScalarType<T[P], AggregateSubRoleConfig[P]>
+  }
+
+
+
+
+  export type SubRoleConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubRoleConfigWhereInput
+    orderBy?: SubRoleConfigOrderByWithAggregationInput | SubRoleConfigOrderByWithAggregationInput[]
+    by: SubRoleConfigScalarFieldEnum[] | SubRoleConfigScalarFieldEnum
+    having?: SubRoleConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubRoleConfigCountAggregateInputType | true
+    _avg?: SubRoleConfigAvgAggregateInputType
+    _sum?: SubRoleConfigSumAggregateInputType
+    _min?: SubRoleConfigMinAggregateInputType
+    _max?: SubRoleConfigMaxAggregateInputType
+  }
+
+  export type SubRoleConfigGroupByOutputType = {
+    id: string
+    chave: string
+    label: string
+    roleChave: string
+    ativo: boolean
+    ordem: number
+    _count: SubRoleConfigCountAggregateOutputType | null
+    _avg: SubRoleConfigAvgAggregateOutputType | null
+    _sum: SubRoleConfigSumAggregateOutputType | null
+    _min: SubRoleConfigMinAggregateOutputType | null
+    _max: SubRoleConfigMaxAggregateOutputType | null
+  }
+
+  type GetSubRoleConfigGroupByPayload<T extends SubRoleConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubRoleConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubRoleConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubRoleConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], SubRoleConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubRoleConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    roleChave?: boolean
+    ativo?: boolean
+    ordem?: boolean
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subRoleConfig"]>
+
+  export type SubRoleConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    roleChave?: boolean
+    ativo?: boolean
+    ordem?: boolean
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subRoleConfig"]>
+
+  export type SubRoleConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    roleChave?: boolean
+    ativo?: boolean
+    ordem?: boolean
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subRoleConfig"]>
+
+  export type SubRoleConfigSelectScalar = {
+    id?: boolean
+    chave?: boolean
+    label?: boolean
+    roleChave?: boolean
+    ativo?: boolean
+    ordem?: boolean
+  }
+
+  export type SubRoleConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "chave" | "label" | "roleChave" | "ativo" | "ordem", ExtArgs["result"]["subRoleConfig"]>
+  export type SubRoleConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }
+  export type SubRoleConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }
+  export type SubRoleConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    role?: boolean | RoleConfigDefaultArgs<ExtArgs>
+  }
+
+  export type $SubRoleConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SubRoleConfig"
+    objects: {
+      role: Prisma.$RoleConfigPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      chave: string
+      label: string
+      roleChave: string
+      ativo: boolean
+      ordem: number
+    }, ExtArgs["result"]["subRoleConfig"]>
+    composites: {}
+  }
+
+  type SubRoleConfigGetPayload<S extends boolean | null | undefined | SubRoleConfigDefaultArgs> = $Result.GetResult<Prisma.$SubRoleConfigPayload, S>
+
+  type SubRoleConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubRoleConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubRoleConfigCountAggregateInputType | true
+    }
+
+  export interface SubRoleConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SubRoleConfig'], meta: { name: 'SubRoleConfig' } }
+    /**
+     * Find zero or one SubRoleConfig that matches the filter.
+     * @param {SubRoleConfigFindUniqueArgs} args - Arguments to find a SubRoleConfig
+     * @example
+     * // Get one SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubRoleConfigFindUniqueArgs>(args: SelectSubset<T, SubRoleConfigFindUniqueArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SubRoleConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubRoleConfigFindUniqueOrThrowArgs} args - Arguments to find a SubRoleConfig
+     * @example
+     * // Get one SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubRoleConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, SubRoleConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubRoleConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigFindFirstArgs} args - Arguments to find a SubRoleConfig
+     * @example
+     * // Get one SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubRoleConfigFindFirstArgs>(args?: SelectSubset<T, SubRoleConfigFindFirstArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubRoleConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigFindFirstOrThrowArgs} args - Arguments to find a SubRoleConfig
+     * @example
+     * // Get one SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubRoleConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, SubRoleConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SubRoleConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SubRoleConfigs
+     * const subRoleConfigs = await prisma.subRoleConfig.findMany()
+     * 
+     * // Get first 10 SubRoleConfigs
+     * const subRoleConfigs = await prisma.subRoleConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const subRoleConfigWithIdOnly = await prisma.subRoleConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubRoleConfigFindManyArgs>(args?: SelectSubset<T, SubRoleConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SubRoleConfig.
+     * @param {SubRoleConfigCreateArgs} args - Arguments to create a SubRoleConfig.
+     * @example
+     * // Create one SubRoleConfig
+     * const SubRoleConfig = await prisma.subRoleConfig.create({
+     *   data: {
+     *     // ... data to create a SubRoleConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubRoleConfigCreateArgs>(args: SelectSubset<T, SubRoleConfigCreateArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SubRoleConfigs.
+     * @param {SubRoleConfigCreateManyArgs} args - Arguments to create many SubRoleConfigs.
+     * @example
+     * // Create many SubRoleConfigs
+     * const subRoleConfig = await prisma.subRoleConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubRoleConfigCreateManyArgs>(args?: SelectSubset<T, SubRoleConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SubRoleConfigs and returns the data saved in the database.
+     * @param {SubRoleConfigCreateManyAndReturnArgs} args - Arguments to create many SubRoleConfigs.
+     * @example
+     * // Create many SubRoleConfigs
+     * const subRoleConfig = await prisma.subRoleConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SubRoleConfigs and only return the `id`
+     * const subRoleConfigWithIdOnly = await prisma.subRoleConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubRoleConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, SubRoleConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SubRoleConfig.
+     * @param {SubRoleConfigDeleteArgs} args - Arguments to delete one SubRoleConfig.
+     * @example
+     * // Delete one SubRoleConfig
+     * const SubRoleConfig = await prisma.subRoleConfig.delete({
+     *   where: {
+     *     // ... filter to delete one SubRoleConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubRoleConfigDeleteArgs>(args: SelectSubset<T, SubRoleConfigDeleteArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SubRoleConfig.
+     * @param {SubRoleConfigUpdateArgs} args - Arguments to update one SubRoleConfig.
+     * @example
+     * // Update one SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubRoleConfigUpdateArgs>(args: SelectSubset<T, SubRoleConfigUpdateArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SubRoleConfigs.
+     * @param {SubRoleConfigDeleteManyArgs} args - Arguments to filter SubRoleConfigs to delete.
+     * @example
+     * // Delete a few SubRoleConfigs
+     * const { count } = await prisma.subRoleConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubRoleConfigDeleteManyArgs>(args?: SelectSubset<T, SubRoleConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubRoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SubRoleConfigs
+     * const subRoleConfig = await prisma.subRoleConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubRoleConfigUpdateManyArgs>(args: SelectSubset<T, SubRoleConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubRoleConfigs and returns the data updated in the database.
+     * @param {SubRoleConfigUpdateManyAndReturnArgs} args - Arguments to update many SubRoleConfigs.
+     * @example
+     * // Update many SubRoleConfigs
+     * const subRoleConfig = await prisma.subRoleConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SubRoleConfigs and only return the `id`
+     * const subRoleConfigWithIdOnly = await prisma.subRoleConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubRoleConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, SubRoleConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SubRoleConfig.
+     * @param {SubRoleConfigUpsertArgs} args - Arguments to update or create a SubRoleConfig.
+     * @example
+     * // Update or create a SubRoleConfig
+     * const subRoleConfig = await prisma.subRoleConfig.upsert({
+     *   create: {
+     *     // ... data to create a SubRoleConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SubRoleConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubRoleConfigUpsertArgs>(args: SelectSubset<T, SubRoleConfigUpsertArgs<ExtArgs>>): Prisma__SubRoleConfigClient<$Result.GetResult<Prisma.$SubRoleConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SubRoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigCountArgs} args - Arguments to filter SubRoleConfigs to count.
+     * @example
+     * // Count the number of SubRoleConfigs
+     * const count = await prisma.subRoleConfig.count({
+     *   where: {
+     *     // ... the filter for the SubRoleConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubRoleConfigCountArgs>(
+      args?: Subset<T, SubRoleConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubRoleConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SubRoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubRoleConfigAggregateArgs>(args: Subset<T, SubRoleConfigAggregateArgs>): Prisma.PrismaPromise<GetSubRoleConfigAggregateType<T>>
+
+    /**
+     * Group by SubRoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubRoleConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubRoleConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubRoleConfigGroupByArgs['orderBy'] }
+        : { orderBy?: SubRoleConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubRoleConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubRoleConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SubRoleConfig model
+   */
+  readonly fields: SubRoleConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SubRoleConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubRoleConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    role<T extends RoleConfigDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleConfigDefaultArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SubRoleConfig model
+   */
+  interface SubRoleConfigFieldRefs {
+    readonly id: FieldRef<"SubRoleConfig", 'String'>
+    readonly chave: FieldRef<"SubRoleConfig", 'String'>
+    readonly label: FieldRef<"SubRoleConfig", 'String'>
+    readonly roleChave: FieldRef<"SubRoleConfig", 'String'>
+    readonly ativo: FieldRef<"SubRoleConfig", 'Boolean'>
+    readonly ordem: FieldRef<"SubRoleConfig", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SubRoleConfig findUnique
+   */
+  export type SubRoleConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SubRoleConfig to fetch.
+     */
+    where: SubRoleConfigWhereUniqueInput
+  }
+
+  /**
+   * SubRoleConfig findUniqueOrThrow
+   */
+  export type SubRoleConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SubRoleConfig to fetch.
+     */
+    where: SubRoleConfigWhereUniqueInput
+  }
+
+  /**
+   * SubRoleConfig findFirst
+   */
+  export type SubRoleConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SubRoleConfig to fetch.
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubRoleConfigs to fetch.
+     */
+    orderBy?: SubRoleConfigOrderByWithRelationInput | SubRoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubRoleConfigs.
+     */
+    cursor?: SubRoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubRoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubRoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubRoleConfigs.
+     */
+    distinct?: SubRoleConfigScalarFieldEnum | SubRoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SubRoleConfig findFirstOrThrow
+   */
+  export type SubRoleConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SubRoleConfig to fetch.
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubRoleConfigs to fetch.
+     */
+    orderBy?: SubRoleConfigOrderByWithRelationInput | SubRoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubRoleConfigs.
+     */
+    cursor?: SubRoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubRoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubRoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubRoleConfigs.
+     */
+    distinct?: SubRoleConfigScalarFieldEnum | SubRoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SubRoleConfig findMany
+   */
+  export type SubRoleConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which SubRoleConfigs to fetch.
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubRoleConfigs to fetch.
+     */
+    orderBy?: SubRoleConfigOrderByWithRelationInput | SubRoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SubRoleConfigs.
+     */
+    cursor?: SubRoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubRoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubRoleConfigs.
+     */
+    skip?: number
+    distinct?: SubRoleConfigScalarFieldEnum | SubRoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * SubRoleConfig create
+   */
+  export type SubRoleConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SubRoleConfig.
+     */
+    data: XOR<SubRoleConfigCreateInput, SubRoleConfigUncheckedCreateInput>
+  }
+
+  /**
+   * SubRoleConfig createMany
+   */
+  export type SubRoleConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SubRoleConfigs.
+     */
+    data: SubRoleConfigCreateManyInput | SubRoleConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SubRoleConfig createManyAndReturn
+   */
+  export type SubRoleConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many SubRoleConfigs.
+     */
+    data: SubRoleConfigCreateManyInput | SubRoleConfigCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubRoleConfig update
+   */
+  export type SubRoleConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SubRoleConfig.
+     */
+    data: XOR<SubRoleConfigUpdateInput, SubRoleConfigUncheckedUpdateInput>
+    /**
+     * Choose, which SubRoleConfig to update.
+     */
+    where: SubRoleConfigWhereUniqueInput
+  }
+
+  /**
+   * SubRoleConfig updateMany
+   */
+  export type SubRoleConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SubRoleConfigs.
+     */
+    data: XOR<SubRoleConfigUpdateManyMutationInput, SubRoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which SubRoleConfigs to update
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * Limit how many SubRoleConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubRoleConfig updateManyAndReturn
+   */
+  export type SubRoleConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update SubRoleConfigs.
+     */
+    data: XOR<SubRoleConfigUpdateManyMutationInput, SubRoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which SubRoleConfigs to update
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * Limit how many SubRoleConfigs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubRoleConfig upsert
+   */
+  export type SubRoleConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SubRoleConfig to update in case it exists.
+     */
+    where: SubRoleConfigWhereUniqueInput
+    /**
+     * In case the SubRoleConfig found by the `where` argument doesn't exist, create a new SubRoleConfig with this data.
+     */
+    create: XOR<SubRoleConfigCreateInput, SubRoleConfigUncheckedCreateInput>
+    /**
+     * In case the SubRoleConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubRoleConfigUpdateInput, SubRoleConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * SubRoleConfig delete
+   */
+  export type SubRoleConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter which SubRoleConfig to delete.
+     */
+    where: SubRoleConfigWhereUniqueInput
+  }
+
+  /**
+   * SubRoleConfig deleteMany
+   */
+  export type SubRoleConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubRoleConfigs to delete
+     */
+    where?: SubRoleConfigWhereInput
+    /**
+     * Limit how many SubRoleConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubRoleConfig without action
+   */
+  export type SubRoleConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubRoleConfig
+     */
+    select?: SubRoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubRoleConfig
+     */
+    omit?: SubRoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubRoleConfigInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Utilizador
    */
 
@@ -6459,8 +8749,8 @@ export namespace Prisma {
     numeroFuncionario: string | null
     nome: string | null
     passwordHash: string | null
-    role: $Enums.Role | null
-    subRole: $Enums.SubRole | null
+    role: string | null
+    subRole: string | null
     servico: $Enums.Servico | null
     ordemExperiencia: number | null
     equipa: string | null
@@ -6474,8 +8764,8 @@ export namespace Prisma {
     numeroFuncionario: string | null
     nome: string | null
     passwordHash: string | null
-    role: $Enums.Role | null
-    subRole: $Enums.SubRole | null
+    role: string | null
+    subRole: string | null
     servico: $Enums.Servico | null
     ordemExperiencia: number | null
     equipa: string | null
@@ -6646,8 +8936,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole: $Enums.SubRole | null
+    role: string
+    subRole: string | null
     servico: $Enums.Servico
     ordemExperiencia: number | null
     equipa: string | null
@@ -6908,8 +9198,8 @@ export namespace Prisma {
       numeroFuncionario: string
       nome: string
       passwordHash: string
-      role: $Enums.Role
-      subRole: $Enums.SubRole | null
+      role: string
+      subRole: string | null
       servico: $Enums.Servico
       ordemExperiencia: number | null
       equipa: string | null
@@ -7395,8 +9685,8 @@ export namespace Prisma {
     readonly numeroFuncionario: FieldRef<"Utilizador", 'String'>
     readonly nome: FieldRef<"Utilizador", 'String'>
     readonly passwordHash: FieldRef<"Utilizador", 'String'>
-    readonly role: FieldRef<"Utilizador", 'Role'>
-    readonly subRole: FieldRef<"Utilizador", 'SubRole'>
+    readonly role: FieldRef<"Utilizador", 'String'>
+    readonly subRole: FieldRef<"Utilizador", 'String'>
     readonly servico: FieldRef<"Utilizador", 'Servico'>
     readonly ordemExperiencia: FieldRef<"Utilizador", 'Int'>
     readonly equipa: FieldRef<"Utilizador", 'String'>
@@ -59756,6 +62046,30 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const RoleConfigScalarFieldEnum: {
+    id: 'id',
+    chave: 'chave',
+    label: 'label',
+    categoria: 'categoria',
+    ativo: 'ativo',
+    ordem: 'ordem'
+  };
+
+  export type RoleConfigScalarFieldEnum = (typeof RoleConfigScalarFieldEnum)[keyof typeof RoleConfigScalarFieldEnum]
+
+
+  export const SubRoleConfigScalarFieldEnum: {
+    id: 'id',
+    chave: 'chave',
+    label: 'label',
+    roleChave: 'roleChave',
+    ativo: 'ativo',
+    ordem: 'ordem'
+  };
+
+  export type SubRoleConfigScalarFieldEnum = (typeof SubRoleConfigScalarFieldEnum)[keyof typeof SubRoleConfigScalarFieldEnum]
+
+
   export const UtilizadorScalarFieldEnum: {
     id: 'id',
     numeroFuncionario: 'numeroFuncionario',
@@ -60474,44 +62788,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Role'
+   * Reference to a field of type 'Boolean'
    */
-  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-  /**
-   * Reference to a field of type 'Role[]'
-   */
-  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'SubRole'
-   */
-  export type EnumSubRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'SubRole[]'
-   */
-  export type ListEnumSubRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubRole[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Servico'
-   */
-  export type EnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico'>
-    
-
-
-  /**
-   * Reference to a field of type 'Servico[]'
-   */
-  export type ListEnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico[]'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -60530,9 +62809,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Servico'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type EnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico'>
+    
+
+
+  /**
+   * Reference to a field of type 'Servico[]'
+   */
+  export type ListEnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico[]'>
     
 
 
@@ -60959,6 +63245,130 @@ export namespace Prisma {
    */
 
 
+  export type RoleConfigWhereInput = {
+    AND?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    OR?: RoleConfigWhereInput[]
+    NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    id?: StringFilter<"RoleConfig"> | string
+    chave?: StringFilter<"RoleConfig"> | string
+    label?: StringFilter<"RoleConfig"> | string
+    categoria?: StringFilter<"RoleConfig"> | string
+    ativo?: BoolFilter<"RoleConfig"> | boolean
+    ordem?: IntFilter<"RoleConfig"> | number
+    subRoles?: SubRoleConfigListRelationFilter
+  }
+
+  export type RoleConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    categoria?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+    subRoles?: SubRoleConfigOrderByRelationAggregateInput
+  }
+
+  export type RoleConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    chave?: string
+    AND?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    OR?: RoleConfigWhereInput[]
+    NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    label?: StringFilter<"RoleConfig"> | string
+    categoria?: StringFilter<"RoleConfig"> | string
+    ativo?: BoolFilter<"RoleConfig"> | boolean
+    ordem?: IntFilter<"RoleConfig"> | number
+    subRoles?: SubRoleConfigListRelationFilter
+  }, "id" | "chave">
+
+  export type RoleConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    categoria?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+    _count?: RoleConfigCountOrderByAggregateInput
+    _avg?: RoleConfigAvgOrderByAggregateInput
+    _max?: RoleConfigMaxOrderByAggregateInput
+    _min?: RoleConfigMinOrderByAggregateInput
+    _sum?: RoleConfigSumOrderByAggregateInput
+  }
+
+  export type RoleConfigScalarWhereWithAggregatesInput = {
+    AND?: RoleConfigScalarWhereWithAggregatesInput | RoleConfigScalarWhereWithAggregatesInput[]
+    OR?: RoleConfigScalarWhereWithAggregatesInput[]
+    NOT?: RoleConfigScalarWhereWithAggregatesInput | RoleConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RoleConfig"> | string
+    chave?: StringWithAggregatesFilter<"RoleConfig"> | string
+    label?: StringWithAggregatesFilter<"RoleConfig"> | string
+    categoria?: StringWithAggregatesFilter<"RoleConfig"> | string
+    ativo?: BoolWithAggregatesFilter<"RoleConfig"> | boolean
+    ordem?: IntWithAggregatesFilter<"RoleConfig"> | number
+  }
+
+  export type SubRoleConfigWhereInput = {
+    AND?: SubRoleConfigWhereInput | SubRoleConfigWhereInput[]
+    OR?: SubRoleConfigWhereInput[]
+    NOT?: SubRoleConfigWhereInput | SubRoleConfigWhereInput[]
+    id?: StringFilter<"SubRoleConfig"> | string
+    chave?: StringFilter<"SubRoleConfig"> | string
+    label?: StringFilter<"SubRoleConfig"> | string
+    roleChave?: StringFilter<"SubRoleConfig"> | string
+    ativo?: BoolFilter<"SubRoleConfig"> | boolean
+    ordem?: IntFilter<"SubRoleConfig"> | number
+    role?: XOR<RoleConfigScalarRelationFilter, RoleConfigWhereInput>
+  }
+
+  export type SubRoleConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    roleChave?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+    role?: RoleConfigOrderByWithRelationInput
+  }
+
+  export type SubRoleConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    chave?: string
+    AND?: SubRoleConfigWhereInput | SubRoleConfigWhereInput[]
+    OR?: SubRoleConfigWhereInput[]
+    NOT?: SubRoleConfigWhereInput | SubRoleConfigWhereInput[]
+    label?: StringFilter<"SubRoleConfig"> | string
+    roleChave?: StringFilter<"SubRoleConfig"> | string
+    ativo?: BoolFilter<"SubRoleConfig"> | boolean
+    ordem?: IntFilter<"SubRoleConfig"> | number
+    role?: XOR<RoleConfigScalarRelationFilter, RoleConfigWhereInput>
+  }, "id" | "chave">
+
+  export type SubRoleConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    roleChave?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+    _count?: SubRoleConfigCountOrderByAggregateInput
+    _avg?: SubRoleConfigAvgOrderByAggregateInput
+    _max?: SubRoleConfigMaxOrderByAggregateInput
+    _min?: SubRoleConfigMinOrderByAggregateInput
+    _sum?: SubRoleConfigSumOrderByAggregateInput
+  }
+
+  export type SubRoleConfigScalarWhereWithAggregatesInput = {
+    AND?: SubRoleConfigScalarWhereWithAggregatesInput | SubRoleConfigScalarWhereWithAggregatesInput[]
+    OR?: SubRoleConfigScalarWhereWithAggregatesInput[]
+    NOT?: SubRoleConfigScalarWhereWithAggregatesInput | SubRoleConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SubRoleConfig"> | string
+    chave?: StringWithAggregatesFilter<"SubRoleConfig"> | string
+    label?: StringWithAggregatesFilter<"SubRoleConfig"> | string
+    roleChave?: StringWithAggregatesFilter<"SubRoleConfig"> | string
+    ativo?: BoolWithAggregatesFilter<"SubRoleConfig"> | boolean
+    ordem?: IntWithAggregatesFilter<"SubRoleConfig"> | number
+  }
+
   export type UtilizadorWhereInput = {
     AND?: UtilizadorWhereInput | UtilizadorWhereInput[]
     OR?: UtilizadorWhereInput[]
@@ -60967,8 +63377,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFilter<"Utilizador"> | string
     nome?: StringFilter<"Utilizador"> | string
     passwordHash?: StringFilter<"Utilizador"> | string
-    role?: EnumRoleFilter<"Utilizador"> | $Enums.Role
-    subRole?: EnumSubRoleNullableFilter<"Utilizador"> | $Enums.SubRole | null
+    role?: StringFilter<"Utilizador"> | string
+    subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
     ordemExperiencia?: IntNullableFilter<"Utilizador"> | number | null
     equipa?: StringNullableFilter<"Utilizador"> | string | null
@@ -61104,8 +63514,8 @@ export namespace Prisma {
     NOT?: UtilizadorWhereInput | UtilizadorWhereInput[]
     nome?: StringFilter<"Utilizador"> | string
     passwordHash?: StringFilter<"Utilizador"> | string
-    role?: EnumRoleFilter<"Utilizador"> | $Enums.Role
-    subRole?: EnumSubRoleNullableFilter<"Utilizador"> | $Enums.SubRole | null
+    role?: StringFilter<"Utilizador"> | string
+    subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
     ordemExperiencia?: IntNullableFilter<"Utilizador"> | number | null
     equipa?: StringNullableFilter<"Utilizador"> | string | null
@@ -61194,8 +63604,8 @@ export namespace Prisma {
     numeroFuncionario?: StringWithAggregatesFilter<"Utilizador"> | string
     nome?: StringWithAggregatesFilter<"Utilizador"> | string
     passwordHash?: StringWithAggregatesFilter<"Utilizador"> | string
-    role?: EnumRoleWithAggregatesFilter<"Utilizador"> | $Enums.Role
-    subRole?: EnumSubRoleNullableWithAggregatesFilter<"Utilizador"> | $Enums.SubRole | null
+    role?: StringWithAggregatesFilter<"Utilizador"> | string
+    subRole?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
     servico?: EnumServicoWithAggregatesFilter<"Utilizador"> | $Enums.Servico
     ordemExperiencia?: IntNullableWithAggregatesFilter<"Utilizador"> | number | null
     equipa?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
@@ -64653,13 +67063,142 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
+  export type RoleConfigCreateInput = {
+    id?: string
+    chave: string
+    label: string
+    categoria: string
+    ativo?: boolean
+    ordem?: number
+    subRoles?: SubRoleConfigCreateNestedManyWithoutRoleInput
+  }
+
+  export type RoleConfigUncheckedCreateInput = {
+    id?: string
+    chave: string
+    label: string
+    categoria: string
+    ativo?: boolean
+    ordem?: number
+    subRoles?: SubRoleConfigUncheckedCreateNestedManyWithoutRoleInput
+  }
+
+  export type RoleConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+    subRoles?: SubRoleConfigUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+    subRoles?: SubRoleConfigUncheckedUpdateManyWithoutRoleNestedInput
+  }
+
+  export type RoleConfigCreateManyInput = {
+    id?: string
+    chave: string
+    label: string
+    categoria: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type RoleConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RoleConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubRoleConfigCreateInput = {
+    id?: string
+    chave: string
+    label: string
+    ativo?: boolean
+    ordem?: number
+    role: RoleConfigCreateNestedOneWithoutSubRolesInput
+  }
+
+  export type SubRoleConfigUncheckedCreateInput = {
+    id?: string
+    chave: string
+    label: string
+    roleChave: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type SubRoleConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+    role?: RoleConfigUpdateOneRequiredWithoutSubRolesNestedInput
+  }
+
+  export type SubRoleConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    roleChave?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubRoleConfigCreateManyInput = {
+    id?: string
+    chave: string
+    label: string
+    roleChave: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type SubRoleConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubRoleConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    roleChave?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
   export type UtilizadorCreateInput = {
     id?: string
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -64725,8 +67264,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -64792,8 +67331,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64859,8 +67398,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64926,8 +67465,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -64941,8 +67480,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64956,8 +67495,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68550,18 +71089,162 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type EnumSubRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubRole | EnumSubRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumSubRoleNullableFilter<$PrismaModel> | $Enums.SubRole | null
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type SubRoleConfigListRelationFilter = {
+    every?: SubRoleConfigWhereInput
+    some?: SubRoleConfigWhereInput
+    none?: SubRoleConfigWhereInput
+  }
+
+  export type SubRoleConfigOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoleConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    categoria?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type RoleConfigAvgOrderByAggregateInput = {
+    ordem?: SortOrder
+  }
+
+  export type RoleConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    categoria?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type RoleConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    categoria?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type RoleConfigSumOrderByAggregateInput = {
+    ordem?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type RoleConfigScalarRelationFilter = {
+    is?: RoleConfigWhereInput
+    isNot?: RoleConfigWhereInput
+  }
+
+  export type SubRoleConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    roleChave?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type SubRoleConfigAvgOrderByAggregateInput = {
+    ordem?: SortOrder
+  }
+
+  export type SubRoleConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    roleChave?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type SubRoleConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    chave?: SortOrder
+    label?: SortOrder
+    roleChave?: SortOrder
+    ativo?: SortOrder
+    ordem?: SortOrder
+  }
+
+  export type SubRoleConfigSumOrderByAggregateInput = {
+    ordem?: SortOrder
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type EnumServicoFilter<$PrismaModel = never> = {
@@ -68580,26 +71263,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -69031,10 +71694,10 @@ export namespace Prisma {
     ordemExperiencia?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -69043,30 +71706,10 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type EnumSubRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubRole | EnumSubRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumSubRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.SubRole | null
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumSubRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumSubRoleNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type EnumServicoWithAggregatesFilter<$PrismaModel = never> = {
@@ -69093,32 +71736,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -69820,17 +72437,6 @@ export namespace Prisma {
     administradoPorId?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type HorarioTurnoListRelationFilter = {
     every?: HorarioTurnoWhereInput
     some?: HorarioTurnoWhereInput
@@ -69878,22 +72484,6 @@ export namespace Prisma {
   export type EscalaSumOrderByAggregateInput = {
     mes?: SortOrder
     ano?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EscalaScalarRelationFilter = {
@@ -71547,6 +74137,78 @@ export namespace Prisma {
     criadoEm?: SortOrder
   }
 
+  export type SubRoleConfigCreateNestedManyWithoutRoleInput = {
+    create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
+    createMany?: SubRoleConfigCreateManyRoleInputEnvelope
+    connect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+  }
+
+  export type SubRoleConfigUncheckedCreateNestedManyWithoutRoleInput = {
+    create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
+    createMany?: SubRoleConfigCreateManyRoleInputEnvelope
+    connect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type SubRoleConfigUpdateManyWithoutRoleNestedInput = {
+    create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
+    upsert?: SubRoleConfigUpsertWithWhereUniqueWithoutRoleInput | SubRoleConfigUpsertWithWhereUniqueWithoutRoleInput[]
+    createMany?: SubRoleConfigCreateManyRoleInputEnvelope
+    set?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    disconnect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    delete?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    connect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    update?: SubRoleConfigUpdateWithWhereUniqueWithoutRoleInput | SubRoleConfigUpdateWithWhereUniqueWithoutRoleInput[]
+    updateMany?: SubRoleConfigUpdateManyWithWhereWithoutRoleInput | SubRoleConfigUpdateManyWithWhereWithoutRoleInput[]
+    deleteMany?: SubRoleConfigScalarWhereInput | SubRoleConfigScalarWhereInput[]
+  }
+
+  export type SubRoleConfigUncheckedUpdateManyWithoutRoleNestedInput = {
+    create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
+    connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
+    upsert?: SubRoleConfigUpsertWithWhereUniqueWithoutRoleInput | SubRoleConfigUpsertWithWhereUniqueWithoutRoleInput[]
+    createMany?: SubRoleConfigCreateManyRoleInputEnvelope
+    set?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    disconnect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    delete?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    connect?: SubRoleConfigWhereUniqueInput | SubRoleConfigWhereUniqueInput[]
+    update?: SubRoleConfigUpdateWithWhereUniqueWithoutRoleInput | SubRoleConfigUpdateWithWhereUniqueWithoutRoleInput[]
+    updateMany?: SubRoleConfigUpdateManyWithWhereWithoutRoleInput | SubRoleConfigUpdateManyWithWhereWithoutRoleInput[]
+    deleteMany?: SubRoleConfigScalarWhereInput | SubRoleConfigScalarWhereInput[]
+  }
+
+  export type RoleConfigCreateNestedOneWithoutSubRolesInput = {
+    create?: XOR<RoleConfigCreateWithoutSubRolesInput, RoleConfigUncheckedCreateWithoutSubRolesInput>
+    connectOrCreate?: RoleConfigCreateOrConnectWithoutSubRolesInput
+    connect?: RoleConfigWhereUniqueInput
+  }
+
+  export type RoleConfigUpdateOneRequiredWithoutSubRolesNestedInput = {
+    create?: XOR<RoleConfigCreateWithoutSubRolesInput, RoleConfigUncheckedCreateWithoutSubRolesInput>
+    connectOrCreate?: RoleConfigCreateOrConnectWithoutSubRolesInput
+    upsert?: RoleConfigUpsertWithoutSubRolesInput
+    connect?: RoleConfigWhereUniqueInput
+    update?: XOR<XOR<RoleConfigUpdateToOneWithWhereWithoutSubRolesInput, RoleConfigUpdateWithoutSubRolesInput>, RoleConfigUncheckedUpdateWithoutSubRolesInput>
+  }
+
   export type TurnoCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -72275,16 +74937,8 @@ export namespace Prisma {
     connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type EnumRoleFieldUpdateOperationsInput = {
-    set?: $Enums.Role
-  }
-
-  export type NullableEnumSubRoleFieldUpdateOperationsInput = {
-    set?: $Enums.SubRole | null
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type EnumServicoFieldUpdateOperationsInput = {
@@ -72297,14 +74951,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -75543,14 +78189,6 @@ export namespace Prisma {
     connect?: HorarioTurnoWhereUniqueInput | HorarioTurnoWhereUniqueInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type UtilizadorUpdateOneRequiredWithoutEscalasNestedInput = {
     create?: XOR<UtilizadorCreateWithoutEscalasInput, UtilizadorUncheckedCreateWithoutEscalasInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutEscalasInput
@@ -76895,18 +79533,86 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedEnumSubRoleNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubRole | EnumSubRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumSubRoleNullableFilter<$PrismaModel> | $Enums.SubRole | null
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedEnumServicoFilter<$PrismaModel = never> = {
@@ -76927,25 +79633,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -76957,10 +79644,10 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -76968,41 +79655,10 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRoleFilter<$PrismaModel>
-    _max?: NestedEnumRoleFilter<$PrismaModel>
-  }
-
-  export type NestedEnumSubRoleNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SubRole | EnumSubRoleFieldRefInput<$PrismaModel> | null
-    in?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.SubRole[] | ListEnumSubRoleFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumSubRoleNullableWithAggregatesFilter<$PrismaModel> | $Enums.SubRole | null
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumSubRoleNullableFilter<$PrismaModel>
-    _max?: NestedEnumSubRoleNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumServicoWithAggregatesFilter<$PrismaModel = never> = {
@@ -77040,31 +79696,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -77246,33 +79877,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoTarefaFilter<$PrismaModel>
     _max?: NestedEnumEstadoTarefaFilter<$PrismaModel>
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumEstadoPedidoTrocaFilter<$PrismaModel = never> = {
@@ -77668,6 +80272,112 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
     _max?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
+  }
+
+  export type SubRoleConfigCreateWithoutRoleInput = {
+    id?: string
+    chave: string
+    label: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type SubRoleConfigUncheckedCreateWithoutRoleInput = {
+    id?: string
+    chave: string
+    label: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type SubRoleConfigCreateOrConnectWithoutRoleInput = {
+    where: SubRoleConfigWhereUniqueInput
+    create: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput>
+  }
+
+  export type SubRoleConfigCreateManyRoleInputEnvelope = {
+    data: SubRoleConfigCreateManyRoleInput | SubRoleConfigCreateManyRoleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubRoleConfigUpsertWithWhereUniqueWithoutRoleInput = {
+    where: SubRoleConfigWhereUniqueInput
+    update: XOR<SubRoleConfigUpdateWithoutRoleInput, SubRoleConfigUncheckedUpdateWithoutRoleInput>
+    create: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput>
+  }
+
+  export type SubRoleConfigUpdateWithWhereUniqueWithoutRoleInput = {
+    where: SubRoleConfigWhereUniqueInput
+    data: XOR<SubRoleConfigUpdateWithoutRoleInput, SubRoleConfigUncheckedUpdateWithoutRoleInput>
+  }
+
+  export type SubRoleConfigUpdateManyWithWhereWithoutRoleInput = {
+    where: SubRoleConfigScalarWhereInput
+    data: XOR<SubRoleConfigUpdateManyMutationInput, SubRoleConfigUncheckedUpdateManyWithoutRoleInput>
+  }
+
+  export type SubRoleConfigScalarWhereInput = {
+    AND?: SubRoleConfigScalarWhereInput | SubRoleConfigScalarWhereInput[]
+    OR?: SubRoleConfigScalarWhereInput[]
+    NOT?: SubRoleConfigScalarWhereInput | SubRoleConfigScalarWhereInput[]
+    id?: StringFilter<"SubRoleConfig"> | string
+    chave?: StringFilter<"SubRoleConfig"> | string
+    label?: StringFilter<"SubRoleConfig"> | string
+    roleChave?: StringFilter<"SubRoleConfig"> | string
+    ativo?: BoolFilter<"SubRoleConfig"> | boolean
+    ordem?: IntFilter<"SubRoleConfig"> | number
+  }
+
+  export type RoleConfigCreateWithoutSubRolesInput = {
+    id?: string
+    chave: string
+    label: string
+    categoria: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type RoleConfigUncheckedCreateWithoutSubRolesInput = {
+    id?: string
+    chave: string
+    label: string
+    categoria: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type RoleConfigCreateOrConnectWithoutSubRolesInput = {
+    where: RoleConfigWhereUniqueInput
+    create: XOR<RoleConfigCreateWithoutSubRolesInput, RoleConfigUncheckedCreateWithoutSubRolesInput>
+  }
+
+  export type RoleConfigUpsertWithoutSubRolesInput = {
+    update: XOR<RoleConfigUpdateWithoutSubRolesInput, RoleConfigUncheckedUpdateWithoutSubRolesInput>
+    create: XOR<RoleConfigCreateWithoutSubRolesInput, RoleConfigUncheckedCreateWithoutSubRolesInput>
+    where?: RoleConfigWhereInput
+  }
+
+  export type RoleConfigUpdateToOneWithWhereWithoutSubRolesInput = {
+    where?: RoleConfigWhereInput
+    data: XOR<RoleConfigUpdateWithoutSubRolesInput, RoleConfigUncheckedUpdateWithoutSubRolesInput>
+  }
+
+  export type RoleConfigUpdateWithoutSubRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RoleConfigUncheckedUpdateWithoutSubRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
   }
 
   export type TurnoCreateWithoutChefeTurnoInput = {
@@ -81031,8 +83741,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -81097,8 +83807,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -81979,8 +84689,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82045,8 +84755,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82559,8 +85269,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -82625,8 +85335,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -82865,8 +85575,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82931,8 +85641,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83178,8 +85888,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -83244,8 +85954,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -83448,8 +86158,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83514,8 +86224,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83648,8 +86358,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -83714,8 +86424,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -83833,8 +86543,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83899,8 +86609,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84362,8 +87072,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -84428,8 +87138,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -84601,8 +87311,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84667,8 +87377,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84818,8 +87528,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -84884,8 +87594,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -85057,8 +87767,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85123,8 +87833,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85305,8 +88015,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -85371,8 +88081,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -85581,8 +88291,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85647,8 +88357,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85798,8 +88508,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -85864,8 +88574,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -85935,8 +88645,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -86001,8 +88711,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -86205,8 +88915,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -86271,8 +88981,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -86348,8 +89058,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -86414,8 +89124,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -86602,8 +89312,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -86668,8 +89378,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -86739,8 +89449,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -86805,8 +89515,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -87004,8 +89714,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87070,8 +89780,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87147,8 +89857,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87213,8 +89923,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87419,8 +90129,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -87485,8 +90195,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -87703,8 +90413,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87769,8 +90479,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87835,8 +90545,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -87901,8 +90611,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88011,8 +90721,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88077,8 +90787,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88360,8 +91070,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88426,8 +91136,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88537,8 +91247,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88603,8 +91313,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88669,8 +91379,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88735,8 +91445,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88806,8 +91516,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88872,8 +91582,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -88966,8 +91676,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -89032,8 +91742,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -89114,8 +91824,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89180,8 +91890,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89257,8 +91967,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89323,8 +92033,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89429,8 +92139,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89495,8 +92205,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89669,8 +92379,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -89735,8 +92445,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -89806,8 +92516,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -89872,8 +92582,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -90074,8 +92784,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90140,8 +92850,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90217,8 +92927,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90283,8 +92993,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90434,8 +93144,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -90500,8 +93210,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -90673,8 +93383,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90739,8 +93449,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -90805,8 +93515,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -90871,8 +93581,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -90953,8 +93663,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -91019,8 +93729,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -91698,8 +94408,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -91764,8 +94474,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -91937,8 +94647,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92003,8 +94713,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92154,8 +94864,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -92220,8 +94930,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -92393,8 +95103,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92459,8 +95169,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92525,8 +95235,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -92591,8 +95301,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -92673,8 +95383,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92739,8 +95449,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -92890,8 +95600,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -92956,8 +95666,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -93153,8 +95863,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93219,8 +95929,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93469,8 +96179,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -93535,8 +96245,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -93606,8 +96316,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -93672,8 +96382,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -93845,8 +96555,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93911,8 +96621,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93988,8 +96698,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94054,8 +96764,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94205,8 +96915,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -94271,8 +96981,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -94342,8 +97052,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -94408,8 +97118,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -94612,8 +97322,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94678,8 +97388,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94755,8 +97465,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94821,8 +97531,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -94963,8 +97673,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95029,8 +97739,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95100,8 +97810,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95166,8 +97876,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95237,8 +97947,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95303,8 +98013,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95430,8 +98140,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95496,8 +98206,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95573,8 +98283,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95639,8 +98349,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95716,8 +98426,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95782,8 +98492,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95933,8 +98643,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -95999,8 +98709,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -96172,8 +98882,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96238,8 +98948,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96304,8 +99014,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -96370,8 +99080,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -96441,8 +99151,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -96507,8 +99217,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -96589,8 +99299,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96655,8 +99365,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96732,8 +99442,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96798,8 +99508,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -96941,8 +99651,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97007,8 +99717,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97078,8 +99788,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97144,8 +99854,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97261,8 +99971,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97327,8 +100037,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97404,8 +100114,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97470,8 +100180,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97621,8 +100331,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97687,8 +100397,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -97892,8 +100602,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -97958,8 +100668,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98152,8 +100862,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -98218,8 +100928,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -98424,8 +101134,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98490,8 +101200,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -98641,8 +101351,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -98707,8 +101417,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -98778,8 +101488,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -98844,8 +101554,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99017,8 +101727,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99083,8 +101793,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99160,8 +101870,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99226,8 +101936,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99292,8 +102002,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99358,8 +102068,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99440,8 +102150,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99506,8 +102216,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99572,8 +102282,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99638,8 +102348,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99709,8 +102419,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99775,8 +102485,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -99857,8 +102567,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -99923,8 +102633,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100000,8 +102710,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100066,8 +102776,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100217,8 +102927,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -100283,8 +102993,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -100354,8 +103064,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -100420,8 +103130,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -100593,8 +103303,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100659,8 +103369,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100736,8 +103446,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100802,8 +103512,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100953,8 +103663,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101019,8 +103729,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101192,8 +103902,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101258,8 +103968,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101324,8 +104034,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101390,8 +104100,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101461,8 +104171,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101527,8 +104237,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101609,8 +104319,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101675,8 +104385,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101752,8 +104462,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101818,8 +104528,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -101884,8 +104594,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -101950,8 +104660,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -102021,8 +104731,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -102087,8 +104797,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -102169,8 +104879,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102235,8 +104945,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102312,8 +105022,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102378,8 +105088,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102444,8 +105154,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -102510,8 +105220,8 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
-    role: $Enums.Role
-    subRole?: $Enums.SubRole | null
+    role: string
+    subRole?: string | null
     servico?: $Enums.Servico
     ordemExperiencia?: number | null
     equipa?: string | null
@@ -102592,8 +105302,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102658,8 +105368,8 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    subRole?: NullableEnumSubRoleFieldUpdateOperationsInput | $Enums.SubRole | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
@@ -102717,6 +105427,38 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type SubRoleConfigCreateManyRoleInput = {
+    id?: string
+    chave: string
+    label: string
+    ativo?: boolean
+    ordem?: number
+  }
+
+  export type SubRoleConfigUpdateWithoutRoleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubRoleConfigUncheckedUpdateWithoutRoleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SubRoleConfigUncheckedUpdateManyWithoutRoleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chave?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    ordem?: IntFieldUpdateOperationsInput | number
   }
 
   export type TurnoCreateManyChefeTurnoInput = {

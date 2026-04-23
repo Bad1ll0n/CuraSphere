@@ -9,161 +9,33 @@ datasource db {
 }
 
 // ─── Utilizadores ────────────────────────────────────────────────────────────
+// Roles e sub-roles são geridas dinamicamente via RoleConfig / SubRoleConfig.
+// Os campos role e subRole em Utilizador são strings livres (chave da RoleConfig/SubRoleConfig).
 
-enum Role {
-  // ── Direção ──────────────────────────────
-  diretor_geral
-  diretor_clinico
-  diretor_enfermagem
-  diretor_financeiro
-  diretor_operacional
-  diretor_rh
-  diretor_ti
-  diretor_qualidade
-  // ── Clínico — Médicos ─────────────────────
-  medico
-  medico_especialista
-  cirurgiao
-  anestesiologista
-  radiologista
-  patologista
-  // ── Clínico — Enfermagem ──────────────────
-  enfermeiro
-  enfermeiro_especialista
-  enfermeiro_gestor
-  // ── Clínico — Outros ─────────────────────
-  auxiliar_saude
-  tecnico
-  fisioterapeuta
-  terapeuta_fala
-  nutricionista
-  psicologo
-  // ── Farmácia ──────────────────────────────
-  farmaceutico
-  farmaceutico_clinico
-  tecnico_farmacia
-  // ── Administrativo ────────────────────────
-  rececionista
-  secretario_clinico
-  assistente_administrativo
-  gestor_agendamento
-  faturacao
-  rh
-  compras
-  // ── Operacional ───────────────────────────
-  maqueiro
-  assistente_operacional
-  esterilizacao
-  limpeza
-  lavandaria
-  // ── Engenharia / TI / Compliance ──────────
-  engenheiro_biomedico
-  tecnico_manutencao
-  seguranca
-  sst
-  it_admin
-  analista_sistemas
-  dba
-  ciberseguranca
-  bi_analyst
-  dpo
-  gestor_qualidade
-  compliance_officer
-  controlo_infecao
-  auditor_interno
-  // ── Legado (compatibilidade) ──────────────
-  auxiliar
-  administrativo
-  chefe_turno
-  chefe_enfermeiros
-  chefe_medicos
-  triador
-  anestesista
-  instrumentista
-  secretaria
+model RoleConfig {
+  id        String  @id @default(uuid())
+  chave     String  @unique // 'medico', 'enfermeiro', 'ti', etc.
+  label     String // 'Médico', 'Enfermeiro', 'TI', etc.
+  categoria String // 'clinico', 'suporte', 'gestao', 'ti'
+  ativo     Boolean @default(true)
+  ordem     Int     @default(0)
+
+  subRoles SubRoleConfig[]
+
+  @@map("roles_config")
 }
 
-enum SubRole {
-  // Direção
-  ceo_hospitalar
-  diretor_medico
-  head_nurse
-  cfo
-  coo
-  hr_director
-  cio
-  compliance_director
-  // Médico
-  clinico_geral
-  // Médico Especialista
-  cardiologista
-  urologista
-  ortopedista
-  neurologista
-  ginecologista
-  pediatra
-  oncologista
-  // Cirurgião / Anestesiologista
-  cirurgiao_geral
-  medico_anestesia
-  // Imagiologia / Lab
-  medico_imagem
-  anatomia_patologica
-  // Enfermeiro
-  generalista
-  // Enfermeiro Especialista
-  enf_uci
-  enf_bloco
-  enf_obstetricia
-  enf_pediatria
-  // Enfermeiro Gestor
-  supervisor_enfermagem
-  // Auxiliar de Saúde
-  tae
-  // Técnico
-  tecnico_radiologia
-  tecnico_tac_rm
-  tecnico_analises_clinicas
-  tecnico_cardiopneumologia
-  // Fisioterapeuta / Terapeutas / Nutricionista / Psicólogo
-  reabilitacao_fisica
-  reabilitacao_fala
-  nutricao_clinica
-  psicologia_clinica
-  // Farmácia
-  farmaceutico_hospitalar
-  farmaceutico_oncologico
-  tecnico_farmacia_assist
-  // Administrativo
-  front_desk
-  secretariado
-  backoffice
-  scheduling
-  billing_officer
-  hr_specialist
-  procurement
-  // Operacional
-  transporte_interno
-  apoio_geral
-  cssd
-  higiene_hospitalar
-  gestao_textil
-  // Engenharia / TI
-  equipamentos_medicos
-  facilities
-  vigilancia
-  seguranca_trabalho
-  sysadmin
-  his_erp
-  database_admin
-  security_officer
-  dados_clinicos
-  // Compliance
-  dpo_role
-  quality_manager
-  compliance
-  infection_control
-  internal_audit
+model SubRoleConfig {
+  id        String  @id @default(uuid())
+  chave     String  @unique // 'cardiologista', 'it_admin', 'generalista', etc.
+  label     String // 'Cardiologista', 'IT Admin', 'Generalista', etc.
+  roleChave String // chave da role-pai (loose FK a RoleConfig.chave)
+  ativo     Boolean @default(true)
+  ordem     Int     @default(0)
+
+  role RoleConfig @relation(fields: [roleChave], references: [chave])
+
+  @@map("subroles_config")
 }
 
 enum Servico {
@@ -182,8 +54,8 @@ model Utilizador {
   numeroFuncionario String   @unique
   nome              String
   passwordHash      String
-  role              Role
-  subRole           SubRole?
+  role              String // chave de RoleConfig (ex: 'medico', 'enfermeiro', 'ti')
+  subRole           String? // chave de SubRoleConfig (ex: 'cardiologista', 'it_admin')
   servico           Servico  @default(internamento)
   ordemExperiencia  Int? // definida pela chefe de enfermeiros
   equipa            String? // ex: "A", "B", "C"

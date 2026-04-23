@@ -36,26 +36,36 @@ const roleCor: Record<string, string> = {
 
 const roles = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico', 'administrativo', 'operacional', 'ti', 'qualidade', 'direcao'];
 
+interface SubRoleOpc { chave: string; label: string }
+interface RoleOpc { chave: string; label: string; subRoles: SubRoleOpc[] }
+
 export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
   const [utilizadores, setUtilizadores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [rolesConfig, setRolesConfig] = useState<RoleOpc[]>([]);
 
   // Modal criar
   const [modalCriar, setModalCriar] = useState(false);
-  const [form, setForm] = useState({ nome: '', numeroFuncionario: '', password: '', role: 'enfermeiro', ordemExperiencia: '' });
+  const [form, setForm] = useState({ nome: '', numeroFuncionario: '', password: '', role: 'enfermeiro', subRole: '', ordemExperiencia: '' });
   const [erroCriar, setErroCriar] = useState('');
   const [salvando, setSalvando] = useState(false);
 
   // Modal editar
   const [editando, setEditando] = useState<any>(null);
-  const [formEdit, setFormEdit] = useState({ nome: '', role: 'enfermeiro', ordemExperiencia: '', equipa: '' });
+  const [formEdit, setFormEdit] = useState({ nome: '', role: 'enfermeiro', subRole: '', ordemExperiencia: '', equipa: '' });
   const [erroEdit, setErroEdit] = useState('');
+
+  const subRolesParaRole = (chave: string) => rolesConfig.find((r) => r.chave === chave)?.subRoles ?? [];
 
   const carregar = async () => {
     try {
-      const { data } = await api.get('/utilizadores');
+      const [{ data }, { data: rolesData }] = await Promise.all([
+        api.get('/utilizadores'),
+        api.get('/configuracoes/roles'),
+      ]);
       setUtilizadores(data);
+      setRolesConfig(rolesData);
     } catch {} finally {
       setLoading(false);
       setRefreshing(false);
@@ -71,10 +81,11 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
     try {
       await api.post('/utilizadores', {
         ...form,
+        subRole: form.subRole || undefined,
         ordemExperiencia: form.ordemExperiencia ? Number(form.ordemExperiencia) : undefined,
       });
       setModalCriar(false);
-      setForm({ nome: '', numeroFuncionario: '', password: '', role: 'enfermeiro', ordemExperiencia: '' });
+      setForm({ nome: '', numeroFuncionario: '', password: '', role: 'enfermeiro', subRole: '', ordemExperiencia: '' });
       await carregar();
     } catch (e: any) {
       setErroCriar(e.response?.data?.message ?? 'Erro ao criar utilizador');
@@ -89,6 +100,7 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
       await api.patch(`/utilizadores/${editando.id}`, {
         nome: formEdit.nome,
         role: formEdit.role,
+        subRole: formEdit.subRole || undefined,
         ordemExperiencia: formEdit.ordemExperiencia ? Number(formEdit.ordemExperiencia) : undefined,
         equipa: formEdit.equipa || undefined,
       });
@@ -110,7 +122,7 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
 
   const abrirEditar = (u: any) => {
     setEditando(u);
-    setFormEdit({ nome: u.nome, role: u.role, ordemExperiencia: u.ordemExperiencia?.toString() ?? '', equipa: u.equipa ?? '' });
+    setFormEdit({ nome: u.nome, role: u.role, subRole: u.subRole ?? '', ordemExperiencia: u.ordemExperiencia?.toString() ?? '', equipa: u.equipa ?? '' });
     setErroEdit('');
   };
 
@@ -204,13 +216,38 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
                   <TouchableOpacity
                     key={r}
                     style={[s.rolePill, form.role === r && { backgroundColor: roleCor[r] ?? '#2563eb' }]}
-                    onPress={() => setForm((f) => ({ ...f, role: r }))}
+                    onPress={() => setForm((f) => ({ ...f, role: r, subRole: '' }))}
                   >
                     <Text style={[s.rolePillTexto, form.role === r && { color: '#fff' }]}>{roleLabel[r]}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
+
+            {subRolesParaRole(form.role).length > 0 && (
+              <>
+                <Text style={s.formLabel}>Especialização</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 4 }}>
+                  <View style={{ flexDirection: 'row', gap: 6 }}>
+                    <TouchableOpacity
+                      style={[s.rolePill, form.subRole === '' && { backgroundColor: '#475569' }]}
+                      onPress={() => setForm((f) => ({ ...f, subRole: '' }))}
+                    >
+                      <Text style={[s.rolePillTexto, form.subRole === '' && { color: '#fff' }]}>Nenhuma</Text>
+                    </TouchableOpacity>
+                    {subRolesParaRole(form.role).map((sr) => (
+                      <TouchableOpacity
+                        key={sr.chave}
+                        style={[s.rolePill, form.subRole === sr.chave && { backgroundColor: roleCor[form.role] ?? '#2563eb' }]}
+                        onPress={() => setForm((f) => ({ ...f, subRole: sr.chave }))}
+                      >
+                        <Text style={[s.rolePillTexto, form.subRole === sr.chave && { color: '#fff' }]}>{sr.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </>
+            )}
 
             <Text style={s.formLabel}>Ordem de Experiência (opcional)</Text>
             <TextInput style={s.formInput} value={form.ordemExperiencia} onChangeText={(v) => setForm((f) => ({ ...f, ordemExperiencia: v }))} placeholder="Ex: 1, 2, 3..." keyboardType="numeric" />
@@ -252,13 +289,38 @@ export default function UtilizadoresScreen({ utilizador, onVoltar }: Props) {
                   <TouchableOpacity
                     key={r}
                     style={[s.rolePill, formEdit.role === r && { backgroundColor: roleCor[r] ?? '#2563eb' }]}
-                    onPress={() => setFormEdit((f) => ({ ...f, role: r }))}
+                    onPress={() => setFormEdit((f) => ({ ...f, role: r, subRole: '' }))}
                   >
                     <Text style={[s.rolePillTexto, formEdit.role === r && { color: '#fff' }]}>{roleLabel[r]}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
+
+            {subRolesParaRole(formEdit.role).length > 0 && (
+              <>
+                <Text style={s.formLabel}>Especialização</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 4 }}>
+                  <View style={{ flexDirection: 'row', gap: 6 }}>
+                    <TouchableOpacity
+                      style={[s.rolePill, formEdit.subRole === '' && { backgroundColor: '#475569' }]}
+                      onPress={() => setFormEdit((f) => ({ ...f, subRole: '' }))}
+                    >
+                      <Text style={[s.rolePillTexto, formEdit.subRole === '' && { color: '#fff' }]}>Nenhuma</Text>
+                    </TouchableOpacity>
+                    {subRolesParaRole(formEdit.role).map((sr) => (
+                      <TouchableOpacity
+                        key={sr.chave}
+                        style={[s.rolePill, formEdit.subRole === sr.chave && { backgroundColor: roleCor[formEdit.role] ?? '#2563eb' }]}
+                        onPress={() => setFormEdit((f) => ({ ...f, subRole: sr.chave }))}
+                      >
+                        <Text style={[s.rolePillTexto, formEdit.subRole === sr.chave && { color: '#fff' }]}>{sr.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </>
+            )}
 
             <Text style={s.formLabel}>Equipa (opcional)</Text>
             <TextInput style={s.formInput} value={formEdit.equipa} onChangeText={(v) => setFormEdit((f) => ({ ...f, equipa: v }))} placeholder="Ex: A, B" />
