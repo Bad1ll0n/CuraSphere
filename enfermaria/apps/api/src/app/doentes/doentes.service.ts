@@ -435,4 +435,36 @@ export class DoenteService {
     if (!doente) throw new NotFoundException('Doente não encontrado');
     return doente;
   }
+
+  async buscarFicheiroPessoal(doenteId: string) {
+    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
+    if (!doente) throw new NotFoundException('Doente não encontrado');
+
+    const ficha = await this.prisma.ficheiroPessoalDoente.findUnique({
+      where: { doenteId },
+      include: { atualizadoPor: { select: { id: true, nome: true } } },
+    });
+
+    return ficha ?? { doenteId };
+  }
+
+  async atualizarFicheiroPessoal(
+    doenteId: string,
+    data: {
+      nif?: string; numeroSNS?: string; morada?: string; codigoPostal?: string;
+      localidade?: string; telefone?: string; email?: string;
+      entidadeSeguradora?: string; numeroApolice?: string; tipoCobertura?: string;
+    },
+    atualizadoPorId: string,
+  ) {
+    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
+    if (!doente) throw new NotFoundException('Doente não encontrado');
+
+    return this.prisma.ficheiroPessoalDoente.upsert({
+      where: { doenteId },
+      create: { doenteId, ...data, atualizadoPorId },
+      update: { ...data, atualizadoPorId },
+      include: { atualizadoPor: { select: { id: true, nome: true } } },
+    });
+  }
 }

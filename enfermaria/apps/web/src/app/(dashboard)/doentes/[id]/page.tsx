@@ -430,6 +430,14 @@ export default function DoenteDetalhe() {
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
 
+  const eAdmin = utilizador?.role === 'administrativo';
+
+  // Ficha pessoal (dados admin — só carregados para role administrativo)
+  const [ficheiroPessoal, setFicheiroPessoal] = useState<Record<string, string | null>>({});
+  const [editandoFicha, setEditandoFicha] = useState(false);
+  const [fichaForm, setFichaForm] = useState<Record<string, string>>({});
+  const [salvandoFicha, setSalvandoFicha] = useState(false);
+
   const podeAlterarEstado = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
   const podeDarAlta = ['administrativo', 'medico'].includes(utilizador?.role ?? '');
   const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
@@ -497,6 +505,13 @@ export default function DoenteDetalhe() {
     api.get(`/doentes/${id}`)
       .then((r) => setDoente(r.data))
       .finally(() => setLoading(false));
+  };
+
+  const carregarFicheiroPessoal = () => {
+    if (!eAdmin) return;
+    api.get(`/doentes/${id}/ficha-pessoal`)
+      .then((r) => { setFicheiroPessoal(r.data); setFichaForm(r.data); })
+      .catch(() => {});
   };
 
   const carregarSinaisVitais = () =>
@@ -609,6 +624,15 @@ export default function DoenteDetalhe() {
     } finally { setSalvando(false); }
   };
 
+  const guardarFicheiroPessoal = async () => {
+    setSalvandoFicha(true);
+    try {
+      const r = await api.patch(`/doentes/${id}/ficha-pessoal`, fichaForm);
+      setFicheiroPessoal(r.data);
+      setEditandoFicha(false);
+    } catch { /* silencioso */ } finally { setSalvandoFicha(false); }
+  };
+
   const removerAlergia = async (alergiaId: string) => {
     if (!confirm('Remover esta alergia?')) return;
     await api.delete(`/alergias/${alergiaId}`);
@@ -646,6 +670,7 @@ export default function DoenteDetalhe() {
       carregarEscalasClinicas(),
       carregarInterconsultas(),
       carregarDispositivos(),
+      carregarFicheiroPessoal(),
     ]);
   }, [id]);
 
@@ -1036,6 +1061,100 @@ export default function DoenteDetalhe() {
           </div>
         </div>
       </div>
+
+      {/* Dados Administrativos — só para role administrativo */}
+      {eAdmin && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-pink-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Dados Administrativos</span>
+              <span className="text-xs text-slate-300 bg-slate-100 px-2 py-0.5 rounded-full font-medium">Confidencial</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <a href={`/faturacao`} className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Ver Faturação
+              </a>
+              {!editandoFicha ? (
+                <button onClick={() => setEditandoFicha(true)}
+                  className="flex items-center gap-1 text-xs text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  style={{ padding: '4px 8px' }}>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                  Editar
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button onClick={() => { setEditandoFicha(false); setFichaForm(ficheiroPessoal as any); }}
+                    className="text-xs text-slate-500 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors" style={{ padding: '4px 10px' }}>
+                    Cancelar
+                  </button>
+                  <button onClick={guardarFicheiroPessoal} disabled={salvandoFicha}
+                    className="text-xs text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors" style={{ padding: '4px 10px' }}>
+                    {salvandoFicha ? 'A guardar...' : 'Guardar'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {editandoFicha ? (
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { key: 'nif', label: 'NIF', placeholder: '123456789' },
+                { key: 'numeroSNS', label: 'Nº SNS / Beneficiário', placeholder: '123456789' },
+                { key: 'telefone', label: 'Telefone', placeholder: '+351 912 345 678' },
+                { key: 'email', label: 'Email', placeholder: 'doente@email.com' },
+                { key: 'morada', label: 'Morada', placeholder: 'Rua Exemplo, 12' },
+                { key: 'codigoPostal', label: 'Código Postal', placeholder: '1000-001' },
+                { key: 'localidade', label: 'Localidade', placeholder: 'Lisboa' },
+                { key: 'entidadeSeguradora', label: 'Seguradora', placeholder: 'Médis, Multicare...' },
+                { key: 'numeroApolice', label: 'Nº Apólice', placeholder: '' },
+                { key: 'tipoCobertura', label: 'Tipo Cobertura', placeholder: 'sns / seguro / particular' },
+              ].map(({ key, label, placeholder }) => (
+                <div key={key}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+                  <input
+                    value={(fichaForm as any)[key] ?? ''}
+                    onChange={e => setFichaForm(p => ({ ...p, [key]: e.target.value }))}
+                    placeholder={placeholder}
+                    className="w-full border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                    style={{ padding: '8px 12px' }}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-x-8 gap-y-4">
+              {[
+                { label: 'NIF', value: ficheiroPessoal?.nif },
+                { label: 'Nº SNS / Beneficiário', value: ficheiroPessoal?.numeroSNS },
+                { label: 'Telefone', value: ficheiroPessoal?.telefone },
+                { label: 'Email', value: ficheiroPessoal?.email },
+                { label: 'Morada', value: ficheiroPessoal?.morada },
+                { label: 'Código Postal', value: ficheiroPessoal?.codigoPostal },
+                { label: 'Localidade', value: ficheiroPessoal?.localidade },
+                { label: 'Seguradora', value: ficheiroPessoal?.entidadeSeguradora },
+                { label: 'Nº Apólice', value: ficheiroPessoal?.numeroApolice },
+                { label: 'Tipo Cobertura', value: ficheiroPessoal?.tipoCobertura },
+              ].map(({ label, value }) => (
+                <div key={label}>
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide block" style={{ marginBottom: '2px' }}>{label}</span>
+                  <span className="text-sm text-slate-700">{value || '—'}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Medicação + Tarefas */}
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>

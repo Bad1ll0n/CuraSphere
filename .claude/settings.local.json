@@ -89,7 +89,8 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(list\\(d.get\\('targets',{}\\).keys\\(\\)\\)\\)\")",
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts',{}\\), indent=2\\)\\)\")",
       "Bash(code --install-extension marp-team.marp-vscode)",
-      "Bash(\"C:/Users/Badillon/AppData/Local/Programs/Microsoft VS Code/bin/code\" --install-extension marp-team.marp-vscode)"
+      "Bash(\"C:/Users/Badillon/AppData/Local/Programs/Microsoft VS Code/bin/code\" --install-extension marp-team.marp-vscode)",
+      "PowerShell(Set-Location \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\"; $env:PRISMA_MIGRATE_SKIP_GENERATE = \"1\"; pnpm exec prisma migrate dev --schema=src/prisma/schema.prisma --name marcacoes 2>&1)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 const include = {
   solicitante: { select: { id: true, nome: true, role: true, equipa: true } },
@@ -10,7 +11,10 @@ const include = {
 
 @Injectable()
 export class TrocasService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   async listar(utilizadorId: string) {
     // Verificar se o utilizador é chefe de algum turno (menor ordemExperiencia no grupo)
@@ -124,10 +128,21 @@ export class TrocasService {
     });
     if (existente) throw new BadRequestException('Já existe um pedido pendente para este turno e colega');
 
-    return this.prisma.pedidoTrocaTurno.create({
+    const pedido = await this.prisma.pedidoTrocaTurno.create({
       data: { solicitanteId, turnoId, destinatarioId },
       include,
     });
+
+    // Notificar o destinatário
+    const solicitante = await this.prisma.utilizador.findUnique({ where: { id: solicitanteId }, select: { nome: true } });
+    this.notificacoes.enviarParaUtilizador(
+      destinatarioId,
+      'Pedido de Troca de Turno',
+      `${solicitante?.nome ?? 'Um colega'} solicitou uma troca de turno consigo.`,
+      { tipo: 'troca', pedidoId: pedido.id },
+    ).catch(() => {});
+
+    return pedido;
   }
 
   async responderDestinatario(pedidoId: string, utilizadorId: string, aceitar: boolean) {
@@ -136,11 +151,30 @@ export class TrocasService {
     if (pedido.destinatarioId !== utilizadorId) throw new ForbiddenException('Não és o destinatário');
     if (pedido.estado !== 'pendente_destinatario') throw new BadRequestException('Pedido já respondido');
 
-    return this.prisma.pedidoTrocaTurno.update({
+    const resultado = await this.prisma.pedidoTrocaTurno.update({
       where: { id: pedidoId },
       data: { estado: aceitar ? 'pendente_chefe' : 'rejeitado', respondidoEm: new Date() },
       include,
     });
+
+    if (aceitar) {
+      // Notificar o solicitante que o destinatário aceitou
+      this.notificacoes.enviarParaUtilizador(
+        pedido.solicitanteId,
+        'Troca Aceite — Aguarda Aprovação',
+        `${resultado.destinatario.nome} aceitou a troca. Aguarda aprovação do chefe de turno.`,
+        { tipo: 'troca', pedidoId },
+      ).catch(() => {});
+    } else {
+      this.notificacoes.enviarParaUtilizador(
+        pedido.solicitanteId,
+        'Troca Recusada',
+        `${resultado.destinatario.nome} recusou o pedido de troca de turno.`,
+        { tipo: 'troca', pedidoId },
+      ).catch(() => {});
+    }
+
+    return resultado;
   }
 
   async aprovarChefe(pedidoId: string, chefeId: string, aprovar: boolean) {
@@ -169,11 +203,25 @@ export class TrocasService {
         create: { horarioTurnoId: pedido.turnoId, utilizadorId: pedido.destinatarioId },
         update: {},
       });
-      return tx.pedidoTrocaTurno.update({
+      const aprovado = await tx.pedidoTrocaTurno.update({
         where: { id: pedidoId },
         data: { estado: 'aprovado', aprovadoPorId: chefeId, respondidoEm: new Date() },
         include,
       });
+      // Notificar ambas as partes
+      this.notificacoes.enviarParaUtilizador(
+        pedido.solicitanteId,
+        'Troca de Turno Aprovada ✅',
+        'O chefe de turno aprovou a sua troca. O turno foi actualizado.',
+        { tipo: 'troca', pedidoId },
+      ).catch(() => {});
+      this.notificacoes.enviarParaUtilizador(
+        pedido.destinatarioId,
+        'Troca de Turno Aprovada ✅',
+        'A troca de turno foi aprovada. Fique atento ao seu horário.',
+        { tipo: 'troca', pedidoId },
+      ).catch(() => {});
+      return aprovado;
     });
   }
 

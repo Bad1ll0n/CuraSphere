@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { SubRoles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -215,6 +216,140 @@ export class DashboardController {
         porSubRole: incidentesPorSubRole.map(g => ({ subRole: g.subRoleAlvo ?? 'sem_atribuicao', total: g._count.id })),
         porTipo: incidentesPorTipo.map(g => ({ tipo: g.tipo, total: g._count.id })),
         recentes: incidentesRecentes,
+      },
+    };
+  }
+
+  @Get('qualidade')
+  @Roles('qualidade', 'direcao', 'medico', 'enfermeiro')
+  async dashboardQualidade() {
+    const agora = new Date();
+    const hoje = new Date(agora); hoje.setHours(0, 0, 0, 0);
+    const tresDiasAtras = new Date(agora); tresDiasAtras.setDate(tresDiasAtras.getDate() - 3);
+    const seteDiasAtras = new Date(agora); seteDiasAtras.setDate(seteDiasAtras.getDate() - 7);
+    const trintaDiasAtras = new Date(agora); trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30);
+
+    const [
+      // IACS
+      totalIsolados,
+      isoladosPorMotivo,
+      // Alertas clínicos
+      alertasNaoLidos,
+      alertasPorTipo,
+      alertasRecentes,
+      // Avaliações de risco
+      avaliacoesAltoRisco,
+      avaliacoesPorTipo,
+      // Doentes críticos
+      doentesCriticos,
+      doentesInstáveis,
+      // Taxa alta
+      doentesComAlta30Dias,
+      doentesComSumarioAlta,
+      // Medicação
+      medicacaoPendenteHoje,
+      medicacaoAdministradaHoje,
+      // Ocupação atual
+      totalCamas,
+      camasOcupadas,
+    ] = await Promise.all([
+      // IACS
+      this.prisma.doente.count({ where: { emIsolamento: true, ativo: true } }),
+      this.prisma.doente.groupBy({
+        by: ['motivoIsolamento'],
+        where: { emIsolamento: true, ativo: true },
+        _count: { id: true },
+      }),
+      // Alertas
+      this.prisma.alertaClinico.count({ where: { lido: false } }),
+      this.prisma.alertaClinico.groupBy({
+        by: ['tipo'],
+        where: { lido: false },
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+      }),
+      this.prisma.alertaClinico.findMany({
+        where: { lido: false },
+        orderBy: { criadoEm: 'desc' },
+        take: 10,
+        include: { doente: { select: { id: true, nome: true, numeroProcesso: true } } },
+      }),
+      // Avaliações de risco
+      this.prisma.avaliacaoRisco.count({ where: { risco: { in: ['alto', 'critico'] }, criadaEm: { gte: seteDiasAtras } } }),
+      this.prisma.avaliacaoRisco.groupBy({
+        by: ['tipo'],
+        where: { criadaEm: { gte: seteDiasAtras } },
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+      }),
+      // Doentes críticos
+      this.prisma.doente.count({ where: { estado: 'critico', ativo: true } }),
+      this.prisma.doente.count({ where: { estado: 'instavel', ativo: true } }),
+      // Taxa de alta com sumário
+      this.prisma.doente.count({ where: { dataAlta: { gte: trintaDiasAtras }, ativo: false } }),
+      this.prisma.sumarioAlta.count({ where: { criadoEm: { gte: trintaDiasAtras } } }),
+      // Medicação
+      this.prisma.medicacao.count({
+        where: {
+          estado: 'pendente',
+          doente: { ativo: true },
+        },
+      }),
+      this.prisma.registoMedicacao.count({ where: { administradoEm: { gte: hoje } } }),
+      // Camas
+      this.prisma.cama.count(),
+      this.prisma.doente.count({ where: { ativo: true } }),
+    ]);
+
+    // Tendência de isolamentos nos últimos 7 dias
+    const tendenciaIsolamentos: Array<{ data: string; total: number }> = [];
+    for (let i = 6; i >= 0; i--) {
+      const dia = new Date(agora);
+      dia.setDate(dia.getDate() - i);
+      dia.setHours(23, 59, 59, 999);
+      const iniciodia = new Date(dia); iniciodia.setHours(0, 0, 0, 0);
+      const count = await this.prisma.doente.count({
+        where: {
+          emIsolamento: true,
+          dataAdmissao: { lte: dia },
+          OR: [{ dataAlta: null }, { dataAlta: { gte: iniciodia } }],
+        },
+      });
+      tendenciaIsolamentos.push({ data: iniciodia.toISOString().split('T')[0], total: count });
+    }
+
+    const taxaAlta = doentesComAlta30Dias > 0
+      ? Math.round((doentesComSumarioAlta / doentesComAlta30Dias) * 100)
+      : 0;
+
+    return {
+      iacs: {
+        totalIsolados,
+        porMotivo: isoladosPorMotivo.map(g => ({ motivo: g.motivoIsolamento ?? 'Desconhecido', total: g._count.id })),
+        tendencia: tendenciaIsolamentos,
+      },
+      alertas: {
+        naoLidos: alertasNaoLidos,
+        porTipo: alertasPorTipo.map(g => ({ tipo: g.tipo, total: g._count.id })),
+        recentes: alertasRecentes,
+      },
+      riscos: {
+        altoRisco7Dias: avaliacoesAltoRisco,
+        porTipo: avaliacoesPorTipo.map(g => ({ tipo: g.tipo, total: g._count.id })),
+      },
+      doentes: {
+        criticos: doentesCriticos,
+        instaveis: doentesInstáveis,
+        ocupacao: { total: totalCamas, ocupadas: camasOcupadas, taxa: totalCamas > 0 ? Math.round((camasOcupadas / totalCamas) * 100) : 0 },
+      },
+      alta: {
+        altas30Dias: doentesComAlta30Dias,
+        comSumario: doentesComSumarioAlta,
+        taxaComplitude: taxaAlta,
+      },
+      medicacao: {
+        pendentes: medicacaoPendenteHoje,
+        administradasHoje: medicacaoAdministradaHoje,
       },
     };
   }

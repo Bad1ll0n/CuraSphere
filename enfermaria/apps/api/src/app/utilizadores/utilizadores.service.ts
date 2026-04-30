@@ -53,27 +53,37 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async listar(role?: string, roles?: string[]) {
+  async listar(role?: string, roles?: string[], page = 1, limit = 50) {
     let whereRole: any = {};
     if (roles && roles.length > 0) whereRole = { role: { in: roles } };
     else if (role) whereRole = { role };
 
-    return this.prisma.utilizador.findMany({
-      where: { ativo: true, ...whereRole },
-      select: {
-        id: true,
-        numeroFuncionario: true,
-        nome: true,
-        role: true,
-        subRole: true,
-        servico: true,
-        ordemExperiencia: true,
-        equipa: true,
-        ativo: true,
-        criadoEm: true,
-      },
-      orderBy: [{ role: 'asc' }, { ordemExperiencia: 'asc' }, { nome: 'asc' }],
-    });
+    const where = { ativo: true, ...whereRole };
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.utilizador.findMany({
+        where,
+        select: {
+          id: true,
+          numeroFuncionario: true,
+          nome: true,
+          role: true,
+          subRole: true,
+          servico: true,
+          ordemExperiencia: true,
+          equipa: true,
+          ativo: true,
+          criadoEm: true,
+        },
+        orderBy: [{ role: 'asc' }, { ordemExperiencia: 'asc' }, { nome: 'asc' }],
+        take: limit,
+        skip,
+      }),
+      this.prisma.utilizador.count({ where }),
+    ]);
+
+    return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
   }
 
   async buscarPorId(id: string) {

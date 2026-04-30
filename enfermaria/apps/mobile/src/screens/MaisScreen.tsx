@@ -14,8 +14,21 @@ import PassagemTurnoScreen from './PassagemTurnoScreen';
 import AuditoriaScreen from './AuditoriaScreen';
 import DashboardTIScreen from './DashboardTIScreen';
 import PedidosTIScreen from './PedidosTIScreen';
+import FarmaciaScreen from './FarmaciaScreen';
+import FisioterapiaScreen from './FisioterapiaScreen';
+import ConsultasScreen from './ConsultasScreen';
+import UrgenciaScreen from './UrgenciaScreen';
+import SalaEsperaScreen from './SalaEsperaScreen';
+import IACSScreen from './IACSScreen';
+import MARScreen from './MARScreen';
+import ComunicacaoScreen from './ComunicacaoScreen';
 
-type SubTela = null | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores' | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti';
+type SubTela =
+  | null
+  | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores'
+  | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti'
+  | 'farmacia' | 'fisioterapia' | 'consultas' | 'urgencia'
+  | 'salaespera' | 'iacs' | 'mar' | 'comunicacao';
 
 const ROLES_MEDICO     = ['medico'];
 const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
@@ -24,16 +37,16 @@ const ROLES_ADMIN      = ['administrativo'];
 const ROLES_QUALIDADE  = ['qualidade'];
 
 const roleLabel: Record<string, string> = {
-  medico:       'Médico',
-  enfermeiro:   'Enfermeiro',
-  auxiliar:     'Auxiliar',
-  tecnico_saude:'Técnico de Saúde',
-  farmaceutico: 'Farmacêutico',
-  administrativo:'Administrativo',
-  operacional:  'Operacional',
-  ti:           'Tecnologias de Informação',
-  qualidade:    'Qualidade',
-  direcao:      'Direção',
+  medico:         'Médico',
+  enfermeiro:     'Enfermeiro',
+  auxiliar:       'Auxiliar',
+  tecnico_saude:  'Técnico de Saúde',
+  farmaceutico:   'Farmacêutico',
+  administrativo: 'Administrativo',
+  operacional:    'Operacional',
+  ti:             'Tecnologias de Informação',
+  qualidade:      'Qualidade',
+  direcao:        'Direção',
 };
 
 interface Props { utilizador: Utilizador; onLogout: () => void }
@@ -53,6 +66,14 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'auditoria')    return <AuditoriaScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'dashboardti')  return <DashboardTIScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'pedidosti')    return <PedidosTIScreen utilizador={utilizador} />;
+  if (subTela === 'farmacia')     return <FarmaciaScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'fisioterapia') return <FisioterapiaScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'consultas')    return <ConsultasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'urgencia')     return <UrgenciaScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'salaespera')   return <SalaEsperaScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'iacs')         return <IACSScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'mar')          return <MARScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'comunicacao')  return <ComunicacaoScreen utilizador={utilizador} onVoltar={voltar} />;
 
   const confirmarLogout = async () => {
     if (Platform.OS === 'web') {
@@ -74,18 +95,31 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   const eMedico = ROLES_MEDICO.includes(role);
   const eEnfermagem = ROLES_ENFERMAGEM.includes(role);
   const eTI = role === 'ti';
+  const eFarmaceutico = role === 'farmaceutico';
+  const eTecnicoSaude = role === 'tecnico_saude';
+  const eAdmin = ROLES_ADMIN.includes(role);
 
   const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean }[] = [
     // — TI
-    { key: 'utilizadores', icon: 'people-outline',          cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',         visivel: eTI && subRole === 'it_admin' },
-    { key: 'auditoria',    icon: 'document-text-outline',   cor: '#64748b', titulo: 'Auditoria',         sub: 'Logs de acesso e ações',          visivel: eTI || ROLES_QUALIDADE.includes(role) },
-    // — Clínico
-    { key: 'turno',        icon: 'time-outline',            cor: '#8b5cf6', titulo: 'Turno',             sub: 'Doentes e tarefas do meu turno',  visivel: eClinical },
-    { key: 'passagem',     icon: 'git-merge-outline',       cor: '#06b6d4', titulo: 'Passagem de Turno', sub: 'Informação do turno anterior',    visivel: eEnfermagem || eMedico },
-    { key: 'horarios',     icon: 'calendar-outline',        cor: '#6366f1', titulo: 'Horários',          sub: 'Escala mensal de turnos',         visivel: eClinical || ROLES_ADMIN.includes(role) },
-    { key: 'atribuicoes',  icon: 'clipboard-outline',       cor: '#0ea5e9', titulo: 'Atribuições',       sub: 'Doentes por profissional',        visivel: eMedico || eEnfermagem },
-    { key: 'camas',        icon: 'bed-outline',             cor: '#22c55e', titulo: 'Camas',             sub: 'Mapa de camas e quartos',         visivel: eMedico || eEnfermagem || ROLES_ADMIN.includes(role) },
-    { key: 'trocas',       icon: 'swap-horizontal-outline', cor: '#f59e0b', titulo: 'Trocas de Turno',   sub: 'Pedidos de cobertura',            visivel: eClinical },
+    { key: 'utilizadores', icon: 'people-outline',           cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',          visivel: eTI && subRole === 'it_admin' },
+    { key: 'auditoria',    icon: 'document-text-outline',    cor: '#64748b', titulo: 'Auditoria',          sub: 'Logs de acesso e ações',           visivel: eTI || ROLES_QUALIDADE.includes(role) },
+    // — Comunicação (universal)
+    { key: 'comunicacao',  icon: 'chatbubbles-outline',      cor: '#6366f1', titulo: 'Comunicação',        sub: 'Mensagens e anúncios',             visivel: true },
+    // — Clínico geral
+    { key: 'turno',        icon: 'time-outline',             cor: '#8b5cf6', titulo: 'Turno',              sub: 'Doentes e tarefas do meu turno',   visivel: eClinical },
+    { key: 'passagem',     icon: 'git-merge-outline',        cor: '#06b6d4', titulo: 'Passagem de Turno',  sub: 'Informação do turno anterior',     visivel: eEnfermagem || eMedico },
+    { key: 'horarios',     icon: 'calendar-outline',         cor: '#6366f1', titulo: 'Horários',           sub: 'Escala mensal de turnos',          visivel: eClinical || eAdmin },
+    { key: 'atribuicoes',  icon: 'clipboard-outline',        cor: '#0ea5e9', titulo: 'Atribuições',        sub: 'Doentes por profissional',         visivel: eMedico || eEnfermagem },
+    { key: 'camas',        icon: 'bed-outline',              cor: '#22c55e', titulo: 'Camas',              sub: 'Mapa de camas e quartos',          visivel: eMedico || eEnfermagem || eAdmin },
+    { key: 'trocas',       icon: 'swap-horizontal-outline',  cor: '#f59e0b', titulo: 'Trocas de Turno',    sub: 'Pedidos de cobertura',             visivel: eClinical },
+    // — Clínico especializado
+    { key: 'iacs',         icon: 'shield-outline',           cor: '#7c3aed', titulo: 'IACS',               sub: 'Doentes em isolamento',            visivel: eMedico || eEnfermagem || ROLES_QUALIDADE.includes(role) },
+    { key: 'mar',          icon: 'medical-outline',          cor: '#3b82f6', titulo: 'MAR',                sub: 'Mapa de administração de medicação', visivel: eEnfermagem },
+    { key: 'urgencia',     icon: 'heart-outline',            cor: '#ef4444', titulo: 'Urgência',           sub: 'Episódios de urgência activos',    visivel: eMedico || eEnfermagem || eAdmin },
+    { key: 'salaespera',   icon: 'people-circle-outline',    cor: '#f97316', titulo: 'Sala de Espera',     sub: 'Fila de espera da urgência',       visivel: eEnfermagem || eAdmin },
+    { key: 'consultas',    icon: 'calendar-number-outline',  cor: '#10b981', titulo: 'Consultas',          sub: 'Consultas externas agendadas',     visivel: eMedico || eAdmin },
+    { key: 'farmacia',     icon: 'flask-outline',            cor: '#ec4899', titulo: 'Farmácia',           sub: 'Stock e pedidos de medicação',     visivel: eFarmaceutico || eMedico },
+    { key: 'fisioterapia', icon: 'fitness-outline',          cor: '#14b8a6', titulo: 'Fisioterapia',       sub: 'Planos de reabilitação',           visivel: eTecnicoSaude || eMedico },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);
@@ -100,6 +134,9 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
         <View style={s.perfilInfo}>
           <Text style={s.perfilNome}>{utilizador.nome}</Text>
           <Text style={s.perfilRole}>{roleLabel[utilizador.role] ?? utilizador.role}</Text>
+          {utilizador.subRole && (
+            <Text style={s.perfilSubRole}>{utilizador.subRole.replace(/_/g, ' ')}</Text>
+          )}
           <Text style={s.perfilNum}>Nº {utilizador.numeroFuncionario}</Text>
         </View>
       </View>
@@ -148,6 +185,7 @@ const s = StyleSheet.create({
   perfilInfo: { flex: 1 },
   perfilNome: { fontSize: 18, fontWeight: '700', color: '#fff' },
   perfilRole: { fontSize: 13, color: '#94a3b8', marginTop: 2 },
+  perfilSubRole: { fontSize: 12, color: '#64748b', marginTop: 1, textTransform: 'capitalize' },
   perfilNum: { fontSize: 12, color: '#64748b', marginTop: 2 },
   secao: { padding: 16, paddingBottom: 0 },
   secaoTitulo: { fontSize: 12, fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 },

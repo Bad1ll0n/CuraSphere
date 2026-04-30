@@ -489,6 +489,19 @@ exports.Prisma.ConsultaScalarFieldEnum = {
   notas: 'notas',
   diagnostico: 'diagnostico',
   proximaConsulta: 'proximaConsulta',
+  codigo: 'codigo',
+  checkinEm: 'checkinEm',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AgendaMedicoScalarFieldEnum = {
+  id: 'id',
+  medicoId: 'medicoId',
+  diaSemana: 'diaSemana',
+  horaInicio: 'horaInicio',
+  horaFim: 'horaFim',
+  duracaoSlot: 'duracaoSlot',
+  ativo: 'ativo',
   criadoEm: 'criadoEm'
 };
 
@@ -643,6 +656,73 @@ exports.Prisma.PedidoTIScalarFieldEnum = {
   resolvidoEm: 'resolvidoEm',
   criadoPorId: 'criadoPorId',
   responsavelId: 'responsavelId'
+};
+
+exports.Prisma.FicheiroPessoalDoenteScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  nif: 'nif',
+  numeroSNS: 'numeroSNS',
+  morada: 'morada',
+  codigoPostal: 'codigoPostal',
+  localidade: 'localidade',
+  telefone: 'telefone',
+  email: 'email',
+  entidadeSeguradora: 'entidadeSeguradora',
+  numeroApolice: 'numeroApolice',
+  tipoCobertura: 'tipoCobertura',
+  atualizadoEm: 'atualizadoEm',
+  atualizadoPorId: 'atualizadoPorId'
+};
+
+exports.Prisma.EpisodioFaturacaoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  estado: 'estado',
+  dataEmissao: 'dataEmissao',
+  totalBase: 'totalBase',
+  totalCobrado: 'totalCobrado',
+  tipoCobertura: 'tipoCobertura',
+  notas: 'notas',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.ItemFaturaScalarFieldEnum = {
+  id: 'id',
+  episodioFaturacaoId: 'episodioFaturacaoId',
+  descricao: 'descricao',
+  categoria: 'categoria',
+  quantidade: 'quantidade',
+  precoUnitario: 'precoUnitario',
+  total: 'total',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.PagamentoScalarFieldEnum = {
+  id: 'id',
+  episodioFaturacaoId: 'episodioFaturacaoId',
+  valor: 'valor',
+  metodo: 'metodo',
+  referencia: 'referencia',
+  registadoPorId: 'registadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  numero: 'numero',
+  letra: 'letra',
+  sequencia: 'sequencia',
+  tipo: 'tipo',
+  estado: 'estado',
+  prioridade: 'prioridade',
+  balcao: 'balcao',
+  nomeUtente: 'nomeUtente',
+  telefone: 'telefone',
+  criadoEm: 'criadoEm',
+  chamadoEm: 'chamadoEm',
+  concluidoEm: 'concluidoEm'
 };
 
 exports.Prisma.RefreshTokenScalarFieldEnum = {
@@ -908,6 +988,14 @@ exports.EstadoPedidoTI = exports.$Enums.EstadoPedidoTI = {
   recusado: 'recusado'
 };
 
+exports.EstadoFatura = exports.$Enums.EstadoFatura = {
+  pendente: 'pendente',
+  emitida: 'emitida',
+  paga: 'paga',
+  isenta: 'isenta',
+  anulada: 'anulada'
+};
+
 exports.Prisma.ModelName = {
   RoleConfig: 'RoleConfig',
   SubRoleConfig: 'SubRoleConfig',
@@ -943,6 +1031,7 @@ exports.Prisma.ModelName = {
   CirurgiaProgramada: 'CirurgiaProgramada',
   ChecklistCirurgia: 'ChecklistCirurgia',
   Consulta: 'Consulta',
+  AgendaMedico: 'AgendaMedico',
   CheckinSalaEspera: 'CheckinSalaEspera',
   StockItem: 'StockItem',
   PedidoFarmacia: 'PedidoFarmacia',
@@ -955,6 +1044,11 @@ exports.Prisma.ModelName = {
   DispositivoInvasivo: 'DispositivoInvasivo',
   IncidenteTI: 'IncidenteTI',
   PedidoTI: 'PedidoTI',
+  FicheiroPessoalDoente: 'FicheiroPessoalDoente',
+  EpisodioFaturacao: 'EpisodioFaturacao',
+  ItemFatura: 'ItemFatura',
+  Pagamento: 'Pagamento',
+  Ticket: 'Ticket',
   RefreshToken: 'RefreshToken'
 };
 

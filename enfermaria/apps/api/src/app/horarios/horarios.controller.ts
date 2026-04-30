@@ -59,4 +59,13 @@ export class HorariosController {
   apagarTurno(@Param('turnoId') turnoId: string) {
     return this.horariosService.apagarTurno(turnoId);
   }
+
+  @Roles('enfermeiro', 'medico', 'administrativo')
+  @Post('gerar-automatico')
+  gerarAutomatico(
+    @Body() body: { mes: number; ano: number; servico?: string },
+    @Request() req: any,
+  ) {
+    return this.horariosService.gerarEscalaAutomatica(body.mes, body.ano, req.user.sub, body.servico);
+  }
 }

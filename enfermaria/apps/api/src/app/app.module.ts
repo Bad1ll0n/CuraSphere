@@ -41,6 +41,8 @@ import { SalaEsperaModule } from './sala-espera/sala-espera.module';
 import { IncidentesTIModule } from './incidentes-ti/incidentes-ti.module';
 import { PedidosTIModule } from './pedidos-ti/pedidos-ti.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
+import { FaturacaoModule } from './faturacao/faturacao.module';
+import { TicketsModule } from './tickets/tickets.module';
 
 @Module({
   imports: [
@@ -80,6 +82,8 @@ import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
     IncidentesTIModule,
     PedidosTIModule,
     ConfiguracoesModule,
+    FaturacaoModule,
+    TicketsModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

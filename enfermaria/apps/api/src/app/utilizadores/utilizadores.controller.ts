@@ -19,9 +19,19 @@ export class UtilizadoresController {
   }
 
   @Get()
-  listar(@Query('role') role?: string, @Query('roles') rolesParam?: string) {
+  listar(
+    @Query('role') role?: string,
+    @Query('roles') rolesParam?: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
     const roles = rolesParam ? rolesParam.split(',') : undefined;
-    return this.utilizadoresService.listar(role, roles);
+    return this.utilizadoresService.listar(
+      role,
+      roles,
+      page ? parseInt(page, 10) : 1,
+      limit ? parseInt(limit, 10) : 50,
+    );
   }
 
   @Get(':id')

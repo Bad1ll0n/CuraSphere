@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
 export class TarefasService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   /**
    * Lista tarefas pendentes/em_progresso:
@@ -90,7 +94,7 @@ export class TarefasService {
     prazo?: Date;
     criadoPorId: string;
   }) {
-    return this.prisma.tarefa.create({
+    const tarefa = await this.prisma.tarefa.create({
       data: {
         doenteId: data.doenteId,
         tipo: data.tipo,
@@ -104,6 +108,19 @@ export class TarefasService {
         criadoPor: { select: { id: true, nome: true } },
       },
     });
+
+    // Notificar responsável se atribuído diretamente
+    if ((data as any).responsavelId && (data as any).responsavelId !== data.criadoPorId) {
+      const prioLabel: Record<string, string> = { urgente: '🚨 Urgente', alta: '⚠️ Alta', media: 'Média', baixa: 'Baixa' };
+      this.notificacoes.enviarParaUtilizador(
+        (data as any).responsavelId,
+        `Nova Tarefa — ${prioLabel[data.prioridade] ?? data.prioridade}`,
+        `${tarefa.doente.nome}: ${data.descricao}`,
+        { tipo: 'tarefa', tarefaId: tarefa.id },
+      ).catch(() => {});
+    }
+
+    return tarefa;
   }
 
   async atualizarEstado(id: string, estado: EstadoTarefa) {

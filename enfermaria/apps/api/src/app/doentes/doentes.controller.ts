@@ -137,4 +137,31 @@ export class DoenteController {
   ) {
     return this.doenteService.atualizarIsolamento(id, emIsolamento, motivoIsolamento);
   }
+
+  @Get(':id/ficha-pessoal')
+  @Roles('administrativo')
+  buscarFicheiroPessoal(@Param('id') id: string) {
+    return this.doenteService.buscarFicheiroPessoal(id);
+  }
+
+  @Patch(':id/ficha-pessoal')
+  @Roles('administrativo')
+  atualizarFicheiroPessoal(
+    @Param('id') id: string,
+    @Body() body: {
+      nif?: string;
+      numeroSNS?: string;
+      morada?: string;
+      codigoPostal?: string;
+      localidade?: string;
+      telefone?: string;
+      email?: string;
+      entidadeSeguradora?: string;
+      numeroApolice?: string;
+      tipoCobertura?: string;
+    },
+    @Request() req: any,
+  ) {
+    return this.doenteService.atualizarFicheiroPessoal(id, body, req.user.sub);
+  }
 }

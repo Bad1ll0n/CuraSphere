@@ -184,6 +184,11 @@ export type ChecklistCirurgia = $Result.DefaultSelection<Prisma.$ChecklistCirurg
  */
 export type Consulta = $Result.DefaultSelection<Prisma.$ConsultaPayload>
 /**
+ * Model AgendaMedico
+ * 
+ */
+export type AgendaMedico = $Result.DefaultSelection<Prisma.$AgendaMedicoPayload>
+/**
  * Model CheckinSalaEspera
  * 
  */
@@ -243,6 +248,31 @@ export type IncidenteTI = $Result.DefaultSelection<Prisma.$IncidenteTIPayload>
  * 
  */
 export type PedidoTI = $Result.DefaultSelection<Prisma.$PedidoTIPayload>
+/**
+ * Model FicheiroPessoalDoente
+ * 
+ */
+export type FicheiroPessoalDoente = $Result.DefaultSelection<Prisma.$FicheiroPessoalDoentePayload>
+/**
+ * Model EpisodioFaturacao
+ * 
+ */
+export type EpisodioFaturacao = $Result.DefaultSelection<Prisma.$EpisodioFaturacaoPayload>
+/**
+ * Model ItemFatura
+ * 
+ */
+export type ItemFatura = $Result.DefaultSelection<Prisma.$ItemFaturaPayload>
+/**
+ * Model Pagamento
+ * 
+ */
+export type Pagamento = $Result.DefaultSelection<Prisma.$PagamentoPayload>
+/**
+ * Model Ticket
+ * 
+ */
+export type Ticket = $Result.DefaultSelection<Prisma.$TicketPayload>
 /**
  * Model RefreshToken
  * 
@@ -561,6 +591,17 @@ export const EstadoPedidoTI: {
 
 export type EstadoPedidoTI = (typeof EstadoPedidoTI)[keyof typeof EstadoPedidoTI]
 
+
+export const EstadoFatura: {
+  pendente: 'pendente',
+  emitida: 'emitida',
+  paga: 'paga',
+  isenta: 'isenta',
+  anulada: 'anulada'
+};
+
+export type EstadoFatura = (typeof EstadoFatura)[keyof typeof EstadoFatura]
+
 }
 
 export type Servico = $Enums.Servico
@@ -674,6 +715,10 @@ export const TipoPedidoTI: typeof $Enums.TipoPedidoTI
 export type EstadoPedidoTI = $Enums.EstadoPedidoTI
 
 export const EstadoPedidoTI: typeof $Enums.EstadoPedidoTI
+
+export type EstadoFatura = $Enums.EstadoFatura
+
+export const EstadoFatura: typeof $Enums.EstadoFatura
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1134,6 +1179,16 @@ export class PrismaClient<
   get consulta(): Prisma.ConsultaDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.agendaMedico`: Exposes CRUD operations for the **AgendaMedico** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AgendaMedicos
+    * const agendaMedicos = await prisma.agendaMedico.findMany()
+    * ```
+    */
+  get agendaMedico(): Prisma.AgendaMedicoDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.checkinSalaEspera`: Exposes CRUD operations for the **CheckinSalaEspera** model.
     * Example usage:
     * ```ts
@@ -1252,6 +1307,56 @@ export class PrismaClient<
     * ```
     */
   get pedidoTI(): Prisma.PedidoTIDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.ficheiroPessoalDoente`: Exposes CRUD operations for the **FicheiroPessoalDoente** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FicheiroPessoalDoentes
+    * const ficheiroPessoalDoentes = await prisma.ficheiroPessoalDoente.findMany()
+    * ```
+    */
+  get ficheiroPessoalDoente(): Prisma.FicheiroPessoalDoenteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.episodioFaturacao`: Exposes CRUD operations for the **EpisodioFaturacao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EpisodioFaturacaos
+    * const episodioFaturacaos = await prisma.episodioFaturacao.findMany()
+    * ```
+    */
+  get episodioFaturacao(): Prisma.EpisodioFaturacaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.itemFatura`: Exposes CRUD operations for the **ItemFatura** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ItemFaturas
+    * const itemFaturas = await prisma.itemFatura.findMany()
+    * ```
+    */
+  get itemFatura(): Prisma.ItemFaturaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pagamento`: Exposes CRUD operations for the **Pagamento** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Pagamentos
+    * const pagamentos = await prisma.pagamento.findMany()
+    * ```
+    */
+  get pagamento(): Prisma.PagamentoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.ticket`: Exposes CRUD operations for the **Ticket** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tickets
+    * const tickets = await prisma.ticket.findMany()
+    * ```
+    */
+  get ticket(): Prisma.TicketDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.refreshToken`: Exposes CRUD operations for the **RefreshToken** model.
@@ -1737,6 +1842,7 @@ export namespace Prisma {
     CirurgiaProgramada: 'CirurgiaProgramada',
     ChecklistCirurgia: 'ChecklistCirurgia',
     Consulta: 'Consulta',
+    AgendaMedico: 'AgendaMedico',
     CheckinSalaEspera: 'CheckinSalaEspera',
     StockItem: 'StockItem',
     PedidoFarmacia: 'PedidoFarmacia',
@@ -1749,6 +1855,11 @@ export namespace Prisma {
     DispositivoInvasivo: 'DispositivoInvasivo',
     IncidenteTI: 'IncidenteTI',
     PedidoTI: 'PedidoTI',
+    FicheiroPessoalDoente: 'FicheiroPessoalDoente',
+    EpisodioFaturacao: 'EpisodioFaturacao',
+    ItemFatura: 'ItemFatura',
+    Pagamento: 'Pagamento',
+    Ticket: 'Ticket',
     RefreshToken: 'RefreshToken'
   };
 
@@ -1768,7 +1879,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "refreshToken"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "ticket" | "refreshToken"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4288,6 +4399,80 @@ export namespace Prisma {
           }
         }
       }
+      AgendaMedico: {
+        payload: Prisma.$AgendaMedicoPayload<ExtArgs>
+        fields: Prisma.AgendaMedicoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AgendaMedicoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AgendaMedicoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          findFirst: {
+            args: Prisma.AgendaMedicoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AgendaMedicoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          findMany: {
+            args: Prisma.AgendaMedicoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>[]
+          }
+          create: {
+            args: Prisma.AgendaMedicoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          createMany: {
+            args: Prisma.AgendaMedicoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AgendaMedicoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>[]
+          }
+          delete: {
+            args: Prisma.AgendaMedicoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          update: {
+            args: Prisma.AgendaMedicoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AgendaMedicoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AgendaMedicoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AgendaMedicoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AgendaMedicoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AgendaMedicoPayload>
+          }
+          aggregate: {
+            args: Prisma.AgendaMedicoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAgendaMedico>
+          }
+          groupBy: {
+            args: Prisma.AgendaMedicoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AgendaMedicoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AgendaMedicoCountArgs<ExtArgs>
+            result: $Utils.Optional<AgendaMedicoCountAggregateOutputType> | number
+          }
+        }
+      }
       CheckinSalaEspera: {
         payload: Prisma.$CheckinSalaEsperaPayload<ExtArgs>
         fields: Prisma.CheckinSalaEsperaFieldRefs
@@ -5176,6 +5361,376 @@ export namespace Prisma {
           }
         }
       }
+      FicheiroPessoalDoente: {
+        payload: Prisma.$FicheiroPessoalDoentePayload<ExtArgs>
+        fields: Prisma.FicheiroPessoalDoenteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FicheiroPessoalDoenteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FicheiroPessoalDoenteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          findFirst: {
+            args: Prisma.FicheiroPessoalDoenteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FicheiroPessoalDoenteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          findMany: {
+            args: Prisma.FicheiroPessoalDoenteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>[]
+          }
+          create: {
+            args: Prisma.FicheiroPessoalDoenteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          createMany: {
+            args: Prisma.FicheiroPessoalDoenteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FicheiroPessoalDoenteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>[]
+          }
+          delete: {
+            args: Prisma.FicheiroPessoalDoenteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          update: {
+            args: Prisma.FicheiroPessoalDoenteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          deleteMany: {
+            args: Prisma.FicheiroPessoalDoenteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FicheiroPessoalDoenteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FicheiroPessoalDoenteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>[]
+          }
+          upsert: {
+            args: Prisma.FicheiroPessoalDoenteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FicheiroPessoalDoentePayload>
+          }
+          aggregate: {
+            args: Prisma.FicheiroPessoalDoenteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFicheiroPessoalDoente>
+          }
+          groupBy: {
+            args: Prisma.FicheiroPessoalDoenteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FicheiroPessoalDoenteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FicheiroPessoalDoenteCountArgs<ExtArgs>
+            result: $Utils.Optional<FicheiroPessoalDoenteCountAggregateOutputType> | number
+          }
+        }
+      }
+      EpisodioFaturacao: {
+        payload: Prisma.$EpisodioFaturacaoPayload<ExtArgs>
+        fields: Prisma.EpisodioFaturacaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EpisodioFaturacaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EpisodioFaturacaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          findFirst: {
+            args: Prisma.EpisodioFaturacaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EpisodioFaturacaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          findMany: {
+            args: Prisma.EpisodioFaturacaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>[]
+          }
+          create: {
+            args: Prisma.EpisodioFaturacaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          createMany: {
+            args: Prisma.EpisodioFaturacaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EpisodioFaturacaoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>[]
+          }
+          delete: {
+            args: Prisma.EpisodioFaturacaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          update: {
+            args: Prisma.EpisodioFaturacaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.EpisodioFaturacaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EpisodioFaturacaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EpisodioFaturacaoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>[]
+          }
+          upsert: {
+            args: Prisma.EpisodioFaturacaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EpisodioFaturacaoPayload>
+          }
+          aggregate: {
+            args: Prisma.EpisodioFaturacaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEpisodioFaturacao>
+          }
+          groupBy: {
+            args: Prisma.EpisodioFaturacaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EpisodioFaturacaoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EpisodioFaturacaoCountArgs<ExtArgs>
+            result: $Utils.Optional<EpisodioFaturacaoCountAggregateOutputType> | number
+          }
+        }
+      }
+      ItemFatura: {
+        payload: Prisma.$ItemFaturaPayload<ExtArgs>
+        fields: Prisma.ItemFaturaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ItemFaturaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ItemFaturaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          findFirst: {
+            args: Prisma.ItemFaturaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ItemFaturaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          findMany: {
+            args: Prisma.ItemFaturaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>[]
+          }
+          create: {
+            args: Prisma.ItemFaturaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          createMany: {
+            args: Prisma.ItemFaturaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ItemFaturaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>[]
+          }
+          delete: {
+            args: Prisma.ItemFaturaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          update: {
+            args: Prisma.ItemFaturaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ItemFaturaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ItemFaturaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ItemFaturaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ItemFaturaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemFaturaPayload>
+          }
+          aggregate: {
+            args: Prisma.ItemFaturaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateItemFatura>
+          }
+          groupBy: {
+            args: Prisma.ItemFaturaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ItemFaturaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ItemFaturaCountArgs<ExtArgs>
+            result: $Utils.Optional<ItemFaturaCountAggregateOutputType> | number
+          }
+        }
+      }
+      Pagamento: {
+        payload: Prisma.$PagamentoPayload<ExtArgs>
+        fields: Prisma.PagamentoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PagamentoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PagamentoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          findFirst: {
+            args: Prisma.PagamentoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PagamentoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          findMany: {
+            args: Prisma.PagamentoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>[]
+          }
+          create: {
+            args: Prisma.PagamentoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          createMany: {
+            args: Prisma.PagamentoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PagamentoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>[]
+          }
+          delete: {
+            args: Prisma.PagamentoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          update: {
+            args: Prisma.PagamentoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          deleteMany: {
+            args: Prisma.PagamentoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PagamentoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PagamentoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>[]
+          }
+          upsert: {
+            args: Prisma.PagamentoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagamentoPayload>
+          }
+          aggregate: {
+            args: Prisma.PagamentoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePagamento>
+          }
+          groupBy: {
+            args: Prisma.PagamentoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PagamentoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PagamentoCountArgs<ExtArgs>
+            result: $Utils.Optional<PagamentoCountAggregateOutputType> | number
+          }
+        }
+      }
+      Ticket: {
+        payload: Prisma.$TicketPayload<ExtArgs>
+        fields: Prisma.TicketFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TicketFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TicketFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          findFirst: {
+            args: Prisma.TicketFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TicketFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          findMany: {
+            args: Prisma.TicketFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>[]
+          }
+          create: {
+            args: Prisma.TicketCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          createMany: {
+            args: Prisma.TicketCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TicketCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>[]
+          }
+          delete: {
+            args: Prisma.TicketDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          update: {
+            args: Prisma.TicketUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          deleteMany: {
+            args: Prisma.TicketDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TicketUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TicketUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>[]
+          }
+          upsert: {
+            args: Prisma.TicketUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TicketPayload>
+          }
+          aggregate: {
+            args: Prisma.TicketAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTicket>
+          }
+          groupBy: {
+            args: Prisma.TicketGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TicketGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TicketCountArgs<ExtArgs>
+            result: $Utils.Optional<TicketCountAggregateOutputType> | number
+          }
+        }
+      }
       RefreshToken: {
         payload: Prisma.$RefreshTokenPayload<ExtArgs>
         fields: Prisma.RefreshTokenFieldRefs
@@ -5380,6 +5935,7 @@ export namespace Prisma {
     cirurgiaProgramada?: CirurgiaProgramadaOmit
     checklistCirurgia?: ChecklistCirurgiaOmit
     consulta?: ConsultaOmit
+    agendaMedico?: AgendaMedicoOmit
     checkinSalaEspera?: CheckinSalaEsperaOmit
     stockItem?: StockItemOmit
     pedidoFarmacia?: PedidoFarmaciaOmit
@@ -5392,6 +5948,11 @@ export namespace Prisma {
     dispositivoInvasivo?: DispositivoInvasivoOmit
     incidenteTI?: IncidenteTIOmit
     pedidoTI?: PedidoTIOmit
+    ficheiroPessoalDoente?: FicheiroPessoalDoenteOmit
+    episodioFaturacao?: EpisodioFaturacaoOmit
+    itemFatura?: ItemFaturaOmit
+    pagamento?: PagamentoOmit
+    ticket?: TicketOmit
     refreshToken?: RefreshTokenOmit
   }
 
@@ -5556,6 +6117,10 @@ export namespace Prisma {
     incidentesAtribuidos: number
     pedidosTICriados: number
     pedidosTIAtribuidos: number
+    ficheirosPessoaisAtualizados: number
+    episodiosFaturacaoCriados: number
+    pagamentosRegistados: number
+    agendas: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5611,6 +6176,10 @@ export namespace Prisma {
     incidentesAtribuidos?: boolean | UtilizadorCountOutputTypeCountIncidentesAtribuidosArgs
     pedidosTICriados?: boolean | UtilizadorCountOutputTypeCountPedidosTICriadosArgs
     pedidosTIAtribuidos?: boolean | UtilizadorCountOutputTypeCountPedidosTIAtribuidosArgs
+    ficheirosPessoaisAtualizados?: boolean | UtilizadorCountOutputTypeCountFicheirosPessoaisAtualizadosArgs
+    episodiosFaturacaoCriados?: boolean | UtilizadorCountOutputTypeCountEpisodiosFaturacaoCriadosArgs
+    pagamentosRegistados?: boolean | UtilizadorCountOutputTypeCountPagamentosRegistadosArgs
+    agendas?: boolean | UtilizadorCountOutputTypeCountAgendasArgs
   }
 
   // Custom InputTypes
@@ -5988,6 +6557,34 @@ export namespace Prisma {
     where?: PedidoTIWhereInput
   }
 
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountFicheirosPessoaisAtualizadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FicheiroPessoalDoenteWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountEpisodiosFaturacaoCriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EpisodioFaturacaoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountPagamentosRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagamentoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAgendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgendaMedicoWhereInput
+  }
+
 
   /**
    * Count Type DoenteCountOutputType
@@ -6017,6 +6614,7 @@ export namespace Prisma {
     pedidosInternos: number
     interconsultas: number
     dispositivosInvasivos: number
+    episodiosFaturacao: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6043,6 +6641,7 @@ export namespace Prisma {
     pedidosInternos?: boolean | DoenteCountOutputTypeCountPedidosInternosArgs
     interconsultas?: boolean | DoenteCountOutputTypeCountInterconsultasArgs
     dispositivosInvasivos?: boolean | DoenteCountOutputTypeCountDispositivosInvasivosArgs
+    episodiosFaturacao?: boolean | DoenteCountOutputTypeCountEpisodiosFaturacaoArgs
   }
 
   // Custom InputTypes
@@ -6215,6 +6814,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountDispositivosInvasivosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DispositivoInvasivoWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountEpisodiosFaturacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EpisodioFaturacaoWhereInput
   }
 
 
@@ -6495,6 +7101,46 @@ export namespace Prisma {
    */
   export type PlanoReabilitacaoCountOutputTypeCountSessoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessaoFisioterapiaWhereInput
+  }
+
+
+  /**
+   * Count Type EpisodioFaturacaoCountOutputType
+   */
+
+  export type EpisodioFaturacaoCountOutputType = {
+    itens: number
+    pagamentos: number
+  }
+
+  export type EpisodioFaturacaoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    itens?: boolean | EpisodioFaturacaoCountOutputTypeCountItensArgs
+    pagamentos?: boolean | EpisodioFaturacaoCountOutputTypeCountPagamentosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EpisodioFaturacaoCountOutputType without action
+   */
+  export type EpisodioFaturacaoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacaoCountOutputType
+     */
+    select?: EpisodioFaturacaoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EpisodioFaturacaoCountOutputType without action
+   */
+  export type EpisodioFaturacaoCountOutputTypeCountItensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemFaturaWhereInput
+  }
+
+  /**
+   * EpisodioFaturacaoCountOutputType without action
+   */
+  export type EpisodioFaturacaoCountOutputTypeCountPagamentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagamentoWhereInput
   }
 
 
@@ -9030,6 +9676,10 @@ export namespace Prisma {
     incidentesAtribuidos?: boolean | Utilizador$incidentesAtribuidosArgs<ExtArgs>
     pedidosTICriados?: boolean | Utilizador$pedidosTICriadosArgs<ExtArgs>
     pedidosTIAtribuidos?: boolean | Utilizador$pedidosTIAtribuidosArgs<ExtArgs>
+    ficheirosPessoaisAtualizados?: boolean | Utilizador$ficheirosPessoaisAtualizadosArgs<ExtArgs>
+    episodiosFaturacaoCriados?: boolean | Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>
+    pagamentosRegistados?: boolean | Utilizador$pagamentosRegistadosArgs<ExtArgs>
+    agendas?: boolean | Utilizador$agendasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -9132,6 +9782,10 @@ export namespace Prisma {
     incidentesAtribuidos?: boolean | Utilizador$incidentesAtribuidosArgs<ExtArgs>
     pedidosTICriados?: boolean | Utilizador$pedidosTICriadosArgs<ExtArgs>
     pedidosTIAtribuidos?: boolean | Utilizador$pedidosTIAtribuidosArgs<ExtArgs>
+    ficheirosPessoaisAtualizados?: boolean | Utilizador$ficheirosPessoaisAtualizadosArgs<ExtArgs>
+    episodiosFaturacaoCriados?: boolean | Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>
+    pagamentosRegistados?: boolean | Utilizador$pagamentosRegistadosArgs<ExtArgs>
+    agendas?: boolean | Utilizador$agendasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9192,6 +9846,10 @@ export namespace Prisma {
       incidentesAtribuidos: Prisma.$IncidenteTIPayload<ExtArgs>[]
       pedidosTICriados: Prisma.$PedidoTIPayload<ExtArgs>[]
       pedidosTIAtribuidos: Prisma.$PedidoTIPayload<ExtArgs>[]
+      ficheirosPessoaisAtualizados: Prisma.$FicheiroPessoalDoentePayload<ExtArgs>[]
+      episodiosFaturacaoCriados: Prisma.$EpisodioFaturacaoPayload<ExtArgs>[]
+      pagamentosRegistados: Prisma.$PagamentoPayload<ExtArgs>[]
+      agendas: Prisma.$AgendaMedicoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9652,6 +10310,10 @@ export namespace Prisma {
     incidentesAtribuidos<T extends Utilizador$incidentesAtribuidosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$incidentesAtribuidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pedidosTICriados<T extends Utilizador$pedidosTICriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pedidosTICriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pedidosTIAtribuidos<T extends Utilizador$pedidosTIAtribuidosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pedidosTIAtribuidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ficheirosPessoaisAtualizados<T extends Utilizador$ficheirosPessoaisAtualizadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$ficheirosPessoaisAtualizadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    episodiosFaturacaoCriados<T extends Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pagamentosRegistados<T extends Utilizador$pagamentosRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pagamentosRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agendas<T extends Utilizador$agendasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$agendasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11329,6 +11991,102 @@ export namespace Prisma {
   }
 
   /**
+   * Utilizador.ficheirosPessoaisAtualizados
+   */
+  export type Utilizador$ficheirosPessoaisAtualizadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    where?: FicheiroPessoalDoenteWhereInput
+    orderBy?: FicheiroPessoalDoenteOrderByWithRelationInput | FicheiroPessoalDoenteOrderByWithRelationInput[]
+    cursor?: FicheiroPessoalDoenteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FicheiroPessoalDoenteScalarFieldEnum | FicheiroPessoalDoenteScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.episodiosFaturacaoCriados
+   */
+  export type Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    where?: EpisodioFaturacaoWhereInput
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.pagamentosRegistados
+   */
+  export type Utilizador$pagamentosRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    where?: PagamentoWhereInput
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    cursor?: PagamentoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PagamentoScalarFieldEnum | PagamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.agendas
+   */
+  export type Utilizador$agendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    where?: AgendaMedicoWhereInput
+    orderBy?: AgendaMedicoOrderByWithRelationInput | AgendaMedicoOrderByWithRelationInput[]
+    cursor?: AgendaMedicoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AgendaMedicoScalarFieldEnum | AgendaMedicoScalarFieldEnum[]
+  }
+
+  /**
    * Utilizador without action
    */
   export type UtilizadorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12659,6 +13417,8 @@ export namespace Prisma {
     pedidosInternos?: boolean | Doente$pedidosInternosArgs<ExtArgs>
     interconsultas?: boolean | Doente$interconsultasArgs<ExtArgs>
     dispositivosInvasivos?: boolean | Doente$dispositivosInvasivosArgs<ExtArgs>
+    ficheiroPessoal?: boolean | Doente$ficheiroPessoalArgs<ExtArgs>
+    episodiosFaturacao?: boolean | Doente$episodiosFaturacaoArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -12745,6 +13505,8 @@ export namespace Prisma {
     pedidosInternos?: boolean | Doente$pedidosInternosArgs<ExtArgs>
     interconsultas?: boolean | Doente$interconsultasArgs<ExtArgs>
     dispositivosInvasivos?: boolean | Doente$dispositivosInvasivosArgs<ExtArgs>
+    ficheiroPessoal?: boolean | Doente$ficheiroPessoalArgs<ExtArgs>
+    episodiosFaturacao?: boolean | Doente$episodiosFaturacaoArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12785,6 +13547,8 @@ export namespace Prisma {
       pedidosInternos: Prisma.$PedidoInternoPayload<ExtArgs>[]
       interconsultas: Prisma.$InterconsultaPayload<ExtArgs>[]
       dispositivosInvasivos: Prisma.$DispositivoInvasivoPayload<ExtArgs>[]
+      ficheiroPessoal: Prisma.$FicheiroPessoalDoentePayload<ExtArgs> | null
+      episodiosFaturacao: Prisma.$EpisodioFaturacaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13221,6 +13985,8 @@ export namespace Prisma {
     pedidosInternos<T extends Doente$pedidosInternosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$pedidosInternosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoInternoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     interconsultas<T extends Doente$interconsultasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$interconsultasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InterconsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dispositivosInvasivos<T extends Doente$dispositivosInvasivosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$dispositivosInvasivosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoInvasivoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ficheiroPessoal<T extends Doente$ficheiroPessoalArgs<ExtArgs> = {}>(args?: Subset<T, Doente$ficheiroPessoalArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    episodiosFaturacao<T extends Doente$episodiosFaturacaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$episodiosFaturacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14228,6 +14994,49 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DispositivoInvasivoScalarFieldEnum | DispositivoInvasivoScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.ficheiroPessoal
+   */
+  export type Doente$ficheiroPessoalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    where?: FicheiroPessoalDoenteWhereInput
+  }
+
+  /**
+   * Doente.episodiosFaturacao
+   */
+  export type Doente$episodiosFaturacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    where?: EpisodioFaturacaoWhereInput
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
   }
 
   /**
@@ -45900,6 +46709,8 @@ export namespace Prisma {
     notas: string | null
     diagnostico: string | null
     proximaConsulta: Date | null
+    codigo: string | null
+    checkinEm: Date | null
     criadoEm: Date | null
   }
 
@@ -45915,6 +46726,8 @@ export namespace Prisma {
     notas: string | null
     diagnostico: string | null
     proximaConsulta: Date | null
+    codigo: string | null
+    checkinEm: Date | null
     criadoEm: Date | null
   }
 
@@ -45930,6 +46743,8 @@ export namespace Prisma {
     notas: number
     diagnostico: number
     proximaConsulta: number
+    codigo: number
+    checkinEm: number
     criadoEm: number
     _all: number
   }
@@ -45955,6 +46770,8 @@ export namespace Prisma {
     notas?: true
     diagnostico?: true
     proximaConsulta?: true
+    codigo?: true
+    checkinEm?: true
     criadoEm?: true
   }
 
@@ -45970,6 +46787,8 @@ export namespace Prisma {
     notas?: true
     diagnostico?: true
     proximaConsulta?: true
+    codigo?: true
+    checkinEm?: true
     criadoEm?: true
   }
 
@@ -45985,6 +46804,8 @@ export namespace Prisma {
     notas?: true
     diagnostico?: true
     proximaConsulta?: true
+    codigo?: true
+    checkinEm?: true
     criadoEm?: true
     _all?: true
   }
@@ -46087,6 +46908,8 @@ export namespace Prisma {
     notas: string | null
     diagnostico: string | null
     proximaConsulta: Date | null
+    codigo: string | null
+    checkinEm: Date | null
     criadoEm: Date
     _count: ConsultaCountAggregateOutputType | null
     _avg: ConsultaAvgAggregateOutputType | null
@@ -46121,6 +46944,8 @@ export namespace Prisma {
     notas?: boolean
     diagnostico?: boolean
     proximaConsulta?: boolean
+    codigo?: boolean
+    checkinEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -46138,6 +46963,8 @@ export namespace Prisma {
     notas?: boolean
     diagnostico?: boolean
     proximaConsulta?: boolean
+    codigo?: boolean
+    checkinEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -46155,6 +46982,8 @@ export namespace Prisma {
     notas?: boolean
     diagnostico?: boolean
     proximaConsulta?: boolean
+    codigo?: boolean
+    checkinEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -46172,10 +47001,12 @@ export namespace Prisma {
     notas?: boolean
     diagnostico?: boolean
     proximaConsulta?: boolean
+    codigo?: boolean
+    checkinEm?: boolean
     criadoEm?: boolean
   }
 
-  export type ConsultaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nomeDoente" | "medicoId" | "especialidade" | "dataHora" | "duracao" | "estado" | "notas" | "diagnostico" | "proximaConsulta" | "criadoEm", ExtArgs["result"]["consulta"]>
+  export type ConsultaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nomeDoente" | "medicoId" | "especialidade" | "dataHora" | "duracao" | "estado" | "notas" | "diagnostico" | "proximaConsulta" | "codigo" | "checkinEm" | "criadoEm", ExtArgs["result"]["consulta"]>
   export type ConsultaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -46207,6 +47038,8 @@ export namespace Prisma {
       notas: string | null
       diagnostico: string | null
       proximaConsulta: Date | null
+      codigo: string | null
+      checkinEm: Date | null
       criadoEm: Date
     }, ExtArgs["result"]["consulta"]>
     composites: {}
@@ -46644,6 +47477,8 @@ export namespace Prisma {
     readonly notas: FieldRef<"Consulta", 'String'>
     readonly diagnostico: FieldRef<"Consulta", 'String'>
     readonly proximaConsulta: FieldRef<"Consulta", 'DateTime'>
+    readonly codigo: FieldRef<"Consulta", 'String'>
+    readonly checkinEm: FieldRef<"Consulta", 'DateTime'>
     readonly criadoEm: FieldRef<"Consulta", 'DateTime'>
   }
     
@@ -47075,6 +47910,1141 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ConsultaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AgendaMedico
+   */
+
+  export type AggregateAgendaMedico = {
+    _count: AgendaMedicoCountAggregateOutputType | null
+    _avg: AgendaMedicoAvgAggregateOutputType | null
+    _sum: AgendaMedicoSumAggregateOutputType | null
+    _min: AgendaMedicoMinAggregateOutputType | null
+    _max: AgendaMedicoMaxAggregateOutputType | null
+  }
+
+  export type AgendaMedicoAvgAggregateOutputType = {
+    diaSemana: number | null
+    duracaoSlot: number | null
+  }
+
+  export type AgendaMedicoSumAggregateOutputType = {
+    diaSemana: number | null
+    duracaoSlot: number | null
+  }
+
+  export type AgendaMedicoMinAggregateOutputType = {
+    id: string | null
+    medicoId: string | null
+    diaSemana: number | null
+    horaInicio: string | null
+    horaFim: string | null
+    duracaoSlot: number | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AgendaMedicoMaxAggregateOutputType = {
+    id: string | null
+    medicoId: string | null
+    diaSemana: number | null
+    horaInicio: string | null
+    horaFim: string | null
+    duracaoSlot: number | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AgendaMedicoCountAggregateOutputType = {
+    id: number
+    medicoId: number
+    diaSemana: number
+    horaInicio: number
+    horaFim: number
+    duracaoSlot: number
+    ativo: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AgendaMedicoAvgAggregateInputType = {
+    diaSemana?: true
+    duracaoSlot?: true
+  }
+
+  export type AgendaMedicoSumAggregateInputType = {
+    diaSemana?: true
+    duracaoSlot?: true
+  }
+
+  export type AgendaMedicoMinAggregateInputType = {
+    id?: true
+    medicoId?: true
+    diaSemana?: true
+    horaInicio?: true
+    horaFim?: true
+    duracaoSlot?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type AgendaMedicoMaxAggregateInputType = {
+    id?: true
+    medicoId?: true
+    diaSemana?: true
+    horaInicio?: true
+    horaFim?: true
+    duracaoSlot?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type AgendaMedicoCountAggregateInputType = {
+    id?: true
+    medicoId?: true
+    diaSemana?: true
+    horaInicio?: true
+    horaFim?: true
+    duracaoSlot?: true
+    ativo?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AgendaMedicoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgendaMedico to aggregate.
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgendaMedicos to fetch.
+     */
+    orderBy?: AgendaMedicoOrderByWithRelationInput | AgendaMedicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AgendaMedicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgendaMedicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgendaMedicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AgendaMedicos
+    **/
+    _count?: true | AgendaMedicoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AgendaMedicoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AgendaMedicoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AgendaMedicoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AgendaMedicoMaxAggregateInputType
+  }
+
+  export type GetAgendaMedicoAggregateType<T extends AgendaMedicoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAgendaMedico]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAgendaMedico[P]>
+      : GetScalarType<T[P], AggregateAgendaMedico[P]>
+  }
+
+
+
+
+  export type AgendaMedicoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AgendaMedicoWhereInput
+    orderBy?: AgendaMedicoOrderByWithAggregationInput | AgendaMedicoOrderByWithAggregationInput[]
+    by: AgendaMedicoScalarFieldEnum[] | AgendaMedicoScalarFieldEnum
+    having?: AgendaMedicoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AgendaMedicoCountAggregateInputType | true
+    _avg?: AgendaMedicoAvgAggregateInputType
+    _sum?: AgendaMedicoSumAggregateInputType
+    _min?: AgendaMedicoMinAggregateInputType
+    _max?: AgendaMedicoMaxAggregateInputType
+  }
+
+  export type AgendaMedicoGroupByOutputType = {
+    id: string
+    medicoId: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot: number
+    ativo: boolean
+    criadoEm: Date
+    _count: AgendaMedicoCountAggregateOutputType | null
+    _avg: AgendaMedicoAvgAggregateOutputType | null
+    _sum: AgendaMedicoSumAggregateOutputType | null
+    _min: AgendaMedicoMinAggregateOutputType | null
+    _max: AgendaMedicoMaxAggregateOutputType | null
+  }
+
+  type GetAgendaMedicoGroupByPayload<T extends AgendaMedicoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AgendaMedicoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AgendaMedicoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AgendaMedicoGroupByOutputType[P]>
+            : GetScalarType<T[P], AgendaMedicoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AgendaMedicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    medicoId?: boolean
+    diaSemana?: boolean
+    horaInicio?: boolean
+    horaFim?: boolean
+    duracaoSlot?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agendaMedico"]>
+
+  export type AgendaMedicoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    medicoId?: boolean
+    diaSemana?: boolean
+    horaInicio?: boolean
+    horaFim?: boolean
+    duracaoSlot?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agendaMedico"]>
+
+  export type AgendaMedicoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    medicoId?: boolean
+    diaSemana?: boolean
+    horaInicio?: boolean
+    horaFim?: boolean
+    duracaoSlot?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["agendaMedico"]>
+
+  export type AgendaMedicoSelectScalar = {
+    id?: boolean
+    medicoId?: boolean
+    diaSemana?: boolean
+    horaInicio?: boolean
+    horaFim?: boolean
+    duracaoSlot?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AgendaMedicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "medicoId" | "diaSemana" | "horaInicio" | "horaFim" | "duracaoSlot" | "ativo" | "criadoEm", ExtArgs["result"]["agendaMedico"]>
+  export type AgendaMedicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AgendaMedicoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AgendaMedicoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $AgendaMedicoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AgendaMedico"
+    objects: {
+      medico: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      medicoId: string
+      diaSemana: number
+      horaInicio: string
+      horaFim: string
+      duracaoSlot: number
+      ativo: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["agendaMedico"]>
+    composites: {}
+  }
+
+  type AgendaMedicoGetPayload<S extends boolean | null | undefined | AgendaMedicoDefaultArgs> = $Result.GetResult<Prisma.$AgendaMedicoPayload, S>
+
+  type AgendaMedicoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AgendaMedicoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AgendaMedicoCountAggregateInputType | true
+    }
+
+  export interface AgendaMedicoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AgendaMedico'], meta: { name: 'AgendaMedico' } }
+    /**
+     * Find zero or one AgendaMedico that matches the filter.
+     * @param {AgendaMedicoFindUniqueArgs} args - Arguments to find a AgendaMedico
+     * @example
+     * // Get one AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AgendaMedicoFindUniqueArgs>(args: SelectSubset<T, AgendaMedicoFindUniqueArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AgendaMedico that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AgendaMedicoFindUniqueOrThrowArgs} args - Arguments to find a AgendaMedico
+     * @example
+     * // Get one AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AgendaMedicoFindUniqueOrThrowArgs>(args: SelectSubset<T, AgendaMedicoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AgendaMedico that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoFindFirstArgs} args - Arguments to find a AgendaMedico
+     * @example
+     * // Get one AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AgendaMedicoFindFirstArgs>(args?: SelectSubset<T, AgendaMedicoFindFirstArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AgendaMedico that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoFindFirstOrThrowArgs} args - Arguments to find a AgendaMedico
+     * @example
+     * // Get one AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AgendaMedicoFindFirstOrThrowArgs>(args?: SelectSubset<T, AgendaMedicoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AgendaMedicos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AgendaMedicos
+     * const agendaMedicos = await prisma.agendaMedico.findMany()
+     * 
+     * // Get first 10 AgendaMedicos
+     * const agendaMedicos = await prisma.agendaMedico.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const agendaMedicoWithIdOnly = await prisma.agendaMedico.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AgendaMedicoFindManyArgs>(args?: SelectSubset<T, AgendaMedicoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AgendaMedico.
+     * @param {AgendaMedicoCreateArgs} args - Arguments to create a AgendaMedico.
+     * @example
+     * // Create one AgendaMedico
+     * const AgendaMedico = await prisma.agendaMedico.create({
+     *   data: {
+     *     // ... data to create a AgendaMedico
+     *   }
+     * })
+     * 
+     */
+    create<T extends AgendaMedicoCreateArgs>(args: SelectSubset<T, AgendaMedicoCreateArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AgendaMedicos.
+     * @param {AgendaMedicoCreateManyArgs} args - Arguments to create many AgendaMedicos.
+     * @example
+     * // Create many AgendaMedicos
+     * const agendaMedico = await prisma.agendaMedico.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AgendaMedicoCreateManyArgs>(args?: SelectSubset<T, AgendaMedicoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AgendaMedicos and returns the data saved in the database.
+     * @param {AgendaMedicoCreateManyAndReturnArgs} args - Arguments to create many AgendaMedicos.
+     * @example
+     * // Create many AgendaMedicos
+     * const agendaMedico = await prisma.agendaMedico.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AgendaMedicos and only return the `id`
+     * const agendaMedicoWithIdOnly = await prisma.agendaMedico.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AgendaMedicoCreateManyAndReturnArgs>(args?: SelectSubset<T, AgendaMedicoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AgendaMedico.
+     * @param {AgendaMedicoDeleteArgs} args - Arguments to delete one AgendaMedico.
+     * @example
+     * // Delete one AgendaMedico
+     * const AgendaMedico = await prisma.agendaMedico.delete({
+     *   where: {
+     *     // ... filter to delete one AgendaMedico
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AgendaMedicoDeleteArgs>(args: SelectSubset<T, AgendaMedicoDeleteArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AgendaMedico.
+     * @param {AgendaMedicoUpdateArgs} args - Arguments to update one AgendaMedico.
+     * @example
+     * // Update one AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AgendaMedicoUpdateArgs>(args: SelectSubset<T, AgendaMedicoUpdateArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AgendaMedicos.
+     * @param {AgendaMedicoDeleteManyArgs} args - Arguments to filter AgendaMedicos to delete.
+     * @example
+     * // Delete a few AgendaMedicos
+     * const { count } = await prisma.agendaMedico.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AgendaMedicoDeleteManyArgs>(args?: SelectSubset<T, AgendaMedicoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgendaMedicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AgendaMedicos
+     * const agendaMedico = await prisma.agendaMedico.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AgendaMedicoUpdateManyArgs>(args: SelectSubset<T, AgendaMedicoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AgendaMedicos and returns the data updated in the database.
+     * @param {AgendaMedicoUpdateManyAndReturnArgs} args - Arguments to update many AgendaMedicos.
+     * @example
+     * // Update many AgendaMedicos
+     * const agendaMedico = await prisma.agendaMedico.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AgendaMedicos and only return the `id`
+     * const agendaMedicoWithIdOnly = await prisma.agendaMedico.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AgendaMedicoUpdateManyAndReturnArgs>(args: SelectSubset<T, AgendaMedicoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AgendaMedico.
+     * @param {AgendaMedicoUpsertArgs} args - Arguments to update or create a AgendaMedico.
+     * @example
+     * // Update or create a AgendaMedico
+     * const agendaMedico = await prisma.agendaMedico.upsert({
+     *   create: {
+     *     // ... data to create a AgendaMedico
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AgendaMedico we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AgendaMedicoUpsertArgs>(args: SelectSubset<T, AgendaMedicoUpsertArgs<ExtArgs>>): Prisma__AgendaMedicoClient<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AgendaMedicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoCountArgs} args - Arguments to filter AgendaMedicos to count.
+     * @example
+     * // Count the number of AgendaMedicos
+     * const count = await prisma.agendaMedico.count({
+     *   where: {
+     *     // ... the filter for the AgendaMedicos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AgendaMedicoCountArgs>(
+      args?: Subset<T, AgendaMedicoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AgendaMedicoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AgendaMedico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AgendaMedicoAggregateArgs>(args: Subset<T, AgendaMedicoAggregateArgs>): Prisma.PrismaPromise<GetAgendaMedicoAggregateType<T>>
+
+    /**
+     * Group by AgendaMedico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AgendaMedicoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AgendaMedicoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AgendaMedicoGroupByArgs['orderBy'] }
+        : { orderBy?: AgendaMedicoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AgendaMedicoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgendaMedicoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AgendaMedico model
+   */
+  readonly fields: AgendaMedicoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AgendaMedico.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AgendaMedicoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    medico<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AgendaMedico model
+   */
+  interface AgendaMedicoFieldRefs {
+    readonly id: FieldRef<"AgendaMedico", 'String'>
+    readonly medicoId: FieldRef<"AgendaMedico", 'String'>
+    readonly diaSemana: FieldRef<"AgendaMedico", 'Int'>
+    readonly horaInicio: FieldRef<"AgendaMedico", 'String'>
+    readonly horaFim: FieldRef<"AgendaMedico", 'String'>
+    readonly duracaoSlot: FieldRef<"AgendaMedico", 'Int'>
+    readonly ativo: FieldRef<"AgendaMedico", 'Boolean'>
+    readonly criadoEm: FieldRef<"AgendaMedico", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AgendaMedico findUnique
+   */
+  export type AgendaMedicoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AgendaMedico to fetch.
+     */
+    where: AgendaMedicoWhereUniqueInput
+  }
+
+  /**
+   * AgendaMedico findUniqueOrThrow
+   */
+  export type AgendaMedicoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AgendaMedico to fetch.
+     */
+    where: AgendaMedicoWhereUniqueInput
+  }
+
+  /**
+   * AgendaMedico findFirst
+   */
+  export type AgendaMedicoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AgendaMedico to fetch.
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgendaMedicos to fetch.
+     */
+    orderBy?: AgendaMedicoOrderByWithRelationInput | AgendaMedicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgendaMedicos.
+     */
+    cursor?: AgendaMedicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgendaMedicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgendaMedicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgendaMedicos.
+     */
+    distinct?: AgendaMedicoScalarFieldEnum | AgendaMedicoScalarFieldEnum[]
+  }
+
+  /**
+   * AgendaMedico findFirstOrThrow
+   */
+  export type AgendaMedicoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AgendaMedico to fetch.
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgendaMedicos to fetch.
+     */
+    orderBy?: AgendaMedicoOrderByWithRelationInput | AgendaMedicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AgendaMedicos.
+     */
+    cursor?: AgendaMedicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgendaMedicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgendaMedicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AgendaMedicos.
+     */
+    distinct?: AgendaMedicoScalarFieldEnum | AgendaMedicoScalarFieldEnum[]
+  }
+
+  /**
+   * AgendaMedico findMany
+   */
+  export type AgendaMedicoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AgendaMedicos to fetch.
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AgendaMedicos to fetch.
+     */
+    orderBy?: AgendaMedicoOrderByWithRelationInput | AgendaMedicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AgendaMedicos.
+     */
+    cursor?: AgendaMedicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AgendaMedicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AgendaMedicos.
+     */
+    skip?: number
+    distinct?: AgendaMedicoScalarFieldEnum | AgendaMedicoScalarFieldEnum[]
+  }
+
+  /**
+   * AgendaMedico create
+   */
+  export type AgendaMedicoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AgendaMedico.
+     */
+    data: XOR<AgendaMedicoCreateInput, AgendaMedicoUncheckedCreateInput>
+  }
+
+  /**
+   * AgendaMedico createMany
+   */
+  export type AgendaMedicoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AgendaMedicos.
+     */
+    data: AgendaMedicoCreateManyInput | AgendaMedicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AgendaMedico createManyAndReturn
+   */
+  export type AgendaMedicoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AgendaMedicos.
+     */
+    data: AgendaMedicoCreateManyInput | AgendaMedicoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgendaMedico update
+   */
+  export type AgendaMedicoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AgendaMedico.
+     */
+    data: XOR<AgendaMedicoUpdateInput, AgendaMedicoUncheckedUpdateInput>
+    /**
+     * Choose, which AgendaMedico to update.
+     */
+    where: AgendaMedicoWhereUniqueInput
+  }
+
+  /**
+   * AgendaMedico updateMany
+   */
+  export type AgendaMedicoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AgendaMedicos.
+     */
+    data: XOR<AgendaMedicoUpdateManyMutationInput, AgendaMedicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AgendaMedicos to update
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * Limit how many AgendaMedicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgendaMedico updateManyAndReturn
+   */
+  export type AgendaMedicoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * The data used to update AgendaMedicos.
+     */
+    data: XOR<AgendaMedicoUpdateManyMutationInput, AgendaMedicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AgendaMedicos to update
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * Limit how many AgendaMedicos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AgendaMedico upsert
+   */
+  export type AgendaMedicoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AgendaMedico to update in case it exists.
+     */
+    where: AgendaMedicoWhereUniqueInput
+    /**
+     * In case the AgendaMedico found by the `where` argument doesn't exist, create a new AgendaMedico with this data.
+     */
+    create: XOR<AgendaMedicoCreateInput, AgendaMedicoUncheckedCreateInput>
+    /**
+     * In case the AgendaMedico was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AgendaMedicoUpdateInput, AgendaMedicoUncheckedUpdateInput>
+  }
+
+  /**
+   * AgendaMedico delete
+   */
+  export type AgendaMedicoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
+    /**
+     * Filter which AgendaMedico to delete.
+     */
+    where: AgendaMedicoWhereUniqueInput
+  }
+
+  /**
+   * AgendaMedico deleteMany
+   */
+  export type AgendaMedicoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AgendaMedicos to delete
+     */
+    where?: AgendaMedicoWhereInput
+    /**
+     * Limit how many AgendaMedicos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AgendaMedico without action
+   */
+  export type AgendaMedicoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AgendaMedico
+     */
+    select?: AgendaMedicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AgendaMedico
+     */
+    omit?: AgendaMedicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AgendaMedicoInclude<ExtArgs> | null
   }
 
 
@@ -60962,6 +62932,5833 @@ export namespace Prisma {
 
 
   /**
+   * Model FicheiroPessoalDoente
+   */
+
+  export type AggregateFicheiroPessoalDoente = {
+    _count: FicheiroPessoalDoenteCountAggregateOutputType | null
+    _min: FicheiroPessoalDoenteMinAggregateOutputType | null
+    _max: FicheiroPessoalDoenteMaxAggregateOutputType | null
+  }
+
+  export type FicheiroPessoalDoenteMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    nif: string | null
+    numeroSNS: string | null
+    morada: string | null
+    codigoPostal: string | null
+    localidade: string | null
+    telefone: string | null
+    email: string | null
+    entidadeSeguradora: string | null
+    numeroApolice: string | null
+    tipoCobertura: string | null
+    atualizadoEm: Date | null
+    atualizadoPorId: string | null
+  }
+
+  export type FicheiroPessoalDoenteMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    nif: string | null
+    numeroSNS: string | null
+    morada: string | null
+    codigoPostal: string | null
+    localidade: string | null
+    telefone: string | null
+    email: string | null
+    entidadeSeguradora: string | null
+    numeroApolice: string | null
+    tipoCobertura: string | null
+    atualizadoEm: Date | null
+    atualizadoPorId: string | null
+  }
+
+  export type FicheiroPessoalDoenteCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    nif: number
+    numeroSNS: number
+    morada: number
+    codigoPostal: number
+    localidade: number
+    telefone: number
+    email: number
+    entidadeSeguradora: number
+    numeroApolice: number
+    tipoCobertura: number
+    atualizadoEm: number
+    atualizadoPorId: number
+    _all: number
+  }
+
+
+  export type FicheiroPessoalDoenteMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nif?: true
+    numeroSNS?: true
+    morada?: true
+    codigoPostal?: true
+    localidade?: true
+    telefone?: true
+    email?: true
+    entidadeSeguradora?: true
+    numeroApolice?: true
+    tipoCobertura?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+  }
+
+  export type FicheiroPessoalDoenteMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nif?: true
+    numeroSNS?: true
+    morada?: true
+    codigoPostal?: true
+    localidade?: true
+    telefone?: true
+    email?: true
+    entidadeSeguradora?: true
+    numeroApolice?: true
+    tipoCobertura?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+  }
+
+  export type FicheiroPessoalDoenteCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    nif?: true
+    numeroSNS?: true
+    morada?: true
+    codigoPostal?: true
+    localidade?: true
+    telefone?: true
+    email?: true
+    entidadeSeguradora?: true
+    numeroApolice?: true
+    tipoCobertura?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+    _all?: true
+  }
+
+  export type FicheiroPessoalDoenteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FicheiroPessoalDoente to aggregate.
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FicheiroPessoalDoentes to fetch.
+     */
+    orderBy?: FicheiroPessoalDoenteOrderByWithRelationInput | FicheiroPessoalDoenteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FicheiroPessoalDoenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FicheiroPessoalDoentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FicheiroPessoalDoentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FicheiroPessoalDoentes
+    **/
+    _count?: true | FicheiroPessoalDoenteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FicheiroPessoalDoenteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FicheiroPessoalDoenteMaxAggregateInputType
+  }
+
+  export type GetFicheiroPessoalDoenteAggregateType<T extends FicheiroPessoalDoenteAggregateArgs> = {
+        [P in keyof T & keyof AggregateFicheiroPessoalDoente]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFicheiroPessoalDoente[P]>
+      : GetScalarType<T[P], AggregateFicheiroPessoalDoente[P]>
+  }
+
+
+
+
+  export type FicheiroPessoalDoenteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FicheiroPessoalDoenteWhereInput
+    orderBy?: FicheiroPessoalDoenteOrderByWithAggregationInput | FicheiroPessoalDoenteOrderByWithAggregationInput[]
+    by: FicheiroPessoalDoenteScalarFieldEnum[] | FicheiroPessoalDoenteScalarFieldEnum
+    having?: FicheiroPessoalDoenteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FicheiroPessoalDoenteCountAggregateInputType | true
+    _min?: FicheiroPessoalDoenteMinAggregateInputType
+    _max?: FicheiroPessoalDoenteMaxAggregateInputType
+  }
+
+  export type FicheiroPessoalDoenteGroupByOutputType = {
+    id: string
+    doenteId: string
+    nif: string | null
+    numeroSNS: string | null
+    morada: string | null
+    codigoPostal: string | null
+    localidade: string | null
+    telefone: string | null
+    email: string | null
+    entidadeSeguradora: string | null
+    numeroApolice: string | null
+    tipoCobertura: string | null
+    atualizadoEm: Date
+    atualizadoPorId: string | null
+    _count: FicheiroPessoalDoenteCountAggregateOutputType | null
+    _min: FicheiroPessoalDoenteMinAggregateOutputType | null
+    _max: FicheiroPessoalDoenteMaxAggregateOutputType | null
+  }
+
+  type GetFicheiroPessoalDoenteGroupByPayload<T extends FicheiroPessoalDoenteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FicheiroPessoalDoenteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FicheiroPessoalDoenteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FicheiroPessoalDoenteGroupByOutputType[P]>
+            : GetScalarType<T[P], FicheiroPessoalDoenteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FicheiroPessoalDoenteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nif?: boolean
+    numeroSNS?: boolean
+    morada?: boolean
+    codigoPostal?: boolean
+    localidade?: boolean
+    telefone?: boolean
+    email?: boolean
+    entidadeSeguradora?: boolean
+    numeroApolice?: boolean
+    tipoCobertura?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["ficheiroPessoalDoente"]>
+
+  export type FicheiroPessoalDoenteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nif?: boolean
+    numeroSNS?: boolean
+    morada?: boolean
+    codigoPostal?: boolean
+    localidade?: boolean
+    telefone?: boolean
+    email?: boolean
+    entidadeSeguradora?: boolean
+    numeroApolice?: boolean
+    tipoCobertura?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["ficheiroPessoalDoente"]>
+
+  export type FicheiroPessoalDoenteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    nif?: boolean
+    numeroSNS?: boolean
+    morada?: boolean
+    codigoPostal?: boolean
+    localidade?: boolean
+    telefone?: boolean
+    email?: boolean
+    entidadeSeguradora?: boolean
+    numeroApolice?: boolean
+    tipoCobertura?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["ficheiroPessoalDoente"]>
+
+  export type FicheiroPessoalDoenteSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    nif?: boolean
+    numeroSNS?: boolean
+    morada?: boolean
+    codigoPostal?: boolean
+    localidade?: boolean
+    telefone?: boolean
+    email?: boolean
+    entidadeSeguradora?: boolean
+    numeroApolice?: boolean
+    tipoCobertura?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+  }
+
+  export type FicheiroPessoalDoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nif" | "numeroSNS" | "morada" | "codigoPostal" | "localidade" | "telefone" | "email" | "entidadeSeguradora" | "numeroApolice" | "tipoCobertura" | "atualizadoEm" | "atualizadoPorId", ExtArgs["result"]["ficheiroPessoalDoente"]>
+  export type FicheiroPessoalDoenteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }
+  export type FicheiroPessoalDoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }
+  export type FicheiroPessoalDoenteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    atualizadoPor?: boolean | FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>
+  }
+
+  export type $FicheiroPessoalDoentePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FicheiroPessoalDoente"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      atualizadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      nif: string | null
+      numeroSNS: string | null
+      morada: string | null
+      codigoPostal: string | null
+      localidade: string | null
+      telefone: string | null
+      email: string | null
+      entidadeSeguradora: string | null
+      numeroApolice: string | null
+      tipoCobertura: string | null
+      atualizadoEm: Date
+      atualizadoPorId: string | null
+    }, ExtArgs["result"]["ficheiroPessoalDoente"]>
+    composites: {}
+  }
+
+  type FicheiroPessoalDoenteGetPayload<S extends boolean | null | undefined | FicheiroPessoalDoenteDefaultArgs> = $Result.GetResult<Prisma.$FicheiroPessoalDoentePayload, S>
+
+  type FicheiroPessoalDoenteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FicheiroPessoalDoenteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FicheiroPessoalDoenteCountAggregateInputType | true
+    }
+
+  export interface FicheiroPessoalDoenteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FicheiroPessoalDoente'], meta: { name: 'FicheiroPessoalDoente' } }
+    /**
+     * Find zero or one FicheiroPessoalDoente that matches the filter.
+     * @param {FicheiroPessoalDoenteFindUniqueArgs} args - Arguments to find a FicheiroPessoalDoente
+     * @example
+     * // Get one FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FicheiroPessoalDoenteFindUniqueArgs>(args: SelectSubset<T, FicheiroPessoalDoenteFindUniqueArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FicheiroPessoalDoente that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FicheiroPessoalDoenteFindUniqueOrThrowArgs} args - Arguments to find a FicheiroPessoalDoente
+     * @example
+     * // Get one FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FicheiroPessoalDoenteFindUniqueOrThrowArgs>(args: SelectSubset<T, FicheiroPessoalDoenteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FicheiroPessoalDoente that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteFindFirstArgs} args - Arguments to find a FicheiroPessoalDoente
+     * @example
+     * // Get one FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FicheiroPessoalDoenteFindFirstArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteFindFirstArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FicheiroPessoalDoente that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteFindFirstOrThrowArgs} args - Arguments to find a FicheiroPessoalDoente
+     * @example
+     * // Get one FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FicheiroPessoalDoenteFindFirstOrThrowArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteFindFirstOrThrowArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FicheiroPessoalDoentes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FicheiroPessoalDoentes
+     * const ficheiroPessoalDoentes = await prisma.ficheiroPessoalDoente.findMany()
+     * 
+     * // Get first 10 FicheiroPessoalDoentes
+     * const ficheiroPessoalDoentes = await prisma.ficheiroPessoalDoente.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const ficheiroPessoalDoenteWithIdOnly = await prisma.ficheiroPessoalDoente.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FicheiroPessoalDoenteFindManyArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FicheiroPessoalDoente.
+     * @param {FicheiroPessoalDoenteCreateArgs} args - Arguments to create a FicheiroPessoalDoente.
+     * @example
+     * // Create one FicheiroPessoalDoente
+     * const FicheiroPessoalDoente = await prisma.ficheiroPessoalDoente.create({
+     *   data: {
+     *     // ... data to create a FicheiroPessoalDoente
+     *   }
+     * })
+     * 
+     */
+    create<T extends FicheiroPessoalDoenteCreateArgs>(args: SelectSubset<T, FicheiroPessoalDoenteCreateArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FicheiroPessoalDoentes.
+     * @param {FicheiroPessoalDoenteCreateManyArgs} args - Arguments to create many FicheiroPessoalDoentes.
+     * @example
+     * // Create many FicheiroPessoalDoentes
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FicheiroPessoalDoenteCreateManyArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FicheiroPessoalDoentes and returns the data saved in the database.
+     * @param {FicheiroPessoalDoenteCreateManyAndReturnArgs} args - Arguments to create many FicheiroPessoalDoentes.
+     * @example
+     * // Create many FicheiroPessoalDoentes
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FicheiroPessoalDoentes and only return the `id`
+     * const ficheiroPessoalDoenteWithIdOnly = await prisma.ficheiroPessoalDoente.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FicheiroPessoalDoenteCreateManyAndReturnArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FicheiroPessoalDoente.
+     * @param {FicheiroPessoalDoenteDeleteArgs} args - Arguments to delete one FicheiroPessoalDoente.
+     * @example
+     * // Delete one FicheiroPessoalDoente
+     * const FicheiroPessoalDoente = await prisma.ficheiroPessoalDoente.delete({
+     *   where: {
+     *     // ... filter to delete one FicheiroPessoalDoente
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FicheiroPessoalDoenteDeleteArgs>(args: SelectSubset<T, FicheiroPessoalDoenteDeleteArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FicheiroPessoalDoente.
+     * @param {FicheiroPessoalDoenteUpdateArgs} args - Arguments to update one FicheiroPessoalDoente.
+     * @example
+     * // Update one FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FicheiroPessoalDoenteUpdateArgs>(args: SelectSubset<T, FicheiroPessoalDoenteUpdateArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FicheiroPessoalDoentes.
+     * @param {FicheiroPessoalDoenteDeleteManyArgs} args - Arguments to filter FicheiroPessoalDoentes to delete.
+     * @example
+     * // Delete a few FicheiroPessoalDoentes
+     * const { count } = await prisma.ficheiroPessoalDoente.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FicheiroPessoalDoenteDeleteManyArgs>(args?: SelectSubset<T, FicheiroPessoalDoenteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FicheiroPessoalDoentes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FicheiroPessoalDoentes
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FicheiroPessoalDoenteUpdateManyArgs>(args: SelectSubset<T, FicheiroPessoalDoenteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FicheiroPessoalDoentes and returns the data updated in the database.
+     * @param {FicheiroPessoalDoenteUpdateManyAndReturnArgs} args - Arguments to update many FicheiroPessoalDoentes.
+     * @example
+     * // Update many FicheiroPessoalDoentes
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FicheiroPessoalDoentes and only return the `id`
+     * const ficheiroPessoalDoenteWithIdOnly = await prisma.ficheiroPessoalDoente.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FicheiroPessoalDoenteUpdateManyAndReturnArgs>(args: SelectSubset<T, FicheiroPessoalDoenteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FicheiroPessoalDoente.
+     * @param {FicheiroPessoalDoenteUpsertArgs} args - Arguments to update or create a FicheiroPessoalDoente.
+     * @example
+     * // Update or create a FicheiroPessoalDoente
+     * const ficheiroPessoalDoente = await prisma.ficheiroPessoalDoente.upsert({
+     *   create: {
+     *     // ... data to create a FicheiroPessoalDoente
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FicheiroPessoalDoente we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FicheiroPessoalDoenteUpsertArgs>(args: SelectSubset<T, FicheiroPessoalDoenteUpsertArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FicheiroPessoalDoentes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteCountArgs} args - Arguments to filter FicheiroPessoalDoentes to count.
+     * @example
+     * // Count the number of FicheiroPessoalDoentes
+     * const count = await prisma.ficheiroPessoalDoente.count({
+     *   where: {
+     *     // ... the filter for the FicheiroPessoalDoentes we want to count
+     *   }
+     * })
+    **/
+    count<T extends FicheiroPessoalDoenteCountArgs>(
+      args?: Subset<T, FicheiroPessoalDoenteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FicheiroPessoalDoenteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FicheiroPessoalDoente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FicheiroPessoalDoenteAggregateArgs>(args: Subset<T, FicheiroPessoalDoenteAggregateArgs>): Prisma.PrismaPromise<GetFicheiroPessoalDoenteAggregateType<T>>
+
+    /**
+     * Group by FicheiroPessoalDoente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FicheiroPessoalDoenteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FicheiroPessoalDoenteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FicheiroPessoalDoenteGroupByArgs['orderBy'] }
+        : { orderBy?: FicheiroPessoalDoenteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FicheiroPessoalDoenteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFicheiroPessoalDoenteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FicheiroPessoalDoente model
+   */
+  readonly fields: FicheiroPessoalDoenteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FicheiroPessoalDoente.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FicheiroPessoalDoenteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    atualizadoPor<T extends FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs> = {}>(args?: Subset<T, FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FicheiroPessoalDoente model
+   */
+  interface FicheiroPessoalDoenteFieldRefs {
+    readonly id: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly doenteId: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly nif: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly numeroSNS: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly morada: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly codigoPostal: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly localidade: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly telefone: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly email: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly entidadeSeguradora: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly numeroApolice: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly tipoCobertura: FieldRef<"FicheiroPessoalDoente", 'String'>
+    readonly atualizadoEm: FieldRef<"FicheiroPessoalDoente", 'DateTime'>
+    readonly atualizadoPorId: FieldRef<"FicheiroPessoalDoente", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FicheiroPessoalDoente findUnique
+   */
+  export type FicheiroPessoalDoenteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter, which FicheiroPessoalDoente to fetch.
+     */
+    where: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  /**
+   * FicheiroPessoalDoente findUniqueOrThrow
+   */
+  export type FicheiroPessoalDoenteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter, which FicheiroPessoalDoente to fetch.
+     */
+    where: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  /**
+   * FicheiroPessoalDoente findFirst
+   */
+  export type FicheiroPessoalDoenteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter, which FicheiroPessoalDoente to fetch.
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FicheiroPessoalDoentes to fetch.
+     */
+    orderBy?: FicheiroPessoalDoenteOrderByWithRelationInput | FicheiroPessoalDoenteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FicheiroPessoalDoentes.
+     */
+    cursor?: FicheiroPessoalDoenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FicheiroPessoalDoentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FicheiroPessoalDoentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FicheiroPessoalDoentes.
+     */
+    distinct?: FicheiroPessoalDoenteScalarFieldEnum | FicheiroPessoalDoenteScalarFieldEnum[]
+  }
+
+  /**
+   * FicheiroPessoalDoente findFirstOrThrow
+   */
+  export type FicheiroPessoalDoenteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter, which FicheiroPessoalDoente to fetch.
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FicheiroPessoalDoentes to fetch.
+     */
+    orderBy?: FicheiroPessoalDoenteOrderByWithRelationInput | FicheiroPessoalDoenteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FicheiroPessoalDoentes.
+     */
+    cursor?: FicheiroPessoalDoenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FicheiroPessoalDoentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FicheiroPessoalDoentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FicheiroPessoalDoentes.
+     */
+    distinct?: FicheiroPessoalDoenteScalarFieldEnum | FicheiroPessoalDoenteScalarFieldEnum[]
+  }
+
+  /**
+   * FicheiroPessoalDoente findMany
+   */
+  export type FicheiroPessoalDoenteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter, which FicheiroPessoalDoentes to fetch.
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FicheiroPessoalDoentes to fetch.
+     */
+    orderBy?: FicheiroPessoalDoenteOrderByWithRelationInput | FicheiroPessoalDoenteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FicheiroPessoalDoentes.
+     */
+    cursor?: FicheiroPessoalDoenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FicheiroPessoalDoentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FicheiroPessoalDoentes.
+     */
+    skip?: number
+    distinct?: FicheiroPessoalDoenteScalarFieldEnum | FicheiroPessoalDoenteScalarFieldEnum[]
+  }
+
+  /**
+   * FicheiroPessoalDoente create
+   */
+  export type FicheiroPessoalDoenteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FicheiroPessoalDoente.
+     */
+    data: XOR<FicheiroPessoalDoenteCreateInput, FicheiroPessoalDoenteUncheckedCreateInput>
+  }
+
+  /**
+   * FicheiroPessoalDoente createMany
+   */
+  export type FicheiroPessoalDoenteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FicheiroPessoalDoentes.
+     */
+    data: FicheiroPessoalDoenteCreateManyInput | FicheiroPessoalDoenteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FicheiroPessoalDoente createManyAndReturn
+   */
+  export type FicheiroPessoalDoenteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * The data used to create many FicheiroPessoalDoentes.
+     */
+    data: FicheiroPessoalDoenteCreateManyInput | FicheiroPessoalDoenteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FicheiroPessoalDoente update
+   */
+  export type FicheiroPessoalDoenteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FicheiroPessoalDoente.
+     */
+    data: XOR<FicheiroPessoalDoenteUpdateInput, FicheiroPessoalDoenteUncheckedUpdateInput>
+    /**
+     * Choose, which FicheiroPessoalDoente to update.
+     */
+    where: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  /**
+   * FicheiroPessoalDoente updateMany
+   */
+  export type FicheiroPessoalDoenteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FicheiroPessoalDoentes.
+     */
+    data: XOR<FicheiroPessoalDoenteUpdateManyMutationInput, FicheiroPessoalDoenteUncheckedUpdateManyInput>
+    /**
+     * Filter which FicheiroPessoalDoentes to update
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * Limit how many FicheiroPessoalDoentes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FicheiroPessoalDoente updateManyAndReturn
+   */
+  export type FicheiroPessoalDoenteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * The data used to update FicheiroPessoalDoentes.
+     */
+    data: XOR<FicheiroPessoalDoenteUpdateManyMutationInput, FicheiroPessoalDoenteUncheckedUpdateManyInput>
+    /**
+     * Filter which FicheiroPessoalDoentes to update
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * Limit how many FicheiroPessoalDoentes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FicheiroPessoalDoente upsert
+   */
+  export type FicheiroPessoalDoenteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FicheiroPessoalDoente to update in case it exists.
+     */
+    where: FicheiroPessoalDoenteWhereUniqueInput
+    /**
+     * In case the FicheiroPessoalDoente found by the `where` argument doesn't exist, create a new FicheiroPessoalDoente with this data.
+     */
+    create: XOR<FicheiroPessoalDoenteCreateInput, FicheiroPessoalDoenteUncheckedCreateInput>
+    /**
+     * In case the FicheiroPessoalDoente was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FicheiroPessoalDoenteUpdateInput, FicheiroPessoalDoenteUncheckedUpdateInput>
+  }
+
+  /**
+   * FicheiroPessoalDoente delete
+   */
+  export type FicheiroPessoalDoenteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+    /**
+     * Filter which FicheiroPessoalDoente to delete.
+     */
+    where: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  /**
+   * FicheiroPessoalDoente deleteMany
+   */
+  export type FicheiroPessoalDoenteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FicheiroPessoalDoentes to delete
+     */
+    where?: FicheiroPessoalDoenteWhereInput
+    /**
+     * Limit how many FicheiroPessoalDoentes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FicheiroPessoalDoente.atualizadoPor
+   */
+  export type FicheiroPessoalDoente$atualizadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * FicheiroPessoalDoente without action
+   */
+  export type FicheiroPessoalDoenteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FicheiroPessoalDoente
+     */
+    select?: FicheiroPessoalDoenteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FicheiroPessoalDoente
+     */
+    omit?: FicheiroPessoalDoenteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FicheiroPessoalDoenteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EpisodioFaturacao
+   */
+
+  export type AggregateEpisodioFaturacao = {
+    _count: EpisodioFaturacaoCountAggregateOutputType | null
+    _avg: EpisodioFaturacaoAvgAggregateOutputType | null
+    _sum: EpisodioFaturacaoSumAggregateOutputType | null
+    _min: EpisodioFaturacaoMinAggregateOutputType | null
+    _max: EpisodioFaturacaoMaxAggregateOutputType | null
+  }
+
+  export type EpisodioFaturacaoAvgAggregateOutputType = {
+    totalBase: number | null
+    totalCobrado: number | null
+  }
+
+  export type EpisodioFaturacaoSumAggregateOutputType = {
+    totalBase: number | null
+    totalCobrado: number | null
+  }
+
+  export type EpisodioFaturacaoMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    estado: $Enums.EstadoFatura | null
+    dataEmissao: Date | null
+    totalBase: number | null
+    totalCobrado: number | null
+    tipoCobertura: string | null
+    notas: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type EpisodioFaturacaoMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    estado: $Enums.EstadoFatura | null
+    dataEmissao: Date | null
+    totalBase: number | null
+    totalCobrado: number | null
+    tipoCobertura: string | null
+    notas: string | null
+    criadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type EpisodioFaturacaoCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    estado: number
+    dataEmissao: number
+    totalBase: number
+    totalCobrado: number
+    tipoCobertura: number
+    notas: number
+    criadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type EpisodioFaturacaoAvgAggregateInputType = {
+    totalBase?: true
+    totalCobrado?: true
+  }
+
+  export type EpisodioFaturacaoSumAggregateInputType = {
+    totalBase?: true
+    totalCobrado?: true
+  }
+
+  export type EpisodioFaturacaoMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    estado?: true
+    dataEmissao?: true
+    totalBase?: true
+    totalCobrado?: true
+    tipoCobertura?: true
+    notas?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type EpisodioFaturacaoMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    estado?: true
+    dataEmissao?: true
+    totalBase?: true
+    totalCobrado?: true
+    tipoCobertura?: true
+    notas?: true
+    criadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type EpisodioFaturacaoCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    estado?: true
+    dataEmissao?: true
+    totalBase?: true
+    totalCobrado?: true
+    tipoCobertura?: true
+    notas?: true
+    criadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type EpisodioFaturacaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EpisodioFaturacao to aggregate.
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EpisodioFaturacaos to fetch.
+     */
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EpisodioFaturacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EpisodioFaturacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EpisodioFaturacaos
+    **/
+    _count?: true | EpisodioFaturacaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EpisodioFaturacaoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EpisodioFaturacaoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EpisodioFaturacaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EpisodioFaturacaoMaxAggregateInputType
+  }
+
+  export type GetEpisodioFaturacaoAggregateType<T extends EpisodioFaturacaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateEpisodioFaturacao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEpisodioFaturacao[P]>
+      : GetScalarType<T[P], AggregateEpisodioFaturacao[P]>
+  }
+
+
+
+
+  export type EpisodioFaturacaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EpisodioFaturacaoWhereInput
+    orderBy?: EpisodioFaturacaoOrderByWithAggregationInput | EpisodioFaturacaoOrderByWithAggregationInput[]
+    by: EpisodioFaturacaoScalarFieldEnum[] | EpisodioFaturacaoScalarFieldEnum
+    having?: EpisodioFaturacaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EpisodioFaturacaoCountAggregateInputType | true
+    _avg?: EpisodioFaturacaoAvgAggregateInputType
+    _sum?: EpisodioFaturacaoSumAggregateInputType
+    _min?: EpisodioFaturacaoMinAggregateInputType
+    _max?: EpisodioFaturacaoMaxAggregateInputType
+  }
+
+  export type EpisodioFaturacaoGroupByOutputType = {
+    id: string
+    doenteId: string
+    estado: $Enums.EstadoFatura
+    dataEmissao: Date | null
+    totalBase: number
+    totalCobrado: number
+    tipoCobertura: string | null
+    notas: string | null
+    criadoPorId: string
+    criadoEm: Date
+    _count: EpisodioFaturacaoCountAggregateOutputType | null
+    _avg: EpisodioFaturacaoAvgAggregateOutputType | null
+    _sum: EpisodioFaturacaoSumAggregateOutputType | null
+    _min: EpisodioFaturacaoMinAggregateOutputType | null
+    _max: EpisodioFaturacaoMaxAggregateOutputType | null
+  }
+
+  type GetEpisodioFaturacaoGroupByPayload<T extends EpisodioFaturacaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EpisodioFaturacaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EpisodioFaturacaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EpisodioFaturacaoGroupByOutputType[P]>
+            : GetScalarType<T[P], EpisodioFaturacaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EpisodioFaturacaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    estado?: boolean
+    dataEmissao?: boolean
+    totalBase?: boolean
+    totalCobrado?: boolean
+    tipoCobertura?: boolean
+    notas?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    itens?: boolean | EpisodioFaturacao$itensArgs<ExtArgs>
+    pagamentos?: boolean | EpisodioFaturacao$pagamentosArgs<ExtArgs>
+    _count?: boolean | EpisodioFaturacaoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["episodioFaturacao"]>
+
+  export type EpisodioFaturacaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    estado?: boolean
+    dataEmissao?: boolean
+    totalBase?: boolean
+    totalCobrado?: boolean
+    tipoCobertura?: boolean
+    notas?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["episodioFaturacao"]>
+
+  export type EpisodioFaturacaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    estado?: boolean
+    dataEmissao?: boolean
+    totalBase?: boolean
+    totalCobrado?: boolean
+    tipoCobertura?: boolean
+    notas?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["episodioFaturacao"]>
+
+  export type EpisodioFaturacaoSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    estado?: boolean
+    dataEmissao?: boolean
+    totalBase?: boolean
+    totalCobrado?: boolean
+    tipoCobertura?: boolean
+    notas?: boolean
+    criadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type EpisodioFaturacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "estado" | "dataEmissao" | "totalBase" | "totalCobrado" | "tipoCobertura" | "notas" | "criadoPorId" | "criadoEm", ExtArgs["result"]["episodioFaturacao"]>
+  export type EpisodioFaturacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    itens?: boolean | EpisodioFaturacao$itensArgs<ExtArgs>
+    pagamentos?: boolean | EpisodioFaturacao$pagamentosArgs<ExtArgs>
+    _count?: boolean | EpisodioFaturacaoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EpisodioFaturacaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type EpisodioFaturacaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $EpisodioFaturacaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EpisodioFaturacao"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      itens: Prisma.$ItemFaturaPayload<ExtArgs>[]
+      pagamentos: Prisma.$PagamentoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      estado: $Enums.EstadoFatura
+      dataEmissao: Date | null
+      totalBase: number
+      totalCobrado: number
+      tipoCobertura: string | null
+      notas: string | null
+      criadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["episodioFaturacao"]>
+    composites: {}
+  }
+
+  type EpisodioFaturacaoGetPayload<S extends boolean | null | undefined | EpisodioFaturacaoDefaultArgs> = $Result.GetResult<Prisma.$EpisodioFaturacaoPayload, S>
+
+  type EpisodioFaturacaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EpisodioFaturacaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EpisodioFaturacaoCountAggregateInputType | true
+    }
+
+  export interface EpisodioFaturacaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EpisodioFaturacao'], meta: { name: 'EpisodioFaturacao' } }
+    /**
+     * Find zero or one EpisodioFaturacao that matches the filter.
+     * @param {EpisodioFaturacaoFindUniqueArgs} args - Arguments to find a EpisodioFaturacao
+     * @example
+     * // Get one EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EpisodioFaturacaoFindUniqueArgs>(args: SelectSubset<T, EpisodioFaturacaoFindUniqueArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EpisodioFaturacao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EpisodioFaturacaoFindUniqueOrThrowArgs} args - Arguments to find a EpisodioFaturacao
+     * @example
+     * // Get one EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EpisodioFaturacaoFindUniqueOrThrowArgs>(args: SelectSubset<T, EpisodioFaturacaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EpisodioFaturacao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoFindFirstArgs} args - Arguments to find a EpisodioFaturacao
+     * @example
+     * // Get one EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EpisodioFaturacaoFindFirstArgs>(args?: SelectSubset<T, EpisodioFaturacaoFindFirstArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EpisodioFaturacao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoFindFirstOrThrowArgs} args - Arguments to find a EpisodioFaturacao
+     * @example
+     * // Get one EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EpisodioFaturacaoFindFirstOrThrowArgs>(args?: SelectSubset<T, EpisodioFaturacaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EpisodioFaturacaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EpisodioFaturacaos
+     * const episodioFaturacaos = await prisma.episodioFaturacao.findMany()
+     * 
+     * // Get first 10 EpisodioFaturacaos
+     * const episodioFaturacaos = await prisma.episodioFaturacao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const episodioFaturacaoWithIdOnly = await prisma.episodioFaturacao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EpisodioFaturacaoFindManyArgs>(args?: SelectSubset<T, EpisodioFaturacaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EpisodioFaturacao.
+     * @param {EpisodioFaturacaoCreateArgs} args - Arguments to create a EpisodioFaturacao.
+     * @example
+     * // Create one EpisodioFaturacao
+     * const EpisodioFaturacao = await prisma.episodioFaturacao.create({
+     *   data: {
+     *     // ... data to create a EpisodioFaturacao
+     *   }
+     * })
+     * 
+     */
+    create<T extends EpisodioFaturacaoCreateArgs>(args: SelectSubset<T, EpisodioFaturacaoCreateArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EpisodioFaturacaos.
+     * @param {EpisodioFaturacaoCreateManyArgs} args - Arguments to create many EpisodioFaturacaos.
+     * @example
+     * // Create many EpisodioFaturacaos
+     * const episodioFaturacao = await prisma.episodioFaturacao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EpisodioFaturacaoCreateManyArgs>(args?: SelectSubset<T, EpisodioFaturacaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EpisodioFaturacaos and returns the data saved in the database.
+     * @param {EpisodioFaturacaoCreateManyAndReturnArgs} args - Arguments to create many EpisodioFaturacaos.
+     * @example
+     * // Create many EpisodioFaturacaos
+     * const episodioFaturacao = await prisma.episodioFaturacao.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EpisodioFaturacaos and only return the `id`
+     * const episodioFaturacaoWithIdOnly = await prisma.episodioFaturacao.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EpisodioFaturacaoCreateManyAndReturnArgs>(args?: SelectSubset<T, EpisodioFaturacaoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EpisodioFaturacao.
+     * @param {EpisodioFaturacaoDeleteArgs} args - Arguments to delete one EpisodioFaturacao.
+     * @example
+     * // Delete one EpisodioFaturacao
+     * const EpisodioFaturacao = await prisma.episodioFaturacao.delete({
+     *   where: {
+     *     // ... filter to delete one EpisodioFaturacao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EpisodioFaturacaoDeleteArgs>(args: SelectSubset<T, EpisodioFaturacaoDeleteArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EpisodioFaturacao.
+     * @param {EpisodioFaturacaoUpdateArgs} args - Arguments to update one EpisodioFaturacao.
+     * @example
+     * // Update one EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EpisodioFaturacaoUpdateArgs>(args: SelectSubset<T, EpisodioFaturacaoUpdateArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EpisodioFaturacaos.
+     * @param {EpisodioFaturacaoDeleteManyArgs} args - Arguments to filter EpisodioFaturacaos to delete.
+     * @example
+     * // Delete a few EpisodioFaturacaos
+     * const { count } = await prisma.episodioFaturacao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EpisodioFaturacaoDeleteManyArgs>(args?: SelectSubset<T, EpisodioFaturacaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EpisodioFaturacaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EpisodioFaturacaos
+     * const episodioFaturacao = await prisma.episodioFaturacao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EpisodioFaturacaoUpdateManyArgs>(args: SelectSubset<T, EpisodioFaturacaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EpisodioFaturacaos and returns the data updated in the database.
+     * @param {EpisodioFaturacaoUpdateManyAndReturnArgs} args - Arguments to update many EpisodioFaturacaos.
+     * @example
+     * // Update many EpisodioFaturacaos
+     * const episodioFaturacao = await prisma.episodioFaturacao.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EpisodioFaturacaos and only return the `id`
+     * const episodioFaturacaoWithIdOnly = await prisma.episodioFaturacao.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EpisodioFaturacaoUpdateManyAndReturnArgs>(args: SelectSubset<T, EpisodioFaturacaoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EpisodioFaturacao.
+     * @param {EpisodioFaturacaoUpsertArgs} args - Arguments to update or create a EpisodioFaturacao.
+     * @example
+     * // Update or create a EpisodioFaturacao
+     * const episodioFaturacao = await prisma.episodioFaturacao.upsert({
+     *   create: {
+     *     // ... data to create a EpisodioFaturacao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EpisodioFaturacao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EpisodioFaturacaoUpsertArgs>(args: SelectSubset<T, EpisodioFaturacaoUpsertArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EpisodioFaturacaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoCountArgs} args - Arguments to filter EpisodioFaturacaos to count.
+     * @example
+     * // Count the number of EpisodioFaturacaos
+     * const count = await prisma.episodioFaturacao.count({
+     *   where: {
+     *     // ... the filter for the EpisodioFaturacaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends EpisodioFaturacaoCountArgs>(
+      args?: Subset<T, EpisodioFaturacaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EpisodioFaturacaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EpisodioFaturacao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EpisodioFaturacaoAggregateArgs>(args: Subset<T, EpisodioFaturacaoAggregateArgs>): Prisma.PrismaPromise<GetEpisodioFaturacaoAggregateType<T>>
+
+    /**
+     * Group by EpisodioFaturacao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EpisodioFaturacaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EpisodioFaturacaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EpisodioFaturacaoGroupByArgs['orderBy'] }
+        : { orderBy?: EpisodioFaturacaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EpisodioFaturacaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEpisodioFaturacaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EpisodioFaturacao model
+   */
+  readonly fields: EpisodioFaturacaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EpisodioFaturacao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EpisodioFaturacaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    itens<T extends EpisodioFaturacao$itensArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacao$itensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pagamentos<T extends EpisodioFaturacao$pagamentosArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacao$pagamentosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EpisodioFaturacao model
+   */
+  interface EpisodioFaturacaoFieldRefs {
+    readonly id: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly doenteId: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly estado: FieldRef<"EpisodioFaturacao", 'EstadoFatura'>
+    readonly dataEmissao: FieldRef<"EpisodioFaturacao", 'DateTime'>
+    readonly totalBase: FieldRef<"EpisodioFaturacao", 'Float'>
+    readonly totalCobrado: FieldRef<"EpisodioFaturacao", 'Float'>
+    readonly tipoCobertura: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly notas: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly criadoPorId: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly criadoEm: FieldRef<"EpisodioFaturacao", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EpisodioFaturacao findUnique
+   */
+  export type EpisodioFaturacaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which EpisodioFaturacao to fetch.
+     */
+    where: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  /**
+   * EpisodioFaturacao findUniqueOrThrow
+   */
+  export type EpisodioFaturacaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which EpisodioFaturacao to fetch.
+     */
+    where: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  /**
+   * EpisodioFaturacao findFirst
+   */
+  export type EpisodioFaturacaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which EpisodioFaturacao to fetch.
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EpisodioFaturacaos to fetch.
+     */
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EpisodioFaturacaos.
+     */
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EpisodioFaturacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EpisodioFaturacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EpisodioFaturacaos.
+     */
+    distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
+  }
+
+  /**
+   * EpisodioFaturacao findFirstOrThrow
+   */
+  export type EpisodioFaturacaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which EpisodioFaturacao to fetch.
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EpisodioFaturacaos to fetch.
+     */
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EpisodioFaturacaos.
+     */
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EpisodioFaturacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EpisodioFaturacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EpisodioFaturacaos.
+     */
+    distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
+  }
+
+  /**
+   * EpisodioFaturacao findMany
+   */
+  export type EpisodioFaturacaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which EpisodioFaturacaos to fetch.
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EpisodioFaturacaos to fetch.
+     */
+    orderBy?: EpisodioFaturacaoOrderByWithRelationInput | EpisodioFaturacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EpisodioFaturacaos.
+     */
+    cursor?: EpisodioFaturacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EpisodioFaturacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EpisodioFaturacaos.
+     */
+    skip?: number
+    distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
+  }
+
+  /**
+   * EpisodioFaturacao create
+   */
+  export type EpisodioFaturacaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EpisodioFaturacao.
+     */
+    data: XOR<EpisodioFaturacaoCreateInput, EpisodioFaturacaoUncheckedCreateInput>
+  }
+
+  /**
+   * EpisodioFaturacao createMany
+   */
+  export type EpisodioFaturacaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EpisodioFaturacaos.
+     */
+    data: EpisodioFaturacaoCreateManyInput | EpisodioFaturacaoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EpisodioFaturacao createManyAndReturn
+   */
+  export type EpisodioFaturacaoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * The data used to create many EpisodioFaturacaos.
+     */
+    data: EpisodioFaturacaoCreateManyInput | EpisodioFaturacaoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EpisodioFaturacao update
+   */
+  export type EpisodioFaturacaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EpisodioFaturacao.
+     */
+    data: XOR<EpisodioFaturacaoUpdateInput, EpisodioFaturacaoUncheckedUpdateInput>
+    /**
+     * Choose, which EpisodioFaturacao to update.
+     */
+    where: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  /**
+   * EpisodioFaturacao updateMany
+   */
+  export type EpisodioFaturacaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EpisodioFaturacaos.
+     */
+    data: XOR<EpisodioFaturacaoUpdateManyMutationInput, EpisodioFaturacaoUncheckedUpdateManyInput>
+    /**
+     * Filter which EpisodioFaturacaos to update
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * Limit how many EpisodioFaturacaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EpisodioFaturacao updateManyAndReturn
+   */
+  export type EpisodioFaturacaoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * The data used to update EpisodioFaturacaos.
+     */
+    data: XOR<EpisodioFaturacaoUpdateManyMutationInput, EpisodioFaturacaoUncheckedUpdateManyInput>
+    /**
+     * Filter which EpisodioFaturacaos to update
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * Limit how many EpisodioFaturacaos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EpisodioFaturacao upsert
+   */
+  export type EpisodioFaturacaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EpisodioFaturacao to update in case it exists.
+     */
+    where: EpisodioFaturacaoWhereUniqueInput
+    /**
+     * In case the EpisodioFaturacao found by the `where` argument doesn't exist, create a new EpisodioFaturacao with this data.
+     */
+    create: XOR<EpisodioFaturacaoCreateInput, EpisodioFaturacaoUncheckedCreateInput>
+    /**
+     * In case the EpisodioFaturacao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EpisodioFaturacaoUpdateInput, EpisodioFaturacaoUncheckedUpdateInput>
+  }
+
+  /**
+   * EpisodioFaturacao delete
+   */
+  export type EpisodioFaturacaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    /**
+     * Filter which EpisodioFaturacao to delete.
+     */
+    where: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  /**
+   * EpisodioFaturacao deleteMany
+   */
+  export type EpisodioFaturacaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EpisodioFaturacaos to delete
+     */
+    where?: EpisodioFaturacaoWhereInput
+    /**
+     * Limit how many EpisodioFaturacaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EpisodioFaturacao.itens
+   */
+  export type EpisodioFaturacao$itensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    where?: ItemFaturaWhereInput
+    orderBy?: ItemFaturaOrderByWithRelationInput | ItemFaturaOrderByWithRelationInput[]
+    cursor?: ItemFaturaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemFaturaScalarFieldEnum | ItemFaturaScalarFieldEnum[]
+  }
+
+  /**
+   * EpisodioFaturacao.pagamentos
+   */
+  export type EpisodioFaturacao$pagamentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    where?: PagamentoWhereInput
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    cursor?: PagamentoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PagamentoScalarFieldEnum | PagamentoScalarFieldEnum[]
+  }
+
+  /**
+   * EpisodioFaturacao without action
+   */
+  export type EpisodioFaturacaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ItemFatura
+   */
+
+  export type AggregateItemFatura = {
+    _count: ItemFaturaCountAggregateOutputType | null
+    _avg: ItemFaturaAvgAggregateOutputType | null
+    _sum: ItemFaturaSumAggregateOutputType | null
+    _min: ItemFaturaMinAggregateOutputType | null
+    _max: ItemFaturaMaxAggregateOutputType | null
+  }
+
+  export type ItemFaturaAvgAggregateOutputType = {
+    quantidade: number | null
+    precoUnitario: number | null
+    total: number | null
+  }
+
+  export type ItemFaturaSumAggregateOutputType = {
+    quantidade: number | null
+    precoUnitario: number | null
+    total: number | null
+  }
+
+  export type ItemFaturaMinAggregateOutputType = {
+    id: string | null
+    episodioFaturacaoId: string | null
+    descricao: string | null
+    categoria: string | null
+    quantidade: number | null
+    precoUnitario: number | null
+    total: number | null
+    criadoEm: Date | null
+  }
+
+  export type ItemFaturaMaxAggregateOutputType = {
+    id: string | null
+    episodioFaturacaoId: string | null
+    descricao: string | null
+    categoria: string | null
+    quantidade: number | null
+    precoUnitario: number | null
+    total: number | null
+    criadoEm: Date | null
+  }
+
+  export type ItemFaturaCountAggregateOutputType = {
+    id: number
+    episodioFaturacaoId: number
+    descricao: number
+    categoria: number
+    quantidade: number
+    precoUnitario: number
+    total: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type ItemFaturaAvgAggregateInputType = {
+    quantidade?: true
+    precoUnitario?: true
+    total?: true
+  }
+
+  export type ItemFaturaSumAggregateInputType = {
+    quantidade?: true
+    precoUnitario?: true
+    total?: true
+  }
+
+  export type ItemFaturaMinAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    descricao?: true
+    categoria?: true
+    quantidade?: true
+    precoUnitario?: true
+    total?: true
+    criadoEm?: true
+  }
+
+  export type ItemFaturaMaxAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    descricao?: true
+    categoria?: true
+    quantidade?: true
+    precoUnitario?: true
+    total?: true
+    criadoEm?: true
+  }
+
+  export type ItemFaturaCountAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    descricao?: true
+    categoria?: true
+    quantidade?: true
+    precoUnitario?: true
+    total?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type ItemFaturaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemFatura to aggregate.
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemFaturas to fetch.
+     */
+    orderBy?: ItemFaturaOrderByWithRelationInput | ItemFaturaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ItemFaturaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemFaturas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemFaturas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ItemFaturas
+    **/
+    _count?: true | ItemFaturaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ItemFaturaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ItemFaturaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ItemFaturaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ItemFaturaMaxAggregateInputType
+  }
+
+  export type GetItemFaturaAggregateType<T extends ItemFaturaAggregateArgs> = {
+        [P in keyof T & keyof AggregateItemFatura]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateItemFatura[P]>
+      : GetScalarType<T[P], AggregateItemFatura[P]>
+  }
+
+
+
+
+  export type ItemFaturaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemFaturaWhereInput
+    orderBy?: ItemFaturaOrderByWithAggregationInput | ItemFaturaOrderByWithAggregationInput[]
+    by: ItemFaturaScalarFieldEnum[] | ItemFaturaScalarFieldEnum
+    having?: ItemFaturaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ItemFaturaCountAggregateInputType | true
+    _avg?: ItemFaturaAvgAggregateInputType
+    _sum?: ItemFaturaSumAggregateInputType
+    _min?: ItemFaturaMinAggregateInputType
+    _max?: ItemFaturaMaxAggregateInputType
+  }
+
+  export type ItemFaturaGroupByOutputType = {
+    id: string
+    episodioFaturacaoId: string
+    descricao: string
+    categoria: string
+    quantidade: number
+    precoUnitario: number
+    total: number
+    criadoEm: Date
+    _count: ItemFaturaCountAggregateOutputType | null
+    _avg: ItemFaturaAvgAggregateOutputType | null
+    _sum: ItemFaturaSumAggregateOutputType | null
+    _min: ItemFaturaMinAggregateOutputType | null
+    _max: ItemFaturaMaxAggregateOutputType | null
+  }
+
+  type GetItemFaturaGroupByPayload<T extends ItemFaturaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ItemFaturaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ItemFaturaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ItemFaturaGroupByOutputType[P]>
+            : GetScalarType<T[P], ItemFaturaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ItemFaturaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    total?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemFatura"]>
+
+  export type ItemFaturaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    total?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemFatura"]>
+
+  export type ItemFaturaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    total?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemFatura"]>
+
+  export type ItemFaturaSelectScalar = {
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    total?: boolean
+    criadoEm?: boolean
+  }
+
+  export type ItemFaturaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "episodioFaturacaoId" | "descricao" | "categoria" | "quantidade" | "precoUnitario" | "total" | "criadoEm", ExtArgs["result"]["itemFatura"]>
+  export type ItemFaturaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }
+  export type ItemFaturaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }
+  export type ItemFaturaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+  }
+
+  export type $ItemFaturaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ItemFatura"
+    objects: {
+      episodio: Prisma.$EpisodioFaturacaoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      episodioFaturacaoId: string
+      descricao: string
+      categoria: string
+      quantidade: number
+      precoUnitario: number
+      total: number
+      criadoEm: Date
+    }, ExtArgs["result"]["itemFatura"]>
+    composites: {}
+  }
+
+  type ItemFaturaGetPayload<S extends boolean | null | undefined | ItemFaturaDefaultArgs> = $Result.GetResult<Prisma.$ItemFaturaPayload, S>
+
+  type ItemFaturaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ItemFaturaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ItemFaturaCountAggregateInputType | true
+    }
+
+  export interface ItemFaturaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ItemFatura'], meta: { name: 'ItemFatura' } }
+    /**
+     * Find zero or one ItemFatura that matches the filter.
+     * @param {ItemFaturaFindUniqueArgs} args - Arguments to find a ItemFatura
+     * @example
+     * // Get one ItemFatura
+     * const itemFatura = await prisma.itemFatura.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ItemFaturaFindUniqueArgs>(args: SelectSubset<T, ItemFaturaFindUniqueArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ItemFatura that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ItemFaturaFindUniqueOrThrowArgs} args - Arguments to find a ItemFatura
+     * @example
+     * // Get one ItemFatura
+     * const itemFatura = await prisma.itemFatura.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ItemFaturaFindUniqueOrThrowArgs>(args: SelectSubset<T, ItemFaturaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemFatura that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaFindFirstArgs} args - Arguments to find a ItemFatura
+     * @example
+     * // Get one ItemFatura
+     * const itemFatura = await prisma.itemFatura.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ItemFaturaFindFirstArgs>(args?: SelectSubset<T, ItemFaturaFindFirstArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemFatura that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaFindFirstOrThrowArgs} args - Arguments to find a ItemFatura
+     * @example
+     * // Get one ItemFatura
+     * const itemFatura = await prisma.itemFatura.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ItemFaturaFindFirstOrThrowArgs>(args?: SelectSubset<T, ItemFaturaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ItemFaturas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ItemFaturas
+     * const itemFaturas = await prisma.itemFatura.findMany()
+     * 
+     * // Get first 10 ItemFaturas
+     * const itemFaturas = await prisma.itemFatura.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const itemFaturaWithIdOnly = await prisma.itemFatura.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ItemFaturaFindManyArgs>(args?: SelectSubset<T, ItemFaturaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ItemFatura.
+     * @param {ItemFaturaCreateArgs} args - Arguments to create a ItemFatura.
+     * @example
+     * // Create one ItemFatura
+     * const ItemFatura = await prisma.itemFatura.create({
+     *   data: {
+     *     // ... data to create a ItemFatura
+     *   }
+     * })
+     * 
+     */
+    create<T extends ItemFaturaCreateArgs>(args: SelectSubset<T, ItemFaturaCreateArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ItemFaturas.
+     * @param {ItemFaturaCreateManyArgs} args - Arguments to create many ItemFaturas.
+     * @example
+     * // Create many ItemFaturas
+     * const itemFatura = await prisma.itemFatura.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ItemFaturaCreateManyArgs>(args?: SelectSubset<T, ItemFaturaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ItemFaturas and returns the data saved in the database.
+     * @param {ItemFaturaCreateManyAndReturnArgs} args - Arguments to create many ItemFaturas.
+     * @example
+     * // Create many ItemFaturas
+     * const itemFatura = await prisma.itemFatura.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ItemFaturas and only return the `id`
+     * const itemFaturaWithIdOnly = await prisma.itemFatura.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ItemFaturaCreateManyAndReturnArgs>(args?: SelectSubset<T, ItemFaturaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ItemFatura.
+     * @param {ItemFaturaDeleteArgs} args - Arguments to delete one ItemFatura.
+     * @example
+     * // Delete one ItemFatura
+     * const ItemFatura = await prisma.itemFatura.delete({
+     *   where: {
+     *     // ... filter to delete one ItemFatura
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ItemFaturaDeleteArgs>(args: SelectSubset<T, ItemFaturaDeleteArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ItemFatura.
+     * @param {ItemFaturaUpdateArgs} args - Arguments to update one ItemFatura.
+     * @example
+     * // Update one ItemFatura
+     * const itemFatura = await prisma.itemFatura.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ItemFaturaUpdateArgs>(args: SelectSubset<T, ItemFaturaUpdateArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ItemFaturas.
+     * @param {ItemFaturaDeleteManyArgs} args - Arguments to filter ItemFaturas to delete.
+     * @example
+     * // Delete a few ItemFaturas
+     * const { count } = await prisma.itemFatura.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ItemFaturaDeleteManyArgs>(args?: SelectSubset<T, ItemFaturaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemFaturas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ItemFaturas
+     * const itemFatura = await prisma.itemFatura.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ItemFaturaUpdateManyArgs>(args: SelectSubset<T, ItemFaturaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemFaturas and returns the data updated in the database.
+     * @param {ItemFaturaUpdateManyAndReturnArgs} args - Arguments to update many ItemFaturas.
+     * @example
+     * // Update many ItemFaturas
+     * const itemFatura = await prisma.itemFatura.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ItemFaturas and only return the `id`
+     * const itemFaturaWithIdOnly = await prisma.itemFatura.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ItemFaturaUpdateManyAndReturnArgs>(args: SelectSubset<T, ItemFaturaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ItemFatura.
+     * @param {ItemFaturaUpsertArgs} args - Arguments to update or create a ItemFatura.
+     * @example
+     * // Update or create a ItemFatura
+     * const itemFatura = await prisma.itemFatura.upsert({
+     *   create: {
+     *     // ... data to create a ItemFatura
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ItemFatura we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ItemFaturaUpsertArgs>(args: SelectSubset<T, ItemFaturaUpsertArgs<ExtArgs>>): Prisma__ItemFaturaClient<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ItemFaturas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaCountArgs} args - Arguments to filter ItemFaturas to count.
+     * @example
+     * // Count the number of ItemFaturas
+     * const count = await prisma.itemFatura.count({
+     *   where: {
+     *     // ... the filter for the ItemFaturas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ItemFaturaCountArgs>(
+      args?: Subset<T, ItemFaturaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ItemFaturaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ItemFatura.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ItemFaturaAggregateArgs>(args: Subset<T, ItemFaturaAggregateArgs>): Prisma.PrismaPromise<GetItemFaturaAggregateType<T>>
+
+    /**
+     * Group by ItemFatura.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemFaturaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ItemFaturaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ItemFaturaGroupByArgs['orderBy'] }
+        : { orderBy?: ItemFaturaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ItemFaturaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItemFaturaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ItemFatura model
+   */
+  readonly fields: ItemFaturaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ItemFatura.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ItemFaturaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    episodio<T extends EpisodioFaturacaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacaoDefaultArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ItemFatura model
+   */
+  interface ItemFaturaFieldRefs {
+    readonly id: FieldRef<"ItemFatura", 'String'>
+    readonly episodioFaturacaoId: FieldRef<"ItemFatura", 'String'>
+    readonly descricao: FieldRef<"ItemFatura", 'String'>
+    readonly categoria: FieldRef<"ItemFatura", 'String'>
+    readonly quantidade: FieldRef<"ItemFatura", 'Int'>
+    readonly precoUnitario: FieldRef<"ItemFatura", 'Float'>
+    readonly total: FieldRef<"ItemFatura", 'Float'>
+    readonly criadoEm: FieldRef<"ItemFatura", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ItemFatura findUnique
+   */
+  export type ItemFaturaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemFatura to fetch.
+     */
+    where: ItemFaturaWhereUniqueInput
+  }
+
+  /**
+   * ItemFatura findUniqueOrThrow
+   */
+  export type ItemFaturaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemFatura to fetch.
+     */
+    where: ItemFaturaWhereUniqueInput
+  }
+
+  /**
+   * ItemFatura findFirst
+   */
+  export type ItemFaturaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemFatura to fetch.
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemFaturas to fetch.
+     */
+    orderBy?: ItemFaturaOrderByWithRelationInput | ItemFaturaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemFaturas.
+     */
+    cursor?: ItemFaturaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemFaturas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemFaturas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemFaturas.
+     */
+    distinct?: ItemFaturaScalarFieldEnum | ItemFaturaScalarFieldEnum[]
+  }
+
+  /**
+   * ItemFatura findFirstOrThrow
+   */
+  export type ItemFaturaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemFatura to fetch.
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemFaturas to fetch.
+     */
+    orderBy?: ItemFaturaOrderByWithRelationInput | ItemFaturaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemFaturas.
+     */
+    cursor?: ItemFaturaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemFaturas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemFaturas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemFaturas.
+     */
+    distinct?: ItemFaturaScalarFieldEnum | ItemFaturaScalarFieldEnum[]
+  }
+
+  /**
+   * ItemFatura findMany
+   */
+  export type ItemFaturaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemFaturas to fetch.
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemFaturas to fetch.
+     */
+    orderBy?: ItemFaturaOrderByWithRelationInput | ItemFaturaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ItemFaturas.
+     */
+    cursor?: ItemFaturaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemFaturas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemFaturas.
+     */
+    skip?: number
+    distinct?: ItemFaturaScalarFieldEnum | ItemFaturaScalarFieldEnum[]
+  }
+
+  /**
+   * ItemFatura create
+   */
+  export type ItemFaturaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ItemFatura.
+     */
+    data: XOR<ItemFaturaCreateInput, ItemFaturaUncheckedCreateInput>
+  }
+
+  /**
+   * ItemFatura createMany
+   */
+  export type ItemFaturaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ItemFaturas.
+     */
+    data: ItemFaturaCreateManyInput | ItemFaturaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ItemFatura createManyAndReturn
+   */
+  export type ItemFaturaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * The data used to create many ItemFaturas.
+     */
+    data: ItemFaturaCreateManyInput | ItemFaturaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemFatura update
+   */
+  export type ItemFaturaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ItemFatura.
+     */
+    data: XOR<ItemFaturaUpdateInput, ItemFaturaUncheckedUpdateInput>
+    /**
+     * Choose, which ItemFatura to update.
+     */
+    where: ItemFaturaWhereUniqueInput
+  }
+
+  /**
+   * ItemFatura updateMany
+   */
+  export type ItemFaturaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ItemFaturas.
+     */
+    data: XOR<ItemFaturaUpdateManyMutationInput, ItemFaturaUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemFaturas to update
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * Limit how many ItemFaturas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemFatura updateManyAndReturn
+   */
+  export type ItemFaturaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * The data used to update ItemFaturas.
+     */
+    data: XOR<ItemFaturaUpdateManyMutationInput, ItemFaturaUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemFaturas to update
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * Limit how many ItemFaturas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemFatura upsert
+   */
+  export type ItemFaturaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ItemFatura to update in case it exists.
+     */
+    where: ItemFaturaWhereUniqueInput
+    /**
+     * In case the ItemFatura found by the `where` argument doesn't exist, create a new ItemFatura with this data.
+     */
+    create: XOR<ItemFaturaCreateInput, ItemFaturaUncheckedCreateInput>
+    /**
+     * In case the ItemFatura was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ItemFaturaUpdateInput, ItemFaturaUncheckedUpdateInput>
+  }
+
+  /**
+   * ItemFatura delete
+   */
+  export type ItemFaturaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+    /**
+     * Filter which ItemFatura to delete.
+     */
+    where: ItemFaturaWhereUniqueInput
+  }
+
+  /**
+   * ItemFatura deleteMany
+   */
+  export type ItemFaturaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemFaturas to delete
+     */
+    where?: ItemFaturaWhereInput
+    /**
+     * Limit how many ItemFaturas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemFatura without action
+   */
+  export type ItemFaturaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemFatura
+     */
+    select?: ItemFaturaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemFatura
+     */
+    omit?: ItemFaturaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemFaturaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Pagamento
+   */
+
+  export type AggregatePagamento = {
+    _count: PagamentoCountAggregateOutputType | null
+    _avg: PagamentoAvgAggregateOutputType | null
+    _sum: PagamentoSumAggregateOutputType | null
+    _min: PagamentoMinAggregateOutputType | null
+    _max: PagamentoMaxAggregateOutputType | null
+  }
+
+  export type PagamentoAvgAggregateOutputType = {
+    valor: number | null
+  }
+
+  export type PagamentoSumAggregateOutputType = {
+    valor: number | null
+  }
+
+  export type PagamentoMinAggregateOutputType = {
+    id: string | null
+    episodioFaturacaoId: string | null
+    valor: number | null
+    metodo: string | null
+    referencia: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type PagamentoMaxAggregateOutputType = {
+    id: string | null
+    episodioFaturacaoId: string | null
+    valor: number | null
+    metodo: string | null
+    referencia: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type PagamentoCountAggregateOutputType = {
+    id: number
+    episodioFaturacaoId: number
+    valor: number
+    metodo: number
+    referencia: number
+    registadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type PagamentoAvgAggregateInputType = {
+    valor?: true
+  }
+
+  export type PagamentoSumAggregateInputType = {
+    valor?: true
+  }
+
+  export type PagamentoMinAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    valor?: true
+    metodo?: true
+    referencia?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type PagamentoMaxAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    valor?: true
+    metodo?: true
+    referencia?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type PagamentoCountAggregateInputType = {
+    id?: true
+    episodioFaturacaoId?: true
+    valor?: true
+    metodo?: true
+    referencia?: true
+    registadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type PagamentoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Pagamento to aggregate.
+     */
+    where?: PagamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Pagamentos to fetch.
+     */
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PagamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Pagamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Pagamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Pagamentos
+    **/
+    _count?: true | PagamentoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PagamentoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PagamentoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PagamentoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PagamentoMaxAggregateInputType
+  }
+
+  export type GetPagamentoAggregateType<T extends PagamentoAggregateArgs> = {
+        [P in keyof T & keyof AggregatePagamento]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePagamento[P]>
+      : GetScalarType<T[P], AggregatePagamento[P]>
+  }
+
+
+
+
+  export type PagamentoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagamentoWhereInput
+    orderBy?: PagamentoOrderByWithAggregationInput | PagamentoOrderByWithAggregationInput[]
+    by: PagamentoScalarFieldEnum[] | PagamentoScalarFieldEnum
+    having?: PagamentoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PagamentoCountAggregateInputType | true
+    _avg?: PagamentoAvgAggregateInputType
+    _sum?: PagamentoSumAggregateInputType
+    _min?: PagamentoMinAggregateInputType
+    _max?: PagamentoMaxAggregateInputType
+  }
+
+  export type PagamentoGroupByOutputType = {
+    id: string
+    episodioFaturacaoId: string
+    valor: number
+    metodo: string
+    referencia: string | null
+    registadoPorId: string
+    criadoEm: Date
+    _count: PagamentoCountAggregateOutputType | null
+    _avg: PagamentoAvgAggregateOutputType | null
+    _sum: PagamentoSumAggregateOutputType | null
+    _min: PagamentoMinAggregateOutputType | null
+    _max: PagamentoMaxAggregateOutputType | null
+  }
+
+  type GetPagamentoGroupByPayload<T extends PagamentoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PagamentoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PagamentoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PagamentoGroupByOutputType[P]>
+            : GetScalarType<T[P], PagamentoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PagamentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    valor?: boolean
+    metodo?: boolean
+    referencia?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagamento"]>
+
+  export type PagamentoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    valor?: boolean
+    metodo?: boolean
+    referencia?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagamento"]>
+
+  export type PagamentoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    valor?: boolean
+    metodo?: boolean
+    referencia?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagamento"]>
+
+  export type PagamentoSelectScalar = {
+    id?: boolean
+    episodioFaturacaoId?: boolean
+    valor?: boolean
+    metodo?: boolean
+    referencia?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type PagamentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "episodioFaturacaoId" | "valor" | "metodo" | "referencia" | "registadoPorId" | "criadoEm", ExtArgs["result"]["pagamento"]>
+  export type PagamentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type PagamentoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type PagamentoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    episodio?: boolean | EpisodioFaturacaoDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $PagamentoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Pagamento"
+    objects: {
+      episodio: Prisma.$EpisodioFaturacaoPayload<ExtArgs>
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      episodioFaturacaoId: string
+      valor: number
+      metodo: string
+      referencia: string | null
+      registadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["pagamento"]>
+    composites: {}
+  }
+
+  type PagamentoGetPayload<S extends boolean | null | undefined | PagamentoDefaultArgs> = $Result.GetResult<Prisma.$PagamentoPayload, S>
+
+  type PagamentoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PagamentoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PagamentoCountAggregateInputType | true
+    }
+
+  export interface PagamentoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Pagamento'], meta: { name: 'Pagamento' } }
+    /**
+     * Find zero or one Pagamento that matches the filter.
+     * @param {PagamentoFindUniqueArgs} args - Arguments to find a Pagamento
+     * @example
+     * // Get one Pagamento
+     * const pagamento = await prisma.pagamento.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PagamentoFindUniqueArgs>(args: SelectSubset<T, PagamentoFindUniqueArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Pagamento that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PagamentoFindUniqueOrThrowArgs} args - Arguments to find a Pagamento
+     * @example
+     * // Get one Pagamento
+     * const pagamento = await prisma.pagamento.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PagamentoFindUniqueOrThrowArgs>(args: SelectSubset<T, PagamentoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Pagamento that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoFindFirstArgs} args - Arguments to find a Pagamento
+     * @example
+     * // Get one Pagamento
+     * const pagamento = await prisma.pagamento.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PagamentoFindFirstArgs>(args?: SelectSubset<T, PagamentoFindFirstArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Pagamento that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoFindFirstOrThrowArgs} args - Arguments to find a Pagamento
+     * @example
+     * // Get one Pagamento
+     * const pagamento = await prisma.pagamento.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PagamentoFindFirstOrThrowArgs>(args?: SelectSubset<T, PagamentoFindFirstOrThrowArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Pagamentos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Pagamentos
+     * const pagamentos = await prisma.pagamento.findMany()
+     * 
+     * // Get first 10 Pagamentos
+     * const pagamentos = await prisma.pagamento.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pagamentoWithIdOnly = await prisma.pagamento.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PagamentoFindManyArgs>(args?: SelectSubset<T, PagamentoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Pagamento.
+     * @param {PagamentoCreateArgs} args - Arguments to create a Pagamento.
+     * @example
+     * // Create one Pagamento
+     * const Pagamento = await prisma.pagamento.create({
+     *   data: {
+     *     // ... data to create a Pagamento
+     *   }
+     * })
+     * 
+     */
+    create<T extends PagamentoCreateArgs>(args: SelectSubset<T, PagamentoCreateArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Pagamentos.
+     * @param {PagamentoCreateManyArgs} args - Arguments to create many Pagamentos.
+     * @example
+     * // Create many Pagamentos
+     * const pagamento = await prisma.pagamento.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PagamentoCreateManyArgs>(args?: SelectSubset<T, PagamentoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Pagamentos and returns the data saved in the database.
+     * @param {PagamentoCreateManyAndReturnArgs} args - Arguments to create many Pagamentos.
+     * @example
+     * // Create many Pagamentos
+     * const pagamento = await prisma.pagamento.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Pagamentos and only return the `id`
+     * const pagamentoWithIdOnly = await prisma.pagamento.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PagamentoCreateManyAndReturnArgs>(args?: SelectSubset<T, PagamentoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Pagamento.
+     * @param {PagamentoDeleteArgs} args - Arguments to delete one Pagamento.
+     * @example
+     * // Delete one Pagamento
+     * const Pagamento = await prisma.pagamento.delete({
+     *   where: {
+     *     // ... filter to delete one Pagamento
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PagamentoDeleteArgs>(args: SelectSubset<T, PagamentoDeleteArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Pagamento.
+     * @param {PagamentoUpdateArgs} args - Arguments to update one Pagamento.
+     * @example
+     * // Update one Pagamento
+     * const pagamento = await prisma.pagamento.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PagamentoUpdateArgs>(args: SelectSubset<T, PagamentoUpdateArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Pagamentos.
+     * @param {PagamentoDeleteManyArgs} args - Arguments to filter Pagamentos to delete.
+     * @example
+     * // Delete a few Pagamentos
+     * const { count } = await prisma.pagamento.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PagamentoDeleteManyArgs>(args?: SelectSubset<T, PagamentoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Pagamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Pagamentos
+     * const pagamento = await prisma.pagamento.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PagamentoUpdateManyArgs>(args: SelectSubset<T, PagamentoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Pagamentos and returns the data updated in the database.
+     * @param {PagamentoUpdateManyAndReturnArgs} args - Arguments to update many Pagamentos.
+     * @example
+     * // Update many Pagamentos
+     * const pagamento = await prisma.pagamento.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Pagamentos and only return the `id`
+     * const pagamentoWithIdOnly = await prisma.pagamento.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PagamentoUpdateManyAndReturnArgs>(args: SelectSubset<T, PagamentoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Pagamento.
+     * @param {PagamentoUpsertArgs} args - Arguments to update or create a Pagamento.
+     * @example
+     * // Update or create a Pagamento
+     * const pagamento = await prisma.pagamento.upsert({
+     *   create: {
+     *     // ... data to create a Pagamento
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Pagamento we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PagamentoUpsertArgs>(args: SelectSubset<T, PagamentoUpsertArgs<ExtArgs>>): Prisma__PagamentoClient<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Pagamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoCountArgs} args - Arguments to filter Pagamentos to count.
+     * @example
+     * // Count the number of Pagamentos
+     * const count = await prisma.pagamento.count({
+     *   where: {
+     *     // ... the filter for the Pagamentos we want to count
+     *   }
+     * })
+    **/
+    count<T extends PagamentoCountArgs>(
+      args?: Subset<T, PagamentoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PagamentoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Pagamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PagamentoAggregateArgs>(args: Subset<T, PagamentoAggregateArgs>): Prisma.PrismaPromise<GetPagamentoAggregateType<T>>
+
+    /**
+     * Group by Pagamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagamentoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PagamentoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PagamentoGroupByArgs['orderBy'] }
+        : { orderBy?: PagamentoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PagamentoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPagamentoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Pagamento model
+   */
+  readonly fields: PagamentoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Pagamento.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PagamentoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    episodio<T extends EpisodioFaturacaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacaoDefaultArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Pagamento model
+   */
+  interface PagamentoFieldRefs {
+    readonly id: FieldRef<"Pagamento", 'String'>
+    readonly episodioFaturacaoId: FieldRef<"Pagamento", 'String'>
+    readonly valor: FieldRef<"Pagamento", 'Float'>
+    readonly metodo: FieldRef<"Pagamento", 'String'>
+    readonly referencia: FieldRef<"Pagamento", 'String'>
+    readonly registadoPorId: FieldRef<"Pagamento", 'String'>
+    readonly criadoEm: FieldRef<"Pagamento", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Pagamento findUnique
+   */
+  export type PagamentoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Pagamento to fetch.
+     */
+    where: PagamentoWhereUniqueInput
+  }
+
+  /**
+   * Pagamento findUniqueOrThrow
+   */
+  export type PagamentoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Pagamento to fetch.
+     */
+    where: PagamentoWhereUniqueInput
+  }
+
+  /**
+   * Pagamento findFirst
+   */
+  export type PagamentoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Pagamento to fetch.
+     */
+    where?: PagamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Pagamentos to fetch.
+     */
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Pagamentos.
+     */
+    cursor?: PagamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Pagamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Pagamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Pagamentos.
+     */
+    distinct?: PagamentoScalarFieldEnum | PagamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Pagamento findFirstOrThrow
+   */
+  export type PagamentoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Pagamento to fetch.
+     */
+    where?: PagamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Pagamentos to fetch.
+     */
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Pagamentos.
+     */
+    cursor?: PagamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Pagamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Pagamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Pagamentos.
+     */
+    distinct?: PagamentoScalarFieldEnum | PagamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Pagamento findMany
+   */
+  export type PagamentoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Pagamentos to fetch.
+     */
+    where?: PagamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Pagamentos to fetch.
+     */
+    orderBy?: PagamentoOrderByWithRelationInput | PagamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Pagamentos.
+     */
+    cursor?: PagamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Pagamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Pagamentos.
+     */
+    skip?: number
+    distinct?: PagamentoScalarFieldEnum | PagamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Pagamento create
+   */
+  export type PagamentoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Pagamento.
+     */
+    data: XOR<PagamentoCreateInput, PagamentoUncheckedCreateInput>
+  }
+
+  /**
+   * Pagamento createMany
+   */
+  export type PagamentoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Pagamentos.
+     */
+    data: PagamentoCreateManyInput | PagamentoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Pagamento createManyAndReturn
+   */
+  export type PagamentoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Pagamentos.
+     */
+    data: PagamentoCreateManyInput | PagamentoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Pagamento update
+   */
+  export type PagamentoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Pagamento.
+     */
+    data: XOR<PagamentoUpdateInput, PagamentoUncheckedUpdateInput>
+    /**
+     * Choose, which Pagamento to update.
+     */
+    where: PagamentoWhereUniqueInput
+  }
+
+  /**
+   * Pagamento updateMany
+   */
+  export type PagamentoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Pagamentos.
+     */
+    data: XOR<PagamentoUpdateManyMutationInput, PagamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which Pagamentos to update
+     */
+    where?: PagamentoWhereInput
+    /**
+     * Limit how many Pagamentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Pagamento updateManyAndReturn
+   */
+  export type PagamentoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * The data used to update Pagamentos.
+     */
+    data: XOR<PagamentoUpdateManyMutationInput, PagamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which Pagamentos to update
+     */
+    where?: PagamentoWhereInput
+    /**
+     * Limit how many Pagamentos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Pagamento upsert
+   */
+  export type PagamentoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Pagamento to update in case it exists.
+     */
+    where: PagamentoWhereUniqueInput
+    /**
+     * In case the Pagamento found by the `where` argument doesn't exist, create a new Pagamento with this data.
+     */
+    create: XOR<PagamentoCreateInput, PagamentoUncheckedCreateInput>
+    /**
+     * In case the Pagamento was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PagamentoUpdateInput, PagamentoUncheckedUpdateInput>
+  }
+
+  /**
+   * Pagamento delete
+   */
+  export type PagamentoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+    /**
+     * Filter which Pagamento to delete.
+     */
+    where: PagamentoWhereUniqueInput
+  }
+
+  /**
+   * Pagamento deleteMany
+   */
+  export type PagamentoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Pagamentos to delete
+     */
+    where?: PagamentoWhereInput
+    /**
+     * Limit how many Pagamentos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Pagamento without action
+   */
+  export type PagamentoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pagamento
+     */
+    select?: PagamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pagamento
+     */
+    omit?: PagamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagamentoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Ticket
+   */
+
+  export type AggregateTicket = {
+    _count: TicketCountAggregateOutputType | null
+    _avg: TicketAvgAggregateOutputType | null
+    _sum: TicketSumAggregateOutputType | null
+    _min: TicketMinAggregateOutputType | null
+    _max: TicketMaxAggregateOutputType | null
+  }
+
+  export type TicketAvgAggregateOutputType = {
+    sequencia: number | null
+  }
+
+  export type TicketSumAggregateOutputType = {
+    sequencia: number | null
+  }
+
+  export type TicketMinAggregateOutputType = {
+    id: string | null
+    numero: string | null
+    letra: string | null
+    sequencia: number | null
+    tipo: string | null
+    estado: string | null
+    prioridade: string | null
+    balcao: string | null
+    nomeUtente: string | null
+    telefone: string | null
+    criadoEm: Date | null
+    chamadoEm: Date | null
+    concluidoEm: Date | null
+  }
+
+  export type TicketMaxAggregateOutputType = {
+    id: string | null
+    numero: string | null
+    letra: string | null
+    sequencia: number | null
+    tipo: string | null
+    estado: string | null
+    prioridade: string | null
+    balcao: string | null
+    nomeUtente: string | null
+    telefone: string | null
+    criadoEm: Date | null
+    chamadoEm: Date | null
+    concluidoEm: Date | null
+  }
+
+  export type TicketCountAggregateOutputType = {
+    id: number
+    numero: number
+    letra: number
+    sequencia: number
+    tipo: number
+    estado: number
+    prioridade: number
+    balcao: number
+    nomeUtente: number
+    telefone: number
+    criadoEm: number
+    chamadoEm: number
+    concluidoEm: number
+    _all: number
+  }
+
+
+  export type TicketAvgAggregateInputType = {
+    sequencia?: true
+  }
+
+  export type TicketSumAggregateInputType = {
+    sequencia?: true
+  }
+
+  export type TicketMinAggregateInputType = {
+    id?: true
+    numero?: true
+    letra?: true
+    sequencia?: true
+    tipo?: true
+    estado?: true
+    prioridade?: true
+    balcao?: true
+    nomeUtente?: true
+    telefone?: true
+    criadoEm?: true
+    chamadoEm?: true
+    concluidoEm?: true
+  }
+
+  export type TicketMaxAggregateInputType = {
+    id?: true
+    numero?: true
+    letra?: true
+    sequencia?: true
+    tipo?: true
+    estado?: true
+    prioridade?: true
+    balcao?: true
+    nomeUtente?: true
+    telefone?: true
+    criadoEm?: true
+    chamadoEm?: true
+    concluidoEm?: true
+  }
+
+  export type TicketCountAggregateInputType = {
+    id?: true
+    numero?: true
+    letra?: true
+    sequencia?: true
+    tipo?: true
+    estado?: true
+    prioridade?: true
+    balcao?: true
+    nomeUtente?: true
+    telefone?: true
+    criadoEm?: true
+    chamadoEm?: true
+    concluidoEm?: true
+    _all?: true
+  }
+
+  export type TicketAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Ticket to aggregate.
+     */
+    where?: TicketWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tickets to fetch.
+     */
+    orderBy?: TicketOrderByWithRelationInput | TicketOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TicketWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tickets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tickets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tickets
+    **/
+    _count?: true | TicketCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TicketAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TicketSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TicketMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TicketMaxAggregateInputType
+  }
+
+  export type GetTicketAggregateType<T extends TicketAggregateArgs> = {
+        [P in keyof T & keyof AggregateTicket]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTicket[P]>
+      : GetScalarType<T[P], AggregateTicket[P]>
+  }
+
+
+
+
+  export type TicketGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TicketWhereInput
+    orderBy?: TicketOrderByWithAggregationInput | TicketOrderByWithAggregationInput[]
+    by: TicketScalarFieldEnum[] | TicketScalarFieldEnum
+    having?: TicketScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TicketCountAggregateInputType | true
+    _avg?: TicketAvgAggregateInputType
+    _sum?: TicketSumAggregateInputType
+    _min?: TicketMinAggregateInputType
+    _max?: TicketMaxAggregateInputType
+  }
+
+  export type TicketGroupByOutputType = {
+    id: string
+    numero: string
+    letra: string
+    sequencia: number
+    tipo: string
+    estado: string
+    prioridade: string
+    balcao: string | null
+    nomeUtente: string | null
+    telefone: string | null
+    criadoEm: Date
+    chamadoEm: Date | null
+    concluidoEm: Date | null
+    _count: TicketCountAggregateOutputType | null
+    _avg: TicketAvgAggregateOutputType | null
+    _sum: TicketSumAggregateOutputType | null
+    _min: TicketMinAggregateOutputType | null
+    _max: TicketMaxAggregateOutputType | null
+  }
+
+  type GetTicketGroupByPayload<T extends TicketGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TicketGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TicketGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TicketGroupByOutputType[P]>
+            : GetScalarType<T[P], TicketGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TicketSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    numero?: boolean
+    letra?: boolean
+    sequencia?: boolean
+    tipo?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    balcao?: boolean
+    nomeUtente?: boolean
+    telefone?: boolean
+    criadoEm?: boolean
+    chamadoEm?: boolean
+    concluidoEm?: boolean
+  }, ExtArgs["result"]["ticket"]>
+
+  export type TicketSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    numero?: boolean
+    letra?: boolean
+    sequencia?: boolean
+    tipo?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    balcao?: boolean
+    nomeUtente?: boolean
+    telefone?: boolean
+    criadoEm?: boolean
+    chamadoEm?: boolean
+    concluidoEm?: boolean
+  }, ExtArgs["result"]["ticket"]>
+
+  export type TicketSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    numero?: boolean
+    letra?: boolean
+    sequencia?: boolean
+    tipo?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    balcao?: boolean
+    nomeUtente?: boolean
+    telefone?: boolean
+    criadoEm?: boolean
+    chamadoEm?: boolean
+    concluidoEm?: boolean
+  }, ExtArgs["result"]["ticket"]>
+
+  export type TicketSelectScalar = {
+    id?: boolean
+    numero?: boolean
+    letra?: boolean
+    sequencia?: boolean
+    tipo?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    balcao?: boolean
+    nomeUtente?: boolean
+    telefone?: boolean
+    criadoEm?: boolean
+    chamadoEm?: boolean
+    concluidoEm?: boolean
+  }
+
+  export type TicketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "numero" | "letra" | "sequencia" | "tipo" | "estado" | "prioridade" | "balcao" | "nomeUtente" | "telefone" | "criadoEm" | "chamadoEm" | "concluidoEm", ExtArgs["result"]["ticket"]>
+
+  export type $TicketPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Ticket"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      numero: string
+      letra: string
+      sequencia: number
+      tipo: string
+      estado: string
+      prioridade: string
+      balcao: string | null
+      nomeUtente: string | null
+      telefone: string | null
+      criadoEm: Date
+      chamadoEm: Date | null
+      concluidoEm: Date | null
+    }, ExtArgs["result"]["ticket"]>
+    composites: {}
+  }
+
+  type TicketGetPayload<S extends boolean | null | undefined | TicketDefaultArgs> = $Result.GetResult<Prisma.$TicketPayload, S>
+
+  type TicketCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TicketFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TicketCountAggregateInputType | true
+    }
+
+  export interface TicketDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Ticket'], meta: { name: 'Ticket' } }
+    /**
+     * Find zero or one Ticket that matches the filter.
+     * @param {TicketFindUniqueArgs} args - Arguments to find a Ticket
+     * @example
+     * // Get one Ticket
+     * const ticket = await prisma.ticket.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TicketFindUniqueArgs>(args: SelectSubset<T, TicketFindUniqueArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Ticket that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TicketFindUniqueOrThrowArgs} args - Arguments to find a Ticket
+     * @example
+     * // Get one Ticket
+     * const ticket = await prisma.ticket.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TicketFindUniqueOrThrowArgs>(args: SelectSubset<T, TicketFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Ticket that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketFindFirstArgs} args - Arguments to find a Ticket
+     * @example
+     * // Get one Ticket
+     * const ticket = await prisma.ticket.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TicketFindFirstArgs>(args?: SelectSubset<T, TicketFindFirstArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Ticket that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketFindFirstOrThrowArgs} args - Arguments to find a Ticket
+     * @example
+     * // Get one Ticket
+     * const ticket = await prisma.ticket.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TicketFindFirstOrThrowArgs>(args?: SelectSubset<T, TicketFindFirstOrThrowArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tickets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tickets
+     * const tickets = await prisma.ticket.findMany()
+     * 
+     * // Get first 10 Tickets
+     * const tickets = await prisma.ticket.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const ticketWithIdOnly = await prisma.ticket.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TicketFindManyArgs>(args?: SelectSubset<T, TicketFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Ticket.
+     * @param {TicketCreateArgs} args - Arguments to create a Ticket.
+     * @example
+     * // Create one Ticket
+     * const Ticket = await prisma.ticket.create({
+     *   data: {
+     *     // ... data to create a Ticket
+     *   }
+     * })
+     * 
+     */
+    create<T extends TicketCreateArgs>(args: SelectSubset<T, TicketCreateArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tickets.
+     * @param {TicketCreateManyArgs} args - Arguments to create many Tickets.
+     * @example
+     * // Create many Tickets
+     * const ticket = await prisma.ticket.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TicketCreateManyArgs>(args?: SelectSubset<T, TicketCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tickets and returns the data saved in the database.
+     * @param {TicketCreateManyAndReturnArgs} args - Arguments to create many Tickets.
+     * @example
+     * // Create many Tickets
+     * const ticket = await prisma.ticket.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tickets and only return the `id`
+     * const ticketWithIdOnly = await prisma.ticket.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TicketCreateManyAndReturnArgs>(args?: SelectSubset<T, TicketCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Ticket.
+     * @param {TicketDeleteArgs} args - Arguments to delete one Ticket.
+     * @example
+     * // Delete one Ticket
+     * const Ticket = await prisma.ticket.delete({
+     *   where: {
+     *     // ... filter to delete one Ticket
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TicketDeleteArgs>(args: SelectSubset<T, TicketDeleteArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Ticket.
+     * @param {TicketUpdateArgs} args - Arguments to update one Ticket.
+     * @example
+     * // Update one Ticket
+     * const ticket = await prisma.ticket.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TicketUpdateArgs>(args: SelectSubset<T, TicketUpdateArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tickets.
+     * @param {TicketDeleteManyArgs} args - Arguments to filter Tickets to delete.
+     * @example
+     * // Delete a few Tickets
+     * const { count } = await prisma.ticket.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TicketDeleteManyArgs>(args?: SelectSubset<T, TicketDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tickets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tickets
+     * const ticket = await prisma.ticket.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TicketUpdateManyArgs>(args: SelectSubset<T, TicketUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tickets and returns the data updated in the database.
+     * @param {TicketUpdateManyAndReturnArgs} args - Arguments to update many Tickets.
+     * @example
+     * // Update many Tickets
+     * const ticket = await prisma.ticket.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tickets and only return the `id`
+     * const ticketWithIdOnly = await prisma.ticket.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TicketUpdateManyAndReturnArgs>(args: SelectSubset<T, TicketUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Ticket.
+     * @param {TicketUpsertArgs} args - Arguments to update or create a Ticket.
+     * @example
+     * // Update or create a Ticket
+     * const ticket = await prisma.ticket.upsert({
+     *   create: {
+     *     // ... data to create a Ticket
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Ticket we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TicketUpsertArgs>(args: SelectSubset<T, TicketUpsertArgs<ExtArgs>>): Prisma__TicketClient<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tickets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketCountArgs} args - Arguments to filter Tickets to count.
+     * @example
+     * // Count the number of Tickets
+     * const count = await prisma.ticket.count({
+     *   where: {
+     *     // ... the filter for the Tickets we want to count
+     *   }
+     * })
+    **/
+    count<T extends TicketCountArgs>(
+      args?: Subset<T, TicketCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TicketCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Ticket.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TicketAggregateArgs>(args: Subset<T, TicketAggregateArgs>): Prisma.PrismaPromise<GetTicketAggregateType<T>>
+
+    /**
+     * Group by Ticket.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TicketGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TicketGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TicketGroupByArgs['orderBy'] }
+        : { orderBy?: TicketGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TicketGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTicketGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Ticket model
+   */
+  readonly fields: TicketFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Ticket.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TicketClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Ticket model
+   */
+  interface TicketFieldRefs {
+    readonly id: FieldRef<"Ticket", 'String'>
+    readonly numero: FieldRef<"Ticket", 'String'>
+    readonly letra: FieldRef<"Ticket", 'String'>
+    readonly sequencia: FieldRef<"Ticket", 'Int'>
+    readonly tipo: FieldRef<"Ticket", 'String'>
+    readonly estado: FieldRef<"Ticket", 'String'>
+    readonly prioridade: FieldRef<"Ticket", 'String'>
+    readonly balcao: FieldRef<"Ticket", 'String'>
+    readonly nomeUtente: FieldRef<"Ticket", 'String'>
+    readonly telefone: FieldRef<"Ticket", 'String'>
+    readonly criadoEm: FieldRef<"Ticket", 'DateTime'>
+    readonly chamadoEm: FieldRef<"Ticket", 'DateTime'>
+    readonly concluidoEm: FieldRef<"Ticket", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Ticket findUnique
+   */
+  export type TicketFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter, which Ticket to fetch.
+     */
+    where: TicketWhereUniqueInput
+  }
+
+  /**
+   * Ticket findUniqueOrThrow
+   */
+  export type TicketFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter, which Ticket to fetch.
+     */
+    where: TicketWhereUniqueInput
+  }
+
+  /**
+   * Ticket findFirst
+   */
+  export type TicketFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter, which Ticket to fetch.
+     */
+    where?: TicketWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tickets to fetch.
+     */
+    orderBy?: TicketOrderByWithRelationInput | TicketOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tickets.
+     */
+    cursor?: TicketWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tickets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tickets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tickets.
+     */
+    distinct?: TicketScalarFieldEnum | TicketScalarFieldEnum[]
+  }
+
+  /**
+   * Ticket findFirstOrThrow
+   */
+  export type TicketFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter, which Ticket to fetch.
+     */
+    where?: TicketWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tickets to fetch.
+     */
+    orderBy?: TicketOrderByWithRelationInput | TicketOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tickets.
+     */
+    cursor?: TicketWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tickets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tickets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tickets.
+     */
+    distinct?: TicketScalarFieldEnum | TicketScalarFieldEnum[]
+  }
+
+  /**
+   * Ticket findMany
+   */
+  export type TicketFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter, which Tickets to fetch.
+     */
+    where?: TicketWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tickets to fetch.
+     */
+    orderBy?: TicketOrderByWithRelationInput | TicketOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tickets.
+     */
+    cursor?: TicketWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tickets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tickets.
+     */
+    skip?: number
+    distinct?: TicketScalarFieldEnum | TicketScalarFieldEnum[]
+  }
+
+  /**
+   * Ticket create
+   */
+  export type TicketCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Ticket.
+     */
+    data: XOR<TicketCreateInput, TicketUncheckedCreateInput>
+  }
+
+  /**
+   * Ticket createMany
+   */
+  export type TicketCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tickets.
+     */
+    data: TicketCreateManyInput | TicketCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Ticket createManyAndReturn
+   */
+  export type TicketCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tickets.
+     */
+    data: TicketCreateManyInput | TicketCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Ticket update
+   */
+  export type TicketUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Ticket.
+     */
+    data: XOR<TicketUpdateInput, TicketUncheckedUpdateInput>
+    /**
+     * Choose, which Ticket to update.
+     */
+    where: TicketWhereUniqueInput
+  }
+
+  /**
+   * Ticket updateMany
+   */
+  export type TicketUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tickets.
+     */
+    data: XOR<TicketUpdateManyMutationInput, TicketUncheckedUpdateManyInput>
+    /**
+     * Filter which Tickets to update
+     */
+    where?: TicketWhereInput
+    /**
+     * Limit how many Tickets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Ticket updateManyAndReturn
+   */
+  export type TicketUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * The data used to update Tickets.
+     */
+    data: XOR<TicketUpdateManyMutationInput, TicketUncheckedUpdateManyInput>
+    /**
+     * Filter which Tickets to update
+     */
+    where?: TicketWhereInput
+    /**
+     * Limit how many Tickets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Ticket upsert
+   */
+  export type TicketUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Ticket to update in case it exists.
+     */
+    where: TicketWhereUniqueInput
+    /**
+     * In case the Ticket found by the `where` argument doesn't exist, create a new Ticket with this data.
+     */
+    create: XOR<TicketCreateInput, TicketUncheckedCreateInput>
+    /**
+     * In case the Ticket was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TicketUpdateInput, TicketUncheckedUpdateInput>
+  }
+
+  /**
+   * Ticket delete
+   */
+  export type TicketDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+    /**
+     * Filter which Ticket to delete.
+     */
+    where: TicketWhereUniqueInput
+  }
+
+  /**
+   * Ticket deleteMany
+   */
+  export type TicketDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tickets to delete
+     */
+    where?: TicketWhereInput
+    /**
+     * Limit how many Tickets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Ticket without action
+   */
+  export type TicketDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ticket
+     */
+    select?: TicketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Ticket
+     */
+    omit?: TicketOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model RefreshToken
    */
 
@@ -62513,10 +70310,26 @@ export namespace Prisma {
     notas: 'notas',
     diagnostico: 'diagnostico',
     proximaConsulta: 'proximaConsulta',
+    codigo: 'codigo',
+    checkinEm: 'checkinEm',
     criadoEm: 'criadoEm'
   };
 
   export type ConsultaScalarFieldEnum = (typeof ConsultaScalarFieldEnum)[keyof typeof ConsultaScalarFieldEnum]
+
+
+  export const AgendaMedicoScalarFieldEnum: {
+    id: 'id',
+    medicoId: 'medicoId',
+    diaSemana: 'diaSemana',
+    horaInicio: 'horaInicio',
+    horaFim: 'horaFim',
+    duracaoSlot: 'duracaoSlot',
+    ativo: 'ativo',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AgendaMedicoScalarFieldEnum = (typeof AgendaMedicoScalarFieldEnum)[keyof typeof AgendaMedicoScalarFieldEnum]
 
 
   export const CheckinSalaEsperaScalarFieldEnum: {
@@ -62706,6 +70519,88 @@ export namespace Prisma {
   };
 
   export type PedidoTIScalarFieldEnum = (typeof PedidoTIScalarFieldEnum)[keyof typeof PedidoTIScalarFieldEnum]
+
+
+  export const FicheiroPessoalDoenteScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    nif: 'nif',
+    numeroSNS: 'numeroSNS',
+    morada: 'morada',
+    codigoPostal: 'codigoPostal',
+    localidade: 'localidade',
+    telefone: 'telefone',
+    email: 'email',
+    entidadeSeguradora: 'entidadeSeguradora',
+    numeroApolice: 'numeroApolice',
+    tipoCobertura: 'tipoCobertura',
+    atualizadoEm: 'atualizadoEm',
+    atualizadoPorId: 'atualizadoPorId'
+  };
+
+  export type FicheiroPessoalDoenteScalarFieldEnum = (typeof FicheiroPessoalDoenteScalarFieldEnum)[keyof typeof FicheiroPessoalDoenteScalarFieldEnum]
+
+
+  export const EpisodioFaturacaoScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    estado: 'estado',
+    dataEmissao: 'dataEmissao',
+    totalBase: 'totalBase',
+    totalCobrado: 'totalCobrado',
+    tipoCobertura: 'tipoCobertura',
+    notas: 'notas',
+    criadoPorId: 'criadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type EpisodioFaturacaoScalarFieldEnum = (typeof EpisodioFaturacaoScalarFieldEnum)[keyof typeof EpisodioFaturacaoScalarFieldEnum]
+
+
+  export const ItemFaturaScalarFieldEnum: {
+    id: 'id',
+    episodioFaturacaoId: 'episodioFaturacaoId',
+    descricao: 'descricao',
+    categoria: 'categoria',
+    quantidade: 'quantidade',
+    precoUnitario: 'precoUnitario',
+    total: 'total',
+    criadoEm: 'criadoEm'
+  };
+
+  export type ItemFaturaScalarFieldEnum = (typeof ItemFaturaScalarFieldEnum)[keyof typeof ItemFaturaScalarFieldEnum]
+
+
+  export const PagamentoScalarFieldEnum: {
+    id: 'id',
+    episodioFaturacaoId: 'episodioFaturacaoId',
+    valor: 'valor',
+    metodo: 'metodo',
+    referencia: 'referencia',
+    registadoPorId: 'registadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type PagamentoScalarFieldEnum = (typeof PagamentoScalarFieldEnum)[keyof typeof PagamentoScalarFieldEnum]
+
+
+  export const TicketScalarFieldEnum: {
+    id: 'id',
+    numero: 'numero',
+    letra: 'letra',
+    sequencia: 'sequencia',
+    tipo: 'tipo',
+    estado: 'estado',
+    prioridade: 'prioridade',
+    balcao: 'balcao',
+    nomeUtente: 'nomeUtente',
+    telefone: 'telefone',
+    criadoEm: 'criadoEm',
+    chamadoEm: 'chamadoEm',
+    concluidoEm: 'concluidoEm'
+  };
+
+  export type TicketScalarFieldEnum = (typeof TicketScalarFieldEnum)[keyof typeof TicketScalarFieldEnum]
 
 
   export const RefreshTokenScalarFieldEnum: {
@@ -63240,6 +71135,20 @@ export namespace Prisma {
    */
   export type ListEnumEstadoPedidoTIFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPedidoTI[]'>
     
+
+
+  /**
+   * Reference to a field of type 'EstadoFatura'
+   */
+  export type EnumEstadoFaturaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoFatura'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoFatura[]'
+   */
+  export type ListEnumEstadoFaturaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoFatura[]'>
+    
   /**
    * Deep Input Types
    */
@@ -63437,6 +71346,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIListRelationFilter
     pedidosTICriados?: PedidoTIListRelationFilter
     pedidosTIAtribuidos?: PedidoTIListRelationFilter
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteListRelationFilter
+    episodiosFaturacaoCriados?: EpisodioFaturacaoListRelationFilter
+    pagamentosRegistados?: PagamentoListRelationFilter
+    agendas?: AgendaMedicoListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -63504,6 +71417,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIOrderByRelationAggregateInput
     pedidosTICriados?: PedidoTIOrderByRelationAggregateInput
     pedidosTIAtribuidos?: PedidoTIOrderByRelationAggregateInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteOrderByRelationAggregateInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoOrderByRelationAggregateInput
+    pagamentosRegistados?: PagamentoOrderByRelationAggregateInput
+    agendas?: AgendaMedicoOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -63574,6 +71491,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIListRelationFilter
     pedidosTICriados?: PedidoTIListRelationFilter
     pedidosTIAtribuidos?: PedidoTIListRelationFilter
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteListRelationFilter
+    episodiosFaturacaoCriados?: EpisodioFaturacaoListRelationFilter
+    pagamentosRegistados?: PagamentoListRelationFilter
+    agendas?: AgendaMedicoListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -63708,6 +71629,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoListRelationFilter
     interconsultas?: InterconsultaListRelationFilter
     dispositivosInvasivos?: DispositivoInvasivoListRelationFilter
+    ficheiroPessoal?: XOR<FicheiroPessoalDoenteNullableScalarRelationFilter, FicheiroPessoalDoenteWhereInput> | null
+    episodiosFaturacao?: EpisodioFaturacaoListRelationFilter
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -63751,6 +71674,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoOrderByRelationAggregateInput
     interconsultas?: InterconsultaOrderByRelationAggregateInput
     dispositivosInvasivos?: DispositivoInvasivoOrderByRelationAggregateInput
+    ficheiroPessoal?: FicheiroPessoalDoenteOrderByWithRelationInput
+    episodiosFaturacao?: EpisodioFaturacaoOrderByRelationAggregateInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -63797,6 +71722,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoListRelationFilter
     interconsultas?: InterconsultaListRelationFilter
     dispositivosInvasivos?: DispositivoInvasivoListRelationFilter
+    ficheiroPessoal?: XOR<FicheiroPessoalDoenteNullableScalarRelationFilter, FicheiroPessoalDoenteWhereInput> | null
+    episodiosFaturacao?: EpisodioFaturacaoListRelationFilter
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -65925,6 +73852,8 @@ export namespace Prisma {
     notas?: StringNullableFilter<"Consulta"> | string | null
     diagnostico?: StringNullableFilter<"Consulta"> | string | null
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    codigo?: StringNullableFilter<"Consulta"> | string | null
+    checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
@@ -65942,6 +73871,8 @@ export namespace Prisma {
     notas?: SortOrderInput | SortOrder
     diagnostico?: SortOrderInput | SortOrder
     proximaConsulta?: SortOrderInput | SortOrder
+    codigo?: SortOrderInput | SortOrder
+    checkinEm?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
     medico?: UtilizadorOrderByWithRelationInput
@@ -65949,6 +73880,7 @@ export namespace Prisma {
 
   export type ConsultaWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    codigo?: string
     AND?: ConsultaWhereInput | ConsultaWhereInput[]
     OR?: ConsultaWhereInput[]
     NOT?: ConsultaWhereInput | ConsultaWhereInput[]
@@ -65962,10 +73894,11 @@ export namespace Prisma {
     notas?: StringNullableFilter<"Consulta"> | string | null
     diagnostico?: StringNullableFilter<"Consulta"> | string | null
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
-  }, "id">
+  }, "id" | "codigo">
 
   export type ConsultaOrderByWithAggregationInput = {
     id?: SortOrder
@@ -65979,6 +73912,8 @@ export namespace Prisma {
     notas?: SortOrderInput | SortOrder
     diagnostico?: SortOrderInput | SortOrder
     proximaConsulta?: SortOrderInput | SortOrder
+    codigo?: SortOrderInput | SortOrder
+    checkinEm?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: ConsultaCountOrderByAggregateInput
     _avg?: ConsultaAvgOrderByAggregateInput
@@ -66002,7 +73937,82 @@ export namespace Prisma {
     notas?: StringNullableWithAggregatesFilter<"Consulta"> | string | null
     diagnostico?: StringNullableWithAggregatesFilter<"Consulta"> | string | null
     proximaConsulta?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
+    codigo?: StringNullableWithAggregatesFilter<"Consulta"> | string | null
+    checkinEm?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"Consulta"> | Date | string
+  }
+
+  export type AgendaMedicoWhereInput = {
+    AND?: AgendaMedicoWhereInput | AgendaMedicoWhereInput[]
+    OR?: AgendaMedicoWhereInput[]
+    NOT?: AgendaMedicoWhereInput | AgendaMedicoWhereInput[]
+    id?: StringFilter<"AgendaMedico"> | string
+    medicoId?: StringFilter<"AgendaMedico"> | string
+    diaSemana?: IntFilter<"AgendaMedico"> | number
+    horaInicio?: StringFilter<"AgendaMedico"> | string
+    horaFim?: StringFilter<"AgendaMedico"> | string
+    duracaoSlot?: IntFilter<"AgendaMedico"> | number
+    ativo?: BoolFilter<"AgendaMedico"> | boolean
+    criadoEm?: DateTimeFilter<"AgendaMedico"> | Date | string
+    medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type AgendaMedicoOrderByWithRelationInput = {
+    id?: SortOrder
+    medicoId?: SortOrder
+    diaSemana?: SortOrder
+    horaInicio?: SortOrder
+    horaFim?: SortOrder
+    duracaoSlot?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    medico?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type AgendaMedicoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    medicoId_diaSemana?: AgendaMedicoMedicoIdDiaSemanaCompoundUniqueInput
+    AND?: AgendaMedicoWhereInput | AgendaMedicoWhereInput[]
+    OR?: AgendaMedicoWhereInput[]
+    NOT?: AgendaMedicoWhereInput | AgendaMedicoWhereInput[]
+    medicoId?: StringFilter<"AgendaMedico"> | string
+    diaSemana?: IntFilter<"AgendaMedico"> | number
+    horaInicio?: StringFilter<"AgendaMedico"> | string
+    horaFim?: StringFilter<"AgendaMedico"> | string
+    duracaoSlot?: IntFilter<"AgendaMedico"> | number
+    ativo?: BoolFilter<"AgendaMedico"> | boolean
+    criadoEm?: DateTimeFilter<"AgendaMedico"> | Date | string
+    medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id" | "medicoId_diaSemana">
+
+  export type AgendaMedicoOrderByWithAggregationInput = {
+    id?: SortOrder
+    medicoId?: SortOrder
+    diaSemana?: SortOrder
+    horaInicio?: SortOrder
+    horaFim?: SortOrder
+    duracaoSlot?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    _count?: AgendaMedicoCountOrderByAggregateInput
+    _avg?: AgendaMedicoAvgOrderByAggregateInput
+    _max?: AgendaMedicoMaxOrderByAggregateInput
+    _min?: AgendaMedicoMinOrderByAggregateInput
+    _sum?: AgendaMedicoSumOrderByAggregateInput
+  }
+
+  export type AgendaMedicoScalarWhereWithAggregatesInput = {
+    AND?: AgendaMedicoScalarWhereWithAggregatesInput | AgendaMedicoScalarWhereWithAggregatesInput[]
+    OR?: AgendaMedicoScalarWhereWithAggregatesInput[]
+    NOT?: AgendaMedicoScalarWhereWithAggregatesInput | AgendaMedicoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AgendaMedico"> | string
+    medicoId?: StringWithAggregatesFilter<"AgendaMedico"> | string
+    diaSemana?: IntWithAggregatesFilter<"AgendaMedico"> | number
+    horaInicio?: StringWithAggregatesFilter<"AgendaMedico"> | string
+    horaFim?: StringWithAggregatesFilter<"AgendaMedico"> | string
+    duracaoSlot?: IntWithAggregatesFilter<"AgendaMedico"> | number
+    ativo?: BoolWithAggregatesFilter<"AgendaMedico"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"AgendaMedico"> | Date | string
   }
 
   export type CheckinSalaEsperaWhereInput = {
@@ -67003,6 +75013,436 @@ export namespace Prisma {
     responsavelId?: StringNullableWithAggregatesFilter<"PedidoTI"> | string | null
   }
 
+  export type FicheiroPessoalDoenteWhereInput = {
+    AND?: FicheiroPessoalDoenteWhereInput | FicheiroPessoalDoenteWhereInput[]
+    OR?: FicheiroPessoalDoenteWhereInput[]
+    NOT?: FicheiroPessoalDoenteWhereInput | FicheiroPessoalDoenteWhereInput[]
+    id?: StringFilter<"FicheiroPessoalDoente"> | string
+    doenteId?: StringFilter<"FicheiroPessoalDoente"> | string
+    nif?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroSNS?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    morada?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    codigoPostal?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    localidade?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    telefone?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    email?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    entidadeSeguradora?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroApolice?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    tipoCobertura?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    atualizadoEm?: DateTimeFilter<"FicheiroPessoalDoente"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    atualizadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type FicheiroPessoalDoenteOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nif?: SortOrderInput | SortOrder
+    numeroSNS?: SortOrderInput | SortOrder
+    morada?: SortOrderInput | SortOrder
+    codigoPostal?: SortOrderInput | SortOrder
+    localidade?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    entidadeSeguradora?: SortOrderInput | SortOrder
+    numeroApolice?: SortOrderInput | SortOrder
+    tipoCobertura?: SortOrderInput | SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrderInput | SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    atualizadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type FicheiroPessoalDoenteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    doenteId?: string
+    AND?: FicheiroPessoalDoenteWhereInput | FicheiroPessoalDoenteWhereInput[]
+    OR?: FicheiroPessoalDoenteWhereInput[]
+    NOT?: FicheiroPessoalDoenteWhereInput | FicheiroPessoalDoenteWhereInput[]
+    nif?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroSNS?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    morada?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    codigoPostal?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    localidade?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    telefone?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    email?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    entidadeSeguradora?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroApolice?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    tipoCobertura?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    atualizadoEm?: DateTimeFilter<"FicheiroPessoalDoente"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    atualizadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id" | "doenteId">
+
+  export type FicheiroPessoalDoenteOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nif?: SortOrderInput | SortOrder
+    numeroSNS?: SortOrderInput | SortOrder
+    morada?: SortOrderInput | SortOrder
+    codigoPostal?: SortOrderInput | SortOrder
+    localidade?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    entidadeSeguradora?: SortOrderInput | SortOrder
+    numeroApolice?: SortOrderInput | SortOrder
+    tipoCobertura?: SortOrderInput | SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrderInput | SortOrder
+    _count?: FicheiroPessoalDoenteCountOrderByAggregateInput
+    _max?: FicheiroPessoalDoenteMaxOrderByAggregateInput
+    _min?: FicheiroPessoalDoenteMinOrderByAggregateInput
+  }
+
+  export type FicheiroPessoalDoenteScalarWhereWithAggregatesInput = {
+    AND?: FicheiroPessoalDoenteScalarWhereWithAggregatesInput | FicheiroPessoalDoenteScalarWhereWithAggregatesInput[]
+    OR?: FicheiroPessoalDoenteScalarWhereWithAggregatesInput[]
+    NOT?: FicheiroPessoalDoenteScalarWhereWithAggregatesInput | FicheiroPessoalDoenteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FicheiroPessoalDoente"> | string
+    doenteId?: StringWithAggregatesFilter<"FicheiroPessoalDoente"> | string
+    nif?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    numeroSNS?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    morada?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    codigoPostal?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    localidade?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    telefone?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    email?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    entidadeSeguradora?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    numeroApolice?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    tipoCobertura?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+    atualizadoEm?: DateTimeWithAggregatesFilter<"FicheiroPessoalDoente"> | Date | string
+    atualizadoPorId?: StringNullableWithAggregatesFilter<"FicheiroPessoalDoente"> | string | null
+  }
+
+  export type EpisodioFaturacaoWhereInput = {
+    AND?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
+    OR?: EpisodioFaturacaoWhereInput[]
+    NOT?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
+    id?: StringFilter<"EpisodioFaturacao"> | string
+    doenteId?: StringFilter<"EpisodioFaturacao"> | string
+    estado?: EnumEstadoFaturaFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
+    dataEmissao?: DateTimeNullableFilter<"EpisodioFaturacao"> | Date | string | null
+    totalBase?: FloatFilter<"EpisodioFaturacao"> | number
+    totalCobrado?: FloatFilter<"EpisodioFaturacao"> | number
+    tipoCobertura?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    notas?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    criadoPorId?: StringFilter<"EpisodioFaturacao"> | string
+    criadoEm?: DateTimeFilter<"EpisodioFaturacao"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    itens?: ItemFaturaListRelationFilter
+    pagamentos?: PagamentoListRelationFilter
+  }
+
+  export type EpisodioFaturacaoOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    estado?: SortOrder
+    dataEmissao?: SortOrderInput | SortOrder
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+    tipoCobertura?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    criadoPor?: UtilizadorOrderByWithRelationInput
+    itens?: ItemFaturaOrderByRelationAggregateInput
+    pagamentos?: PagamentoOrderByRelationAggregateInput
+  }
+
+  export type EpisodioFaturacaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
+    OR?: EpisodioFaturacaoWhereInput[]
+    NOT?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
+    doenteId?: StringFilter<"EpisodioFaturacao"> | string
+    estado?: EnumEstadoFaturaFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
+    dataEmissao?: DateTimeNullableFilter<"EpisodioFaturacao"> | Date | string | null
+    totalBase?: FloatFilter<"EpisodioFaturacao"> | number
+    totalCobrado?: FloatFilter<"EpisodioFaturacao"> | number
+    tipoCobertura?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    notas?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    criadoPorId?: StringFilter<"EpisodioFaturacao"> | string
+    criadoEm?: DateTimeFilter<"EpisodioFaturacao"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    itens?: ItemFaturaListRelationFilter
+    pagamentos?: PagamentoListRelationFilter
+  }, "id">
+
+  export type EpisodioFaturacaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    estado?: SortOrder
+    dataEmissao?: SortOrderInput | SortOrder
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+    tipoCobertura?: SortOrderInput | SortOrder
+    notas?: SortOrderInput | SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: EpisodioFaturacaoCountOrderByAggregateInput
+    _avg?: EpisodioFaturacaoAvgOrderByAggregateInput
+    _max?: EpisodioFaturacaoMaxOrderByAggregateInput
+    _min?: EpisodioFaturacaoMinOrderByAggregateInput
+    _sum?: EpisodioFaturacaoSumOrderByAggregateInput
+  }
+
+  export type EpisodioFaturacaoScalarWhereWithAggregatesInput = {
+    AND?: EpisodioFaturacaoScalarWhereWithAggregatesInput | EpisodioFaturacaoScalarWhereWithAggregatesInput[]
+    OR?: EpisodioFaturacaoScalarWhereWithAggregatesInput[]
+    NOT?: EpisodioFaturacaoScalarWhereWithAggregatesInput | EpisodioFaturacaoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EpisodioFaturacao"> | string
+    doenteId?: StringWithAggregatesFilter<"EpisodioFaturacao"> | string
+    estado?: EnumEstadoFaturaWithAggregatesFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
+    dataEmissao?: DateTimeNullableWithAggregatesFilter<"EpisodioFaturacao"> | Date | string | null
+    totalBase?: FloatWithAggregatesFilter<"EpisodioFaturacao"> | number
+    totalCobrado?: FloatWithAggregatesFilter<"EpisodioFaturacao"> | number
+    tipoCobertura?: StringNullableWithAggregatesFilter<"EpisodioFaturacao"> | string | null
+    notas?: StringNullableWithAggregatesFilter<"EpisodioFaturacao"> | string | null
+    criadoPorId?: StringWithAggregatesFilter<"EpisodioFaturacao"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"EpisodioFaturacao"> | Date | string
+  }
+
+  export type ItemFaturaWhereInput = {
+    AND?: ItemFaturaWhereInput | ItemFaturaWhereInput[]
+    OR?: ItemFaturaWhereInput[]
+    NOT?: ItemFaturaWhereInput | ItemFaturaWhereInput[]
+    id?: StringFilter<"ItemFatura"> | string
+    episodioFaturacaoId?: StringFilter<"ItemFatura"> | string
+    descricao?: StringFilter<"ItemFatura"> | string
+    categoria?: StringFilter<"ItemFatura"> | string
+    quantidade?: IntFilter<"ItemFatura"> | number
+    precoUnitario?: FloatFilter<"ItemFatura"> | number
+    total?: FloatFilter<"ItemFatura"> | number
+    criadoEm?: DateTimeFilter<"ItemFatura"> | Date | string
+    episodio?: XOR<EpisodioFaturacaoScalarRelationFilter, EpisodioFaturacaoWhereInput>
+  }
+
+  export type ItemFaturaOrderByWithRelationInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+    criadoEm?: SortOrder
+    episodio?: EpisodioFaturacaoOrderByWithRelationInput
+  }
+
+  export type ItemFaturaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ItemFaturaWhereInput | ItemFaturaWhereInput[]
+    OR?: ItemFaturaWhereInput[]
+    NOT?: ItemFaturaWhereInput | ItemFaturaWhereInput[]
+    episodioFaturacaoId?: StringFilter<"ItemFatura"> | string
+    descricao?: StringFilter<"ItemFatura"> | string
+    categoria?: StringFilter<"ItemFatura"> | string
+    quantidade?: IntFilter<"ItemFatura"> | number
+    precoUnitario?: FloatFilter<"ItemFatura"> | number
+    total?: FloatFilter<"ItemFatura"> | number
+    criadoEm?: DateTimeFilter<"ItemFatura"> | Date | string
+    episodio?: XOR<EpisodioFaturacaoScalarRelationFilter, EpisodioFaturacaoWhereInput>
+  }, "id">
+
+  export type ItemFaturaOrderByWithAggregationInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+    criadoEm?: SortOrder
+    _count?: ItemFaturaCountOrderByAggregateInput
+    _avg?: ItemFaturaAvgOrderByAggregateInput
+    _max?: ItemFaturaMaxOrderByAggregateInput
+    _min?: ItemFaturaMinOrderByAggregateInput
+    _sum?: ItemFaturaSumOrderByAggregateInput
+  }
+
+  export type ItemFaturaScalarWhereWithAggregatesInput = {
+    AND?: ItemFaturaScalarWhereWithAggregatesInput | ItemFaturaScalarWhereWithAggregatesInput[]
+    OR?: ItemFaturaScalarWhereWithAggregatesInput[]
+    NOT?: ItemFaturaScalarWhereWithAggregatesInput | ItemFaturaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ItemFatura"> | string
+    episodioFaturacaoId?: StringWithAggregatesFilter<"ItemFatura"> | string
+    descricao?: StringWithAggregatesFilter<"ItemFatura"> | string
+    categoria?: StringWithAggregatesFilter<"ItemFatura"> | string
+    quantidade?: IntWithAggregatesFilter<"ItemFatura"> | number
+    precoUnitario?: FloatWithAggregatesFilter<"ItemFatura"> | number
+    total?: FloatWithAggregatesFilter<"ItemFatura"> | number
+    criadoEm?: DateTimeWithAggregatesFilter<"ItemFatura"> | Date | string
+  }
+
+  export type PagamentoWhereInput = {
+    AND?: PagamentoWhereInput | PagamentoWhereInput[]
+    OR?: PagamentoWhereInput[]
+    NOT?: PagamentoWhereInput | PagamentoWhereInput[]
+    id?: StringFilter<"Pagamento"> | string
+    episodioFaturacaoId?: StringFilter<"Pagamento"> | string
+    valor?: FloatFilter<"Pagamento"> | number
+    metodo?: StringFilter<"Pagamento"> | string
+    referencia?: StringNullableFilter<"Pagamento"> | string | null
+    registadoPorId?: StringFilter<"Pagamento"> | string
+    criadoEm?: DateTimeFilter<"Pagamento"> | Date | string
+    episodio?: XOR<EpisodioFaturacaoScalarRelationFilter, EpisodioFaturacaoWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type PagamentoOrderByWithRelationInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    valor?: SortOrder
+    metodo?: SortOrder
+    referencia?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    episodio?: EpisodioFaturacaoOrderByWithRelationInput
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type PagamentoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PagamentoWhereInput | PagamentoWhereInput[]
+    OR?: PagamentoWhereInput[]
+    NOT?: PagamentoWhereInput | PagamentoWhereInput[]
+    episodioFaturacaoId?: StringFilter<"Pagamento"> | string
+    valor?: FloatFilter<"Pagamento"> | number
+    metodo?: StringFilter<"Pagamento"> | string
+    referencia?: StringNullableFilter<"Pagamento"> | string | null
+    registadoPorId?: StringFilter<"Pagamento"> | string
+    criadoEm?: DateTimeFilter<"Pagamento"> | Date | string
+    episodio?: XOR<EpisodioFaturacaoScalarRelationFilter, EpisodioFaturacaoWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type PagamentoOrderByWithAggregationInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    valor?: SortOrder
+    metodo?: SortOrder
+    referencia?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: PagamentoCountOrderByAggregateInput
+    _avg?: PagamentoAvgOrderByAggregateInput
+    _max?: PagamentoMaxOrderByAggregateInput
+    _min?: PagamentoMinOrderByAggregateInput
+    _sum?: PagamentoSumOrderByAggregateInput
+  }
+
+  export type PagamentoScalarWhereWithAggregatesInput = {
+    AND?: PagamentoScalarWhereWithAggregatesInput | PagamentoScalarWhereWithAggregatesInput[]
+    OR?: PagamentoScalarWhereWithAggregatesInput[]
+    NOT?: PagamentoScalarWhereWithAggregatesInput | PagamentoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Pagamento"> | string
+    episodioFaturacaoId?: StringWithAggregatesFilter<"Pagamento"> | string
+    valor?: FloatWithAggregatesFilter<"Pagamento"> | number
+    metodo?: StringWithAggregatesFilter<"Pagamento"> | string
+    referencia?: StringNullableWithAggregatesFilter<"Pagamento"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"Pagamento"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"Pagamento"> | Date | string
+  }
+
+  export type TicketWhereInput = {
+    AND?: TicketWhereInput | TicketWhereInput[]
+    OR?: TicketWhereInput[]
+    NOT?: TicketWhereInput | TicketWhereInput[]
+    id?: StringFilter<"Ticket"> | string
+    numero?: StringFilter<"Ticket"> | string
+    letra?: StringFilter<"Ticket"> | string
+    sequencia?: IntFilter<"Ticket"> | number
+    tipo?: StringFilter<"Ticket"> | string
+    estado?: StringFilter<"Ticket"> | string
+    prioridade?: StringFilter<"Ticket"> | string
+    balcao?: StringNullableFilter<"Ticket"> | string | null
+    nomeUtente?: StringNullableFilter<"Ticket"> | string | null
+    telefone?: StringNullableFilter<"Ticket"> | string | null
+    criadoEm?: DateTimeFilter<"Ticket"> | Date | string
+    chamadoEm?: DateTimeNullableFilter<"Ticket"> | Date | string | null
+    concluidoEm?: DateTimeNullableFilter<"Ticket"> | Date | string | null
+  }
+
+  export type TicketOrderByWithRelationInput = {
+    id?: SortOrder
+    numero?: SortOrder
+    letra?: SortOrder
+    sequencia?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    balcao?: SortOrderInput | SortOrder
+    nomeUtente?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    chamadoEm?: SortOrderInput | SortOrder
+    concluidoEm?: SortOrderInput | SortOrder
+  }
+
+  export type TicketWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TicketWhereInput | TicketWhereInput[]
+    OR?: TicketWhereInput[]
+    NOT?: TicketWhereInput | TicketWhereInput[]
+    numero?: StringFilter<"Ticket"> | string
+    letra?: StringFilter<"Ticket"> | string
+    sequencia?: IntFilter<"Ticket"> | number
+    tipo?: StringFilter<"Ticket"> | string
+    estado?: StringFilter<"Ticket"> | string
+    prioridade?: StringFilter<"Ticket"> | string
+    balcao?: StringNullableFilter<"Ticket"> | string | null
+    nomeUtente?: StringNullableFilter<"Ticket"> | string | null
+    telefone?: StringNullableFilter<"Ticket"> | string | null
+    criadoEm?: DateTimeFilter<"Ticket"> | Date | string
+    chamadoEm?: DateTimeNullableFilter<"Ticket"> | Date | string | null
+    concluidoEm?: DateTimeNullableFilter<"Ticket"> | Date | string | null
+  }, "id">
+
+  export type TicketOrderByWithAggregationInput = {
+    id?: SortOrder
+    numero?: SortOrder
+    letra?: SortOrder
+    sequencia?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    balcao?: SortOrderInput | SortOrder
+    nomeUtente?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    chamadoEm?: SortOrderInput | SortOrder
+    concluidoEm?: SortOrderInput | SortOrder
+    _count?: TicketCountOrderByAggregateInput
+    _avg?: TicketAvgOrderByAggregateInput
+    _max?: TicketMaxOrderByAggregateInput
+    _min?: TicketMinOrderByAggregateInput
+    _sum?: TicketSumOrderByAggregateInput
+  }
+
+  export type TicketScalarWhereWithAggregatesInput = {
+    AND?: TicketScalarWhereWithAggregatesInput | TicketScalarWhereWithAggregatesInput[]
+    OR?: TicketScalarWhereWithAggregatesInput[]
+    NOT?: TicketScalarWhereWithAggregatesInput | TicketScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Ticket"> | string
+    numero?: StringWithAggregatesFilter<"Ticket"> | string
+    letra?: StringWithAggregatesFilter<"Ticket"> | string
+    sequencia?: IntWithAggregatesFilter<"Ticket"> | number
+    tipo?: StringWithAggregatesFilter<"Ticket"> | string
+    estado?: StringWithAggregatesFilter<"Ticket"> | string
+    prioridade?: StringWithAggregatesFilter<"Ticket"> | string
+    balcao?: StringNullableWithAggregatesFilter<"Ticket"> | string | null
+    nomeUtente?: StringNullableWithAggregatesFilter<"Ticket"> | string | null
+    telefone?: StringNullableWithAggregatesFilter<"Ticket"> | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"Ticket"> | Date | string
+    chamadoEm?: DateTimeNullableWithAggregatesFilter<"Ticket"> | Date | string | null
+    concluidoEm?: DateTimeNullableWithAggregatesFilter<"Ticket"> | Date | string | null
+  }
+
   export type RefreshTokenWhereInput = {
     AND?: RefreshTokenWhereInput | RefreshTokenWhereInput[]
     OR?: RefreshTokenWhereInput[]
@@ -67257,6 +75697,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -67324,6 +75768,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -67391,6 +75839,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -67458,6 +75910,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -67597,6 +76053,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -67638,6 +76096,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -67679,6 +76139,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -67720,6 +76182,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -69865,6 +78329,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
@@ -69882,6 +78348,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -69895,6 +78363,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
@@ -69912,6 +78382,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -69927,6 +78399,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -69940,6 +78414,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -69955,6 +78431,84 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoCreateInput = {
+    id?: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
+    medico: UtilizadorCreateNestedOneWithoutAgendasInput
+  }
+
+  export type AgendaMedicoUncheckedCreateInput = {
+    id?: string
+    medicoId: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AgendaMedicoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    medico?: UtilizadorUpdateOneRequiredWithoutAgendasNestedInput
+  }
+
+  export type AgendaMedicoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    medicoId?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoCreateManyInput = {
+    id?: string
+    medicoId: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AgendaMedicoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    medicoId?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -71012,6 +79566,476 @@ export namespace Prisma {
     responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type FicheiroPessoalDoenteCreateInput = {
+    id?: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutFicheiroPessoalInput
+    atualizadoPor?: UtilizadorCreateNestedOneWithoutFicheirosPessoaisAtualizadosInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    atualizadoPorId?: string | null
+  }
+
+  export type FicheiroPessoalDoenteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutFicheiroPessoalNestedInput
+    atualizadoPor?: UtilizadorUpdateOneWithoutFicheirosPessoaisAtualizadosNestedInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type FicheiroPessoalDoenteCreateManyInput = {
+    id?: string
+    doenteId: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    atualizadoPorId?: string | null
+  }
+
+  export type FicheiroPessoalDoenteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EpisodioFaturacaoCreateInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
+    itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+    itens?: ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
+    itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    itens?: ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoCreateManyInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type EpisodioFaturacaoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemFaturaCreateInput = {
+    id?: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+    episodio: EpisodioFaturacaoCreateNestedOneWithoutItensInput
+  }
+
+  export type ItemFaturaUncheckedCreateInput = {
+    id?: string
+    episodioFaturacaoId: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+  }
+
+  export type ItemFaturaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    episodio?: EpisodioFaturacaoUpdateOneRequiredWithoutItensNestedInput
+  }
+
+  export type ItemFaturaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemFaturaCreateManyInput = {
+    id?: string
+    episodioFaturacaoId: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+  }
+
+  export type ItemFaturaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemFaturaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoCreateInput = {
+    id?: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    criadoEm?: Date | string
+    episodio: EpisodioFaturacaoCreateNestedOneWithoutPagamentosInput
+    registadoPor: UtilizadorCreateNestedOneWithoutPagamentosRegistadosInput
+  }
+
+  export type PagamentoUncheckedCreateInput = {
+    id?: string
+    episodioFaturacaoId: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    episodio?: EpisodioFaturacaoUpdateOneRequiredWithoutPagamentosNestedInput
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutPagamentosRegistadosNestedInput
+  }
+
+  export type PagamentoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoCreateManyInput = {
+    id?: string
+    episodioFaturacaoId: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TicketCreateInput = {
+    id?: string
+    numero: string
+    letra: string
+    sequencia: number
+    tipo: string
+    estado?: string
+    prioridade?: string
+    balcao?: string | null
+    nomeUtente?: string | null
+    telefone?: string | null
+    criadoEm?: Date | string
+    chamadoEm?: Date | string | null
+    concluidoEm?: Date | string | null
+  }
+
+  export type TicketUncheckedCreateInput = {
+    id?: string
+    numero: string
+    letra: string
+    sequencia: number
+    tipo: string
+    estado?: string
+    prioridade?: string
+    balcao?: string | null
+    nomeUtente?: string | null
+    telefone?: string | null
+    criadoEm?: Date | string
+    chamadoEm?: Date | string | null
+    concluidoEm?: Date | string | null
+  }
+
+  export type TicketUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numero?: StringFieldUpdateOperationsInput | string
+    letra?: StringFieldUpdateOperationsInput | string
+    sequencia?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    balcao?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeUtente?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chamadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concluidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TicketUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numero?: StringFieldUpdateOperationsInput | string
+    letra?: StringFieldUpdateOperationsInput | string
+    sequencia?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    balcao?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeUtente?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chamadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concluidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TicketCreateManyInput = {
+    id?: string
+    numero: string
+    letra: string
+    sequencia: number
+    tipo: string
+    estado?: string
+    prioridade?: string
+    balcao?: string | null
+    nomeUtente?: string | null
+    telefone?: string | null
+    criadoEm?: Date | string
+    chamadoEm?: Date | string | null
+    concluidoEm?: Date | string | null
+  }
+
+  export type TicketUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numero?: StringFieldUpdateOperationsInput | string
+    letra?: StringFieldUpdateOperationsInput | string
+    sequencia?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    balcao?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeUtente?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chamadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concluidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TicketUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numero?: StringFieldUpdateOperationsInput | string
+    letra?: StringFieldUpdateOperationsInput | string
+    sequencia?: IntFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    balcao?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeUtente?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chamadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concluidoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type RefreshTokenCreateInput = {
     id?: string
     token: string
@@ -71492,6 +80516,30 @@ export namespace Prisma {
     none?: PedidoTIWhereInput
   }
 
+  export type FicheiroPessoalDoenteListRelationFilter = {
+    every?: FicheiroPessoalDoenteWhereInput
+    some?: FicheiroPessoalDoenteWhereInput
+    none?: FicheiroPessoalDoenteWhereInput
+  }
+
+  export type EpisodioFaturacaoListRelationFilter = {
+    every?: EpisodioFaturacaoWhereInput
+    some?: EpisodioFaturacaoWhereInput
+    none?: EpisodioFaturacaoWhereInput
+  }
+
+  export type PagamentoListRelationFilter = {
+    every?: PagamentoWhereInput
+    some?: PagamentoWhereInput
+    none?: PagamentoWhereInput
+  }
+
+  export type AgendaMedicoListRelationFilter = {
+    every?: AgendaMedicoWhereInput
+    some?: AgendaMedicoWhereInput
+    none?: AgendaMedicoWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -71638,6 +80686,22 @@ export namespace Prisma {
   }
 
   export type PedidoTIOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FicheiroPessoalDoenteOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EpisodioFaturacaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PagamentoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AgendaMedicoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -71850,6 +80914,11 @@ export namespace Prisma {
   export type SumarioAltaNullableScalarRelationFilter = {
     is?: SumarioAltaWhereInput | null
     isNot?: SumarioAltaWhereInput | null
+  }
+
+  export type FicheiroPessoalDoenteNullableScalarRelationFilter = {
+    is?: FicheiroPessoalDoenteWhereInput | null
+    isNot?: FicheiroPessoalDoenteWhereInput | null
   }
 
   export type PassagemTurnoOrderByRelationAggregateInput = {
@@ -73308,6 +82377,8 @@ export namespace Prisma {
     notas?: SortOrder
     diagnostico?: SortOrder
     proximaConsulta?: SortOrder
+    codigo?: SortOrder
+    checkinEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -73327,6 +82398,8 @@ export namespace Prisma {
     notas?: SortOrder
     diagnostico?: SortOrder
     proximaConsulta?: SortOrder
+    codigo?: SortOrder
+    checkinEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -73342,6 +82415,8 @@ export namespace Prisma {
     notas?: SortOrder
     diagnostico?: SortOrder
     proximaConsulta?: SortOrder
+    codigo?: SortOrder
+    checkinEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -73357,6 +82432,54 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoConsultaFilter<$PrismaModel>
     _max?: NestedEnumEstadoConsultaFilter<$PrismaModel>
+  }
+
+  export type AgendaMedicoMedicoIdDiaSemanaCompoundUniqueInput = {
+    medicoId: string
+    diaSemana: number
+  }
+
+  export type AgendaMedicoCountOrderByAggregateInput = {
+    id?: SortOrder
+    medicoId?: SortOrder
+    diaSemana?: SortOrder
+    horaInicio?: SortOrder
+    horaFim?: SortOrder
+    duracaoSlot?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AgendaMedicoAvgOrderByAggregateInput = {
+    diaSemana?: SortOrder
+    duracaoSlot?: SortOrder
+  }
+
+  export type AgendaMedicoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    medicoId?: SortOrder
+    diaSemana?: SortOrder
+    horaInicio?: SortOrder
+    horaFim?: SortOrder
+    duracaoSlot?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AgendaMedicoMinOrderByAggregateInput = {
+    id?: SortOrder
+    medicoId?: SortOrder
+    diaSemana?: SortOrder
+    horaInicio?: SortOrder
+    horaFim?: SortOrder
+    duracaoSlot?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AgendaMedicoSumOrderByAggregateInput = {
+    diaSemana?: SortOrder
+    duracaoSlot?: SortOrder
   }
 
   export type EnumEstadoCheckinFilter<$PrismaModel = never> = {
@@ -74110,6 +83233,277 @@ export namespace Prisma {
     _max?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
   }
 
+  export type FicheiroPessoalDoenteCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nif?: SortOrder
+    numeroSNS?: SortOrder
+    morada?: SortOrder
+    codigoPostal?: SortOrder
+    localidade?: SortOrder
+    telefone?: SortOrder
+    email?: SortOrder
+    entidadeSeguradora?: SortOrder
+    numeroApolice?: SortOrder
+    tipoCobertura?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
+  export type FicheiroPessoalDoenteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nif?: SortOrder
+    numeroSNS?: SortOrder
+    morada?: SortOrder
+    codigoPostal?: SortOrder
+    localidade?: SortOrder
+    telefone?: SortOrder
+    email?: SortOrder
+    entidadeSeguradora?: SortOrder
+    numeroApolice?: SortOrder
+    tipoCobertura?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
+  export type FicheiroPessoalDoenteMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    nif?: SortOrder
+    numeroSNS?: SortOrder
+    morada?: SortOrder
+    codigoPostal?: SortOrder
+    localidade?: SortOrder
+    telefone?: SortOrder
+    email?: SortOrder
+    entidadeSeguradora?: SortOrder
+    numeroApolice?: SortOrder
+    tipoCobertura?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
+  export type EnumEstadoFaturaFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoFatura | EnumEstadoFaturaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoFaturaFilter<$PrismaModel> | $Enums.EstadoFatura
+  }
+
+  export type ItemFaturaListRelationFilter = {
+    every?: ItemFaturaWhereInput
+    some?: ItemFaturaWhereInput
+    none?: ItemFaturaWhereInput
+  }
+
+  export type ItemFaturaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EpisodioFaturacaoCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    estado?: SortOrder
+    dataEmissao?: SortOrder
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+    tipoCobertura?: SortOrder
+    notas?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EpisodioFaturacaoAvgOrderByAggregateInput = {
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+  }
+
+  export type EpisodioFaturacaoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    estado?: SortOrder
+    dataEmissao?: SortOrder
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+    tipoCobertura?: SortOrder
+    notas?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EpisodioFaturacaoMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    estado?: SortOrder
+    dataEmissao?: SortOrder
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+    tipoCobertura?: SortOrder
+    notas?: SortOrder
+    criadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EpisodioFaturacaoSumOrderByAggregateInput = {
+    totalBase?: SortOrder
+    totalCobrado?: SortOrder
+  }
+
+  export type EnumEstadoFaturaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoFatura | EnumEstadoFaturaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoFaturaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoFatura
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoFaturaFilter<$PrismaModel>
+    _max?: NestedEnumEstadoFaturaFilter<$PrismaModel>
+  }
+
+  export type EpisodioFaturacaoScalarRelationFilter = {
+    is?: EpisodioFaturacaoWhereInput
+    isNot?: EpisodioFaturacaoWhereInput
+  }
+
+  export type ItemFaturaCountOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ItemFaturaAvgOrderByAggregateInput = {
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+  }
+
+  export type ItemFaturaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ItemFaturaMinOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ItemFaturaSumOrderByAggregateInput = {
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    total?: SortOrder
+  }
+
+  export type PagamentoCountOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    valor?: SortOrder
+    metodo?: SortOrder
+    referencia?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type PagamentoAvgOrderByAggregateInput = {
+    valor?: SortOrder
+  }
+
+  export type PagamentoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    valor?: SortOrder
+    metodo?: SortOrder
+    referencia?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type PagamentoMinOrderByAggregateInput = {
+    id?: SortOrder
+    episodioFaturacaoId?: SortOrder
+    valor?: SortOrder
+    metodo?: SortOrder
+    referencia?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type PagamentoSumOrderByAggregateInput = {
+    valor?: SortOrder
+  }
+
+  export type TicketCountOrderByAggregateInput = {
+    id?: SortOrder
+    numero?: SortOrder
+    letra?: SortOrder
+    sequencia?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    balcao?: SortOrder
+    nomeUtente?: SortOrder
+    telefone?: SortOrder
+    criadoEm?: SortOrder
+    chamadoEm?: SortOrder
+    concluidoEm?: SortOrder
+  }
+
+  export type TicketAvgOrderByAggregateInput = {
+    sequencia?: SortOrder
+  }
+
+  export type TicketMaxOrderByAggregateInput = {
+    id?: SortOrder
+    numero?: SortOrder
+    letra?: SortOrder
+    sequencia?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    balcao?: SortOrder
+    nomeUtente?: SortOrder
+    telefone?: SortOrder
+    criadoEm?: SortOrder
+    chamadoEm?: SortOrder
+    concluidoEm?: SortOrder
+  }
+
+  export type TicketMinOrderByAggregateInput = {
+    id?: SortOrder
+    numero?: SortOrder
+    letra?: SortOrder
+    sequencia?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    balcao?: SortOrder
+    nomeUtente?: SortOrder
+    telefone?: SortOrder
+    criadoEm?: SortOrder
+    chamadoEm?: SortOrder
+    concluidoEm?: SortOrder
+  }
+
+  export type TicketSumOrderByAggregateInput = {
+    sequencia?: SortOrder
+  }
+
   export type RefreshTokenCountOrderByAggregateInput = {
     id?: SortOrder
     token?: SortOrder
@@ -74573,6 +83967,34 @@ export namespace Prisma {
     connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
   }
 
+  export type FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput> | FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput[] | FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput | FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput[]
+    createMany?: FicheiroPessoalDoenteCreateManyAtualizadoPorInputEnvelope
+    connect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+  }
+
+  export type EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput> | EpisodioFaturacaoCreateWithoutCriadoPorInput[] | EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput | EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput[]
+    createMany?: EpisodioFaturacaoCreateManyCriadoPorInputEnvelope
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+  }
+
+  export type PagamentoCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput> | PagamentoCreateWithoutRegistadoPorInput[] | PagamentoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutRegistadoPorInput | PagamentoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: PagamentoCreateManyRegistadoPorInputEnvelope
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+  }
+
+  export type AgendaMedicoCreateNestedManyWithoutMedicoInput = {
+    create?: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput> | AgendaMedicoCreateWithoutMedicoInput[] | AgendaMedicoUncheckedCreateWithoutMedicoInput[]
+    connectOrCreate?: AgendaMedicoCreateOrConnectWithoutMedicoInput | AgendaMedicoCreateOrConnectWithoutMedicoInput[]
+    createMany?: AgendaMedicoCreateManyMedicoInputEnvelope
+    connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -74935,6 +84357,34 @@ export namespace Prisma {
     connectOrCreate?: PedidoTICreateOrConnectWithoutResponsavelInput | PedidoTICreateOrConnectWithoutResponsavelInput[]
     createMany?: PedidoTICreateManyResponsavelInputEnvelope
     connect?: PedidoTIWhereUniqueInput | PedidoTIWhereUniqueInput[]
+  }
+
+  export type FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput> | FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput[] | FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput | FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput[]
+    createMany?: FicheiroPessoalDoenteCreateManyAtualizadoPorInputEnvelope
+    connect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput> | EpisodioFaturacaoCreateWithoutCriadoPorInput[] | EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput | EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput[]
+    createMany?: EpisodioFaturacaoCreateManyCriadoPorInputEnvelope
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+  }
+
+  export type PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput> | PagamentoCreateWithoutRegistadoPorInput[] | PagamentoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutRegistadoPorInput | PagamentoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: PagamentoCreateManyRegistadoPorInputEnvelope
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+  }
+
+  export type AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput = {
+    create?: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput> | AgendaMedicoCreateWithoutMedicoInput[] | AgendaMedicoUncheckedCreateWithoutMedicoInput[]
+    connectOrCreate?: AgendaMedicoCreateOrConnectWithoutMedicoInput | AgendaMedicoCreateOrConnectWithoutMedicoInput[]
+    createMany?: AgendaMedicoCreateManyMedicoInputEnvelope
+    connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -75685,6 +85135,62 @@ export namespace Prisma {
     deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
   }
 
+  export type FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput> | FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput[] | FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput | FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput[]
+    upsert?: FicheiroPessoalDoenteUpsertWithWhereUniqueWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpsertWithWhereUniqueWithoutAtualizadoPorInput[]
+    createMany?: FicheiroPessoalDoenteCreateManyAtualizadoPorInputEnvelope
+    set?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    disconnect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    delete?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    connect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    update?: FicheiroPessoalDoenteUpdateWithWhereUniqueWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpdateWithWhereUniqueWithoutAtualizadoPorInput[]
+    updateMany?: FicheiroPessoalDoenteUpdateManyWithWhereWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpdateManyWithWhereWithoutAtualizadoPorInput[]
+    deleteMany?: FicheiroPessoalDoenteScalarWhereInput | FicheiroPessoalDoenteScalarWhereInput[]
+  }
+
+  export type EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput> | EpisodioFaturacaoCreateWithoutCriadoPorInput[] | EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput | EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput[]
+    upsert?: EpisodioFaturacaoUpsertWithWhereUniqueWithoutCriadoPorInput | EpisodioFaturacaoUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: EpisodioFaturacaoCreateManyCriadoPorInputEnvelope
+    set?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    disconnect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    delete?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    update?: EpisodioFaturacaoUpdateWithWhereUniqueWithoutCriadoPorInput | EpisodioFaturacaoUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: EpisodioFaturacaoUpdateManyWithWhereWithoutCriadoPorInput | EpisodioFaturacaoUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+  }
+
+  export type PagamentoUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput> | PagamentoCreateWithoutRegistadoPorInput[] | PagamentoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutRegistadoPorInput | PagamentoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: PagamentoUpsertWithWhereUniqueWithoutRegistadoPorInput | PagamentoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: PagamentoCreateManyRegistadoPorInputEnvelope
+    set?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    disconnect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    delete?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    update?: PagamentoUpdateWithWhereUniqueWithoutRegistadoPorInput | PagamentoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: PagamentoUpdateManyWithWhereWithoutRegistadoPorInput | PagamentoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+  }
+
+  export type AgendaMedicoUpdateManyWithoutMedicoNestedInput = {
+    create?: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput> | AgendaMedicoCreateWithoutMedicoInput[] | AgendaMedicoUncheckedCreateWithoutMedicoInput[]
+    connectOrCreate?: AgendaMedicoCreateOrConnectWithoutMedicoInput | AgendaMedicoCreateOrConnectWithoutMedicoInput[]
+    upsert?: AgendaMedicoUpsertWithWhereUniqueWithoutMedicoInput | AgendaMedicoUpsertWithWhereUniqueWithoutMedicoInput[]
+    createMany?: AgendaMedicoCreateManyMedicoInputEnvelope
+    set?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    disconnect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    delete?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    update?: AgendaMedicoUpdateWithWhereUniqueWithoutMedicoInput | AgendaMedicoUpdateWithWhereUniqueWithoutMedicoInput[]
+    updateMany?: AgendaMedicoUpdateManyWithWhereWithoutMedicoInput | AgendaMedicoUpdateManyWithWhereWithoutMedicoInput[]
+    deleteMany?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -76413,6 +85919,62 @@ export namespace Prisma {
     deleteMany?: PedidoTIScalarWhereInput | PedidoTIScalarWhereInput[]
   }
 
+  export type FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput> | FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput[] | FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput | FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput[]
+    upsert?: FicheiroPessoalDoenteUpsertWithWhereUniqueWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpsertWithWhereUniqueWithoutAtualizadoPorInput[]
+    createMany?: FicheiroPessoalDoenteCreateManyAtualizadoPorInputEnvelope
+    set?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    disconnect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    delete?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    connect?: FicheiroPessoalDoenteWhereUniqueInput | FicheiroPessoalDoenteWhereUniqueInput[]
+    update?: FicheiroPessoalDoenteUpdateWithWhereUniqueWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpdateWithWhereUniqueWithoutAtualizadoPorInput[]
+    updateMany?: FicheiroPessoalDoenteUpdateManyWithWhereWithoutAtualizadoPorInput | FicheiroPessoalDoenteUpdateManyWithWhereWithoutAtualizadoPorInput[]
+    deleteMany?: FicheiroPessoalDoenteScalarWhereInput | FicheiroPessoalDoenteScalarWhereInput[]
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput> | EpisodioFaturacaoCreateWithoutCriadoPorInput[] | EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput | EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput[]
+    upsert?: EpisodioFaturacaoUpsertWithWhereUniqueWithoutCriadoPorInput | EpisodioFaturacaoUpsertWithWhereUniqueWithoutCriadoPorInput[]
+    createMany?: EpisodioFaturacaoCreateManyCriadoPorInputEnvelope
+    set?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    disconnect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    delete?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    update?: EpisodioFaturacaoUpdateWithWhereUniqueWithoutCriadoPorInput | EpisodioFaturacaoUpdateWithWhereUniqueWithoutCriadoPorInput[]
+    updateMany?: EpisodioFaturacaoUpdateManyWithWhereWithoutCriadoPorInput | EpisodioFaturacaoUpdateManyWithWhereWithoutCriadoPorInput[]
+    deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+  }
+
+  export type PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput> | PagamentoCreateWithoutRegistadoPorInput[] | PagamentoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutRegistadoPorInput | PagamentoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: PagamentoUpsertWithWhereUniqueWithoutRegistadoPorInput | PagamentoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: PagamentoCreateManyRegistadoPorInputEnvelope
+    set?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    disconnect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    delete?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    update?: PagamentoUpdateWithWhereUniqueWithoutRegistadoPorInput | PagamentoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: PagamentoUpdateManyWithWhereWithoutRegistadoPorInput | PagamentoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+  }
+
+  export type AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput = {
+    create?: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput> | AgendaMedicoCreateWithoutMedicoInput[] | AgendaMedicoUncheckedCreateWithoutMedicoInput[]
+    connectOrCreate?: AgendaMedicoCreateOrConnectWithoutMedicoInput | AgendaMedicoCreateOrConnectWithoutMedicoInput[]
+    upsert?: AgendaMedicoUpsertWithWhereUniqueWithoutMedicoInput | AgendaMedicoUpsertWithWhereUniqueWithoutMedicoInput[]
+    createMany?: AgendaMedicoCreateManyMedicoInputEnvelope
+    set?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    disconnect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    delete?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+    update?: AgendaMedicoUpdateWithWhereUniqueWithoutMedicoInput | AgendaMedicoUpdateWithWhereUniqueWithoutMedicoInput[]
+    updateMany?: AgendaMedicoUpdateManyWithWhereWithoutMedicoInput | AgendaMedicoUpdateManyWithWhereWithoutMedicoInput[]
+    deleteMany?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
+  }
+
   export type DoenteCreateNestedOneWithoutCamaInput = {
     create?: XOR<DoenteCreateWithoutCamaInput, DoenteUncheckedCreateWithoutCamaInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutCamaInput
@@ -76628,6 +86190,19 @@ export namespace Prisma {
     connect?: DispositivoInvasivoWhereUniqueInput | DispositivoInvasivoWhereUniqueInput[]
   }
 
+  export type FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutDoenteInput
+    connect?: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  export type EpisodioFaturacaoCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput> | EpisodioFaturacaoCreateWithoutDoenteInput[] | EpisodioFaturacaoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutDoenteInput | EpisodioFaturacaoCreateOrConnectWithoutDoenteInput[]
+    createMany?: EpisodioFaturacaoCreateManyDoenteInputEnvelope
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -76793,6 +86368,19 @@ export namespace Prisma {
     connectOrCreate?: DispositivoInvasivoCreateOrConnectWithoutDoenteInput | DispositivoInvasivoCreateOrConnectWithoutDoenteInput[]
     createMany?: DispositivoInvasivoCreateManyDoenteInputEnvelope
     connect?: DispositivoInvasivoWhereUniqueInput | DispositivoInvasivoWhereUniqueInput[]
+  }
+
+  export type FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutDoenteInput
+    connect?: FicheiroPessoalDoenteWhereUniqueInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput> | EpisodioFaturacaoCreateWithoutDoenteInput[] | EpisodioFaturacaoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutDoenteInput | EpisodioFaturacaoCreateOrConnectWithoutDoenteInput[]
+    createMany?: EpisodioFaturacaoCreateManyDoenteInputEnvelope
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -77151,6 +86739,30 @@ export namespace Prisma {
     deleteMany?: DispositivoInvasivoScalarWhereInput | DispositivoInvasivoScalarWhereInput[]
   }
 
+  export type FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutDoenteInput
+    upsert?: FicheiroPessoalDoenteUpsertWithoutDoenteInput
+    disconnect?: FicheiroPessoalDoenteWhereInput | boolean
+    delete?: FicheiroPessoalDoenteWhereInput | boolean
+    connect?: FicheiroPessoalDoenteWhereUniqueInput
+    update?: XOR<XOR<FicheiroPessoalDoenteUpdateToOneWithWhereWithoutDoenteInput, FicheiroPessoalDoenteUpdateWithoutDoenteInput>, FicheiroPessoalDoenteUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput> | EpisodioFaturacaoCreateWithoutDoenteInput[] | EpisodioFaturacaoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutDoenteInput | EpisodioFaturacaoCreateOrConnectWithoutDoenteInput[]
+    upsert?: EpisodioFaturacaoUpsertWithWhereUniqueWithoutDoenteInput | EpisodioFaturacaoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: EpisodioFaturacaoCreateManyDoenteInputEnvelope
+    set?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    disconnect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    delete?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    update?: EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput | EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput | EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -77481,6 +87093,30 @@ export namespace Prisma {
     update?: DispositivoInvasivoUpdateWithWhereUniqueWithoutDoenteInput | DispositivoInvasivoUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: DispositivoInvasivoUpdateManyWithWhereWithoutDoenteInput | DispositivoInvasivoUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: DispositivoInvasivoScalarWhereInput | DispositivoInvasivoScalarWhereInput[]
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput = {
+    create?: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+    connectOrCreate?: FicheiroPessoalDoenteCreateOrConnectWithoutDoenteInput
+    upsert?: FicheiroPessoalDoenteUpsertWithoutDoenteInput
+    disconnect?: FicheiroPessoalDoenteWhereInput | boolean
+    delete?: FicheiroPessoalDoenteWhereInput | boolean
+    connect?: FicheiroPessoalDoenteWhereUniqueInput
+    update?: XOR<XOR<FicheiroPessoalDoenteUpdateToOneWithWhereWithoutDoenteInput, FicheiroPessoalDoenteUpdateWithoutDoenteInput>, FicheiroPessoalDoenteUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput> | EpisodioFaturacaoCreateWithoutDoenteInput[] | EpisodioFaturacaoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutDoenteInput | EpisodioFaturacaoCreateOrConnectWithoutDoenteInput[]
+    upsert?: EpisodioFaturacaoUpsertWithWhereUniqueWithoutDoenteInput | EpisodioFaturacaoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: EpisodioFaturacaoCreateManyDoenteInputEnvelope
+    set?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    disconnect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    delete?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+    update?: EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput | EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput | EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -78995,6 +88631,20 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutConsultasInput, UtilizadorUpdateWithoutConsultasInput>, UtilizadorUncheckedUpdateWithoutConsultasInput>
   }
 
+  export type UtilizadorCreateNestedOneWithoutAgendasInput = {
+    create?: XOR<UtilizadorCreateWithoutAgendasInput, UtilizadorUncheckedCreateWithoutAgendasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAgendasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAgendasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAgendasInput, UtilizadorUncheckedCreateWithoutAgendasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAgendasInput
+    upsert?: UtilizadorUpsertWithoutAgendasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAgendasInput, UtilizadorUpdateWithoutAgendasInput>, UtilizadorUncheckedUpdateWithoutAgendasInput>
+  }
+
   export type UtilizadorCreateNestedOneWithoutCheckinsRececionadosInput = {
     create?: XOR<UtilizadorCreateWithoutCheckinsRececionadosInput, UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput
@@ -79503,6 +89153,194 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPedidosTIAtribuidosInput, UtilizadorUpdateWithoutPedidosTIAtribuidosInput>, UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutFicheiroPessoalInput = {
+    create?: XOR<DoenteCreateWithoutFicheiroPessoalInput, DoenteUncheckedCreateWithoutFicheiroPessoalInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutFicheiroPessoalInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutFicheirosPessoaisAtualizadosInput = {
+    create?: XOR<UtilizadorCreateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutFicheiroPessoalNestedInput = {
+    create?: XOR<DoenteCreateWithoutFicheiroPessoalInput, DoenteUncheckedCreateWithoutFicheiroPessoalInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutFicheiroPessoalInput
+    upsert?: DoenteUpsertWithoutFicheiroPessoalInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutFicheiroPessoalInput, DoenteUpdateWithoutFicheiroPessoalInput>, DoenteUncheckedUpdateWithoutFicheiroPessoalInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutFicheirosPessoaisAtualizadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput
+    upsert?: UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUpdateWithoutFicheirosPessoaisAtualizadosInput>, UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput>
+  }
+
+  export type DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput = {
+    create?: XOR<DoenteCreateWithoutEpisodiosFaturacaoInput, DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput = {
+    create?: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type ItemFaturaCreateNestedManyWithoutEpisodioInput = {
+    create?: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput> | ItemFaturaCreateWithoutEpisodioInput[] | ItemFaturaUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: ItemFaturaCreateOrConnectWithoutEpisodioInput | ItemFaturaCreateOrConnectWithoutEpisodioInput[]
+    createMany?: ItemFaturaCreateManyEpisodioInputEnvelope
+    connect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+  }
+
+  export type PagamentoCreateNestedManyWithoutEpisodioInput = {
+    create?: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput> | PagamentoCreateWithoutEpisodioInput[] | PagamentoUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutEpisodioInput | PagamentoCreateOrConnectWithoutEpisodioInput[]
+    createMany?: PagamentoCreateManyEpisodioInputEnvelope
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+  }
+
+  export type ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput = {
+    create?: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput> | ItemFaturaCreateWithoutEpisodioInput[] | ItemFaturaUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: ItemFaturaCreateOrConnectWithoutEpisodioInput | ItemFaturaCreateOrConnectWithoutEpisodioInput[]
+    createMany?: ItemFaturaCreateManyEpisodioInputEnvelope
+    connect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+  }
+
+  export type PagamentoUncheckedCreateNestedManyWithoutEpisodioInput = {
+    create?: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput> | PagamentoCreateWithoutEpisodioInput[] | PagamentoUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutEpisodioInput | PagamentoCreateOrConnectWithoutEpisodioInput[]
+    createMany?: PagamentoCreateManyEpisodioInputEnvelope
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+  }
+
+  export type EnumEstadoFaturaFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoFatura
+  }
+
+  export type DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput = {
+    create?: XOR<DoenteCreateWithoutEpisodiosFaturacaoInput, DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput
+    upsert?: DoenteUpsertWithoutEpisodiosFaturacaoInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutEpisodiosFaturacaoInput, DoenteUpdateWithoutEpisodiosFaturacaoInput>, DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput
+    upsert?: UtilizadorUpsertWithoutEpisodiosFaturacaoCriadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUpdateWithoutEpisodiosFaturacaoCriadosInput>, UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput>
+  }
+
+  export type ItemFaturaUpdateManyWithoutEpisodioNestedInput = {
+    create?: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput> | ItemFaturaCreateWithoutEpisodioInput[] | ItemFaturaUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: ItemFaturaCreateOrConnectWithoutEpisodioInput | ItemFaturaCreateOrConnectWithoutEpisodioInput[]
+    upsert?: ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput | ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput[]
+    createMany?: ItemFaturaCreateManyEpisodioInputEnvelope
+    set?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    disconnect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    delete?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    connect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    update?: ItemFaturaUpdateWithWhereUniqueWithoutEpisodioInput | ItemFaturaUpdateWithWhereUniqueWithoutEpisodioInput[]
+    updateMany?: ItemFaturaUpdateManyWithWhereWithoutEpisodioInput | ItemFaturaUpdateManyWithWhereWithoutEpisodioInput[]
+    deleteMany?: ItemFaturaScalarWhereInput | ItemFaturaScalarWhereInput[]
+  }
+
+  export type PagamentoUpdateManyWithoutEpisodioNestedInput = {
+    create?: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput> | PagamentoCreateWithoutEpisodioInput[] | PagamentoUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutEpisodioInput | PagamentoCreateOrConnectWithoutEpisodioInput[]
+    upsert?: PagamentoUpsertWithWhereUniqueWithoutEpisodioInput | PagamentoUpsertWithWhereUniqueWithoutEpisodioInput[]
+    createMany?: PagamentoCreateManyEpisodioInputEnvelope
+    set?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    disconnect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    delete?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    update?: PagamentoUpdateWithWhereUniqueWithoutEpisodioInput | PagamentoUpdateWithWhereUniqueWithoutEpisodioInput[]
+    updateMany?: PagamentoUpdateManyWithWhereWithoutEpisodioInput | PagamentoUpdateManyWithWhereWithoutEpisodioInput[]
+    deleteMany?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+  }
+
+  export type ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput = {
+    create?: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput> | ItemFaturaCreateWithoutEpisodioInput[] | ItemFaturaUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: ItemFaturaCreateOrConnectWithoutEpisodioInput | ItemFaturaCreateOrConnectWithoutEpisodioInput[]
+    upsert?: ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput | ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput[]
+    createMany?: ItemFaturaCreateManyEpisodioInputEnvelope
+    set?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    disconnect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    delete?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    connect?: ItemFaturaWhereUniqueInput | ItemFaturaWhereUniqueInput[]
+    update?: ItemFaturaUpdateWithWhereUniqueWithoutEpisodioInput | ItemFaturaUpdateWithWhereUniqueWithoutEpisodioInput[]
+    updateMany?: ItemFaturaUpdateManyWithWhereWithoutEpisodioInput | ItemFaturaUpdateManyWithWhereWithoutEpisodioInput[]
+    deleteMany?: ItemFaturaScalarWhereInput | ItemFaturaScalarWhereInput[]
+  }
+
+  export type PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput = {
+    create?: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput> | PagamentoCreateWithoutEpisodioInput[] | PagamentoUncheckedCreateWithoutEpisodioInput[]
+    connectOrCreate?: PagamentoCreateOrConnectWithoutEpisodioInput | PagamentoCreateOrConnectWithoutEpisodioInput[]
+    upsert?: PagamentoUpsertWithWhereUniqueWithoutEpisodioInput | PagamentoUpsertWithWhereUniqueWithoutEpisodioInput[]
+    createMany?: PagamentoCreateManyEpisodioInputEnvelope
+    set?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    disconnect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    delete?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    connect?: PagamentoWhereUniqueInput | PagamentoWhereUniqueInput[]
+    update?: PagamentoUpdateWithWhereUniqueWithoutEpisodioInput | PagamentoUpdateWithWhereUniqueWithoutEpisodioInput[]
+    updateMany?: PagamentoUpdateManyWithWhereWithoutEpisodioInput | PagamentoUpdateManyWithWhereWithoutEpisodioInput[]
+    deleteMany?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+  }
+
+  export type EpisodioFaturacaoCreateNestedOneWithoutItensInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutItensInput, EpisodioFaturacaoUncheckedCreateWithoutItensInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutItensInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  export type EpisodioFaturacaoUpdateOneRequiredWithoutItensNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutItensInput, EpisodioFaturacaoUncheckedCreateWithoutItensInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutItensInput
+    upsert?: EpisodioFaturacaoUpsertWithoutItensInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+    update?: XOR<XOR<EpisodioFaturacaoUpdateToOneWithWhereWithoutItensInput, EpisodioFaturacaoUpdateWithoutItensInput>, EpisodioFaturacaoUncheckedUpdateWithoutItensInput>
+  }
+
+  export type EpisodioFaturacaoCreateNestedOneWithoutPagamentosInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutPagamentosInput, EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutPagamentosInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutPagamentosRegistadosInput = {
+    create?: XOR<UtilizadorCreateWithoutPagamentosRegistadosInput, UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EpisodioFaturacaoUpdateOneRequiredWithoutPagamentosNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutPagamentosInput, EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutPagamentosInput
+    upsert?: EpisodioFaturacaoUpsertWithoutPagamentosInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+    update?: XOR<XOR<EpisodioFaturacaoUpdateToOneWithWhereWithoutPagamentosInput, EpisodioFaturacaoUpdateWithoutPagamentosInput>, EpisodioFaturacaoUncheckedUpdateWithoutPagamentosInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutPagamentosRegistadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutPagamentosRegistadosInput, UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput
+    upsert?: UtilizadorUpsertWithoutPagamentosRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPagamentosRegistadosInput, UtilizadorUpdateWithoutPagamentosRegistadosInput>, UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutRefreshTokensInput = {
@@ -80274,6 +90112,23 @@ export namespace Prisma {
     _max?: NestedEnumEstadoPedidoTIFilter<$PrismaModel>
   }
 
+  export type NestedEnumEstadoFaturaFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoFatura | EnumEstadoFaturaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoFaturaFilter<$PrismaModel> | $Enums.EstadoFatura
+  }
+
+  export type NestedEnumEstadoFaturaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoFatura | EnumEstadoFaturaFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoFatura[] | ListEnumEstadoFaturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoFaturaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoFatura
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoFaturaFilter<$PrismaModel>
+    _max?: NestedEnumEstadoFaturaFilter<$PrismaModel>
+  }
+
   export type SubRoleConfigCreateWithoutRoleInput = {
     id?: string
     chave: string
@@ -80658,6 +90513,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -80698,6 +90555,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -81346,6 +91205,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
   }
@@ -81361,6 +91222,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -82170,6 +92033,144 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput = {
+    id?: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutFicheiroPessoalInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput = {
+    id?: string
+    doenteId: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+  }
+
+  export type FicheiroPessoalDoenteCreateOrConnectWithoutAtualizadoPorInput = {
+    where: FicheiroPessoalDoenteWhereUniqueInput
+    create: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput>
+  }
+
+  export type FicheiroPessoalDoenteCreateManyAtualizadoPorInputEnvelope = {
+    data: FicheiroPessoalDoenteCreateManyAtualizadoPorInput | FicheiroPessoalDoenteCreateManyAtualizadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EpisodioFaturacaoCreateWithoutCriadoPorInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    itens?: ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoCreateOrConnectWithoutCriadoPorInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    create: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type EpisodioFaturacaoCreateManyCriadoPorInputEnvelope = {
+    data: EpisodioFaturacaoCreateManyCriadoPorInput | EpisodioFaturacaoCreateManyCriadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PagamentoCreateWithoutRegistadoPorInput = {
+    id?: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    criadoEm?: Date | string
+    episodio: EpisodioFaturacaoCreateNestedOneWithoutPagamentosInput
+  }
+
+  export type PagamentoUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    episodioFaturacaoId: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoCreateOrConnectWithoutRegistadoPorInput = {
+    where: PagamentoWhereUniqueInput
+    create: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type PagamentoCreateManyRegistadoPorInputEnvelope = {
+    data: PagamentoCreateManyRegistadoPorInput | PagamentoCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AgendaMedicoCreateWithoutMedicoInput = {
+    id?: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AgendaMedicoUncheckedCreateWithoutMedicoInput = {
+    id?: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AgendaMedicoCreateOrConnectWithoutMedicoInput = {
+    where: AgendaMedicoWhereUniqueInput
+    create: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput>
+  }
+
+  export type AgendaMedicoCreateManyMedicoInputEnvelope = {
+    data: AgendaMedicoCreateManyMedicoInput | AgendaMedicoCreateManyMedicoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TurnoUpsertWithWhereUniqueWithoutChefeTurnoInput = {
     where: TurnoWhereUniqueInput
     update: XOR<TurnoUpdateWithoutChefeTurnoInput, TurnoUncheckedUpdateWithoutChefeTurnoInput>
@@ -82967,6 +92968,8 @@ export namespace Prisma {
     notas?: StringNullableFilter<"Consulta"> | string | null
     diagnostico?: StringNullableFilter<"Consulta"> | string | null
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    codigo?: StringNullableFilter<"Consulta"> | string | null
+    checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
   }
 
@@ -83541,6 +93544,133 @@ export namespace Prisma {
     data: XOR<PedidoTIUpdateManyMutationInput, PedidoTIUncheckedUpdateManyWithoutResponsavelInput>
   }
 
+  export type FicheiroPessoalDoenteUpsertWithWhereUniqueWithoutAtualizadoPorInput = {
+    where: FicheiroPessoalDoenteWhereUniqueInput
+    update: XOR<FicheiroPessoalDoenteUpdateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedUpdateWithoutAtualizadoPorInput>
+    create: XOR<FicheiroPessoalDoenteCreateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedCreateWithoutAtualizadoPorInput>
+  }
+
+  export type FicheiroPessoalDoenteUpdateWithWhereUniqueWithoutAtualizadoPorInput = {
+    where: FicheiroPessoalDoenteWhereUniqueInput
+    data: XOR<FicheiroPessoalDoenteUpdateWithoutAtualizadoPorInput, FicheiroPessoalDoenteUncheckedUpdateWithoutAtualizadoPorInput>
+  }
+
+  export type FicheiroPessoalDoenteUpdateManyWithWhereWithoutAtualizadoPorInput = {
+    where: FicheiroPessoalDoenteScalarWhereInput
+    data: XOR<FicheiroPessoalDoenteUpdateManyMutationInput, FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorInput>
+  }
+
+  export type FicheiroPessoalDoenteScalarWhereInput = {
+    AND?: FicheiroPessoalDoenteScalarWhereInput | FicheiroPessoalDoenteScalarWhereInput[]
+    OR?: FicheiroPessoalDoenteScalarWhereInput[]
+    NOT?: FicheiroPessoalDoenteScalarWhereInput | FicheiroPessoalDoenteScalarWhereInput[]
+    id?: StringFilter<"FicheiroPessoalDoente"> | string
+    doenteId?: StringFilter<"FicheiroPessoalDoente"> | string
+    nif?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroSNS?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    morada?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    codigoPostal?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    localidade?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    telefone?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    email?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    entidadeSeguradora?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    numeroApolice?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    tipoCobertura?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+    atualizadoEm?: DateTimeFilter<"FicheiroPessoalDoente"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"FicheiroPessoalDoente"> | string | null
+  }
+
+  export type EpisodioFaturacaoUpsertWithWhereUniqueWithoutCriadoPorInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    update: XOR<EpisodioFaturacaoUpdateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedUpdateWithoutCriadoPorInput>
+    create: XOR<EpisodioFaturacaoCreateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput>
+  }
+
+  export type EpisodioFaturacaoUpdateWithWhereUniqueWithoutCriadoPorInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    data: XOR<EpisodioFaturacaoUpdateWithoutCriadoPorInput, EpisodioFaturacaoUncheckedUpdateWithoutCriadoPorInput>
+  }
+
+  export type EpisodioFaturacaoUpdateManyWithWhereWithoutCriadoPorInput = {
+    where: EpisodioFaturacaoScalarWhereInput
+    data: XOR<EpisodioFaturacaoUpdateManyMutationInput, EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorInput>
+  }
+
+  export type EpisodioFaturacaoScalarWhereInput = {
+    AND?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+    OR?: EpisodioFaturacaoScalarWhereInput[]
+    NOT?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+    id?: StringFilter<"EpisodioFaturacao"> | string
+    doenteId?: StringFilter<"EpisodioFaturacao"> | string
+    estado?: EnumEstadoFaturaFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
+    dataEmissao?: DateTimeNullableFilter<"EpisodioFaturacao"> | Date | string | null
+    totalBase?: FloatFilter<"EpisodioFaturacao"> | number
+    totalCobrado?: FloatFilter<"EpisodioFaturacao"> | number
+    tipoCobertura?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    notas?: StringNullableFilter<"EpisodioFaturacao"> | string | null
+    criadoPorId?: StringFilter<"EpisodioFaturacao"> | string
+    criadoEm?: DateTimeFilter<"EpisodioFaturacao"> | Date | string
+  }
+
+  export type PagamentoUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: PagamentoWhereUniqueInput
+    update: XOR<PagamentoUpdateWithoutRegistadoPorInput, PagamentoUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<PagamentoCreateWithoutRegistadoPorInput, PagamentoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type PagamentoUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: PagamentoWhereUniqueInput
+    data: XOR<PagamentoUpdateWithoutRegistadoPorInput, PagamentoUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type PagamentoUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: PagamentoScalarWhereInput
+    data: XOR<PagamentoUpdateManyMutationInput, PagamentoUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type PagamentoScalarWhereInput = {
+    AND?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+    OR?: PagamentoScalarWhereInput[]
+    NOT?: PagamentoScalarWhereInput | PagamentoScalarWhereInput[]
+    id?: StringFilter<"Pagamento"> | string
+    episodioFaturacaoId?: StringFilter<"Pagamento"> | string
+    valor?: FloatFilter<"Pagamento"> | number
+    metodo?: StringFilter<"Pagamento"> | string
+    referencia?: StringNullableFilter<"Pagamento"> | string | null
+    registadoPorId?: StringFilter<"Pagamento"> | string
+    criadoEm?: DateTimeFilter<"Pagamento"> | Date | string
+  }
+
+  export type AgendaMedicoUpsertWithWhereUniqueWithoutMedicoInput = {
+    where: AgendaMedicoWhereUniqueInput
+    update: XOR<AgendaMedicoUpdateWithoutMedicoInput, AgendaMedicoUncheckedUpdateWithoutMedicoInput>
+    create: XOR<AgendaMedicoCreateWithoutMedicoInput, AgendaMedicoUncheckedCreateWithoutMedicoInput>
+  }
+
+  export type AgendaMedicoUpdateWithWhereUniqueWithoutMedicoInput = {
+    where: AgendaMedicoWhereUniqueInput
+    data: XOR<AgendaMedicoUpdateWithoutMedicoInput, AgendaMedicoUncheckedUpdateWithoutMedicoInput>
+  }
+
+  export type AgendaMedicoUpdateManyWithWhereWithoutMedicoInput = {
+    where: AgendaMedicoScalarWhereInput
+    data: XOR<AgendaMedicoUpdateManyMutationInput, AgendaMedicoUncheckedUpdateManyWithoutMedicoInput>
+  }
+
+  export type AgendaMedicoScalarWhereInput = {
+    AND?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
+    OR?: AgendaMedicoScalarWhereInput[]
+    NOT?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
+    id?: StringFilter<"AgendaMedico"> | string
+    medicoId?: StringFilter<"AgendaMedico"> | string
+    diaSemana?: IntFilter<"AgendaMedico"> | number
+    horaInicio?: StringFilter<"AgendaMedico"> | string
+    horaFim?: StringFilter<"AgendaMedico"> | string
+    duracaoSlot?: IntFilter<"AgendaMedico"> | number
+    ativo?: BoolFilter<"AgendaMedico"> | boolean
+    criadoEm?: DateTimeFilter<"AgendaMedico"> | Date | string
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -83579,6 +93709,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -83619,6 +93751,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -83675,6 +93809,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -83715,6 +93851,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -83800,6 +93938,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -83866,6 +94008,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -84448,6 +94594,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
   }
@@ -84463,6 +94611,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -84648,6 +94798,81 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FicheiroPessoalDoenteCreateWithoutDoenteInput = {
+    id?: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    atualizadoPor?: UtilizadorCreateNestedOneWithoutFicheirosPessoaisAtualizadosInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+    atualizadoPorId?: string | null
+  }
+
+  export type FicheiroPessoalDoenteCreateOrConnectWithoutDoenteInput = {
+    where: FicheiroPessoalDoenteWhereUniqueInput
+    create: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoCreateWithoutDoenteInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
+    itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+    itens?: ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoCreateOrConnectWithoutDoenteInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    create: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoCreateManyDoenteInputEnvelope = {
+    data: EpisodioFaturacaoCreateManyDoenteInput | EpisodioFaturacaoCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -84748,6 +94973,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -84814,6 +95043,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -85264,6 +95497,65 @@ export namespace Prisma {
     data: XOR<DispositivoInvasivoUpdateManyMutationInput, DispositivoInvasivoUncheckedUpdateManyWithoutDoenteInput>
   }
 
+  export type FicheiroPessoalDoenteUpsertWithoutDoenteInput = {
+    update: XOR<FicheiroPessoalDoenteUpdateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedUpdateWithoutDoenteInput>
+    create: XOR<FicheiroPessoalDoenteCreateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedCreateWithoutDoenteInput>
+    where?: FicheiroPessoalDoenteWhereInput
+  }
+
+  export type FicheiroPessoalDoenteUpdateToOneWithWhereWithoutDoenteInput = {
+    where?: FicheiroPessoalDoenteWhereInput
+    data: XOR<FicheiroPessoalDoenteUpdateWithoutDoenteInput, FicheiroPessoalDoenteUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type FicheiroPessoalDoenteUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPor?: UtilizadorUpdateOneWithoutFicheirosPessoaisAtualizadosNestedInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EpisodioFaturacaoUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    update: XOR<EpisodioFaturacaoUpdateWithoutDoenteInput, EpisodioFaturacaoUncheckedUpdateWithoutDoenteInput>
+    create: XOR<EpisodioFaturacaoCreateWithoutDoenteInput, EpisodioFaturacaoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    data: XOR<EpisodioFaturacaoUpdateWithoutDoenteInput, EpisodioFaturacaoUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput = {
+    where: EpisodioFaturacaoScalarWhereInput
+    data: XOR<EpisodioFaturacaoUpdateManyMutationInput, EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteInput>
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     numeroFuncionario: string
@@ -85328,6 +95620,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -85394,6 +95690,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -85634,6 +95934,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -85700,6 +96004,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -85836,6 +96144,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -85876,6 +96186,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -85947,6 +96259,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -86013,6 +96329,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -86100,6 +96420,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -86140,6 +96462,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -86217,6 +96541,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -86283,6 +96611,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -86417,6 +96749,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -86483,6 +96819,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -86602,6 +96942,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -86668,6 +97012,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -86770,6 +97118,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -86810,6 +97160,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -86940,6 +97292,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -86980,6 +97334,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutNotasClinciasInput = {
@@ -87020,6 +97376,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
@@ -87060,6 +97418,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasClinciasInput = {
@@ -87131,6 +97491,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -87197,6 +97561,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -87253,6 +97621,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
@@ -87293,6 +97663,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasClinciasAutorInput = {
@@ -87370,6 +97742,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -87436,6 +97812,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -87476,6 +97856,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
@@ -87516,6 +97898,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEscalasClinicasInput = {
@@ -87587,6 +97971,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -87653,6 +98041,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -87709,6 +98101,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
@@ -87749,6 +98143,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEscalasClinicasRegistadasInput = {
@@ -87826,6 +98222,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -87892,6 +98292,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -87963,6 +98367,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -88003,6 +98409,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -88074,6 +98482,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -88140,6 +98552,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -88233,6 +98649,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -88273,6 +98691,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -88350,6 +98770,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -88416,6 +98840,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -88456,6 +98884,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -88496,6 +98926,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -88567,6 +98999,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -88633,6 +99069,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -88704,6 +99144,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -88770,6 +99214,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -88857,6 +99305,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -88897,6 +99347,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -88974,6 +99426,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -89040,6 +99496,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -89117,6 +99577,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -89183,6 +99647,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -89260,6 +99728,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -89300,6 +99770,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -89371,6 +99843,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -89437,6 +99913,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -89508,6 +99988,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -89574,6 +100058,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -89656,6 +100144,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -89696,6 +100186,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -89773,6 +100265,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -89839,6 +100335,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -89916,6 +100416,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -89982,6 +100486,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -90077,6 +100585,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -90117,6 +100627,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -90188,6 +100700,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -90254,6 +100770,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -90355,6 +100875,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -90395,6 +100917,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -90472,6 +100996,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -90538,6 +101066,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -90604,6 +101136,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -90670,6 +101206,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -90780,6 +101320,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -90846,6 +101390,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -91129,6 +101677,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -91195,6 +101747,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -91306,6 +101862,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -91372,6 +101932,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -91438,6 +102002,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -91504,6 +102072,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -91575,6 +102147,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -91641,6 +102217,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -91735,6 +102315,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -91801,6 +102385,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -91883,6 +102471,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -91949,6 +102541,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -92026,6 +102622,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -92092,6 +102692,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -92198,6 +102802,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -92264,6 +102872,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -92327,6 +102939,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -92367,6 +102981,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -92438,6 +103054,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -92504,6 +103124,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -92575,6 +103199,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -92641,6 +103269,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -92726,6 +103358,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -92766,6 +103400,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -92843,6 +103479,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -92909,6 +103549,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -92986,6 +103630,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -93052,6 +103700,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -93092,6 +103744,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
@@ -93132,6 +103786,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
@@ -93203,6 +103859,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -93269,6 +103929,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -93325,6 +103989,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
@@ -93365,6 +104031,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
@@ -93442,6 +104110,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -93508,6 +104180,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -93574,6 +104250,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -93640,6 +104320,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -93722,6 +104406,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -93788,6 +104476,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -93828,6 +104520,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
@@ -93868,6 +104562,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlergiasInput = {
@@ -93924,6 +104620,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
@@ -93964,6 +104662,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -94004,6 +104704,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
@@ -94044,6 +104746,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
@@ -94100,6 +104804,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
@@ -94140,6 +104846,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAlertasClinicosInput = {
@@ -94180,6 +104888,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
@@ -94220,6 +104930,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
@@ -94276,6 +104988,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
@@ -94316,6 +105030,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
@@ -94356,6 +105072,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -94396,6 +105114,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -94467,6 +105187,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -94533,6 +105257,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -94589,6 +105317,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -94629,6 +105359,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
@@ -94706,6 +105438,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -94772,6 +105508,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -94812,6 +105552,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
@@ -94852,6 +105594,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
@@ -94923,6 +105667,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -94989,6 +105737,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -95045,6 +105797,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
@@ -95085,6 +105839,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSumariosAltaInput = {
@@ -95162,6 +105918,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -95228,6 +105988,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -95294,6 +106058,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -95360,6 +106128,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -95442,6 +106214,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -95508,6 +106284,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -95548,6 +106328,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutExamesInput = {
@@ -95588,6 +106370,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutExamesInput = {
@@ -95659,6 +106443,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -95725,6 +106513,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -95805,6 +106597,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutExamesInput = {
@@ -95845,6 +106639,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutExamesSolicitadosInput = {
@@ -95922,6 +106718,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -95988,6 +106788,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -96127,6 +106931,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
@@ -96167,6 +106973,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosUrgenciaInput = {
@@ -96238,6 +107046,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -96304,6 +107116,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -96375,6 +107191,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -96441,6 +107261,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -96497,6 +107321,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
@@ -96537,6 +107363,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosTriadosInput = {
@@ -96614,6 +107442,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -96680,6 +107512,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -96757,6 +107593,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -96823,6 +107663,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -96863,6 +107707,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
@@ -96903,6 +107749,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCirurgiasInput = {
@@ -96974,6 +107822,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -97040,6 +107892,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -97111,6 +107967,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -97177,6 +108037,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -97264,6 +108128,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
@@ -97304,6 +108170,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoCircurgiaoInput = {
@@ -97381,6 +108249,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -97447,6 +108319,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -97524,6 +108400,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -97590,6 +108470,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -97732,6 +108616,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -97798,6 +108686,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -97869,6 +108761,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -97935,6 +108831,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -98006,6 +108906,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -98072,6 +108976,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -98199,6 +109107,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -98265,6 +109177,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -98342,6 +109258,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -98408,6 +109328,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -98485,6 +109409,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -98551,6 +109479,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -98591,6 +109523,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsultasInput = {
@@ -98631,6 +109565,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsultasInput = {
@@ -98702,6 +109638,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -98768,6 +109708,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -98824,6 +109768,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
@@ -98864,6 +109810,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsultasInput = {
@@ -98941,6 +109889,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -99007,6 +109959,306 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type UtilizadorCreateWithoutAgendasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAgendasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAgendasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAgendasInput, UtilizadorUncheckedCreateWithoutAgendasInput>
+  }
+
+  export type UtilizadorUpsertWithoutAgendasInput = {
+    update: XOR<UtilizadorUpdateWithoutAgendasInput, UtilizadorUncheckedUpdateWithoutAgendasInput>
+    create: XOR<UtilizadorCreateWithoutAgendasInput, UtilizadorUncheckedCreateWithoutAgendasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAgendasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAgendasInput, UtilizadorUncheckedUpdateWithoutAgendasInput>
+  }
+
+  export type UtilizadorUpdateWithoutAgendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAgendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -99073,6 +110325,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -99139,6 +110395,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -99210,6 +110470,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -99276,6 +110540,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -99358,6 +110626,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -99424,6 +110696,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -99501,6 +110777,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -99567,6 +110847,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type PedidoFarmaciaCreateWithoutStockItemInput = {
@@ -99710,6 +110994,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -99776,6 +111064,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -99847,6 +111139,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -99913,6 +111209,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -100030,6 +111330,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -100096,6 +111400,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -100173,6 +111481,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -100239,6 +111551,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -100279,6 +111595,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -100319,6 +111637,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -100390,6 +111710,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -100456,6 +111780,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -100544,6 +111872,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -100584,6 +111914,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPlanosReabilitacaoInput = {
@@ -100661,6 +111993,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -100727,6 +112063,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -100810,6 +112150,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -100850,6 +112192,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -100921,6 +112265,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -100987,6 +112335,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -101076,6 +112428,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -101116,6 +112470,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesFisioterapiaInput = {
@@ -101193,6 +112549,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -101259,6 +112619,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -101299,6 +112663,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
@@ -101339,6 +112705,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosInternosInput = {
@@ -101410,6 +112778,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -101476,6 +112848,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -101547,6 +112923,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -101613,6 +112993,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -101669,6 +113053,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
@@ -101709,6 +113095,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosSolicitadosInput = {
@@ -101786,6 +113174,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -101852,6 +113244,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -101929,6 +113325,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -101995,6 +113395,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -102061,6 +113465,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -102127,6 +113535,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -102209,6 +113621,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -102275,6 +113691,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -102341,6 +113761,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -102407,6 +113831,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -102478,6 +113906,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -102544,6 +113976,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -102626,6 +114062,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -102692,6 +114132,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -102769,6 +114213,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -102835,6 +114283,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -102875,6 +114327,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
@@ -102915,6 +114369,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutInterconsultasInput = {
@@ -102986,6 +114442,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -103052,6 +114512,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -103123,6 +114587,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -103189,6 +114657,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -103245,6 +114717,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
@@ -103285,6 +114759,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRequisitadasInput = {
@@ -103362,6 +114838,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -103428,6 +114908,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -103505,6 +114989,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -103571,6 +115059,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -103611,6 +115103,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
     pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
@@ -103651,6 +115145,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
     pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDispositivosInvasivosInput = {
@@ -103722,6 +115218,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -103788,6 +115288,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -103844,6 +115348,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
@@ -103884,6 +115390,8 @@ export namespace Prisma {
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutDispositivosInseridosInput = {
@@ -103961,6 +115469,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -104027,6 +115539,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutIncidentesCriadosInput = {
@@ -104093,6 +115609,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
@@ -104159,6 +115679,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
@@ -104230,6 +115754,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
@@ -104296,6 +115824,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
@@ -104378,6 +115910,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
@@ -104444,6 +115980,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
@@ -104521,6 +116061,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
@@ -104587,6 +116131,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutPedidosTICriadosInput = {
@@ -104653,6 +116201,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
@@ -104719,6 +116271,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
@@ -104790,6 +116346,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
@@ -104856,6 +116416,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
@@ -104938,6 +116502,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
@@ -105004,6 +116572,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
@@ -105081,6 +116653,10 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
@@ -105147,6 +116723,1514 @@ export namespace Prisma {
     incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type DoenteCreateWithoutFicheiroPessoalInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutFicheiroPessoalInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutFicheiroPessoalInput, DoenteUncheckedCreateWithoutFicheiroPessoalInput>
+  }
+
+  export type UtilizadorCreateWithoutFicheirosPessoaisAtualizadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput>
+  }
+
+  export type DoenteUpsertWithoutFicheiroPessoalInput = {
+    update: XOR<DoenteUpdateWithoutFicheiroPessoalInput, DoenteUncheckedUpdateWithoutFicheiroPessoalInput>
+    create: XOR<DoenteCreateWithoutFicheiroPessoalInput, DoenteUncheckedCreateWithoutFicheiroPessoalInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutFicheiroPessoalInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutFicheiroPessoalInput, DoenteUncheckedUpdateWithoutFicheiroPessoalInput>
+  }
+
+  export type DoenteUpdateWithoutFicheiroPessoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput = {
+    update: XOR<UtilizadorUpdateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput>
+    create: XOR<UtilizadorCreateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutFicheirosPessoaisAtualizadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutFicheirosPessoaisAtualizadosInput, UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutFicheirosPessoaisAtualizadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    cama: CamaCreateNestedOneWithoutDoenteInput
+    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
+    id?: string
+    nome: string
+    dataNascimento: Date | string
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal: string
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    camaId: string
+    administrativoAdmissaoId: string
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutEpisodiosFaturacaoInput, DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput>
+  }
+
+  export type UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
+  }
+
+  export type ItemFaturaCreateWithoutEpisodioInput = {
+    id?: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+  }
+
+  export type ItemFaturaUncheckedCreateWithoutEpisodioInput = {
+    id?: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+  }
+
+  export type ItemFaturaCreateOrConnectWithoutEpisodioInput = {
+    where: ItemFaturaWhereUniqueInput
+    create: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput>
+  }
+
+  export type ItemFaturaCreateManyEpisodioInputEnvelope = {
+    data: ItemFaturaCreateManyEpisodioInput | ItemFaturaCreateManyEpisodioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PagamentoCreateWithoutEpisodioInput = {
+    id?: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    criadoEm?: Date | string
+    registadoPor: UtilizadorCreateNestedOneWithoutPagamentosRegistadosInput
+  }
+
+  export type PagamentoUncheckedCreateWithoutEpisodioInput = {
+    id?: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoCreateOrConnectWithoutEpisodioInput = {
+    where: PagamentoWhereUniqueInput
+    create: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput>
+  }
+
+  export type PagamentoCreateManyEpisodioInputEnvelope = {
+    data: PagamentoCreateManyEpisodioInput | PagamentoCreateManyEpisodioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DoenteUpsertWithoutEpisodiosFaturacaoInput = {
+    update: XOR<DoenteUpdateWithoutEpisodiosFaturacaoInput, DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput>
+    create: XOR<DoenteCreateWithoutEpisodiosFaturacaoInput, DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutEpisodiosFaturacaoInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutEpisodiosFaturacaoInput, DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput>
+  }
+
+  export type DoenteUpdateWithoutEpisodiosFaturacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    camaId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutEpisodiosFaturacaoCriadosInput = {
+    update: XOR<UtilizadorUpdateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput>
+    create: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutEpisodiosFaturacaoCriadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutEpisodiosFaturacaoCriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput = {
+    where: ItemFaturaWhereUniqueInput
+    update: XOR<ItemFaturaUpdateWithoutEpisodioInput, ItemFaturaUncheckedUpdateWithoutEpisodioInput>
+    create: XOR<ItemFaturaCreateWithoutEpisodioInput, ItemFaturaUncheckedCreateWithoutEpisodioInput>
+  }
+
+  export type ItemFaturaUpdateWithWhereUniqueWithoutEpisodioInput = {
+    where: ItemFaturaWhereUniqueInput
+    data: XOR<ItemFaturaUpdateWithoutEpisodioInput, ItemFaturaUncheckedUpdateWithoutEpisodioInput>
+  }
+
+  export type ItemFaturaUpdateManyWithWhereWithoutEpisodioInput = {
+    where: ItemFaturaScalarWhereInput
+    data: XOR<ItemFaturaUpdateManyMutationInput, ItemFaturaUncheckedUpdateManyWithoutEpisodioInput>
+  }
+
+  export type ItemFaturaScalarWhereInput = {
+    AND?: ItemFaturaScalarWhereInput | ItemFaturaScalarWhereInput[]
+    OR?: ItemFaturaScalarWhereInput[]
+    NOT?: ItemFaturaScalarWhereInput | ItemFaturaScalarWhereInput[]
+    id?: StringFilter<"ItemFatura"> | string
+    episodioFaturacaoId?: StringFilter<"ItemFatura"> | string
+    descricao?: StringFilter<"ItemFatura"> | string
+    categoria?: StringFilter<"ItemFatura"> | string
+    quantidade?: IntFilter<"ItemFatura"> | number
+    precoUnitario?: FloatFilter<"ItemFatura"> | number
+    total?: FloatFilter<"ItemFatura"> | number
+    criadoEm?: DateTimeFilter<"ItemFatura"> | Date | string
+  }
+
+  export type PagamentoUpsertWithWhereUniqueWithoutEpisodioInput = {
+    where: PagamentoWhereUniqueInput
+    update: XOR<PagamentoUpdateWithoutEpisodioInput, PagamentoUncheckedUpdateWithoutEpisodioInput>
+    create: XOR<PagamentoCreateWithoutEpisodioInput, PagamentoUncheckedCreateWithoutEpisodioInput>
+  }
+
+  export type PagamentoUpdateWithWhereUniqueWithoutEpisodioInput = {
+    where: PagamentoWhereUniqueInput
+    data: XOR<PagamentoUpdateWithoutEpisodioInput, PagamentoUncheckedUpdateWithoutEpisodioInput>
+  }
+
+  export type PagamentoUpdateManyWithWhereWithoutEpisodioInput = {
+    where: PagamentoScalarWhereInput
+    data: XOR<PagamentoUpdateManyMutationInput, PagamentoUncheckedUpdateManyWithoutEpisodioInput>
+  }
+
+  export type EpisodioFaturacaoCreateWithoutItensInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
+    pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateWithoutItensInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+    pagamentos?: PagamentoUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoCreateOrConnectWithoutItensInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    create: XOR<EpisodioFaturacaoCreateWithoutItensInput, EpisodioFaturacaoUncheckedCreateWithoutItensInput>
+  }
+
+  export type EpisodioFaturacaoUpsertWithoutItensInput = {
+    update: XOR<EpisodioFaturacaoUpdateWithoutItensInput, EpisodioFaturacaoUncheckedUpdateWithoutItensInput>
+    create: XOR<EpisodioFaturacaoCreateWithoutItensInput, EpisodioFaturacaoUncheckedCreateWithoutItensInput>
+    where?: EpisodioFaturacaoWhereInput
+  }
+
+  export type EpisodioFaturacaoUpdateToOneWithWhereWithoutItensInput = {
+    where?: EpisodioFaturacaoWhereInput
+    data: XOR<EpisodioFaturacaoUpdateWithoutItensInput, EpisodioFaturacaoUncheckedUpdateWithoutItensInput>
+  }
+
+  export type EpisodioFaturacaoUpdateWithoutItensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
+    pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateWithoutItensInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pagamentos?: PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoCreateWithoutPagamentosInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
+    itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+    itens?: ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoCreateOrConnectWithoutPagamentosInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    create: XOR<EpisodioFaturacaoCreateWithoutPagamentosInput, EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput>
+  }
+
+  export type UtilizadorCreateWithoutPagamentosRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutPagamentosRegistadosInput, UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput>
+  }
+
+  export type EpisodioFaturacaoUpsertWithoutPagamentosInput = {
+    update: XOR<EpisodioFaturacaoUpdateWithoutPagamentosInput, EpisodioFaturacaoUncheckedUpdateWithoutPagamentosInput>
+    create: XOR<EpisodioFaturacaoCreateWithoutPagamentosInput, EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput>
+    where?: EpisodioFaturacaoWhereInput
+  }
+
+  export type EpisodioFaturacaoUpdateToOneWithWhereWithoutPagamentosInput = {
+    where?: EpisodioFaturacaoWhereInput
+    data: XOR<EpisodioFaturacaoUpdateWithoutPagamentosInput, EpisodioFaturacaoUncheckedUpdateWithoutPagamentosInput>
+  }
+
+  export type EpisodioFaturacaoUpdateWithoutPagamentosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
+    itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateWithoutPagamentosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    itens?: ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutPagamentosRegistadosInput = {
+    update: XOR<UtilizadorUpdateWithoutPagamentosRegistadosInput, UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput>
+    create: XOR<UtilizadorCreateWithoutPagamentosRegistadosInput, UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutPagamentosRegistadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutPagamentosRegistadosInput, UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutPagamentosRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorCreateWithoutRefreshTokensInput = {
@@ -105213,6 +118297,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
@@ -105279,6 +118367,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
     pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
     pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
@@ -105361,6 +118453,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
@@ -105427,6 +118523,10 @@ export namespace Prisma {
     incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
     pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
     pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -105775,6 +118875,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -106057,6 +119159,53 @@ export namespace Prisma {
     criadoEm?: Date | string
     resolvidoEm?: Date | string | null
     criadoPorId: string
+  }
+
+  export type FicheiroPessoalDoenteCreateManyAtualizadoPorInput = {
+    id?: string
+    doenteId: string
+    nif?: string | null
+    numeroSNS?: string | null
+    morada?: string | null
+    codigoPostal?: string | null
+    localidade?: string | null
+    telefone?: string | null
+    email?: string | null
+    entidadeSeguradora?: string | null
+    numeroApolice?: string | null
+    tipoCobertura?: string | null
+    atualizadoEm?: Date | string
+  }
+
+  export type EpisodioFaturacaoCreateManyCriadoPorInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoCreateManyRegistadoPorInput = {
+    id?: string
+    episodioFaturacaoId: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type AgendaMedicoCreateManyMedicoInput = {
+    id?: string
+    diaSemana: number
+    horaInicio: string
+    horaFim: string
+    duracaoSlot?: number
+    ativo?: boolean
+    criadoEm?: Date | string
   }
 
   export type TurnoUpdateWithoutChefeTurnoInput = {
@@ -106345,6 +119494,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -106385,6 +119536,8 @@ export namespace Prisma {
     pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -107048,6 +120201,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
   }
@@ -107063,6 +120218,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -107077,6 +120234,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -107927,6 +121086,151 @@ export namespace Prisma {
     criadoPorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type FicheiroPessoalDoenteUpdateWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutFicheiroPessoalNestedInput
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroSNS?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoPostal?: NullableStringFieldUpdateOperationsInput | string | null
+    localidade?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    entidadeSeguradora?: NullableStringFieldUpdateOperationsInput | string | null
+    numeroApolice?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EpisodioFaturacaoUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    itens?: ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    episodio?: EpisodioFaturacaoUpdateOneRequiredWithoutPagamentosNestedInput
+  }
+
+  export type PagamentoUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    episodioFaturacaoId?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoUpdateWithoutMedicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoUncheckedUpdateWithoutMedicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AgendaMedicoUncheckedUpdateManyWithoutMedicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    diaSemana?: IntFieldUpdateOperationsInput | number
+    horaInicio?: StringFieldUpdateOperationsInput | string
+    horaFim?: StringFieldUpdateOperationsInput | string
+    duracaoSlot?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyDoenteInput = {
     id?: string
     enfermeiroId: string
@@ -108119,6 +121423,8 @@ export namespace Prisma {
     notas?: string | null
     diagnostico?: string | null
     proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -108180,6 +121486,18 @@ export namespace Prisma {
     ativo?: boolean
     observacoes?: string | null
     inseridoPorId: string
+  }
+
+  export type EpisodioFaturacaoCreateManyDoenteInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
   }
 
   export type AtribuicaoDoenteUpdateWithoutDoenteInput = {
@@ -108741,6 +122059,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
   }
@@ -108756,6 +122076,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -108770,6 +122092,8 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -108953,6 +122277,46 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     inseridoPorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EpisodioFaturacaoUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
+    itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    itens?: ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AtribuicaoDoenteCreateManyTurnoInput = {
@@ -109411,6 +122775,82 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     evolucao?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoSessaoFieldUpdateOperationsInput | $Enums.EstadoSessao
+  }
+
+  export type ItemFaturaCreateManyEpisodioInput = {
+    id?: string
+    descricao: string
+    categoria: string
+    quantidade?: number
+    precoUnitario: number
+    total: number
+    criadoEm?: Date | string
+  }
+
+  export type PagamentoCreateManyEpisodioInput = {
+    id?: string
+    valor: number
+    metodo: string
+    referencia?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type ItemFaturaUpdateWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemFaturaUncheckedUpdateWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemFaturaUncheckedUpdateManyWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    total?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoUpdateWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutPagamentosRegistadosNestedInput
+  }
+
+  export type PagamentoUncheckedUpdateWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagamentoUncheckedUpdateManyWithoutEpisodioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    valor?: FloatFieldUpdateOperationsInput | number
+    metodo?: StringFieldUpdateOperationsInput | string
+    referencia?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

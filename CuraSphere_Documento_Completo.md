@@ -1,0 +1,862 @@
+# CuraSphere — Documento Completo da Aplicação
+
+> **Última actualização:** 2026-04-29 (sessão 4)
+> **Estado geral:** Em desenvolvimento activo — backend completo, web e mobile funcionais
+
+---
+
+## Índice
+
+1. [Visão Geral](#1-visão-geral)
+2. [Arquitectura Técnica](#2-arquitectura-técnica)
+3. [Autenticação e Segurança](#3-autenticação-e-segurança)
+4. [Sistema de Roles e Sub-roles](#4-sistema-de-roles-e-sub-roles)
+5. [API — Módulos Implementados](#5-api--módulos-implementados)
+6. [Web — Páginas Implementadas](#6-web--páginas-implementadas)
+7. [Mobile — Screens Implementados](#7-mobile--screens-implementados)
+8. [Tabela de Permissões por Role](#8-tabela-de-permissões-por-role)
+9. [Funcionalidades Implementadas ✅](#9-funcionalidades-implementadas-)
+10. [O Que Falta / Está Incompleto ❌](#10-o-que-falta--está-incompleto-)
+11. [Prioridades de Desenvolvimento](#11-prioridades-de-desenvolvimento)
+12. [Modelos de Dados (Prisma)](#12-modelos-de-dados-prisma)
+
+---
+
+## 1. Visão Geral
+
+**CuraSphere** é uma plataforma hospitalar integrada que cobre:
+- Gestão clínica (doentes, camas, medicação, sinais vitais, notas SOAP, escalas, exames)
+- Logística hospitalar (turnos, trocas, atribuições, tarefas, pedidos internos)
+- Serviços especializados (urgência, bloco operatório, consultas externas, farmácia, fisioterapia)
+- Infraestrutura TI (incidentes, pedidos TI, gestão de utilizadores)
+- Qualidade e compliance (IACS, auditoria, alertas)
+- Comunicação interna (mensagens, anúncios)
+
+**Plataformas:**
+| Plataforma | Tecnologia | Porta | Estado |
+|------------|-----------|-------|--------|
+| API (backend) | NestJS + Prisma + PostgreSQL | 3000 | ✅ Completo |
+| Web (frontend) | Next.js 14 App Router + Tailwind | 4200 | ✅ Maioria funcional |
+| Mobile | React Native + Expo | — | ✅ Funcional (subset) |
+
+---
+
+## 2. Arquitectura Técnica
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    CuraSphere                        │
+├──────────────┬──────────────────┬───────────────────┤
+│  Mobile App  │    Web App       │    REST API        │
+│  React Native│    Next.js 14    │    NestJS          │
+│  Expo        │    App Router    │    Prisma ORM      │
+│              │    Tailwind CSS  │    PostgreSQL       │
+└──────────────┴──────────────────┴───────────────────┘
+                         │
+              ┌──────────┴──────────┐
+              │    PostgreSQL DB     │
+              │    (via Prisma)      │
+              └─────────────────────┘
+```
+
+**Estrutura Nx Monorepo:**
+```
+enfermaria/
+├── apps/
+│   ├── api/          NestJS API
+│   ├── web/          Next.js Web
+│   └── mobile/       React Native / Expo
+└── libs/             (partilhadas — actualmente vazias)
+```
+
+**Comandos de arranque:**
+```bash
+# API
+cd apps/api && npx prisma migrate deploy --schema src/prisma/schema.prisma
+cd apps/api && npx ts-node src/prisma/seed.ts
+
+# Web
+pnpm nx serve web
+
+# Mobile
+cd apps/mobile && npx expo start
+```
+
+---
+
+## 3. Autenticação e Segurança
+
+### Mecanismo
+- **JWT Access Token** (curta duração) + **Refresh Token** (longa duração, armazenado em BD)
+- Login via `POST /auth/login` → devolve `accessToken` + `refreshToken`
+- Renovação via `POST /auth/refresh`
+- Logout via `POST /auth/logout` (invalida refresh token em BD)
+- Validação de sessão via `GET /auth/me`
+
+### Proteção de Endpoints
+```ts
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('medico', 'enfermeiro')         // role obrigatória
+@SubRoles('it_admin')                  // sub-role adicional (opcional)
+```
+
+### Timeout de Sessão (Mobile)
+- 15 minutos de inactividade em background → logout automático
+
+### Refresh Token (BD)
+- Modelo `RefreshToken` com `expiresAt`, `revogado`, `utilizadorId`
+- Tokens expirados são limpos periodicamente
+
+### Auditoria
+- Middleware `AuditLog` regista todas as mutações (POST/PATCH/DELETE)
+- Campos: `utilizadorId`, `acao`, `entidade`, `entidadeId`, `detalhes`, `ip`, `createdAt`
+- Consultável via `GET /audit` (apenas `ti` e `qualidade`)
+
+---
+
+## 4. Sistema de Roles e Sub-roles
+
+### 10 Roles-categoria (fixas)
+
+| Role | Label | Grupo |
+|------|-------|-------|
+| `medico` | Médico | Clínico |
+| `enfermeiro` | Enfermeiro | Clínico |
+| `auxiliar` | Auxiliar | Clínico |
+| `tecnico_saude` | Técnico de Saúde | Clínico |
+| `farmaceutico` | Farmacêutico | Clínico |
+| `administrativo` | Administrativo | Gestão |
+| `operacional` | Operacional | Suporte |
+| `ti` | TI | Tecnologia |
+| `qualidade` | Qualidade | Compliance |
+| `direcao` | Direção | Gestão |
+
+### Sub-roles (81 dinâmicas, armazenadas em BD)
+
+| Role | Sub-roles disponíveis |
+|------|-----------------------|
+| medico | clinico_geral, cardiologista, neurologista, ortopedista, pediatra, oncologista, pneumologista, gastroenterologista, nefrologista, dermatologista, psiquiatra, endocrinologista, reumatologista, cirurgiao_geral, cirurgiao_vascular, cirurgiao_toracico, neurocirurgiao, cirurgiao_pediatrico, medico_anestesia, medico_imagem, anatomia_patologica, medico_gestor, diretor_medico |
+| enfermeiro | generalista, enf_bloco, enf_uci, enf_urgencia, enf_pediatria, enf_oncologia, enf_saude_mental, enf_geriatria, enf_neonatologia, supervisor_enfermagem, triador, instrumentista, head_nurse |
+| auxiliar | apoio_geral |
+| tecnico_saude | tae, reabilitacao_fisica, reabilitacao_fala, nutricao_clinica, psicologia_clinica, medico_trabalho |
+| farmaceutico | farmaceutico_hospitalar, farmaceutico_oncologico, tecnico_farmacia_assist |
+| administrativo | front_desk, secretariado, backoffice, scheduling, billing_officer, hr_specialist, procurement, cfo, coo, hr_director |
+| operacional | transporte_interno, apoio_geral, cssd, higiene_hospitalar, gestao_textil, equipamentos_medicos, facilities, vigilancia, seguranca_trabalho |
+| ti | it_admin, cio, his_erp, database_admin, security_officer, dados_clinicos |
+| qualidade | quality_manager, compliance, infection_control, internal_audit, dpo_role, compliance_director |
+| direcao | ceo_hospitalar, diretor_medico, head_nurse, cfo, coo, hr_director |
+
+### Tabelas em BD
+- `RoleConfig`: chave, label, categoria, ativo, ordem
+- `SubRoleConfig`: chave, label, roleChave (FK → RoleConfig.chave), ativo, ordem
+
+### Chefe de Turno
+- Não é role nem sub-role
+- Determinado pelo campo `chefeTurnoId` no modelo `Turno`
+- Fallback: utilizador com menor `ordemExperiencia` no mesmo grupo de role do turno
+
+---
+
+## 5. API — Módulos Implementados
+
+### 5.1 Auth
+```
+POST /auth/login          → login (email + password)
+POST /auth/refresh        → renovar access token
+POST /auth/logout         → invalidar refresh token
+GET  /auth/me             → dados do utilizador autenticado
+```
+
+### 5.2 Utilizadores
+```
+GET    /utilizadores                   → lista (ti/it_admin)
+POST   /utilizadores                   → criar utilizador
+GET    /utilizadores/:id               → detalhe
+PATCH  /utilizadores/:id               → editar
+DELETE /utilizadores/:id               → desactivar
+GET    /utilizadores/perfil            → perfil próprio
+PATCH  /utilizadores/perfil            → editar perfil próprio
+PATCH  /utilizadores/:id/password      → alterar password
+```
+
+### 5.3 Doentes
+```
+GET    /doentes                        → lista (com filtros: servico, estado, search)
+POST   /doentes                        → admitir doente
+GET    /doentes/:id                    → ficha completa
+PATCH  /doentes/:id                    → editar dados
+PATCH  /doentes/:id/alta               → dar alta
+PATCH  /doentes/:id/transferir         → transferir serviço
+PATCH  /doentes/:id/isolamento         → activar/desactivar isolamento
+GET    /doentes/iacs/isolados          → doentes em isolamento activo
+```
+
+### 5.4 Camas
+```
+GET    /camas                          → lista todas as camas (com filtros)
+POST   /camas                          → criar cama
+PATCH  /camas/:id                      → editar (estado, doente, etc.)
+PATCH  /camas/:id/ocupar               → associar doente
+PATCH  /camas/:id/libertar             → desocupar
+```
+
+### 5.5 Medicação
+```
+GET    /medicacao/:doenteId            → lista prescrições do doente
+POST   /medicacao                      → prescrever medicamento
+PATCH  /medicacao/:id                  → editar prescrição
+DELETE /medicacao/:id                  → cancelar prescrição
+POST   /medicacao/:id/administrar      → registar administração
+GET    /medicacao/mar                  → MAR global (todas as medicações activas)
+```
+
+### 5.6 Sinais Vitais
+```
+GET    /sinais-vitais/:doenteId        → histórico
+POST   /sinais-vitais                  → registar (temp, TA, FC, FR, SpO2, Glicemia, Dor, IMC)
+```
+
+### 5.7 Notas Clínicas (SOAP)
+```
+GET    /notas-clinicas/:doenteId       → lista notas
+POST   /notas-clinicas                 → criar nota (Subjectivo, Objectivo, Avaliação, Plano)
+```
+
+### 5.8 Escalas Clínicas
+```
+GET    /escalas-clinicas/:doenteId     → lista avaliações
+POST   /escalas-clinicas               → registar (14 tipos: Braden, Glasgow, Morse, MRC, NIHSS, Apgar, etc.)
+```
+
+### 5.9 Dispositivos Invasivos
+```
+GET    /dispositivos-invasivos/:doenteId
+POST   /dispositivos-invasivos          → inserir (10 tipos: CVC, SNG, SV, SVP, O2, TET, etc.)
+PATCH  /dispositivos-invasivos/:id      → actualizar (data_remocao, etc.)
+DELETE /dispositivos-invasivos/:id      → remover
+```
+
+### 5.10 Exames
+```
+GET    /exames/:doenteId               → exames do doente
+POST   /exames                         → solicitar exame
+PATCH  /exames/:id/estado              → actualizar estado
+PATCH  /exames/:id/resultado           → registar resultado
+GET    /exames/worklist                → worklist global (todos os exames pendentes/em progresso)
+POST   /exames/:id/ficheiros           → upload de ficheiro (PDF, imagem)
+```
+
+### 5.11 Interconsultas
+```
+GET    /interconsultas/:doenteId
+POST   /interconsultas                 → solicitar interconsulta
+PATCH  /interconsultas/:id/resposta    → responder interconsulta
+```
+
+### 5.12 Alergias
+```
+GET    /alergias/:doenteId
+POST   /alergias
+DELETE /alergias/:id
+```
+
+### 5.13 Alertas Clínicos
+```
+GET    /alertas/:doenteId
+POST   /alertas
+PATCH  /alertas/:id/resolver
+```
+
+### 5.14 Tarefas
+```
+GET    /tarefas                        → lista (com filtro por utilizador, estado, prioridade)
+POST   /tarefas                        → criar
+PATCH  /tarefas/:id                    → editar
+PATCH  /tarefas/:id/concluir           → concluir
+DELETE /tarefas/:id                    → apagar
+```
+
+### 5.15 Turnos e Horários
+```
+GET    /turnos                         → lista turnos (por data, serviço)
+POST   /turnos                         → criar turno
+PATCH  /turnos/:id                     → editar
+DELETE /turnos/:id                     → remover
+PATCH  /turnos/:id/chefe               → definir chefe de turno (chefeTurnoId)
+GET    /horarios                       → horário semanal
+POST   /horarios                       → criar horário
+```
+
+### 5.16 Trocas de Turno
+```
+GET    /trocas                         → lista pedidos (filtrado por role/chefe)
+POST   /trocas                         → solicitar troca
+PATCH  /trocas/:id/aceitar             → aceitar (utilizador visado)
+PATCH  /trocas/:id/recusar             → recusar (utilizador visado)
+PATCH  /trocas/:id/aprovar-chefe       → aprovar como chefe de turno
+PATCH  /trocas/:id/rejeitar-chefe      → rejeitar como chefe de turno
+```
+
+### 5.17 Atribuições
+```
+GET    /atribuicoes                    → lista atribuições activas
+POST   /atribuicoes                    → atribuir doente a profissional
+DELETE /atribuicoes/:id                → remover atribuição
+```
+
+### 5.18 Urgência
+```
+GET    /urgencia                       → episódios de urgência activos
+POST   /urgencia                       → criar episódio
+PATCH  /urgencia/:id                   → actualizar (triagem, estado)
+PATCH  /urgencia/:id/alta              → alta urgência
+```
+
+### 5.19 Sala de Espera
+```
+GET    /sala-espera                    → fila de espera actual
+POST   /sala-espera/checkin            → registar chegada
+PATCH  /sala-espera/:id/chamar         → chamar doente
+PATCH  /sala-espera/:id/atendido       → marcar atendido
+```
+
+### 5.20 Bloco Operatório
+```
+GET    /bloco                          → cirurgias programadas
+POST   /bloco                          → agendar cirurgia
+PATCH  /bloco/:id                      → editar
+PATCH  /bloco/:id/estado               → actualizar estado (programada → em_curso → concluída)
+POST   /bloco/:id/checklist            → preencher checklist (WHO Surgical Safety Checklist)
+```
+
+### 5.21 Consultas Externas
+```
+GET    /consultas                      → lista consultas
+POST   /consultas                      → agendar
+PATCH  /consultas/:id                  → editar
+PATCH  /consultas/:id/realizar         → marcar realizada
+PATCH  /consultas/:id/cancelar         → cancelar
+```
+
+### 5.22 Farmácia
+```
+GET    /farmacia/stock                 → inventário de stock
+POST   /farmacia/stock                 → criar item
+PATCH  /farmacia/stock/:id             → actualizar stock
+GET    /farmacia/pedidos               → pedidos de medicação
+POST   /farmacia/pedidos               → criar pedido
+PATCH  /farmacia/pedidos/:id/estado    → aprovar/recusar/dispensar
+```
+
+### 5.23 Fisioterapia
+```
+GET    /fisioterapia/planos/:doenteId  → planos de reabilitação
+POST   /fisioterapia/planos            → criar plano
+POST   /fisioterapia/sessoes           → registar sessão
+GET    /fisioterapia/sessoes/:planoId  → sessões de um plano
+```
+
+### 5.24 Pedidos Internos
+```
+GET    /pedidos-internos               → lista (por departamento / criador)
+POST   /pedidos-internos               → criar pedido (material, manutenção, limpeza, etc.)
+PATCH  /pedidos-internos/:id/estado    → actualizar estado
+```
+
+### 5.25 Comunicação
+```
+GET    /comunicacao/mensagens          → inbox do utilizador
+POST   /comunicacao/mensagens          → enviar mensagem
+GET    /comunicacao/mensagens/:id      → detalhe de conversa
+GET    /comunicacao/anuncios           → anúncios activos
+POST   /comunicacao/anuncios           → criar anúncio (ti/it_admin ou direcao)
+```
+
+### 5.26 Incidentes TI
+```
+GET    /incidentes-ti                  → lista (filtros: estado, prioridade, tipo)
+POST   /incidentes-ti                  → reportar incidente
+PATCH  /incidentes-ti/:id              → editar / atribuir / resolver
+PATCH  /incidentes-ti/:id/estado       → actualizar estado
+```
+
+### 5.27 Pedidos TI
+```
+GET    /pedidos-ti                     → lista pedidos
+POST   /pedidos-ti                     → criar pedido
+PATCH  /pedidos-ti/:id/estado          → actualizar estado
+PATCH  /pedidos-ti/:id/atribuir        → atribuir técnico
+```
+
+### 5.28 Configurações (Roles)
+```
+GET    /configuracoes/roles                  → lista roles activas (auth req)
+POST   /configuracoes/roles                  → criar role (ti/it_admin)
+PATCH  /configuracoes/roles/:id              → editar
+DELETE /configuracoes/roles/:id              → desactivar
+
+GET    /configuracoes/roles/:chave/subroles  → sub-roles de uma role
+GET    /configuracoes/subroles               → todos os sub-roles activos
+POST   /configuracoes/subroles               → criar sub-role (ti/it_admin)
+PATCH  /configuracoes/subroles/:id           → editar
+DELETE /configuracoes/subroles/:id           → desactivar
+```
+
+### 5.29 Dashboard
+```
+GET    /dashboard                      → KPIs clínicos (camas, doentes, alertas)
+GET    /dashboard/ti                   → KPIs TI (incidentes, pedidos, uptime)
+```
+
+### 5.30 Auditoria
+```
+GET    /audit                          → log de auditoria (ti, qualidade)
+```
+
+### 5.31 Notificações Push
+```
+POST   /notificacoes/registar-token    → registar token Expo push
+```
+
+### 5.32 Contactos de Emergência
+```
+GET    /contactos/:doenteId
+POST   /contactos
+PATCH  /contactos/:id
+DELETE /contactos/:id
+```
+
+---
+
+## 6. Web — Páginas Implementadas
+
+### 6.1 Autenticação
+| Página | Rota | Estado |
+|--------|------|--------|
+| Login | `/login` | ✅ Completo |
+
+### 6.2 Dashboard
+| Página | Rota | Roles | Estado |
+|--------|------|-------|--------|
+| Dashboard Clínico | `/dashboard` | clínico + admin | ✅ KPIs, alertas |
+| Dashboard TI | `/dashboard-ti` | ti + direcao | ✅ KPIs TI |
+| Dashboard Qualidade | `/dashboard-qualidade` | qualidade, direcao, medico, enfermeiro | ✅ IACS, alertas, riscos, ocupação, taxa alta |
+| Faturação | `/faturacao` | administrativo | ✅ Lista episódios + detalhe com itens/pagamentos + estados |
+| Receção | `/recepcao` | administrativo | ✅ Gestão de filas em tempo real — chamar, re-chamar, concluir, stats |
+| Quiosque | `/quiosque` | público (sem auth) | ✅ Tirar senha self-service — 7 serviços, prioridade, nome + "Já tenho marcação" com check-in por código |
+| Painel de Chamadas | `/painel` | público (sem auth) | ✅ SSE em tempo real — número chamado + balcão + fila em espera |
+
+### 6.3 Internamento / Clínico
+| Página | Rota | Roles | Serviço | Estado |
+|--------|------|-------|---------|--------|
+| Lista de Doentes | `/doentes` | medico, enfermeiro, auxiliar, tecnico_saude, admin | todos | ✅ |
+| Ficha do Doente | `/doentes/[id]` | clínico | todos | ✅ Full (sinais vitais, SOAP, medicação, escalas, dispositivos, exames, interconsultas, alertas) |
+| Admitir Doente | `/doentes/admitir` | medico, enfermeiro, admin | todos | ✅ |
+| Imprimir Ficha | `/doentes/[id]/print` | clínico | todos | ✅ |
+| Gestão de Camas | `/camas` | medico, enfermeiro, auxiliar, admin | internamento, urgência | ✅ Grid visual |
+| Horários | `/horarios` | clínico + admin | todos | ✅ Calendário + geração automática de escala mensal |
+| Tarefas | `/tarefas` | medico, enfermeiro, auxiliar, tecnico_saude, operacional | todos | ✅ Kanban-like |
+| Trocas de Turno | `/trocas` | clínico | todos | ✅ Pedidos + aprovação chefe |
+| Atribuições | `/atribuicoes` | medico, enfermeiro | todos | ✅ |
+| MAR | `/mar` | enfermeiro, auxiliar | todos | ✅ Tabela global + administrar |
+| IACS | `/iacs` | medico, qualidade, enfermeiro | todos | ✅ Doentes isolados + gestão |
+| Worklist | `/worklist` | tecnico_saude, medico | todos | ✅ Exames + resultados |
+
+### 6.4 Serviços Especializados
+| Página | Rota | Roles | Serviço | Estado |
+|--------|------|-------|---------|--------|
+| Urgência | `/urgencia` | medico, enfermeiro, auxiliar, admin | urgencia | ✅ |
+| Bloco Operatório | `/bloco` | medico, enfermeiro | bloco_operatorio | ✅ Checklist WHO |
+| Consultas Externas | `/consultas` | medico, admin | consultas_externas | ✅ Marcações com picker de slots + agenda semanal por médico + check-in + código de marcação |
+| Sala de Espera | `/sala-espera` | enfermeiro, auxiliar, admin | urgencia | ✅ Fila triagem |
+| Farmácia | `/farmacia` | farmaceutico | todos | ✅ Stock + pedidos |
+| Fisioterapia | `/fisioterapia` | tecnico_saude | todos | ✅ Planos + sessões |
+
+### 6.5 Gestão e Suporte
+| Página | Rota | Roles | Estado |
+|--------|------|-------|--------|
+| Comunicação | `/comunicacao` | todos | ✅ Mensagens + anúncios |
+| Pedidos Internos | `/pedidos-internos` | clínico + admin + operacional | ✅ |
+| Pedidos TI | `/pedidos-ti` | ti | ✅ |
+| Incidentes TI | `/incidentes-ti` | ti | ✅ |
+| Utilizadores | `/utilizadores` | ti (subRole: it_admin) | ✅ CRUD + subRole dinâmico |
+| Configurações | `/configuracoes` | ti (subRole: it_admin) | ✅ CRUD roles/sub-roles |
+| Auditoria | `/auditoria` | ti + qualidade | ✅ Log de auditoria |
+
+---
+
+## 7. Mobile — Screens Implementados
+
+### 7.1 Estrutura de Navegação por Role
+
+| Grupo | Roles | Tabs na barra inferior |
+|-------|-------|------------------------|
+| Clínico | medico, enfermeiro, auxiliar, tecnico_saude, farmaceutico | Dashboard · Doentes · QR Scan · Tarefas · Mais |
+| TI | ti | Dashboard TI · Incidentes · Pedidos · Mais |
+| Administrativo | administrativo | Doentes · Tarefas · Mais |
+| Operacional | operacional | Tarefas · Mais |
+| Direção | direcao | Dashboard TI · Mais |
+| Qualidade | qualidade | Auditoria · Mais |
+
+### 7.2 Screens Disponíveis
+
+| Screen | Acesso | Funcionalidades |
+|--------|--------|-----------------|
+| `LoginScreen` | Todos | Login com email + password |
+| `DashboardScreen` | Clínico | KPIs, alertas, doentes do dia |
+| `DashboardTIScreen` | TI + Direção | KPIs TI, incidentes abertos |
+| `DoentesScreen` | Clínico + Admin | Lista doentes por serviço |
+| `DoenteDetalheScreen` | Clínico | Ficha completa: sinais vitais, medicação, SOAP, escalas, dispositivos, exames; acções por role |
+| `QRScannerScreen` | Clínico | Scanner de código QR do doente → abre DoenteDetalheScreen |
+| `CamasScreen` | Clínico + Admin | Grid de camas, estado |
+| `TarefasScreen` | Clínico + Operacional + Admin | Lista de tarefas, filtros |
+| `TurnoScreen` | Clínico | Turno actual, membros |
+| `HorariosScreen` | Clínico + Admin | Horário semanal pessoal |
+| `TrocasScreen` | Clínico | Pedidos de troca + aprovação chefe |
+| `AtribuicoesScreen` | Medico + Enfermeiro | Doentes atribuídos |
+| `PassagemTurnoScreen` | Medico + Enfermeiro | Registo de passagem de turno |
+| `PedidosTIScreen` | TI | Lista e gestão de pedidos TI |
+| `IncidentesSubRoleScreen` | TI | Incidentes filtrados por sub-role |
+| `UtilizadoresScreen` | TI (it_admin) | CRUD utilizadores + sub-roles dinâmicos |
+| `AuditoriaScreen` | TI + Qualidade | Log de auditoria |
+| `MaisScreen` | Todos | Menu extra — items visíveis por role |
+| `PerfilScreen` | Todos | Perfil do utilizador, editar |
+
+### 7.3 Menu "Mais" — Items por Role
+
+| Item | Roles que vêem |
+|------|----------------|
+| Utilizadores | ti (it_admin) |
+| Auditoria | ti, qualidade |
+| Meu Turno | clínico |
+| Passagem de Turno | medico, enfermeiro |
+| Horários | clínico + admin |
+| Atribuições | medico, enfermeiro |
+| Camas | medico, enfermeiro, admin |
+| Trocas de Turno | clínico |
+| Perfil | todos |
+| Terminar Sessão | todos |
+
+### 7.4 Permissões Clínicas no DoenteDetalheScreen
+
+| Ação | Roles |
+|------|-------|
+| Prescrever medicação | medico |
+| Registar administração | enfermeiro, auxiliar |
+| Alterar estado do doente | medico, enfermeiro |
+| Registar sinais vitais | enfermeiro, auxiliar, tecnico_saude |
+| Criar nota SOAP | medico, enfermeiro |
+| Aplicar escala clínica | medico, enfermeiro, tecnico_saude |
+| Inserir/remover dispositivo | medico, enfermeiro |
+| Solicitar exame | medico |
+| Registar resultado exame | tecnico_saude |
+
+---
+
+## 8. Tabela de Permissões por Role
+
+### 8.1 Web — Menus visíveis
+
+| Menu | medico | enfermeiro | auxiliar | tecnico_saude | farmaceutico | admin | operacional | ti | qualidade | direcao |
+|------|:------:|:----------:|:--------:|:-------------:|:------------:|:-----:|:-----------:|:--:|:---------:|:-------:|
+| Dashboard Clínico | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | — |
+| Doentes | ✅ | ✅ | ✅ | ✅ | — | ✅ | — | — | — | — |
+| Camas* | ✅ | ✅ | ✅ | — | — | ✅ | — | — | — | — |
+| Horários | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | — |
+| Tarefas | ✅ | ✅ | ✅ | ✅ | — | — | ✅ | — | — | — |
+| Trocas de Turno | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — | — | — |
+| Atribuições | ✅ | ✅ | — | — | — | — | — | — | — | — |
+| Urgência** | ✅ | ✅ | ✅ | — | — | ✅ | — | — | — | — |
+| Bloco Operatório*** | ✅ | ✅ | — | — | — | — | — | — | — | — |
+| Consultas**** | ✅ | — | — | — | — | ✅ | — | — | — | — |
+| Farmácia | — | — | — | — | ✅ | — | — | — | — | — |
+| Fisioterapia | — | — | — | ✅ | — | — | — | — | — | — |
+| MAR | — | ✅ | ✅ | — | — | — | — | — | — | — |
+| IACS | ✅ | ✅ | — | — | — | — | — | — | ✅ | — |
+| Worklist | ✅ | — | — | ✅ | — | — | — | — | — | — |
+| Sala de Espera** | — | ✅ | ✅ | — | — | ✅ | — | — | — | — |
+| Pedidos Internos | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — |
+| Comunicação | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Dashboard TI | — | — | — | — | — | — | — | ✅ | — | ✅ |
+| Pedidos TI | — | — | — | — | — | — | — | ✅ | — | — |
+| Incidentes TI | — | — | — | — | — | — | — | ✅ | — | — |
+| Utilizadores | — | — | — | — | — | — | — | it_admin | — | — |
+| Configurações | — | — | — | — | — | — | — | it_admin | — | — |
+| Auditoria | — | — | — | — | — | — | — | ✅ | ✅ | — |
+
+> *Camas: apenas serviços internamento e urgência
+> **Urgência e Sala de Espera: apenas serviço urgência
+> ***Bloco: apenas serviço bloco_operatorio
+> ****Consultas: apenas serviço consultas_externas
+
+### 8.2 Serviços disponíveis
+
+```
+internamento | urgencia | bloco_operatorio | consultas_externas
+uci | neonatologia | pediatria | psiquiatria | oncologia
+ortopedia | cardiologia | neurologia | laboratorio | imagiologia
+```
+
+---
+
+## 9. Funcionalidades Implementadas ✅
+
+### Backend (API)
+- [x] Autenticação JWT + Refresh Token com revogação em BD
+- [x] Sistema de roles + sub-roles dinâmicos (BD) — 10 roles + 81 sub-roles
+- [x] Guard de roles + sub-roles (`RolesGuard`)
+- [x] Auditoria automática de todas as mutações
+- [x] CRUD completo de utilizadores (com role/subRole dinâmico)
+- [x] Gestão de doentes: admissão, alta, transferência, isolamento
+- [x] Gestão de camas: ocupar, libertar, estados
+- [x] Prescrição e administração de medicação (com MAR)
+- [x] Registo de sinais vitais (8 parâmetros)
+- [x] Notas clínicas SOAP
+- [x] Escalas clínicas (14 tipos: Braden, Glasgow, Morse, NIHSS, MRC, etc.)
+- [x] Dispositivos invasivos (10 tipos: CVC, SNG, SV, etc.)
+- [x] Exames: solicitar, worklist, resultados, upload de ficheiros
+- [x] Interconsultas (pedido + resposta)
+- [x] Alergias e alertas clínicos
+- [x] Tarefas (CRUD + conclusão)
+- [x] Turnos e horários com chefeTurnoId
+- [x] Trocas de turno (pedido → aceitação → aprovação chefe)
+- [x] Atribuições doente–profissional
+- [x] Urgência (episódios, triagem, alta)
+- [x] Sala de espera (check-in, chamada, atendimento)
+- [x] Bloco operatório (agendamento, checklist WHO)
+- [x] Consultas externas (agendamento, realização, cancelamento)
+- [x] Farmácia: stock e pedidos de medicação
+- [x] Fisioterapia: planos de reabilitação e sessões
+- [x] Pedidos internos (material, manutenção, etc.)
+- [x] Comunicação interna (mensagens + anúncios)
+- [x] Incidentes TI e Pedidos TI
+- [x] Configurações (CRUD de roles e sub-roles via API)
+- [x] Dashboard KPIs (clínico + TI + Qualidade)
+- [x] Geração automática de escala mensal (`POST /horarios/gerar-automatico`) — round-robin por médicos/enfermeiros/auxiliares
+- [x] Ficha pessoal do doente (`FicheiroPessoalDoente`) — modelo separado com NIF, SNS, morada, seguro; acesso restrito a `administrativo` via `GET/PATCH /doentes/:id/ficha-pessoal`
+- [x] Módulo de Faturação — `EpisodioFaturacao`, `ItemFatura`, `Pagamento`; endpoints completos; estados: pendente→emitida→paga/isenta/anulada
+- [x] Sistema de Tickets / Filas — modelo `Ticket` (sequência diária por tipo, prioridade); `QuiosqueController` público com SSE; `TicketsController` autenticado; fila prioritário→sénior→normal FIFO
+- [x] Notificações push com trigger real — TrocasService (novo pedido, aceitação, aprovação chefe) + TarefasService (nova tarefa atribuída)
+- [x] Paginação em Utilizadores (`page`, `limit`, `totalPaginas`)
+- [x] Seed de dados de demo (`seed-demo.ts`) — 17 utilizadores, 13 camas, 8 doentes, sinais vitais, tarefas, stock, incidentes, anúncios
+- [x] Contactos de emergência do doente
+- [x] Migração de dados: todos os utilizadores convertidos para nova taxonomia de roles
+
+### Web Frontend
+- [x] Login + gestão de sessão (refresh automático)
+- [x] Sidebar dinâmico por role + serviço + sub-role
+- [x] Dashboard clínico e TI
+- [x] Ficha completa do doente (todos os módulos clínicos)
+- [x] Admissão de doentes
+- [x] Impressão da ficha do doente
+- [x] Grid de camas com estados visuais
+- [x] MAR (Mapa de Administração de Medicação) global
+- [x] Worklist de exames
+- [x] IACS — doentes em isolamento
+- [x] Urgência, Bloco, Consultas, Sala de Espera
+- [x] Farmácia (stock + pedidos)
+- [x] Fisioterapia (planos + sessões)
+- [x] Horários com calendário + botão "Gerar Automaticamente" (escala mensal round-robin)
+- [x] Dashboard Qualidade — IACS por agente, tendência 7 dias, alertas clínicos, avaliações de risco, ocupação, taxa de completitude de alta
+- [x] Faturação — lista episódios, criar episódio, adicionar itens, registar pagamentos, emitir/anular
+- [x] Receção / Gestão de Filas — painel front-desk com SSE em tempo real; chamar próximo por prioridade; re-chamar; concluir; stats diárias por tipo
+- [x] Quiosque self-service — página pública; 7 tipos de serviço; checkbox prioritário/sénior; nome opcional; senha emitida instantaneamente
+- [x] Painel de Chamadas — página pública com `EventSource`; flash no número chamado; fila lateral; histórico; reconexão automática
+- [x] Ficha do doente: secção "Dados Administrativos" para role `administrativo` (NIF, SNS, morada, seguro) — invisível a clínicos
+- [x] Tarefas
+- [x] Trocas de turno
+- [x] Atribuições
+- [x] Comunicação (mensagens + anúncios)
+- [x] Pedidos internos, Pedidos TI, Incidentes TI
+- [x] Utilizadores (CRUD + roles dinâmicos + sub-roles)
+- [x] Configurações de roles e sub-roles
+- [x] Auditoria log
+- [x] Logo CuraSphere no header
+
+### Mobile
+- [x] Login com token persistente
+- [x] Timeout de sessão (15 min inactividade)
+- [x] Navegação adaptada por grupo de role
+- [x] QR Scanner → abre ficha do doente
+- [x] Ficha do doente com módulos clínicos (sinais vitais, medicação, SOAP, escalas, dispositivos, exames)
+- [x] Permissões clínicas por role no DoenteDetalheScreen
+- [x] Dashboard clínico e TI
+- [x] Lista de doentes
+- [x] Camas, Tarefas, Horários
+- [x] Trocas de turno com aprovação de chefe
+- [x] Atribuições, Passagem de turno
+- [x] Pedidos TI, Incidentes TI
+- [x] Utilizadores com sub-roles dinâmicos (carregados da API)
+- [x] Auditoria
+- [x] Notificações push (registo de token)
+- [x] Perfil do utilizador
+- [x] Farmácia (pedidos + stock, dispensar)
+- [x] Fisioterapia (planos + sessões com barra de progresso)
+- [x] Consultas Externas (filtros por estado, marcar como realizada)
+- [x] Urgência (triagem Manchester, cores, tempo de espera)
+- [x] Sala de Espera (chamar + atendido)
+- [x] IACS (isolados por motivo, levantar isolamento)
+- [x] MAR — Mapa de Administração de Medicação
+- [x] Comunicação (mensagens + anúncios com badge de não lidos)
+
+---
+
+## 10. O Que Falta / Está Incompleto ❌
+
+### 10.1 Funcionalidades Completamente Ausentes
+
+| Feature | Prioridade | Notas |
+|---------|-----------|-------|
+| Relatórios e exportação PDF | Média | Só existe impressão de ficha do doente; faltam relatórios de turnos, produtividade, etc. |
+| Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
+| Aprovação de pedidos farmácia pelo médico | Alta | O médico não valida o pedido antes da dispensa |
+| Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
+| Painel de BI / Analytics | Baixa | Dashboard executivo para Direção com gráficos históricos |
+| Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
+| Módulo de RH / gestão de férias | Baixa | RH só gere utilizadores; falta módulo de férias, folgas e saldos |
+| Módulo de RH / gestão de férias | Baixa | RH só gere utilizadores; falta módulo de férias, folgas e saldos |
+| Telemedicina / Videochamada | Baixa | Fora de âmbito actual |
+| Integrações externas (HL7, FHIR) | Baixa | Exportação de dados clínicos para sistemas externos |
+
+### 10.2 Features Parciais ou Incompletas
+
+| Feature | O que existe | O que falta |
+|---------|-------------|------------|
+| Push notifications | Trigger implementado em Trocas + Tarefas | Alertas clínicos críticos ainda sem push; leitura confirmada |
+| Comunicação | Mensagens 1-a-1 + anúncios (web + mobile) | Grupos/broadcast por serviço; attachments; leitura confirmada |
+| Dashboard Direção | Acede a Dashboard TI + Qualidade | Falta dashboard executivo (KPIs financeiros, ocupação hospitalar, etc.) |
+| Horários | Calendário + geração automática mensal | Gestão de folgas, férias, trocas de dia de folga |
+| Bloco Operatório | Lista + checklist | Falta vista de sala (quais salas livres/ocupadas em tempo real) |
+| Urgência | Episódios + triagem Manchester + mobile | Falta protocolo de triagem Manchester completo no mobile |
+| IACS | Lista isolados + activar/desactivar (web + mobile) | Falta registo de culturas microbiológicas, histórico de surtos |
+| Exames | Solicitar + resultado texto | Falta visualizador DICOM integrado para imagiologia |
+| Worklist mobile | Ausente | Falta screen de worklist para tecnico_saude no mobile |
+| Pedidos Internos mobile | Ausente | Falta screen de pedidos internos no mobile |
+| Bloco Operatório mobile | Ausente | Falta screen de bloco para medico/enfermeiro no mobile |
+
+### 10.3 Divergências Web vs. Mobile
+
+| Módulo | Web | Mobile |
+|--------|-----|--------|
+| Farmácia | ✅ Completo | ✅ FarmaciaScreen (pedidos + stock) |
+| Fisioterapia | ✅ Completo | ✅ FisioterapiaScreen (planos + sessões) |
+| Consultas Externas | ✅ Completo | ✅ ConsultasScreen (filtros + realizar) |
+| Urgência | ✅ Completo | ✅ UrgenciaScreen (Manchester + tempo espera) |
+| Bloco Operatório | ✅ Completo | ❌ Ausente |
+| Sala de Espera | ✅ Completo | ✅ SalaEsperaScreen (chamar + atendido) |
+| Comunicação | ✅ Completo | ✅ ComunicacaoScreen (mensagens + anúncios) |
+| Pedidos Internos | ✅ Completo | ❌ Ausente |
+| IACS | ✅ Completo | ✅ IACSScreen (isolados + levantar isolamento) |
+| Worklist | ✅ Completo | ❌ Ausente |
+| MAR | ✅ Completo | ✅ MARScreen (pendentes + administrar) |
+| Interconsultas | ✅ (na ficha) | ⚠️ Parcial (no DoenteDetalheScreen) |
+| Dashboard Qualidade | ✅ Completo | ❌ Ausente |
+
+### 10.4 Dívida Técnica
+
+| Área | Problema |
+|------|---------|
+| Testes | Nenhum teste unitário ou e2e escrito |
+| Validação de input | DTOs têm validação básica; faltam validações de negócio (e.g., conflito de camas) |
+| Erro handling | API devolve mensagens genéricas; falta padronização de erros |
+| Paginação | Utilizadores paginado; maioria dos outros endpoints sem paginação |
+| SSE / Tempo Real | Tickets usam SSE; restantes módulos ainda sem actualizações em tempo real |
+| Seed de dados de teste | `seed-demo.ts` criado com dados hospitalares realistas |
+| Documentação API (Swagger) | Não configurado |
+
+---
+
+## 11. Prioridades de Desenvolvimento
+
+### Prioridade Alta — Próximas 2 semanas
+1. **Aprovação de pedidos farmácia pelo médico** — validação clínica antes da dispensa
+2. **Paginação nos restantes endpoints** — doentes, tarefas, trocas, comunicação
+3. **Alertas críticos com push** — alertas clínicos críticos ainda sem trigger de notificação
+
+### Prioridade Média — Próximo mês
+4. **Relatórios PDF** — exportação de turnos, produtividade, relatórios clínicos
+5. **Bloco Operatório mobile** — médicos/enfermeiros de bloco sem módulo mobile
+6. **Worklist mobile** — técnicos de saúde sem módulo de exames no mobile
+7. **Dashboard executivo (Direção)** — KPIs financeiros, produtividade, ocupação histórica
+8. **Gestão de folgas e férias** — RH sem módulo de gestão de ausências
+
+### Prioridade Baixa — Backlog
+9. Módulo de faturação para administrativo/billing
+10. Vista de sala do bloco (disponibilidade em tempo real)
+11. Culturas microbiológicas e histórico de surtos IACS
+12. Visualizador DICOM para imagiologia
+13. Testes automatizados (unitários + e2e)
+14. Swagger/OpenAPI
+15. Integrações externas (HL7, FHIR)
+
+---
+
+## 12. Modelos de Dados (Prisma)
+
+### 12.1 Entidades Principais
+
+| Modelo | Descrição | Relações Principais |
+|--------|-----------|---------------------|
+| `Utilizador` | Profissional de saúde | Tem role, subRole, servico, turno actual, notificações |
+| `RefreshToken` | Token de renovação | → Utilizador |
+| `RoleConfig` | Definição de role dinâmica | → SubRoleConfig[] |
+| `SubRoleConfig` | Definição de sub-role | → RoleConfig |
+| `Doente` | Paciente | → Cama, Medicações, Sinais Vitais, Notas, etc. |
+| `Cama` | Cama hospitalar | → Doente (nullable), Serviço |
+| `AuditLog` | Registo de auditoria | → Utilizador |
+| `Anuncio` | Anúncio institucional | → Utilizador (autor) |
+| `MensagemInterna` | Mensagem entre utilizadores | → Utilizador (de/para) |
+
+### 12.2 Módulo Clínico
+
+| Modelo | Descrição |
+|--------|-----------|
+| `Medicacao` | Prescrição de medicamento (dose, via, frequência, horários) |
+| `RegistoMedicacao` | Registo de administração de medicamento |
+| `SinalVital` | Registo de sinais vitais (8 parâmetros) |
+| `NotaClinica` | Nota SOAP (Subjectivo, Objectivo, Avaliação, Plano) |
+| `EscalaClinica` | Avaliação com escala (14 tipos) |
+| `DispositivoInvasivo` | Dispositivo invasivo activo/removido (10 tipos) |
+| `Exame` | Exame solicitado com estado e resultado |
+| `FicheiroExame` | Ficheiro anexado a um exame |
+| `Interconsulta` | Pedido de interconsulta entre especialidades |
+| `Alergia` | Alergia do doente |
+| `AlertaClinico` | Alerta clínico (resolúvel) |
+| `ContactoEmergencia` | Contacto familiar/emergência do doente |
+
+### 12.3 Operacional
+
+| Modelo | Descrição |
+|--------|-----------|
+| `Tarefa` | Tarefa com prioridade, estado, doente associado |
+| `Turno` | Turno com data, tipo, serviço, membros, chefeTurnoId |
+| `HorarioTurno` | Associação utilizador–turno |
+| `PedidoTrocaTurno` | Pedido de troca com workflow de aprovação |
+| `Atribuicao` | Doente atribuído a profissional |
+| `PedidoInterno` | Pedido de material/serviço interno |
+
+### 12.4 Serviços Especializados
+
+| Modelo | Descrição |
+|--------|-----------|
+| `EpisodioUrgencia` | Episódio de urgência com triagem |
+| `CheckinSalaEspera` | Check-in de utente na sala de espera |
+| `CirurgiaProgramada` | Cirurgia agendada no bloco |
+| `ChecklistCirurgia` | Checklist WHO para cirurgia |
+| `Consulta` | Consulta externa agendada |
+| `StockItem` | Item de stock da farmácia |
+| `PedidoFarmacia` | Pedido de medicação à farmácia |
+| `PlanoReabilitacao` | Plano de fisioterapia/reabilitação |
+| `SessaoFisioterapia` | Sessão individual de fisioterapia |
+
+### 12.5 TI e Qualidade
+
+| Modelo | Descrição |
+|--------|-----------|
+| `IncidenteTI` | Incidente tecnológico reportado |
+| `PedidoTI` | Pedido de suporte/equipamento TI |
+| `NotificacaoPush` | Token de notificação push por dispositivo |
+
+---
+
+*Documento mantido por Claude Code — actualizar após cada sprint ou alteração significativa.*

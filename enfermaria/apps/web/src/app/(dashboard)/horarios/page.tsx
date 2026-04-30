@@ -69,7 +69,10 @@ export default function HorariosPagina() {
   const [salvandoEdit, setSalvandoEdit] = useState(false);
   const [erroEdit, setErroEdit] = useState('');
 
-  const isChefe = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
+  const [gerandoAuto, setGerandoAuto] = useState(false);
+  const [resultadoAuto, setResultadoAuto] = useState<{ turnosCriados: number; profissionaisUsados: number; diasGerados: number } | null>(null);
+
+  const isChefe = ['enfermeiro', 'medico', 'administrativo'].includes(utilizador?.role ?? '');
   const verApenasSeus = ['enfermeiro', 'auxiliar', 'medico', 'tecnico_saude', 'farmaceutico'].includes(utilizador?.role ?? '');
 
   const grupoDoChefe = utilizador?.role === 'medico'
@@ -188,6 +191,20 @@ export default function HorariosPagina() {
     } catch { /* silencioso */ }
   };
 
+  const gerarAutomatico = async () => {
+    setGerandoAuto(true);
+    setResultadoAuto(null);
+    try {
+      const r = await api.post('/horarios/gerar-automatico', { mes, ano });
+      setResultadoAuto(r.data);
+      await carregar();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Erro ao gerar escala automática');
+    } finally {
+      setGerandoAuto(false);
+    }
+  };
+
   const toggleEditProfissional = (id: string) => {
     setEditTurno((prev) => ({
       ...prev,
@@ -241,21 +258,75 @@ export default function HorariosPagina() {
           <p className="text-slate-500 font-medium" style={{ marginBottom: '6px' }}>Sem escala para {meses[mes - 1]} {ano}</p>
           <p className="text-slate-400 text-sm" style={{ marginBottom: '24px' }}>Ainda não foi criada uma escala para este mês</p>
           {isChefe && (
-            <button onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
-              className="bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors"
-              style={{ padding: '10px 24px', fontSize: '14px' }}>
-              Criar Escala
-            </button>
+            <div className="flex gap-3">
+              <button onClick={async () => { await api.post('/horarios', { mes, ano }); carregar(); }}
+                className="border border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '10px 24px', fontSize: '14px' }}>
+                Criar Escala Vazia
+              </button>
+              <button onClick={gerarAutomatico} disabled={gerandoAuto}
+                className="bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-60 transition-colors flex items-center gap-2"
+                style={{ padding: '10px 24px', fontSize: '14px' }}>
+                {gerandoAuto ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    A gerar...
+                  </>
+                ) : 'Gerar Automaticamente'}
+              </button>
+            </div>
           )}
         </div>
       ) : (
         <>
           {isChefe && (
-            <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
-              <svg className="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <div className="flex items-center gap-3" style={{ marginBottom: '20px' }}>
+              <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl flex-1" style={{ padding: '12px 16px' }}>
+                <svg className="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-blue-700 text-sm">Clique num dia do calendário para adicionar um turno.</p>
+              </div>
+              <button onClick={gerarAutomatico} disabled={gerandoAuto}
+                className="bg-violet-600 text-white text-sm font-semibold rounded-xl hover:bg-violet-700 disabled:opacity-60 transition-colors flex items-center gap-2 shrink-0"
+                style={{ padding: '10px 18px' }}>
+                {gerandoAuto ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    A gerar...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Gerar Turnos Automáticos
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          {resultadoAuto && (
+            <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>
+              <svg className="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-blue-700 text-sm">Clique num dia do calendário para adicionar um turno.</p>
+              <p className="text-green-700 text-sm flex-1">
+                Escala gerada: <strong>{resultadoAuto.turnosCriados} turnos</strong> criados para {resultadoAuto.diasGerados} dias,
+                com <strong>{resultadoAuto.profissionaisUsados} profissionais</strong>.
+              </p>
+              <button onClick={() => setResultadoAuto(null)} className="text-green-400 hover:text-green-600">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           )}
 

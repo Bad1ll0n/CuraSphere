@@ -1,0 +1,101 @@
+import { Controller, Post, Get, Param, Query, Body, Sse, NotFoundException, BadRequestException } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
+import { map } from 'rxjs';
+import { TicketsService } from './tickets.service';
+import { PrismaService } from '../prisma/prisma.service';
+
+@Controller('quiosque')
+export class QuiosqueController {
+  constructor(
+    private readonly service: TicketsService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  @Post()
+  tirarSenha(
+    @Body()
+    body: {
+      tipo: string;
+      prioridade?: string;
+      nomeUtente?: string;
+      telefone?: string;
+    },
+  ) {
+    return this.service.tirarSenha(body);
+  }
+
+  @Get('fila')
+  fila() {
+    return this.service.listarFila();
+  }
+
+  @Get('ultimos')
+  ultimos(@Query('n') n?: string) {
+    return this.service.ultimos(n ? parseInt(n, 10) : 10);
+  }
+
+  @Get('stats')
+  stats() {
+    return this.service.statsHoje();
+  }
+
+  // ─── Marcações ───────────────────────────────────────────────────────────
+
+  @Get('marcacao')
+  async buscarMarcacao(@Query('codigo') codigo: string) {
+    if (!codigo) throw new BadRequestException('Código obrigatório');
+    const consulta = await this.prisma.consulta.findUnique({
+      where: { codigo: codigo.toUpperCase() },
+      include: {
+        doente: { select: { id: true, nome: true, numeroProcesso: true } },
+        medico: { select: { id: true, nome: true, especialidade: true } },
+      },
+    });
+    if (!consulta) throw new NotFoundException('Marcação não encontrada');
+    if (consulta.estado !== 'agendada') throw new BadRequestException(`Marcação com estado: ${consulta.estado}`);
+    return consulta;
+  }
+
+  @Post('marcacao/:id/checkin')
+  async checkinMarcacao(@Param('id') id: string) {
+    const consulta = await this.prisma.consulta.findUnique({
+      where: { id },
+      include: {
+        doente: { select: { nome: true } },
+      },
+    });
+    if (!consulta) throw new NotFoundException('Marcação não encontrada');
+    if (consulta.checkinEm) {
+      return { jaFezCheckin: true, consulta };
+    }
+
+    const [atualizada, ticket] = await Promise.all([
+      this.prisma.consulta.update({
+        where: { id },
+        data: { checkinEm: new Date() },
+        include: {
+          medico: { select: { id: true, nome: true } },
+          doente: { select: { id: true, nome: true } },
+        },
+      }),
+      this.service.tirarSenha({
+        tipo: 'consulta',
+        prioridade: 'normal',
+        nomeUtente: consulta.nomeDoente ?? (consulta.doente as any)?.nome ?? undefined,
+      }),
+    ]);
+
+    return { jaFezCheckin: false, consulta: atualizada, ticket };
+  }
+
+  @Sse('eventos')
+  @SkipThrottle()
+  eventos() {
+    return this.service.eventStream().pipe(
+      map((evento) => ({
+        type: evento.type ?? 'mensagem',
+        data: evento.data,
+      })),
+    );
+  }
+}

@@ -64,64 +64,68 @@ model Utilizador {
   atualizadoEm      DateTime @updatedAt
 
   // Relações existentes
-  turnosComoChefe            Turno[]                    @relation("ChefeTurno")
-  horariosEntrada            HorarioEntrada[]
-  notasTurno                 NotaTurno[]
-  tarefasCriadas             Tarefa[]                   @relation("TarefaCriadaPor")
-  tarefasResponsavel         Tarefa[]                   @relation("TarefaResponsavel")
-  medicacoesPrescritas       Medicacao[]                @relation("MedicacaoPrescritor")
-  registosMedicacao          RegistoMedicacao[]
-  doentesAdmitidos           Doente[]                   @relation("DoenteAdmissao")
-  escalas                    Escala[]
-  atribuicoesEnfermeiro      AtribuicaoDoente[]
-  horariosTurnoProfissional  HorarioTurnoProfissional[]
-  atribuicoesComoUtilizador  AtribuicaoHorarioTurno[]   @relation("AtribuicaoUtilizador")
-  atribuicoesFeitas          AtribuicaoHorarioTurno[]   @relation("AtribuicaoAtribuidoPor")
-  trocasSolicitadas          PedidoTrocaTurno[]         @relation("TrocaSolicitante")
-  trocasRecebidas            PedidoTrocaTurno[]         @relation("TrocaDestinatario")
-  trocasAprovadas            PedidoTrocaTurno[]         @relation("TrocaAprovadoPor")
-  auditLogs                  AuditLog[]
-  sinaisVitaisRegistados     SinalVital[]               @relation("SinaisVitaisRegistados")
-  dispositivosTokens         DispositivoToken[]
-  avaliacoesRisco            AvaliacaoRisco[]
-  sumariosAlta               SumarioAlta[]
+  turnosComoChefe              Turno[]                    @relation("ChefeTurno")
+  horariosEntrada              HorarioEntrada[]
+  notasTurno                   NotaTurno[]
+  tarefasCriadas               Tarefa[]                   @relation("TarefaCriadaPor")
+  tarefasResponsavel           Tarefa[]                   @relation("TarefaResponsavel")
+  medicacoesPrescritas         Medicacao[]                @relation("MedicacaoPrescritor")
+  registosMedicacao            RegistoMedicacao[]
+  doentesAdmitidos             Doente[]                   @relation("DoenteAdmissao")
+  escalas                      Escala[]
+  atribuicoesEnfermeiro        AtribuicaoDoente[]
+  horariosTurnoProfissional    HorarioTurnoProfissional[]
+  atribuicoesComoUtilizador    AtribuicaoHorarioTurno[]   @relation("AtribuicaoUtilizador")
+  atribuicoesFeitas            AtribuicaoHorarioTurno[]   @relation("AtribuicaoAtribuidoPor")
+  trocasSolicitadas            PedidoTrocaTurno[]         @relation("TrocaSolicitante")
+  trocasRecebidas              PedidoTrocaTurno[]         @relation("TrocaDestinatario")
+  trocasAprovadas              PedidoTrocaTurno[]         @relation("TrocaAprovadoPor")
+  auditLogs                    AuditLog[]
+  sinaisVitaisRegistados       SinalVital[]               @relation("SinaisVitaisRegistados")
+  dispositivosTokens           DispositivoToken[]
+  avaliacoesRisco              AvaliacaoRisco[]
+  sumariosAlta                 SumarioAlta[]
   // Novos — Fase 7
-  notasClinciasAutor         NotaClinica[]
-  escalasClinicasRegistadas  EscalaClinica[]
+  notasClinciasAutor           NotaClinica[]
+  escalasClinicasRegistadas    EscalaClinica[]
   // Novos — Fase 5
-  examesSolicitados          Exame[]                    @relation("ExameSolicitadoPor")
-  episodiosTriados           EpisodioUrgencia[]         @relation("EpisodioTriador")
-  episodiosMedico            EpisodioUrgencia[]         @relation("EpisodioMedico")
-  cirurgiasComoCircurgiao    CirurgiaProgramada[]       @relation("CirurgiaCircurgiao")
-  cirurgiasComoAnestesista   CirurgiaProgramada[]       @relation("CirurgiaAnestesista")
-  consultas                  Consulta[]
-  stockPedidosSolicitados    PedidoFarmacia[]           @relation("PedidoSolicitante")
-  stockPedidosProcessados    PedidoFarmacia[]           @relation("PedidoProcessador")
-  planosReabilitacao         PlanoReabilitacao[]
-  sessoesFisioterapia        SessaoFisioterapia[]
-  pedidosInternosSolicitados PedidoInterno[]            @relation("PedidoInternoSolicitante")
-  pedidosInternosExecutados  PedidoInterno[]            @relation("PedidoInternoExecutor")
-  anunciosPublicados         Anuncio[]
-  mensagensEnviadas          MensagemInterna[]          @relation("MensagemRemetente")
-  mensagensRecebidas         MensagemInterna[]          @relation("MensagemDestinatario")
+  examesSolicitados            Exame[]                    @relation("ExameSolicitadoPor")
+  episodiosTriados             EpisodioUrgencia[]         @relation("EpisodioTriador")
+  episodiosMedico              EpisodioUrgencia[]         @relation("EpisodioMedico")
+  cirurgiasComoCircurgiao      CirurgiaProgramada[]       @relation("CirurgiaCircurgiao")
+  cirurgiasComoAnestesista     CirurgiaProgramada[]       @relation("CirurgiaAnestesista")
+  consultas                    Consulta[]
+  stockPedidosSolicitados      PedidoFarmacia[]           @relation("PedidoSolicitante")
+  stockPedidosProcessados      PedidoFarmacia[]           @relation("PedidoProcessador")
+  planosReabilitacao           PlanoReabilitacao[]
+  sessoesFisioterapia          SessaoFisioterapia[]
+  pedidosInternosSolicitados   PedidoInterno[]            @relation("PedidoInternoSolicitante")
+  pedidosInternosExecutados    PedidoInterno[]            @relation("PedidoInternoExecutor")
+  anunciosPublicados           Anuncio[]
+  mensagensEnviadas            MensagemInterna[]          @relation("MensagemRemetente")
+  mensagensRecebidas           MensagemInterna[]          @relation("MensagemDestinatario")
   // Novos — Fase 8A
-  interconsultasRequisitadas Interconsulta[]            @relation("InterconsultaRequisitante")
-  interconsultasRespondidas  Interconsulta[]            @relation("InterconsultaResposta")
-  dispositivosInseridos      DispositivoInvasivo[]      @relation("DispositivoInserido")
+  interconsultasRequisitadas   Interconsulta[]            @relation("InterconsultaRequisitante")
+  interconsultasRespondidas    Interconsulta[]            @relation("InterconsultaResposta")
+  dispositivosInseridos        DispositivoInvasivo[]      @relation("DispositivoInserido")
   // Novos — Fase 8B
-  medicacoesValidadas        Medicacao[]                @relation("MedicacaoValidador")
+  medicacoesValidadas          Medicacao[]                @relation("MedicacaoValidador")
   // Novos — Fase 8B WHO Checklist
-  checklistsSignIn           ChecklistCirurgia[]        @relation("ChecklistSignIn")
-  checklistsTimeOut          ChecklistCirurgia[]        @relation("ChecklistTimeOut")
-  checklistsSignOut          ChecklistCirurgia[]        @relation("ChecklistSignOut")
+  checklistsSignIn             ChecklistCirurgia[]        @relation("ChecklistSignIn")
+  checklistsTimeOut            ChecklistCirurgia[]        @relation("ChecklistTimeOut")
+  checklistsSignOut            ChecklistCirurgia[]        @relation("ChecklistSignOut")
   // Novos — Fase 8C Sala de Espera
-  checkinsRececionados       CheckinSalaEspera[]        @relation("CheckinRececionista")
-  checkinsAtendidos          CheckinSalaEspera[]        @relation("CheckinMedico")
-  refreshTokens              RefreshToken[]
-  incidentesCriados          IncidenteTI[]              @relation("IncidentesCriados")
-  incidentesAtribuidos       IncidenteTI[]              @relation("IncidentesAtribuidos")
-  pedidosTICriados           PedidoTI[]                 @relation("PedidosTICriados")
-  pedidosTIAtribuidos        PedidoTI[]                 @relation("PedidosTIAtribuidos")
+  checkinsRececionados         CheckinSalaEspera[]        @relation("CheckinRececionista")
+  checkinsAtendidos            CheckinSalaEspera[]        @relation("CheckinMedico")
+  refreshTokens                RefreshToken[]
+  incidentesCriados            IncidenteTI[]              @relation("IncidentesCriados")
+  incidentesAtribuidos         IncidenteTI[]              @relation("IncidentesAtribuidos")
+  pedidosTICriados             PedidoTI[]                 @relation("PedidosTICriados")
+  pedidosTIAtribuidos          PedidoTI[]                 @relation("PedidosTIAtribuidos")
+  ficheirosPessoaisAtualizados FicheiroPessoalDoente[]
+  episodiosFaturacaoCriados    EpisodioFaturacao[]
+  pagamentosRegistados         Pagamento[]
+  agendas                      AgendaMedico[]             @relation("AgendaMedico")
 
   @@map("utilizadores")
 }
@@ -203,6 +207,9 @@ model Doente {
   // Novos — Fase 8A
   interconsultas        Interconsulta[]
   dispositivosInvasivos DispositivoInvasivo[]
+  // Dados administrativos (acesso restrito a role 'administrativo')
+  ficheiroPessoal       FicheiroPessoalDoente?
+  episodiosFaturacao    EpisodioFaturacao[]
 
   @@index([ativo])
   @@index([estado])
@@ -833,9 +840,28 @@ model Consulta {
   notas           String?
   diagnostico     String?
   proximaConsulta DateTime?
+  codigo          String?        @unique // ex: "CON-K7PX" — para check-in no quiosque
+  checkinEm       DateTime? // quando o utente deu entrada
   criadoEm        DateTime       @default(now())
 
+  @@index([medicoId, dataHora])
+  @@index([codigo])
   @@map("consultas")
+}
+
+model AgendaMedico {
+  id          String     @id @default(uuid())
+  medicoId    String
+  medico      Utilizador @relation("AgendaMedico", fields: [medicoId], references: [id])
+  diaSemana   Int // 0=Dom 1=Seg 2=Ter 3=Qua 4=Qui 5=Sex 6=Sab
+  horaInicio  String // "08:00"
+  horaFim     String // "13:00"
+  duracaoSlot Int        @default(20)
+  ativo       Boolean    @default(true)
+  criadoEm    DateTime   @default(now())
+
+  @@unique([medicoId, diaSemana])
+  @@map("agenda_medico")
 }
 
 // ─── Sala de Espera ───────────────────────────────────────────────────────────
@@ -1173,6 +1199,110 @@ model PedidoTI {
   @@index([estado])
   @@index([criadoPorId])
   @@map("pedidos_ti")
+}
+
+// ─── Ficha Pessoal do Doente (acesso restrito: só role 'administrativo') ──────
+
+model FicheiroPessoalDoente {
+  id                 String      @id @default(uuid())
+  doenteId           String      @unique
+  doente             Doente      @relation(fields: [doenteId], references: [id])
+  nif                String?
+  numeroSNS          String?
+  morada             String?
+  codigoPostal       String?
+  localidade         String?
+  telefone           String?
+  email              String?
+  entidadeSeguradora String?
+  numeroApolice      String?
+  tipoCobertura      String? // 'sns' | 'seguro' | 'particular'
+  atualizadoEm       DateTime    @updatedAt
+  atualizadoPorId    String?
+  atualizadoPor      Utilizador? @relation(fields: [atualizadoPorId], references: [id])
+
+  @@map("fichas_pessoais_doente")
+}
+
+// ─── Faturação ────────────────────────────────────────────────────────────────
+
+enum EstadoFatura {
+  pendente
+  emitida
+  paga
+  isenta
+  anulada
+}
+
+model EpisodioFaturacao {
+  id            String       @id @default(uuid())
+  doenteId      String
+  doente        Doente       @relation(fields: [doenteId], references: [id])
+  estado        EstadoFatura @default(pendente)
+  dataEmissao   DateTime?
+  totalBase     Float        @default(0)
+  totalCobrado  Float        @default(0)
+  tipoCobertura String? // 'sns' | 'seguro' | 'particular'
+  notas         String?
+  criadoPorId   String
+  criadoPor     Utilizador   @relation(fields: [criadoPorId], references: [id])
+  criadoEm      DateTime     @default(now())
+  itens         ItemFatura[]
+  pagamentos    Pagamento[]
+
+  @@index([doenteId])
+  @@index([estado])
+  @@map("episodios_faturacao")
+}
+
+model ItemFatura {
+  id                  String            @id @default(uuid())
+  episodioFaturacaoId String
+  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id])
+  descricao           String
+  categoria           String // 'diaria' | 'procedimento' | 'medicacao' | 'exame' | 'outro'
+  quantidade          Int               @default(1)
+  precoUnitario       Float
+  total               Float
+  criadoEm            DateTime          @default(now())
+
+  @@map("itens_fatura")
+}
+
+model Pagamento {
+  id                  String            @id @default(uuid())
+  episodioFaturacaoId String
+  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id])
+  valor               Float
+  metodo              String // 'numerario' | 'multibanco' | 'transferencia' | 'seguro' | 'isencao'
+  referencia          String?
+  registadoPorId      String
+  registadoPor        Utilizador        @relation(fields: [registadoPorId], references: [id])
+  criadoEm            DateTime          @default(now())
+
+  @@map("pagamentos")
+}
+
+// ─── Tickets / Filas de Espera ───────────────────────────────────────────────
+
+model Ticket {
+  id          String    @id @default(uuid())
+  numero      String // ex: 'A045', 'C012'
+  letra       String // 'A' | 'C' | 'F' | 'R' | 'E' | 'U' | 'G'
+  sequencia   Int
+  tipo        String // admissao | consulta | faturacao | farmacia | exames | urgencia | geral
+  estado      String    @default("aguarda") // aguarda | chamado | em_atendimento | concluido | desistiu
+  prioridade  String    @default("normal") // normal | prioritario | senior
+  balcao      String?
+  nomeUtente  String?
+  telefone    String?
+  criadoEm    DateTime  @default(now())
+  chamadoEm   DateTime?
+  concluidoEm DateTime?
+
+  @@index([estado, criadoEm])
+  @@index([tipo, criadoEm])
+  @@map("tickets")
 }
 
 // ─── Refresh Tokens ──────────────────────────────────────────────────────────
