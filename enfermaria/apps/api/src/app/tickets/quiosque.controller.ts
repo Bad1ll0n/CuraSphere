@@ -39,6 +39,36 @@ export class QuiosqueController {
     return this.service.statsHoje();
   }
 
+  // ─── NIF ──────────────────────────────────────────────────────────────────
+
+  @Get('paciente')
+  async buscarPaciente(@Query('nif') nif: string) {
+    if (!nif) throw new BadRequestException('NIF obrigatório');
+    const ficha = await this.prisma.ficheiroPessoalDoente.findFirst({
+      where: { nif: nif.trim() },
+      include: { doente: { select: { id: true, nome: true, dataNascimento: true } } },
+    });
+    if (!ficha) throw new NotFoundException('Nenhum utente encontrado com esse NIF');
+    return {
+      id: ficha.doente.id,
+      nome: ficha.doente.nome,
+      dataNascimento: ficha.doente.dataNascimento,
+    };
+  }
+
+  @Get('paciente/:doenteId/marcacoes-hoje')
+  async marcacoesHoje(@Param('doenteId') doenteId: string) {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const amanha = new Date(hoje);
+    amanha.setDate(amanha.getDate() + 1);
+    return this.prisma.consulta.findMany({
+      where: { doenteId, estado: 'agendada', dataHora: { gte: hoje, lt: amanha } },
+      include: { medico: { select: { nome: true, especialidade: true } } },
+      orderBy: { dataHora: 'asc' },
+    });
+  }
+
   // ─── Marcações ───────────────────────────────────────────────────────────
 
   @Get('marcacao')

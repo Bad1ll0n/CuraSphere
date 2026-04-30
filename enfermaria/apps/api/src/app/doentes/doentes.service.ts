@@ -11,20 +11,22 @@ export class DoenteService {
     const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 
     if (!restritos.includes(role)) {
+      // Admin e outros roles não clínicos: ver internados + ambulatorio (não pendente_cama)
+      const whereBase = { ativo: true, estadoRegisto: { not: 'pendente_cama' } };
       const [data, total] = await this.prisma.$transaction([
         this.prisma.doente.findMany({
-          where: { ativo: true },
+          where: whereBase,
           include: { cama: true },
           orderBy: { dataAdmissao: 'desc' },
           take: limit,
           skip,
         }),
-        this.prisma.doente.count({ where: { ativo: true } }),
+        this.prisma.doente.count({ where: whereBase }),
       ]);
       return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
     }
 
-    // Determina turno ativo actual
+    // Clínicos (enfermeiro, médico, auxiliar): apenas doentes internados (com cama)
     const agora = new Date();
     const min = agora.getHours() * 60 + agora.getMinutes();
     let tipo: string;
@@ -41,6 +43,7 @@ export class DoenteService {
 
     const where = {
       ativo: true,
+      estadoRegisto: 'internado',
       atribuicoesHorario: {
         some: {
           utilizadorId,
@@ -174,17 +177,21 @@ export class DoenteService {
   async darAlta(id: string, administrativoId: string) {
     const doente = await this.buscarPorId(id);
 
-    await this.prisma.$transaction([
+    const ops: any[] = [
       this.prisma.doente.update({
         where: { id },
         data: { ativo: false, dataAlta: new Date(), estado: 'alta_prevista' },
       }),
-      this.prisma.cama.update({
+    ];
+
+    if (doente.camaId) {
+      ops.push(this.prisma.cama.update({
         where: { id: doente.camaId },
         data: { estado: 'em_limpeza' },
-      }),
-    ]);
+      }));
+    }
 
+    await this.prisma.$transaction(ops);
     return { mensagem: 'Alta registada com sucesso' };
   }
 
@@ -385,10 +392,12 @@ export class DoenteService {
         data: { ativo: false, dataAlta: new Date() },
       });
 
-      await tx.cama.update({
-        where: { id: doente.camaId },
-        data: { estado: 'em_limpeza' },
-      });
+      if (doente.camaId) {
+        await tx.cama.update({
+          where: { id: doente.camaId },
+          data: { estado: 'em_limpeza' },
+        });
+      }
 
       return sumario;
     });
@@ -407,6 +416,23 @@ export class DoenteService {
       where: { id },
       data: { emIsolamento, motivoIsolamento: emIsolamento ? (motivoIsolamento ?? null) : null },
       select: { id: true, emIsolamento: true, motivoIsolamento: true },
+    });
+  }
+
+  async listarRegistosAdministrativos(search?: string) {
+    return this.prisma.doente.findMany({
+      where: {
+        estadoRegisto: { in: ['pendente_cama', 'ambulatorio'] },
+        ...(search ? { nome: { contains: search, mode: 'insensitive' as any } } : {}),
+      },
+      select: {
+        id: true, nome: true, dataNascimento: true, numeroProcesso: true,
+        estadoRegisto: true, tipoVisita: true, dataAdmissao: true,
+        ficheiroPessoal: {
+          select: { nif: true, numeroSNS: true, telefone: true, tipoCobertura: true },
+        },
+      },
+      orderBy: { dataAdmissao: 'desc' },
     });
   }
 
@@ -465,6 +491,78 @@ export class DoenteService {
       create: { doenteId, ...data, atualizadoPorId },
       update: { ...data, atualizadoPorId },
       include: { atualizadoPor: { select: { id: true, nome: true } } },
+    });
+  }
+
+  private async gerarNumeroProcesso(tx: { doente: { findFirst: (args: any) => Promise<{ numeroProcesso: string } | null> } }) {
+    const ano = new Date().getFullYear();
+    const prefixo = `${ano}-`;
+    const ultimo = await tx.doente.findFirst({
+      where: { numeroProcesso: { startsWith: prefixo } },
+      orderBy: { numeroProcesso: 'desc' },
+      select: { numeroProcesso: true },
+    });
+    const proximoNum = ultimo ? parseInt(ultimo.numeroProcesso.split('-')[1], 10) + 1 : 1;
+    return `${ano}-${String(proximoNum).padStart(8, '0')}`;
+  }
+
+  async registroRapido(
+    dto: {
+      nome: string;
+      tipoVisita?: string; // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
+      dataNascimento?: string;
+      nif?: string;
+      numeroSNS?: string;
+      telefone?: string;
+      email?: string;
+      tipoCobertura?: string;
+      morada?: string;
+      codigoPostal?: string;
+      localidade?: string;
+      entidadeSeguradora?: string;
+      numeroApolice?: string;
+    },
+    criadoPorId: string,
+  ) {
+    return this.prisma.$transaction(async (tx) => {
+      const numeroProcesso = await this.gerarNumeroProcesso(tx);
+      // Internamento → pendente_cama (aguarda cama clínica); tudo o resto → ambulatorio
+      const estadoRegisto = dto.tipoVisita === 'internamento' ? 'pendente_cama' : 'ambulatorio';
+      const doente = await tx.doente.create({
+        data: {
+          nome: dto.nome,
+          dataNascimento: dto.dataNascimento ? new Date(dto.dataNascimento) : null,
+          numeroProcesso,
+          estadoRegisto,
+          tipoVisita: dto.tipoVisita ?? null,
+          administrativoAdmissaoId: criadoPorId,
+        },
+      });
+
+      const temDadosAdmin = dto.nif || dto.numeroSNS || dto.telefone || dto.email
+        || dto.morada || dto.codigoPostal || dto.localidade
+        || dto.entidadeSeguradora || dto.numeroApolice;
+
+      if (temDadosAdmin) {
+        await tx.ficheiroPessoalDoente.create({
+          data: {
+            doenteId: doente.id,
+            nif: dto.nif ?? null,
+            numeroSNS: dto.numeroSNS ?? null,
+            telefone: dto.telefone ?? null,
+            email: dto.email ?? null,
+            tipoCobertura: dto.tipoCobertura ?? null,
+            morada: dto.morada ?? null,
+            codigoPostal: dto.codigoPostal ?? null,
+            localidade: dto.localidade ?? null,
+            entidadeSeguradora: dto.entidadeSeguradora ?? null,
+            numeroApolice: dto.numeroApolice ?? null,
+            atualizadoPorId: criadoPorId,
+          },
+        });
+      }
+
+      return doente;
     });
   }
 }

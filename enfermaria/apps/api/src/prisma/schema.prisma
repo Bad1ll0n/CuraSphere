@@ -162,10 +162,12 @@ enum EstadoDoente {
 model Doente {
   id                   String       @id @default(uuid())
   nome                 String
-  dataNascimento       DateTime
+  dataNascimento       DateTime?
   numeroProcesso       String       @unique
   estado               EstadoDoente @default(estavel)
-  diagnosticoPrincipal String
+  diagnosticoPrincipal String?
+  estadoRegisto        String       @default("pendente_cama") // 'pendente_cama' | 'internado' | 'ambulatorio'
+  tipoVisita           String?      // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
   dataAdmissao         DateTime     @default(now())
   dataAltaPrevista     DateTime?
   dataAlta             DateTime?
@@ -173,11 +175,11 @@ model Doente {
   emIsolamento         Boolean      @default(false)
   motivoIsolamento     String?
 
-  camaId               String       @unique
-  cama                 Cama         @relation(fields: [camaId], references: [id])
+  camaId               String?      @unique
+  cama                 Cama?        @relation(fields: [camaId], references: [id])
 
-  administrativoAdmissaoId String
-  administrativo           Utilizador @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
+  administrativoAdmissaoId String?
+  administrativo           Utilizador? @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
 
   // Relações existentes
   atribuicoes         AtribuicaoDoente[]

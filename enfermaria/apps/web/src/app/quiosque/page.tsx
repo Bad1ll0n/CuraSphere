@@ -14,7 +14,7 @@ const SERVICOS = [
   { tipo: 'geral', letra: 'G', label: 'Informações', icon: 'ℹ️', cor: '#6b7280' },
 ];
 
-type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso';
+type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes';
 
 export default function QuiosquePage() {
   const [estado, setEstado] = useState<Estado>('selecionar');
@@ -24,6 +24,14 @@ export default function QuiosquePage() {
   const [nome, setNome] = useState('');
   const [emissao, setEmissao] = useState(false);
   const [ticket, setTicket] = useState<{ numero: string; tipo: string; prioridade: string } | null>(null);
+
+  // NIF
+  const [nifInput, setNifInput] = useState('');
+  const [nifErro, setNifErro] = useState('');
+  const [buscandoNif, setBuscandoNif] = useState(false);
+  const [pacienteNif, setPacienteNif] = useState<{ id: string; nome: string; dataNascimento?: string } | null>(null);
+  const [marcacoesHoje, setMarcacoesHoje] = useState<Array<{ id: string; dataHora: string; checkinEm?: string; medico: { nome: string; especialidade?: string } }>>([]);
+  const [buscandoMarcacoesHoje, setBuscandoMarcacoesHoje] = useState(false);
 
   // Marcação
   const [codigoInput, setCodigoInput] = useState('');
@@ -69,6 +77,65 @@ export default function QuiosquePage() {
     setCodigoInput('');
     setMarcacaoEncontrada(null);
     setMarcacaoErro('');
+    setNifInput('');
+    setNifErro('');
+    setPacienteNif(null);
+    setMarcacoesHoje([]);
+  }
+
+  async function buscarPacientePorNif() {
+    if (nifInput.trim().length < 9) return;
+    setBuscandoNif(true);
+    setNifErro('');
+    try {
+      const res = await fetch(`${API}/quiosque/paciente?nif=${nifInput.trim()}`);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setNifErro(err.message ?? 'Nenhum utente encontrado com esse NIF');
+        return;
+      }
+      setPacienteNif(await res.json());
+      setEstado('nif_resultado');
+    } finally {
+      setBuscandoNif(false);
+    }
+  }
+
+  async function verMarcacoesHoje() {
+    if (!pacienteNif) return;
+    setBuscandoMarcacoesHoje(true);
+    try {
+      const res = await fetch(`${API}/quiosque/paciente/${pacienteNif.id}/marcacoes-hoje`);
+      setMarcacoesHoje(res.ok ? await res.json() : []);
+      setEstado('nif_marcacoes');
+    } finally {
+      setBuscandoMarcacoesHoje(false);
+    }
+  }
+
+  async function checkinMarcacaoNif(consultaId: string) {
+    setEmissao(true);
+    try {
+      const res = await fetch(`${API}/quiosque/marcacao/${consultaId}/checkin`, { method: 'POST' });
+      const data = await res.json();
+      if (data.jaFezCheckin) {
+        alert('Este utente já fez check-in nesta marcação.');
+        return;
+      }
+      setTicket(data.ticket);
+      setEstado('marcacao_sucesso');
+    } catch {
+      alert('Erro ao fazer check-in. Tente novamente.');
+    } finally {
+      setEmissao(false);
+    }
+  }
+
+  async function tirarSenhaNif() {
+    if (!pacienteNif) return;
+    setEstado('opcoes');
+    setTipoSelecionado(SERVICOS[0]);
+    setNome(pacienteNif.nome);
   }
 
   async function buscarMarcacao() {
@@ -188,15 +255,32 @@ export default function QuiosquePage() {
             ))}
           </div>
 
-          {/* Botão Tenho Marcação */}
-          <div style={{ marginTop: 28, textAlign: 'center' }}>
+          {/* Botões secundários */}
+          <div style={{ marginTop: 28, display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setEstado('nif')}
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: 12,
+                padding: '14px 28px',
+                color: '#94a3b8',
+                fontSize: 16,
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
+            >
+              🪪 Identificar pelo NIF
+            </button>
             <button
               onClick={() => setEstado('marcacao')}
               style={{
                 background: 'rgba(255,255,255,0.05)',
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: 12,
-                padding: '14px 36px',
+                padding: '14px 28px',
                 color: '#94a3b8',
                 fontSize: 16,
                 cursor: 'pointer',
@@ -206,6 +290,118 @@ export default function QuiosquePage() {
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
             >
               📋 Já tenho marcação
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ESTADO: Inserir NIF */}
+      {estado === 'nif' && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
+          <div style={{ fontSize: 56, marginBottom: 16 }}>🪪</div>
+          <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Identificar pelo NIF</h2>
+          <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 32 }}>
+            Introduza o seu Número de Identificação Fiscal para ser identificado automaticamente.
+          </p>
+          <input
+            type="tel"
+            value={nifInput}
+            onChange={e => { setNifInput(e.target.value.replace(/\D/g, '')); setNifErro(''); }}
+            placeholder="000000000"
+            maxLength={9}
+            style={{
+              width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: 12, padding: '16px', color: '#fff', fontSize: 32, fontWeight: 800,
+              textAlign: 'center', letterSpacing: 6, boxSizing: 'border-box', marginBottom: 16,
+              fontFamily: 'monospace',
+            }}
+            onKeyDown={e => { if (e.key === 'Enter') buscarPacientePorNif(); }}
+          />
+          {nifErro && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{nifErro}</p>}
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button onClick={reiniciar}
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+            <button onClick={buscarPacientePorNif} disabled={buscandoNif || nifInput.length < 9}
+              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: buscandoNif || nifInput.length < 9 ? 0.6 : 1 }}>
+              {buscandoNif ? 'A procurar...' : 'Identificar'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ESTADO: Paciente identificado por NIF */}
+      {estado === 'nif_resultado' && pacienteNif && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
+          <div style={{ fontSize: 56, marginBottom: 16 }}>👋</div>
+          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 6 }}>Olá,</h2>
+          <h2 style={{ color: '#fff', fontSize: 28, fontWeight: 800, marginBottom: 32 }}>{pacienteNif.nome}</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <button onClick={verMarcacoesHoje} disabled={buscandoMarcacoesHoje}
+              style={{ width: '100%', padding: '18px', borderRadius: 12, border: 'none', background: '#8b5cf6', color: '#fff', fontSize: 17, fontWeight: 700, cursor: 'pointer', opacity: buscandoMarcacoesHoje ? 0.7 : 1 }}>
+              {buscandoMarcacoesHoje ? 'A verificar...' : '📋 Ver Marcações de Hoje'}
+            </button>
+            <button onClick={tirarSenhaNif}
+              style={{ width: '100%', padding: '18px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 17, fontWeight: 600, cursor: 'pointer' }}>
+              🎟️ Tirar Senha
+            </button>
+            <button onClick={reiniciar}
+              style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ESTADO: Marcações de hoje via NIF */}
+      {estado === 'nif_marcacoes' && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 540, textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>📋</div>
+          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>
+            {marcacoesHoje.length > 0 ? 'As suas consultas de hoje' : 'Sem marcações para hoje'}
+          </h2>
+          {marcacoesHoje.length === 0 ? (
+            <p style={{ color: '#94a3b8', fontSize: 16, marginBottom: 32 }}>
+              Não tem consultas agendadas para hoje. Pode tirar uma senha normal abaixo.
+            </p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+              {marcacoesHoje.map(m => (
+                <div key={m.id} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '18px 20px', textAlign: 'left' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                    <div>
+                      <div style={{ color: '#60a5fa', fontWeight: 700, fontSize: 20 }}>
+                        {new Date(m.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                      <div style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>Dr. {m.medico.nome}</div>
+                      {m.medico.especialidade && (
+                        <div style={{ color: '#94a3b8', fontSize: 13 }}>{m.medico.especialidade}</div>
+                      )}
+                    </div>
+                    {m.checkinEm ? (
+                      <span style={{ background: '#10b981', color: '#fff', borderRadius: 8, padding: '4px 12px', fontSize: 13, fontWeight: 600 }}>
+                        ✓ Check-in feito
+                      </span>
+                    ) : (
+                      <button onClick={() => checkinMarcacaoNif(m.id)} disabled={emissao}
+                        style={{ padding: '10px 18px', borderRadius: 10, border: 'none', background: '#10b981', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: emissao ? 0.7 : 1 }}>
+                        Fazer Check-in
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button onClick={() => setEstado('nif_resultado')}
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+            <button onClick={tirarSenhaNif}
+              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
+              🎟️ Tirar Senha Normal
             </button>
           </div>
         </div>

@@ -67,6 +67,81 @@ export default function RecepcaoPage() {
 
   const podeVer = utilizador?.role === 'administrativo';
 
+  // Modal Registo Administrativo
+  const TIPOS_VISITA = [
+    { value: 'consulta',     label: 'Consulta',     icon: '👨‍⚕️', desc: 'Marcação com médico' },
+    { value: 'exame',        label: 'Exame',        icon: '🔬', desc: 'Análises / Imagiologia' },
+    { value: 'urgencia',     label: 'Urgência',     icon: '🚨', desc: 'Atendimento de urgência' },
+    { value: 'farmacia',     label: 'Farmácia',     icon: '💊', desc: 'Levantamento de medicação' },
+    { value: 'internamento', label: 'Internamento', icon: '🏥', desc: 'Admissão com cama' },
+    { value: 'outro',        label: 'Outro',        icon: 'ℹ️', desc: 'Outro serviço' },
+  ];
+
+  const [modalNovoUtente, setModalNovoUtente] = useState(false);
+  const [novoUtenteForm, setNovoUtenteForm] = useState({
+    tipoVisita: '',
+    nome: '', dataNascimento: '', nif: '', numeroSNS: '',
+    telefone: '', email: '', tipoCobertura: 'sns',
+    morada: '', codigoPostal: '', localidade: '',
+    entidadeSeguradora: '', numeroApolice: '',
+  });
+  const [criandoUtente, setCriandoUtente] = useState(false);
+  const [novoUtenteErro, setNovoUtenteErro] = useState('');
+  const [novoUtenteSucesso, setNovoUtenteSucesso] = useState<{ nome: string; numeroProcesso: string; tipoVisita: string } | null>(null);
+
+  const formVazio = {
+    tipoVisita: '',
+    nome: '', dataNascimento: '', nif: '', numeroSNS: '',
+    telefone: '', email: '', tipoCobertura: 'sns',
+    morada: '', codigoPostal: '', localidade: '',
+    entidadeSeguradora: '', numeroApolice: '',
+  };
+
+  async function criarUtente(e: React.FormEvent) {
+    e.preventDefault();
+    if (!novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita) return;
+    setCriandoUtente(true);
+    setNovoUtenteErro('');
+    try {
+      const res = await fetch(`${API}/doentes/registro-rapido`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          nome: novoUtenteForm.nome,
+          tipoVisita: novoUtenteForm.tipoVisita,
+          dataNascimento: novoUtenteForm.dataNascimento || undefined,
+          nif: novoUtenteForm.nif || undefined,
+          numeroSNS: novoUtenteForm.numeroSNS || undefined,
+          telefone: novoUtenteForm.telefone || undefined,
+          email: novoUtenteForm.email || undefined,
+          tipoCobertura: novoUtenteForm.tipoCobertura,
+          morada: novoUtenteForm.morada || undefined,
+          codigoPostal: novoUtenteForm.codigoPostal || undefined,
+          localidade: novoUtenteForm.localidade || undefined,
+          entidadeSeguradora: novoUtenteForm.entidadeSeguradora || undefined,
+          numeroApolice: novoUtenteForm.numeroApolice || undefined,
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setNovoUtenteErro(err.message ?? 'Erro ao registar utente');
+        return;
+      }
+      const doente = await res.json();
+      setNovoUtenteSucesso({ nome: doente.nome, numeroProcesso: doente.numeroProcesso, tipoVisita: novoUtenteForm.tipoVisita });
+      setNovoUtenteForm(formVazio);
+    } finally {
+      setCriandoUtente(false);
+    }
+  }
+
+  function fecharModalNovoUtente() {
+    setModalNovoUtente(false);
+    setNovoUtenteErro('');
+    setNovoUtenteSucesso(null);
+    setNovoUtenteForm(formVazio);
+  }
+
   function triggerFlash() {
     setFlash(true);
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
@@ -201,6 +276,23 @@ export default function RecepcaoPage() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <a
+            href="/registos-administrativos"
+            style={{
+              background: '#10b981',
+              border: 'none',
+              color: '#fff',
+              padding: '8px 18px',
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              textDecoration: 'none',
+              display: 'inline-block',
+            }}
+          >
+            + Registar Utente
+          </a>
           <a
             href="/quiosque"
             target="_blank"
@@ -554,6 +646,265 @@ export default function RecepcaoPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal Novo Utente */}
+      {modalNovoUtente && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16,
+          }}
+          onClick={(e) => { if (e.target === e.currentTarget) fecharModalNovoUtente(); }}
+        >
+          <div style={{
+            background: '#1e293b', border: '1px solid #334155', borderRadius: 16,
+            padding: '32px', width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto',
+          }}>
+            {novoUtenteSucesso ? (
+              <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                <div style={{ fontSize: 56, marginBottom: 16 }}>✅</div>
+                <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 8 }}>Registo Concluído</h2>
+                <p style={{ color: '#6ee7b7', fontSize: 18, fontWeight: 700 }}>{novoUtenteSucesso.nome}</p>
+                <p style={{ color: '#64748b', fontSize: 14, marginBottom: 16 }}>
+                  Nº de processo: <strong style={{ color: '#94a3b8' }}>{novoUtenteSucesso.numeroProcesso}</strong>
+                </p>
+                {(() => {
+                  const tv = TIPOS_VISITA.find(t => t.value === novoUtenteSucesso.tipoVisita);
+                  const msgs: Record<string, string> = {
+                    internamento: 'Aguarda atribuição de cama pela equipa clínica.',
+                    consulta: 'Dirija-se ao balcão de consultas ou ao quiosque para tirar senha.',
+                    exame: 'Dirija-se ao serviço de exames.',
+                    urgencia: 'Dirija-se à urgência imediatamente.',
+                    farmacia: 'Dirija-se à farmácia.',
+                    outro: 'Registo concluído.',
+                  };
+                  return (
+                    <div style={{ background: '#0f172a', borderRadius: 10, padding: '12px 16px', marginBottom: 24 }}>
+                      <p style={{ color: '#94a3b8', margin: 0, fontSize: 14 }}>
+                        {tv?.icon} <strong>{tv?.label}</strong> — {msgs[novoUtenteSucesso.tipoVisita] ?? ''}
+                      </p>
+                    </div>
+                  );
+                })()}
+                <button
+                  onClick={fecharModalNovoUtente}
+                  style={{ width: '100%', padding: '14px', borderRadius: 10, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Fechar
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={criarUtente}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Registo Administrativo</h2>
+                    <p style={{ margin: '4px 0 0 0', color: '#64748b', fontSize: 13 }}>Dados legais e de identificação do utente</p>
+                  </div>
+                  <button type="button" onClick={fecharModalNovoUtente}
+                    style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer', padding: 4 }}>
+                    ✕
+                  </button>
+                </div>
+
+                {novoUtenteErro && (
+                  <div style={{ background: '#ef444420', border: '1px solid #ef4444', borderRadius: 8, padding: '10px 14px', marginBottom: 16, color: '#fca5a5', fontSize: 14 }}>
+                    {novoUtenteErro}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 20 }}>
+
+                  {/* Secção: Tipo de visita */}
+                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: 0 }}>Motivo da Visita *</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                    {TIPOS_VISITA.map(tv => (
+                      <button
+                        key={tv.value}
+                        type="button"
+                        onClick={() => setNovoUtenteForm(f => ({ ...f, tipoVisita: tv.value }))}
+                        style={{
+                          padding: '10px 8px',
+                          borderRadius: 10,
+                          border: novoUtenteForm.tipoVisita === tv.value ? '2px solid #3b82f6' : '1px solid #334155',
+                          background: novoUtenteForm.tipoVisita === tv.value ? '#1e3a5f' : '#0f172a',
+                          color: novoUtenteForm.tipoVisita === tv.value ? '#60a5fa' : '#94a3b8',
+                          cursor: 'pointer',
+                          textAlign: 'center',
+                          fontSize: 13,
+                          fontWeight: novoUtenteForm.tipoVisita === tv.value ? 700 : 400,
+                        }}
+                      >
+                        <div style={{ fontSize: 22, marginBottom: 4 }}>{tv.icon}</div>
+                        <div>{tv.label}</div>
+                        <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{tv.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Secção: Identificação */}
+                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Identificação</p>
+
+                  <div>
+                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      Nome Completo *
+                    </label>
+                    <input
+                      required
+                      value={novoUtenteForm.nome}
+                      onChange={e => setNovoUtenteForm(f => ({ ...f, nome: e.target.value }))}
+                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      placeholder="Nome completo do utente"
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        Data de Nascimento
+                      </label>
+                      <input
+                        type="date"
+                        value={novoUtenteForm.dataNascimento}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, dataNascimento: e.target.value }))}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>NIF</label>
+                      <input
+                        value={novoUtenteForm.nif}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') }))}
+                        maxLength={9}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        placeholder="000000000"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nº SNS</label>
+                    <input
+                      value={novoUtenteForm.numeroSNS}
+                      onChange={e => setNovoUtenteForm(f => ({ ...f, numeroSNS: e.target.value }))}
+                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      placeholder="000 000 000"
+                    />
+                  </div>
+
+                  {/* Secção: Contactos */}
+                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Contactos</p>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Telefone</label>
+                      <input
+                        type="tel"
+                        value={novoUtenteForm.telefone}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, telefone: e.target.value }))}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        placeholder="9XX XXX XXX"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
+                      <input
+                        type="email"
+                        value={novoUtenteForm.email}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, email: e.target.value }))}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        placeholder="email@exemplo.pt"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Morada</label>
+                    <input
+                      value={novoUtenteForm.morada}
+                      onChange={e => setNovoUtenteForm(f => ({ ...f, morada: e.target.value }))}
+                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      placeholder="Rua, nº, andar"
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
+                      <input
+                        value={novoUtenteForm.codigoPostal}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value }))}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        placeholder="0000-000"
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
+                      <input
+                        value={novoUtenteForm.localidade}
+                        onChange={e => setNovoUtenteForm(f => ({ ...f, localidade: e.target.value }))}
+                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        placeholder="Cidade"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Secção: Cobertura */}
+                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '6px 0 0 0' }}>Cobertura de Saúde</p>
+
+                  <div>
+                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      Tipo de Cobertura
+                    </label>
+                    <select
+                      value={novoUtenteForm.tipoCobertura}
+                      onChange={e => setNovoUtenteForm(f => ({ ...f, tipoCobertura: e.target.value }))}
+                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                    >
+                      <option value="sns">SNS</option>
+                      <option value="seguro">Seguro de Saúde</option>
+                      <option value="particular">Particular</option>
+                    </select>
+                  </div>
+
+                  {novoUtenteForm.tipoCobertura === 'seguro' && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                      <div>
+                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Entidade Seguradora</label>
+                        <input
+                          value={novoUtenteForm.entidadeSeguradora}
+                          onChange={e => setNovoUtenteForm(f => ({ ...f, entidadeSeguradora: e.target.value }))}
+                          style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          placeholder="Nome da seguradora"
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nº Apólice</label>
+                        <input
+                          value={novoUtenteForm.numeroApolice}
+                          onChange={e => setNovoUtenteForm(f => ({ ...f, numeroApolice: e.target.value }))}
+                          style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          placeholder="Nº da apólice"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+                    <button type="button" onClick={fecharModalNovoUtente}
+                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+                      Cancelar
+                    </button>
+                    <button type="submit" disabled={criandoUtente || !novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita}
+                      style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#10b981', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', opacity: criandoUtente || !novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita ? 0.5 : 1 }}>
+                      {criandoUtente ? 'A registar...' : 'Registar Administrativamente'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

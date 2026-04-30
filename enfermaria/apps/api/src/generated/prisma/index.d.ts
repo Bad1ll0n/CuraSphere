@@ -13172,6 +13172,8 @@ export namespace Prisma {
     numeroProcesso: string | null
     estado: $Enums.EstadoDoente | null
     diagnosticoPrincipal: string | null
+    estadoRegisto: string | null
+    tipoVisita: string | null
     dataAdmissao: Date | null
     dataAltaPrevista: Date | null
     dataAlta: Date | null
@@ -13189,6 +13191,8 @@ export namespace Prisma {
     numeroProcesso: string | null
     estado: $Enums.EstadoDoente | null
     diagnosticoPrincipal: string | null
+    estadoRegisto: string | null
+    tipoVisita: string | null
     dataAdmissao: Date | null
     dataAltaPrevista: Date | null
     dataAlta: Date | null
@@ -13206,6 +13210,8 @@ export namespace Prisma {
     numeroProcesso: number
     estado: number
     diagnosticoPrincipal: number
+    estadoRegisto: number
+    tipoVisita: number
     dataAdmissao: number
     dataAltaPrevista: number
     dataAlta: number
@@ -13225,6 +13231,8 @@ export namespace Prisma {
     numeroProcesso?: true
     estado?: true
     diagnosticoPrincipal?: true
+    estadoRegisto?: true
+    tipoVisita?: true
     dataAdmissao?: true
     dataAltaPrevista?: true
     dataAlta?: true
@@ -13242,6 +13250,8 @@ export namespace Prisma {
     numeroProcesso?: true
     estado?: true
     diagnosticoPrincipal?: true
+    estadoRegisto?: true
+    tipoVisita?: true
     dataAdmissao?: true
     dataAltaPrevista?: true
     dataAlta?: true
@@ -13259,6 +13269,8 @@ export namespace Prisma {
     numeroProcesso?: true
     estado?: true
     diagnosticoPrincipal?: true
+    estadoRegisto?: true
+    tipoVisita?: true
     dataAdmissao?: true
     dataAltaPrevista?: true
     dataAlta?: true
@@ -13345,18 +13357,20 @@ export namespace Prisma {
   export type DoenteGroupByOutputType = {
     id: string
     nome: string
-    dataNascimento: Date
+    dataNascimento: Date | null
     numeroProcesso: string
     estado: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal: string | null
+    estadoRegisto: string
+    tipoVisita: string | null
     dataAdmissao: Date
     dataAltaPrevista: Date | null
     dataAlta: Date | null
     ativo: boolean
     emIsolamento: boolean
     motivoIsolamento: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId: string | null
+    administrativoAdmissaoId: string | null
     _count: DoenteCountAggregateOutputType | null
     _min: DoenteMinAggregateOutputType | null
     _max: DoenteMaxAggregateOutputType | null
@@ -13383,6 +13397,8 @@ export namespace Prisma {
     numeroProcesso?: boolean
     estado?: boolean
     diagnosticoPrincipal?: boolean
+    estadoRegisto?: boolean
+    tipoVisita?: boolean
     dataAdmissao?: boolean
     dataAltaPrevista?: boolean
     dataAlta?: boolean
@@ -13391,8 +13407,8 @@ export namespace Prisma {
     motivoIsolamento?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
     atribuicoes?: boolean | Doente$atribuicoesArgs<ExtArgs>
     atribuicoesHorario?: boolean | Doente$atribuicoesHorarioArgs<ExtArgs>
     tarefas?: boolean | Doente$tarefasArgs<ExtArgs>
@@ -13429,6 +13445,8 @@ export namespace Prisma {
     numeroProcesso?: boolean
     estado?: boolean
     diagnosticoPrincipal?: boolean
+    estadoRegisto?: boolean
+    tipoVisita?: boolean
     dataAdmissao?: boolean
     dataAltaPrevista?: boolean
     dataAlta?: boolean
@@ -13437,8 +13455,8 @@ export namespace Prisma {
     motivoIsolamento?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
   export type DoenteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13448,6 +13466,8 @@ export namespace Prisma {
     numeroProcesso?: boolean
     estado?: boolean
     diagnosticoPrincipal?: boolean
+    estadoRegisto?: boolean
+    tipoVisita?: boolean
     dataAdmissao?: boolean
     dataAltaPrevista?: boolean
     dataAlta?: boolean
@@ -13456,8 +13476,8 @@ export namespace Prisma {
     motivoIsolamento?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
   export type DoenteSelectScalar = {
@@ -13467,6 +13487,8 @@ export namespace Prisma {
     numeroProcesso?: boolean
     estado?: boolean
     diagnosticoPrincipal?: boolean
+    estadoRegisto?: boolean
+    tipoVisita?: boolean
     dataAdmissao?: boolean
     dataAltaPrevista?: boolean
     dataAlta?: boolean
@@ -13477,10 +13499,10 @@ export namespace Prisma {
     administrativoAdmissaoId?: boolean
   }
 
-  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
+  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "estadoRegisto" | "tipoVisita" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
   export type DoenteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
     atribuicoes?: boolean | Doente$atribuicoesArgs<ExtArgs>
     atribuicoesHorario?: boolean | Doente$atribuicoesHorarioArgs<ExtArgs>
     tarefas?: boolean | Doente$tarefasArgs<ExtArgs>
@@ -13510,19 +13532,19 @@ export namespace Prisma {
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
   }
   export type DoenteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cama?: boolean | CamaDefaultArgs<ExtArgs>
-    administrativo?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    cama?: boolean | Doente$camaArgs<ExtArgs>
+    administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
   }
 
   export type $DoentePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Doente"
     objects: {
-      cama: Prisma.$CamaPayload<ExtArgs>
-      administrativo: Prisma.$UtilizadorPayload<ExtArgs>
+      cama: Prisma.$CamaPayload<ExtArgs> | null
+      administrativo: Prisma.$UtilizadorPayload<ExtArgs> | null
       atribuicoes: Prisma.$AtribuicaoDoentePayload<ExtArgs>[]
       atribuicoesHorario: Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>[]
       tarefas: Prisma.$TarefaPayload<ExtArgs>[]
@@ -13553,18 +13575,20 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       nome: string
-      dataNascimento: Date
+      dataNascimento: Date | null
       numeroProcesso: string
       estado: $Enums.EstadoDoente
-      diagnosticoPrincipal: string
+      diagnosticoPrincipal: string | null
+      estadoRegisto: string
+      tipoVisita: string | null
       dataAdmissao: Date
       dataAltaPrevista: Date | null
       dataAlta: Date | null
       ativo: boolean
       emIsolamento: boolean
       motivoIsolamento: string | null
-      camaId: string
-      administrativoAdmissaoId: string
+      camaId: string | null
+      administrativoAdmissaoId: string | null
     }, ExtArgs["result"]["doente"]>
     composites: {}
   }
@@ -13959,8 +13983,8 @@ export namespace Prisma {
    */
   export interface Prisma__DoenteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cama<T extends CamaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CamaDefaultArgs<ExtArgs>>): Prisma__CamaClient<$Result.GetResult<Prisma.$CamaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    administrativo<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cama<T extends Doente$camaArgs<ExtArgs> = {}>(args?: Subset<T, Doente$camaArgs<ExtArgs>>): Prisma__CamaClient<$Result.GetResult<Prisma.$CamaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    administrativo<T extends Doente$administrativoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$administrativoArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     atribuicoes<T extends Doente$atribuicoesArgs<ExtArgs> = {}>(args?: Subset<T, Doente$atribuicoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     atribuicoesHorario<T extends Doente$atribuicoesHorarioArgs<ExtArgs> = {}>(args?: Subset<T, Doente$atribuicoesHorarioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtribuicaoHorarioTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tarefas<T extends Doente$tarefasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$tarefasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TarefaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -14022,6 +14046,8 @@ export namespace Prisma {
     readonly numeroProcesso: FieldRef<"Doente", 'String'>
     readonly estado: FieldRef<"Doente", 'EstadoDoente'>
     readonly diagnosticoPrincipal: FieldRef<"Doente", 'String'>
+    readonly estadoRegisto: FieldRef<"Doente", 'String'>
+    readonly tipoVisita: FieldRef<"Doente", 'String'>
     readonly dataAdmissao: FieldRef<"Doente", 'DateTime'>
     readonly dataAltaPrevista: FieldRef<"Doente", 'DateTime'>
     readonly dataAlta: FieldRef<"Doente", 'DateTime'>
@@ -14423,6 +14449,44 @@ export namespace Prisma {
      * Limit how many Doentes to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Doente.cama
+   */
+  export type Doente$camaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cama
+     */
+    select?: CamaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Cama
+     */
+    omit?: CamaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CamaInclude<ExtArgs> | null
+    where?: CamaWhereInput
+  }
+
+  /**
+   * Doente.administrativo
+   */
+  export type Doente$administrativoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
   }
 
   /**
@@ -69902,6 +69966,8 @@ export namespace Prisma {
     numeroProcesso: 'numeroProcesso',
     estado: 'estado',
     diagnosticoPrincipal: 'diagnosticoPrincipal',
+    estadoRegisto: 'estadoRegisto',
+    tipoVisita: 'tipoVisita',
     dataAdmissao: 'dataAdmissao',
     dataAltaPrevista: 'dataAltaPrevista',
     dataAlta: 'dataAlta',
@@ -71591,20 +71657,22 @@ export namespace Prisma {
     NOT?: DoenteWhereInput | DoenteWhereInput[]
     id?: StringFilter<"Doente"> | string
     nome?: StringFilter<"Doente"> | string
-    dataNascimento?: DateTimeFilter<"Doente"> | Date | string
+    dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringFilter<"Doente"> | string
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFilter<"Doente"> | string
+    diagnosticoPrincipal?: StringNullableFilter<"Doente"> | string | null
+    estadoRegisto?: StringFilter<"Doente"> | string
+    tipoVisita?: StringNullableFilter<"Doente"> | string | null
     dataAdmissao?: DateTimeFilter<"Doente"> | Date | string
     dataAltaPrevista?: DateTimeNullableFilter<"Doente"> | Date | string | null
     dataAlta?: DateTimeNullableFilter<"Doente"> | Date | string | null
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
-    camaId?: StringFilter<"Doente"> | string
-    administrativoAdmissaoId?: StringFilter<"Doente"> | string
-    cama?: XOR<CamaScalarRelationFilter, CamaWhereInput>
-    administrativo?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    camaId?: StringNullableFilter<"Doente"> | string | null
+    administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
+    cama?: XOR<CamaNullableScalarRelationFilter, CamaWhereInput> | null
+    administrativo?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     atribuicoes?: AtribuicaoDoenteListRelationFilter
     atribuicoesHorario?: AtribuicaoHorarioTurnoListRelationFilter
     tarefas?: TarefaListRelationFilter
@@ -71636,18 +71704,20 @@ export namespace Prisma {
   export type DoenteOrderByWithRelationInput = {
     id?: SortOrder
     nome?: SortOrder
-    dataNascimento?: SortOrder
+    dataNascimento?: SortOrderInput | SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
-    diagnosticoPrincipal?: SortOrder
+    diagnosticoPrincipal?: SortOrderInput | SortOrder
+    estadoRegisto?: SortOrder
+    tipoVisita?: SortOrderInput | SortOrder
     dataAdmissao?: SortOrder
     dataAltaPrevista?: SortOrderInput | SortOrder
     dataAlta?: SortOrderInput | SortOrder
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrderInput | SortOrder
-    camaId?: SortOrder
-    administrativoAdmissaoId?: SortOrder
+    camaId?: SortOrderInput | SortOrder
+    administrativoAdmissaoId?: SortOrderInput | SortOrder
     cama?: CamaOrderByWithRelationInput
     administrativo?: UtilizadorOrderByWithRelationInput
     atribuicoes?: AtribuicaoDoenteOrderByRelationAggregateInput
@@ -71686,18 +71756,20 @@ export namespace Prisma {
     OR?: DoenteWhereInput[]
     NOT?: DoenteWhereInput | DoenteWhereInput[]
     nome?: StringFilter<"Doente"> | string
-    dataNascimento?: DateTimeFilter<"Doente"> | Date | string
+    dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFilter<"Doente"> | string
+    diagnosticoPrincipal?: StringNullableFilter<"Doente"> | string | null
+    estadoRegisto?: StringFilter<"Doente"> | string
+    tipoVisita?: StringNullableFilter<"Doente"> | string | null
     dataAdmissao?: DateTimeFilter<"Doente"> | Date | string
     dataAltaPrevista?: DateTimeNullableFilter<"Doente"> | Date | string | null
     dataAlta?: DateTimeNullableFilter<"Doente"> | Date | string | null
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
-    administrativoAdmissaoId?: StringFilter<"Doente"> | string
-    cama?: XOR<CamaScalarRelationFilter, CamaWhereInput>
-    administrativo?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
+    cama?: XOR<CamaNullableScalarRelationFilter, CamaWhereInput> | null
+    administrativo?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     atribuicoes?: AtribuicaoDoenteListRelationFilter
     atribuicoesHorario?: AtribuicaoHorarioTurnoListRelationFilter
     tarefas?: TarefaListRelationFilter
@@ -71729,18 +71801,20 @@ export namespace Prisma {
   export type DoenteOrderByWithAggregationInput = {
     id?: SortOrder
     nome?: SortOrder
-    dataNascimento?: SortOrder
+    dataNascimento?: SortOrderInput | SortOrder
     numeroProcesso?: SortOrder
     estado?: SortOrder
-    diagnosticoPrincipal?: SortOrder
+    diagnosticoPrincipal?: SortOrderInput | SortOrder
+    estadoRegisto?: SortOrder
+    tipoVisita?: SortOrderInput | SortOrder
     dataAdmissao?: SortOrder
     dataAltaPrevista?: SortOrderInput | SortOrder
     dataAlta?: SortOrderInput | SortOrder
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrderInput | SortOrder
-    camaId?: SortOrder
-    administrativoAdmissaoId?: SortOrder
+    camaId?: SortOrderInput | SortOrder
+    administrativoAdmissaoId?: SortOrderInput | SortOrder
     _count?: DoenteCountOrderByAggregateInput
     _max?: DoenteMaxOrderByAggregateInput
     _min?: DoenteMinOrderByAggregateInput
@@ -71752,18 +71826,20 @@ export namespace Prisma {
     NOT?: DoenteScalarWhereWithAggregatesInput | DoenteScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Doente"> | string
     nome?: StringWithAggregatesFilter<"Doente"> | string
-    dataNascimento?: DateTimeWithAggregatesFilter<"Doente"> | Date | string
+    dataNascimento?: DateTimeNullableWithAggregatesFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringWithAggregatesFilter<"Doente"> | string
     estado?: EnumEstadoDoenteWithAggregatesFilter<"Doente"> | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringWithAggregatesFilter<"Doente"> | string
+    diagnosticoPrincipal?: StringNullableWithAggregatesFilter<"Doente"> | string | null
+    estadoRegisto?: StringWithAggregatesFilter<"Doente"> | string
+    tipoVisita?: StringNullableWithAggregatesFilter<"Doente"> | string | null
     dataAdmissao?: DateTimeWithAggregatesFilter<"Doente"> | Date | string
     dataAltaPrevista?: DateTimeNullableWithAggregatesFilter<"Doente"> | Date | string | null
     dataAlta?: DateTimeNullableWithAggregatesFilter<"Doente"> | Date | string | null
     ativo?: BoolWithAggregatesFilter<"Doente"> | boolean
     emIsolamento?: BoolWithAggregatesFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableWithAggregatesFilter<"Doente"> | string | null
-    camaId?: StringWithAggregatesFilter<"Doente"> | string
-    administrativoAdmissaoId?: StringWithAggregatesFilter<"Doente"> | string
+    camaId?: StringNullableWithAggregatesFilter<"Doente"> | string | null
+    administrativoAdmissaoId?: StringNullableWithAggregatesFilter<"Doente"> | string | null
   }
 
   export type TurnoWhereInput = {
@@ -76017,18 +76093,20 @@ export namespace Prisma {
   export type DoenteCreateInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -76060,18 +76138,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -76103,18 +76183,20 @@ export namespace Prisma {
   export type DoenteUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -76146,18 +76228,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -76189,27 +76273,31 @@ export namespace Prisma {
   export type DoenteCreateManyInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
   }
 
   export type DoenteUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76221,18 +76309,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TurnoCreateInput = {
@@ -80859,13 +80949,6 @@ export namespace Prisma {
     _max?: NestedEnumEstadoCamaFilter<$PrismaModel>
   }
 
-  export type EnumEstadoDoenteFilter<$PrismaModel = never> = {
-    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
-    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    not?: NestedEnumEstadoDoenteFilter<$PrismaModel> | $Enums.EstadoDoente
-  }
-
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -80877,14 +80960,21 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type CamaScalarRelationFilter = {
-    is?: CamaWhereInput
-    isNot?: CamaWhereInput
+  export type EnumEstadoDoenteFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoDoenteFilter<$PrismaModel> | $Enums.EstadoDoente
   }
 
-  export type UtilizadorScalarRelationFilter = {
-    is?: UtilizadorWhereInput
-    isNot?: UtilizadorWhereInput
+  export type CamaNullableScalarRelationFilter = {
+    is?: CamaWhereInput | null
+    isNot?: CamaWhereInput | null
+  }
+
+  export type UtilizadorNullableScalarRelationFilter = {
+    is?: UtilizadorWhereInput | null
+    isNot?: UtilizadorWhereInput | null
   }
 
   export type PassagemTurnoListRelationFilter = {
@@ -80944,6 +81034,8 @@ export namespace Prisma {
     numeroProcesso?: SortOrder
     estado?: SortOrder
     diagnosticoPrincipal?: SortOrder
+    estadoRegisto?: SortOrder
+    tipoVisita?: SortOrder
     dataAdmissao?: SortOrder
     dataAltaPrevista?: SortOrder
     dataAlta?: SortOrder
@@ -80961,6 +81053,8 @@ export namespace Prisma {
     numeroProcesso?: SortOrder
     estado?: SortOrder
     diagnosticoPrincipal?: SortOrder
+    estadoRegisto?: SortOrder
+    tipoVisita?: SortOrder
     dataAdmissao?: SortOrder
     dataAltaPrevista?: SortOrder
     dataAlta?: SortOrder
@@ -80978,6 +81072,8 @@ export namespace Prisma {
     numeroProcesso?: SortOrder
     estado?: SortOrder
     diagnosticoPrincipal?: SortOrder
+    estadoRegisto?: SortOrder
+    tipoVisita?: SortOrder
     dataAdmissao?: SortOrder
     dataAltaPrevista?: SortOrder
     dataAlta?: SortOrder
@@ -80986,16 +81082,6 @@ export namespace Prisma {
     motivoIsolamento?: SortOrder
     camaId?: SortOrder
     administrativoAdmissaoId?: SortOrder
-  }
-
-  export type EnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
-    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    not?: NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel> | $Enums.EstadoDoente
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEstadoDoenteFilter<$PrismaModel>
-    _max?: NestedEnumEstadoDoenteFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -81012,11 +81098,26 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type EnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel> | $Enums.EstadoDoente
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoDoenteFilter<$PrismaModel>
+    _max?: NestedEnumEstadoDoenteFilter<$PrismaModel>
+  }
+
   export type EnumTipoTurnoFilter<$PrismaModel = never> = {
     equals?: $Enums.TipoTurno | EnumTipoTurnoFieldRefInput<$PrismaModel>
     in?: $Enums.TipoTurno[] | ListEnumTipoTurnoFieldRefInput<$PrismaModel>
     notIn?: $Enums.TipoTurno[] | ListEnumTipoTurnoFieldRefInput<$PrismaModel>
     not?: NestedEnumTipoTurnoFilter<$PrismaModel> | $Enums.TipoTurno
+  }
+
+  export type UtilizadorScalarRelationFilter = {
+    is?: UtilizadorWhereInput
+    isNot?: UtilizadorWhereInput
   }
 
   export type TurnoCountOrderByAggregateInput = {
@@ -81335,11 +81436,6 @@ export namespace Prisma {
     in?: $Enums.EstadoTarefa[] | ListEnumEstadoTarefaFieldRefInput<$PrismaModel>
     notIn?: $Enums.EstadoTarefa[] | ListEnumEstadoTarefaFieldRefInput<$PrismaModel>
     not?: NestedEnumEstadoTarefaFilter<$PrismaModel> | $Enums.EstadoTarefa
-  }
-
-  export type UtilizadorNullableScalarRelationFilter = {
-    is?: UtilizadorWhereInput | null
-    isNot?: UtilizadorWhereInput | null
   }
 
   export type TarefaCountOrderByAggregateInput = {
@@ -86383,26 +86479,30 @@ export namespace Prisma {
     connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
   }
 
-  export type EnumEstadoDoenteFieldUpdateOperationsInput = {
-    set?: $Enums.EstadoDoente
-  }
-
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
-  export type CamaUpdateOneRequiredWithoutDoenteNestedInput = {
+  export type EnumEstadoDoenteFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoDoente
+  }
+
+  export type CamaUpdateOneWithoutDoenteNestedInput = {
     create?: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
     connectOrCreate?: CamaCreateOrConnectWithoutDoenteInput
     upsert?: CamaUpsertWithoutDoenteInput
+    disconnect?: CamaWhereInput | boolean
+    delete?: CamaWhereInput | boolean
     connect?: CamaWhereUniqueInput
     update?: XOR<XOR<CamaUpdateToOneWithWhereWithoutDoenteInput, CamaUpdateWithoutDoenteInput>, CamaUncheckedUpdateWithoutDoenteInput>
   }
 
-  export type UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput = {
+  export type UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput = {
     create?: XOR<UtilizadorCreateWithoutDoentesAdmitidosInput, UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput
     upsert?: UtilizadorUpsertWithoutDoentesAdmitidosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDoentesAdmitidosInput, UtilizadorUpdateWithoutDoentesAdmitidosInput>, UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput>
   }
@@ -89567,13 +89667,6 @@ export namespace Prisma {
     _max?: NestedEnumEstadoCamaFilter<$PrismaModel>
   }
 
-  export type NestedEnumEstadoDoenteFilter<$PrismaModel = never> = {
-    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
-    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    not?: NestedEnumEstadoDoenteFilter<$PrismaModel> | $Enums.EstadoDoente
-  }
-
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -89585,14 +89678,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
+  export type NestedEnumEstadoDoenteFilter<$PrismaModel = never> = {
     equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
     in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
     notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
-    not?: NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel> | $Enums.EstadoDoente
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEstadoDoenteFilter<$PrismaModel>
-    _max?: NestedEnumEstadoDoenteFilter<$PrismaModel>
+    not?: NestedEnumEstadoDoenteFilter<$PrismaModel> | $Enums.EstadoDoente
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -89607,6 +89697,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel> | $Enums.EstadoDoente
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoDoenteFilter<$PrismaModel>
+    _max?: NestedEnumEstadoDoenteFilter<$PrismaModel>
   }
 
   export type NestedEnumTipoTurnoFilter<$PrismaModel = never> = {
@@ -90478,17 +90578,19 @@ export namespace Prisma {
   export type DoenteCreateWithoutAdministrativoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -90520,17 +90622,19 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
+    camaId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -92391,18 +92495,20 @@ export namespace Prisma {
     NOT?: DoenteScalarWhereInput | DoenteScalarWhereInput[]
     id?: StringFilter<"Doente"> | string
     nome?: StringFilter<"Doente"> | string
-    dataNascimento?: DateTimeFilter<"Doente"> | Date | string
+    dataNascimento?: DateTimeNullableFilter<"Doente"> | Date | string | null
     numeroProcesso?: StringFilter<"Doente"> | string
     estado?: EnumEstadoDoenteFilter<"Doente"> | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFilter<"Doente"> | string
+    diagnosticoPrincipal?: StringNullableFilter<"Doente"> | string | null
+    estadoRegisto?: StringFilter<"Doente"> | string
+    tipoVisita?: StringNullableFilter<"Doente"> | string | null
     dataAdmissao?: DateTimeFilter<"Doente"> | Date | string
     dataAltaPrevista?: DateTimeNullableFilter<"Doente"> | Date | string | null
     dataAlta?: DateTimeNullableFilter<"Doente"> | Date | string | null
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
-    camaId?: StringFilter<"Doente"> | string
-    administrativoAdmissaoId?: StringFilter<"Doente"> | string
+    camaId?: StringNullableFilter<"Doente"> | string | null
+    administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
   }
 
   export type EscalaUpsertWithWhereUniqueWithoutCriadaPorInput = {
@@ -93674,17 +93780,19 @@ export namespace Prisma {
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -93716,17 +93824,19 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutCamaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    administrativoAdmissaoId: string
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -93774,17 +93884,19 @@ export namespace Prisma {
   export type DoenteUpdateWithoutCamaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -93816,17 +93928,19 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutCamaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -96109,18 +96223,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutAtribuicoesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
@@ -96151,18 +96267,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -96385,18 +96503,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAtribuicoesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
@@ -96427,18 +96547,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -97083,18 +97205,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutPassagensTurnoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -97125,18 +97249,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -97257,18 +97383,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutPassagensTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -97299,18 +97427,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -97341,18 +97471,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutNotasClinciasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -97383,18 +97515,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -97586,18 +97720,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutNotasClinciasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -97628,18 +97764,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -97821,18 +97959,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutEscalasClinicasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -97863,18 +98003,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -98066,18 +98208,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutEscalasClinicasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -98108,18 +98252,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -98332,18 +98478,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutNotasTurnoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -98374,18 +98522,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -98614,18 +98764,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutNotasTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -98656,18 +98808,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -98849,18 +99003,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutTarefasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
@@ -98891,18 +99047,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutTarefasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -99270,18 +99428,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutTarefasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
@@ -99312,18 +99472,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -99693,18 +99855,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutMedicacoesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -99735,18 +99899,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -100109,18 +100275,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutMedicacoesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -100151,18 +100319,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -100550,18 +100720,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutRegistosMedicacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -100592,18 +100764,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -100840,18 +101014,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutRegistosMedicacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -100882,18 +101058,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -102904,18 +103082,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutAtribuicoesHorarioInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
@@ -102946,18 +103126,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
     medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
@@ -103323,18 +103505,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAtribuicoesHorarioInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
@@ -103365,18 +103549,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
     medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -103709,18 +103895,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutSinaisVitaisInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -103751,18 +103939,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -103954,18 +104144,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutSinaisVitaisInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -103996,18 +104188,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -104485,18 +104679,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutAlergiasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -104527,18 +104723,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -104585,18 +104783,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAlergiasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -104627,18 +104827,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -104669,18 +104871,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutContactosEmergenciaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -104711,18 +104915,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -104769,18 +104975,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutContactosEmergenciaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -104811,18 +105019,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -104853,18 +105063,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutAlertasClinicosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -104895,18 +105107,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -104953,18 +105167,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAlertasClinicosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -104995,18 +105211,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -105037,18 +105255,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -105079,18 +105299,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -105282,18 +105504,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAvaliacoesRiscoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -105324,18 +105548,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -105517,18 +105743,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutSumarioAltaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -105559,18 +105787,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -105762,18 +105992,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutSumarioAltaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -105804,18 +106036,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -106293,18 +106527,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutExamesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -106335,18 +106571,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutExamesInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -106562,18 +106800,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutExamesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -106604,18 +106844,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutExamesInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -106896,18 +107138,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutEpisodiosUrgenciaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -106938,18 +107182,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -107286,18 +107532,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutEpisodiosUrgenciaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -107328,18 +107576,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -107672,18 +107922,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutCirurgiasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -107714,18 +107966,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -108093,18 +108347,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutCirurgiasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -108135,18 +108391,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -109488,18 +109746,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutConsultasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -109530,18 +109790,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutConsultasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -109733,18 +109995,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutConsultasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -109775,18 +110039,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -111560,18 +111826,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -111602,18 +111870,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -111837,18 +112107,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutPlanosReabilitacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -111879,18 +112151,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -112115,18 +112389,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutSessoesFisioterapiaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -112157,18 +112433,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -112393,18 +112671,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutSessoesFisioterapiaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -112435,18 +112715,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -112628,18 +112910,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutPedidosInternosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -112670,18 +112954,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -113018,18 +113304,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutPedidosInternosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -113060,18 +113348,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -114292,18 +114582,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutInterconsultasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -114334,18 +114626,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -114682,18 +114976,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutInterconsultasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -114724,18 +115020,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -115068,18 +115366,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -115110,18 +115410,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -115313,18 +115615,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutDispositivosInvasivosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -115355,18 +115659,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -116732,18 +117038,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutFicheiroPessoalInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -116774,18 +117082,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -116977,18 +117287,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutFicheiroPessoalInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -117019,18 +117331,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -117212,18 +117526,20 @@ export namespace Prisma {
   export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    cama: CamaCreateNestedOneWithoutDoenteInput
-    administrativo: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaCreateNestedManyWithoutDoenteInput
@@ -117254,18 +117570,20 @@ export namespace Prisma {
   export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
-    administrativoAdmissaoId: string
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
     tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
@@ -117515,18 +117833,20 @@ export namespace Prisma {
   export type DoenteUpdateWithoutEpisodiosFaturacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
-    administrativo?: UtilizadorUpdateOneRequiredWithoutDoentesAdmitidosNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -117557,18 +117877,20 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
-    administrativoAdmissaoId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -118642,17 +118964,19 @@ export namespace Prisma {
   export type DoenteCreateManyAdministrativoInput = {
     id?: string
     nome: string
-    dataNascimento: Date | string
+    dataNascimento?: Date | string | null
     numeroProcesso: string
     estado?: $Enums.EstadoDoente
-    diagnosticoPrincipal: string
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
     dataAdmissao?: Date | string
     dataAltaPrevista?: Date | string | null
     dataAlta?: Date | string | null
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
-    camaId: string
+    camaId?: string | null
   }
 
   export type EscalaCreateManyCriadaPorInput = {
@@ -119459,17 +119783,19 @@ export namespace Prisma {
   export type DoenteUpdateWithoutAdministrativoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    cama?: CamaUpdateOneRequiredWithoutDoenteNestedInput
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
@@ -119501,17 +119827,19 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
     tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
@@ -119543,17 +119871,19 @@ export namespace Prisma {
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
     id?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
-    dataNascimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     numeroProcesso?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
-    diagnosticoPrincipal?: StringFieldUpdateOperationsInput | string
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
     dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
     dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
-    camaId?: StringFieldUpdateOperationsInput | string
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EscalaUpdateWithoutCriadaPorInput = {

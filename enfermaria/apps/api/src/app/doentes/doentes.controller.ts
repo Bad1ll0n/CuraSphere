@@ -36,6 +36,35 @@ export class DoenteController {
     return this.doenteService.historico(id);
   }
 
+  @Roles('administrativo')
+  @Get('registos-administrativos')
+  listarRegistosAdministrativos(@Query('search') search?: string) {
+    return this.doenteService.listarRegistosAdministrativos(search);
+  }
+
+  @Roles('administrativo')
+  @Post('registro-rapido')
+  registroRapido(
+    @Body() body: {
+      nome: string;
+      tipoVisita?: string;
+      dataNascimento?: string;
+      nif?: string;
+      numeroSNS?: string;
+      telefone?: string;
+      email?: string;
+      tipoCobertura?: string;
+      morada?: string;
+      codigoPostal?: string;
+      localidade?: string;
+      entidadeSeguradora?: string;
+      numeroApolice?: string;
+    },
+    @Request() req: any,
+  ) {
+    return this.doenteService.registroRapido(body, req.user.sub);
+  }
+
   @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
   admitir(@Body() body: {
