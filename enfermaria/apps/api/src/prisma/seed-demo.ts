@@ -77,31 +77,31 @@ const DOENTES = [
 
 // ─────────────────────────── STOCK FARMÁCIA ───────────────────────────
 const STOCK = [
-  { nome: 'Paracetamol 1g IV', categoria: 'Analgésico', quantidade: 240, unidade: 'amp', minimo: 50 },
-  { nome: 'Amoxicilina 1g IV', categoria: 'Antibiótico', quantidade: 80, unidade: 'frs', minimo: 30 },
-  { nome: 'Heparina 5000 UI/ml', categoria: 'Anticoagulante', quantidade: 120, unidade: 'amp', minimo: 40 },
-  { nome: 'Metoclopramida 10mg', categoria: 'Antiemético', quantidade: 200, unidade: 'amp', minimo: 60 },
-  { nome: 'Omeprazol 40mg IV', categoria: 'Gastrointestinal', quantidade: 18, unidade: 'frs', minimo: 20 },
-  { nome: 'Furosemida 20mg IV', categoria: 'Diurético', quantidade: 150, unidade: 'amp', minimo: 40 },
-  { nome: 'Insulina Regular', categoria: 'Antidiabético', quantidade: 12, unidade: 'frs', minimo: 15 },
-  { nome: 'NaCl 0,9% 500ml', categoria: 'Solução IV', quantidade: 95, unidade: 'saco', minimo: 50 },
-  { nome: 'Midazolam 5mg/ml', categoria: 'Sedativo', quantidade: 35, unidade: 'amp', minimo: 20 },
-  { nome: 'Adrenalina 1mg/ml', categoria: 'Emergência', quantidade: 8, unidade: 'amp', minimo: 10 },
+  { nome: 'Paracetamol 1g IV', tipo: 'medicamento', quantidade: 240, unidade: 'amp', minimo: 50, servico: 'internamento' },
+  { nome: 'Amoxicilina 1g IV', tipo: 'medicamento', quantidade: 80, unidade: 'frs', minimo: 30, servico: 'internamento' },
+  { nome: 'Heparina 5000 UI/ml', tipo: 'medicamento', quantidade: 120, unidade: 'amp', minimo: 40, servico: 'internamento' },
+  { nome: 'Metoclopramida 10mg', tipo: 'medicamento', quantidade: 200, unidade: 'amp', minimo: 60, servico: 'internamento' },
+  { nome: 'Omeprazol 40mg IV', tipo: 'medicamento', quantidade: 18, unidade: 'frs', minimo: 20, servico: 'internamento' },
+  { nome: 'Furosemida 20mg IV', tipo: 'medicamento', quantidade: 150, unidade: 'amp', minimo: 40, servico: 'internamento' },
+  { nome: 'Insulina Regular', tipo: 'medicamento', quantidade: 12, unidade: 'frs', minimo: 15, servico: 'internamento' },
+  { nome: 'NaCl 0,9% 500ml', tipo: 'material', quantidade: 95, unidade: 'saco', minimo: 50, servico: 'internamento' },
+  { nome: 'Midazolam 5mg/ml', tipo: 'medicamento', quantidade: 35, unidade: 'amp', minimo: 20, servico: 'uci' },
+  { nome: 'Adrenalina 1mg/ml', tipo: 'medicamento', quantidade: 8, unidade: 'amp', minimo: 10, servico: 'urgencia' },
 ];
 
 // ─────────────────────────── INCIDENTES TI ───────────────────────────
 const INCIDENTES_TI = [
-  { tipo: 'hardware', titulo: 'Monitor UCI1 sem imagem', descricao: 'Monitor de monitorização da cama UCI1 apresenta ecrã preto desde as 06h00.', prioridade: 'critica', estado: 'em_investigacao' },
-  { tipo: 'software', titulo: 'HIS lento no módulo de prescrição', descricao: 'Médicos reportam que o módulo de prescrição demora >10s a carregar.', prioridade: 'alta', estado: 'aberto' },
+  { tipo: 'infraestrutura', titulo: 'Monitor UCI1 sem imagem', descricao: 'Monitor de monitorização da cama UCI1 apresenta ecrã preto desde as 06h00.', prioridade: 'critica', estado: 'aberto' },
+  { tipo: 'his_erp', titulo: 'HIS lento no módulo de prescrição', descricao: 'Médicos reportam que o módulo de prescrição demora >10s a carregar.', prioridade: 'alta', estado: 'aberto' },
   { tipo: 'rede', titulo: 'WiFi intermitente no Quarto B', descricao: 'Tablets de enfermagem no Quarto B perdem conectividade esporadicamente.', prioridade: 'media', estado: 'aberto' },
-  { tipo: 'acesso', titulo: 'Conta bloqueada — Enf. João Silva', descricao: 'Utilizador EN002 não consegue fazer login após troca de turno.', prioridade: 'alta', estado: 'resolvido' },
+  { tipo: 'seguranca', titulo: 'Conta bloqueada — Enf. João Silva', descricao: 'Utilizador EN002 não consegue fazer login após troca de turno.', prioridade: 'alta', estado: 'resolvido' },
 ];
 
 // ─────────────────────────── ANÚNCIOS ───────────────────────────
 const ANUNCIOS = [
-  { titulo: 'Simulacro de Emergência — 5 de Maio', conteudo: 'Recorda-se que no próximo dia 5 de maio decorrerá o simulacro anual de emergência. A participação de todos os profissionais é obrigatória.', prioridade: 'alta' },
-  { titulo: 'Atualização do HIS — Janela de Manutenção', conteudo: 'O sistema HIS estará em manutenção programada este sábado entre as 02h00 e as 04h00. Prevê-se interrupção do acesso ao módulo de prescrição.', prioridade: 'urgente' },
-  { titulo: 'Boas Práticas de Higienização das Mãos', conteudo: 'Semana da Higiene das Mãos: lembre-se dos 5 momentos. Estações de gel disponíveis em todos os corredores.', prioridade: 'normal' },
+  { titulo: 'Simulacro de Emergência — 5 de Maio', texto: 'Recorda-se que no próximo dia 5 de maio decorrerá o simulacro anual de emergência. A participação de todos os profissionais é obrigatória.' },
+  { titulo: 'Atualização do HIS — Janela de Manutenção', texto: 'O sistema HIS estará em manutenção programada este sábado entre as 02h00 e as 04h00. Prevê-se interrupção do acesso ao módulo de prescrição.' },
+  { titulo: 'Boas Práticas de Higienização das Mãos', texto: 'Semana da Higiene das Mãos: lembre-se dos 5 momentos. Estações de gel disponíveis em todos os corredores.' },
 ];
 
 // ─────────────────────────── MAIN ───────────────────────────
@@ -135,8 +135,8 @@ async function main() {
   for (const c of CAMAS) {
     const cama = await prisma.cama.upsert({
       where: { numero: c.numero },
-      update: { quarto: c.quarto, servico: c.servico as any },
-      create: { numero: c.numero, quarto: c.quarto, servico: c.servico as any, estado: 'livre' },
+      update: { quarto: c.quarto },
+      create: { numero: c.numero, quarto: c.quarto, estado: 'livre' },
     });
     camaMap[c.numero] = cama.id;
   }
@@ -159,8 +159,10 @@ async function main() {
         data: {
           nome: d.nome,
           dataNascimento: new Date(d.dataNascimento),
+          numeroProcesso: `P${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 100)}`,
           diagnosticoPrincipal: d.diagnostico,
           estado: d.estado as any,
+          estadoRegisto: 'internado',
           camaId,
           administrativoAdmissaoId: admissaoId,
           dataAltaPrevista: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
@@ -168,7 +170,7 @@ async function main() {
       });
       doenteId = doente.id;
       // Marcar cama como ocupada
-      await prisma.cama.update({ where: { id: camaId }, data: { estado: 'ocupada', doenteId } });
+      await prisma.cama.update({ where: { id: camaId }, data: { estado: 'ocupada' } });
     }
     doenteMap[d.nome] = doenteId;
   }
@@ -184,9 +186,9 @@ async function main() {
       data: {
         doenteId,
         temperatura: 36.8 + Math.random() * 2,
-        tensaoSistolica: 110 + Math.floor(Math.random() * 50),
-        tensaoDiastolica: 65 + Math.floor(Math.random() * 30),
-        frequenciaCardiaca: 70 + Math.floor(Math.random() * 30),
+        pressaoSistolica: 110 + Math.floor(Math.random() * 50),
+        pressaoDiastolica: 65 + Math.floor(Math.random() * 30),
+        pulso: 70 + Math.floor(Math.random() * 30),
         frequenciaRespiratoria: 16 + Math.floor(Math.random() * 6),
         saturacaoO2: 94 + Math.floor(Math.random() * 6),
         registadoPorId: utilizadorMap['EN001'],
@@ -252,7 +254,7 @@ async function main() {
   for (const s of STOCK) {
     const existente = await prisma.stockItem.findFirst({ where: { nome: s.nome } });
     if (existente) { await prisma.stockItem.update({ where: { id: existente.id }, data: { quantidade: s.quantidade } }); continue; }
-    await prisma.stockItem.create({ data: { nome: s.nome, categoria: s.categoria, quantidade: s.quantidade, unidade: s.unidade, minimo: s.minimo } });
+    await prisma.stockItem.create({ data: { nome: s.nome, tipo: s.tipo as any, quantidade: s.quantidade, unidade: s.unidade, quantidadeMinima: s.minimo, servico: s.servico } });
     stockCount++;
   }
   console.log(`   ✓ ${stockCount} itens de stock (${STOCK.filter(s => s.quantidade <= s.minimo).length} abaixo do mínimo)`);
@@ -271,7 +273,7 @@ async function main() {
         descricao: i.descricao,
         prioridade: i.prioridade as any,
         estado: i.estado as any,
-        reportadoPorId: tiId,
+        criadoPorId: tiId,
       },
     });
     incidentesCount++;
@@ -286,11 +288,13 @@ async function main() {
     const existente = await prisma.anuncio.findFirst({ where: { titulo: a.titulo } });
     if (existente) continue;
     await prisma.anuncio.create({
-      data: { titulo: a.titulo, conteudo: a.conteudo, prioridade: a.prioridade as any, autorId: autorAnuncio },
+      data: { titulo: a.titulo, texto: a.texto, autorId: autorAnuncio },
     });
     anunciosCount++;
   }
   console.log(`   ✓ ${anunciosCount} anúncios`);
+
+  // Nota: agendas dos médicos são configuradas através da UI (Utilizadores → Editar → Agenda)
 
   console.log('\n✅  Seed de demo concluído!');
   console.log('\n🔑  Credenciais de acesso (password: demo1234):');

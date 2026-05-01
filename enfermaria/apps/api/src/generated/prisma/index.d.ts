@@ -278,6 +278,21 @@ export type Ticket = $Result.DefaultSelection<Prisma.$TicketPayload>
  * 
  */
 export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
+/**
+ * Model ProblemaClinico
+ * 
+ */
+export type ProblemaClinico = $Result.DefaultSelection<Prisma.$ProblemaClinicoPayload>
+/**
+ * Model Equipamento
+ * 
+ */
+export type Equipamento = $Result.DefaultSelection<Prisma.$EquipamentoPayload>
+/**
+ * Model Manutencao
+ * 
+ */
+export type Manutencao = $Result.DefaultSelection<Prisma.$ManutencaoPayload>
 
 /**
  * Enums
@@ -1367,6 +1382,36 @@ export class PrismaClient<
     * ```
     */
   get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.problemaClinico`: Exposes CRUD operations for the **ProblemaClinico** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProblemaClinicos
+    * const problemaClinicos = await prisma.problemaClinico.findMany()
+    * ```
+    */
+  get problemaClinico(): Prisma.ProblemaClinicoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.equipamento`: Exposes CRUD operations for the **Equipamento** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Equipamentos
+    * const equipamentos = await prisma.equipamento.findMany()
+    * ```
+    */
+  get equipamento(): Prisma.EquipamentoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.manutencao`: Exposes CRUD operations for the **Manutencao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Manutencaos
+    * const manutencaos = await prisma.manutencao.findMany()
+    * ```
+    */
+  get manutencao(): Prisma.ManutencaoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1860,7 +1905,10 @@ export namespace Prisma {
     ItemFatura: 'ItemFatura',
     Pagamento: 'Pagamento',
     Ticket: 'Ticket',
-    RefreshToken: 'RefreshToken'
+    RefreshToken: 'RefreshToken',
+    ProblemaClinico: 'ProblemaClinico',
+    Equipamento: 'Equipamento',
+    Manutencao: 'Manutencao'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1879,7 +1927,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "ticket" | "refreshToken"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5805,6 +5853,228 @@ export namespace Prisma {
           }
         }
       }
+      ProblemaClinico: {
+        payload: Prisma.$ProblemaClinicoPayload<ExtArgs>
+        fields: Prisma.ProblemaClinicoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProblemaClinicoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProblemaClinicoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          findFirst: {
+            args: Prisma.ProblemaClinicoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProblemaClinicoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          findMany: {
+            args: Prisma.ProblemaClinicoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>[]
+          }
+          create: {
+            args: Prisma.ProblemaClinicoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          createMany: {
+            args: Prisma.ProblemaClinicoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProblemaClinicoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>[]
+          }
+          delete: {
+            args: Prisma.ProblemaClinicoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          update: {
+            args: Prisma.ProblemaClinicoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProblemaClinicoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProblemaClinicoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProblemaClinicoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProblemaClinicoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProblemaClinicoPayload>
+          }
+          aggregate: {
+            args: Prisma.ProblemaClinicoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProblemaClinico>
+          }
+          groupBy: {
+            args: Prisma.ProblemaClinicoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProblemaClinicoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProblemaClinicoCountArgs<ExtArgs>
+            result: $Utils.Optional<ProblemaClinicoCountAggregateOutputType> | number
+          }
+        }
+      }
+      Equipamento: {
+        payload: Prisma.$EquipamentoPayload<ExtArgs>
+        fields: Prisma.EquipamentoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EquipamentoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EquipamentoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          findFirst: {
+            args: Prisma.EquipamentoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EquipamentoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          findMany: {
+            args: Prisma.EquipamentoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>[]
+          }
+          create: {
+            args: Prisma.EquipamentoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          createMany: {
+            args: Prisma.EquipamentoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EquipamentoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>[]
+          }
+          delete: {
+            args: Prisma.EquipamentoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          update: {
+            args: Prisma.EquipamentoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          deleteMany: {
+            args: Prisma.EquipamentoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EquipamentoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EquipamentoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>[]
+          }
+          upsert: {
+            args: Prisma.EquipamentoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipamentoPayload>
+          }
+          aggregate: {
+            args: Prisma.EquipamentoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEquipamento>
+          }
+          groupBy: {
+            args: Prisma.EquipamentoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EquipamentoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EquipamentoCountArgs<ExtArgs>
+            result: $Utils.Optional<EquipamentoCountAggregateOutputType> | number
+          }
+        }
+      }
+      Manutencao: {
+        payload: Prisma.$ManutencaoPayload<ExtArgs>
+        fields: Prisma.ManutencaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ManutencaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ManutencaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          findFirst: {
+            args: Prisma.ManutencaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ManutencaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          findMany: {
+            args: Prisma.ManutencaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>[]
+          }
+          create: {
+            args: Prisma.ManutencaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          createMany: {
+            args: Prisma.ManutencaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ManutencaoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>[]
+          }
+          delete: {
+            args: Prisma.ManutencaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          update: {
+            args: Prisma.ManutencaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.ManutencaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ManutencaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ManutencaoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>[]
+          }
+          upsert: {
+            args: Prisma.ManutencaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManutencaoPayload>
+          }
+          aggregate: {
+            args: Prisma.ManutencaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateManutencao>
+          }
+          groupBy: {
+            args: Prisma.ManutencaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ManutencaoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ManutencaoCountArgs<ExtArgs>
+            result: $Utils.Optional<ManutencaoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -5954,6 +6224,9 @@ export namespace Prisma {
     pagamento?: PagamentoOmit
     ticket?: TicketOmit
     refreshToken?: RefreshTokenOmit
+    problemaClinico?: ProblemaClinicoOmit
+    equipamento?: EquipamentoOmit
+    manutencao?: ManutencaoOmit
   }
 
   /* Types for Logging */
@@ -6121,6 +6394,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados: number
     pagamentosRegistados: number
     agendas: number
+    problemasRegistados: number
+    manutencoesReportadas: number
+    manutencoesTecnico: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6180,6 +6456,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: boolean | UtilizadorCountOutputTypeCountEpisodiosFaturacaoCriadosArgs
     pagamentosRegistados?: boolean | UtilizadorCountOutputTypeCountPagamentosRegistadosArgs
     agendas?: boolean | UtilizadorCountOutputTypeCountAgendasArgs
+    problemasRegistados?: boolean | UtilizadorCountOutputTypeCountProblemasRegistadosArgs
+    manutencoesReportadas?: boolean | UtilizadorCountOutputTypeCountManutencoesReportadasArgs
+    manutencoesTecnico?: boolean | UtilizadorCountOutputTypeCountManutencoesTecnicoArgs
   }
 
   // Custom InputTypes
@@ -6585,6 +6864,27 @@ export namespace Prisma {
     where?: AgendaMedicoWhereInput
   }
 
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountProblemasRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProblemaClinicoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountManutencoesReportadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManutencaoWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountManutencoesTecnicoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManutencaoWhereInput
+  }
+
 
   /**
    * Count Type DoenteCountOutputType
@@ -6615,6 +6915,7 @@ export namespace Prisma {
     interconsultas: number
     dispositivosInvasivos: number
     episodiosFaturacao: number
+    problemas: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6642,6 +6943,7 @@ export namespace Prisma {
     interconsultas?: boolean | DoenteCountOutputTypeCountInterconsultasArgs
     dispositivosInvasivos?: boolean | DoenteCountOutputTypeCountDispositivosInvasivosArgs
     episodiosFaturacao?: boolean | DoenteCountOutputTypeCountEpisodiosFaturacaoArgs
+    problemas?: boolean | DoenteCountOutputTypeCountProblemasArgs
   }
 
   // Custom InputTypes
@@ -6821,6 +7123,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountEpisodiosFaturacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EpisodioFaturacaoWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountProblemasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProblemaClinicoWhereInput
   }
 
 
@@ -7141,6 +7450,37 @@ export namespace Prisma {
    */
   export type EpisodioFaturacaoCountOutputTypeCountPagamentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PagamentoWhereInput
+  }
+
+
+  /**
+   * Count Type EquipamentoCountOutputType
+   */
+
+  export type EquipamentoCountOutputType = {
+    manutencoes: number
+  }
+
+  export type EquipamentoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manutencoes?: boolean | EquipamentoCountOutputTypeCountManutencoesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EquipamentoCountOutputType without action
+   */
+  export type EquipamentoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipamentoCountOutputType
+     */
+    select?: EquipamentoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EquipamentoCountOutputType without action
+   */
+  export type EquipamentoCountOutputTypeCountManutencoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManutencaoWhereInput
   }
 
 
@@ -9680,6 +10020,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: boolean | Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>
     pagamentosRegistados?: boolean | Utilizador$pagamentosRegistadosArgs<ExtArgs>
     agendas?: boolean | Utilizador$agendasArgs<ExtArgs>
+    problemasRegistados?: boolean | Utilizador$problemasRegistadosArgs<ExtArgs>
+    manutencoesReportadas?: boolean | Utilizador$manutencoesReportadasArgs<ExtArgs>
+    manutencoesTecnico?: boolean | Utilizador$manutencoesTecnicoArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -9786,6 +10129,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: boolean | Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>
     pagamentosRegistados?: boolean | Utilizador$pagamentosRegistadosArgs<ExtArgs>
     agendas?: boolean | Utilizador$agendasArgs<ExtArgs>
+    problemasRegistados?: boolean | Utilizador$problemasRegistadosArgs<ExtArgs>
+    manutencoesReportadas?: boolean | Utilizador$manutencoesReportadasArgs<ExtArgs>
+    manutencoesTecnico?: boolean | Utilizador$manutencoesTecnicoArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9850,6 +10196,9 @@ export namespace Prisma {
       episodiosFaturacaoCriados: Prisma.$EpisodioFaturacaoPayload<ExtArgs>[]
       pagamentosRegistados: Prisma.$PagamentoPayload<ExtArgs>[]
       agendas: Prisma.$AgendaMedicoPayload<ExtArgs>[]
+      problemasRegistados: Prisma.$ProblemaClinicoPayload<ExtArgs>[]
+      manutencoesReportadas: Prisma.$ManutencaoPayload<ExtArgs>[]
+      manutencoesTecnico: Prisma.$ManutencaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10314,6 +10663,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados<T extends Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$episodiosFaturacaoCriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pagamentosRegistados<T extends Utilizador$pagamentosRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pagamentosRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agendas<T extends Utilizador$agendasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$agendasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgendaMedicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    problemasRegistados<T extends Utilizador$problemasRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$problemasRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    manutencoesReportadas<T extends Utilizador$manutencoesReportadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$manutencoesReportadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    manutencoesTecnico<T extends Utilizador$manutencoesTecnicoArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$manutencoesTecnicoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12087,6 +12439,78 @@ export namespace Prisma {
   }
 
   /**
+   * Utilizador.problemasRegistados
+   */
+  export type Utilizador$problemasRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    where?: ProblemaClinicoWhereInput
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    cursor?: ProblemaClinicoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProblemaClinicoScalarFieldEnum | ProblemaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.manutencoesReportadas
+   */
+  export type Utilizador$manutencoesReportadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    where?: ManutencaoWhereInput
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    cursor?: ManutencaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.manutencoesTecnico
+   */
+  export type Utilizador$manutencoesTecnicoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    where?: ManutencaoWhereInput
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    cursor?: ManutencaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
    * Utilizador without action
    */
   export type UtilizadorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13435,6 +13859,7 @@ export namespace Prisma {
     dispositivosInvasivos?: boolean | Doente$dispositivosInvasivosArgs<ExtArgs>
     ficheiroPessoal?: boolean | Doente$ficheiroPessoalArgs<ExtArgs>
     episodiosFaturacao?: boolean | Doente$episodiosFaturacaoArgs<ExtArgs>
+    problemas?: boolean | Doente$problemasArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -13529,6 +13954,7 @@ export namespace Prisma {
     dispositivosInvasivos?: boolean | Doente$dispositivosInvasivosArgs<ExtArgs>
     ficheiroPessoal?: boolean | Doente$ficheiroPessoalArgs<ExtArgs>
     episodiosFaturacao?: boolean | Doente$episodiosFaturacaoArgs<ExtArgs>
+    problemas?: boolean | Doente$problemasArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13571,6 +13997,7 @@ export namespace Prisma {
       dispositivosInvasivos: Prisma.$DispositivoInvasivoPayload<ExtArgs>[]
       ficheiroPessoal: Prisma.$FicheiroPessoalDoentePayload<ExtArgs> | null
       episodiosFaturacao: Prisma.$EpisodioFaturacaoPayload<ExtArgs>[]
+      problemas: Prisma.$ProblemaClinicoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14011,6 +14438,7 @@ export namespace Prisma {
     dispositivosInvasivos<T extends Doente$dispositivosInvasivosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$dispositivosInvasivosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoInvasivoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ficheiroPessoal<T extends Doente$ficheiroPessoalArgs<ExtArgs> = {}>(args?: Subset<T, Doente$ficheiroPessoalArgs<ExtArgs>>): Prisma__FicheiroPessoalDoenteClient<$Result.GetResult<Prisma.$FicheiroPessoalDoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     episodiosFaturacao<T extends Doente$episodiosFaturacaoArgs<ExtArgs> = {}>(args?: Subset<T, Doente$episodiosFaturacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    problemas<T extends Doente$problemasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$problemasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15101,6 +15529,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EpisodioFaturacaoScalarFieldEnum | EpisodioFaturacaoScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.problemas
+   */
+  export type Doente$problemasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    where?: ProblemaClinicoWhereInput
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    cursor?: ProblemaClinicoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProblemaClinicoScalarFieldEnum | ProblemaClinicoScalarFieldEnum[]
   }
 
   /**
@@ -69894,6 +70346,3436 @@ export namespace Prisma {
 
 
   /**
+   * Model ProblemaClinico
+   */
+
+  export type AggregateProblemaClinico = {
+    _count: ProblemaClinicoCountAggregateOutputType | null
+    _min: ProblemaClinicoMinAggregateOutputType | null
+    _max: ProblemaClinicoMaxAggregateOutputType | null
+  }
+
+  export type ProblemaClinicoMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    descricao: string | null
+    tipo: string | null
+    estado: string | null
+    dataInicio: Date | null
+    dataFim: Date | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type ProblemaClinicoMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    descricao: string | null
+    tipo: string | null
+    estado: string | null
+    dataInicio: Date | null
+    dataFim: Date | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type ProblemaClinicoCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    descricao: number
+    tipo: number
+    estado: number
+    dataInicio: number
+    dataFim: number
+    registadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type ProblemaClinicoMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    dataInicio?: true
+    dataFim?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type ProblemaClinicoMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    dataInicio?: true
+    dataFim?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type ProblemaClinicoCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    descricao?: true
+    tipo?: true
+    estado?: true
+    dataInicio?: true
+    dataFim?: true
+    registadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type ProblemaClinicoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProblemaClinico to aggregate.
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProblemaClinicos to fetch.
+     */
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProblemaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProblemaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProblemaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProblemaClinicos
+    **/
+    _count?: true | ProblemaClinicoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProblemaClinicoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProblemaClinicoMaxAggregateInputType
+  }
+
+  export type GetProblemaClinicoAggregateType<T extends ProblemaClinicoAggregateArgs> = {
+        [P in keyof T & keyof AggregateProblemaClinico]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProblemaClinico[P]>
+      : GetScalarType<T[P], AggregateProblemaClinico[P]>
+  }
+
+
+
+
+  export type ProblemaClinicoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProblemaClinicoWhereInput
+    orderBy?: ProblemaClinicoOrderByWithAggregationInput | ProblemaClinicoOrderByWithAggregationInput[]
+    by: ProblemaClinicoScalarFieldEnum[] | ProblemaClinicoScalarFieldEnum
+    having?: ProblemaClinicoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProblemaClinicoCountAggregateInputType | true
+    _min?: ProblemaClinicoMinAggregateInputType
+    _max?: ProblemaClinicoMaxAggregateInputType
+  }
+
+  export type ProblemaClinicoGroupByOutputType = {
+    id: string
+    doenteId: string
+    descricao: string
+    tipo: string
+    estado: string
+    dataInicio: Date | null
+    dataFim: Date | null
+    registadoPorId: string
+    criadoEm: Date
+    _count: ProblemaClinicoCountAggregateOutputType | null
+    _min: ProblemaClinicoMinAggregateOutputType | null
+    _max: ProblemaClinicoMaxAggregateOutputType | null
+  }
+
+  type GetProblemaClinicoGroupByPayload<T extends ProblemaClinicoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProblemaClinicoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProblemaClinicoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProblemaClinicoGroupByOutputType[P]>
+            : GetScalarType<T[P], ProblemaClinicoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProblemaClinicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["problemaClinico"]>
+
+  export type ProblemaClinicoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["problemaClinico"]>
+
+  export type ProblemaClinicoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["problemaClinico"]>
+
+  export type ProblemaClinicoSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    descricao?: boolean
+    tipo?: boolean
+    estado?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type ProblemaClinicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "descricao" | "tipo" | "estado" | "dataInicio" | "dataFim" | "registadoPorId" | "criadoEm", ExtArgs["result"]["problemaClinico"]>
+  export type ProblemaClinicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type ProblemaClinicoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type ProblemaClinicoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $ProblemaClinicoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProblemaClinico"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      descricao: string
+      tipo: string
+      estado: string
+      dataInicio: Date | null
+      dataFim: Date | null
+      registadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["problemaClinico"]>
+    composites: {}
+  }
+
+  type ProblemaClinicoGetPayload<S extends boolean | null | undefined | ProblemaClinicoDefaultArgs> = $Result.GetResult<Prisma.$ProblemaClinicoPayload, S>
+
+  type ProblemaClinicoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProblemaClinicoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProblemaClinicoCountAggregateInputType | true
+    }
+
+  export interface ProblemaClinicoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProblemaClinico'], meta: { name: 'ProblemaClinico' } }
+    /**
+     * Find zero or one ProblemaClinico that matches the filter.
+     * @param {ProblemaClinicoFindUniqueArgs} args - Arguments to find a ProblemaClinico
+     * @example
+     * // Get one ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProblemaClinicoFindUniqueArgs>(args: SelectSubset<T, ProblemaClinicoFindUniqueArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProblemaClinico that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProblemaClinicoFindUniqueOrThrowArgs} args - Arguments to find a ProblemaClinico
+     * @example
+     * // Get one ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProblemaClinicoFindUniqueOrThrowArgs>(args: SelectSubset<T, ProblemaClinicoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProblemaClinico that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoFindFirstArgs} args - Arguments to find a ProblemaClinico
+     * @example
+     * // Get one ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProblemaClinicoFindFirstArgs>(args?: SelectSubset<T, ProblemaClinicoFindFirstArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProblemaClinico that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoFindFirstOrThrowArgs} args - Arguments to find a ProblemaClinico
+     * @example
+     * // Get one ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProblemaClinicoFindFirstOrThrowArgs>(args?: SelectSubset<T, ProblemaClinicoFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProblemaClinicos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProblemaClinicos
+     * const problemaClinicos = await prisma.problemaClinico.findMany()
+     * 
+     * // Get first 10 ProblemaClinicos
+     * const problemaClinicos = await prisma.problemaClinico.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const problemaClinicoWithIdOnly = await prisma.problemaClinico.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProblemaClinicoFindManyArgs>(args?: SelectSubset<T, ProblemaClinicoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProblemaClinico.
+     * @param {ProblemaClinicoCreateArgs} args - Arguments to create a ProblemaClinico.
+     * @example
+     * // Create one ProblemaClinico
+     * const ProblemaClinico = await prisma.problemaClinico.create({
+     *   data: {
+     *     // ... data to create a ProblemaClinico
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProblemaClinicoCreateArgs>(args: SelectSubset<T, ProblemaClinicoCreateArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProblemaClinicos.
+     * @param {ProblemaClinicoCreateManyArgs} args - Arguments to create many ProblemaClinicos.
+     * @example
+     * // Create many ProblemaClinicos
+     * const problemaClinico = await prisma.problemaClinico.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProblemaClinicoCreateManyArgs>(args?: SelectSubset<T, ProblemaClinicoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProblemaClinicos and returns the data saved in the database.
+     * @param {ProblemaClinicoCreateManyAndReturnArgs} args - Arguments to create many ProblemaClinicos.
+     * @example
+     * // Create many ProblemaClinicos
+     * const problemaClinico = await prisma.problemaClinico.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProblemaClinicos and only return the `id`
+     * const problemaClinicoWithIdOnly = await prisma.problemaClinico.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProblemaClinicoCreateManyAndReturnArgs>(args?: SelectSubset<T, ProblemaClinicoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProblemaClinico.
+     * @param {ProblemaClinicoDeleteArgs} args - Arguments to delete one ProblemaClinico.
+     * @example
+     * // Delete one ProblemaClinico
+     * const ProblemaClinico = await prisma.problemaClinico.delete({
+     *   where: {
+     *     // ... filter to delete one ProblemaClinico
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProblemaClinicoDeleteArgs>(args: SelectSubset<T, ProblemaClinicoDeleteArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProblemaClinico.
+     * @param {ProblemaClinicoUpdateArgs} args - Arguments to update one ProblemaClinico.
+     * @example
+     * // Update one ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProblemaClinicoUpdateArgs>(args: SelectSubset<T, ProblemaClinicoUpdateArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProblemaClinicos.
+     * @param {ProblemaClinicoDeleteManyArgs} args - Arguments to filter ProblemaClinicos to delete.
+     * @example
+     * // Delete a few ProblemaClinicos
+     * const { count } = await prisma.problemaClinico.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProblemaClinicoDeleteManyArgs>(args?: SelectSubset<T, ProblemaClinicoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProblemaClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProblemaClinicos
+     * const problemaClinico = await prisma.problemaClinico.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProblemaClinicoUpdateManyArgs>(args: SelectSubset<T, ProblemaClinicoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProblemaClinicos and returns the data updated in the database.
+     * @param {ProblemaClinicoUpdateManyAndReturnArgs} args - Arguments to update many ProblemaClinicos.
+     * @example
+     * // Update many ProblemaClinicos
+     * const problemaClinico = await prisma.problemaClinico.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProblemaClinicos and only return the `id`
+     * const problemaClinicoWithIdOnly = await prisma.problemaClinico.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProblemaClinicoUpdateManyAndReturnArgs>(args: SelectSubset<T, ProblemaClinicoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProblemaClinico.
+     * @param {ProblemaClinicoUpsertArgs} args - Arguments to update or create a ProblemaClinico.
+     * @example
+     * // Update or create a ProblemaClinico
+     * const problemaClinico = await prisma.problemaClinico.upsert({
+     *   create: {
+     *     // ... data to create a ProblemaClinico
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProblemaClinico we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProblemaClinicoUpsertArgs>(args: SelectSubset<T, ProblemaClinicoUpsertArgs<ExtArgs>>): Prisma__ProblemaClinicoClient<$Result.GetResult<Prisma.$ProblemaClinicoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProblemaClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoCountArgs} args - Arguments to filter ProblemaClinicos to count.
+     * @example
+     * // Count the number of ProblemaClinicos
+     * const count = await prisma.problemaClinico.count({
+     *   where: {
+     *     // ... the filter for the ProblemaClinicos we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProblemaClinicoCountArgs>(
+      args?: Subset<T, ProblemaClinicoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProblemaClinicoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProblemaClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProblemaClinicoAggregateArgs>(args: Subset<T, ProblemaClinicoAggregateArgs>): Prisma.PrismaPromise<GetProblemaClinicoAggregateType<T>>
+
+    /**
+     * Group by ProblemaClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProblemaClinicoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProblemaClinicoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProblemaClinicoGroupByArgs['orderBy'] }
+        : { orderBy?: ProblemaClinicoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProblemaClinicoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProblemaClinicoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProblemaClinico model
+   */
+  readonly fields: ProblemaClinicoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProblemaClinico.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProblemaClinicoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProblemaClinico model
+   */
+  interface ProblemaClinicoFieldRefs {
+    readonly id: FieldRef<"ProblemaClinico", 'String'>
+    readonly doenteId: FieldRef<"ProblemaClinico", 'String'>
+    readonly descricao: FieldRef<"ProblemaClinico", 'String'>
+    readonly tipo: FieldRef<"ProblemaClinico", 'String'>
+    readonly estado: FieldRef<"ProblemaClinico", 'String'>
+    readonly dataInicio: FieldRef<"ProblemaClinico", 'DateTime'>
+    readonly dataFim: FieldRef<"ProblemaClinico", 'DateTime'>
+    readonly registadoPorId: FieldRef<"ProblemaClinico", 'String'>
+    readonly criadoEm: FieldRef<"ProblemaClinico", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProblemaClinico findUnique
+   */
+  export type ProblemaClinicoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which ProblemaClinico to fetch.
+     */
+    where: ProblemaClinicoWhereUniqueInput
+  }
+
+  /**
+   * ProblemaClinico findUniqueOrThrow
+   */
+  export type ProblemaClinicoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which ProblemaClinico to fetch.
+     */
+    where: ProblemaClinicoWhereUniqueInput
+  }
+
+  /**
+   * ProblemaClinico findFirst
+   */
+  export type ProblemaClinicoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which ProblemaClinico to fetch.
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProblemaClinicos to fetch.
+     */
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProblemaClinicos.
+     */
+    cursor?: ProblemaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProblemaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProblemaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProblemaClinicos.
+     */
+    distinct?: ProblemaClinicoScalarFieldEnum | ProblemaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * ProblemaClinico findFirstOrThrow
+   */
+  export type ProblemaClinicoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which ProblemaClinico to fetch.
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProblemaClinicos to fetch.
+     */
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProblemaClinicos.
+     */
+    cursor?: ProblemaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProblemaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProblemaClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProblemaClinicos.
+     */
+    distinct?: ProblemaClinicoScalarFieldEnum | ProblemaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * ProblemaClinico findMany
+   */
+  export type ProblemaClinicoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which ProblemaClinicos to fetch.
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProblemaClinicos to fetch.
+     */
+    orderBy?: ProblemaClinicoOrderByWithRelationInput | ProblemaClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProblemaClinicos.
+     */
+    cursor?: ProblemaClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProblemaClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProblemaClinicos.
+     */
+    skip?: number
+    distinct?: ProblemaClinicoScalarFieldEnum | ProblemaClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * ProblemaClinico create
+   */
+  export type ProblemaClinicoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProblemaClinico.
+     */
+    data: XOR<ProblemaClinicoCreateInput, ProblemaClinicoUncheckedCreateInput>
+  }
+
+  /**
+   * ProblemaClinico createMany
+   */
+  export type ProblemaClinicoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProblemaClinicos.
+     */
+    data: ProblemaClinicoCreateManyInput | ProblemaClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProblemaClinico createManyAndReturn
+   */
+  export type ProblemaClinicoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProblemaClinicos.
+     */
+    data: ProblemaClinicoCreateManyInput | ProblemaClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProblemaClinico update
+   */
+  export type ProblemaClinicoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProblemaClinico.
+     */
+    data: XOR<ProblemaClinicoUpdateInput, ProblemaClinicoUncheckedUpdateInput>
+    /**
+     * Choose, which ProblemaClinico to update.
+     */
+    where: ProblemaClinicoWhereUniqueInput
+  }
+
+  /**
+   * ProblemaClinico updateMany
+   */
+  export type ProblemaClinicoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProblemaClinicos.
+     */
+    data: XOR<ProblemaClinicoUpdateManyMutationInput, ProblemaClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which ProblemaClinicos to update
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * Limit how many ProblemaClinicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProblemaClinico updateManyAndReturn
+   */
+  export type ProblemaClinicoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to update ProblemaClinicos.
+     */
+    data: XOR<ProblemaClinicoUpdateManyMutationInput, ProblemaClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which ProblemaClinicos to update
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * Limit how many ProblemaClinicos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProblemaClinico upsert
+   */
+  export type ProblemaClinicoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProblemaClinico to update in case it exists.
+     */
+    where: ProblemaClinicoWhereUniqueInput
+    /**
+     * In case the ProblemaClinico found by the `where` argument doesn't exist, create a new ProblemaClinico with this data.
+     */
+    create: XOR<ProblemaClinicoCreateInput, ProblemaClinicoUncheckedCreateInput>
+    /**
+     * In case the ProblemaClinico was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProblemaClinicoUpdateInput, ProblemaClinicoUncheckedUpdateInput>
+  }
+
+  /**
+   * ProblemaClinico delete
+   */
+  export type ProblemaClinicoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+    /**
+     * Filter which ProblemaClinico to delete.
+     */
+    where: ProblemaClinicoWhereUniqueInput
+  }
+
+  /**
+   * ProblemaClinico deleteMany
+   */
+  export type ProblemaClinicoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProblemaClinicos to delete
+     */
+    where?: ProblemaClinicoWhereInput
+    /**
+     * Limit how many ProblemaClinicos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProblemaClinico without action
+   */
+  export type ProblemaClinicoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProblemaClinico
+     */
+    select?: ProblemaClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProblemaClinico
+     */
+    omit?: ProblemaClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProblemaClinicoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Equipamento
+   */
+
+  export type AggregateEquipamento = {
+    _count: EquipamentoCountAggregateOutputType | null
+    _min: EquipamentoMinAggregateOutputType | null
+    _max: EquipamentoMaxAggregateOutputType | null
+  }
+
+  export type EquipamentoMinAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    tipo: string | null
+    numeroSerie: string | null
+    localizacao: string | null
+    estado: string | null
+    ultimaManutencao: Date | null
+    proximaManutencao: Date | null
+    criadoEm: Date | null
+  }
+
+  export type EquipamentoMaxAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    tipo: string | null
+    numeroSerie: string | null
+    localizacao: string | null
+    estado: string | null
+    ultimaManutencao: Date | null
+    proximaManutencao: Date | null
+    criadoEm: Date | null
+  }
+
+  export type EquipamentoCountAggregateOutputType = {
+    id: number
+    nome: number
+    tipo: number
+    numeroSerie: number
+    localizacao: number
+    estado: number
+    ultimaManutencao: number
+    proximaManutencao: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type EquipamentoMinAggregateInputType = {
+    id?: true
+    nome?: true
+    tipo?: true
+    numeroSerie?: true
+    localizacao?: true
+    estado?: true
+    ultimaManutencao?: true
+    proximaManutencao?: true
+    criadoEm?: true
+  }
+
+  export type EquipamentoMaxAggregateInputType = {
+    id?: true
+    nome?: true
+    tipo?: true
+    numeroSerie?: true
+    localizacao?: true
+    estado?: true
+    ultimaManutencao?: true
+    proximaManutencao?: true
+    criadoEm?: true
+  }
+
+  export type EquipamentoCountAggregateInputType = {
+    id?: true
+    nome?: true
+    tipo?: true
+    numeroSerie?: true
+    localizacao?: true
+    estado?: true
+    ultimaManutencao?: true
+    proximaManutencao?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type EquipamentoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Equipamento to aggregate.
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipamentos to fetch.
+     */
+    orderBy?: EquipamentoOrderByWithRelationInput | EquipamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EquipamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Equipamentos
+    **/
+    _count?: true | EquipamentoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EquipamentoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EquipamentoMaxAggregateInputType
+  }
+
+  export type GetEquipamentoAggregateType<T extends EquipamentoAggregateArgs> = {
+        [P in keyof T & keyof AggregateEquipamento]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEquipamento[P]>
+      : GetScalarType<T[P], AggregateEquipamento[P]>
+  }
+
+
+
+
+  export type EquipamentoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EquipamentoWhereInput
+    orderBy?: EquipamentoOrderByWithAggregationInput | EquipamentoOrderByWithAggregationInput[]
+    by: EquipamentoScalarFieldEnum[] | EquipamentoScalarFieldEnum
+    having?: EquipamentoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EquipamentoCountAggregateInputType | true
+    _min?: EquipamentoMinAggregateInputType
+    _max?: EquipamentoMaxAggregateInputType
+  }
+
+  export type EquipamentoGroupByOutputType = {
+    id: string
+    nome: string
+    tipo: string
+    numeroSerie: string | null
+    localizacao: string | null
+    estado: string
+    ultimaManutencao: Date | null
+    proximaManutencao: Date | null
+    criadoEm: Date
+    _count: EquipamentoCountAggregateOutputType | null
+    _min: EquipamentoMinAggregateOutputType | null
+    _max: EquipamentoMaxAggregateOutputType | null
+  }
+
+  type GetEquipamentoGroupByPayload<T extends EquipamentoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EquipamentoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EquipamentoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EquipamentoGroupByOutputType[P]>
+            : GetScalarType<T[P], EquipamentoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EquipamentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    tipo?: boolean
+    numeroSerie?: boolean
+    localizacao?: boolean
+    estado?: boolean
+    ultimaManutencao?: boolean
+    proximaManutencao?: boolean
+    criadoEm?: boolean
+    manutencoes?: boolean | Equipamento$manutencoesArgs<ExtArgs>
+    _count?: boolean | EquipamentoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["equipamento"]>
+
+  export type EquipamentoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    tipo?: boolean
+    numeroSerie?: boolean
+    localizacao?: boolean
+    estado?: boolean
+    ultimaManutencao?: boolean
+    proximaManutencao?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["equipamento"]>
+
+  export type EquipamentoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    tipo?: boolean
+    numeroSerie?: boolean
+    localizacao?: boolean
+    estado?: boolean
+    ultimaManutencao?: boolean
+    proximaManutencao?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["equipamento"]>
+
+  export type EquipamentoSelectScalar = {
+    id?: boolean
+    nome?: boolean
+    tipo?: boolean
+    numeroSerie?: boolean
+    localizacao?: boolean
+    estado?: boolean
+    ultimaManutencao?: boolean
+    proximaManutencao?: boolean
+    criadoEm?: boolean
+  }
+
+  export type EquipamentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "tipo" | "numeroSerie" | "localizacao" | "estado" | "ultimaManutencao" | "proximaManutencao" | "criadoEm", ExtArgs["result"]["equipamento"]>
+  export type EquipamentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manutencoes?: boolean | Equipamento$manutencoesArgs<ExtArgs>
+    _count?: boolean | EquipamentoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type EquipamentoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type EquipamentoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $EquipamentoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Equipamento"
+    objects: {
+      manutencoes: Prisma.$ManutencaoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nome: string
+      tipo: string
+      numeroSerie: string | null
+      localizacao: string | null
+      estado: string
+      ultimaManutencao: Date | null
+      proximaManutencao: Date | null
+      criadoEm: Date
+    }, ExtArgs["result"]["equipamento"]>
+    composites: {}
+  }
+
+  type EquipamentoGetPayload<S extends boolean | null | undefined | EquipamentoDefaultArgs> = $Result.GetResult<Prisma.$EquipamentoPayload, S>
+
+  type EquipamentoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EquipamentoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EquipamentoCountAggregateInputType | true
+    }
+
+  export interface EquipamentoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Equipamento'], meta: { name: 'Equipamento' } }
+    /**
+     * Find zero or one Equipamento that matches the filter.
+     * @param {EquipamentoFindUniqueArgs} args - Arguments to find a Equipamento
+     * @example
+     * // Get one Equipamento
+     * const equipamento = await prisma.equipamento.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EquipamentoFindUniqueArgs>(args: SelectSubset<T, EquipamentoFindUniqueArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Equipamento that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EquipamentoFindUniqueOrThrowArgs} args - Arguments to find a Equipamento
+     * @example
+     * // Get one Equipamento
+     * const equipamento = await prisma.equipamento.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EquipamentoFindUniqueOrThrowArgs>(args: SelectSubset<T, EquipamentoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Equipamento that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoFindFirstArgs} args - Arguments to find a Equipamento
+     * @example
+     * // Get one Equipamento
+     * const equipamento = await prisma.equipamento.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EquipamentoFindFirstArgs>(args?: SelectSubset<T, EquipamentoFindFirstArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Equipamento that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoFindFirstOrThrowArgs} args - Arguments to find a Equipamento
+     * @example
+     * // Get one Equipamento
+     * const equipamento = await prisma.equipamento.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EquipamentoFindFirstOrThrowArgs>(args?: SelectSubset<T, EquipamentoFindFirstOrThrowArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Equipamentos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Equipamentos
+     * const equipamentos = await prisma.equipamento.findMany()
+     * 
+     * // Get first 10 Equipamentos
+     * const equipamentos = await prisma.equipamento.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const equipamentoWithIdOnly = await prisma.equipamento.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EquipamentoFindManyArgs>(args?: SelectSubset<T, EquipamentoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Equipamento.
+     * @param {EquipamentoCreateArgs} args - Arguments to create a Equipamento.
+     * @example
+     * // Create one Equipamento
+     * const Equipamento = await prisma.equipamento.create({
+     *   data: {
+     *     // ... data to create a Equipamento
+     *   }
+     * })
+     * 
+     */
+    create<T extends EquipamentoCreateArgs>(args: SelectSubset<T, EquipamentoCreateArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Equipamentos.
+     * @param {EquipamentoCreateManyArgs} args - Arguments to create many Equipamentos.
+     * @example
+     * // Create many Equipamentos
+     * const equipamento = await prisma.equipamento.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EquipamentoCreateManyArgs>(args?: SelectSubset<T, EquipamentoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Equipamentos and returns the data saved in the database.
+     * @param {EquipamentoCreateManyAndReturnArgs} args - Arguments to create many Equipamentos.
+     * @example
+     * // Create many Equipamentos
+     * const equipamento = await prisma.equipamento.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Equipamentos and only return the `id`
+     * const equipamentoWithIdOnly = await prisma.equipamento.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EquipamentoCreateManyAndReturnArgs>(args?: SelectSubset<T, EquipamentoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Equipamento.
+     * @param {EquipamentoDeleteArgs} args - Arguments to delete one Equipamento.
+     * @example
+     * // Delete one Equipamento
+     * const Equipamento = await prisma.equipamento.delete({
+     *   where: {
+     *     // ... filter to delete one Equipamento
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EquipamentoDeleteArgs>(args: SelectSubset<T, EquipamentoDeleteArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Equipamento.
+     * @param {EquipamentoUpdateArgs} args - Arguments to update one Equipamento.
+     * @example
+     * // Update one Equipamento
+     * const equipamento = await prisma.equipamento.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EquipamentoUpdateArgs>(args: SelectSubset<T, EquipamentoUpdateArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Equipamentos.
+     * @param {EquipamentoDeleteManyArgs} args - Arguments to filter Equipamentos to delete.
+     * @example
+     * // Delete a few Equipamentos
+     * const { count } = await prisma.equipamento.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EquipamentoDeleteManyArgs>(args?: SelectSubset<T, EquipamentoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Equipamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Equipamentos
+     * const equipamento = await prisma.equipamento.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EquipamentoUpdateManyArgs>(args: SelectSubset<T, EquipamentoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Equipamentos and returns the data updated in the database.
+     * @param {EquipamentoUpdateManyAndReturnArgs} args - Arguments to update many Equipamentos.
+     * @example
+     * // Update many Equipamentos
+     * const equipamento = await prisma.equipamento.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Equipamentos and only return the `id`
+     * const equipamentoWithIdOnly = await prisma.equipamento.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EquipamentoUpdateManyAndReturnArgs>(args: SelectSubset<T, EquipamentoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Equipamento.
+     * @param {EquipamentoUpsertArgs} args - Arguments to update or create a Equipamento.
+     * @example
+     * // Update or create a Equipamento
+     * const equipamento = await prisma.equipamento.upsert({
+     *   create: {
+     *     // ... data to create a Equipamento
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Equipamento we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EquipamentoUpsertArgs>(args: SelectSubset<T, EquipamentoUpsertArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Equipamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoCountArgs} args - Arguments to filter Equipamentos to count.
+     * @example
+     * // Count the number of Equipamentos
+     * const count = await prisma.equipamento.count({
+     *   where: {
+     *     // ... the filter for the Equipamentos we want to count
+     *   }
+     * })
+    **/
+    count<T extends EquipamentoCountArgs>(
+      args?: Subset<T, EquipamentoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EquipamentoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Equipamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EquipamentoAggregateArgs>(args: Subset<T, EquipamentoAggregateArgs>): Prisma.PrismaPromise<GetEquipamentoAggregateType<T>>
+
+    /**
+     * Group by Equipamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipamentoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EquipamentoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EquipamentoGroupByArgs['orderBy'] }
+        : { orderBy?: EquipamentoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EquipamentoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEquipamentoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Equipamento model
+   */
+  readonly fields: EquipamentoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Equipamento.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EquipamentoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    manutencoes<T extends Equipamento$manutencoesArgs<ExtArgs> = {}>(args?: Subset<T, Equipamento$manutencoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Equipamento model
+   */
+  interface EquipamentoFieldRefs {
+    readonly id: FieldRef<"Equipamento", 'String'>
+    readonly nome: FieldRef<"Equipamento", 'String'>
+    readonly tipo: FieldRef<"Equipamento", 'String'>
+    readonly numeroSerie: FieldRef<"Equipamento", 'String'>
+    readonly localizacao: FieldRef<"Equipamento", 'String'>
+    readonly estado: FieldRef<"Equipamento", 'String'>
+    readonly ultimaManutencao: FieldRef<"Equipamento", 'DateTime'>
+    readonly proximaManutencao: FieldRef<"Equipamento", 'DateTime'>
+    readonly criadoEm: FieldRef<"Equipamento", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Equipamento findUnique
+   */
+  export type EquipamentoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipamento to fetch.
+     */
+    where: EquipamentoWhereUniqueInput
+  }
+
+  /**
+   * Equipamento findUniqueOrThrow
+   */
+  export type EquipamentoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipamento to fetch.
+     */
+    where: EquipamentoWhereUniqueInput
+  }
+
+  /**
+   * Equipamento findFirst
+   */
+  export type EquipamentoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipamento to fetch.
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipamentos to fetch.
+     */
+    orderBy?: EquipamentoOrderByWithRelationInput | EquipamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Equipamentos.
+     */
+    cursor?: EquipamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Equipamentos.
+     */
+    distinct?: EquipamentoScalarFieldEnum | EquipamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Equipamento findFirstOrThrow
+   */
+  export type EquipamentoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipamento to fetch.
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipamentos to fetch.
+     */
+    orderBy?: EquipamentoOrderByWithRelationInput | EquipamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Equipamentos.
+     */
+    cursor?: EquipamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Equipamentos.
+     */
+    distinct?: EquipamentoScalarFieldEnum | EquipamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Equipamento findMany
+   */
+  export type EquipamentoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipamentos to fetch.
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipamentos to fetch.
+     */
+    orderBy?: EquipamentoOrderByWithRelationInput | EquipamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Equipamentos.
+     */
+    cursor?: EquipamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipamentos.
+     */
+    skip?: number
+    distinct?: EquipamentoScalarFieldEnum | EquipamentoScalarFieldEnum[]
+  }
+
+  /**
+   * Equipamento create
+   */
+  export type EquipamentoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Equipamento.
+     */
+    data: XOR<EquipamentoCreateInput, EquipamentoUncheckedCreateInput>
+  }
+
+  /**
+   * Equipamento createMany
+   */
+  export type EquipamentoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Equipamentos.
+     */
+    data: EquipamentoCreateManyInput | EquipamentoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Equipamento createManyAndReturn
+   */
+  export type EquipamentoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Equipamentos.
+     */
+    data: EquipamentoCreateManyInput | EquipamentoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Equipamento update
+   */
+  export type EquipamentoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Equipamento.
+     */
+    data: XOR<EquipamentoUpdateInput, EquipamentoUncheckedUpdateInput>
+    /**
+     * Choose, which Equipamento to update.
+     */
+    where: EquipamentoWhereUniqueInput
+  }
+
+  /**
+   * Equipamento updateMany
+   */
+  export type EquipamentoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Equipamentos.
+     */
+    data: XOR<EquipamentoUpdateManyMutationInput, EquipamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which Equipamentos to update
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * Limit how many Equipamentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Equipamento updateManyAndReturn
+   */
+  export type EquipamentoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * The data used to update Equipamentos.
+     */
+    data: XOR<EquipamentoUpdateManyMutationInput, EquipamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which Equipamentos to update
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * Limit how many Equipamentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Equipamento upsert
+   */
+  export type EquipamentoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Equipamento to update in case it exists.
+     */
+    where: EquipamentoWhereUniqueInput
+    /**
+     * In case the Equipamento found by the `where` argument doesn't exist, create a new Equipamento with this data.
+     */
+    create: XOR<EquipamentoCreateInput, EquipamentoUncheckedCreateInput>
+    /**
+     * In case the Equipamento was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EquipamentoUpdateInput, EquipamentoUncheckedUpdateInput>
+  }
+
+  /**
+   * Equipamento delete
+   */
+  export type EquipamentoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+    /**
+     * Filter which Equipamento to delete.
+     */
+    where: EquipamentoWhereUniqueInput
+  }
+
+  /**
+   * Equipamento deleteMany
+   */
+  export type EquipamentoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Equipamentos to delete
+     */
+    where?: EquipamentoWhereInput
+    /**
+     * Limit how many Equipamentos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Equipamento.manutencoes
+   */
+  export type Equipamento$manutencoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    where?: ManutencaoWhereInput
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    cursor?: ManutencaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
+   * Equipamento without action
+   */
+  export type EquipamentoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipamento
+     */
+    select?: EquipamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipamento
+     */
+    omit?: EquipamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipamentoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Manutencao
+   */
+
+  export type AggregateManutencao = {
+    _count: ManutencaoCountAggregateOutputType | null
+    _min: ManutencaoMinAggregateOutputType | null
+    _max: ManutencaoMaxAggregateOutputType | null
+  }
+
+  export type ManutencaoMinAggregateOutputType = {
+    id: string | null
+    equipamentoId: string | null
+    tipo: string | null
+    descricao: string | null
+    estado: string | null
+    prioridade: string | null
+    reportadoPorId: string | null
+    tecnicoId: string | null
+    dataReporte: Date | null
+    dataConclusao: Date | null
+    observacoes: string | null
+  }
+
+  export type ManutencaoMaxAggregateOutputType = {
+    id: string | null
+    equipamentoId: string | null
+    tipo: string | null
+    descricao: string | null
+    estado: string | null
+    prioridade: string | null
+    reportadoPorId: string | null
+    tecnicoId: string | null
+    dataReporte: Date | null
+    dataConclusao: Date | null
+    observacoes: string | null
+  }
+
+  export type ManutencaoCountAggregateOutputType = {
+    id: number
+    equipamentoId: number
+    tipo: number
+    descricao: number
+    estado: number
+    prioridade: number
+    reportadoPorId: number
+    tecnicoId: number
+    dataReporte: number
+    dataConclusao: number
+    observacoes: number
+    _all: number
+  }
+
+
+  export type ManutencaoMinAggregateInputType = {
+    id?: true
+    equipamentoId?: true
+    tipo?: true
+    descricao?: true
+    estado?: true
+    prioridade?: true
+    reportadoPorId?: true
+    tecnicoId?: true
+    dataReporte?: true
+    dataConclusao?: true
+    observacoes?: true
+  }
+
+  export type ManutencaoMaxAggregateInputType = {
+    id?: true
+    equipamentoId?: true
+    tipo?: true
+    descricao?: true
+    estado?: true
+    prioridade?: true
+    reportadoPorId?: true
+    tecnicoId?: true
+    dataReporte?: true
+    dataConclusao?: true
+    observacoes?: true
+  }
+
+  export type ManutencaoCountAggregateInputType = {
+    id?: true
+    equipamentoId?: true
+    tipo?: true
+    descricao?: true
+    estado?: true
+    prioridade?: true
+    reportadoPorId?: true
+    tecnicoId?: true
+    dataReporte?: true
+    dataConclusao?: true
+    observacoes?: true
+    _all?: true
+  }
+
+  export type ManutencaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Manutencao to aggregate.
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manutencaos to fetch.
+     */
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ManutencaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manutencaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manutencaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Manutencaos
+    **/
+    _count?: true | ManutencaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ManutencaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ManutencaoMaxAggregateInputType
+  }
+
+  export type GetManutencaoAggregateType<T extends ManutencaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateManutencao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateManutencao[P]>
+      : GetScalarType<T[P], AggregateManutencao[P]>
+  }
+
+
+
+
+  export type ManutencaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManutencaoWhereInput
+    orderBy?: ManutencaoOrderByWithAggregationInput | ManutencaoOrderByWithAggregationInput[]
+    by: ManutencaoScalarFieldEnum[] | ManutencaoScalarFieldEnum
+    having?: ManutencaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ManutencaoCountAggregateInputType | true
+    _min?: ManutencaoMinAggregateInputType
+    _max?: ManutencaoMaxAggregateInputType
+  }
+
+  export type ManutencaoGroupByOutputType = {
+    id: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado: string
+    prioridade: string
+    reportadoPorId: string | null
+    tecnicoId: string | null
+    dataReporte: Date
+    dataConclusao: Date | null
+    observacoes: string | null
+    _count: ManutencaoCountAggregateOutputType | null
+    _min: ManutencaoMinAggregateOutputType | null
+    _max: ManutencaoMaxAggregateOutputType | null
+  }
+
+  type GetManutencaoGroupByPayload<T extends ManutencaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ManutencaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ManutencaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ManutencaoGroupByOutputType[P]>
+            : GetScalarType<T[P], ManutencaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ManutencaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    equipamentoId?: boolean
+    tipo?: boolean
+    descricao?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    reportadoPorId?: boolean
+    tecnicoId?: boolean
+    dataReporte?: boolean
+    dataConclusao?: boolean
+    observacoes?: boolean
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }, ExtArgs["result"]["manutencao"]>
+
+  export type ManutencaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    equipamentoId?: boolean
+    tipo?: boolean
+    descricao?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    reportadoPorId?: boolean
+    tecnicoId?: boolean
+    dataReporte?: boolean
+    dataConclusao?: boolean
+    observacoes?: boolean
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }, ExtArgs["result"]["manutencao"]>
+
+  export type ManutencaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    equipamentoId?: boolean
+    tipo?: boolean
+    descricao?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    reportadoPorId?: boolean
+    tecnicoId?: boolean
+    dataReporte?: boolean
+    dataConclusao?: boolean
+    observacoes?: boolean
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }, ExtArgs["result"]["manutencao"]>
+
+  export type ManutencaoSelectScalar = {
+    id?: boolean
+    equipamentoId?: boolean
+    tipo?: boolean
+    descricao?: boolean
+    estado?: boolean
+    prioridade?: boolean
+    reportadoPorId?: boolean
+    tecnicoId?: boolean
+    dataReporte?: boolean
+    dataConclusao?: boolean
+    observacoes?: boolean
+  }
+
+  export type ManutencaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "equipamentoId" | "tipo" | "descricao" | "estado" | "prioridade" | "reportadoPorId" | "tecnicoId" | "dataReporte" | "dataConclusao" | "observacoes", ExtArgs["result"]["manutencao"]>
+  export type ManutencaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }
+  export type ManutencaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }
+  export type ManutencaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    equipamento?: boolean | EquipamentoDefaultArgs<ExtArgs>
+    reportadoPor?: boolean | Manutencao$reportadoPorArgs<ExtArgs>
+    tecnico?: boolean | Manutencao$tecnicoArgs<ExtArgs>
+  }
+
+  export type $ManutencaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Manutencao"
+    objects: {
+      equipamento: Prisma.$EquipamentoPayload<ExtArgs>
+      reportadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+      tecnico: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      equipamentoId: string
+      tipo: string
+      descricao: string
+      estado: string
+      prioridade: string
+      reportadoPorId: string | null
+      tecnicoId: string | null
+      dataReporte: Date
+      dataConclusao: Date | null
+      observacoes: string | null
+    }, ExtArgs["result"]["manutencao"]>
+    composites: {}
+  }
+
+  type ManutencaoGetPayload<S extends boolean | null | undefined | ManutencaoDefaultArgs> = $Result.GetResult<Prisma.$ManutencaoPayload, S>
+
+  type ManutencaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ManutencaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ManutencaoCountAggregateInputType | true
+    }
+
+  export interface ManutencaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Manutencao'], meta: { name: 'Manutencao' } }
+    /**
+     * Find zero or one Manutencao that matches the filter.
+     * @param {ManutencaoFindUniqueArgs} args - Arguments to find a Manutencao
+     * @example
+     * // Get one Manutencao
+     * const manutencao = await prisma.manutencao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ManutencaoFindUniqueArgs>(args: SelectSubset<T, ManutencaoFindUniqueArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Manutencao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ManutencaoFindUniqueOrThrowArgs} args - Arguments to find a Manutencao
+     * @example
+     * // Get one Manutencao
+     * const manutencao = await prisma.manutencao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ManutencaoFindUniqueOrThrowArgs>(args: SelectSubset<T, ManutencaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Manutencao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoFindFirstArgs} args - Arguments to find a Manutencao
+     * @example
+     * // Get one Manutencao
+     * const manutencao = await prisma.manutencao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ManutencaoFindFirstArgs>(args?: SelectSubset<T, ManutencaoFindFirstArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Manutencao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoFindFirstOrThrowArgs} args - Arguments to find a Manutencao
+     * @example
+     * // Get one Manutencao
+     * const manutencao = await prisma.manutencao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ManutencaoFindFirstOrThrowArgs>(args?: SelectSubset<T, ManutencaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Manutencaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Manutencaos
+     * const manutencaos = await prisma.manutencao.findMany()
+     * 
+     * // Get first 10 Manutencaos
+     * const manutencaos = await prisma.manutencao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const manutencaoWithIdOnly = await prisma.manutencao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ManutencaoFindManyArgs>(args?: SelectSubset<T, ManutencaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Manutencao.
+     * @param {ManutencaoCreateArgs} args - Arguments to create a Manutencao.
+     * @example
+     * // Create one Manutencao
+     * const Manutencao = await prisma.manutencao.create({
+     *   data: {
+     *     // ... data to create a Manutencao
+     *   }
+     * })
+     * 
+     */
+    create<T extends ManutencaoCreateArgs>(args: SelectSubset<T, ManutencaoCreateArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Manutencaos.
+     * @param {ManutencaoCreateManyArgs} args - Arguments to create many Manutencaos.
+     * @example
+     * // Create many Manutencaos
+     * const manutencao = await prisma.manutencao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ManutencaoCreateManyArgs>(args?: SelectSubset<T, ManutencaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Manutencaos and returns the data saved in the database.
+     * @param {ManutencaoCreateManyAndReturnArgs} args - Arguments to create many Manutencaos.
+     * @example
+     * // Create many Manutencaos
+     * const manutencao = await prisma.manutencao.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Manutencaos and only return the `id`
+     * const manutencaoWithIdOnly = await prisma.manutencao.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ManutencaoCreateManyAndReturnArgs>(args?: SelectSubset<T, ManutencaoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Manutencao.
+     * @param {ManutencaoDeleteArgs} args - Arguments to delete one Manutencao.
+     * @example
+     * // Delete one Manutencao
+     * const Manutencao = await prisma.manutencao.delete({
+     *   where: {
+     *     // ... filter to delete one Manutencao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ManutencaoDeleteArgs>(args: SelectSubset<T, ManutencaoDeleteArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Manutencao.
+     * @param {ManutencaoUpdateArgs} args - Arguments to update one Manutencao.
+     * @example
+     * // Update one Manutencao
+     * const manutencao = await prisma.manutencao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ManutencaoUpdateArgs>(args: SelectSubset<T, ManutencaoUpdateArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Manutencaos.
+     * @param {ManutencaoDeleteManyArgs} args - Arguments to filter Manutencaos to delete.
+     * @example
+     * // Delete a few Manutencaos
+     * const { count } = await prisma.manutencao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ManutencaoDeleteManyArgs>(args?: SelectSubset<T, ManutencaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Manutencaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Manutencaos
+     * const manutencao = await prisma.manutencao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ManutencaoUpdateManyArgs>(args: SelectSubset<T, ManutencaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Manutencaos and returns the data updated in the database.
+     * @param {ManutencaoUpdateManyAndReturnArgs} args - Arguments to update many Manutencaos.
+     * @example
+     * // Update many Manutencaos
+     * const manutencao = await prisma.manutencao.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Manutencaos and only return the `id`
+     * const manutencaoWithIdOnly = await prisma.manutencao.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ManutencaoUpdateManyAndReturnArgs>(args: SelectSubset<T, ManutencaoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Manutencao.
+     * @param {ManutencaoUpsertArgs} args - Arguments to update or create a Manutencao.
+     * @example
+     * // Update or create a Manutencao
+     * const manutencao = await prisma.manutencao.upsert({
+     *   create: {
+     *     // ... data to create a Manutencao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Manutencao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ManutencaoUpsertArgs>(args: SelectSubset<T, ManutencaoUpsertArgs<ExtArgs>>): Prisma__ManutencaoClient<$Result.GetResult<Prisma.$ManutencaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Manutencaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoCountArgs} args - Arguments to filter Manutencaos to count.
+     * @example
+     * // Count the number of Manutencaos
+     * const count = await prisma.manutencao.count({
+     *   where: {
+     *     // ... the filter for the Manutencaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends ManutencaoCountArgs>(
+      args?: Subset<T, ManutencaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ManutencaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Manutencao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ManutencaoAggregateArgs>(args: Subset<T, ManutencaoAggregateArgs>): Prisma.PrismaPromise<GetManutencaoAggregateType<T>>
+
+    /**
+     * Group by Manutencao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManutencaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ManutencaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ManutencaoGroupByArgs['orderBy'] }
+        : { orderBy?: ManutencaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ManutencaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetManutencaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Manutencao model
+   */
+  readonly fields: ManutencaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Manutencao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ManutencaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    equipamento<T extends EquipamentoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EquipamentoDefaultArgs<ExtArgs>>): Prisma__EquipamentoClient<$Result.GetResult<Prisma.$EquipamentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    reportadoPor<T extends Manutencao$reportadoPorArgs<ExtArgs> = {}>(args?: Subset<T, Manutencao$reportadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    tecnico<T extends Manutencao$tecnicoArgs<ExtArgs> = {}>(args?: Subset<T, Manutencao$tecnicoArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Manutencao model
+   */
+  interface ManutencaoFieldRefs {
+    readonly id: FieldRef<"Manutencao", 'String'>
+    readonly equipamentoId: FieldRef<"Manutencao", 'String'>
+    readonly tipo: FieldRef<"Manutencao", 'String'>
+    readonly descricao: FieldRef<"Manutencao", 'String'>
+    readonly estado: FieldRef<"Manutencao", 'String'>
+    readonly prioridade: FieldRef<"Manutencao", 'String'>
+    readonly reportadoPorId: FieldRef<"Manutencao", 'String'>
+    readonly tecnicoId: FieldRef<"Manutencao", 'String'>
+    readonly dataReporte: FieldRef<"Manutencao", 'DateTime'>
+    readonly dataConclusao: FieldRef<"Manutencao", 'DateTime'>
+    readonly observacoes: FieldRef<"Manutencao", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Manutencao findUnique
+   */
+  export type ManutencaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Manutencao to fetch.
+     */
+    where: ManutencaoWhereUniqueInput
+  }
+
+  /**
+   * Manutencao findUniqueOrThrow
+   */
+  export type ManutencaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Manutencao to fetch.
+     */
+    where: ManutencaoWhereUniqueInput
+  }
+
+  /**
+   * Manutencao findFirst
+   */
+  export type ManutencaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Manutencao to fetch.
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manutencaos to fetch.
+     */
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Manutencaos.
+     */
+    cursor?: ManutencaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manutencaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manutencaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Manutencaos.
+     */
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
+   * Manutencao findFirstOrThrow
+   */
+  export type ManutencaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Manutencao to fetch.
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manutencaos to fetch.
+     */
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Manutencaos.
+     */
+    cursor?: ManutencaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manutencaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manutencaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Manutencaos.
+     */
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
+   * Manutencao findMany
+   */
+  export type ManutencaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter, which Manutencaos to fetch.
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Manutencaos to fetch.
+     */
+    orderBy?: ManutencaoOrderByWithRelationInput | ManutencaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Manutencaos.
+     */
+    cursor?: ManutencaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Manutencaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Manutencaos.
+     */
+    skip?: number
+    distinct?: ManutencaoScalarFieldEnum | ManutencaoScalarFieldEnum[]
+  }
+
+  /**
+   * Manutencao create
+   */
+  export type ManutencaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Manutencao.
+     */
+    data: XOR<ManutencaoCreateInput, ManutencaoUncheckedCreateInput>
+  }
+
+  /**
+   * Manutencao createMany
+   */
+  export type ManutencaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Manutencaos.
+     */
+    data: ManutencaoCreateManyInput | ManutencaoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Manutencao createManyAndReturn
+   */
+  export type ManutencaoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Manutencaos.
+     */
+    data: ManutencaoCreateManyInput | ManutencaoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Manutencao update
+   */
+  export type ManutencaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Manutencao.
+     */
+    data: XOR<ManutencaoUpdateInput, ManutencaoUncheckedUpdateInput>
+    /**
+     * Choose, which Manutencao to update.
+     */
+    where: ManutencaoWhereUniqueInput
+  }
+
+  /**
+   * Manutencao updateMany
+   */
+  export type ManutencaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Manutencaos.
+     */
+    data: XOR<ManutencaoUpdateManyMutationInput, ManutencaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Manutencaos to update
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * Limit how many Manutencaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Manutencao updateManyAndReturn
+   */
+  export type ManutencaoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * The data used to update Manutencaos.
+     */
+    data: XOR<ManutencaoUpdateManyMutationInput, ManutencaoUncheckedUpdateManyInput>
+    /**
+     * Filter which Manutencaos to update
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * Limit how many Manutencaos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Manutencao upsert
+   */
+  export type ManutencaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Manutencao to update in case it exists.
+     */
+    where: ManutencaoWhereUniqueInput
+    /**
+     * In case the Manutencao found by the `where` argument doesn't exist, create a new Manutencao with this data.
+     */
+    create: XOR<ManutencaoCreateInput, ManutencaoUncheckedCreateInput>
+    /**
+     * In case the Manutencao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ManutencaoUpdateInput, ManutencaoUncheckedUpdateInput>
+  }
+
+  /**
+   * Manutencao delete
+   */
+  export type ManutencaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+    /**
+     * Filter which Manutencao to delete.
+     */
+    where: ManutencaoWhereUniqueInput
+  }
+
+  /**
+   * Manutencao deleteMany
+   */
+  export type ManutencaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Manutencaos to delete
+     */
+    where?: ManutencaoWhereInput
+    /**
+     * Limit how many Manutencaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Manutencao.reportadoPor
+   */
+  export type Manutencao$reportadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * Manutencao.tecnico
+   */
+  export type Manutencao$tecnicoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * Manutencao without action
+   */
+  export type ManutencaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Manutencao
+     */
+    select?: ManutencaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Manutencao
+     */
+    omit?: ManutencaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManutencaoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -70681,6 +74563,53 @@ export namespace Prisma {
   export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+  export const ProblemaClinicoScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    descricao: 'descricao',
+    tipo: 'tipo',
+    estado: 'estado',
+    dataInicio: 'dataInicio',
+    dataFim: 'dataFim',
+    registadoPorId: 'registadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type ProblemaClinicoScalarFieldEnum = (typeof ProblemaClinicoScalarFieldEnum)[keyof typeof ProblemaClinicoScalarFieldEnum]
+
+
+  export const EquipamentoScalarFieldEnum: {
+    id: 'id',
+    nome: 'nome',
+    tipo: 'tipo',
+    numeroSerie: 'numeroSerie',
+    localizacao: 'localizacao',
+    estado: 'estado',
+    ultimaManutencao: 'ultimaManutencao',
+    proximaManutencao: 'proximaManutencao',
+    criadoEm: 'criadoEm'
+  };
+
+  export type EquipamentoScalarFieldEnum = (typeof EquipamentoScalarFieldEnum)[keyof typeof EquipamentoScalarFieldEnum]
+
+
+  export const ManutencaoScalarFieldEnum: {
+    id: 'id',
+    equipamentoId: 'equipamentoId',
+    tipo: 'tipo',
+    descricao: 'descricao',
+    estado: 'estado',
+    prioridade: 'prioridade',
+    reportadoPorId: 'reportadoPorId',
+    tecnicoId: 'tecnicoId',
+    dataReporte: 'dataReporte',
+    dataConclusao: 'dataConclusao',
+    observacoes: 'observacoes'
+  };
+
+  export type ManutencaoScalarFieldEnum = (typeof ManutencaoScalarFieldEnum)[keyof typeof ManutencaoScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -71416,6 +75345,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoListRelationFilter
     pagamentosRegistados?: PagamentoListRelationFilter
     agendas?: AgendaMedicoListRelationFilter
+    problemasRegistados?: ProblemaClinicoListRelationFilter
+    manutencoesReportadas?: ManutencaoListRelationFilter
+    manutencoesTecnico?: ManutencaoListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -71487,6 +75419,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoOrderByRelationAggregateInput
     pagamentosRegistados?: PagamentoOrderByRelationAggregateInput
     agendas?: AgendaMedicoOrderByRelationAggregateInput
+    problemasRegistados?: ProblemaClinicoOrderByRelationAggregateInput
+    manutencoesReportadas?: ManutencaoOrderByRelationAggregateInput
+    manutencoesTecnico?: ManutencaoOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -71561,6 +75496,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoListRelationFilter
     pagamentosRegistados?: PagamentoListRelationFilter
     agendas?: AgendaMedicoListRelationFilter
+    problemasRegistados?: ProblemaClinicoListRelationFilter
+    manutencoesReportadas?: ManutencaoListRelationFilter
+    manutencoesTecnico?: ManutencaoListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -71699,6 +75637,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoListRelationFilter
     ficheiroPessoal?: XOR<FicheiroPessoalDoenteNullableScalarRelationFilter, FicheiroPessoalDoenteWhereInput> | null
     episodiosFaturacao?: EpisodioFaturacaoListRelationFilter
+    problemas?: ProblemaClinicoListRelationFilter
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -71746,6 +75685,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoOrderByRelationAggregateInput
     ficheiroPessoal?: FicheiroPessoalDoenteOrderByWithRelationInput
     episodiosFaturacao?: EpisodioFaturacaoOrderByRelationAggregateInput
+    problemas?: ProblemaClinicoOrderByRelationAggregateInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -71796,6 +75736,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoListRelationFilter
     ficheiroPessoal?: XOR<FicheiroPessoalDoenteNullableScalarRelationFilter, FicheiroPessoalDoenteWhereInput> | null
     episodiosFaturacao?: EpisodioFaturacaoListRelationFilter
+    problemas?: ProblemaClinicoListRelationFilter
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -75579,6 +79520,250 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
+  export type ProblemaClinicoWhereInput = {
+    AND?: ProblemaClinicoWhereInput | ProblemaClinicoWhereInput[]
+    OR?: ProblemaClinicoWhereInput[]
+    NOT?: ProblemaClinicoWhereInput | ProblemaClinicoWhereInput[]
+    id?: StringFilter<"ProblemaClinico"> | string
+    doenteId?: StringFilter<"ProblemaClinico"> | string
+    descricao?: StringFilter<"ProblemaClinico"> | string
+    tipo?: StringFilter<"ProblemaClinico"> | string
+    estado?: StringFilter<"ProblemaClinico"> | string
+    dataInicio?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    dataFim?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    registadoPorId?: StringFilter<"ProblemaClinico"> | string
+    criadoEm?: DateTimeFilter<"ProblemaClinico"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type ProblemaClinicoOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    dataInicio?: SortOrderInput | SortOrder
+    dataFim?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type ProblemaClinicoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProblemaClinicoWhereInput | ProblemaClinicoWhereInput[]
+    OR?: ProblemaClinicoWhereInput[]
+    NOT?: ProblemaClinicoWhereInput | ProblemaClinicoWhereInput[]
+    doenteId?: StringFilter<"ProblemaClinico"> | string
+    descricao?: StringFilter<"ProblemaClinico"> | string
+    tipo?: StringFilter<"ProblemaClinico"> | string
+    estado?: StringFilter<"ProblemaClinico"> | string
+    dataInicio?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    dataFim?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    registadoPorId?: StringFilter<"ProblemaClinico"> | string
+    criadoEm?: DateTimeFilter<"ProblemaClinico"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type ProblemaClinicoOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    dataInicio?: SortOrderInput | SortOrder
+    dataFim?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: ProblemaClinicoCountOrderByAggregateInput
+    _max?: ProblemaClinicoMaxOrderByAggregateInput
+    _min?: ProblemaClinicoMinOrderByAggregateInput
+  }
+
+  export type ProblemaClinicoScalarWhereWithAggregatesInput = {
+    AND?: ProblemaClinicoScalarWhereWithAggregatesInput | ProblemaClinicoScalarWhereWithAggregatesInput[]
+    OR?: ProblemaClinicoScalarWhereWithAggregatesInput[]
+    NOT?: ProblemaClinicoScalarWhereWithAggregatesInput | ProblemaClinicoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    doenteId?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    descricao?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    tipo?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    estado?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    dataInicio?: DateTimeNullableWithAggregatesFilter<"ProblemaClinico"> | Date | string | null
+    dataFim?: DateTimeNullableWithAggregatesFilter<"ProblemaClinico"> | Date | string | null
+    registadoPorId?: StringWithAggregatesFilter<"ProblemaClinico"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"ProblemaClinico"> | Date | string
+  }
+
+  export type EquipamentoWhereInput = {
+    AND?: EquipamentoWhereInput | EquipamentoWhereInput[]
+    OR?: EquipamentoWhereInput[]
+    NOT?: EquipamentoWhereInput | EquipamentoWhereInput[]
+    id?: StringFilter<"Equipamento"> | string
+    nome?: StringFilter<"Equipamento"> | string
+    tipo?: StringFilter<"Equipamento"> | string
+    numeroSerie?: StringNullableFilter<"Equipamento"> | string | null
+    localizacao?: StringNullableFilter<"Equipamento"> | string | null
+    estado?: StringFilter<"Equipamento"> | string
+    ultimaManutencao?: DateTimeNullableFilter<"Equipamento"> | Date | string | null
+    proximaManutencao?: DateTimeNullableFilter<"Equipamento"> | Date | string | null
+    criadoEm?: DateTimeFilter<"Equipamento"> | Date | string
+    manutencoes?: ManutencaoListRelationFilter
+  }
+
+  export type EquipamentoOrderByWithRelationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    tipo?: SortOrder
+    numeroSerie?: SortOrderInput | SortOrder
+    localizacao?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    ultimaManutencao?: SortOrderInput | SortOrder
+    proximaManutencao?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    manutencoes?: ManutencaoOrderByRelationAggregateInput
+  }
+
+  export type EquipamentoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EquipamentoWhereInput | EquipamentoWhereInput[]
+    OR?: EquipamentoWhereInput[]
+    NOT?: EquipamentoWhereInput | EquipamentoWhereInput[]
+    nome?: StringFilter<"Equipamento"> | string
+    tipo?: StringFilter<"Equipamento"> | string
+    numeroSerie?: StringNullableFilter<"Equipamento"> | string | null
+    localizacao?: StringNullableFilter<"Equipamento"> | string | null
+    estado?: StringFilter<"Equipamento"> | string
+    ultimaManutencao?: DateTimeNullableFilter<"Equipamento"> | Date | string | null
+    proximaManutencao?: DateTimeNullableFilter<"Equipamento"> | Date | string | null
+    criadoEm?: DateTimeFilter<"Equipamento"> | Date | string
+    manutencoes?: ManutencaoListRelationFilter
+  }, "id">
+
+  export type EquipamentoOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    tipo?: SortOrder
+    numeroSerie?: SortOrderInput | SortOrder
+    localizacao?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    ultimaManutencao?: SortOrderInput | SortOrder
+    proximaManutencao?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    _count?: EquipamentoCountOrderByAggregateInput
+    _max?: EquipamentoMaxOrderByAggregateInput
+    _min?: EquipamentoMinOrderByAggregateInput
+  }
+
+  export type EquipamentoScalarWhereWithAggregatesInput = {
+    AND?: EquipamentoScalarWhereWithAggregatesInput | EquipamentoScalarWhereWithAggregatesInput[]
+    OR?: EquipamentoScalarWhereWithAggregatesInput[]
+    NOT?: EquipamentoScalarWhereWithAggregatesInput | EquipamentoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Equipamento"> | string
+    nome?: StringWithAggregatesFilter<"Equipamento"> | string
+    tipo?: StringWithAggregatesFilter<"Equipamento"> | string
+    numeroSerie?: StringNullableWithAggregatesFilter<"Equipamento"> | string | null
+    localizacao?: StringNullableWithAggregatesFilter<"Equipamento"> | string | null
+    estado?: StringWithAggregatesFilter<"Equipamento"> | string
+    ultimaManutencao?: DateTimeNullableWithAggregatesFilter<"Equipamento"> | Date | string | null
+    proximaManutencao?: DateTimeNullableWithAggregatesFilter<"Equipamento"> | Date | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"Equipamento"> | Date | string
+  }
+
+  export type ManutencaoWhereInput = {
+    AND?: ManutencaoWhereInput | ManutencaoWhereInput[]
+    OR?: ManutencaoWhereInput[]
+    NOT?: ManutencaoWhereInput | ManutencaoWhereInput[]
+    id?: StringFilter<"Manutencao"> | string
+    equipamentoId?: StringFilter<"Manutencao"> | string
+    tipo?: StringFilter<"Manutencao"> | string
+    descricao?: StringFilter<"Manutencao"> | string
+    estado?: StringFilter<"Manutencao"> | string
+    prioridade?: StringFilter<"Manutencao"> | string
+    reportadoPorId?: StringNullableFilter<"Manutencao"> | string | null
+    tecnicoId?: StringNullableFilter<"Manutencao"> | string | null
+    dataReporte?: DateTimeFilter<"Manutencao"> | Date | string
+    dataConclusao?: DateTimeNullableFilter<"Manutencao"> | Date | string | null
+    observacoes?: StringNullableFilter<"Manutencao"> | string | null
+    equipamento?: XOR<EquipamentoScalarRelationFilter, EquipamentoWhereInput>
+    reportadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    tecnico?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type ManutencaoOrderByWithRelationInput = {
+    id?: SortOrder
+    equipamentoId?: SortOrder
+    tipo?: SortOrder
+    descricao?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    reportadoPorId?: SortOrderInput | SortOrder
+    tecnicoId?: SortOrderInput | SortOrder
+    dataReporte?: SortOrder
+    dataConclusao?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    equipamento?: EquipamentoOrderByWithRelationInput
+    reportadoPor?: UtilizadorOrderByWithRelationInput
+    tecnico?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type ManutencaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ManutencaoWhereInput | ManutencaoWhereInput[]
+    OR?: ManutencaoWhereInput[]
+    NOT?: ManutencaoWhereInput | ManutencaoWhereInput[]
+    equipamentoId?: StringFilter<"Manutencao"> | string
+    tipo?: StringFilter<"Manutencao"> | string
+    descricao?: StringFilter<"Manutencao"> | string
+    estado?: StringFilter<"Manutencao"> | string
+    prioridade?: StringFilter<"Manutencao"> | string
+    reportadoPorId?: StringNullableFilter<"Manutencao"> | string | null
+    tecnicoId?: StringNullableFilter<"Manutencao"> | string | null
+    dataReporte?: DateTimeFilter<"Manutencao"> | Date | string
+    dataConclusao?: DateTimeNullableFilter<"Manutencao"> | Date | string | null
+    observacoes?: StringNullableFilter<"Manutencao"> | string | null
+    equipamento?: XOR<EquipamentoScalarRelationFilter, EquipamentoWhereInput>
+    reportadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    tecnico?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type ManutencaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    equipamentoId?: SortOrder
+    tipo?: SortOrder
+    descricao?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    reportadoPorId?: SortOrderInput | SortOrder
+    tecnicoId?: SortOrderInput | SortOrder
+    dataReporte?: SortOrder
+    dataConclusao?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    _count?: ManutencaoCountOrderByAggregateInput
+    _max?: ManutencaoMaxOrderByAggregateInput
+    _min?: ManutencaoMinOrderByAggregateInput
+  }
+
+  export type ManutencaoScalarWhereWithAggregatesInput = {
+    AND?: ManutencaoScalarWhereWithAggregatesInput | ManutencaoScalarWhereWithAggregatesInput[]
+    OR?: ManutencaoScalarWhereWithAggregatesInput[]
+    NOT?: ManutencaoScalarWhereWithAggregatesInput | ManutencaoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Manutencao"> | string
+    equipamentoId?: StringWithAggregatesFilter<"Manutencao"> | string
+    tipo?: StringWithAggregatesFilter<"Manutencao"> | string
+    descricao?: StringWithAggregatesFilter<"Manutencao"> | string
+    estado?: StringWithAggregatesFilter<"Manutencao"> | string
+    prioridade?: StringWithAggregatesFilter<"Manutencao"> | string
+    reportadoPorId?: StringNullableWithAggregatesFilter<"Manutencao"> | string | null
+    tecnicoId?: StringNullableWithAggregatesFilter<"Manutencao"> | string | null
+    dataReporte?: DateTimeWithAggregatesFilter<"Manutencao"> | Date | string
+    dataConclusao?: DateTimeNullableWithAggregatesFilter<"Manutencao"> | Date | string | null
+    observacoes?: StringNullableWithAggregatesFilter<"Manutencao"> | string | null
+  }
+
   export type RoleConfigCreateInput = {
     id?: string
     chave: string
@@ -75777,6 +79962,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -75848,6 +80036,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -75919,6 +80110,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -75990,6 +80184,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -76133,6 +80330,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -76178,6 +80376,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -76223,6 +80422,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -76268,6 +80468,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -80188,6 +84389,271 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProblemaClinicoCreateInput = {
+    id?: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutProblemasInput
+    registadoPor: UtilizadorCreateNestedOneWithoutProblemasRegistadosInput
+  }
+
+  export type ProblemaClinicoUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type ProblemaClinicoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutProblemasNestedInput
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutProblemasRegistadosNestedInput
+  }
+
+  export type ProblemaClinicoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProblemaClinicoCreateManyInput = {
+    id?: string
+    doenteId: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type ProblemaClinicoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProblemaClinicoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipamentoCreateInput = {
+    id?: string
+    nome: string
+    tipo: string
+    numeroSerie?: string | null
+    localizacao?: string | null
+    estado?: string
+    ultimaManutencao?: Date | string | null
+    proximaManutencao?: Date | string | null
+    criadoEm?: Date | string
+    manutencoes?: ManutencaoCreateNestedManyWithoutEquipamentoInput
+  }
+
+  export type EquipamentoUncheckedCreateInput = {
+    id?: string
+    nome: string
+    tipo: string
+    numeroSerie?: string | null
+    localizacao?: string | null
+    estado?: string
+    ultimaManutencao?: Date | string | null
+    proximaManutencao?: Date | string | null
+    criadoEm?: Date | string
+    manutencoes?: ManutencaoUncheckedCreateNestedManyWithoutEquipamentoInput
+  }
+
+  export type EquipamentoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    manutencoes?: ManutencaoUpdateManyWithoutEquipamentoNestedInput
+  }
+
+  export type EquipamentoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    manutencoes?: ManutencaoUncheckedUpdateManyWithoutEquipamentoNestedInput
+  }
+
+  export type EquipamentoCreateManyInput = {
+    id?: string
+    nome: string
+    tipo: string
+    numeroSerie?: string | null
+    localizacao?: string | null
+    estado?: string
+    ultimaManutencao?: Date | string | null
+    proximaManutencao?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type EquipamentoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipamentoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManutencaoCreateInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+    equipamento: EquipamentoCreateNestedOneWithoutManutencoesInput
+    reportadoPor?: UtilizadorCreateNestedOneWithoutManutencoesReportadasInput
+    tecnico?: UtilizadorCreateNestedOneWithoutManutencoesTecnicoInput
+  }
+
+  export type ManutencaoUncheckedCreateInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    equipamento?: EquipamentoUpdateOneRequiredWithoutManutencoesNestedInput
+    reportadoPor?: UtilizadorUpdateOneWithoutManutencoesReportadasNestedInput
+    tecnico?: UtilizadorUpdateOneWithoutManutencoesTecnicoNestedInput
+  }
+
+  export type ManutencaoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoCreateManyInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -80630,6 +85096,18 @@ export namespace Prisma {
     none?: AgendaMedicoWhereInput
   }
 
+  export type ProblemaClinicoListRelationFilter = {
+    every?: ProblemaClinicoWhereInput
+    some?: ProblemaClinicoWhereInput
+    none?: ProblemaClinicoWhereInput
+  }
+
+  export type ManutencaoListRelationFilter = {
+    every?: ManutencaoWhereInput
+    some?: ManutencaoWhereInput
+    none?: ManutencaoWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -80792,6 +85270,14 @@ export namespace Prisma {
   }
 
   export type AgendaMedicoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProblemaClinicoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ManutencaoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -83627,6 +88113,125 @@ export namespace Prisma {
     criadoEm?: SortOrder
   }
 
+  export type ProblemaClinicoCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ProblemaClinicoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type ProblemaClinicoMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    descricao?: SortOrder
+    tipo?: SortOrder
+    estado?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EquipamentoCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    tipo?: SortOrder
+    numeroSerie?: SortOrder
+    localizacao?: SortOrder
+    estado?: SortOrder
+    ultimaManutencao?: SortOrder
+    proximaManutencao?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EquipamentoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    tipo?: SortOrder
+    numeroSerie?: SortOrder
+    localizacao?: SortOrder
+    estado?: SortOrder
+    ultimaManutencao?: SortOrder
+    proximaManutencao?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EquipamentoMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    tipo?: SortOrder
+    numeroSerie?: SortOrder
+    localizacao?: SortOrder
+    estado?: SortOrder
+    ultimaManutencao?: SortOrder
+    proximaManutencao?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EquipamentoScalarRelationFilter = {
+    is?: EquipamentoWhereInput
+    isNot?: EquipamentoWhereInput
+  }
+
+  export type ManutencaoCountOrderByAggregateInput = {
+    id?: SortOrder
+    equipamentoId?: SortOrder
+    tipo?: SortOrder
+    descricao?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    reportadoPorId?: SortOrder
+    tecnicoId?: SortOrder
+    dataReporte?: SortOrder
+    dataConclusao?: SortOrder
+    observacoes?: SortOrder
+  }
+
+  export type ManutencaoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    equipamentoId?: SortOrder
+    tipo?: SortOrder
+    descricao?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    reportadoPorId?: SortOrder
+    tecnicoId?: SortOrder
+    dataReporte?: SortOrder
+    dataConclusao?: SortOrder
+    observacoes?: SortOrder
+  }
+
+  export type ManutencaoMinOrderByAggregateInput = {
+    id?: SortOrder
+    equipamentoId?: SortOrder
+    tipo?: SortOrder
+    descricao?: SortOrder
+    estado?: SortOrder
+    prioridade?: SortOrder
+    reportadoPorId?: SortOrder
+    tecnicoId?: SortOrder
+    dataReporte?: SortOrder
+    dataConclusao?: SortOrder
+    observacoes?: SortOrder
+  }
+
   export type SubRoleConfigCreateNestedManyWithoutRoleInput = {
     create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
@@ -84091,6 +88696,27 @@ export namespace Prisma {
     connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
   }
 
+  export type ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput> | ProblemaClinicoCreateWithoutRegistadoPorInput[] | ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput | ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: ProblemaClinicoCreateManyRegistadoPorInputEnvelope
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+  }
+
+  export type ManutencaoCreateNestedManyWithoutReportadoPorInput = {
+    create?: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput> | ManutencaoCreateWithoutReportadoPorInput[] | ManutencaoUncheckedCreateWithoutReportadoPorInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutReportadoPorInput | ManutencaoCreateOrConnectWithoutReportadoPorInput[]
+    createMany?: ManutencaoCreateManyReportadoPorInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+  }
+
+  export type ManutencaoCreateNestedManyWithoutTecnicoInput = {
+    create?: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput> | ManutencaoCreateWithoutTecnicoInput[] | ManutencaoUncheckedCreateWithoutTecnicoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutTecnicoInput | ManutencaoCreateOrConnectWithoutTecnicoInput[]
+    createMany?: ManutencaoCreateManyTecnicoInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -84481,6 +89107,27 @@ export namespace Prisma {
     connectOrCreate?: AgendaMedicoCreateOrConnectWithoutMedicoInput | AgendaMedicoCreateOrConnectWithoutMedicoInput[]
     createMany?: AgendaMedicoCreateManyMedicoInputEnvelope
     connect?: AgendaMedicoWhereUniqueInput | AgendaMedicoWhereUniqueInput[]
+  }
+
+  export type ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput> | ProblemaClinicoCreateWithoutRegistadoPorInput[] | ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput | ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: ProblemaClinicoCreateManyRegistadoPorInputEnvelope
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+  }
+
+  export type ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput = {
+    create?: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput> | ManutencaoCreateWithoutReportadoPorInput[] | ManutencaoUncheckedCreateWithoutReportadoPorInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutReportadoPorInput | ManutencaoCreateOrConnectWithoutReportadoPorInput[]
+    createMany?: ManutencaoCreateManyReportadoPorInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+  }
+
+  export type ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput = {
+    create?: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput> | ManutencaoCreateWithoutTecnicoInput[] | ManutencaoUncheckedCreateWithoutTecnicoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutTecnicoInput | ManutencaoCreateOrConnectWithoutTecnicoInput[]
+    createMany?: ManutencaoCreateManyTecnicoInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -85287,6 +89934,48 @@ export namespace Prisma {
     deleteMany?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
   }
 
+  export type ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput> | ProblemaClinicoCreateWithoutRegistadoPorInput[] | ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput | ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: ProblemaClinicoUpsertWithWhereUniqueWithoutRegistadoPorInput | ProblemaClinicoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: ProblemaClinicoCreateManyRegistadoPorInputEnvelope
+    set?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    disconnect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    delete?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    update?: ProblemaClinicoUpdateWithWhereUniqueWithoutRegistadoPorInput | ProblemaClinicoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: ProblemaClinicoUpdateManyWithWhereWithoutRegistadoPorInput | ProblemaClinicoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
+  }
+
+  export type ManutencaoUpdateManyWithoutReportadoPorNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput> | ManutencaoCreateWithoutReportadoPorInput[] | ManutencaoUncheckedCreateWithoutReportadoPorInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutReportadoPorInput | ManutencaoCreateOrConnectWithoutReportadoPorInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutReportadoPorInput | ManutencaoUpsertWithWhereUniqueWithoutReportadoPorInput[]
+    createMany?: ManutencaoCreateManyReportadoPorInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutReportadoPorInput | ManutencaoUpdateWithWhereUniqueWithoutReportadoPorInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutReportadoPorInput | ManutencaoUpdateManyWithWhereWithoutReportadoPorInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
+  export type ManutencaoUpdateManyWithoutTecnicoNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput> | ManutencaoCreateWithoutTecnicoInput[] | ManutencaoUncheckedCreateWithoutTecnicoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutTecnicoInput | ManutencaoCreateOrConnectWithoutTecnicoInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutTecnicoInput | ManutencaoUpsertWithWhereUniqueWithoutTecnicoInput[]
+    createMany?: ManutencaoCreateManyTecnicoInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutTecnicoInput | ManutencaoUpdateWithWhereUniqueWithoutTecnicoInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutTecnicoInput | ManutencaoUpdateManyWithWhereWithoutTecnicoInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -86071,6 +90760,48 @@ export namespace Prisma {
     deleteMany?: AgendaMedicoScalarWhereInput | AgendaMedicoScalarWhereInput[]
   }
 
+  export type ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput> | ProblemaClinicoCreateWithoutRegistadoPorInput[] | ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput | ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: ProblemaClinicoUpsertWithWhereUniqueWithoutRegistadoPorInput | ProblemaClinicoUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: ProblemaClinicoCreateManyRegistadoPorInputEnvelope
+    set?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    disconnect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    delete?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    update?: ProblemaClinicoUpdateWithWhereUniqueWithoutRegistadoPorInput | ProblemaClinicoUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: ProblemaClinicoUpdateManyWithWhereWithoutRegistadoPorInput | ProblemaClinicoUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput> | ManutencaoCreateWithoutReportadoPorInput[] | ManutencaoUncheckedCreateWithoutReportadoPorInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutReportadoPorInput | ManutencaoCreateOrConnectWithoutReportadoPorInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutReportadoPorInput | ManutencaoUpsertWithWhereUniqueWithoutReportadoPorInput[]
+    createMany?: ManutencaoCreateManyReportadoPorInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutReportadoPorInput | ManutencaoUpdateWithWhereUniqueWithoutReportadoPorInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutReportadoPorInput | ManutencaoUpdateManyWithWhereWithoutReportadoPorInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput> | ManutencaoCreateWithoutTecnicoInput[] | ManutencaoUncheckedCreateWithoutTecnicoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutTecnicoInput | ManutencaoCreateOrConnectWithoutTecnicoInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutTecnicoInput | ManutencaoUpsertWithWhereUniqueWithoutTecnicoInput[]
+    createMany?: ManutencaoCreateManyTecnicoInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutTecnicoInput | ManutencaoUpdateWithWhereUniqueWithoutTecnicoInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutTecnicoInput | ManutencaoUpdateManyWithWhereWithoutTecnicoInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
   export type DoenteCreateNestedOneWithoutCamaInput = {
     create?: XOR<DoenteCreateWithoutCamaInput, DoenteUncheckedCreateWithoutCamaInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutCamaInput
@@ -86299,6 +91030,13 @@ export namespace Prisma {
     connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
   }
 
+  export type ProblemaClinicoCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput> | ProblemaClinicoCreateWithoutDoenteInput[] | ProblemaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutDoenteInput | ProblemaClinicoCreateOrConnectWithoutDoenteInput[]
+    createMany?: ProblemaClinicoCreateManyDoenteInputEnvelope
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -86477,6 +91215,13 @@ export namespace Prisma {
     connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutDoenteInput | EpisodioFaturacaoCreateOrConnectWithoutDoenteInput[]
     createMany?: EpisodioFaturacaoCreateManyDoenteInputEnvelope
     connect?: EpisodioFaturacaoWhereUniqueInput | EpisodioFaturacaoWhereUniqueInput[]
+  }
+
+  export type ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput> | ProblemaClinicoCreateWithoutDoenteInput[] | ProblemaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutDoenteInput | ProblemaClinicoCreateOrConnectWithoutDoenteInput[]
+    createMany?: ProblemaClinicoCreateManyDoenteInputEnvelope
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -86863,6 +91608,20 @@ export namespace Prisma {
     deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
   }
 
+  export type ProblemaClinicoUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput> | ProblemaClinicoCreateWithoutDoenteInput[] | ProblemaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutDoenteInput | ProblemaClinicoCreateOrConnectWithoutDoenteInput[]
+    upsert?: ProblemaClinicoUpsertWithWhereUniqueWithoutDoenteInput | ProblemaClinicoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: ProblemaClinicoCreateManyDoenteInputEnvelope
+    set?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    disconnect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    delete?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    update?: ProblemaClinicoUpdateWithWhereUniqueWithoutDoenteInput | ProblemaClinicoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: ProblemaClinicoUpdateManyWithWhereWithoutDoenteInput | ProblemaClinicoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -87217,6 +91976,20 @@ export namespace Prisma {
     update?: EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput | EpisodioFaturacaoUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput | EpisodioFaturacaoUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
+  }
+
+  export type ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput> | ProblemaClinicoCreateWithoutDoenteInput[] | ProblemaClinicoUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: ProblemaClinicoCreateOrConnectWithoutDoenteInput | ProblemaClinicoCreateOrConnectWithoutDoenteInput[]
+    upsert?: ProblemaClinicoUpsertWithWhereUniqueWithoutDoenteInput | ProblemaClinicoUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: ProblemaClinicoCreateManyDoenteInputEnvelope
+    set?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    disconnect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    delete?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    connect?: ProblemaClinicoWhereUniqueInput | ProblemaClinicoWhereUniqueInput[]
+    update?: ProblemaClinicoUpdateWithWhereUniqueWithoutDoenteInput | ProblemaClinicoUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: ProblemaClinicoUpdateManyWithWhereWithoutDoenteInput | ProblemaClinicoUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -89457,6 +94230,122 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutRefreshTokensInput, UtilizadorUpdateWithoutRefreshTokensInput>, UtilizadorUncheckedUpdateWithoutRefreshTokensInput>
   }
 
+  export type DoenteCreateNestedOneWithoutProblemasInput = {
+    create?: XOR<DoenteCreateWithoutProblemasInput, DoenteUncheckedCreateWithoutProblemasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutProblemasInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutProblemasRegistadosInput = {
+    create?: XOR<UtilizadorCreateWithoutProblemasRegistadosInput, UtilizadorUncheckedCreateWithoutProblemasRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutProblemasRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type DoenteUpdateOneRequiredWithoutProblemasNestedInput = {
+    create?: XOR<DoenteCreateWithoutProblemasInput, DoenteUncheckedCreateWithoutProblemasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutProblemasInput
+    upsert?: DoenteUpsertWithoutProblemasInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutProblemasInput, DoenteUpdateWithoutProblemasInput>, DoenteUncheckedUpdateWithoutProblemasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutProblemasRegistadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutProblemasRegistadosInput, UtilizadorUncheckedCreateWithoutProblemasRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutProblemasRegistadosInput
+    upsert?: UtilizadorUpsertWithoutProblemasRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutProblemasRegistadosInput, UtilizadorUpdateWithoutProblemasRegistadosInput>, UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput>
+  }
+
+  export type ManutencaoCreateNestedManyWithoutEquipamentoInput = {
+    create?: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput> | ManutencaoCreateWithoutEquipamentoInput[] | ManutencaoUncheckedCreateWithoutEquipamentoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutEquipamentoInput | ManutencaoCreateOrConnectWithoutEquipamentoInput[]
+    createMany?: ManutencaoCreateManyEquipamentoInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+  }
+
+  export type ManutencaoUncheckedCreateNestedManyWithoutEquipamentoInput = {
+    create?: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput> | ManutencaoCreateWithoutEquipamentoInput[] | ManutencaoUncheckedCreateWithoutEquipamentoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutEquipamentoInput | ManutencaoCreateOrConnectWithoutEquipamentoInput[]
+    createMany?: ManutencaoCreateManyEquipamentoInputEnvelope
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+  }
+
+  export type ManutencaoUpdateManyWithoutEquipamentoNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput> | ManutencaoCreateWithoutEquipamentoInput[] | ManutencaoUncheckedCreateWithoutEquipamentoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutEquipamentoInput | ManutencaoCreateOrConnectWithoutEquipamentoInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutEquipamentoInput | ManutencaoUpsertWithWhereUniqueWithoutEquipamentoInput[]
+    createMany?: ManutencaoCreateManyEquipamentoInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutEquipamentoInput | ManutencaoUpdateWithWhereUniqueWithoutEquipamentoInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutEquipamentoInput | ManutencaoUpdateManyWithWhereWithoutEquipamentoInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutEquipamentoNestedInput = {
+    create?: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput> | ManutencaoCreateWithoutEquipamentoInput[] | ManutencaoUncheckedCreateWithoutEquipamentoInput[]
+    connectOrCreate?: ManutencaoCreateOrConnectWithoutEquipamentoInput | ManutencaoCreateOrConnectWithoutEquipamentoInput[]
+    upsert?: ManutencaoUpsertWithWhereUniqueWithoutEquipamentoInput | ManutencaoUpsertWithWhereUniqueWithoutEquipamentoInput[]
+    createMany?: ManutencaoCreateManyEquipamentoInputEnvelope
+    set?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    disconnect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    delete?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    connect?: ManutencaoWhereUniqueInput | ManutencaoWhereUniqueInput[]
+    update?: ManutencaoUpdateWithWhereUniqueWithoutEquipamentoInput | ManutencaoUpdateWithWhereUniqueWithoutEquipamentoInput[]
+    updateMany?: ManutencaoUpdateManyWithWhereWithoutEquipamentoInput | ManutencaoUpdateManyWithWhereWithoutEquipamentoInput[]
+    deleteMany?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+  }
+
+  export type EquipamentoCreateNestedOneWithoutManutencoesInput = {
+    create?: XOR<EquipamentoCreateWithoutManutencoesInput, EquipamentoUncheckedCreateWithoutManutencoesInput>
+    connectOrCreate?: EquipamentoCreateOrConnectWithoutManutencoesInput
+    connect?: EquipamentoWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutManutencoesReportadasInput = {
+    create?: XOR<UtilizadorCreateWithoutManutencoesReportadasInput, UtilizadorUncheckedCreateWithoutManutencoesReportadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutManutencoesReportadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutManutencoesTecnicoInput = {
+    create?: XOR<UtilizadorCreateWithoutManutencoesTecnicoInput, UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EquipamentoUpdateOneRequiredWithoutManutencoesNestedInput = {
+    create?: XOR<EquipamentoCreateWithoutManutencoesInput, EquipamentoUncheckedCreateWithoutManutencoesInput>
+    connectOrCreate?: EquipamentoCreateOrConnectWithoutManutencoesInput
+    upsert?: EquipamentoUpsertWithoutManutencoesInput
+    connect?: EquipamentoWhereUniqueInput
+    update?: XOR<XOR<EquipamentoUpdateToOneWithWhereWithoutManutencoesInput, EquipamentoUpdateWithoutManutencoesInput>, EquipamentoUncheckedUpdateWithoutManutencoesInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutManutencoesReportadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutManutencoesReportadasInput, UtilizadorUncheckedCreateWithoutManutencoesReportadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutManutencoesReportadasInput
+    upsert?: UtilizadorUpsertWithoutManutencoesReportadasInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutManutencoesReportadasInput, UtilizadorUpdateWithoutManutencoesReportadasInput>, UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutManutencoesTecnicoNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutManutencoesTecnicoInput, UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput
+    upsert?: UtilizadorUpsertWithoutManutencoesTecnicoInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutManutencoesTecnicoInput, UtilizadorUpdateWithoutManutencoesTecnicoInput>, UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -90617,6 +95506,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -90661,6 +95551,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -92275,6 +97166,110 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProblemaClinicoCreateWithoutRegistadoPorInput = {
+    id?: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutProblemasInput
+  }
+
+  export type ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type ProblemaClinicoCreateOrConnectWithoutRegistadoPorInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    create: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type ProblemaClinicoCreateManyRegistadoPorInputEnvelope = {
+    data: ProblemaClinicoCreateManyRegistadoPorInput | ProblemaClinicoCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ManutencaoCreateWithoutReportadoPorInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+    equipamento: EquipamentoCreateNestedOneWithoutManutencoesInput
+    tecnico?: UtilizadorCreateNestedOneWithoutManutencoesTecnicoInput
+  }
+
+  export type ManutencaoUncheckedCreateWithoutReportadoPorInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoCreateOrConnectWithoutReportadoPorInput = {
+    where: ManutencaoWhereUniqueInput
+    create: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput>
+  }
+
+  export type ManutencaoCreateManyReportadoPorInputEnvelope = {
+    data: ManutencaoCreateManyReportadoPorInput | ManutencaoCreateManyReportadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ManutencaoCreateWithoutTecnicoInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+    equipamento: EquipamentoCreateNestedOneWithoutManutencoesInput
+    reportadoPor?: UtilizadorCreateNestedOneWithoutManutencoesReportadasInput
+  }
+
+  export type ManutencaoUncheckedCreateWithoutTecnicoInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoCreateOrConnectWithoutTecnicoInput = {
+    where: ManutencaoWhereUniqueInput
+    create: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput>
+  }
+
+  export type ManutencaoCreateManyTecnicoInputEnvelope = {
+    data: ManutencaoCreateManyTecnicoInput | ManutencaoCreateManyTecnicoInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TurnoUpsertWithWhereUniqueWithoutChefeTurnoInput = {
     where: TurnoWhereUniqueInput
     update: XOR<TurnoUpdateWithoutChefeTurnoInput, TurnoUncheckedUpdateWithoutChefeTurnoInput>
@@ -93777,6 +98772,86 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"AgendaMedico"> | Date | string
   }
 
+  export type ProblemaClinicoUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    update: XOR<ProblemaClinicoUpdateWithoutRegistadoPorInput, ProblemaClinicoUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<ProblemaClinicoCreateWithoutRegistadoPorInput, ProblemaClinicoUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type ProblemaClinicoUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    data: XOR<ProblemaClinicoUpdateWithoutRegistadoPorInput, ProblemaClinicoUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type ProblemaClinicoUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: ProblemaClinicoScalarWhereInput
+    data: XOR<ProblemaClinicoUpdateManyMutationInput, ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type ProblemaClinicoScalarWhereInput = {
+    AND?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
+    OR?: ProblemaClinicoScalarWhereInput[]
+    NOT?: ProblemaClinicoScalarWhereInput | ProblemaClinicoScalarWhereInput[]
+    id?: StringFilter<"ProblemaClinico"> | string
+    doenteId?: StringFilter<"ProblemaClinico"> | string
+    descricao?: StringFilter<"ProblemaClinico"> | string
+    tipo?: StringFilter<"ProblemaClinico"> | string
+    estado?: StringFilter<"ProblemaClinico"> | string
+    dataInicio?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    dataFim?: DateTimeNullableFilter<"ProblemaClinico"> | Date | string | null
+    registadoPorId?: StringFilter<"ProblemaClinico"> | string
+    criadoEm?: DateTimeFilter<"ProblemaClinico"> | Date | string
+  }
+
+  export type ManutencaoUpsertWithWhereUniqueWithoutReportadoPorInput = {
+    where: ManutencaoWhereUniqueInput
+    update: XOR<ManutencaoUpdateWithoutReportadoPorInput, ManutencaoUncheckedUpdateWithoutReportadoPorInput>
+    create: XOR<ManutencaoCreateWithoutReportadoPorInput, ManutencaoUncheckedCreateWithoutReportadoPorInput>
+  }
+
+  export type ManutencaoUpdateWithWhereUniqueWithoutReportadoPorInput = {
+    where: ManutencaoWhereUniqueInput
+    data: XOR<ManutencaoUpdateWithoutReportadoPorInput, ManutencaoUncheckedUpdateWithoutReportadoPorInput>
+  }
+
+  export type ManutencaoUpdateManyWithWhereWithoutReportadoPorInput = {
+    where: ManutencaoScalarWhereInput
+    data: XOR<ManutencaoUpdateManyMutationInput, ManutencaoUncheckedUpdateManyWithoutReportadoPorInput>
+  }
+
+  export type ManutencaoScalarWhereInput = {
+    AND?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+    OR?: ManutencaoScalarWhereInput[]
+    NOT?: ManutencaoScalarWhereInput | ManutencaoScalarWhereInput[]
+    id?: StringFilter<"Manutencao"> | string
+    equipamentoId?: StringFilter<"Manutencao"> | string
+    tipo?: StringFilter<"Manutencao"> | string
+    descricao?: StringFilter<"Manutencao"> | string
+    estado?: StringFilter<"Manutencao"> | string
+    prioridade?: StringFilter<"Manutencao"> | string
+    reportadoPorId?: StringNullableFilter<"Manutencao"> | string | null
+    tecnicoId?: StringNullableFilter<"Manutencao"> | string | null
+    dataReporte?: DateTimeFilter<"Manutencao"> | Date | string
+    dataConclusao?: DateTimeNullableFilter<"Manutencao"> | Date | string | null
+    observacoes?: StringNullableFilter<"Manutencao"> | string | null
+  }
+
+  export type ManutencaoUpsertWithWhereUniqueWithoutTecnicoInput = {
+    where: ManutencaoWhereUniqueInput
+    update: XOR<ManutencaoUpdateWithoutTecnicoInput, ManutencaoUncheckedUpdateWithoutTecnicoInput>
+    create: XOR<ManutencaoCreateWithoutTecnicoInput, ManutencaoUncheckedCreateWithoutTecnicoInput>
+  }
+
+  export type ManutencaoUpdateWithWhereUniqueWithoutTecnicoInput = {
+    where: ManutencaoWhereUniqueInput
+    data: XOR<ManutencaoUpdateWithoutTecnicoInput, ManutencaoUncheckedUpdateWithoutTecnicoInput>
+  }
+
+  export type ManutencaoUpdateManyWithWhereWithoutTecnicoInput = {
+    where: ManutencaoScalarWhereInput
+    data: XOR<ManutencaoUpdateManyMutationInput, ManutencaoUncheckedUpdateManyWithoutTecnicoInput>
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -93819,6 +98894,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -93863,6 +98939,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -93923,6 +99000,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -93967,6 +99045,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -94056,6 +99135,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -94126,6 +99208,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -94987,6 +100072,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProblemaClinicoCreateWithoutDoenteInput = {
+    id?: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    criadoEm?: Date | string
+    registadoPor: UtilizadorCreateNestedOneWithoutProblemasRegistadosInput
+  }
+
+  export type ProblemaClinicoUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type ProblemaClinicoCreateOrConnectWithoutDoenteInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    create: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type ProblemaClinicoCreateManyDoenteInputEnvelope = {
+    data: ProblemaClinicoCreateManyDoenteInput | ProblemaClinicoCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -95091,6 +100208,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -95161,6 +100281,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -95670,6 +100793,22 @@ export namespace Prisma {
     data: XOR<EpisodioFaturacaoUpdateManyMutationInput, EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteInput>
   }
 
+  export type ProblemaClinicoUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    update: XOR<ProblemaClinicoUpdateWithoutDoenteInput, ProblemaClinicoUncheckedUpdateWithoutDoenteInput>
+    create: XOR<ProblemaClinicoCreateWithoutDoenteInput, ProblemaClinicoUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type ProblemaClinicoUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: ProblemaClinicoWhereUniqueInput
+    data: XOR<ProblemaClinicoUpdateWithoutDoenteInput, ProblemaClinicoUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type ProblemaClinicoUpdateManyWithWhereWithoutDoenteInput = {
+    where: ProblemaClinicoScalarWhereInput
+    data: XOR<ProblemaClinicoUpdateManyMutationInput, ProblemaClinicoUncheckedUpdateManyWithoutDoenteInput>
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     numeroFuncionario: string
@@ -95738,6 +100877,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -95808,6 +100950,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -96052,6 +101197,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -96122,6 +101270,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -96262,6 +101413,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -96306,6 +101458,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -96381,6 +101534,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -96451,6 +101607,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -96542,6 +101701,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -96586,6 +101746,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -96667,6 +101828,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -96737,6 +101901,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -96875,6 +102042,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -96945,6 +102115,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -97068,6 +102241,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -97138,6 +102314,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -97244,6 +102423,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -97288,6 +102468,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -97422,6 +102603,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -97466,6 +102648,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutNotasClinciasInput = {
@@ -97510,6 +102693,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
@@ -97554,6 +102738,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasClinciasInput = {
@@ -97629,6 +102814,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -97699,6 +102887,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -97759,6 +102950,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
@@ -97803,6 +102995,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasClinciasAutorInput = {
@@ -97884,6 +103077,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -97954,6 +103150,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -97998,6 +103197,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
@@ -98042,6 +103242,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEscalasClinicasInput = {
@@ -98117,6 +103318,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -98187,6 +103391,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -98247,6 +103454,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
@@ -98291,6 +103499,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEscalasClinicasRegistadasInput = {
@@ -98372,6 +103581,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -98442,6 +103654,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -98517,6 +103732,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -98561,6 +103777,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -98636,6 +103853,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -98706,6 +103926,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -98803,6 +104026,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -98847,6 +104071,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -98928,6 +104153,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -98998,6 +104226,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -99042,6 +104273,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -99086,6 +104318,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -99161,6 +104394,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -99231,6 +104467,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -99306,6 +104545,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -99376,6 +104618,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -99467,6 +104712,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -99511,6 +104757,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -99592,6 +104839,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -99662,6 +104912,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -99743,6 +104996,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -99813,6 +105069,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -99894,6 +105153,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -99938,6 +105198,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -100013,6 +105274,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -100083,6 +105347,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -100158,6 +105425,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -100228,6 +105498,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -100314,6 +105587,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -100358,6 +105632,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -100439,6 +105714,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -100509,6 +105787,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -100590,6 +105871,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -100660,6 +105944,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -100759,6 +106046,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -100803,6 +106091,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -100878,6 +106167,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -100948,6 +106240,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -101053,6 +106348,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -101097,6 +106393,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -101178,6 +106475,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -101248,6 +106548,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -101318,6 +106621,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -101388,6 +106694,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -101502,6 +106811,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -101572,6 +106884,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -101859,6 +107174,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -101929,6 +107247,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -102044,6 +107365,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -102114,6 +107438,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -102184,6 +107511,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -102254,6 +107584,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -102329,6 +107662,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -102399,6 +107735,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -102497,6 +107836,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -102567,6 +107909,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -102653,6 +107998,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -102723,6 +108071,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -102804,6 +108155,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -102874,6 +108228,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -102984,6 +108341,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -103054,6 +108414,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -103121,6 +108484,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -103165,6 +108529,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -103240,6 +108605,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -103310,6 +108678,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -103385,6 +108756,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -103455,6 +108829,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -103544,6 +108921,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -103588,6 +108966,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -103669,6 +109048,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -103739,6 +109121,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -103820,6 +109205,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -103890,6 +109278,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -103934,6 +109325,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
@@ -103978,6 +109370,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
@@ -104053,6 +109446,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -104123,6 +109519,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -104183,6 +109582,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
@@ -104227,6 +109627,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
@@ -104308,6 +109709,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -104378,6 +109782,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -104448,6 +109855,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -104518,6 +109928,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -104604,6 +110017,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -104674,6 +110090,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -104718,6 +110137,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
@@ -104762,6 +110182,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlergiasInput = {
@@ -104822,6 +110243,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
@@ -104866,6 +110288,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -104910,6 +110333,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
@@ -104954,6 +110378,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
@@ -105014,6 +110439,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
@@ -105058,6 +110484,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAlertasClinicosInput = {
@@ -105102,6 +110529,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
@@ -105146,6 +110574,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
@@ -105206,6 +110635,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
@@ -105250,6 +110680,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
@@ -105294,6 +110725,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -105338,6 +110770,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -105413,6 +110846,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -105483,6 +110919,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -105543,6 +110982,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -105587,6 +111027,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
@@ -105668,6 +111109,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -105738,6 +111182,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -105782,6 +111229,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
@@ -105826,6 +111274,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
@@ -105901,6 +111350,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -105971,6 +111423,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -106031,6 +111486,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
@@ -106075,6 +111531,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSumariosAltaInput = {
@@ -106156,6 +111613,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -106226,6 +111686,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -106296,6 +111759,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -106366,6 +111832,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -106452,6 +111921,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -106522,6 +111994,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -106566,6 +112041,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutExamesInput = {
@@ -106610,6 +112086,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutExamesInput = {
@@ -106685,6 +112162,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -106755,6 +112235,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -106839,6 +112322,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutExamesInput = {
@@ -106883,6 +112367,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutExamesSolicitadosInput = {
@@ -106964,6 +112449,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -107034,6 +112522,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -107177,6 +112668,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
@@ -107221,6 +112713,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosUrgenciaInput = {
@@ -107296,6 +112789,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -107366,6 +112862,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -107441,6 +112940,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -107511,6 +113013,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -107571,6 +113076,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
@@ -107615,6 +113121,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosTriadosInput = {
@@ -107696,6 +113203,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -107766,6 +113276,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -107847,6 +113360,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -107917,6 +113433,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -107961,6 +113480,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
@@ -108005,6 +113525,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCirurgiasInput = {
@@ -108080,6 +113601,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -108150,6 +113674,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -108225,6 +113752,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -108295,6 +113825,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -108386,6 +113919,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
@@ -108430,6 +113964,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoCircurgiaoInput = {
@@ -108511,6 +114046,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -108581,6 +114119,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -108662,6 +114203,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -108732,6 +114276,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -108878,6 +114425,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -108948,6 +114498,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -109023,6 +114576,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -109093,6 +114649,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -109168,6 +114727,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -109238,6 +114800,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -109369,6 +114934,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -109439,6 +115007,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -109520,6 +115091,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -109590,6 +115164,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -109671,6 +115248,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -109741,6 +115321,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -109785,6 +115368,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsultasInput = {
@@ -109829,6 +115413,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsultasInput = {
@@ -109904,6 +115489,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -109974,6 +115562,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -110034,6 +115625,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
@@ -110078,6 +115670,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsultasInput = {
@@ -110159,6 +115752,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -110229,6 +115825,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutAgendasInput = {
@@ -110299,6 +115898,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAgendasInput = {
@@ -110369,6 +115971,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAgendasInput = {
@@ -110455,6 +116060,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAgendasInput = {
@@ -110525,6 +116133,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -110595,6 +116206,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -110665,6 +116279,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -110740,6 +116357,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -110810,6 +116430,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -110896,6 +116519,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -110966,6 +116592,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -111047,6 +116676,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -111117,6 +116749,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type PedidoFarmaciaCreateWithoutStockItemInput = {
@@ -111264,6 +116899,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -111334,6 +116972,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -111409,6 +117050,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -111479,6 +117123,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -111600,6 +117247,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -111670,6 +117320,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -111751,6 +117404,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -111821,6 +117477,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -111865,6 +117524,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -111909,6 +117569,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -111984,6 +117645,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -112054,6 +117718,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -112146,6 +117813,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -112190,6 +117858,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPlanosReabilitacaoInput = {
@@ -112271,6 +117940,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -112341,6 +118013,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -112428,6 +118103,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -112472,6 +118148,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -112547,6 +118224,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -112617,6 +118297,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -112710,6 +118393,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -112754,6 +118438,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesFisioterapiaInput = {
@@ -112835,6 +118520,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -112905,6 +118593,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -112949,6 +118640,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
@@ -112993,6 +118685,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosInternosInput = {
@@ -113068,6 +118761,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -113138,6 +118834,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -113213,6 +118912,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -113283,6 +118985,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -113343,6 +119048,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
@@ -113387,6 +119093,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosSolicitadosInput = {
@@ -113468,6 +119175,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -113538,6 +119248,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -113619,6 +119332,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -113689,6 +119405,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -113759,6 +119478,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -113829,6 +119551,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -113915,6 +119640,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -113985,6 +119713,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -114055,6 +119786,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -114125,6 +119859,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -114200,6 +119937,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -114270,6 +120010,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -114356,6 +120099,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -114426,6 +120172,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -114507,6 +120256,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -114577,6 +120329,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -114621,6 +120376,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
@@ -114665,6 +120421,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutInterconsultasInput = {
@@ -114740,6 +120497,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -114810,6 +120570,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -114885,6 +120648,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -114955,6 +120721,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -115015,6 +120784,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
@@ -115059,6 +120829,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRequisitadasInput = {
@@ -115140,6 +120911,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -115210,6 +120984,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -115291,6 +121068,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -115361,6 +121141,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -115405,6 +121188,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
@@ -115449,6 +121233,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDispositivosInvasivosInput = {
@@ -115524,6 +121309,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -115594,6 +121382,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -115654,6 +121445,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
@@ -115698,6 +121490,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutDispositivosInseridosInput = {
@@ -115779,6 +121572,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -115849,6 +121645,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutIncidentesCriadosInput = {
@@ -115919,6 +121718,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
@@ -115989,6 +121791,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
@@ -116064,6 +121869,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
@@ -116134,6 +121942,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
@@ -116220,6 +122031,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
@@ -116290,6 +122104,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
@@ -116371,6 +122188,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
@@ -116441,6 +122261,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutPedidosTICriadosInput = {
@@ -116511,6 +122334,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
@@ -116581,6 +122407,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
@@ -116656,6 +122485,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
@@ -116726,6 +122558,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
@@ -116812,6 +122647,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
@@ -116882,6 +122720,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
@@ -116963,6 +122804,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
@@ -117033,6 +122877,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutFicheiroPessoalInput = {
@@ -117077,6 +122924,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
@@ -117121,6 +122969,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFicheiroPessoalInput = {
@@ -117196,6 +123045,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -117266,6 +123118,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput = {
@@ -117326,6 +123181,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
@@ -117370,6 +123226,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput = {
@@ -117451,6 +123308,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -117521,6 +123381,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
@@ -117565,6 +123428,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
@@ -117609,6 +123473,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput = {
@@ -117684,6 +123549,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -117754,6 +123622,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput = {
@@ -117872,6 +123743,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
@@ -117916,6 +123788,7 @@ export namespace Prisma {
     interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosFaturacaoCriadosInput = {
@@ -117997,6 +123870,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -118067,6 +123943,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput = {
@@ -118288,6 +124167,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput = {
@@ -118358,6 +124240,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput = {
@@ -118483,6 +124368,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput = {
@@ -118553,6 +124441,9 @@ export namespace Prisma {
     ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorCreateWithoutRefreshTokensInput = {
@@ -118623,6 +124514,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
@@ -118693,6 +124587,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
     pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
     agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
@@ -118779,6 +124676,9 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
@@ -118849,6 +124749,1245 @@ export namespace Prisma {
     episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
     pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type DoenteCreateWithoutProblemasInput = {
+    id?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutProblemasInput = {
+    id?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutProblemasInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutProblemasInput, DoenteUncheckedCreateWithoutProblemasInput>
+  }
+
+  export type UtilizadorCreateWithoutProblemasRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutProblemasRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutProblemasRegistadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutProblemasRegistadosInput, UtilizadorUncheckedCreateWithoutProblemasRegistadosInput>
+  }
+
+  export type DoenteUpsertWithoutProblemasInput = {
+    update: XOR<DoenteUpdateWithoutProblemasInput, DoenteUncheckedUpdateWithoutProblemasInput>
+    create: XOR<DoenteCreateWithoutProblemasInput, DoenteUncheckedCreateWithoutProblemasInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutProblemasInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutProblemasInput, DoenteUncheckedUpdateWithoutProblemasInput>
+  }
+
+  export type DoenteUpdateWithoutProblemasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutProblemasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutProblemasRegistadosInput = {
+    update: XOR<UtilizadorUpdateWithoutProblemasRegistadosInput, UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput>
+    create: XOR<UtilizadorCreateWithoutProblemasRegistadosInput, UtilizadorUncheckedCreateWithoutProblemasRegistadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutProblemasRegistadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutProblemasRegistadosInput, UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutProblemasRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type ManutencaoCreateWithoutEquipamentoInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+    reportadoPor?: UtilizadorCreateNestedOneWithoutManutencoesReportadasInput
+    tecnico?: UtilizadorCreateNestedOneWithoutManutencoesTecnicoInput
+  }
+
+  export type ManutencaoUncheckedCreateWithoutEquipamentoInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoCreateOrConnectWithoutEquipamentoInput = {
+    where: ManutencaoWhereUniqueInput
+    create: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput>
+  }
+
+  export type ManutencaoCreateManyEquipamentoInputEnvelope = {
+    data: ManutencaoCreateManyEquipamentoInput | ManutencaoCreateManyEquipamentoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ManutencaoUpsertWithWhereUniqueWithoutEquipamentoInput = {
+    where: ManutencaoWhereUniqueInput
+    update: XOR<ManutencaoUpdateWithoutEquipamentoInput, ManutencaoUncheckedUpdateWithoutEquipamentoInput>
+    create: XOR<ManutencaoCreateWithoutEquipamentoInput, ManutencaoUncheckedCreateWithoutEquipamentoInput>
+  }
+
+  export type ManutencaoUpdateWithWhereUniqueWithoutEquipamentoInput = {
+    where: ManutencaoWhereUniqueInput
+    data: XOR<ManutencaoUpdateWithoutEquipamentoInput, ManutencaoUncheckedUpdateWithoutEquipamentoInput>
+  }
+
+  export type ManutencaoUpdateManyWithWhereWithoutEquipamentoInput = {
+    where: ManutencaoScalarWhereInput
+    data: XOR<ManutencaoUpdateManyMutationInput, ManutencaoUncheckedUpdateManyWithoutEquipamentoInput>
+  }
+
+  export type EquipamentoCreateWithoutManutencoesInput = {
+    id?: string
+    nome: string
+    tipo: string
+    numeroSerie?: string | null
+    localizacao?: string | null
+    estado?: string
+    ultimaManutencao?: Date | string | null
+    proximaManutencao?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type EquipamentoUncheckedCreateWithoutManutencoesInput = {
+    id?: string
+    nome: string
+    tipo: string
+    numeroSerie?: string | null
+    localizacao?: string | null
+    estado?: string
+    ultimaManutencao?: Date | string | null
+    proximaManutencao?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type EquipamentoCreateOrConnectWithoutManutencoesInput = {
+    where: EquipamentoWhereUniqueInput
+    create: XOR<EquipamentoCreateWithoutManutencoesInput, EquipamentoUncheckedCreateWithoutManutencoesInput>
+  }
+
+  export type UtilizadorCreateWithoutManutencoesReportadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutManutencoesReportadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutManutencoesReportadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutManutencoesReportadasInput, UtilizadorUncheckedCreateWithoutManutencoesReportadasInput>
+  }
+
+  export type UtilizadorCreateWithoutManutencoesTecnicoInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutManutencoesTecnicoInput, UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput>
+  }
+
+  export type EquipamentoUpsertWithoutManutencoesInput = {
+    update: XOR<EquipamentoUpdateWithoutManutencoesInput, EquipamentoUncheckedUpdateWithoutManutencoesInput>
+    create: XOR<EquipamentoCreateWithoutManutencoesInput, EquipamentoUncheckedCreateWithoutManutencoesInput>
+    where?: EquipamentoWhereInput
+  }
+
+  export type EquipamentoUpdateToOneWithWhereWithoutManutencoesInput = {
+    where?: EquipamentoWhereInput
+    data: XOR<EquipamentoUpdateWithoutManutencoesInput, EquipamentoUncheckedUpdateWithoutManutencoesInput>
+  }
+
+  export type EquipamentoUpdateWithoutManutencoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipamentoUncheckedUpdateWithoutManutencoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    numeroSerie?: NullableStringFieldUpdateOperationsInput | string | null
+    localizacao?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    ultimaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proximaManutencao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UtilizadorUpsertWithoutManutencoesReportadasInput = {
+    update: XOR<UtilizadorUpdateWithoutManutencoesReportadasInput, UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput>
+    create: XOR<UtilizadorCreateWithoutManutencoesReportadasInput, UtilizadorUncheckedCreateWithoutManutencoesReportadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutManutencoesReportadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutManutencoesReportadasInput, UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutManutencoesReportadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutManutencoesTecnicoInput = {
+    update: XOR<UtilizadorUpdateWithoutManutencoesTecnicoInput, UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput>
+    create: XOR<UtilizadorCreateWithoutManutencoesTecnicoInput, UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutManutencoesTecnicoInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutManutencoesTecnicoInput, UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput>
+  }
+
+  export type UtilizadorUpdateWithoutManutencoesTecnicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -119532,6 +126671,43 @@ export namespace Prisma {
     criadoEm?: Date | string
   }
 
+  export type ProblemaClinicoCreateManyRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    criadoEm?: Date | string
+  }
+
+  export type ManutencaoCreateManyReportadoPorInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoCreateManyTecnicoInput = {
+    id?: string
+    equipamentoId: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
   export type TurnoUpdateWithoutChefeTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
@@ -119822,6 +126998,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -119866,6 +127043,7 @@ export namespace Prisma {
     dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
     ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
     episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -121561,6 +128739,117 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProblemaClinicoUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutProblemasNestedInput
+  }
+
+  export type ProblemaClinicoUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManutencaoUpdateWithoutReportadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    equipamento?: EquipamentoUpdateOneRequiredWithoutManutencoesNestedInput
+    tecnico?: UtilizadorUpdateOneWithoutManutencoesTecnicoNestedInput
+  }
+
+  export type ManutencaoUncheckedUpdateWithoutReportadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutReportadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoUpdateWithoutTecnicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    equipamento?: EquipamentoUpdateOneRequiredWithoutManutencoesNestedInput
+    reportadoPor?: UtilizadorUpdateOneWithoutManutencoesReportadasNestedInput
+  }
+
+  export type ManutencaoUncheckedUpdateWithoutTecnicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutTecnicoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    equipamentoId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type AtribuicaoDoenteCreateManyDoenteInput = {
     id?: string
     enfermeiroId: string
@@ -121827,6 +129116,17 @@ export namespace Prisma {
     tipoCobertura?: string | null
     notas?: string | null
     criadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type ProblemaClinicoCreateManyDoenteInput = {
+    id?: string
+    descricao: string
+    tipo: string
+    estado?: string
+    dataInicio?: Date | string | null
+    dataFim?: Date | string | null
+    registadoPorId: string
     criadoEm?: Date | string
   }
 
@@ -122649,6 +129949,39 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProblemaClinicoUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutProblemasRegistadosNestedInput
+  }
+
+  export type ProblemaClinicoUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProblemaClinicoUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    dataInicio?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyTurnoInput = {
     id?: string
     doenteId: string
@@ -123181,6 +130514,58 @@ export namespace Prisma {
     referencia?: NullableStringFieldUpdateOperationsInput | string | null
     registadoPorId?: StringFieldUpdateOperationsInput | string
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManutencaoCreateManyEquipamentoInput = {
+    id?: string
+    tipo: string
+    descricao: string
+    estado?: string
+    prioridade?: string
+    reportadoPorId?: string | null
+    tecnicoId?: string | null
+    dataReporte?: Date | string
+    dataConclusao?: Date | string | null
+    observacoes?: string | null
+  }
+
+  export type ManutencaoUpdateWithoutEquipamentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    reportadoPor?: UtilizadorUpdateOneWithoutManutencoesReportadasNestedInput
+    tecnico?: UtilizadorUpdateOneWithoutManutencoesTecnicoNestedInput
+  }
+
+  export type ManutencaoUncheckedUpdateWithoutEquipamentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ManutencaoUncheckedUpdateManyWithoutEquipamentoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    prioridade?: StringFieldUpdateOperationsInput | string
+    reportadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    tecnicoId?: NullableStringFieldUpdateOperationsInput | string | null
+    dataReporte?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataConclusao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

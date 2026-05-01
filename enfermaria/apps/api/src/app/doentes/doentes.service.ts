@@ -506,14 +506,50 @@ export class DoenteService {
     return `${ano}-${String(proximoNum).padStart(8, '0')}`;
   }
 
+  async listarProblemas(doenteId: string) {
+    return this.prisma.problemaClinico.findMany({
+      where: { doenteId },
+      include: { registadoPor: { select: { nome: true, role: true } } },
+      orderBy: [{ estado: 'asc' }, { criadoEm: 'desc' }],
+    });
+  }
+
+  async criarProblema(doenteId: string, dto: { descricao: string; tipo?: string; estado?: string; dataInicio?: string }, registadoPorId: string) {
+    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
+    if (!doente) throw new NotFoundException('Doente não encontrado');
+    return this.prisma.problemaClinico.create({
+      data: {
+        doenteId,
+        descricao: dto.descricao,
+        tipo: dto.tipo ?? 'comorbilidade',
+        estado: dto.estado ?? 'ativo',
+        dataInicio: dto.dataInicio ? new Date(dto.dataInicio) : null,
+        registadoPorId,
+      },
+      include: { registadoPor: { select: { nome: true, role: true } } },
+    });
+  }
+
+  async atualizarProblema(id: string, dto: { estado?: string; descricao?: string; dataFim?: string }) {
+    return this.prisma.problemaClinico.update({
+      where: { id },
+      data: {
+        ...(dto.estado && { estado: dto.estado }),
+        ...(dto.descricao && { descricao: dto.descricao }),
+        ...(dto.dataFim ? { dataFim: new Date(dto.dataFim) } : {}),
+      },
+      include: { registadoPor: { select: { nome: true, role: true } } },
+    });
+  }
+
   async registroRapido(
     dto: {
       nome: string;
-      tipoVisita?: string; // 'consulta' | 'exame' | 'urgencia' | 'farmacia' | 'internamento' | 'outro'
-      dataNascimento?: string;
-      nif?: string;
-      numeroSNS?: string;
-      telefone?: string;
+      tipoVisita?: string;
+      dataNascimento: string;
+      nif: string;
+      numeroSNS: string;
+      telefone: string;
       email?: string;
       tipoCobertura?: string;
       morada?: string;
@@ -524,6 +560,20 @@ export class DoenteService {
     },
     criadoPorId: string,
   ) {
+    if (!dto.nome?.trim()) throw new BadRequestException('Nome é obrigatório');
+    if (!dto.dataNascimento) throw new BadRequestException('Data de nascimento é obrigatória');
+    if (!dto.nif || !/^\d{9}$/.test(dto.nif)) throw new BadRequestException('NIF inválido — deve ter 9 dígitos');
+    if (!dto.telefone || !/^[239]\d{8}$/.test(dto.telefone.replace(/\s/g, '')))
+      throw new BadRequestException('Telefone inválido — 9 dígitos, começa com 2, 3 ou 9');
+    if (!dto.numeroSNS || !/^\d{9}$/.test(dto.numeroSNS.replace(/\s/g, '')))
+      throw new BadRequestException('Número SNS inválido — deve ter 9 dígitos');
+    if (dto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
+      throw new BadRequestException('Email inválido');
+    if (dto.tipoCobertura === 'seguro') {
+      if (!dto.entidadeSeguradora?.trim()) throw new BadRequestException('Entidade seguradora obrigatória para seguro');
+      if (!dto.numeroApolice?.trim()) throw new BadRequestException('Número de apólice obrigatório para seguro');
+    }
+
     return this.prisma.$transaction(async (tx) => {
       const numeroProcesso = await this.gerarNumeroProcesso(tx);
       // Internamento → pendente_cama (aguarda cama clínica); tudo o resto → ambulatorio

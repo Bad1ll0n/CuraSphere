@@ -126,6 +126,9 @@ model Utilizador {
   episodiosFaturacaoCriados    EpisodioFaturacao[]
   pagamentosRegistados         Pagamento[]
   agendas                      AgendaMedico[]             @relation("AgendaMedico")
+  problemasRegistados          ProblemaClinico[]          @relation("ProblemaRegistado")
+  manutencoesReportadas        Manutencao[]               @relation("ManutencaoReportada")
+  manutencoesTecnico           Manutencao[]               @relation("ManutencaoTecnico")
 
   @@map("utilizadores")
 }
@@ -212,6 +215,7 @@ model Doente {
   // Dados administrativos (acesso restrito a role 'administrativo')
   ficheiroPessoal       FicheiroPessoalDoente?
   episodiosFaturacao    EpisodioFaturacao[]
+  problemas             ProblemaClinico[]
 
   @@index([ativo])
   @@index([estado])
@@ -1321,4 +1325,62 @@ model RefreshToken {
   @@index([utilizadorId])
   @@index([token])
   @@map("refresh_tokens")
+}
+
+// ─── Problemas Clínicos ──────────────────────────────────────────────────────
+
+model ProblemaClinico {
+  id             String     @id @default(uuid())
+  doenteId       String
+  doente         Doente     @relation(fields: [doenteId], references: [id])
+  descricao      String
+  tipo           String // 'principal' | 'comorbilidade' | 'cirurgico' | 'cronico' | 'agudo'
+  estado         String     @default("ativo") // 'ativo' | 'resolvido' | 'cronico'
+  dataInicio     DateTime?
+  dataFim        DateTime?
+  registadoPorId String
+  registadoPor   Utilizador @relation("ProblemaRegistado", fields: [registadoPorId], references: [id])
+  criadoEm       DateTime   @default(now())
+
+  @@index([doenteId])
+  @@map("problemas_clinicos")
+}
+
+// ─── Equipamentos e Manutenção ───────────────────────────────────────────────
+
+model Equipamento {
+  id                String       @id @default(uuid())
+  nome              String
+  tipo              String // 'cama_eletrica'|'ventilador'|'monitor'|'cadeira_rodas'|'bomba_perfusao'|'desfibrilhador'|'outro'
+  numeroSerie       String?
+  localizacao       String?
+  estado            String       @default("operacional") // 'operacional'|'em_manutencao'|'avariado'|'abatido'
+  ultimaManutencao  DateTime?
+  proximaManutencao DateTime?
+  criadoEm          DateTime     @default(now())
+  manutencoes       Manutencao[]
+
+  @@index([estado])
+  @@map("equipamentos")
+}
+
+model Manutencao {
+  id             String      @id @default(uuid())
+  equipamentoId  String
+  equipamento    Equipamento @relation(fields: [equipamentoId], references: [id])
+  tipo           String // 'preventiva' | 'corretiva'
+  descricao      String
+  estado         String      @default("pendente") // 'pendente'|'em_curso'|'concluida'|'cancelada'
+  prioridade     String      @default("normal") // 'urgente'|'alta'|'normal'|'baixa'
+  reportadoPorId String?
+  reportadoPor   Utilizador? @relation("ManutencaoReportada", fields: [reportadoPorId], references: [id])
+  tecnicoId      String?
+  tecnico        Utilizador? @relation("ManutencaoTecnico", fields: [tecnicoId], references: [id])
+  dataReporte    DateTime    @default(now())
+  dataConclusao  DateTime?
+  observacoes    String?
+
+  @@index([equipamentoId])
+  @@index([estado])
+  @@map("manutencoes")
 }

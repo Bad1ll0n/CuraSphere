@@ -5,16 +5,28 @@ import { useState } from 'react';
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
 
 const SERVICOS = [
-  { tipo: 'admissao', letra: 'A', label: 'Admissão', icon: '🏥', cor: '#3b82f6' },
-  { tipo: 'consulta', letra: 'C', label: 'Consulta', icon: '👨‍⚕️', cor: '#8b5cf6' },
-  { tipo: 'faturacao', letra: 'F', label: 'Faturação', icon: '💳', cor: '#f59e0b' },
-  { tipo: 'farmacia', letra: 'R', label: 'Farmácia', icon: '💊', cor: '#10b981' },
-  { tipo: 'exames', letra: 'E', label: 'Exames', icon: '🔬', cor: '#06b6d4' },
-  { tipo: 'urgencia', letra: 'U', label: 'Urgência', icon: '🚨', cor: '#ef4444' },
-  { tipo: 'geral', letra: 'G', label: 'Informações', icon: 'ℹ️', cor: '#6b7280' },
+  { tipo: 'admissao', letra: 'A', label: 'Admissão', cor: '#3b82f6' },
+  { tipo: 'consulta', letra: 'C', label: 'Consulta', cor: '#8b5cf6' },
+  { tipo: 'faturacao', letra: 'F', label: 'Faturação', cor: '#f59e0b' },
+  { tipo: 'farmacia', letra: 'R', label: 'Farmácia', cor: '#10b981' },
+  { tipo: 'exames', letra: 'E', label: 'Exames', cor: '#06b6d4' },
+  { tipo: 'geral', letra: 'G', label: 'Informações', cor: '#6b7280' },
 ];
 
-type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes';
+type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes' | 'nova_medico' | 'nova_data' | 'nova_slot' | 'nova_confirmar' | 'nova_sucesso';
+
+const SUBROLE_LABEL: Record<string, string> = {
+  clinico_geral: 'Clínica Geral',
+  cardiologista: 'Cardiologia',
+  cirurgiao_geral: 'Cirurgia Geral',
+  ortopedista: 'Ortopedia',
+  pediatra: 'Pediatria',
+  neurologista: 'Neurologia',
+  pneumologista: 'Pneumologia',
+  dermatologista: 'Dermatologia',
+  triador: 'Triagem',
+  generalista: 'Geral',
+};
 
 export default function QuiosquePage() {
   const [estado, setEstado] = useState<Estado>('selecionar');
@@ -32,6 +44,19 @@ export default function QuiosquePage() {
   const [pacienteNif, setPacienteNif] = useState<{ id: string; nome: string; dataNascimento?: string } | null>(null);
   const [marcacoesHoje, setMarcacoesHoje] = useState<Array<{ id: string; dataHora: string; checkinEm?: string; medico: { nome: string; especialidade?: string } }>>([]);
   const [buscandoMarcacoesHoje, setBuscandoMarcacoesHoje] = useState(false);
+
+  // Nova marcação (agendamento self-service)
+  type Medico = { id: string; nome: string; subRole: string };
+  type Slot = { dataHora: string; disponivel: boolean };
+  const [medicos, setMedicos] = useState<Medico[]>([]);
+  const [medicoSelecionado, setMedicoSelecionado] = useState<Medico | null>(null);
+  const [dataSelecionada, setDataSelecionada] = useState('');
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [slotSelecionado, setSlotSelecionado] = useState<Slot | null>(null);
+  const [carregandoMedicos, setCarregandoMedicos] = useState(false);
+  const [carregandoSlots, setCarregandoSlots] = useState(false);
+  const [novaConsulta, setNovaConsulta] = useState<{ codigo: string; dataHora: string; medico: { nome: string } } | null>(null);
+  const [erroMarcacao, setErroMarcacao] = useState('');
 
   // Marcação
   const [codigoInput, setCodigoInput] = useState('');
@@ -81,6 +106,76 @@ export default function QuiosquePage() {
     setNifErro('');
     setPacienteNif(null);
     setMarcacoesHoje([]);
+    setMedicos([]);
+    setMedicoSelecionado(null);
+    setDataSelecionada('');
+    setSlots([]);
+    setSlotSelecionado(null);
+    setNovaConsulta(null);
+    setErroMarcacao('');
+  }
+
+  async function iniciarMarcacao() {
+    setCarregandoMedicos(true);
+    setErroMarcacao('');
+    try {
+      const res = await fetch(`${API}/quiosque/medicos`);
+      const data = res.ok ? await res.json() : [];
+      setMedicos(data);
+      setEstado('nova_medico');
+    } finally {
+      setCarregandoMedicos(false);
+    }
+  }
+
+  function selecionarMedico(m: Medico) {
+    setMedicoSelecionado(m);
+    setDataSelecionada('');
+    setSlots([]);
+    setSlotSelecionado(null);
+    setEstado('nova_data');
+  }
+
+  async function selecionarData(data: string) {
+    setDataSelecionada(data);
+    setCarregandoSlots(true);
+    setSlots([]);
+    setSlotSelecionado(null);
+    try {
+      const res = await fetch(`${API}/quiosque/medicos/${medicoSelecionado!.id}/slots?data=${data}`);
+      if (!res.ok) { setSlots([]); return; }
+      setSlots(await res.json());
+      setEstado('nova_slot');
+    } finally {
+      setCarregandoSlots(false);
+    }
+  }
+
+  async function confirmarMarcacao() {
+    if (!pacienteNif || !medicoSelecionado || !slotSelecionado) return;
+    setEmissao(true);
+    setErroMarcacao('');
+    try {
+      const res = await fetch(`${API}/quiosque/marcacao-nova`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doenteId: pacienteNif.id,
+          medicoId: medicoSelecionado.id,
+          dataHora: slotSelecionado.dataHora,
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setErroMarcacao(err.message ?? 'Erro ao criar marcação');
+        return;
+      }
+      const consulta = await res.json();
+      setNovaConsulta({ codigo: consulta.codigo, dataHora: consulta.dataHora, medico: { nome: medicoSelecionado.nome } });
+      setEstado('nova_sucesso');
+    } finally {
+      setEmissao(false);
+    }
   }
 
   async function buscarPacientePorNif() {
@@ -191,9 +286,8 @@ export default function QuiosquePage() {
     >
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <div style={{ fontSize: 48, marginBottom: 8 }}>🏥</div>
-        <h1 style={{ color: '#fff', fontSize: 32, fontWeight: 700, margin: 0 }}>CuraSphere</h1>
-        <p style={{ color: '#94a3b8', fontSize: 18, marginTop: 6 }}>Sistema de Gestão de Filas</p>
+        <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 700, margin: 0, letterSpacing: -1 }}>CuraSphere</h1>
+        <p style={{ color: '#94a3b8', fontSize: 18, marginTop: 8 }}>Sistema de Gestão de Filas</p>
       </div>
 
       {/* ESTADO: Selecionar serviço */}
@@ -237,7 +331,7 @@ export default function QuiosquePage() {
                   (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
                 }}
               >
-                <span style={{ fontSize: 48 }}>{s.icon}</span>
+                <span style={{ fontSize: 48, fontWeight: 900, color: s.cor, fontFamily: 'monospace' }}>{s.letra}</span>
                 <span style={{ fontSize: 18, fontWeight: 700 }}>{s.label}</span>
                 <span
                   style={{
@@ -272,7 +366,7 @@ export default function QuiosquePage() {
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
             >
-              🪪 Identificar pelo NIF
+              Identificar pelo NIF
             </button>
             <button
               onClick={() => setEstado('marcacao')}
@@ -289,7 +383,7 @@ export default function QuiosquePage() {
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLButtonElement).style.color = '#94a3b8'; }}
             >
-              📋 Já tenho marcação
+              Já tenho marcação
             </button>
           </div>
         </div>
@@ -298,7 +392,6 @@ export default function QuiosquePage() {
       {/* ESTADO: Inserir NIF */}
       {estado === 'nif' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>🪪</div>
           <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Identificar pelo NIF</h2>
           <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 32 }}>
             Introduza o seu Número de Identificação Fiscal para ser identificado automaticamente.
@@ -334,17 +427,20 @@ export default function QuiosquePage() {
       {/* ESTADO: Paciente identificado por NIF */}
       {estado === 'nif_resultado' && pacienteNif && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>👋</div>
           <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 6 }}>Olá,</h2>
           <h2 style={{ color: '#fff', fontSize: 28, fontWeight: 800, marginBottom: 32 }}>{pacienteNif.nome}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <button onClick={verMarcacoesHoje} disabled={buscandoMarcacoesHoje}
               style={{ width: '100%', padding: '18px', borderRadius: 12, border: 'none', background: '#8b5cf6', color: '#fff', fontSize: 17, fontWeight: 700, cursor: 'pointer', opacity: buscandoMarcacoesHoje ? 0.7 : 1 }}>
-              {buscandoMarcacoesHoje ? 'A verificar...' : '📋 Ver Marcações de Hoje'}
+              {buscandoMarcacoesHoje ? 'A verificar...' : 'Ver Marcações de Hoje'}
+            </button>
+            <button onClick={iniciarMarcacao} disabled={carregandoMedicos}
+              style={{ width: '100%', padding: '18px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 17, fontWeight: 700, cursor: 'pointer', opacity: carregandoMedicos ? 0.7 : 1 }}>
+              {carregandoMedicos ? 'A carregar...' : 'Marcar Consulta'}
             </button>
             <button onClick={tirarSenhaNif}
               style={{ width: '100%', padding: '18px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 17, fontWeight: 600, cursor: 'pointer' }}>
-              🎟️ Tirar Senha
+              Tirar Senha
             </button>
             <button onClick={reiniciar}
               style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
@@ -357,7 +453,6 @@ export default function QuiosquePage() {
       {/* ESTADO: Marcações de hoje via NIF */}
       {estado === 'nif_marcacoes' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 540, textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>📋</div>
           <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>
             {marcacoesHoje.length > 0 ? 'As suas consultas de hoje' : 'Sem marcações para hoje'}
           </h2>
@@ -381,7 +476,7 @@ export default function QuiosquePage() {
                     </div>
                     {m.checkinEm ? (
                       <span style={{ background: '#10b981', color: '#fff', borderRadius: 8, padding: '4px 12px', fontSize: 13, fontWeight: 600 }}>
-                        ✓ Check-in feito
+                        Check-in feito
                       </span>
                     ) : (
                       <button onClick={() => checkinMarcacaoNif(m.id)} disabled={emissao}
@@ -401,7 +496,7 @@ export default function QuiosquePage() {
             </button>
             <button onClick={tirarSenhaNif}
               style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
-              🎟️ Tirar Senha Normal
+              Tirar Senha Normal
             </button>
           </div>
         </div>
@@ -410,7 +505,6 @@ export default function QuiosquePage() {
       {/* ESTADO: Inserir código de marcação */}
       {estado === 'marcacao' && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>📋</div>
           <h2 style={{ color: '#fff', fontSize: 24, marginBottom: 8 }}>Confirmar Marcação</h2>
           <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 32 }}>
             Introduza o código que recebeu quando fez a marcação.
@@ -446,7 +540,6 @@ export default function QuiosquePage() {
       {/* ESTADO: Confirmar check-in */}
       {estado === 'marcacao_confirm' && marcacaoEncontrada && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b98160', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
           <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>Marcação Encontrada</h2>
           <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '20px', marginBottom: 28, textAlign: 'left' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -484,7 +577,6 @@ export default function QuiosquePage() {
       {/* ESTADO: Sucesso check-in marcação */}
       {estado === 'marcacao_sucesso' && ticket && (
         <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b981', borderRadius: 20, padding: '48px 56px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <div style={{ fontSize: 64, marginBottom: 16 }}>✅</div>
           <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>Check-in confirmado! A sua senha é</p>
           <div style={{ fontSize: 96, fontWeight: 900, color: '#fff', letterSpacing: -2, lineHeight: 1, marginBottom: 20 }}>
             {ticket.numero}
@@ -512,7 +604,7 @@ export default function QuiosquePage() {
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: 56, marginBottom: 12 }}>{tipoSelecionado.icon}</div>
+          <div style={{ fontSize: 64, fontWeight: 900, color: tipoSelecionado.cor, fontFamily: 'monospace', marginBottom: 12 }}>{tipoSelecionado.letra}</div>
           <h2 style={{ color: '#fff', fontSize: 26, marginBottom: 6 }}>{tipoSelecionado.label}</h2>
           <p style={{ color: '#94a3b8', marginBottom: 32, fontSize: 15 }}>
             Senhas da série <strong style={{ color: tipoSelecionado.cor }}>{tipoSelecionado.letra}</strong>
@@ -531,7 +623,7 @@ export default function QuiosquePage() {
                 style={{ width: 20, height: 20, accentColor: '#ef4444' }}
               />
               <span style={{ color: '#fff', fontSize: 16 }}>
-                🔴 Prioridade — Grávida / Emergência / Mobilidade Reduzida
+                Prioritário — Grávida / Emergência / Mobilidade Reduzida
               </span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}>
@@ -542,7 +634,7 @@ export default function QuiosquePage() {
                 style={{ width: 20, height: 20, accentColor: '#f59e0b' }}
               />
               <span style={{ color: '#fff', fontSize: 16 }}>
-                🟡 Sénior — Pessoa com mais de 65 anos
+                Sénior — Pessoa com mais de 65 anos
               </span>
             </label>
           </div>
@@ -621,7 +713,6 @@ export default function QuiosquePage() {
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: 64, marginBottom: 16 }}>✅</div>
           <p style={{ color: '#6ee7b7', fontSize: 18, marginBottom: 12 }}>A sua senha é</p>
           <div
             style={{
@@ -648,7 +739,7 @@ export default function QuiosquePage() {
                 marginBottom: 24,
               }}
             >
-              {ticket.prioridade === 'prioritario' ? '🔴 Prioritário' : '🟡 Sénior'}
+              {ticket.prioridade === 'prioritario' ? 'Prioritário' : 'Sénior'}
             </span>
           )}
           <p style={{ color: '#94a3b8', fontSize: 16, marginBottom: 32, marginTop: ticket.prioridade === 'normal' ? 16 : 0 }}>
@@ -669,6 +760,157 @@ export default function QuiosquePage() {
             }}
           >
             Nova Senha
+          </button>
+        </div>
+      )}
+
+      {/* ── NOVA MARCAÇÃO: Selecionar Médico ── */}
+      {estado === 'nova_medico' && (
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 8 }}>Escolha o médico</h2>
+          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
+            Selecione a especialidade e o profissional pretendido
+          </p>
+          {medicos.length === 0 ? (
+            <div style={{ textAlign: 'center', color: '#94a3b8', padding: '40px 0' }}>
+              <p style={{ fontSize: 16 }}>Sem médicos com agenda disponível de momento.</p>
+              <p style={{ fontSize: 14, marginTop: 8 }}>Dirija-se à receção para marcação assistida.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {Array.from(new Set(medicos.map(m => m.subRole))).map(especialidade => (
+                <div key={especialidade}>
+                  <p style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>
+                    {SUBROLE_LABEL[especialidade] ?? especialidade}
+                  </p>
+                  {medicos.filter(m => m.subRole === especialidade).map(m => (
+                    <button key={m.id} onClick={() => selecionarMedico(m)}
+                      style={{ width: '100%', padding: '18px 24px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 16, fontWeight: 600, cursor: 'pointer', textAlign: 'left', marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>{m.nome.replace(/^Dr\.|^Dra\./, '').trim()}</span>
+                      <span style={{ color: '#60a5fa', fontSize: 14 }}>→</span>
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+          <button onClick={() => setEstado('nif_resultado')}
+            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            ← Voltar
+          </button>
+        </div>
+      )}
+
+      {/* ── NOVA MARCAÇÃO: Selecionar Data ── */}
+      {estado === 'nova_data' && medicoSelecionado && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
+          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 6 }}>{medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()}</h2>
+          <p style={{ color: '#60a5fa', fontSize: 15, marginBottom: 32 }}>{SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}</p>
+          <label style={{ display: 'block', color: '#94a3b8', fontSize: 13, marginBottom: 10, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
+            Escolha a data da consulta
+          </label>
+          <input
+            type="date"
+            min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+            value={dataSelecionada}
+            onChange={e => setDataSelecionada(e.target.value)}
+            style={{ width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '16px', color: '#fff', fontSize: 20, boxSizing: 'border-box', marginBottom: 24, colorScheme: 'dark' }}
+          />
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button onClick={() => setEstado('nova_medico')}
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+            <button onClick={() => selecionarData(dataSelecionada)} disabled={!dataSelecionada || carregandoSlots}
+              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: !dataSelecionada || carregandoSlots ? 0.5 : 1 }}>
+              {carregandoSlots ? 'A verificar...' : 'Ver Horários'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── NOVA MARCAÇÃO: Selecionar Slot ── */}
+      {estado === 'nova_slot' && medicoSelecionado && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #8b5cf660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 540 }}>
+          <h2 style={{ color: '#fff', fontSize: 20, textAlign: 'center', marginBottom: 6 }}>
+            {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </h2>
+          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
+            {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()} — {SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}
+          </p>
+          {slots.filter(s => s.disponivel).length === 0 ? (
+            <p style={{ color: '#94a3b8', textAlign: 'center', padding: '20px 0' }}>Sem horários disponíveis neste dia.</p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 24 }}>
+              {slots.filter(s => s.disponivel).map(s => (
+                <button key={s.dataHora}
+                  onClick={() => { setSlotSelecionado(s); setEstado('nova_confirmar'); }}
+                  style={{ padding: '16px 8px', borderRadius: 10, border: `2px solid ${slotSelecionado?.dataHora === s.dataHora ? '#3b82f6' : 'rgba(255,255,255,0.15)'}`, background: slotSelecionado?.dataHora === s.dataHora ? '#3b82f620' : 'rgba(255,255,255,0.05)', color: '#fff', fontSize: 18, fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}>
+                  {new Date(s.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                </button>
+              ))}
+            </div>
+          )}
+          <button onClick={() => setEstado('nova_data')}
+            style={{ width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            ← Voltar
+          </button>
+        </div>
+      )}
+
+      {/* ── NOVA MARCAÇÃO: Confirmar ── */}
+      {estado === 'nova_confirmar' && medicoSelecionado && slotSelecionado && pacienteNif && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b98160', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
+          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 24 }}>Confirmar Marcação</h2>
+          <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 14, padding: '20px', marginBottom: 24, textAlign: 'left' }}>
+            {[
+              { label: 'Utente', valor: pacienteNif.nome },
+              { label: 'Especialidade', valor: SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole },
+              { label: 'Médico', valor: medicoSelecionado.nome },
+              { label: 'Data', valor: new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) },
+              { label: 'Hora', valor: new Date(slotSelecionado.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) },
+            ].map(({ label, valor }) => (
+              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ color: '#94a3b8', fontSize: 14 }}>{label}</span>
+                <span style={{ color: '#fff', fontWeight: 600, fontSize: 14, textAlign: 'right', maxWidth: '60%' }}>{valor}</span>
+              </div>
+            ))}
+          </div>
+          {erroMarcacao && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{erroMarcacao}</p>}
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button onClick={() => setEstado('nova_slot')}
+              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+            <button onClick={confirmarMarcacao} disabled={emissao}
+              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#10b981', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: emissao ? 0.6 : 1 }}>
+              {emissao ? 'A agendar...' : 'Confirmar Marcação'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── NOVA MARCAÇÃO: Sucesso ── */}
+      {estado === 'nova_sucesso' && novaConsulta && (
+        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #10b981', borderRadius: 20, padding: '48px 56px', width: '100%', maxWidth: 500, textAlign: 'center' }}>
+          <h2 style={{ color: '#6ee7b7', fontSize: 22, marginBottom: 8 }}>Marcação Confirmada</h2>
+          <p style={{ color: '#94a3b8', fontSize: 15, marginBottom: 24 }}>
+            {new Date(novaConsulta.dataHora).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+            {' às '}
+            {new Date(novaConsulta.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+            {' com '}
+            {novaConsulta.medico.nome}
+          </p>
+          <p style={{ color: '#94a3b8', fontSize: 14, marginBottom: 8 }}>Guarde o seu código de marcação:</p>
+          <div style={{ fontSize: 36, fontWeight: 900, color: '#fff', letterSpacing: 4, fontFamily: 'monospace', background: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: '20px', marginBottom: 24 }}>
+            {novaConsulta.codigo}
+          </div>
+          <p style={{ color: '#64748b', fontSize: 13, marginBottom: 32 }}>
+            No dia da consulta, introduza este código no quiosque para fazer o check-in e obter a sua senha de atendimento.
+          </p>
+          <button onClick={reiniciar}
+            style={{ width: '100%', padding: '16px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer' }}>
+            Concluir
           </button>
         </div>
       )}

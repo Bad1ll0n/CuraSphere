@@ -390,6 +390,14 @@ export default function DoenteDetalhe() {
   const [modalIntercResposta, setModalIntercResposta] = useState<string | null>(null);
   const [intercResposta, setIntercResposta] = useState('');
 
+  // Problemas Clínicos
+  const [problemas, setProblemas] = useState<any[]>([]);
+  const [modalProblema, setModalProblema] = useState(false);
+  const [probDescricao, setProbDescricao] = useState('');
+  const [probTipo, setProbTipo] = useState('comorbilidade');
+  const [probDataInicio, setProbDataInicio] = useState('');
+  const [salvandoProb, setSalvandoProb] = useState(false);
+
   // Dispositivos Invasivos
   const [dispositivos, setDispositivos] = useState<any[]>([]);
   const [modalDispositivo, setModalDispositivo] = useState(false);
@@ -671,6 +679,7 @@ export default function DoenteDetalhe() {
       carregarInterconsultas(),
       carregarDispositivos(),
       carregarFicheiroPessoal(),
+      api.get(`/doentes/${id}/problemas`).then(r => setProblemas(r.data ?? [])).catch(() => setProblemas([])),
     ]);
   }, [id]);
 
@@ -855,6 +864,27 @@ export default function DoenteDetalhe() {
       setModalIntercResposta(null); setIntercResposta('');
       carregarInterconsultas();
     } catch (e: any) { alert(e.response?.data?.message ?? 'Erro'); }
+  };
+
+  const submeterProblema = async () => {
+    if (!probDescricao.trim()) return;
+    setSalvandoProb(true);
+    try {
+      await api.post(`/doentes/${id}/problemas`, {
+        descricao: probDescricao, tipo: probTipo,
+        dataInicio: probDataInicio || undefined,
+      });
+      setModalProblema(false);
+      setProbDescricao(''); setProbTipo('comorbilidade'); setProbDataInicio('');
+      const r = await api.get(`/doentes/${id}/problemas`);
+      setProblemas(r.data ?? []);
+    } finally { setSalvandoProb(false); }
+  };
+
+  const resolverProblema = async (probId: string) => {
+    await api.patch(`/doentes/${id}/problemas/${probId}`, { estado: 'resolvido', dataFim: new Date().toISOString().split('T')[0] });
+    const r = await api.get(`/doentes/${id}/problemas`);
+    setProblemas(r.data ?? []);
   };
 
   const submeterDispositivo = async () => {
@@ -1982,6 +2012,134 @@ export default function DoenteDetalhe() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Problemas Clínicos ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const visivel = ['medico', 'enfermeiro', 'auxiliar'].includes(role);
+        if (!visivel) return null;
+        const podeCriar = role === 'medico';
+
+        const TIPO_COR: Record<string, string> = {
+          principal: 'bg-red-50 text-red-700', comorbilidade: 'bg-blue-50 text-blue-700',
+          cirurgico: 'bg-purple-50 text-purple-700', cronico: 'bg-amber-50 text-amber-700',
+          agudo: 'bg-orange-50 text-orange-700',
+        };
+        const TIPO_LABEL: Record<string, string> = {
+          principal: 'Principal', comorbilidade: 'Comorbilidade',
+          cirurgico: 'Cirúrgico', cronico: 'Crónico', agudo: 'Agudo',
+        };
+
+        const ativos = problemas.filter((p: any) => p.estado === 'ativo');
+        const cronicos = problemas.filter((p: any) => p.estado === 'cronico');
+        const resolvidos = problemas.filter((p: any) => p.estado === 'resolvido');
+
+        return (
+          <div className="rounded-2xl shadow-sm border" style={{ padding: '20px 24px', background: '#fff', borderColor: '#e2e8f0', marginBottom: '20px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: ativos.length + cronicos.length + resolvidos.length === 0 ? 0 : '14px' }}>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-slate-700">Lista de Problemas</span>
+                {ativos.length > 0 && (
+                  <span className="text-xs bg-red-100 text-red-700 rounded-full px-2 py-0.5 font-medium">{ativos.length} ativo(s)</span>
+                )}
+              </div>
+              {podeCriar && (
+                <button onClick={() => setModalProblema(true)}
+                  className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg px-3 py-1.5 font-medium transition-colors">
+                  + Adicionar
+                </button>
+              )}
+            </div>
+
+            {problemas.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '12px 0' }}>Sem problemas registados</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {[...ativos, ...cronicos].map((p: any) => (
+                  <div key={p.id} className="flex items-center justify-between rounded-lg" style={{ padding: '8px 12px', background: '#f8fafc' }}>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`text-xs rounded-full px-2 py-0.5 font-medium shrink-0 ${TIPO_COR[p.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
+                        {TIPO_LABEL[p.tipo] ?? p.tipo}
+                      </span>
+                      <span className="text-sm text-slate-700 truncate">{p.descricao}</span>
+                      {p.dataInicio && <span className="text-xs text-slate-400 shrink-0">{new Date(p.dataInicio).toLocaleDateString('pt-PT')}</span>}
+                    </div>
+                    {podeCriar && (
+                      <button onClick={() => resolverProblema(p.id)}
+                        className="text-xs text-slate-400 hover:text-emerald-600 shrink-0 ml-2 transition-colors">
+                        ✓ Resolver
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {resolvidos.length > 0 && (
+                  <details className="text-xs text-slate-400" style={{ marginTop: 4 }}>
+                    <summary className="cursor-pointer hover:text-slate-600">{resolvidos.length} problema(s) resolvido(s)</summary>
+                    <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                      {resolvidos.map((p: any) => (
+                        <div key={p.id} className="flex items-center gap-2 rounded-lg" style={{ padding: '6px 10px', background: '#f1f5f9', opacity: 0.6 }}>
+                          <span className="line-through text-xs text-slate-400">{p.descricao}</span>
+                          {p.dataFim && <span className="text-xs text-slate-300">{new Date(p.dataFim).toLocaleDateString('pt-PT')}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </div>
+            )}
+
+            {/* Modal Adicionar Problema */}
+            {modalProblema && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                onClick={e => { if (e.target === e.currentTarget) setModalProblema(false); }}>
+                <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-base font-bold text-slate-800">Adicionar Problema Clínico</h3>
+                    <button onClick={() => setModalProblema(false)} className="text-slate-400 hover:text-slate-600 text-xl">✕</button>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <div>
+                      <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Descrição *</label>
+                      <input value={probDescricao} onChange={e => setProbDescricao(e.target.value)} autoFocus
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        placeholder="Ex: Diabetes mellitus tipo 2, HTA, IRC grau 3..." />
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Tipo</label>
+                        <select value={probTipo} onChange={e => setProbTipo(e.target.value)}
+                          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option value="comorbilidade">Comorbilidade</option>
+                          <option value="principal">Principal</option>
+                          <option value="agudo">Agudo</option>
+                          <option value="cirurgico">Cirúrgico</option>
+                          <option value="cronico">Crónico</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Data Início</label>
+                        <input type="date" value={probDataInicio} onChange={e => setProbDataInicio(e.target.value)}
+                          className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                      </div>
+                    </div>
+                    <div className="flex gap-3 mt-1">
+                      <button onClick={() => setModalProblema(false)}
+                        className="flex-1 border border-slate-200 text-slate-600 rounded-lg py-2 text-sm hover:bg-slate-50 transition-colors">
+                        Cancelar
+                      </button>
+                      <button onClick={submeterProblema} disabled={salvandoProb || !probDescricao.trim()}
+                        className="flex-2 bg-blue-600 text-white rounded-lg py-2 text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+                        style={{ flex: 2 }}>
+                        {salvandoProb ? 'A guardar...' : 'Adicionar Problema'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

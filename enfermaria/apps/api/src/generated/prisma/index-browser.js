@@ -736,6 +736,44 @@ exports.Prisma.RefreshTokenScalarFieldEnum = {
   criadoEm: 'criadoEm'
 };
 
+exports.Prisma.ProblemaClinicoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  descricao: 'descricao',
+  tipo: 'tipo',
+  estado: 'estado',
+  dataInicio: 'dataInicio',
+  dataFim: 'dataFim',
+  registadoPorId: 'registadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.EquipamentoScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  tipo: 'tipo',
+  numeroSerie: 'numeroSerie',
+  localizacao: 'localizacao',
+  estado: 'estado',
+  ultimaManutencao: 'ultimaManutencao',
+  proximaManutencao: 'proximaManutencao',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.ManutencaoScalarFieldEnum = {
+  id: 'id',
+  equipamentoId: 'equipamentoId',
+  tipo: 'tipo',
+  descricao: 'descricao',
+  estado: 'estado',
+  prioridade: 'prioridade',
+  reportadoPorId: 'reportadoPorId',
+  tecnicoId: 'tecnicoId',
+  dataReporte: 'dataReporte',
+  dataConclusao: 'dataConclusao',
+  observacoes: 'observacoes'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1051,7 +1089,10 @@ exports.Prisma.ModelName = {
   ItemFatura: 'ItemFatura',
   Pagamento: 'Pagamento',
   Ticket: 'Ticket',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  ProblemaClinico: 'ProblemaClinico',
+  Equipamento: 'Equipamento',
+  Manutencao: 'Manutencao'
 };
 
 /**

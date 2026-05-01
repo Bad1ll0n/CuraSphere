@@ -1,14 +1,16 @@
-import { Controller, Post, Get, Param, Query, Body, Sse, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Get, Param, Query, Body, Sse, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { map } from 'rxjs';
 import { TicketsService } from './tickets.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { ConsultasService } from '../consultas/consultas.service';
 
 @Controller('quiosque')
 export class QuiosqueController {
   constructor(
     private readonly service: TicketsService,
     private readonly prisma: PrismaService,
+    private readonly consultasService: ConsultasService,
   ) {}
 
   @Post()
@@ -116,6 +118,52 @@ export class QuiosqueController {
     ]);
 
     return { jaFezCheckin: false, consulta: atualizada, ticket };
+  }
+
+  // ─── Marcação Nova (Quiosque self-service) ───────────────────────────────
+
+  @Get('medicos')
+  async listarMedicos() {
+    return this.prisma.utilizador.findMany({
+      where: { role: 'medico', ativo: true, agendas: { some: { ativo: true } } },
+      select: { id: true, nome: true, subRole: true },
+      orderBy: [{ subRole: 'asc' }, { nome: 'asc' }],
+    });
+  }
+
+  @Get('medicos/:medicoId/slots')
+  async slotsDisponiveis(@Param('medicoId') medicoId: string, @Query('data') data: string) {
+    if (!data) throw new BadRequestException('data é obrigatória (YYYY-MM-DD)');
+    const slots = await this.consultasService.calcularSlots(medicoId, data);
+    if (!slots.length) throw new NotFoundException('Médico sem agenda para esse dia');
+    return slots;
+  }
+
+  @Post('marcacao-nova')
+  async criarMarcacaoQuiosque(
+    @Body() body: { doenteId: string; medicoId: string; dataHora: string },
+  ) {
+    const [doente, medico] = await Promise.all([
+      this.prisma.doente.findUnique({ where: { id: body.doenteId }, select: { id: true, nome: true } }),
+      this.prisma.utilizador.findUnique({ where: { id: body.medicoId }, select: { id: true, nome: true, subRole: true } }),
+    ]);
+    if (!doente) throw new NotFoundException('Utente não encontrado');
+    if (!medico) throw new NotFoundException('Médico não encontrado');
+
+    // Verificar disponibilidade do slot
+    const dataStr = body.dataHora.split('T')[0];
+    const slots = await this.consultasService.calcularSlots(body.medicoId, dataStr);
+    const slotAlvo = new Date(body.dataHora).getTime();
+    const slot = slots.find((s: any) => new Date(s.dataHora).getTime() === slotAlvo);
+    if (!slot || !slot.disponivel) throw new ConflictException('Horário já ocupado ou inválido');
+
+    return this.consultasService.agendar({
+      doenteId: body.doenteId,
+      nomeDoente: doente.nome,
+      medicoId: body.medicoId,
+      especialidade: medico.subRole ?? 'Geral',
+      dataHora: body.dataHora,
+    });
   }
 
   @Sse('eventos')

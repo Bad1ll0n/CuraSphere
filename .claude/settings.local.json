@@ -90,11 +90,23 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts',{}\\), indent=2\\)\\)\")",
       "Bash(code --install-extension marp-team.marp-vscode)",
       "Bash(\"C:/Users/Badillon/AppData/Local/Programs/Microsoft VS Code/bin/code\" --install-extension marp-team.marp-vscode)",
-      "PowerShell(Set-Location \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\"; $env:PRISMA_MIGRATE_SKIP_GENERATE = \"1\"; pnpm exec prisma migrate dev --schema=src/prisma/schema.prisma --name marcacoes 2>&1)"
+      "PowerShell(Set-Location \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\"; $env:PRISMA_MIGRATE_SKIP_GENERATE = \"1\"; pnpm exec prisma migrate dev --schema=src/prisma/schema.prisma --name marcacoes 2>&1)",
+      "Bash(pnpm nx *)",
+      "Bash(echo \"API PID: $!\")",
+      "Read(//tmp/**)",
+      "Bash(curl -s http://localhost:3333/auth/login -X POST -H \"Content-Type: application/json\" -d '{\"numeroFuncionario\":\"AD001\",\"password\":\"demo1234\"}')",
+      "Bash(curl -s http://localhost:3333/auth/login -X POST -H \"Content-Type: application/json\" -d '{\"numeroFuncionario\":\"MD001\",\"password\":\"demo1234\"}')",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('token:', d.get\\('accessToken',''\\)[:60]+'...'\\) if 'accessToken' in d else print\\(d\\)\")",
+      "Bash(echo \"Web PID: $!\")",
+      "Bash(cd c:\\\\\\\\Users\\\\\\\\Badillon\\\\\\\\Projeto_Enfermaria\\\\\\\\enfermaria)",
+      "Bash(powershell -Command \"netstat -ano | Select-String ':3333'\")",
+      "Bash(powershell -Command \"Start-Sleep -Seconds 10; netstat -ano | Select-String ':3333|:3000'\")",
+      "Bash(powershell -Command \"Start-Sleep -Seconds 25; netstat -ano | Select-String ':3333'\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",
-      "c:\\Users\\Badillon\\.claude\\plans"
+      "c:\\Users\\Badillon\\.claude\\plans",
+      "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(dashboard)\\doentes-admin"
     ]
   }
 }

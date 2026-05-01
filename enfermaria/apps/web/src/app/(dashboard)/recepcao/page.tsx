@@ -63,7 +63,8 @@ export default function RecepcaoPage() {
   const [flash, setFlash] = useState(false);
   const esRef = useRef<EventSource | null>(null);
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const carregarDadosRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   const podeVer = utilizador?.role === 'administrativo';
 
@@ -87,7 +88,29 @@ export default function RecepcaoPage() {
   });
   const [criandoUtente, setCriandoUtente] = useState(false);
   const [novoUtenteErro, setNovoUtenteErro] = useState('');
+  const [novoUtenteErros, setNovoUtenteErros] = useState<Record<string, string>>({});
   const [novoUtenteSucesso, setNovoUtenteSucesso] = useState<{ nome: string; numeroProcesso: string; tipoVisita: string } | null>(null);
+
+  function validarNovoUtente(f: typeof novoUtenteForm): Record<string, string> {
+    const e: Record<string, string> = {};
+    if (!f.tipoVisita) e.tipoVisita = 'Selecione o tipo de visita';
+    if (!f.nome.trim()) e.nome = 'Nome é obrigatório';
+    if (!f.dataNascimento) e.dataNascimento = 'Data de nascimento é obrigatória';
+    else if (new Date(f.dataNascimento) >= new Date()) e.dataNascimento = 'Data deve ser no passado';
+    if (!f.nif) e.nif = 'NIF é obrigatório';
+    else if (!/^\d{9}$/.test(f.nif)) e.nif = 'NIF deve ter exactamente 9 dígitos';
+    if (!f.telefone) e.telefone = 'Telefone é obrigatório';
+    else if (!/^[239]\d{8}$/.test(f.telefone.replace(/\s/g, ''))) e.telefone = 'Inválido (9 dígitos, começa com 2, 3 ou 9)';
+    if (!f.numeroSNS) e.numeroSNS = 'Número SNS é obrigatório';
+    else if (!/^\d{9}$/.test(f.numeroSNS.replace(/\s/g, ''))) e.numeroSNS = 'SNS deve ter 9 dígitos';
+    if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = 'Email inválido';
+    if (f.codigoPostal && !/^\d{4}-\d{3}$/.test(f.codigoPostal)) e.codigoPostal = 'Formato: 0000-000';
+    if (f.tipoCobertura === 'seguro') {
+      if (!f.entidadeSeguradora.trim()) e.entidadeSeguradora = 'Obrigatório para seguro';
+      if (!f.numeroApolice.trim()) e.numeroApolice = 'Obrigatório para seguro';
+    }
+    return e;
+  }
 
   const formVazio = {
     tipoVisita: '',
@@ -99,7 +122,9 @@ export default function RecepcaoPage() {
 
   async function criarUtente(e: React.FormEvent) {
     e.preventDefault();
-    if (!novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita) return;
+    const validacoes = validarNovoUtente(novoUtenteForm);
+    if (Object.keys(validacoes).length > 0) { setNovoUtenteErros(validacoes); return; }
+    setNovoUtenteErros({});
     setCriandoUtente(true);
     setNovoUtenteErro('');
     try {
@@ -138,6 +163,7 @@ export default function RecepcaoPage() {
   function fecharModalNovoUtente() {
     setModalNovoUtente(false);
     setNovoUtenteErro('');
+    setNovoUtenteErros({});
     setNovoUtenteSucesso(null);
     setNovoUtenteForm(formVazio);
   }
@@ -165,9 +191,15 @@ export default function RecepcaoPage() {
     if (statsRes.ok) setStats(await statsRes.json());
   }, [token]);
 
+  // Manter ref sempre atualizada para usar dentro do SSE sem stale closure
+  useEffect(() => { carregarDadosRef.current = carregarDados; }, [carregarDados]);
+
   useEffect(() => {
     if (!podeVer || !token) return;
-    carregarDados();
+    carregarDadosRef.current();
+
+    // Polling de backup — garante sincronização mesmo que o SSE falhe
+    const pollInterval = setInterval(() => carregarDadosRef.current(), 8000);
 
     function conectar() {
       const es = new EventSource(`${API}/quiosque/eventos`);
@@ -179,18 +211,19 @@ export default function RecepcaoPage() {
         if (Array.isArray(payload.fila)) setFila(payload.fila);
         if (Array.isArray(payload.ultimos)) setUltimos(payload.ultimos);
         triggerFlash();
+        carregarDadosRef.current();
       });
 
       es.addEventListener('novo_ticket', (e) => {
         const payload = JSON.parse(e.data);
         if (Array.isArray(payload.fila)) setFila(payload.fila);
-        carregarDados();
+        carregarDadosRef.current();
       });
 
       es.addEventListener('ticket_concluido', (e) => {
         const payload = JSON.parse(e.data);
         if (Array.isArray(payload.fila)) setFila(payload.fila);
-        carregarDados();
+        carregarDadosRef.current();
       });
 
       es.addEventListener('error', () => {
@@ -202,9 +235,10 @@ export default function RecepcaoPage() {
     conectar();
     return () => {
       esRef.current?.close();
+      clearInterval(pollInterval);
       if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     };
-  }, [podeVer, token, carregarDados]);
+  }, [podeVer, token]);
 
   async function chamarProximo() {
     if (!token || chamando) return;
@@ -715,30 +749,35 @@ export default function RecepcaoPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 20 }}>
 
                   {/* Secção: Tipo de visita */}
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: 0 }}>Motivo da Visita *</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-                    {TIPOS_VISITA.map(tv => (
-                      <button
-                        key={tv.value}
-                        type="button"
-                        onClick={() => setNovoUtenteForm(f => ({ ...f, tipoVisita: tv.value }))}
-                        style={{
-                          padding: '10px 8px',
-                          borderRadius: 10,
-                          border: novoUtenteForm.tipoVisita === tv.value ? '2px solid #3b82f6' : '1px solid #334155',
-                          background: novoUtenteForm.tipoVisita === tv.value ? '#1e3a5f' : '#0f172a',
-                          color: novoUtenteForm.tipoVisita === tv.value ? '#60a5fa' : '#94a3b8',
-                          cursor: 'pointer',
-                          textAlign: 'center',
-                          fontSize: 13,
-                          fontWeight: novoUtenteForm.tipoVisita === tv.value ? 700 : 400,
-                        }}
-                      >
-                        <div style={{ fontSize: 22, marginBottom: 4 }}>{tv.icon}</div>
-                        <div>{tv.label}</div>
-                        <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{tv.desc}</div>
-                      </button>
-                    ))}
+                  <div>
+                    <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 8px 0' }}>
+                      Motivo da Visita <span style={{ color: '#ef4444' }}>*</span>
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                      {TIPOS_VISITA.map(tv => (
+                        <button
+                          key={tv.value}
+                          type="button"
+                          onClick={() => { setNovoUtenteForm(f => ({ ...f, tipoVisita: tv.value })); setNovoUtenteErros(p => ({ ...p, tipoVisita: '' })); }}
+                          style={{
+                            padding: '10px 8px',
+                            borderRadius: 10,
+                            border: novoUtenteForm.tipoVisita === tv.value ? '2px solid #3b82f6' : `1px solid ${novoUtenteErros.tipoVisita ? '#ef4444' : '#334155'}`,
+                            background: novoUtenteForm.tipoVisita === tv.value ? '#1e3a5f' : '#0f172a',
+                            color: novoUtenteForm.tipoVisita === tv.value ? '#60a5fa' : '#94a3b8',
+                            cursor: 'pointer',
+                            textAlign: 'center',
+                            fontSize: 13,
+                            fontWeight: novoUtenteForm.tipoVisita === tv.value ? 700 : 400,
+                          }}
+                        >
+                          <div style={{ fontSize: 22, marginBottom: 4 }}>{tv.icon}</div>
+                          <div>{tv.label}</div>
+                          <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{tv.desc}</div>
+                        </button>
+                      ))}
+                    </div>
+                    {novoUtenteErros.tipoVisita && <p style={{ color: '#f87171', fontSize: 12, marginTop: 6 }}>{novoUtenteErros.tipoVisita}</p>}
                   </div>
 
                   {/* Secção: Identificação */}
@@ -746,49 +785,57 @@ export default function RecepcaoPage() {
 
                   <div>
                     <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
-                      Nome Completo *
+                      Nome Completo <span style={{ color: '#ef4444' }}>*</span>
                     </label>
                     <input
-                      required
                       value={novoUtenteForm.nome}
-                      onChange={e => setNovoUtenteForm(f => ({ ...f, nome: e.target.value }))}
-                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      onChange={e => { setNovoUtenteForm(f => ({ ...f, nome: e.target.value })); setNovoUtenteErros(p => ({ ...p, nome: '' })); }}
+                      style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.nome ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="Nome completo do utente"
                     />
+                    {novoUtenteErros.nome && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.nome}</p>}
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
                       <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
-                        Data de Nascimento
+                        Data de Nascimento <span style={{ color: '#ef4444' }}>*</span>
                       </label>
                       <input
                         type="date"
                         value={novoUtenteForm.dataNascimento}
-                        onChange={e => setNovoUtenteForm(f => ({ ...f, dataNascimento: e.target.value }))}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        onChange={e => { setNovoUtenteForm(f => ({ ...f, dataNascimento: e.target.value })); setNovoUtenteErros(p => ({ ...p, dataNascimento: '' })); }}
+                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.dataNascimento ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                       />
+                      {novoUtenteErros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.dataNascimento}</p>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>NIF</label>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        NIF <span style={{ color: '#ef4444' }}>*</span>
+                      </label>
                       <input
                         value={novoUtenteForm.nif}
-                        onChange={e => setNovoUtenteForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') }))}
+                        onChange={e => { setNovoUtenteForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, nif: '' })); }}
                         maxLength={9}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.nif ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="000000000"
                       />
+                      {novoUtenteErros.nif && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.nif}</p>}
                     </div>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nº SNS</label>
+                    <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      Nº SNS <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
                     <input
                       value={novoUtenteForm.numeroSNS}
-                      onChange={e => setNovoUtenteForm(f => ({ ...f, numeroSNS: e.target.value }))}
-                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
-                      placeholder="000 000 000"
+                      onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroSNS: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, numeroSNS: '' })); }}
+                      maxLength={9}
+                      style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.numeroSNS ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      placeholder="000000000"
                     />
+                    {novoUtenteErros.numeroSNS && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.numeroSNS}</p>}
                   </div>
 
                   {/* Secção: Contactos */}
@@ -796,24 +843,28 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
-                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Telefone</label>
+                      <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        Telefone <span style={{ color: '#ef4444' }}>*</span>
+                      </label>
                       <input
                         type="tel"
                         value={novoUtenteForm.telefone}
-                        onChange={e => setNovoUtenteForm(f => ({ ...f, telefone: e.target.value }))}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        onChange={e => { setNovoUtenteForm(f => ({ ...f, telefone: e.target.value })); setNovoUtenteErros(p => ({ ...p, telefone: '' })); }}
+                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.telefone ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="9XX XXX XXX"
                       />
+                      {novoUtenteErros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.telefone}</p>}
                     </div>
                     <div>
                       <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Email</label>
                       <input
                         type="email"
                         value={novoUtenteForm.email}
-                        onChange={e => setNovoUtenteForm(f => ({ ...f, email: e.target.value }))}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        onChange={e => { setNovoUtenteForm(f => ({ ...f, email: e.target.value })); setNovoUtenteErros(p => ({ ...p, email: '' })); }}
+                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.email ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="email@exemplo.pt"
                       />
+                      {novoUtenteErros.email && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.email}</p>}
                     </div>
                   </div>
 
@@ -832,10 +883,11 @@ export default function RecepcaoPage() {
                       <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Cód. Postal</label>
                       <input
                         value={novoUtenteForm.codigoPostal}
-                        onChange={e => setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value }))}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        onChange={e => { setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value })); setNovoUtenteErros(p => ({ ...p, codigoPostal: '' })); }}
+                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.codigoPostal ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="0000-000"
                       />
+                      {novoUtenteErros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.codigoPostal}</p>}
                     </div>
                     <div>
                       <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localidade</label>
@@ -857,7 +909,7 @@ export default function RecepcaoPage() {
                     </label>
                     <select
                       value={novoUtenteForm.tipoCobertura}
-                      onChange={e => setNovoUtenteForm(f => ({ ...f, tipoCobertura: e.target.value }))}
+                      onChange={e => { setNovoUtenteForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
                       style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                     >
                       <option value="sns">SNS</option>
@@ -869,22 +921,28 @@ export default function RecepcaoPage() {
                   {novoUtenteForm.tipoCobertura === 'seguro' && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Entidade Seguradora</label>
+                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                          Entidade Seguradora <span style={{ color: '#ef4444' }}>*</span>
+                        </label>
                         <input
                           value={novoUtenteForm.entidadeSeguradora}
-                          onChange={e => setNovoUtenteForm(f => ({ ...f, entidadeSeguradora: e.target.value }))}
-                          style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          onChange={e => { setNovoUtenteForm(f => ({ ...f, entidadeSeguradora: e.target.value })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '' })); }}
+                          style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.entidadeSeguradora ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
                           placeholder="Nome da seguradora"
                         />
+                        {novoUtenteErros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.entidadeSeguradora}</p>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nº Apólice</label>
+                        <label style={{ display: 'block', color: '#94a3b8', fontSize: 12, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>
+                          Nº Apólice <span style={{ color: '#ef4444' }}>*</span>
+                        </label>
                         <input
                           value={novoUtenteForm.numeroApolice}
-                          onChange={e => setNovoUtenteForm(f => ({ ...f, numeroApolice: e.target.value }))}
-                          style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroApolice: e.target.value })); setNovoUtenteErros(p => ({ ...p, numeroApolice: '' })); }}
+                          style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.numeroApolice ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
                           placeholder="Nº da apólice"
                         />
+                        {novoUtenteErros.numeroApolice && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.numeroApolice}</p>}
                       </div>
                     </div>
                   )}
@@ -894,8 +952,8 @@ export default function RecepcaoPage() {
                       style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
                       Cancelar
                     </button>
-                    <button type="submit" disabled={criandoUtente || !novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita}
-                      style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#10b981', color: '#fff', fontSize: 15, fontWeight: 700, cursor: 'pointer', opacity: criandoUtente || !novoUtenteForm.nome.trim() || !novoUtenteForm.tipoVisita ? 0.5 : 1 }}>
+                    <button type="submit" disabled={criandoUtente}
+                      style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#10b981', color: '#fff', fontSize: 15, fontWeight: 700, cursor: criandoUtente ? 'not-allowed' : 'pointer', opacity: criandoUtente ? 0.5 : 1 }}>
                       {criandoUtente ? 'A registar...' : 'Registar Administrativamente'}
                     </button>
                   </div>

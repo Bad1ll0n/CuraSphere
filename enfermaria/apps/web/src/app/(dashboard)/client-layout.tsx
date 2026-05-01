@@ -22,7 +22,7 @@ const ROLES_DIRECAO    = ['direcao'];
 const ROLES_CLINICO    = [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA];
 
 const navItems = [
-  // — Dashboard Clínico
+  // 1 — Dashboard
   {
     href: '/dashboard',
     label: 'Dashboard',
@@ -34,74 +34,31 @@ const navItems = [
       </svg>
     ),
   },
-  // — Internamento
+  // 2 — Doentes (clínico)
   {
     href: '/doentes',
     label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_ADMIN],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
   },
+  // 3 — Doentes (vista administrativa)
   {
-    href: '/camas',
-    label: 'Camas',
-    servicos: ['internamento', 'urgencia'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-      </svg>
-    ),
-  },
-  {
-    href: '/horarios',
-    label: 'Horários',
+    href: '/doentes-admin',
+    label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
+    roles: [...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     ),
   },
-  {
-    href: '/tarefas',
-    label: 'Tarefas',
-    servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_OPERACIONAL],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h.01M9 16h.01m6-4h-3" />
-      </svg>
-    ),
-  },
-  {
-    href: '/trocas',
-    label: 'Trocas de Turno',
-    servicos: null,
-    roles: [...ROLES_CLINICO],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-      </svg>
-    ),
-  },
-  {
-    href: '/atribuicoes',
-    label: 'Atribuições',
-    servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-      </svg>
-    ),
-  },
-  // — Urgência
+  // 4 — Urgência
   {
     href: '/urgencia',
     label: 'Urgência',
@@ -113,55 +70,7 @@ const navItems = [
       </svg>
     ),
   },
-  // — Bloco Operatório
-  {
-    href: '/bloco',
-    label: 'Bloco Operatório',
-    servicos: ['bloco_operatorio'],
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
-      </svg>
-    ),
-  },
-  // — Consultas Externas
-  {
-    href: '/consultas',
-    label: 'Consultas',
-    servicos: ['consultas_externas'],
-    roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
-  // — Farmácia
-  {
-    href: '/farmacia',
-    label: 'Farmácia',
-    servicos: null,
-    roles: [...ROLES_FARMACIA],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-      </svg>
-    ),
-  },
-  // — Fisioterapia
-  {
-    href: '/fisioterapia',
-    label: 'Fisioterapia',
-    servicos: null,
-    roles: [...ROLES_SAUDE],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-  },
-  // — MAR
+  // 5 — MAR
   {
     href: '/mar',
     label: 'MAR',
@@ -173,31 +82,43 @@ const navItems = [
       </svg>
     ),
   },
-  // — IACS
+  // 6 — Atribuições
   {
-    href: '/iacs',
-    label: 'IACS',
+    href: '/atribuicoes',
+    label: 'Atribuições',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro'],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-      </svg>
-    ),
-  },
-  // — Worklist Imagiologia
-  {
-    href: '/worklist',
-    label: 'Worklist',
-    servicos: null,
-    roles: [...ROLES_SAUDE, ...ROLES_MEDICO],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
       </svg>
     ),
   },
-  // — Sala de Espera
+  // 7 — Consultas Externas
+  {
+    href: '/consultas',
+    label: 'Consultas',
+    servicos: ['consultas_externas'],
+    roles: [...ROLES_MEDICO, ...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+  // 8 — Bloco Operatório
+  {
+    href: '/bloco',
+    label: 'Bloco Operatório',
+    servicos: ['bloco_operatorio'],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+      </svg>
+    ),
+  },
+  // 9 — Sala de Espera
   {
     href: '/sala-espera',
     label: 'Sala de Espera',
@@ -209,31 +130,139 @@ const navItems = [
       </svg>
     ),
   },
-  // — Dashboard TI
+  // 10 — Camas
   {
-    href: '/dashboard-ti',
-    label: 'Dashboard TI',
-    servicos: null,
-    roles: [...ROLES_TI, ...ROLES_DIRECAO],
+    href: '/camas',
+    label: 'Camas',
+    servicos: ['internamento', 'urgencia'],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
       </svg>
     ),
   },
-  // — Dashboard Qualidade
+  // 11 — Worklist Imagiologia
   {
-    href: '/dashboard-qualidade',
-    label: 'Dashboard Qualidade',
+    href: '/worklist',
+    label: 'Worklist',
     servicos: null,
-    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'enfermeiro'],
+    roles: [...ROLES_SAUDE, ...ROLES_MEDICO],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
       </svg>
     ),
   },
-  // — Comunicação (universal)
+  // 12 — IACS
+  {
+    href: '/iacs',
+    label: 'IACS',
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+      </svg>
+    ),
+  },
+  // 13 — Tarefas
+  {
+    href: '/tarefas',
+    label: 'Tarefas',
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_OPERACIONAL],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8h.01M9 16h.01m6-4h-3" />
+      </svg>
+    ),
+  },
+  // 14 — Trocas de Turno
+  {
+    href: '/trocas',
+    label: 'Trocas de Turno',
+    servicos: null,
+    roles: [...ROLES_CLINICO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      </svg>
+    ),
+  },
+  // 15 — Horários
+  {
+    href: '/horarios',
+    label: 'Horários',
+    servicos: null,
+    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+  // 16 — Farmácia
+  {
+    href: '/farmacia',
+    label: 'Farmácia',
+    servicos: null,
+    roles: [...ROLES_FARMACIA],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+      </svg>
+    ),
+  },
+  // 17 — Fisioterapia
+  {
+    href: '/fisioterapia',
+    label: 'Fisioterapia',
+    servicos: null,
+    roles: [...ROLES_SAUDE],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  // 18 — Receção / Filas
+  {
+    href: '/recepcao',
+    label: 'Receção',
+    servicos: null,
+    roles: [...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+      </svg>
+    ),
+  },
+  // 19 — Registos Administrativos
+  {
+    href: '/registos-administrativos',
+    label: 'Registos Admin.',
+    servicos: null,
+    roles: [...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+      </svg>
+    ),
+  },
+  // 20 — Faturação
+  {
+    href: '/faturacao',
+    label: 'Faturação',
+    servicos: null,
+    roles: [...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+  // 21 — Comunicação (universal)
   {
     href: '/comunicacao',
     label: 'Comunicação',
@@ -245,7 +274,7 @@ const navItems = [
       </svg>
     ),
   },
-  // — Pedidos Internos
+  // 22 — Pedidos Internos
   {
     href: '/pedidos-internos',
     label: 'Pedidos Internos',
@@ -257,7 +286,43 @@ const navItems = [
       </svg>
     ),
   },
-  // — TI
+  // 23 — Equipamentos
+  {
+    href: '/equipamentos',
+    label: 'Equipamentos',
+    servicos: null,
+    roles: [...ROLES_OPERACIONAL, ...ROLES_TI, ...ROLES_DIRECAO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+      </svg>
+    ),
+  },
+  // 24 — Dashboard TI
+  {
+    href: '/dashboard-ti',
+    label: 'Dashboard TI',
+    servicos: null,
+    roles: [...ROLES_TI, ...ROLES_DIRECAO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+      </svg>
+    ),
+  },
+  // 25 — Dashboard Qualidade
+  {
+    href: '/dashboard-qualidade',
+    label: 'Dashboard Qualidade',
+    servicos: null,
+    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'enfermeiro'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+  },
+  // 26 — Pedidos TI
   {
     href: '/pedidos-ti',
     label: 'Pedidos TI',
@@ -269,6 +334,7 @@ const navItems = [
       </svg>
     ),
   },
+  // 27 — Incidentes TI
   {
     href: '/incidentes-ti',
     label: 'Incidentes TI',
@@ -280,7 +346,19 @@ const navItems = [
       </svg>
     ),
   },
-  // — Gestão (it_admin only)
+  // 28 — Auditoria
+  {
+    href: '/auditoria',
+    label: 'Auditoria',
+    servicos: null,
+    roles: [...ROLES_TI, ...ROLES_QUALIDADE],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
+  // 29 — Utilizadores (it_admin)
   {
     href: '/utilizadores',
     label: 'Utilizadores',
@@ -293,6 +371,7 @@ const navItems = [
       </svg>
     ),
   },
+  // 30 — Configurações (it_admin)
   {
     href: '/configuracoes',
     label: 'Configurações',
@@ -302,53 +381,6 @@ const navItems = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-  {
-    href: '/auditoria',
-    label: 'Auditoria',
-    servicos: null,
-    roles: [...ROLES_TI, ...ROLES_QUALIDADE],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
-  },
-  // — Faturação
-  {
-    href: '/faturacao',
-    label: 'Faturação',
-    servicos: null,
-    roles: [...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
-  // — Receção / Filas
-  {
-    href: '/recepcao',
-    label: 'Receção',
-    servicos: null,
-    roles: [...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-      </svg>
-    ),
-  },
-  // — Registos Administrativos
-  {
-    href: '/registos-administrativos',
-    label: 'Registos Admin.',
-    servicos: null,
-    roles: [...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
       </svg>
     ),
   },
@@ -483,11 +515,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 
   const itemsVisiveis = navItems.filter((item) => {
-    const servicoOk = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
-    const roleOk    = !item.roles    || item.roles.includes(utilizador.role);
-    // subRoles: se o item exige subRole específico, o utilizador deve tê-lo
-    const subRoleOk = !(item as any).subRoles || (item as any).subRoles.includes(utilizador.subRole);
-    return servicoOk && roleOk && subRoleOk;
+    const servicoOk   = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
+    const roleOk      = !item.roles    || item.roles.includes(utilizador.role);
+    const subRoleOk   = !(item as any).subRoles        || (item as any).subRoles.includes(utilizador.subRole);
+    const notExcluded = !(item as any).excludeSubRoles || !(item as any).excludeSubRoles.includes(utilizador.subRole);
+    return servicoOk && roleOk && subRoleOk && notExcluded;
   });
 
   return (

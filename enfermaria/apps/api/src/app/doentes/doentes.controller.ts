@@ -193,4 +193,32 @@ export class DoenteController {
   ) {
     return this.doenteService.atualizarFicheiroPessoal(id, body, req.user.sub);
   }
+
+  // ─── Problemas Clínicos ─────────────────────────────────────────────────────
+
+  @Get(':id/problemas')
+  @Roles('medico', 'enfermeiro', 'administrativo')
+  listarProblemas(@Param('id') id: string) {
+    return this.doenteService.listarProblemas(id);
+  }
+
+  @Post(':id/problemas')
+  @Roles('medico', 'enfermeiro')
+  criarProblema(
+    @Param('id') id: string,
+    @Body() body: { descricao: string; tipo?: string; estado?: string; dataInicio?: string },
+    @Request() req: any,
+  ) {
+    return this.doenteService.criarProblema(id, body, req.user.sub);
+  }
+
+  @Patch(':id/problemas/:problemaId')
+  @Roles('medico', 'enfermeiro')
+  atualizarProblema(
+    @Param('id') _doenteId: string,
+    @Param('problemaId') problemaId: string,
+    @Body() body: { estado?: string; descricao?: string; dataFim?: string },
+  ) {
+    return this.doenteService.atualizarProblema(problemaId, body);
+  }
 }

@@ -11,6 +11,15 @@ interface Utilizador {
 interface SubRoleOpc { id: string; chave: string; label: string; }
 interface RoleOpc { id: string; chave: string; label: string; subRoles: SubRoleOpc[]; }
 
+type AgendaDia = { ativo: boolean; horaInicio: string; horaFim: string };
+const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const agendaVazia = (): AgendaDia[] =>
+  Array.from({ length: 7 }, (_, i) => ({
+    ativo: i >= 1 && i <= 5,
+    horaInicio: '08:00',
+    horaFim: '13:00',
+  }));
+
 const servicoLabel: Record<string, string> = {
   internamento: 'Internamento', urgencia: 'Urgência', bloco_operatorio: 'Bloco Operatório',
   consultas_externas: 'Consultas Externas', farmacia: 'Farmácia', fisioterapia: 'Fisioterapia',
@@ -30,6 +39,41 @@ const roleCor: Record<string, { badge: string; dot: string }> = {
   qualidade:      { badge: 'bg-indigo-100 text-indigo-700', dot: 'bg-indigo-500' },
   direcao:        { badge: 'bg-yellow-100 text-yellow-700', dot: 'bg-yellow-500' },
 };
+
+function AgendaConfig({ agenda, onChange }: { agenda: AgendaDia[]; onChange: (a: AgendaDia[]) => void }) {
+  const update = (i: number, patch: Partial<AgendaDia>) =>
+    onChange(agenda.map((d, idx) => idx === i ? { ...d, ...patch } : d));
+
+  return (
+    <div>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+        Agenda de Consultas <span className="font-normal normal-case text-slate-400">(slots de 30 min)</span>
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {DIAS_SEMANA.map((dia, i) => (
+          <div key={i} className="flex items-center gap-3" style={{ padding: '8px 12px', borderRadius: '10px', background: agenda[i].ativo ? '#f0f9ff' : '#f8fafc', border: `1px solid ${agenda[i].ativo ? '#bae6fd' : '#e2e8f0'}` }}>
+            <input type="checkbox" checked={agenda[i].ativo} onChange={e => update(i, { ativo: e.target.checked })}
+              style={{ width: 16, height: 16, accentColor: '#2563eb', cursor: 'pointer', flexShrink: 0 }} />
+            <span className={`text-xs font-semibold w-7 ${agenda[i].ativo ? 'text-blue-700' : 'text-slate-400'}`}>{dia}</span>
+            {agenda[i].ativo ? (
+              <>
+                <input type="time" value={agenda[i].horaInicio} onChange={e => update(i, { horaInicio: e.target.value })}
+                  className="border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white"
+                  style={{ padding: '4px 8px' }} />
+                <span className="text-slate-400 text-xs">até</span>
+                <input type="time" value={agenda[i].horaFim} onChange={e => update(i, { horaFim: e.target.value })}
+                  className="border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 bg-white"
+                  style={{ padding: '4px 8px' }} />
+              </>
+            ) : (
+              <span className="text-xs text-slate-400 italic">Sem consultas</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function Avatar({ nome }: { nome: string }) {
   const initials = nome.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -53,6 +97,10 @@ export default function UtilizadoresPagina() {
   const [formEdit, setFormEdit] = useState({ nome: '', role: '', subRole: '', servico: 'internamento', ordemExperiencia: '', equipa: '' });
   const [erroEdit, setErroEdit] = useState('');
 
+  // Agenda (médicos)
+  const [agendaEdit, setAgendaEdit] = useState<AgendaDia[]>(agendaVazia());
+  const [agendaNovo, setAgendaNovo] = useState<AgendaDia[]>(agendaVazia());
+
   const carregar = useCallback(async () => {
     const [resUtil, resRoles] = await Promise.all([
       api.get('/utilizadores'),
@@ -72,13 +120,15 @@ export default function UtilizadoresPagina() {
   const criar = async (e: React.FormEvent) => {
     e.preventDefault(); setErro('');
     try {
-      await api.post('/utilizadores', {
+      const res = await api.post('/utilizadores', {
         nome: form.nome, numeroFuncionario: form.numeroFuncionario, password: form.password,
         role: form.role, subRole: form.subRole || undefined,
         servico: form.servico,
         ordemExperiencia: form.ordemExperiencia ? Number(form.ordemExperiencia) : undefined,
       });
+      await salvarNovoComAgenda(res.data.id);
       setMostrarForm(false);
+      setAgendaNovo(agendaVazia());
       setForm({ nome: '', numeroFuncionario: '', password: '', role: roles[0]?.chave ?? '', subRole: '', servico: 'internamento', ordemExperiencia: '' });
       await carregar();
     } catch (err: any) {
@@ -92,10 +142,22 @@ export default function UtilizadoresPagina() {
     await carregar();
   };
 
-  const abrirEditar = (u: Utilizador) => {
+  const abrirEditar = async (u: Utilizador) => {
     setEditando(u);
     setFormEdit({ nome: u.nome, role: u.role, subRole: u.subRole ?? '', servico: u.servico ?? 'internamento', ordemExperiencia: u.ordemExperiencia?.toString() ?? '', equipa: u.equipa ?? '' });
     setErroEdit('');
+    if (u.role === 'medico') {
+      try {
+        const res = await api.get(`/consultas/agenda/${u.id}`);
+        const regras: { diaSemana: number; horaInicio: string; horaFim: string; ativo: boolean }[] = res.data;
+        setAgendaEdit(agendaVazia().map((d, i) => {
+          const r = regras.find(r => r.diaSemana === i && r.ativo);
+          return r ? { ativo: true, horaInicio: r.horaInicio, horaFim: r.horaFim } : d;
+        }));
+      } catch {
+        setAgendaEdit(agendaVazia());
+      }
+    }
   };
 
   const guardarEdicao = async (e: React.FormEvent) => {
@@ -109,11 +171,37 @@ export default function UtilizadoresPagina() {
         ordemExperiencia: formEdit.ordemExperiencia ? Number(formEdit.ordemExperiencia) : undefined,
         equipa: formEdit.equipa || undefined,
       });
+      if (formEdit.role === 'medico') {
+        await Promise.all(agendaEdit.map((d, i) =>
+          api.post('/consultas/agenda', {
+            medicoId: editando.id,
+            diaSemana: i,
+            horaInicio: d.horaInicio,
+            horaFim: d.horaFim,
+            duracaoSlot: 30,
+            ativo: d.ativo,
+          })
+        ));
+      }
       setEditando(null);
       await carregar();
     } catch (err: any) {
       setErroEdit(err.response?.data?.message ?? 'Erro ao guardar alterações');
     }
+  };
+
+  const salvarNovoComAgenda = async (utilizadorId: string) => {
+    if (form.role !== 'medico') return;
+    await Promise.all(agendaNovo.map((d, i) =>
+      api.post('/consultas/agenda', {
+        medicoId: utilizadorId,
+        diaSemana: i,
+        horaInicio: d.horaInicio,
+        horaFim: d.horaFim,
+        duracaoSlot: 30,
+        ativo: d.ativo,
+      })
+    ));
   };
 
   const rolesComUtilizadores = roles.filter((r) => utilizadores.some((u) => u.role === r.chave && u.ativo));
@@ -278,6 +366,12 @@ export default function UtilizadoresPagina() {
                   style={{ padding: '10px 14px' }} />
                 <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>Deixe em branco para remover da equipa</p>
               </div>
+              {formEdit.role === 'medico' && (
+                <div style={{ marginBottom: '28px' }}>
+                  <div className="border-t border-slate-100" style={{ marginBottom: '20px', marginTop: '4px' }} />
+                  <AgendaConfig agenda={agendaEdit} onChange={setAgendaEdit} />
+                </div>
+              )}
               {erroEdit && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>{erroEdit}</div>}
               <div className="flex gap-3">
                 <button type="button" onClick={() => setEditando(null)} className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors" style={{ padding: '11px' }}>Cancelar</button>
@@ -350,9 +444,15 @@ export default function UtilizadoresPagina() {
                   className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
                   style={{ padding: '10px 14px' }} />
               </div>
+              {form.role === 'medico' && (
+                <div style={{ marginBottom: '28px' }}>
+                  <div className="border-t border-slate-100" style={{ marginBottom: '20px' }} />
+                  <AgendaConfig agenda={agendaNovo} onChange={setAgendaNovo} />
+                </div>
+              )}
               {erro && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style={{ padding: '12px 16px', marginBottom: '20px' }}>{erro}</div>}
               <div className="flex gap-3">
-                <button type="button" onClick={() => { setMostrarForm(false); setErro(''); }}
+                <button type="button" onClick={() => { setMostrarForm(false); setErro(''); setAgendaNovo(agendaVazia()); }}
                   className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors" style={{ padding: '11px' }}>Cancelar</button>
                 <button type="submit"
                   className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors" style={{ padding: '11px' }}>Criar Utilizador</button>

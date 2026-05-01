@@ -43,6 +43,7 @@ import { PedidosTIModule } from './pedidos-ti/pedidos-ti.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { FaturacaoModule } from './faturacao/faturacao.module';
 import { TicketsModule } from './tickets/tickets.module';
+import { EquipamentosModule } from './equipamentos/equipamentos.module';
 
 @Module({
   imports: [
@@ -84,6 +85,7 @@ import { TicketsModule } from './tickets/tickets.module';
     ConfiguracoesModule,
     FaturacaoModule,
     TicketsModule,
+    EquipamentosModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

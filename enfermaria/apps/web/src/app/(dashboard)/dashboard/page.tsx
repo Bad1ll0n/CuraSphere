@@ -442,6 +442,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
   const [tarefas, setTarefas] = useState<any[]>([]);
   const [turno, setTurno] = useState<any>(null);
   const [mensagensNaoLidas, setMensagensNaoLidas] = useState(0);
+  const [workload, setWorkload] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -450,11 +451,13 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
       api.get('/tarefas/minhas').catch(() => ({ data: [] })),
       api.get('/turnos/ativo').catch(() => ({ data: null })),
       api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
-    ]).then(([d, t, turnoR, msg]) => {
+      api.get('/dashboard/workload-turno').catch(() => ({ data: [] })),
+    ]).then(([d, t, turnoR, msg, wl]) => {
       setDoentes(d.data?.data ?? []);
       setTarefas((t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'));
       setTurno(turnoR.data);
       setMensagensNaoLidas(msg.data?.count ?? msg.data?.length ?? 0);
+      setWorkload(wl.data ?? []);
     }).finally(() => setLoading(false));
   }, []);
 
@@ -524,7 +527,34 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
               </div>
             )}
           </CardContainer>
-          <EmBreve titulo="Medicações Pendentes (MAR)" descricao="Registo de Administração de Medicação — Fase 7" />
+          <CardContainer>
+            <CardHeader title="Workload — Meu Turno" count={workload.length} countColor="bg-teal-100 text-teal-700" />
+            {workload.length === 0 ? <Vazio msg="Sem doentes atribuídos no turno atual" /> : (
+              <div>
+                {workload.map((w: any, i: number) => {
+                  const temAlerta = w.medicacoesPendentes > 0 || w.tarefasAtrasadas > 0 || w.alertasNaoLidos > 0;
+                  const ultimoSV = w.ultimoSinalVital ? new Date(w.ultimoSinalVital) : null;
+                  const horasSD = ultimoSV ? Math.round((Date.now() - ultimoSV.getTime()) / 3600000) : null;
+                  return (
+                    <Link key={w.doente.id} href={`/doentes/${w.doente.id}`}>
+                      <div className={`flex items-center justify-between hover:bg-slate-50 transition-colors ${temAlerta ? 'border-l-2 border-red-400' : ''}`} style={{ padding: '10px 16px', borderBottom: i < workload.length - 1 ? '1px solid #f8fafc' : 'none' }}>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-slate-800 truncate">{w.doente.nome}</p>
+                          <p className="text-xs text-slate-400">Cama {w.doente.cama ?? '—'} · {w.doente.quarto ?? '—'}</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                          {w.medicacoesPendentes > 0 && <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">💊 {w.medicacoesPendentes}</span>}
+                          {w.tarefasAtrasadas > 0 && <span className="text-xs bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-full font-medium">⚠️ {w.tarefasAtrasadas}</span>}
+                          {w.alertasNaoLidos > 0 && <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">🔔 {w.alertasNaoLidos}</span>}
+                          {horasSD !== null && <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${horasSD > 8 ? 'bg-red-100 text-red-700' : horasSD > 4 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>🕐 {horasSD}h</span>}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </CardContainer>
           {isUCI && <EmBreve titulo="Dispositivos Invasivos" descricao="Cateteres, ventiladores, drenos — Fase 7" />}
         </div>
       </div>
@@ -985,109 +1015,130 @@ function DashboardQualidade({ utilizador }: { utilizador: any }) {
 // ─── Vista 12: Executivo ──────────────────────────────────────────────────────
 
 function DashboardExecutivo({ utilizador }: { utilizador: any }) {
-  const [ocupacao, setOcupacao] = useState<any>(null);
-  const [doentes, setDoentes] = useState<any[]>([]);
+  const [kpis, setKpis] = useState<any>(null);
+  const [pessoal, setPessoal] = useState<any>(null);
   const [urgencia, setUrgencia] = useState<any>(null);
-  const [cirurgias, setCirurgias] = useState<any[]>([]);
-  const [consultas, setConsultas] = useState<any[]>([]);
-  const [alertasFarmacia, setAlertasFarmacia] = useState<any[]>([]);
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      api.get('/camas/ocupacao').catch(() => ({ data: null })),
-      api.get('/doentes?todos=true').catch(() => ({ data: [] })),
+      api.get('/dashboard/executivo').catch(() => ({ data: null })),
+      api.get('/dashboard/pessoal').catch(() => ({ data: null })),
       api.get('/urgencia/dashboard').catch(() => ({ data: null })),
-      api.get(`/bloco/agenda?data=${hojeISO}`).catch(() => ({ data: [] })),
-      api.get('/consultas').catch(() => ({ data: [] })),
-      api.get('/farmacia/alertas').catch(() => ({ data: [] })),
       api.get('/dashboard/analytics').catch(() => ({ data: null })),
-    ]).then(([o, d, u, c, co, fa, a]) => {
-      setOcupacao(o.data);
-      setDoentes(d.data?.data ?? []);
+    ]).then(([kp, ps, u, a]) => {
+      setKpis(kp.data);
+      setPessoal(ps.data);
       setUrgencia(u.data);
-      setCirurgias(c.data ?? []);
-      const hoje = new Date().toDateString();
-      setConsultas((co.data ?? []).filter((x: any) => new Date(x.dataHora).toDateString() === hoje));
-      setAlertasFarmacia(fa.data ?? []);
       setAnalytics(a.data);
     }).finally(() => setLoading(false));
   }, []);
 
-  const pct = ocupacao?.total ? Math.round((ocupacao.ocupadas / ocupacao.total) * 100) : 0;
-  const altasHoje = doentes.filter((d: any) => d.dataAltaPrevista && new Date(d.dataAltaPrevista).toDateString() === new Date().toDateString());
+  const pct = kpis?.camas?.taxaOcupacao ?? 0;
 
   if (loading) return <Spinner />;
 
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
-      <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
-        <StatCard label="Ocupação de Camas" value={`${pct}%`} sub={`${ocupacao?.ocupadas ?? 0} de ${ocupacao?.total ?? 0} camas`} color={pct > 90 ? 'bg-red-500' : pct > 75 ? 'bg-amber-500' : 'bg-emerald-500'} />
-        <StatCard label="Doentes Internados" value={doentes.length} color="bg-slate-700" />
-        <StatCard label="Cirurgias Hoje" value={cirurgias.length} color="bg-red-600" sub={`${cirurgias.filter((c: any) => c.estado === 'concluida').length} concluídas`} />
-        <StatCard label="Consultas Hoje" value={consultas.length} color="bg-blue-600" sub={`${consultas.filter((c: any) => c.estado === 'realizada').length} realizadas`} />
+
+      {/* KPI Cards — Linha 1 */}
+      <div className="grid grid-cols-5 gap-4" style={{ marginBottom: '28px' }}>
+        <StatCard label="Ocupação de Camas" value={`${pct}%`} sub={`${kpis?.camas?.ocupadas ?? 0}/${kpis?.camas?.total ?? 0} camas`} color={pct > 90 ? 'bg-red-500' : pct > 75 ? 'bg-amber-500' : 'bg-emerald-500'} />
+        <StatCard label="Internados" value={kpis?.doentes?.internados ?? 0} sub={`Avg ${kpis?.doentes?.mediaInternamento ?? 0}d internamento`} color="bg-slate-700" />
+        <StatCard label="Faturação Mês (Paga)" value={`€${((kpis?.faturacao?.pagoMes ?? 0) / 1000).toFixed(1)}k`} sub={`Pendente: €${((kpis?.faturacao?.pendenteMes ?? 0) / 1000).toFixed(1)}k`} color="bg-emerald-600" />
+        <StatCard label="No-Show Consultas" value={`${kpis?.consultasHoje?.taxaNoShow ?? 0}%`} sub={`${kpis?.consultasHoje?.faltaram ?? 0} de ${kpis?.consultasHoje?.total ?? 0} hoje`} color={(kpis?.consultasHoje?.taxaNoShow ?? 0) > 20 ? 'bg-red-500' : 'bg-blue-600'} />
+        <StatCard label="Trocas Turno Pendentes" value={kpis?.trocasPendentes ?? 0} color={(kpis?.trocasPendentes ?? 0) > 5 ? 'bg-amber-500' : 'bg-slate-500'} />
       </div>
 
       <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '24px' }}>
 
-        {/* Resumo de doentes */}
-        <div className="rounded-2xl shadow-lg flex flex-col justify-between" style={{ padding: '28px', background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)' }}>
-          <div>
-            <p className="text-blue-200 text-xs font-semibold uppercase tracking-widest" style={{ marginBottom: '16px' }}>Doentes por Estado</p>
-            <p className="text-5xl font-bold text-white" style={{ marginBottom: '4px' }}>{doentes.length}</p>
-            <p className="text-blue-200 text-sm">doentes internados</p>
-          </div>
-          <div style={{ marginTop: '24px' }} className="space-y-2">
-            {(['estavel', 'grave', 'critico', 'alta_prevista'] as const).map((e) => (
-              <div key={e} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${estadoCor[e].dot}`} />
-                  <span className="text-blue-100">{estadoLabel[e]}</span>
-                </div>
-                <span className="font-semibold text-white">{doentes.filter((d) => d.estado === e).length}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Urgência */}
+        {/* Faturação por cobertura */}
         <CardContainer>
-          <CardHeader title="Urgência — Últimas 24h" />
-          <div style={{ padding: '20px 24px' }}>
-            {urgencia ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Total de episódios</span>
-                  <span className="font-bold text-slate-900">{urgencia.total ?? '—'}</span>
-                </div>
-                {urgencia.porTriagem && Object.entries(urgencia.porTriagem).map(([cor, n]: [string, any]) => (
-                  <div key={cor} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-3 h-3 rounded-full ${cor === 'vermelho' ? 'bg-red-500' : cor === 'laranja' ? 'bg-orange-500' : cor === 'amarelo' ? 'bg-yellow-400' : cor === 'verde' ? 'bg-emerald-500' : 'bg-blue-400'}`} />
-                      <span className="text-sm text-slate-600 capitalize">{cor}</span>
-                    </div>
-                    <span className="font-semibold text-slate-900">{n}</span>
+          <CardHeader title="Faturação Mês — Por Cobertura" />
+          <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { key: 'sns', label: 'SNS', cor: '#3b82f6' },
+              { key: 'seguro', label: 'Seguro', cor: '#10b981' },
+              { key: 'particular', label: 'Particular', cor: '#8b5cf6' },
+            ].map(({ key, label, cor }) => {
+              const val = kpis?.faturacao?.porCobertura?.[key] ?? 0;
+              const total = kpis?.faturacao?.totalMes ?? 1;
+              const pctCob = total > 0 ? Math.round((val / total) * 100) : 0;
+              return (
+                <div key={key}>
+                  <div className="flex justify-between text-sm" style={{ marginBottom: '4px' }}>
+                    <span className="text-slate-600 font-medium">{label}</span>
+                    <span className="font-semibold text-slate-800">€{(val / 1000).toFixed(1)}k ({pctCob}%)</span>
                   </div>
-                ))}
-              </div>
-            ) : <Vazio msg="Sem dados de urgência" />}
+                  <div className="h-2 rounded-full bg-slate-100">
+                    <div className="h-2 rounded-full transition-all" style={{ width: `${pctCob}%`, background: cor }} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </CardContainer>
 
-        {/* Farmácia + Altas */}
+        {/* Pessoal */}
+        <CardContainer>
+          <CardHeader title="Pessoal — Resumo" />
+          <div style={{ padding: '12px 24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="flex justify-between text-sm" style={{ marginBottom: '4px' }}>
+              <span className="text-slate-500">Turnos cobertos (7d)</span>
+              <span className="font-semibold text-slate-800">{pessoal?.turnosCobertos7d ?? '—'} / {((pessoal?.turnosCobertos7d ?? 0) + (pessoal?.turnosSemCobertura7d ?? 0))}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Trocas aprovadas (30d)</span>
+              <span className="font-semibold text-emerald-700">{pessoal?.trocas30d?.aprovado ?? 0}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Trocas recusadas (30d)</span>
+              <span className="font-semibold text-red-600">{pessoal?.trocas30d?.recusado ?? 0}</span>
+            </div>
+            <div style={{ marginTop: '8px', borderTop: '1px solid #f1f5f9', paddingTop: '8px' }}>
+              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold" style={{ marginBottom: '6px' }}>Por Role</p>
+              {pessoal?.utilizadoresPorRole && Object.entries(pessoal.utilizadoresPorRole).slice(0, 6).map(([role, total]: [string, any]) => (
+                <div key={role} className="flex justify-between text-xs" style={{ padding: '2px 0' }}>
+                  <span className="text-slate-500 capitalize">{role}</span>
+                  <span className="font-semibold text-slate-700">{total}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContainer>
+
+        {/* Urgência + Doentes */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <CardContainer>
-            <CardHeader title="Alertas Farmácia" count={alertasFarmacia.length} countColor={alertasFarmacia.length > 0 ? 'bg-orange-100 text-orange-700' : undefined} />
-            <div style={{ padding: '14px 24px' }}>
-              <p className="text-sm text-slate-500">{alertasFarmacia.length > 0 ? `${alertasFarmacia.length} items abaixo do stock mínimo ou a expirar` : 'Stock em níveis adequados'}</p>
+            <CardHeader title="Urgência — Últimas 24h" />
+            <div style={{ padding: '12px 24px' }}>
+              {urgencia ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Total episódios</span>
+                    <span className="font-bold text-slate-800">{urgencia.total ?? '—'}</span>
+                  </div>
+                  {urgencia.porTriagem && Object.entries(urgencia.porTriagem).slice(0, 3).map(([cor, n]: [string, any]) => (
+                    <div key={cor} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${cor === 'vermelho' ? 'bg-red-500' : cor === 'laranja' ? 'bg-orange-500' : 'bg-yellow-400'}`} />
+                        <span className="text-slate-500 capitalize">{cor}</span>
+                      </div>
+                      <span className="font-semibold text-slate-700">{n}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : <Vazio msg="Sem dados" />}
             </div>
           </CardContainer>
           <CardContainer>
-            <CardHeader title="Altas Previstas Hoje" count={altasHoje.length} countColor={altasHoje.length > 0 ? 'bg-blue-100 text-blue-700' : undefined} />
-            <div style={{ padding: '14px 24px' }}>
-              <p className="text-sm text-slate-500">{altasHoje.length > 0 ? `${altasHoje.length} doentes com alta prevista para hoje` : 'Sem altas previstas para hoje'}</p>
+            <CardHeader title="Doentes" />
+            <div style={{ padding: '12px 24px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div className="flex justify-between text-sm"><span className="text-slate-500">Internados</span><span className="font-semibold text-slate-800">{kpis?.doentes?.internados ?? 0}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-slate-500">Ambulatório</span><span className="font-semibold text-slate-800">{kpis?.doentes?.ambulatorio ?? 0}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-slate-500">Aguarda Cama</span><span className="font-semibold text-amber-600">{kpis?.doentes?.pendenteCama ?? 0}</span></div>
             </div>
           </CardContainer>
         </div>

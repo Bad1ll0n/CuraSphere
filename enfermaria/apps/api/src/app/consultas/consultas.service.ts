@@ -18,16 +18,17 @@ export class ConsultasService {
   // ─── Agenda semanal ───────────────────────────────────────────────────────
 
   async criarAgenda(dto: {
-    medicoId: string; diaSemana: number; horaInicio: string; horaFim: string; duracaoSlot?: number;
+    medicoId: string; diaSemana: number; horaInicio: string; horaFim: string; duracaoSlot?: number; ativo?: boolean;
   }) {
+    const ativo = dto.ativo ?? true;
     return this.prisma.agendaMedico.upsert({
       where: { medicoId_diaSemana: { medicoId: dto.medicoId, diaSemana: dto.diaSemana } },
       create: {
         medicoId: dto.medicoId, diaSemana: dto.diaSemana,
         horaInicio: dto.horaInicio, horaFim: dto.horaFim,
-        duracaoSlot: dto.duracaoSlot ?? 20,
+        duracaoSlot: 30, ativo,
       },
-      update: { horaInicio: dto.horaInicio, horaFim: dto.horaFim, duracaoSlot: dto.duracaoSlot ?? 20, ativo: true },
+      update: { horaInicio: dto.horaInicio, horaFim: dto.horaFim, duracaoSlot: 30, ativo },
     });
   }
 
@@ -43,7 +44,7 @@ export class ConsultasService {
 
   async agendaSemanal(medicoId: string) {
     return this.prisma.agendaMedico.findMany({
-      where: { medicoId, ativo: true },
+      where: { medicoId },
       orderBy: { diaSemana: 'asc' },
     });
   }
