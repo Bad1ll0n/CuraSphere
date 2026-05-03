@@ -190,18 +190,6 @@ const navItems = [
       </svg>
     ),
   },
-  // 15 — Horários
-  {
-    href: '/horarios',
-    label: 'Horários',
-    servicos: null,
-    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
   // 16 — Farmácia
   {
     href: '/farmacia',
@@ -231,6 +219,7 @@ const navItems = [
     href: '/recepcao',
     label: 'Receção',
     servicos: null,
+    excludeServicos: ['urgencia'],
     roles: [...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,6 +232,7 @@ const navItems = [
     href: '/registos-administrativos',
     label: 'Registos Admin.',
     servicos: null,
+    excludeServicos: ['urgencia'],
     roles: [...ROLES_ADMIN],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -371,6 +361,18 @@ const navItems = [
       </svg>
     ),
   },
+  // Horários (último — visível a todos)
+  {
+    href: '/horarios',
+    label: 'Horários',
+    servicos: null,
+    roles: [...ROLES_CLINICO, ...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
   // 30 — Configurações (it_admin)
   {
     href: '/configuracoes',
@@ -482,6 +484,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [salvandoPwd, setSalvandoPwd] = useState(false);
   const [pwdErro, setPwdErro] = useState('');
 
+  const [modalConfig, setModalConfig] = useState(false);
+  const [tema, setTema] = useState<'light'|'dark'>('light');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('curasphere-theme') as 'light'|'dark'|null;
+    if (saved) setTema(saved);
+  }, []);
+
+  const aplicarTema = (t: 'light'|'dark') => {
+    setTema(t);
+    localStorage.setItem('curasphere-theme', t);
+    document.documentElement.classList.toggle('dark', t === 'dark');
+  };
+
   const alterarPassword = async () => {
     if (novaSenha !== confirmarSenha) { setPwdErro('As passwords não coincidem'); return; }
     if (novaSenha.length < 6) { setPwdErro('A nova password deve ter pelo menos 6 caracteres'); return; }
@@ -518,8 +534,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const servicoOk   = !item.servicos || item.servicos.includes(utilizador.servico ?? 'internamento');
     const roleOk      = !item.roles    || item.roles.includes(utilizador.role);
     const subRoleOk   = !(item as any).subRoles        || (item as any).subRoles.includes(utilizador.subRole);
-    const notExcluded = !(item as any).excludeSubRoles || !(item as any).excludeSubRoles.includes(utilizador.subRole);
-    return servicoOk && roleOk && subRoleOk && notExcluded;
+    const notExcluded        = !(item as any).excludeSubRoles  || !(item as any).excludeSubRoles.includes(utilizador.subRole);
+    const notExcludedServico = !(item as any).excludeServicos  || !(item as any).excludeServicos.includes(utilizador.servico ?? 'internamento');
+    return servicoOk && roleOk && subRoleOk && notExcluded && notExcludedServico;
   });
 
   return (
@@ -590,13 +607,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
           <button
-            onClick={() => { setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setPwdErro(''); setModalPwd(true); }}
+            onClick={() => setModalConfig(true)}
             className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/5 rounded-xl text-sm transition-all"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            Alterar Password
+            Configurações
           </button>
           <button
             onClick={logout}
@@ -614,6 +631,62 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main className="flex-1 overflow-auto">
         {children}
       </main>
+
+      {/* Modal: Configurações */}
+      {modalConfig && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          onClick={e => { if (e.target === e.currentTarget) setModalConfig(false); }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '28px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Configurações</h2>
+              <button onClick={() => setModalConfig(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold leading-none">✕</button>
+            </div>
+
+            {/* Tema */}
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Tema</p>
+            <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '28px' }}>
+              <button
+                onClick={() => aplicarTema('light')}
+                className={`flex flex-col items-center gap-2 border-2 rounded-xl transition-all ${tema === 'light' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
+                style={{ padding: '16px 12px' }}
+              >
+                <svg className={`w-6 h-6 ${tema === 'light' ? 'text-blue-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                </svg>
+                <span className={`text-sm font-semibold ${tema === 'light' ? 'text-blue-600' : 'text-slate-500'}`}>Claro</span>
+              </button>
+              <button
+                onClick={() => aplicarTema('dark')}
+                className={`flex flex-col items-center gap-2 border-2 rounded-xl transition-all ${tema === 'dark' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-slate-300'}`}
+                style={{ padding: '16px 12px' }}
+              >
+                <svg className={`w-6 h-6 ${tema === 'dark' ? 'text-blue-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+                <span className={`text-sm font-semibold ${tema === 'dark' ? 'text-blue-600' : 'text-slate-500'}`}>Escuro</span>
+              </button>
+            </div>
+
+            {/* Conta */}
+            <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '12px' }}>Conta</p>
+              <button
+                onClick={() => { setModalConfig(false); setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setPwdErro(''); setModalPwd(true); }}
+                className="w-full flex items-center gap-3 text-sm text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                style={{ padding: '10px 14px' }}
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                </svg>
+                Alterar Password
+                <svg className="w-4 h-4 ml-auto text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal: Alterar Password */}
       {modalPwd && (

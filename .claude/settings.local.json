@@ -101,7 +101,8 @@
       "Bash(cd c:\\\\\\\\Users\\\\\\\\Badillon\\\\\\\\Projeto_Enfermaria\\\\\\\\enfermaria)",
       "Bash(powershell -Command \"netstat -ano | Select-String ':3333'\")",
       "Bash(powershell -Command \"Start-Sleep -Seconds 10; netstat -ano | Select-String ':3333|:3000'\")",
-      "Bash(powershell -Command \"Start-Sleep -Seconds 25; netstat -ano | Select-String ':3333'\")"
+      "Bash(powershell -Command \"Start-Sleep -Seconds 25; netstat -ano | Select-String ':3333'\")",
+      "Bash(Select-Object Name)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

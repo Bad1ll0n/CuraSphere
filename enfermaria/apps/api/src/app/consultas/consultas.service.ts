@@ -139,10 +139,11 @@ export class ConsultasService {
     });
   }
 
-  async listar(medicoId?: string, especialidade?: string, data?: string) {
+  async listar(medicoId?: string, especialidade?: string, data?: string, doenteId?: string) {
     const where: any = {};
     if (medicoId) where.medicoId = medicoId;
     if (especialidade) where.especialidade = especialidade;
+    if (doenteId) where.doenteId = doenteId;
     if (data) {
       const d = new Date(data); const fim = new Date(d); fim.setDate(fim.getDate() + 1);
       where.dataHora = { gte: d, lt: fim };
@@ -218,7 +219,7 @@ export class ConsultasService {
   private includeRelations() {
     return {
       doente: { select: { id: true, nome: true, dataNascimento: true, numeroProcesso: true } },
-      medico: { select: { id: true, nome: true, role: true, subRole: true, especialidade: true } },
+      medico: { select: { id: true, nome: true, role: true, subRole: true } },
     } as any;
   }
 }

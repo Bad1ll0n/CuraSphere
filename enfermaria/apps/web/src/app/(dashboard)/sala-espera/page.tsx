@@ -55,8 +55,21 @@ export default function SalaEsperaPage() {
   const [loading, setLoading] = useState(true);
   const [mostrarTodos, setMostrarTodos] = useState(false);
   const [modal, setModal] = useState(false);
-  const [form, setForm] = useState({ nomeDoente: '', dataNascimento: '', numeroUtente: '', motivo: '', prioridade: 3, observacoes: '' });
+  const [form, setForm] = useState({
+    nomeDoente: '', dataNascimento: '', numeroUtente: '', motivo: '', prioridade: 3, observacoes: '',
+    nif: '', telefone: '', email: '',
+    morada: '', codigoPostal: '', localidade: '',
+    tipoCobertura: 'sns', entidadeSeguradora: '', numeroApolice: '',
+  });
+  const [erros, setErros] = useState<Record<string, string>>({});
   const [salvando, setSalvando] = useState(false);
+
+  const resetForm = () => setForm({
+    nomeDoente: '', dataNascimento: '', numeroUtente: '', motivo: '', prioridade: 3, observacoes: '',
+    nif: '', telefone: '', email: '',
+    morada: '', codigoPostal: '', localidade: '',
+    tipoCobertura: 'sns', entidadeSeguradora: '', numeroApolice: '',
+  });
 
   const carregar = useCallback(async () => {
     const [c, s] = await Promise.all([
@@ -74,12 +87,46 @@ export default function SalaEsperaPage() {
   const podeChamar   = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
 
   const registar = async () => {
-    if (!form.nomeDoente.trim() || !form.motivo.trim()) return;
+    const e: Record<string, string> = {};
+    if (!form.nomeDoente.trim()) e.nomeDoente = 'Nome obrigatório';
+    if (!form.motivo.trim()) e.motivo = 'Motivo obrigatório';
+    if (form.nif && !/^\d{9}$/.test(form.nif)) e.nif = 'NIF deve ter 9 dígitos';
+    if (form.telefone && !/^[239]\d{8}$/.test(form.telefone)) e.telefone = 'Telefone inválido (ex: 912345678)';
+    if (form.email && !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Email inválido';
+    if (form.codigoPostal && !/^\d{4}-\d{3}$/.test(form.codigoPostal)) e.codigoPostal = 'Formato: 0000-000';
+    if (form.tipoCobertura === 'seguro' && !form.entidadeSeguradora.trim()) e.entidadeSeguradora = 'Campo obrigatório para seguro';
+    if (form.tipoCobertura === 'seguro' && !form.numeroApolice.trim()) e.numeroApolice = 'Campo obrigatório para seguro';
+    if (Object.keys(e).length > 0) { setErros(e); return; }
+    setErros({});
     setSalvando(true);
     try {
-      await api.post('/sala-espera', { ...form, dataNascimento: form.dataNascimento || undefined, numeroUtente: form.numeroUtente || undefined });
+      await api.post('/sala-espera', {
+        nomeDoente: form.nomeDoente,
+        dataNascimento: form.dataNascimento || undefined,
+        numeroUtente: form.numeroUtente || undefined,
+        motivo: form.motivo,
+        prioridade: form.prioridade,
+        observacoes: form.observacoes || undefined,
+      });
+      if (form.nif && form.numeroUtente && form.telefone) {
+        await api.post('/doentes/registro-rapido', {
+          tipoVisita: 'urgencia',
+          nome: form.nomeDoente,
+          dataNascimento: form.dataNascimento || undefined,
+          nif: form.nif,
+          numeroSNS: form.numeroUtente,
+          telefone: form.telefone,
+          email: form.email || undefined,
+          morada: form.morada || undefined,
+          codigoPostal: form.codigoPostal || undefined,
+          localidade: form.localidade || undefined,
+          tipoCobertura: form.tipoCobertura || undefined,
+          entidadeSeguradora: form.entidadeSeguradora || undefined,
+          numeroApolice: form.numeroApolice || undefined,
+        }).catch(() => {});
+      }
       setModal(false);
-      setForm({ nomeDoente: '', dataNascimento: '', numeroUtente: '', motivo: '', prioridade: 3, observacoes: '' });
+      resetForm();
       carregar();
     } finally { setSalvando(false); }
   };
@@ -204,29 +251,34 @@ export default function SalaEsperaPage() {
 
       {/* Modal: Registar Entrada */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '460px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
+          onClick={e => { if (e.target === e.currentTarget) { setModal(false); setErros({}); } }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '520px', padding: '32px', margin: '0 16px', maxHeight: '92vh' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-lg font-bold text-slate-900">Registar Entrada</h2>
-              <button onClick={() => setModal(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+              <button onClick={() => { setModal(false); setErros({}); }} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
 
-            {[
+            {/* ── Secção 1: Triagem ── */}
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Triagem</p>
+
+            {([
               { label: 'Nome do Utente *', key: 'nomeDoente', type: 'text', placeholder: 'Nome completo' },
-              { label: 'Número de Utente', key: 'numeroUtente', type: 'text', placeholder: 'Ex: 123456789' },
+              { label: 'Número de Utente (SNS)', key: 'numeroUtente', type: 'text', placeholder: 'Ex: 123456789' },
               { label: 'Data de Nascimento', key: 'dataNascimento', type: 'date', placeholder: '' },
-              { label: 'Motivo da Consulta *', key: 'motivo', type: 'text', placeholder: 'Ex: Dor abdominal, Febre, Renovação receita...' },
-            ].map(({ label, key, type, placeholder }) => (
-              <div key={key} style={{ marginBottom: '14px' }}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>{label}</label>
+              { label: 'Motivo da Entrada *', key: 'motivo', type: 'text', placeholder: 'Ex: Dor abdominal, Febre alta...' },
+            ] as { label: string; key: string; type: string; placeholder: string }[]).map(({ label, key, type, placeholder }) => (
+              <div key={key} style={{ marginBottom: '12px' }}>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
                 <input type={type} value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
                   style={{ padding: '10px 14px' }} placeholder={placeholder} />
+                {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}
               </div>
             ))}
 
-            <div style={{ marginBottom: '14px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
+            <div style={{ marginBottom: '12px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Prioridade</label>
               <select value={form.prioridade} onChange={e => setForm(f => ({ ...f, prioridade: Number(e.target.value) }))}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }}>
@@ -237,21 +289,104 @@ export default function SalaEsperaPage() {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Observações</label>
               <textarea value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
                 rows={2} placeholder="Informações adicionais..."
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
 
-            <div className="flex gap-3">
-              <button onClick={() => setModal(false)}
+            {/* ── Secção 2: Dados Administrativos ── */}
+            <div className="border-t border-slate-100" style={{ paddingTop: '20px', marginBottom: '14px' }}>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '4px' }}>Dados Administrativos</p>
+              <p className="text-xs text-slate-400" style={{ marginBottom: '14px' }}>Se disponíveis, ficam associados ao processo do utente.</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4">
+              {([
+                { label: 'NIF', key: 'nif', placeholder: '123456789' },
+                { label: 'Telefone', key: 'telefone', placeholder: '912345678' },
+              ] as { label: string; key: string; placeholder: string }[]).map(({ label, key, placeholder }) => (
+                <div key={key} style={{ marginBottom: '12px' }}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>{label}</label>
+                  <input type="text" value={(form as any)[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                    className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros[key] ? 'border-red-400' : 'border-slate-200'}`}
+                    style={{ padding: '10px 14px' }} placeholder={placeholder} />
+                  {erros[key] && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros[key]}</p>}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Email</label>
+              <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.email ? 'border-red-400' : 'border-slate-200'}`}
+                style={{ padding: '10px 14px' }} placeholder="exemplo@email.com" />
+              {erros.email && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.email}</p>}
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Morada</label>
+              <input type="text" value={form.morada} onChange={e => setForm(f => ({ ...f, morada: e.target.value }))}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '10px 14px' }} placeholder="Rua, número, andar" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4" style={{ marginBottom: '12px' }}>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Código Postal</label>
+                <input type="text" value={form.codigoPostal} onChange={e => setForm(f => ({ ...f, codigoPostal: e.target.value }))}
+                  className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.codigoPostal ? 'border-red-400' : 'border-slate-200'}`}
+                  style={{ padding: '10px 14px' }} placeholder="0000-000" />
+                {erros.codigoPostal && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.codigoPostal}</p>}
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Localidade</label>
+                <input type="text" value={form.localidade} onChange={e => setForm(f => ({ ...f, localidade: e.target.value }))}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '10px 14px' }} placeholder="Lisboa" />
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Tipo de Cobertura</label>
+              <select value={form.tipoCobertura} onChange={e => setForm(f => ({ ...f, tipoCobertura: e.target.value }))}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '10px 14px' }}>
+                <option value="sns">SNS</option>
+                <option value="seguro">Seguro</option>
+                <option value="particular">Particular</option>
+                <option value="adse">ADSE</option>
+              </select>
+            </div>
+
+            {form.tipoCobertura === 'seguro' && (
+              <div className="grid grid-cols-2 gap-x-4" style={{ marginBottom: '12px' }}>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>Entidade Seguradora *</label>
+                  <input type="text" value={form.entidadeSeguradora} onChange={e => setForm(f => ({ ...f, entidadeSeguradora: e.target.value }))}
+                    className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.entidadeSeguradora ? 'border-red-400' : 'border-slate-200'}`}
+                    style={{ padding: '10px 14px' }} placeholder="Ex: Fidelidade" />
+                  {erros.entidadeSeguradora && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.entidadeSeguradora}</p>}
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '5px' }}>N.º Apólice *</label>
+                  <input type="text" value={form.numeroApolice} onChange={e => setForm(f => ({ ...f, numeroApolice: e.target.value }))}
+                    className={`w-full border rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${erros.numeroApolice ? 'border-red-400' : 'border-slate-200'}`}
+                    style={{ padding: '10px 14px' }} placeholder="Ex: AP12345678" />
+                  {erros.numeroApolice && <p className="text-xs text-red-500" style={{ marginTop: '3px' }}>{erros.numeroApolice}</p>}
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3" style={{ marginTop: '24px' }}>
+              <button onClick={() => { setModal(false); setErros({}); }}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50"
                 style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={registar} disabled={salvando || !form.nomeDoente.trim() || !form.motivo.trim()}
+              <button onClick={registar} disabled={salvando}
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
-                {salvando ? 'A registar...' : 'Registar'}
+                {salvando ? 'A registar...' : 'Registar Entrada'}
               </button>
             </div>
           </div>

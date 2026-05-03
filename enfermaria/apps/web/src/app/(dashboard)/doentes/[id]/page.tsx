@@ -406,6 +406,12 @@ export default function DoenteDetalhe() {
   const [dispObservacoes, setDispObservacoes] = useState('');
   const [salvandoDisp, setSalvandoDisp] = useState(false);
 
+  // Consultas
+  const [consultas, setConsultas] = useState<any[]>([]);
+
+  // Faturação
+  const [faturacao, setFaturacao] = useState<any[]>([]);
+
   // Alta estruturada
   const [modalAltaEstruturada, setModalAltaEstruturada] = useState(false);
   const [altaMotivo, setAltaMotivo] = useState('melhoria');
@@ -680,6 +686,8 @@ export default function DoenteDetalhe() {
       carregarDispositivos(),
       carregarFicheiroPessoal(),
       api.get(`/doentes/${id}/problemas`).then(r => setProblemas(r.data ?? [])).catch(() => setProblemas([])),
+      api.get(`/consultas?doenteId=${id}`).then(r => setConsultas(r.data ?? [])).catch(() => setConsultas([])),
+      api.get(`/faturacao/doente/${id}`).then(r => setFaturacao(r.data ?? [])).catch(() => setFaturacao([])),
     ]);
   }, [id]);
 
@@ -2578,6 +2586,203 @@ export default function DoenteDetalhe() {
           </div>
         </div>
       )}
+
+      {/* ── Consultas ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const visivel = ['medico', 'enfermeiro', 'administrativo'].includes(role);
+        if (!visivel) return null;
+
+        const proximas = consultas
+          .filter((c: any) => c.estado === 'agendada')
+          .sort((a: any, b: any) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime());
+        const historico = consultas
+          .filter((c: any) => c.estado !== 'agendada')
+          .sort((a: any, b: any) => new Date(b.dataHora).getTime() - new Date(a.dataHora).getTime());
+
+        const ESTADO_BADGE: Record<string, string> = {
+          agendada: 'bg-blue-50 text-blue-700',
+          realizada: 'bg-green-50 text-green-700',
+          faltou: 'bg-orange-50 text-orange-700',
+          cancelada: 'bg-slate-100 text-slate-500',
+        };
+        const ESTADO_LABEL: Record<string, string> = {
+          agendada: 'Agendada', realizada: 'Realizada', faltou: 'Faltou', cancelada: 'Cancelada',
+        };
+
+        const fmtData = (iso: string) =>
+          new Date(iso).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        const ConsultaRow = ({ c }: { c: any }) => (
+          <div className="flex flex-col gap-1 border border-slate-100 rounded-xl" style={{ padding: '12px 16px' }}>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm font-medium text-slate-800">{fmtData(c.dataHora)}</span>
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                {ESTADO_LABEL[c.estado] ?? c.estado}
+              </span>
+              <span className="text-xs text-slate-400 font-mono">{c.codigo}</span>
+            </div>
+            <div className="text-xs text-slate-500">
+              {c.especialidade}{c.medico?.nome ? ` · ${c.medico.nome}` : ''}
+            </div>
+            {c.diagnostico && (
+              <p className="text-xs text-slate-500 italic" style={{ marginTop: '2px' }}>{c.diagnostico}</p>
+            )}
+          </div>
+        );
+
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Consultas</span>
+              {consultas.length > 0 && (
+                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {consultas.length}
+                </span>
+              )}
+            </div>
+
+            {consultas.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem consultas registadas</p>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {proximas.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Próximas</p>
+                    <div className="flex flex-col gap-2">
+                      {proximas.map((c: any) => <ConsultaRow key={c.id} c={c} />)}
+                    </div>
+                  </div>
+                )}
+                {historico.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Histórico</p>
+                    <div className="flex flex-col gap-2">
+                      {historico.map((c: any) => <ConsultaRow key={c.id} c={c} />)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Faturação ── */}
+      {(() => {
+        const role = utilizador?.role ?? '';
+        const visivel = ['administrativo', 'direcao'].includes(role);
+        if (!visivel) return null;
+
+        const pendentes = faturacao.filter((e: any) => ['pendente', 'emitida'].includes(e.estado));
+        const totalPendente = pendentes.reduce((acc: number, e: any) => {
+          const pago = (e.pagamentos ?? []).reduce((s: number, p: any) => s + (p.valor ?? 0), 0);
+          return acc + Math.max(0, (e.totalCobrado ?? 0) - pago);
+        }, 0);
+
+        const ESTADO_BADGE: Record<string, string> = {
+          pendente: 'bg-yellow-50 text-yellow-700',
+          emitida: 'bg-orange-50 text-orange-700',
+          paga: 'bg-green-50 text-green-700',
+          isenta: 'bg-blue-50 text-blue-700',
+          anulada: 'bg-slate-100 text-slate-500',
+        };
+        const ESTADO_LABEL: Record<string, string> = {
+          pendente: '⏳ Pendente', emitida: '📄 Emitida', paga: '✅ Paga', isenta: '🔵 Isenta', anulada: '❌ Anulada',
+        };
+
+        const fmtEur = (v: number) =>
+          v.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
+        const fmtData = (iso: string) =>
+          new Date(iso).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+        return (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
+            <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Faturação</span>
+              {faturacao.length > 0 && (
+                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                  {faturacao.length} episódio{faturacao.length !== 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+
+            {pendentes.length > 0 && (
+              <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800" style={{ padding: '10px 14px', marginBottom: '16px' }}>
+                <span>⚠</span>
+                <span>
+                  {pendentes.length} episódio{pendentes.length !== 1 ? 's' : ''} com pagamento pendente —{' '}
+                  <strong>Total: {fmtEur(totalPendente)}</strong>
+                </span>
+              </div>
+            )}
+
+            {faturacao.length === 0 ? (
+              <p className="text-sm text-slate-400 text-center" style={{ padding: '16px 0' }}>Sem episódios de faturação</p>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {faturacao.map((e: any) => {
+                  const pago = (e.pagamentos ?? []).reduce((s: number, p: any) => s + (p.valor ?? 0), 0);
+                  const emFalta = Math.max(0, (e.totalCobrado ?? 0) - pago);
+                  return (
+                    <div key={e.id} className="border border-slate-100 rounded-xl" style={{ padding: '14px 16px' }}>
+                      <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '8px' }}>
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE[e.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                          {ESTADO_LABEL[e.estado] ?? e.estado}
+                        </span>
+                        {e.dataEmissao && <span className="text-xs text-slate-500">{fmtData(e.dataEmissao)}</span>}
+                        {e.tipoCobertura && <span className="text-xs text-slate-400">{e.tipoCobertura}</span>}
+                        <span className="text-xs font-semibold text-slate-700" style={{ marginLeft: 'auto' }}>{fmtEur(e.totalCobrado ?? 0)}</span>
+                      </div>
+
+                      {(e.itens ?? []).length > 0 && (
+                        <div style={{ marginBottom: '8px' }}>
+                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Itens</p>
+                          {(e.itens ?? []).map((it: any) => (
+                            <div key={it.id} className="flex justify-between text-xs text-slate-500 py-0.5">
+                              <span>{it.descricao} <span className="text-slate-400">({it.categoria})</span></span>
+                              <span>{it.quantidade} × {fmtEur(it.precoUnitario)} = {fmtEur(it.total)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {(e.pagamentos ?? []).length > 0 && (
+                        <div style={{ marginBottom: '6px' }}>
+                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Pagamentos</p>
+                          {(e.pagamentos ?? []).map((p: any) => (
+                            <div key={p.id} className="flex justify-between text-xs text-slate-500 py-0.5">
+                              <span>{p.metodo}{p.referencia ? ` · ${p.referencia}` : ''} · {fmtData(p.criadoEm)}</span>
+                              <span>{fmtEur(p.valor)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {emFalta > 0 && (
+                        <div className="flex justify-between text-xs font-semibold text-red-600 border-t border-slate-100" style={{ paddingTop: '6px', marginTop: '4px' }}>
+                          <span>Valor em falta</span>
+                          <span>{fmtEur(emFalta)}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Modal Editar Doente */}
       {modalEditarDoente && (

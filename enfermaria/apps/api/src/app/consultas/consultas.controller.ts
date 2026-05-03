@@ -54,8 +54,9 @@ export class ConsultasController {
     @Query('medicoId') medicoId?: string,
     @Query('especialidade') especialidade?: string,
     @Query('data') data?: string,
+    @Query('doenteId') doenteId?: string,
   ) {
-    return this.service.listar(medicoId, especialidade, data);
+    return this.service.listar(medicoId, especialidade, data, doenteId);
   }
 
   @Get('medico/:medicoId')

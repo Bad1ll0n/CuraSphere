@@ -13,7 +13,7 @@ const SERVICOS = [
   { tipo: 'geral', letra: 'G', label: 'Informações', cor: '#6b7280' },
 ];
 
-type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes' | 'nova_medico' | 'nova_data' | 'nova_slot' | 'nova_confirmar' | 'nova_sucesso';
+type Estado = 'selecionar' | 'opcoes' | 'sucesso' | 'marcacao' | 'marcacao_confirm' | 'marcacao_sucesso' | 'nif' | 'nif_resultado' | 'nif_marcacoes' | 'nova_especialidade' | 'nova_medico' | 'nova_data' | 'nova_slot' | 'nova_confirmar' | 'nova_sucesso';
 
 const SUBROLE_LABEL: Record<string, string> = {
   clinico_geral: 'Clínica Geral',
@@ -27,6 +27,21 @@ const SUBROLE_LABEL: Record<string, string> = {
   triador: 'Triagem',
   generalista: 'Geral',
 };
+
+const SUBROLE_ICONE: Record<string, string> = {
+  clinico_geral: '🏥',
+  cardiologista: '❤️',
+  cirurgiao_geral: '🔬',
+  ortopedista: '🦴',
+  pediatra: '👶',
+  neurologista: '🧠',
+  pneumologista: '🫁',
+  dermatologista: '🧴',
+  triador: '📋',
+  generalista: '👨‍⚕️',
+};
+
+const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 export default function QuiosquePage() {
   const [estado, setEstado] = useState<Estado>('selecionar');
@@ -57,6 +72,8 @@ export default function QuiosquePage() {
   const [carregandoSlots, setCarregandoSlots] = useState(false);
   const [novaConsulta, setNovaConsulta] = useState<{ codigo: string; dataHora: string; medico: { nome: string } } | null>(null);
   const [erroMarcacao, setErroMarcacao] = useState('');
+  const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState('');
+  const [slotCache, setSlotCache] = useState<Record<string, Slot[] | null>>({});
 
   // Marcação
   const [codigoInput, setCodigoInput] = useState('');
@@ -113,6 +130,8 @@ export default function QuiosquePage() {
     setSlotSelecionado(null);
     setNovaConsulta(null);
     setErroMarcacao('');
+    setEspecialidadeSelecionada('');
+    setSlotCache({});
   }
 
   async function iniciarMarcacao() {
@@ -122,7 +141,7 @@ export default function QuiosquePage() {
       const res = await fetch(`${API}/quiosque/medicos`);
       const data = res.ok ? await res.json() : [];
       setMedicos(data);
-      setEstado('nova_medico');
+      setEstado('nova_especialidade');
     } finally {
       setCarregandoMedicos(false);
     }
@@ -133,7 +152,38 @@ export default function QuiosquePage() {
     setDataSelecionada('');
     setSlots([]);
     setSlotSelecionado(null);
+    setSlotCache({});
     setEstado('nova_data');
+
+    // Pré-carregar disponibilidade dos próximos 28 dias em paralelo
+    const hoje = new Date();
+    const amanhaUtc = new Date(Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1));
+    const dias = Array.from({ length: 28 }, (_, i) =>
+      new Date(amanhaUtc.getTime() + i * 86400000).toISOString().split('T')[0]
+    );
+    setSlotCache(Object.fromEntries(dias.map(d => [d, null]))); // null = a carregar
+
+    Promise.allSettled(
+      dias.map(dia =>
+        fetch(`${API}/quiosque/medicos/${m.id}/slots?data=${dia}`)
+          .then(r => r.ok ? r.json() : [])
+          .then((s: Slot[]) => ({ dia, slots: s.filter(x => x.disponivel) }))
+          .catch(() => ({ dia, slots: [] as Slot[] }))
+      )
+    ).then(results => {
+      const cache: Record<string, Slot[]> = {};
+      results.forEach(r => { if (r.status === 'fulfilled') cache[r.value.dia] = r.value.slots; });
+      setSlotCache(cache);
+    });
+  }
+
+  function selecionarDiaCalendario(dia: string) {
+    const cached = slotCache[dia];
+    if (cached === null) return; // ainda a carregar
+    if (!cached || cached.length === 0) return; // sem disponibilidade
+    setDataSelecionada(dia);
+    setSlots(cached);
+    setSlotSelecionado(null);
   }
 
   async function selecionarData(data: string) {
@@ -764,12 +814,12 @@ export default function QuiosquePage() {
         </div>
       )}
 
-      {/* ── NOVA MARCAÇÃO: Selecionar Médico ── */}
-      {estado === 'nova_medico' && (
-        <div style={{ width: '100%', maxWidth: 640 }}>
-          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 8 }}>Escolha o médico</h2>
+      {/* ── NOVA MARCAÇÃO: Selecionar Especialidade ── */}
+      {estado === 'nova_especialidade' && (
+        <div style={{ width: '100%', maxWidth: 600 }}>
+          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 24, marginBottom: 8 }}>Escolha a especialidade</h2>
           <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
-            Selecione a especialidade e o profissional pretendido
+            Selecione a área médica para a sua consulta
           </p>
           {medicos.length === 0 ? (
             <div style={{ textAlign: 'center', color: '#94a3b8', padding: '40px 0' }}>
@@ -777,21 +827,21 @@ export default function QuiosquePage() {
               <p style={{ fontSize: 14, marginTop: 8 }}>Dirija-se à receção para marcação assistida.</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {Array.from(new Set(medicos.map(m => m.subRole))).map(especialidade => (
-                <div key={especialidade}>
-                  <p style={{ color: '#64748b', fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>
-                    {SUBROLE_LABEL[especialidade] ?? especialidade}
-                  </p>
-                  {medicos.filter(m => m.subRole === especialidade).map(m => (
-                    <button key={m.id} onClick={() => selecionarMedico(m)}
-                      style={{ width: '100%', padding: '18px 24px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 16, fontWeight: 600, cursor: 'pointer', textAlign: 'left', marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span>{m.nome.replace(/^Dr\.|^Dra\./, '').trim()}</span>
-                      <span style={{ color: '#60a5fa', fontSize: 14 }}>→</span>
-                    </button>
-                  ))}
-                </div>
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {Array.from(new Set(medicos.map(m => m.subRole))).map(subRole => {
+                const count = medicos.filter(m => m.subRole === subRole).length;
+                return (
+                  <button key={subRole}
+                    onClick={() => { setEspecialidadeSelecionada(subRole); setEstado('nova_medico'); }}
+                    style={{ width: '100%', padding: '22px 28px', borderRadius: 14, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 18, fontWeight: 600, cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  >
+                    <span>{SUBROLE_ICONE[subRole] ?? '👨‍⚕️'} {SUBROLE_LABEL[subRole] ?? subRole}</span>
+                    <span style={{ color: '#94a3b8', fontSize: 14, fontWeight: 400 }}>
+                      {count} {count === 1 ? 'médico' : 'médicos'} →
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           )}
           <button onClick={() => setEstado('nif_resultado')}
@@ -801,33 +851,147 @@ export default function QuiosquePage() {
         </div>
       )}
 
-      {/* ── NOVA MARCAÇÃO: Selecionar Data ── */}
-      {estado === 'nova_data' && medicoSelecionado && (
-        <div style={{ background: 'rgba(255,255,255,0.07)', border: '2px solid #3b82f660', borderRadius: 20, padding: '40px 48px', width: '100%', maxWidth: 480, textAlign: 'center' }}>
-          <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 6 }}>{medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()}</h2>
-          <p style={{ color: '#60a5fa', fontSize: 15, marginBottom: 32 }}>{SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}</p>
-          <label style={{ display: 'block', color: '#94a3b8', fontSize: 13, marginBottom: 10, textAlign: 'left', textTransform: 'uppercase', letterSpacing: 1 }}>
-            Escolha a data da consulta
-          </label>
-          <input
-            type="date"
-            min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
-            value={dataSelecionada}
-            onChange={e => setDataSelecionada(e.target.value)}
-            style={{ width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '16px', color: '#fff', fontSize: 20, boxSizing: 'border-box', marginBottom: 24, colorScheme: 'dark' }}
-          />
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => setEstado('nova_medico')}
-              style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
-              ← Voltar
-            </button>
-            <button onClick={() => selecionarData(dataSelecionada)} disabled={!dataSelecionada || carregandoSlots}
-              style={{ flex: 2, padding: '14px', borderRadius: 12, border: 'none', background: '#3b82f6', color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', opacity: !dataSelecionada || carregandoSlots ? 0.5 : 1 }}>
-              {carregandoSlots ? 'A verificar...' : 'Ver Horários'}
-            </button>
+      {/* ── NOVA MARCAÇÃO: Selecionar Médico ── */}
+      {estado === 'nova_medico' && (
+        <div style={{ width: '100%', maxWidth: 600 }}>
+          <h2 style={{ color: '#e2e8f0', textAlign: 'center', fontSize: 22, marginBottom: 4 }}>
+            {SUBROLE_ICONE[especialidadeSelecionada] ?? '👨‍⚕️'} {SUBROLE_LABEL[especialidadeSelecionada] ?? especialidadeSelecionada}
+          </h2>
+          <p style={{ color: '#94a3b8', textAlign: 'center', fontSize: 15, marginBottom: 28 }}>
+            Escolha o profissional pretendido
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {medicos.filter(m => m.subRole === especialidadeSelecionada).map(m => (
+              <button key={m.id} onClick={() => selecionarMedico(m)}
+                style={{ width: '100%', padding: '20px 24px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.07)', color: '#fff', fontSize: 17, fontWeight: 600, cursor: 'pointer', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Dr. {m.nome.replace(/^Dr\.|^Dra\./, '').trim()}</span>
+                <span style={{ color: '#60a5fa', fontSize: 14, fontWeight: 400 }}>Ver disponibilidade →</span>
+              </button>
+            ))}
           </div>
+          <button onClick={() => setEstado('nova_especialidade')}
+            style={{ marginTop: 20, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+            ← Voltar
+          </button>
         </div>
       )}
+
+      {/* ── NOVA MARCAÇÃO: Calendário de Disponibilidade ── */}
+      {estado === 'nova_data' && medicoSelecionado && (() => {
+        const hojeAgora = new Date();
+        const amanhaUtcCal = new Date(Date.UTC(hojeAgora.getFullYear(), hojeAgora.getMonth(), hojeAgora.getDate() + 1));
+        const dias = Array.from({ length: 28 }, (_, i) =>
+          new Date(amanhaUtcCal.getTime() + i * 86400000)
+        );
+        const semanas: Date[][] = [dias.slice(0,7), dias.slice(7,14), dias.slice(14,21), dias.slice(21,28)];
+        const slotsInline = dataSelecionada ? (slotCache[dataSelecionada] ?? []) : [];
+        return (
+          <div style={{ width: '100%', maxWidth: 660 }}>
+            <h2 style={{ color: '#fff', textAlign: 'center', fontSize: 20, marginBottom: 4 }}>
+              Dr. {medicoSelecionado.nome.replace(/^Dr\.|^Dra\./, '').trim()}
+            </h2>
+            <p style={{ color: '#60a5fa', textAlign: 'center', fontSize: 15, marginBottom: 24 }}>
+              {SUBROLE_LABEL[medicoSelecionado.subRole] ?? medicoSelecionado.subRole}
+            </p>
+
+            {/* Legenda */}
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
+              {[
+                { cor: '#22c55e', label: 'Com disponibilidade' },
+                { cor: '#334155', label: 'Sem vagas' },
+                { cor: '#3b82f6', label: 'Selecionado' },
+              ].map(l => (
+                <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 4, background: l.cor }} />
+                  <span style={{ color: '#94a3b8', fontSize: 13 }}>{l.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Cabeçalho dias da semana */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 6 }}>
+              {DIAS_SEMANA.map(d => (
+                <div key={d} style={{ textAlign: 'center', color: '#64748b', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
+              ))}
+            </div>
+
+            {/* Grid calendário — 4 semanas, alinhadas por dia da semana */}
+            {semanas.map((semana, si) => {
+              // Pad first row if needed
+              const firstDow = si === 0 ? amanhaUtcCal.getUTCDay() : 0;
+              return (
+                <div key={si} style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 6 }}>
+                  {si === 0 && Array.from({ length: firstDow }, (_, i) => <div key={`pad-${i}`} />)}
+                  {semana.map(d => {
+                    const iso = d.toISOString().split('T')[0];
+                    const cached = slotCache[iso];
+                    const temSlots = Array.isArray(cached) && cached.length > 0;
+                    const semSlots = Array.isArray(cached) && cached.length === 0;
+                    const aCarregar = cached === null;
+                    const selecionado = dataSelecionada === iso;
+                    return (
+                      <button
+                        key={iso}
+                        onClick={() => selecionarDiaCalendario(iso)}
+                        disabled={semSlots || aCarregar}
+                        style={{
+                          padding: '10px 4px',
+                          borderRadius: 10,
+                          border: `2px solid ${selecionado ? '#3b82f6' : temSlots ? '#22c55e40' : 'transparent'}`,
+                          background: selecionado ? '#1d4ed8' : temSlots ? '#15803d30' : semSlots ? '#1e293b' : aCarregar ? '#1e293b' : '#1e293b',
+                          color: semSlots || aCarregar ? '#334155' : '#fff',
+                          cursor: temSlots ? 'pointer' : 'default',
+                          textAlign: 'center',
+                          transition: 'all 0.15s',
+                          opacity: aCarregar ? 0.5 : 1,
+                        }}
+                      >
+                        <div style={{ fontSize: 18, fontWeight: 700, color: selecionado ? '#fff' : temSlots ? '#86efac' : '#475569' }}>
+                          {d.getUTCDate()}
+                        </div>
+                        <div style={{ fontSize: 11, color: selecionado ? '#93c5fd' : temSlots ? '#4ade80' : '#334155', marginTop: 2 }}>
+                          {aCarregar ? '···' : temSlots ? `${cached.length} vaga${cached.length !== 1 ? 's' : ''}` : semSlots ? 'cheio' : ''}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })}
+
+            {/* Slots inline quando dia selecionado */}
+            {dataSelecionada && slotsInline.length > 0 && (
+              <div style={{ marginTop: 24, background: 'rgba(255,255,255,0.05)', borderRadius: 14, padding: '20px 24px' }}>
+                <p style={{ color: '#94a3b8', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14 }}>
+                  {new Date(dataSelecionada + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+                  {slotsInline.map(s => (
+                    <button
+                      key={s.dataHora}
+                      onClick={() => { setSlotSelecionado(s); setEstado('nova_confirmar'); }}
+                      style={{ padding: '14px 8px', borderRadius: 10, border: '2px solid #22c55e60', background: '#15803d20', color: '#86efac', fontSize: 17, fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}
+                    >
+                      {new Date(s.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {dataSelecionada && slotsInline.length === 0 && slotCache[dataSelecionada] !== null && (
+              <p style={{ color: '#64748b', textAlign: 'center', marginTop: 20, fontSize: 14 }}>
+                Sem horários disponíveis neste dia. Selecione outro.
+              </p>
+            )}
+
+            <button onClick={() => setEstado('nova_medico')}
+              style={{ marginTop: 24, width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
+              ← Voltar
+            </button>
+          </div>
+        );
+      })()}
 
       {/* ── NOVA MARCAÇÃO: Selecionar Slot ── */}
       {estado === 'nova_slot' && medicoSelecionado && (
@@ -878,7 +1042,7 @@ export default function QuiosquePage() {
           </div>
           {erroMarcacao && <p style={{ color: '#fca5a5', fontSize: 14, marginBottom: 16 }}>{erroMarcacao}</p>}
           <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => setEstado('nova_slot')}
+            <button onClick={() => setEstado('nova_data')}
               style={{ flex: 1, padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#94a3b8', fontSize: 16, cursor: 'pointer' }}>
               ← Voltar
             </button>
