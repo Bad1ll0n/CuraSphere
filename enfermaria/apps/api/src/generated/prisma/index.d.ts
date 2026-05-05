@@ -269,6 +269,16 @@ export type ItemFatura = $Result.DefaultSelection<Prisma.$ItemFaturaPayload>
  */
 export type Pagamento = $Result.DefaultSelection<Prisma.$PagamentoPayload>
 /**
+ * Model AtoClinico
+ * 
+ */
+export type AtoClinico = $Result.DefaultSelection<Prisma.$AtoClinicoPayload>
+/**
+ * Model AtoConsulta
+ * 
+ */
+export type AtoConsulta = $Result.DefaultSelection<Prisma.$AtoConsultaPayload>
+/**
  * Model Ticket
  * 
  */
@@ -1364,6 +1374,26 @@ export class PrismaClient<
   get pagamento(): Prisma.PagamentoDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.atoClinico`: Exposes CRUD operations for the **AtoClinico** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AtoClinicos
+    * const atoClinicos = await prisma.atoClinico.findMany()
+    * ```
+    */
+  get atoClinico(): Prisma.AtoClinicoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.atoConsulta`: Exposes CRUD operations for the **AtoConsulta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AtoConsultas
+    * const atoConsultas = await prisma.atoConsulta.findMany()
+    * ```
+    */
+  get atoConsulta(): Prisma.AtoConsultaDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.ticket`: Exposes CRUD operations for the **Ticket** model.
     * Example usage:
     * ```ts
@@ -1904,6 +1934,8 @@ export namespace Prisma {
     EpisodioFaturacao: 'EpisodioFaturacao',
     ItemFatura: 'ItemFatura',
     Pagamento: 'Pagamento',
+    AtoClinico: 'AtoClinico',
+    AtoConsulta: 'AtoConsulta',
     Ticket: 'Ticket',
     RefreshToken: 'RefreshToken',
     ProblemaClinico: 'ProblemaClinico',
@@ -1927,7 +1959,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5705,6 +5737,154 @@ export namespace Prisma {
           }
         }
       }
+      AtoClinico: {
+        payload: Prisma.$AtoClinicoPayload<ExtArgs>
+        fields: Prisma.AtoClinicoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AtoClinicoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AtoClinicoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          findFirst: {
+            args: Prisma.AtoClinicoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AtoClinicoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          findMany: {
+            args: Prisma.AtoClinicoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>[]
+          }
+          create: {
+            args: Prisma.AtoClinicoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          createMany: {
+            args: Prisma.AtoClinicoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AtoClinicoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>[]
+          }
+          delete: {
+            args: Prisma.AtoClinicoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          update: {
+            args: Prisma.AtoClinicoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AtoClinicoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AtoClinicoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AtoClinicoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>[]
+          }
+          upsert: {
+            args: Prisma.AtoClinicoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoClinicoPayload>
+          }
+          aggregate: {
+            args: Prisma.AtoClinicoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAtoClinico>
+          }
+          groupBy: {
+            args: Prisma.AtoClinicoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AtoClinicoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AtoClinicoCountArgs<ExtArgs>
+            result: $Utils.Optional<AtoClinicoCountAggregateOutputType> | number
+          }
+        }
+      }
+      AtoConsulta: {
+        payload: Prisma.$AtoConsultaPayload<ExtArgs>
+        fields: Prisma.AtoConsultaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AtoConsultaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AtoConsultaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          findFirst: {
+            args: Prisma.AtoConsultaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AtoConsultaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          findMany: {
+            args: Prisma.AtoConsultaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>[]
+          }
+          create: {
+            args: Prisma.AtoConsultaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          createMany: {
+            args: Prisma.AtoConsultaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AtoConsultaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>[]
+          }
+          delete: {
+            args: Prisma.AtoConsultaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          update: {
+            args: Prisma.AtoConsultaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          deleteMany: {
+            args: Prisma.AtoConsultaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AtoConsultaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AtoConsultaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>[]
+          }
+          upsert: {
+            args: Prisma.AtoConsultaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AtoConsultaPayload>
+          }
+          aggregate: {
+            args: Prisma.AtoConsultaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAtoConsulta>
+          }
+          groupBy: {
+            args: Prisma.AtoConsultaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AtoConsultaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AtoConsultaCountArgs<ExtArgs>
+            result: $Utils.Optional<AtoConsultaCountAggregateOutputType> | number
+          }
+        }
+      }
       Ticket: {
         payload: Prisma.$TicketPayload<ExtArgs>
         fields: Prisma.TicketFieldRefs
@@ -6222,6 +6402,8 @@ export namespace Prisma {
     episodioFaturacao?: EpisodioFaturacaoOmit
     itemFatura?: ItemFaturaOmit
     pagamento?: PagamentoOmit
+    atoClinico?: AtoClinicoOmit
+    atoConsulta?: AtoConsultaOmit
     ticket?: TicketOmit
     refreshToken?: RefreshTokenOmit
     problemaClinico?: ProblemaClinicoOmit
@@ -7352,6 +7534,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ConsultaCountOutputType
+   */
+
+  export type ConsultaCountOutputType = {
+    atosConsulta: number
+  }
+
+  export type ConsultaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atosConsulta?: boolean | ConsultaCountOutputTypeCountAtosConsultaArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ConsultaCountOutputType without action
+   */
+  export type ConsultaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultaCountOutputType
+     */
+    select?: ConsultaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ConsultaCountOutputType without action
+   */
+  export type ConsultaCountOutputTypeCountAtosConsultaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtoConsultaWhereInput
+  }
+
+
+  /**
    * Count Type StockItemCountOutputType
    */
 
@@ -7450,6 +7663,37 @@ export namespace Prisma {
    */
   export type EpisodioFaturacaoCountOutputTypeCountPagamentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PagamentoWhereInput
+  }
+
+
+  /**
+   * Count Type AtoClinicoCountOutputType
+   */
+
+  export type AtoClinicoCountOutputType = {
+    atosConsulta: number
+  }
+
+  export type AtoClinicoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atosConsulta?: boolean | AtoClinicoCountOutputTypeCountAtosConsultaArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AtoClinicoCountOutputType without action
+   */
+  export type AtoClinicoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinicoCountOutputType
+     */
+    select?: AtoClinicoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AtoClinicoCountOutputType without action
+   */
+  export type AtoClinicoCountOutputTypeCountAtosConsultaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtoConsultaWhereInput
   }
 
 
@@ -47465,6 +47709,9 @@ export namespace Prisma {
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atosConsulta?: boolean | Consulta$atosConsultaArgs<ExtArgs>
+    episodioFaturacao?: boolean | Consulta$episodioFaturacaoArgs<ExtArgs>
+    _count?: boolean | ConsultaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["consulta"]>
 
   export type ConsultaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -47526,6 +47773,9 @@ export namespace Prisma {
   export type ConsultaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    atosConsulta?: boolean | Consulta$atosConsultaArgs<ExtArgs>
+    episodioFaturacao?: boolean | Consulta$episodioFaturacaoArgs<ExtArgs>
+    _count?: boolean | ConsultaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConsultaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
@@ -47541,6 +47791,8 @@ export namespace Prisma {
     objects: {
       doente: Prisma.$DoentePayload<ExtArgs> | null
       medico: Prisma.$UtilizadorPayload<ExtArgs>
+      atosConsulta: Prisma.$AtoConsultaPayload<ExtArgs>[]
+      episodioFaturacao: Prisma.$EpisodioFaturacaoPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -47953,6 +48205,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     doente<T extends Consulta$doenteArgs<ExtArgs> = {}>(args?: Subset<T, Consulta$doenteArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     medico<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    atosConsulta<T extends Consulta$atosConsultaArgs<ExtArgs> = {}>(args?: Subset<T, Consulta$atosConsultaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    episodioFaturacao<T extends Consulta$episodioFaturacaoArgs<ExtArgs> = {}>(args?: Subset<T, Consulta$episodioFaturacaoArgs<ExtArgs>>): Prisma__EpisodioFaturacaoClient<$Result.GetResult<Prisma.$EpisodioFaturacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -48408,6 +48662,49 @@ export namespace Prisma {
      */
     include?: DoenteInclude<ExtArgs> | null
     where?: DoenteWhereInput
+  }
+
+  /**
+   * Consulta.atosConsulta
+   */
+  export type Consulta$atosConsultaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    where?: AtoConsultaWhereInput
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    cursor?: AtoConsultaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtoConsultaScalarFieldEnum | AtoConsultaScalarFieldEnum[]
+  }
+
+  /**
+   * Consulta.episodioFaturacao
+   */
+  export type Consulta$episodioFaturacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EpisodioFaturacao
+     */
+    select?: EpisodioFaturacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EpisodioFaturacao
+     */
+    omit?: EpisodioFaturacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EpisodioFaturacaoInclude<ExtArgs> | null
+    where?: EpisodioFaturacaoWhereInput
   }
 
   /**
@@ -64674,6 +64971,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMinAggregateOutputType = {
     id: string | null
     doenteId: string | null
+    consultaId: string | null
     estado: $Enums.EstadoFatura | null
     dataEmissao: Date | null
     totalBase: number | null
@@ -64687,6 +64985,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMaxAggregateOutputType = {
     id: string | null
     doenteId: string | null
+    consultaId: string | null
     estado: $Enums.EstadoFatura | null
     dataEmissao: Date | null
     totalBase: number | null
@@ -64700,6 +64999,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoCountAggregateOutputType = {
     id: number
     doenteId: number
+    consultaId: number
     estado: number
     dataEmissao: number
     totalBase: number
@@ -64725,6 +65025,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMinAggregateInputType = {
     id?: true
     doenteId?: true
+    consultaId?: true
     estado?: true
     dataEmissao?: true
     totalBase?: true
@@ -64738,6 +65039,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMaxAggregateInputType = {
     id?: true
     doenteId?: true
+    consultaId?: true
     estado?: true
     dataEmissao?: true
     totalBase?: true
@@ -64751,6 +65053,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoCountAggregateInputType = {
     id?: true
     doenteId?: true
+    consultaId?: true
     estado?: true
     dataEmissao?: true
     totalBase?: true
@@ -64851,6 +65154,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoGroupByOutputType = {
     id: string
     doenteId: string
+    consultaId: string | null
     estado: $Enums.EstadoFatura
     dataEmissao: Date | null
     totalBase: number
@@ -64883,6 +65187,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     doenteId?: boolean
+    consultaId?: boolean
     estado?: boolean
     dataEmissao?: boolean
     totalBase?: boolean
@@ -64892,6 +65197,7 @@ export namespace Prisma {
     criadoPorId?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     itens?: boolean | EpisodioFaturacao$itensArgs<ExtArgs>
     pagamentos?: boolean | EpisodioFaturacao$pagamentosArgs<ExtArgs>
@@ -64901,6 +65207,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     doenteId?: boolean
+    consultaId?: boolean
     estado?: boolean
     dataEmissao?: boolean
     totalBase?: boolean
@@ -64910,12 +65217,14 @@ export namespace Prisma {
     criadoPorId?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["episodioFaturacao"]>
 
   export type EpisodioFaturacaoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     doenteId?: boolean
+    consultaId?: boolean
     estado?: boolean
     dataEmissao?: boolean
     totalBase?: boolean
@@ -64925,12 +65234,14 @@ export namespace Prisma {
     criadoPorId?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["episodioFaturacao"]>
 
   export type EpisodioFaturacaoSelectScalar = {
     id?: boolean
     doenteId?: boolean
+    consultaId?: boolean
     estado?: boolean
     dataEmissao?: boolean
     totalBase?: boolean
@@ -64941,9 +65252,10 @@ export namespace Prisma {
     criadoEm?: boolean
   }
 
-  export type EpisodioFaturacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "estado" | "dataEmissao" | "totalBase" | "totalCobrado" | "tipoCobertura" | "notas" | "criadoPorId" | "criadoEm", ExtArgs["result"]["episodioFaturacao"]>
+  export type EpisodioFaturacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "consultaId" | "estado" | "dataEmissao" | "totalBase" | "totalCobrado" | "tipoCobertura" | "notas" | "criadoPorId" | "criadoEm", ExtArgs["result"]["episodioFaturacao"]>
   export type EpisodioFaturacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     itens?: boolean | EpisodioFaturacao$itensArgs<ExtArgs>
     pagamentos?: boolean | EpisodioFaturacao$pagamentosArgs<ExtArgs>
@@ -64951,10 +65263,12 @@ export namespace Prisma {
   }
   export type EpisodioFaturacaoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
   export type EpisodioFaturacaoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    consulta?: boolean | EpisodioFaturacao$consultaArgs<ExtArgs>
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }
 
@@ -64962,6 +65276,7 @@ export namespace Prisma {
     name: "EpisodioFaturacao"
     objects: {
       doente: Prisma.$DoentePayload<ExtArgs>
+      consulta: Prisma.$ConsultaPayload<ExtArgs> | null
       criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
       itens: Prisma.$ItemFaturaPayload<ExtArgs>[]
       pagamentos: Prisma.$PagamentoPayload<ExtArgs>[]
@@ -64969,6 +65284,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       doenteId: string
+      consultaId: string | null
       estado: $Enums.EstadoFatura
       dataEmissao: Date | null
       totalBase: number
@@ -65372,6 +65688,7 @@ export namespace Prisma {
   export interface Prisma__EpisodioFaturacaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    consulta<T extends EpisodioFaturacao$consultaArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacao$consultaArgs<ExtArgs>>): Prisma__ConsultaClient<$Result.GetResult<Prisma.$ConsultaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     itens<T extends EpisodioFaturacao$itensArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacao$itensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemFaturaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pagamentos<T extends EpisodioFaturacao$pagamentosArgs<ExtArgs> = {}>(args?: Subset<T, EpisodioFaturacao$pagamentosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -65406,6 +65723,7 @@ export namespace Prisma {
   interface EpisodioFaturacaoFieldRefs {
     readonly id: FieldRef<"EpisodioFaturacao", 'String'>
     readonly doenteId: FieldRef<"EpisodioFaturacao", 'String'>
+    readonly consultaId: FieldRef<"EpisodioFaturacao", 'String'>
     readonly estado: FieldRef<"EpisodioFaturacao", 'EstadoFatura'>
     readonly dataEmissao: FieldRef<"EpisodioFaturacao", 'DateTime'>
     readonly totalBase: FieldRef<"EpisodioFaturacao", 'Float'>
@@ -65807,6 +66125,25 @@ export namespace Prisma {
      * Limit how many EpisodioFaturacaos to delete.
      */
     limit?: number
+  }
+
+  /**
+   * EpisodioFaturacao.consulta
+   */
+  export type EpisodioFaturacao$consultaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Consulta
+     */
+    select?: ConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Consulta
+     */
+    omit?: ConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultaInclude<ExtArgs> | null
+    where?: ConsultaWhereInput
   }
 
   /**
@@ -68138,6 +68475,2266 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PagamentoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AtoClinico
+   */
+
+  export type AggregateAtoClinico = {
+    _count: AtoClinicoCountAggregateOutputType | null
+    _avg: AtoClinicoAvgAggregateOutputType | null
+    _sum: AtoClinicoSumAggregateOutputType | null
+    _min: AtoClinicoMinAggregateOutputType | null
+    _max: AtoClinicoMaxAggregateOutputType | null
+  }
+
+  export type AtoClinicoAvgAggregateOutputType = {
+    precoBase: number | null
+  }
+
+  export type AtoClinicoSumAggregateOutputType = {
+    precoBase: number | null
+  }
+
+  export type AtoClinicoMinAggregateOutputType = {
+    id: string | null
+    codigo: string | null
+    descricao: string | null
+    categoria: string | null
+    precoBase: number | null
+    especialidade: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AtoClinicoMaxAggregateOutputType = {
+    id: string | null
+    codigo: string | null
+    descricao: string | null
+    categoria: string | null
+    precoBase: number | null
+    especialidade: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type AtoClinicoCountAggregateOutputType = {
+    id: number
+    codigo: number
+    descricao: number
+    categoria: number
+    precoBase: number
+    especialidade: number
+    ativo: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AtoClinicoAvgAggregateInputType = {
+    precoBase?: true
+  }
+
+  export type AtoClinicoSumAggregateInputType = {
+    precoBase?: true
+  }
+
+  export type AtoClinicoMinAggregateInputType = {
+    id?: true
+    codigo?: true
+    descricao?: true
+    categoria?: true
+    precoBase?: true
+    especialidade?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type AtoClinicoMaxAggregateInputType = {
+    id?: true
+    codigo?: true
+    descricao?: true
+    categoria?: true
+    precoBase?: true
+    especialidade?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type AtoClinicoCountAggregateInputType = {
+    id?: true
+    codigo?: true
+    descricao?: true
+    categoria?: true
+    precoBase?: true
+    especialidade?: true
+    ativo?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AtoClinicoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtoClinico to aggregate.
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoClinicos to fetch.
+     */
+    orderBy?: AtoClinicoOrderByWithRelationInput | AtoClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AtoClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AtoClinicos
+    **/
+    _count?: true | AtoClinicoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AtoClinicoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AtoClinicoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AtoClinicoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AtoClinicoMaxAggregateInputType
+  }
+
+  export type GetAtoClinicoAggregateType<T extends AtoClinicoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAtoClinico]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAtoClinico[P]>
+      : GetScalarType<T[P], AggregateAtoClinico[P]>
+  }
+
+
+
+
+  export type AtoClinicoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtoClinicoWhereInput
+    orderBy?: AtoClinicoOrderByWithAggregationInput | AtoClinicoOrderByWithAggregationInput[]
+    by: AtoClinicoScalarFieldEnum[] | AtoClinicoScalarFieldEnum
+    having?: AtoClinicoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AtoClinicoCountAggregateInputType | true
+    _avg?: AtoClinicoAvgAggregateInputType
+    _sum?: AtoClinicoSumAggregateInputType
+    _min?: AtoClinicoMinAggregateInputType
+    _max?: AtoClinicoMaxAggregateInputType
+  }
+
+  export type AtoClinicoGroupByOutputType = {
+    id: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade: string | null
+    ativo: boolean
+    criadoEm: Date
+    _count: AtoClinicoCountAggregateOutputType | null
+    _avg: AtoClinicoAvgAggregateOutputType | null
+    _sum: AtoClinicoSumAggregateOutputType | null
+    _min: AtoClinicoMinAggregateOutputType | null
+    _max: AtoClinicoMaxAggregateOutputType | null
+  }
+
+  type GetAtoClinicoGroupByPayload<T extends AtoClinicoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AtoClinicoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AtoClinicoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AtoClinicoGroupByOutputType[P]>
+            : GetScalarType<T[P], AtoClinicoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AtoClinicoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    codigo?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    precoBase?: boolean
+    especialidade?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    atosConsulta?: boolean | AtoClinico$atosConsultaArgs<ExtArgs>
+    _count?: boolean | AtoClinicoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atoClinico"]>
+
+  export type AtoClinicoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    codigo?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    precoBase?: boolean
+    especialidade?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["atoClinico"]>
+
+  export type AtoClinicoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    codigo?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    precoBase?: boolean
+    especialidade?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["atoClinico"]>
+
+  export type AtoClinicoSelectScalar = {
+    id?: boolean
+    codigo?: boolean
+    descricao?: boolean
+    categoria?: boolean
+    precoBase?: boolean
+    especialidade?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AtoClinicoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "codigo" | "descricao" | "categoria" | "precoBase" | "especialidade" | "ativo" | "criadoEm", ExtArgs["result"]["atoClinico"]>
+  export type AtoClinicoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atosConsulta?: boolean | AtoClinico$atosConsultaArgs<ExtArgs>
+    _count?: boolean | AtoClinicoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AtoClinicoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AtoClinicoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $AtoClinicoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AtoClinico"
+    objects: {
+      atosConsulta: Prisma.$AtoConsultaPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      codigo: string
+      descricao: string
+      categoria: string
+      precoBase: number
+      especialidade: string | null
+      ativo: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["atoClinico"]>
+    composites: {}
+  }
+
+  type AtoClinicoGetPayload<S extends boolean | null | undefined | AtoClinicoDefaultArgs> = $Result.GetResult<Prisma.$AtoClinicoPayload, S>
+
+  type AtoClinicoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AtoClinicoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AtoClinicoCountAggregateInputType | true
+    }
+
+  export interface AtoClinicoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AtoClinico'], meta: { name: 'AtoClinico' } }
+    /**
+     * Find zero or one AtoClinico that matches the filter.
+     * @param {AtoClinicoFindUniqueArgs} args - Arguments to find a AtoClinico
+     * @example
+     * // Get one AtoClinico
+     * const atoClinico = await prisma.atoClinico.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AtoClinicoFindUniqueArgs>(args: SelectSubset<T, AtoClinicoFindUniqueArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AtoClinico that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AtoClinicoFindUniqueOrThrowArgs} args - Arguments to find a AtoClinico
+     * @example
+     * // Get one AtoClinico
+     * const atoClinico = await prisma.atoClinico.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AtoClinicoFindUniqueOrThrowArgs>(args: SelectSubset<T, AtoClinicoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtoClinico that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoFindFirstArgs} args - Arguments to find a AtoClinico
+     * @example
+     * // Get one AtoClinico
+     * const atoClinico = await prisma.atoClinico.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AtoClinicoFindFirstArgs>(args?: SelectSubset<T, AtoClinicoFindFirstArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtoClinico that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoFindFirstOrThrowArgs} args - Arguments to find a AtoClinico
+     * @example
+     * // Get one AtoClinico
+     * const atoClinico = await prisma.atoClinico.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AtoClinicoFindFirstOrThrowArgs>(args?: SelectSubset<T, AtoClinicoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AtoClinicos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AtoClinicos
+     * const atoClinicos = await prisma.atoClinico.findMany()
+     * 
+     * // Get first 10 AtoClinicos
+     * const atoClinicos = await prisma.atoClinico.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const atoClinicoWithIdOnly = await prisma.atoClinico.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AtoClinicoFindManyArgs>(args?: SelectSubset<T, AtoClinicoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AtoClinico.
+     * @param {AtoClinicoCreateArgs} args - Arguments to create a AtoClinico.
+     * @example
+     * // Create one AtoClinico
+     * const AtoClinico = await prisma.atoClinico.create({
+     *   data: {
+     *     // ... data to create a AtoClinico
+     *   }
+     * })
+     * 
+     */
+    create<T extends AtoClinicoCreateArgs>(args: SelectSubset<T, AtoClinicoCreateArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AtoClinicos.
+     * @param {AtoClinicoCreateManyArgs} args - Arguments to create many AtoClinicos.
+     * @example
+     * // Create many AtoClinicos
+     * const atoClinico = await prisma.atoClinico.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AtoClinicoCreateManyArgs>(args?: SelectSubset<T, AtoClinicoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AtoClinicos and returns the data saved in the database.
+     * @param {AtoClinicoCreateManyAndReturnArgs} args - Arguments to create many AtoClinicos.
+     * @example
+     * // Create many AtoClinicos
+     * const atoClinico = await prisma.atoClinico.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AtoClinicos and only return the `id`
+     * const atoClinicoWithIdOnly = await prisma.atoClinico.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AtoClinicoCreateManyAndReturnArgs>(args?: SelectSubset<T, AtoClinicoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AtoClinico.
+     * @param {AtoClinicoDeleteArgs} args - Arguments to delete one AtoClinico.
+     * @example
+     * // Delete one AtoClinico
+     * const AtoClinico = await prisma.atoClinico.delete({
+     *   where: {
+     *     // ... filter to delete one AtoClinico
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AtoClinicoDeleteArgs>(args: SelectSubset<T, AtoClinicoDeleteArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AtoClinico.
+     * @param {AtoClinicoUpdateArgs} args - Arguments to update one AtoClinico.
+     * @example
+     * // Update one AtoClinico
+     * const atoClinico = await prisma.atoClinico.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AtoClinicoUpdateArgs>(args: SelectSubset<T, AtoClinicoUpdateArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AtoClinicos.
+     * @param {AtoClinicoDeleteManyArgs} args - Arguments to filter AtoClinicos to delete.
+     * @example
+     * // Delete a few AtoClinicos
+     * const { count } = await prisma.atoClinico.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AtoClinicoDeleteManyArgs>(args?: SelectSubset<T, AtoClinicoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtoClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AtoClinicos
+     * const atoClinico = await prisma.atoClinico.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AtoClinicoUpdateManyArgs>(args: SelectSubset<T, AtoClinicoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtoClinicos and returns the data updated in the database.
+     * @param {AtoClinicoUpdateManyAndReturnArgs} args - Arguments to update many AtoClinicos.
+     * @example
+     * // Update many AtoClinicos
+     * const atoClinico = await prisma.atoClinico.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AtoClinicos and only return the `id`
+     * const atoClinicoWithIdOnly = await prisma.atoClinico.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AtoClinicoUpdateManyAndReturnArgs>(args: SelectSubset<T, AtoClinicoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AtoClinico.
+     * @param {AtoClinicoUpsertArgs} args - Arguments to update or create a AtoClinico.
+     * @example
+     * // Update or create a AtoClinico
+     * const atoClinico = await prisma.atoClinico.upsert({
+     *   create: {
+     *     // ... data to create a AtoClinico
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AtoClinico we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AtoClinicoUpsertArgs>(args: SelectSubset<T, AtoClinicoUpsertArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AtoClinicos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoCountArgs} args - Arguments to filter AtoClinicos to count.
+     * @example
+     * // Count the number of AtoClinicos
+     * const count = await prisma.atoClinico.count({
+     *   where: {
+     *     // ... the filter for the AtoClinicos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AtoClinicoCountArgs>(
+      args?: Subset<T, AtoClinicoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AtoClinicoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AtoClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AtoClinicoAggregateArgs>(args: Subset<T, AtoClinicoAggregateArgs>): Prisma.PrismaPromise<GetAtoClinicoAggregateType<T>>
+
+    /**
+     * Group by AtoClinico.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoClinicoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AtoClinicoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AtoClinicoGroupByArgs['orderBy'] }
+        : { orderBy?: AtoClinicoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AtoClinicoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAtoClinicoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AtoClinico model
+   */
+  readonly fields: AtoClinicoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AtoClinico.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AtoClinicoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    atosConsulta<T extends AtoClinico$atosConsultaArgs<ExtArgs> = {}>(args?: Subset<T, AtoClinico$atosConsultaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AtoClinico model
+   */
+  interface AtoClinicoFieldRefs {
+    readonly id: FieldRef<"AtoClinico", 'String'>
+    readonly codigo: FieldRef<"AtoClinico", 'String'>
+    readonly descricao: FieldRef<"AtoClinico", 'String'>
+    readonly categoria: FieldRef<"AtoClinico", 'String'>
+    readonly precoBase: FieldRef<"AtoClinico", 'Float'>
+    readonly especialidade: FieldRef<"AtoClinico", 'String'>
+    readonly ativo: FieldRef<"AtoClinico", 'Boolean'>
+    readonly criadoEm: FieldRef<"AtoClinico", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AtoClinico findUnique
+   */
+  export type AtoClinicoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoClinico to fetch.
+     */
+    where: AtoClinicoWhereUniqueInput
+  }
+
+  /**
+   * AtoClinico findUniqueOrThrow
+   */
+  export type AtoClinicoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoClinico to fetch.
+     */
+    where: AtoClinicoWhereUniqueInput
+  }
+
+  /**
+   * AtoClinico findFirst
+   */
+  export type AtoClinicoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoClinico to fetch.
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoClinicos to fetch.
+     */
+    orderBy?: AtoClinicoOrderByWithRelationInput | AtoClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtoClinicos.
+     */
+    cursor?: AtoClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtoClinicos.
+     */
+    distinct?: AtoClinicoScalarFieldEnum | AtoClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AtoClinico findFirstOrThrow
+   */
+  export type AtoClinicoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoClinico to fetch.
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoClinicos to fetch.
+     */
+    orderBy?: AtoClinicoOrderByWithRelationInput | AtoClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtoClinicos.
+     */
+    cursor?: AtoClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoClinicos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtoClinicos.
+     */
+    distinct?: AtoClinicoScalarFieldEnum | AtoClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AtoClinico findMany
+   */
+  export type AtoClinicoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoClinicos to fetch.
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoClinicos to fetch.
+     */
+    orderBy?: AtoClinicoOrderByWithRelationInput | AtoClinicoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AtoClinicos.
+     */
+    cursor?: AtoClinicoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoClinicos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoClinicos.
+     */
+    skip?: number
+    distinct?: AtoClinicoScalarFieldEnum | AtoClinicoScalarFieldEnum[]
+  }
+
+  /**
+   * AtoClinico create
+   */
+  export type AtoClinicoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AtoClinico.
+     */
+    data: XOR<AtoClinicoCreateInput, AtoClinicoUncheckedCreateInput>
+  }
+
+  /**
+   * AtoClinico createMany
+   */
+  export type AtoClinicoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AtoClinicos.
+     */
+    data: AtoClinicoCreateManyInput | AtoClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AtoClinico createManyAndReturn
+   */
+  export type AtoClinicoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to create many AtoClinicos.
+     */
+    data: AtoClinicoCreateManyInput | AtoClinicoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AtoClinico update
+   */
+  export type AtoClinicoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AtoClinico.
+     */
+    data: XOR<AtoClinicoUpdateInput, AtoClinicoUncheckedUpdateInput>
+    /**
+     * Choose, which AtoClinico to update.
+     */
+    where: AtoClinicoWhereUniqueInput
+  }
+
+  /**
+   * AtoClinico updateMany
+   */
+  export type AtoClinicoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AtoClinicos.
+     */
+    data: XOR<AtoClinicoUpdateManyMutationInput, AtoClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AtoClinicos to update
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * Limit how many AtoClinicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtoClinico updateManyAndReturn
+   */
+  export type AtoClinicoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * The data used to update AtoClinicos.
+     */
+    data: XOR<AtoClinicoUpdateManyMutationInput, AtoClinicoUncheckedUpdateManyInput>
+    /**
+     * Filter which AtoClinicos to update
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * Limit how many AtoClinicos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtoClinico upsert
+   */
+  export type AtoClinicoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AtoClinico to update in case it exists.
+     */
+    where: AtoClinicoWhereUniqueInput
+    /**
+     * In case the AtoClinico found by the `where` argument doesn't exist, create a new AtoClinico with this data.
+     */
+    create: XOR<AtoClinicoCreateInput, AtoClinicoUncheckedCreateInput>
+    /**
+     * In case the AtoClinico was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AtoClinicoUpdateInput, AtoClinicoUncheckedUpdateInput>
+  }
+
+  /**
+   * AtoClinico delete
+   */
+  export type AtoClinicoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+    /**
+     * Filter which AtoClinico to delete.
+     */
+    where: AtoClinicoWhereUniqueInput
+  }
+
+  /**
+   * AtoClinico deleteMany
+   */
+  export type AtoClinicoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtoClinicos to delete
+     */
+    where?: AtoClinicoWhereInput
+    /**
+     * Limit how many AtoClinicos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtoClinico.atosConsulta
+   */
+  export type AtoClinico$atosConsultaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    where?: AtoConsultaWhereInput
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    cursor?: AtoConsultaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AtoConsultaScalarFieldEnum | AtoConsultaScalarFieldEnum[]
+  }
+
+  /**
+   * AtoClinico without action
+   */
+  export type AtoClinicoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoClinico
+     */
+    select?: AtoClinicoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoClinico
+     */
+    omit?: AtoClinicoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoClinicoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AtoConsulta
+   */
+
+  export type AggregateAtoConsulta = {
+    _count: AtoConsultaCountAggregateOutputType | null
+    _avg: AtoConsultaAvgAggregateOutputType | null
+    _sum: AtoConsultaSumAggregateOutputType | null
+    _min: AtoConsultaMinAggregateOutputType | null
+    _max: AtoConsultaMaxAggregateOutputType | null
+  }
+
+  export type AtoConsultaAvgAggregateOutputType = {
+    quantidade: number | null
+    precoUnitario: number | null
+  }
+
+  export type AtoConsultaSumAggregateOutputType = {
+    quantidade: number | null
+    precoUnitario: number | null
+  }
+
+  export type AtoConsultaMinAggregateOutputType = {
+    id: string | null
+    consultaId: string | null
+    atoId: string | null
+    quantidade: number | null
+    precoUnitario: number | null
+    criadoEm: Date | null
+  }
+
+  export type AtoConsultaMaxAggregateOutputType = {
+    id: string | null
+    consultaId: string | null
+    atoId: string | null
+    quantidade: number | null
+    precoUnitario: number | null
+    criadoEm: Date | null
+  }
+
+  export type AtoConsultaCountAggregateOutputType = {
+    id: number
+    consultaId: number
+    atoId: number
+    quantidade: number
+    precoUnitario: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AtoConsultaAvgAggregateInputType = {
+    quantidade?: true
+    precoUnitario?: true
+  }
+
+  export type AtoConsultaSumAggregateInputType = {
+    quantidade?: true
+    precoUnitario?: true
+  }
+
+  export type AtoConsultaMinAggregateInputType = {
+    id?: true
+    consultaId?: true
+    atoId?: true
+    quantidade?: true
+    precoUnitario?: true
+    criadoEm?: true
+  }
+
+  export type AtoConsultaMaxAggregateInputType = {
+    id?: true
+    consultaId?: true
+    atoId?: true
+    quantidade?: true
+    precoUnitario?: true
+    criadoEm?: true
+  }
+
+  export type AtoConsultaCountAggregateInputType = {
+    id?: true
+    consultaId?: true
+    atoId?: true
+    quantidade?: true
+    precoUnitario?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AtoConsultaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtoConsulta to aggregate.
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoConsultas to fetch.
+     */
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AtoConsultaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoConsultas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoConsultas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AtoConsultas
+    **/
+    _count?: true | AtoConsultaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AtoConsultaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AtoConsultaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AtoConsultaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AtoConsultaMaxAggregateInputType
+  }
+
+  export type GetAtoConsultaAggregateType<T extends AtoConsultaAggregateArgs> = {
+        [P in keyof T & keyof AggregateAtoConsulta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAtoConsulta[P]>
+      : GetScalarType<T[P], AggregateAtoConsulta[P]>
+  }
+
+
+
+
+  export type AtoConsultaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AtoConsultaWhereInput
+    orderBy?: AtoConsultaOrderByWithAggregationInput | AtoConsultaOrderByWithAggregationInput[]
+    by: AtoConsultaScalarFieldEnum[] | AtoConsultaScalarFieldEnum
+    having?: AtoConsultaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AtoConsultaCountAggregateInputType | true
+    _avg?: AtoConsultaAvgAggregateInputType
+    _sum?: AtoConsultaSumAggregateInputType
+    _min?: AtoConsultaMinAggregateInputType
+    _max?: AtoConsultaMaxAggregateInputType
+  }
+
+  export type AtoConsultaGroupByOutputType = {
+    id: string
+    consultaId: string
+    atoId: string
+    quantidade: number
+    precoUnitario: number
+    criadoEm: Date
+    _count: AtoConsultaCountAggregateOutputType | null
+    _avg: AtoConsultaAvgAggregateOutputType | null
+    _sum: AtoConsultaSumAggregateOutputType | null
+    _min: AtoConsultaMinAggregateOutputType | null
+    _max: AtoConsultaMaxAggregateOutputType | null
+  }
+
+  type GetAtoConsultaGroupByPayload<T extends AtoConsultaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AtoConsultaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AtoConsultaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AtoConsultaGroupByOutputType[P]>
+            : GetScalarType<T[P], AtoConsultaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AtoConsultaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    consultaId?: boolean
+    atoId?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    criadoEm?: boolean
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atoConsulta"]>
+
+  export type AtoConsultaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    consultaId?: boolean
+    atoId?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    criadoEm?: boolean
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atoConsulta"]>
+
+  export type AtoConsultaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    consultaId?: boolean
+    atoId?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    criadoEm?: boolean
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["atoConsulta"]>
+
+  export type AtoConsultaSelectScalar = {
+    id?: boolean
+    consultaId?: boolean
+    atoId?: boolean
+    quantidade?: boolean
+    precoUnitario?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AtoConsultaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "consultaId" | "atoId" | "quantidade" | "precoUnitario" | "criadoEm", ExtArgs["result"]["atoConsulta"]>
+  export type AtoConsultaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }
+  export type AtoConsultaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }
+  export type AtoConsultaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    consulta?: boolean | ConsultaDefaultArgs<ExtArgs>
+    ato?: boolean | AtoClinicoDefaultArgs<ExtArgs>
+  }
+
+  export type $AtoConsultaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AtoConsulta"
+    objects: {
+      consulta: Prisma.$ConsultaPayload<ExtArgs>
+      ato: Prisma.$AtoClinicoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      consultaId: string
+      atoId: string
+      quantidade: number
+      precoUnitario: number
+      criadoEm: Date
+    }, ExtArgs["result"]["atoConsulta"]>
+    composites: {}
+  }
+
+  type AtoConsultaGetPayload<S extends boolean | null | undefined | AtoConsultaDefaultArgs> = $Result.GetResult<Prisma.$AtoConsultaPayload, S>
+
+  type AtoConsultaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AtoConsultaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AtoConsultaCountAggregateInputType | true
+    }
+
+  export interface AtoConsultaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AtoConsulta'], meta: { name: 'AtoConsulta' } }
+    /**
+     * Find zero or one AtoConsulta that matches the filter.
+     * @param {AtoConsultaFindUniqueArgs} args - Arguments to find a AtoConsulta
+     * @example
+     * // Get one AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AtoConsultaFindUniqueArgs>(args: SelectSubset<T, AtoConsultaFindUniqueArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AtoConsulta that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AtoConsultaFindUniqueOrThrowArgs} args - Arguments to find a AtoConsulta
+     * @example
+     * // Get one AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AtoConsultaFindUniqueOrThrowArgs>(args: SelectSubset<T, AtoConsultaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtoConsulta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaFindFirstArgs} args - Arguments to find a AtoConsulta
+     * @example
+     * // Get one AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AtoConsultaFindFirstArgs>(args?: SelectSubset<T, AtoConsultaFindFirstArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AtoConsulta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaFindFirstOrThrowArgs} args - Arguments to find a AtoConsulta
+     * @example
+     * // Get one AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AtoConsultaFindFirstOrThrowArgs>(args?: SelectSubset<T, AtoConsultaFindFirstOrThrowArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AtoConsultas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AtoConsultas
+     * const atoConsultas = await prisma.atoConsulta.findMany()
+     * 
+     * // Get first 10 AtoConsultas
+     * const atoConsultas = await prisma.atoConsulta.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const atoConsultaWithIdOnly = await prisma.atoConsulta.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AtoConsultaFindManyArgs>(args?: SelectSubset<T, AtoConsultaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AtoConsulta.
+     * @param {AtoConsultaCreateArgs} args - Arguments to create a AtoConsulta.
+     * @example
+     * // Create one AtoConsulta
+     * const AtoConsulta = await prisma.atoConsulta.create({
+     *   data: {
+     *     // ... data to create a AtoConsulta
+     *   }
+     * })
+     * 
+     */
+    create<T extends AtoConsultaCreateArgs>(args: SelectSubset<T, AtoConsultaCreateArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AtoConsultas.
+     * @param {AtoConsultaCreateManyArgs} args - Arguments to create many AtoConsultas.
+     * @example
+     * // Create many AtoConsultas
+     * const atoConsulta = await prisma.atoConsulta.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AtoConsultaCreateManyArgs>(args?: SelectSubset<T, AtoConsultaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AtoConsultas and returns the data saved in the database.
+     * @param {AtoConsultaCreateManyAndReturnArgs} args - Arguments to create many AtoConsultas.
+     * @example
+     * // Create many AtoConsultas
+     * const atoConsulta = await prisma.atoConsulta.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AtoConsultas and only return the `id`
+     * const atoConsultaWithIdOnly = await prisma.atoConsulta.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AtoConsultaCreateManyAndReturnArgs>(args?: SelectSubset<T, AtoConsultaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AtoConsulta.
+     * @param {AtoConsultaDeleteArgs} args - Arguments to delete one AtoConsulta.
+     * @example
+     * // Delete one AtoConsulta
+     * const AtoConsulta = await prisma.atoConsulta.delete({
+     *   where: {
+     *     // ... filter to delete one AtoConsulta
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AtoConsultaDeleteArgs>(args: SelectSubset<T, AtoConsultaDeleteArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AtoConsulta.
+     * @param {AtoConsultaUpdateArgs} args - Arguments to update one AtoConsulta.
+     * @example
+     * // Update one AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AtoConsultaUpdateArgs>(args: SelectSubset<T, AtoConsultaUpdateArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AtoConsultas.
+     * @param {AtoConsultaDeleteManyArgs} args - Arguments to filter AtoConsultas to delete.
+     * @example
+     * // Delete a few AtoConsultas
+     * const { count } = await prisma.atoConsulta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AtoConsultaDeleteManyArgs>(args?: SelectSubset<T, AtoConsultaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtoConsultas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AtoConsultas
+     * const atoConsulta = await prisma.atoConsulta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AtoConsultaUpdateManyArgs>(args: SelectSubset<T, AtoConsultaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AtoConsultas and returns the data updated in the database.
+     * @param {AtoConsultaUpdateManyAndReturnArgs} args - Arguments to update many AtoConsultas.
+     * @example
+     * // Update many AtoConsultas
+     * const atoConsulta = await prisma.atoConsulta.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AtoConsultas and only return the `id`
+     * const atoConsultaWithIdOnly = await prisma.atoConsulta.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AtoConsultaUpdateManyAndReturnArgs>(args: SelectSubset<T, AtoConsultaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AtoConsulta.
+     * @param {AtoConsultaUpsertArgs} args - Arguments to update or create a AtoConsulta.
+     * @example
+     * // Update or create a AtoConsulta
+     * const atoConsulta = await prisma.atoConsulta.upsert({
+     *   create: {
+     *     // ... data to create a AtoConsulta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AtoConsulta we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AtoConsultaUpsertArgs>(args: SelectSubset<T, AtoConsultaUpsertArgs<ExtArgs>>): Prisma__AtoConsultaClient<$Result.GetResult<Prisma.$AtoConsultaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AtoConsultas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaCountArgs} args - Arguments to filter AtoConsultas to count.
+     * @example
+     * // Count the number of AtoConsultas
+     * const count = await prisma.atoConsulta.count({
+     *   where: {
+     *     // ... the filter for the AtoConsultas we want to count
+     *   }
+     * })
+    **/
+    count<T extends AtoConsultaCountArgs>(
+      args?: Subset<T, AtoConsultaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AtoConsultaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AtoConsulta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AtoConsultaAggregateArgs>(args: Subset<T, AtoConsultaAggregateArgs>): Prisma.PrismaPromise<GetAtoConsultaAggregateType<T>>
+
+    /**
+     * Group by AtoConsulta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AtoConsultaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AtoConsultaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AtoConsultaGroupByArgs['orderBy'] }
+        : { orderBy?: AtoConsultaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AtoConsultaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAtoConsultaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AtoConsulta model
+   */
+  readonly fields: AtoConsultaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AtoConsulta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AtoConsultaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    consulta<T extends ConsultaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConsultaDefaultArgs<ExtArgs>>): Prisma__ConsultaClient<$Result.GetResult<Prisma.$ConsultaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ato<T extends AtoClinicoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AtoClinicoDefaultArgs<ExtArgs>>): Prisma__AtoClinicoClient<$Result.GetResult<Prisma.$AtoClinicoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AtoConsulta model
+   */
+  interface AtoConsultaFieldRefs {
+    readonly id: FieldRef<"AtoConsulta", 'String'>
+    readonly consultaId: FieldRef<"AtoConsulta", 'String'>
+    readonly atoId: FieldRef<"AtoConsulta", 'String'>
+    readonly quantidade: FieldRef<"AtoConsulta", 'Int'>
+    readonly precoUnitario: FieldRef<"AtoConsulta", 'Float'>
+    readonly criadoEm: FieldRef<"AtoConsulta", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AtoConsulta findUnique
+   */
+  export type AtoConsultaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoConsulta to fetch.
+     */
+    where: AtoConsultaWhereUniqueInput
+  }
+
+  /**
+   * AtoConsulta findUniqueOrThrow
+   */
+  export type AtoConsultaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoConsulta to fetch.
+     */
+    where: AtoConsultaWhereUniqueInput
+  }
+
+  /**
+   * AtoConsulta findFirst
+   */
+  export type AtoConsultaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoConsulta to fetch.
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoConsultas to fetch.
+     */
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtoConsultas.
+     */
+    cursor?: AtoConsultaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoConsultas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoConsultas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtoConsultas.
+     */
+    distinct?: AtoConsultaScalarFieldEnum | AtoConsultaScalarFieldEnum[]
+  }
+
+  /**
+   * AtoConsulta findFirstOrThrow
+   */
+  export type AtoConsultaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoConsulta to fetch.
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoConsultas to fetch.
+     */
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AtoConsultas.
+     */
+    cursor?: AtoConsultaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoConsultas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoConsultas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AtoConsultas.
+     */
+    distinct?: AtoConsultaScalarFieldEnum | AtoConsultaScalarFieldEnum[]
+  }
+
+  /**
+   * AtoConsulta findMany
+   */
+  export type AtoConsultaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter, which AtoConsultas to fetch.
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AtoConsultas to fetch.
+     */
+    orderBy?: AtoConsultaOrderByWithRelationInput | AtoConsultaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AtoConsultas.
+     */
+    cursor?: AtoConsultaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AtoConsultas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AtoConsultas.
+     */
+    skip?: number
+    distinct?: AtoConsultaScalarFieldEnum | AtoConsultaScalarFieldEnum[]
+  }
+
+  /**
+   * AtoConsulta create
+   */
+  export type AtoConsultaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AtoConsulta.
+     */
+    data: XOR<AtoConsultaCreateInput, AtoConsultaUncheckedCreateInput>
+  }
+
+  /**
+   * AtoConsulta createMany
+   */
+  export type AtoConsultaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AtoConsultas.
+     */
+    data: AtoConsultaCreateManyInput | AtoConsultaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AtoConsulta createManyAndReturn
+   */
+  export type AtoConsultaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * The data used to create many AtoConsultas.
+     */
+    data: AtoConsultaCreateManyInput | AtoConsultaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AtoConsulta update
+   */
+  export type AtoConsultaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AtoConsulta.
+     */
+    data: XOR<AtoConsultaUpdateInput, AtoConsultaUncheckedUpdateInput>
+    /**
+     * Choose, which AtoConsulta to update.
+     */
+    where: AtoConsultaWhereUniqueInput
+  }
+
+  /**
+   * AtoConsulta updateMany
+   */
+  export type AtoConsultaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AtoConsultas.
+     */
+    data: XOR<AtoConsultaUpdateManyMutationInput, AtoConsultaUncheckedUpdateManyInput>
+    /**
+     * Filter which AtoConsultas to update
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * Limit how many AtoConsultas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtoConsulta updateManyAndReturn
+   */
+  export type AtoConsultaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * The data used to update AtoConsultas.
+     */
+    data: XOR<AtoConsultaUpdateManyMutationInput, AtoConsultaUncheckedUpdateManyInput>
+    /**
+     * Filter which AtoConsultas to update
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * Limit how many AtoConsultas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AtoConsulta upsert
+   */
+  export type AtoConsultaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AtoConsulta to update in case it exists.
+     */
+    where: AtoConsultaWhereUniqueInput
+    /**
+     * In case the AtoConsulta found by the `where` argument doesn't exist, create a new AtoConsulta with this data.
+     */
+    create: XOR<AtoConsultaCreateInput, AtoConsultaUncheckedCreateInput>
+    /**
+     * In case the AtoConsulta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AtoConsultaUpdateInput, AtoConsultaUncheckedUpdateInput>
+  }
+
+  /**
+   * AtoConsulta delete
+   */
+  export type AtoConsultaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
+    /**
+     * Filter which AtoConsulta to delete.
+     */
+    where: AtoConsultaWhereUniqueInput
+  }
+
+  /**
+   * AtoConsulta deleteMany
+   */
+  export type AtoConsultaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AtoConsultas to delete
+     */
+    where?: AtoConsultaWhereInput
+    /**
+     * Limit how many AtoConsultas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AtoConsulta without action
+   */
+  export type AtoConsultaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AtoConsulta
+     */
+    select?: AtoConsultaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AtoConsulta
+     */
+    omit?: AtoConsultaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AtoConsultaInclude<ExtArgs> | null
   }
 
 
@@ -74492,6 +77089,7 @@ export namespace Prisma {
   export const EpisodioFaturacaoScalarFieldEnum: {
     id: 'id',
     doenteId: 'doenteId',
+    consultaId: 'consultaId',
     estado: 'estado',
     dataEmissao: 'dataEmissao',
     totalBase: 'totalBase',
@@ -74530,6 +77128,32 @@ export namespace Prisma {
   };
 
   export type PagamentoScalarFieldEnum = (typeof PagamentoScalarFieldEnum)[keyof typeof PagamentoScalarFieldEnum]
+
+
+  export const AtoClinicoScalarFieldEnum: {
+    id: 'id',
+    codigo: 'codigo',
+    descricao: 'descricao',
+    categoria: 'categoria',
+    precoBase: 'precoBase',
+    especialidade: 'especialidade',
+    ativo: 'ativo',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AtoClinicoScalarFieldEnum = (typeof AtoClinicoScalarFieldEnum)[keyof typeof AtoClinicoScalarFieldEnum]
+
+
+  export const AtoConsultaScalarFieldEnum: {
+    id: 'id',
+    consultaId: 'consultaId',
+    atoId: 'atoId',
+    quantidade: 'quantidade',
+    precoUnitario: 'precoUnitario',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AtoConsultaScalarFieldEnum = (typeof AtoConsultaScalarFieldEnum)[keyof typeof AtoConsultaScalarFieldEnum]
 
 
   export const TicketScalarFieldEnum: {
@@ -77874,6 +80498,8 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    atosConsulta?: AtoConsultaListRelationFilter
+    episodioFaturacao?: XOR<EpisodioFaturacaoNullableScalarRelationFilter, EpisodioFaturacaoWhereInput> | null
   }
 
   export type ConsultaOrderByWithRelationInput = {
@@ -77893,6 +80519,8 @@ export namespace Prisma {
     criadoEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
     medico?: UtilizadorOrderByWithRelationInput
+    atosConsulta?: AtoConsultaOrderByRelationAggregateInput
+    episodioFaturacao?: EpisodioFaturacaoOrderByWithRelationInput
   }
 
   export type ConsultaWhereUniqueInput = Prisma.AtLeast<{
@@ -77915,6 +80543,8 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    atosConsulta?: AtoConsultaListRelationFilter
+    episodioFaturacao?: XOR<EpisodioFaturacaoNullableScalarRelationFilter, EpisodioFaturacaoWhereInput> | null
   }, "id" | "codigo">
 
   export type ConsultaOrderByWithAggregationInput = {
@@ -79139,6 +81769,7 @@ export namespace Prisma {
     NOT?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
     id?: StringFilter<"EpisodioFaturacao"> | string
     doenteId?: StringFilter<"EpisodioFaturacao"> | string
+    consultaId?: StringNullableFilter<"EpisodioFaturacao"> | string | null
     estado?: EnumEstadoFaturaFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
     dataEmissao?: DateTimeNullableFilter<"EpisodioFaturacao"> | Date | string | null
     totalBase?: FloatFilter<"EpisodioFaturacao"> | number
@@ -79148,6 +81779,7 @@ export namespace Prisma {
     criadoPorId?: StringFilter<"EpisodioFaturacao"> | string
     criadoEm?: DateTimeFilter<"EpisodioFaturacao"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    consulta?: XOR<ConsultaNullableScalarRelationFilter, ConsultaWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     itens?: ItemFaturaListRelationFilter
     pagamentos?: PagamentoListRelationFilter
@@ -79156,6 +81788,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoOrderByWithRelationInput = {
     id?: SortOrder
     doenteId?: SortOrder
+    consultaId?: SortOrderInput | SortOrder
     estado?: SortOrder
     dataEmissao?: SortOrderInput | SortOrder
     totalBase?: SortOrder
@@ -79165,6 +81798,7 @@ export namespace Prisma {
     criadoPorId?: SortOrder
     criadoEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
+    consulta?: ConsultaOrderByWithRelationInput
     criadoPor?: UtilizadorOrderByWithRelationInput
     itens?: ItemFaturaOrderByRelationAggregateInput
     pagamentos?: PagamentoOrderByRelationAggregateInput
@@ -79172,6 +81806,7 @@ export namespace Prisma {
 
   export type EpisodioFaturacaoWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    consultaId?: string
     AND?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
     OR?: EpisodioFaturacaoWhereInput[]
     NOT?: EpisodioFaturacaoWhereInput | EpisodioFaturacaoWhereInput[]
@@ -79185,14 +81820,16 @@ export namespace Prisma {
     criadoPorId?: StringFilter<"EpisodioFaturacao"> | string
     criadoEm?: DateTimeFilter<"EpisodioFaturacao"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    consulta?: XOR<ConsultaNullableScalarRelationFilter, ConsultaWhereInput> | null
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     itens?: ItemFaturaListRelationFilter
     pagamentos?: PagamentoListRelationFilter
-  }, "id">
+  }, "id" | "consultaId">
 
   export type EpisodioFaturacaoOrderByWithAggregationInput = {
     id?: SortOrder
     doenteId?: SortOrder
+    consultaId?: SortOrderInput | SortOrder
     estado?: SortOrder
     dataEmissao?: SortOrderInput | SortOrder
     totalBase?: SortOrder
@@ -79214,6 +81851,7 @@ export namespace Prisma {
     NOT?: EpisodioFaturacaoScalarWhereWithAggregatesInput | EpisodioFaturacaoScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EpisodioFaturacao"> | string
     doenteId?: StringWithAggregatesFilter<"EpisodioFaturacao"> | string
+    consultaId?: StringNullableWithAggregatesFilter<"EpisodioFaturacao"> | string | null
     estado?: EnumEstadoFaturaWithAggregatesFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
     dataEmissao?: DateTimeNullableWithAggregatesFilter<"EpisodioFaturacao"> | Date | string | null
     totalBase?: FloatWithAggregatesFilter<"EpisodioFaturacao"> | number
@@ -79364,6 +82002,143 @@ export namespace Prisma {
     referencia?: StringNullableWithAggregatesFilter<"Pagamento"> | string | null
     registadoPorId?: StringWithAggregatesFilter<"Pagamento"> | string
     criadoEm?: DateTimeWithAggregatesFilter<"Pagamento"> | Date | string
+  }
+
+  export type AtoClinicoWhereInput = {
+    AND?: AtoClinicoWhereInput | AtoClinicoWhereInput[]
+    OR?: AtoClinicoWhereInput[]
+    NOT?: AtoClinicoWhereInput | AtoClinicoWhereInput[]
+    id?: StringFilter<"AtoClinico"> | string
+    codigo?: StringFilter<"AtoClinico"> | string
+    descricao?: StringFilter<"AtoClinico"> | string
+    categoria?: StringFilter<"AtoClinico"> | string
+    precoBase?: FloatFilter<"AtoClinico"> | number
+    especialidade?: StringNullableFilter<"AtoClinico"> | string | null
+    ativo?: BoolFilter<"AtoClinico"> | boolean
+    criadoEm?: DateTimeFilter<"AtoClinico"> | Date | string
+    atosConsulta?: AtoConsultaListRelationFilter
+  }
+
+  export type AtoClinicoOrderByWithRelationInput = {
+    id?: SortOrder
+    codigo?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    precoBase?: SortOrder
+    especialidade?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    atosConsulta?: AtoConsultaOrderByRelationAggregateInput
+  }
+
+  export type AtoClinicoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    codigo?: string
+    AND?: AtoClinicoWhereInput | AtoClinicoWhereInput[]
+    OR?: AtoClinicoWhereInput[]
+    NOT?: AtoClinicoWhereInput | AtoClinicoWhereInput[]
+    descricao?: StringFilter<"AtoClinico"> | string
+    categoria?: StringFilter<"AtoClinico"> | string
+    precoBase?: FloatFilter<"AtoClinico"> | number
+    especialidade?: StringNullableFilter<"AtoClinico"> | string | null
+    ativo?: BoolFilter<"AtoClinico"> | boolean
+    criadoEm?: DateTimeFilter<"AtoClinico"> | Date | string
+    atosConsulta?: AtoConsultaListRelationFilter
+  }, "id" | "codigo">
+
+  export type AtoClinicoOrderByWithAggregationInput = {
+    id?: SortOrder
+    codigo?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    precoBase?: SortOrder
+    especialidade?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    _count?: AtoClinicoCountOrderByAggregateInput
+    _avg?: AtoClinicoAvgOrderByAggregateInput
+    _max?: AtoClinicoMaxOrderByAggregateInput
+    _min?: AtoClinicoMinOrderByAggregateInput
+    _sum?: AtoClinicoSumOrderByAggregateInput
+  }
+
+  export type AtoClinicoScalarWhereWithAggregatesInput = {
+    AND?: AtoClinicoScalarWhereWithAggregatesInput | AtoClinicoScalarWhereWithAggregatesInput[]
+    OR?: AtoClinicoScalarWhereWithAggregatesInput[]
+    NOT?: AtoClinicoScalarWhereWithAggregatesInput | AtoClinicoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AtoClinico"> | string
+    codigo?: StringWithAggregatesFilter<"AtoClinico"> | string
+    descricao?: StringWithAggregatesFilter<"AtoClinico"> | string
+    categoria?: StringWithAggregatesFilter<"AtoClinico"> | string
+    precoBase?: FloatWithAggregatesFilter<"AtoClinico"> | number
+    especialidade?: StringNullableWithAggregatesFilter<"AtoClinico"> | string | null
+    ativo?: BoolWithAggregatesFilter<"AtoClinico"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"AtoClinico"> | Date | string
+  }
+
+  export type AtoConsultaWhereInput = {
+    AND?: AtoConsultaWhereInput | AtoConsultaWhereInput[]
+    OR?: AtoConsultaWhereInput[]
+    NOT?: AtoConsultaWhereInput | AtoConsultaWhereInput[]
+    id?: StringFilter<"AtoConsulta"> | string
+    consultaId?: StringFilter<"AtoConsulta"> | string
+    atoId?: StringFilter<"AtoConsulta"> | string
+    quantidade?: IntFilter<"AtoConsulta"> | number
+    precoUnitario?: FloatFilter<"AtoConsulta"> | number
+    criadoEm?: DateTimeFilter<"AtoConsulta"> | Date | string
+    consulta?: XOR<ConsultaScalarRelationFilter, ConsultaWhereInput>
+    ato?: XOR<AtoClinicoScalarRelationFilter, AtoClinicoWhereInput>
+  }
+
+  export type AtoConsultaOrderByWithRelationInput = {
+    id?: SortOrder
+    consultaId?: SortOrder
+    atoId?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    criadoEm?: SortOrder
+    consulta?: ConsultaOrderByWithRelationInput
+    ato?: AtoClinicoOrderByWithRelationInput
+  }
+
+  export type AtoConsultaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AtoConsultaWhereInput | AtoConsultaWhereInput[]
+    OR?: AtoConsultaWhereInput[]
+    NOT?: AtoConsultaWhereInput | AtoConsultaWhereInput[]
+    consultaId?: StringFilter<"AtoConsulta"> | string
+    atoId?: StringFilter<"AtoConsulta"> | string
+    quantidade?: IntFilter<"AtoConsulta"> | number
+    precoUnitario?: FloatFilter<"AtoConsulta"> | number
+    criadoEm?: DateTimeFilter<"AtoConsulta"> | Date | string
+    consulta?: XOR<ConsultaScalarRelationFilter, ConsultaWhereInput>
+    ato?: XOR<AtoClinicoScalarRelationFilter, AtoClinicoWhereInput>
+  }, "id">
+
+  export type AtoConsultaOrderByWithAggregationInput = {
+    id?: SortOrder
+    consultaId?: SortOrder
+    atoId?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    criadoEm?: SortOrder
+    _count?: AtoConsultaCountOrderByAggregateInput
+    _avg?: AtoConsultaAvgOrderByAggregateInput
+    _max?: AtoConsultaMaxOrderByAggregateInput
+    _min?: AtoConsultaMinOrderByAggregateInput
+    _sum?: AtoConsultaSumOrderByAggregateInput
+  }
+
+  export type AtoConsultaScalarWhereWithAggregatesInput = {
+    AND?: AtoConsultaScalarWhereWithAggregatesInput | AtoConsultaScalarWhereWithAggregatesInput[]
+    OR?: AtoConsultaScalarWhereWithAggregatesInput[]
+    NOT?: AtoConsultaScalarWhereWithAggregatesInput | AtoConsultaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AtoConsulta"> | string
+    consultaId?: StringWithAggregatesFilter<"AtoConsulta"> | string
+    atoId?: StringWithAggregatesFilter<"AtoConsulta"> | string
+    quantidade?: IntWithAggregatesFilter<"AtoConsulta"> | number
+    precoUnitario?: FloatWithAggregatesFilter<"AtoConsulta"> | number
+    criadoEm?: DateTimeWithAggregatesFilter<"AtoConsulta"> | Date | string
   }
 
   export type TicketWhereInput = {
@@ -82625,6 +85400,8 @@ export namespace Prisma {
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
+    atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaUncheckedCreateInput = {
@@ -82642,6 +85419,8 @@ export namespace Prisma {
     codigo?: string | null
     checkinEm?: Date | string | null
     criadoEm?: Date | string
+    atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaUpdateInput = {
@@ -82659,6 +85438,8 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
+    atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaUncheckedUpdateInput = {
@@ -82676,6 +85457,8 @@ export namespace Prisma {
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaCreateManyInput = {
@@ -83984,6 +86767,7 @@ export namespace Prisma {
     notas?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    consulta?: ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput
     criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
     itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
     pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
@@ -83992,6 +86776,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedCreateInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -84014,6 +86799,7 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    consulta?: ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
     itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
     pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
@@ -84022,6 +86808,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -84037,6 +86824,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoCreateManyInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -84061,6 +86849,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -84212,6 +87001,148 @@ export namespace Prisma {
     metodo?: StringFieldUpdateOperationsInput | string
     referencia?: NullableStringFieldUpdateOperationsInput | string | null
     registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoClinicoCreateInput = {
+    id?: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atosConsulta?: AtoConsultaCreateNestedManyWithoutAtoInput
+  }
+
+  export type AtoClinicoUncheckedCreateInput = {
+    id?: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutAtoInput
+  }
+
+  export type AtoClinicoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUpdateManyWithoutAtoNestedInput
+  }
+
+  export type AtoClinicoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutAtoNestedInput
+  }
+
+  export type AtoClinicoCreateManyInput = {
+    id?: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AtoClinicoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoClinicoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaCreateInput = {
+    id?: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+    consulta: ConsultaCreateNestedOneWithoutAtosConsultaInput
+    ato: AtoClinicoCreateNestedOneWithoutAtosConsultaInput
+  }
+
+  export type AtoConsultaUncheckedCreateInput = {
+    id?: string
+    consultaId: string
+    atoId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    consulta?: ConsultaUpdateOneRequiredWithoutAtosConsultaNestedInput
+    ato?: AtoClinicoUpdateOneRequiredWithoutAtosConsultaNestedInput
+  }
+
+  export type AtoConsultaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consultaId?: StringFieldUpdateOperationsInput | string
+    atoId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaCreateManyInput = {
+    id?: string
+    consultaId: string
+    atoId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consultaId?: StringFieldUpdateOperationsInput | string
+    atoId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -86947,6 +89878,21 @@ export namespace Prisma {
     not?: NestedEnumEstadoConsultaFilter<$PrismaModel> | $Enums.EstadoConsulta
   }
 
+  export type AtoConsultaListRelationFilter = {
+    every?: AtoConsultaWhereInput
+    some?: AtoConsultaWhereInput
+    none?: AtoConsultaWhereInput
+  }
+
+  export type EpisodioFaturacaoNullableScalarRelationFilter = {
+    is?: EpisodioFaturacaoWhereInput | null
+    isNot?: EpisodioFaturacaoWhereInput | null
+  }
+
+  export type AtoConsultaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ConsultaCountOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
@@ -87873,6 +90819,11 @@ export namespace Prisma {
     not?: NestedEnumEstadoFaturaFilter<$PrismaModel> | $Enums.EstadoFatura
   }
 
+  export type ConsultaNullableScalarRelationFilter = {
+    is?: ConsultaWhereInput | null
+    isNot?: ConsultaWhereInput | null
+  }
+
   export type ItemFaturaListRelationFilter = {
     every?: ItemFaturaWhereInput
     some?: ItemFaturaWhereInput
@@ -87886,6 +90837,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoCountOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
+    consultaId?: SortOrder
     estado?: SortOrder
     dataEmissao?: SortOrder
     totalBase?: SortOrder
@@ -87904,6 +90856,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMaxOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
+    consultaId?: SortOrder
     estado?: SortOrder
     dataEmissao?: SortOrder
     totalBase?: SortOrder
@@ -87917,6 +90870,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoMinOrderByAggregateInput = {
     id?: SortOrder
     doenteId?: SortOrder
+    consultaId?: SortOrder
     estado?: SortOrder
     dataEmissao?: SortOrder
     totalBase?: SortOrder
@@ -88028,6 +90982,94 @@ export namespace Prisma {
 
   export type PagamentoSumOrderByAggregateInput = {
     valor?: SortOrder
+  }
+
+  export type AtoClinicoCountOrderByAggregateInput = {
+    id?: SortOrder
+    codigo?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    precoBase?: SortOrder
+    especialidade?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoClinicoAvgOrderByAggregateInput = {
+    precoBase?: SortOrder
+  }
+
+  export type AtoClinicoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    codigo?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    precoBase?: SortOrder
+    especialidade?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoClinicoMinOrderByAggregateInput = {
+    id?: SortOrder
+    codigo?: SortOrder
+    descricao?: SortOrder
+    categoria?: SortOrder
+    precoBase?: SortOrder
+    especialidade?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoClinicoSumOrderByAggregateInput = {
+    precoBase?: SortOrder
+  }
+
+  export type ConsultaScalarRelationFilter = {
+    is?: ConsultaWhereInput
+    isNot?: ConsultaWhereInput
+  }
+
+  export type AtoClinicoScalarRelationFilter = {
+    is?: AtoClinicoWhereInput
+    isNot?: AtoClinicoWhereInput
+  }
+
+  export type AtoConsultaCountOrderByAggregateInput = {
+    id?: SortOrder
+    consultaId?: SortOrder
+    atoId?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoConsultaAvgOrderByAggregateInput = {
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+  }
+
+  export type AtoConsultaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    consultaId?: SortOrder
+    atoId?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoConsultaMinOrderByAggregateInput = {
+    id?: SortOrder
+    consultaId?: SortOrder
+    atoId?: SortOrder
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AtoConsultaSumOrderByAggregateInput = {
+    quantidade?: SortOrder
+    precoUnitario?: SortOrder
   }
 
   export type TicketCountOrderByAggregateInput = {
@@ -93482,6 +96524,32 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type AtoConsultaCreateNestedManyWithoutConsultaInput = {
+    create?: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput> | AtoConsultaCreateWithoutConsultaInput[] | AtoConsultaUncheckedCreateWithoutConsultaInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutConsultaInput | AtoConsultaCreateOrConnectWithoutConsultaInput[]
+    createMany?: AtoConsultaCreateManyConsultaInputEnvelope
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+  }
+
+  export type EpisodioFaturacaoCreateNestedOneWithoutConsultaInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutConsultaInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+  }
+
+  export type AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput = {
+    create?: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput> | AtoConsultaCreateWithoutConsultaInput[] | AtoConsultaUncheckedCreateWithoutConsultaInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutConsultaInput | AtoConsultaCreateOrConnectWithoutConsultaInput[]
+    createMany?: AtoConsultaCreateManyConsultaInputEnvelope
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutConsultaInput
+    connect?: EpisodioFaturacaoWhereUniqueInput
+  }
+
   export type EnumEstadoConsultaFieldUpdateOperationsInput = {
     set?: $Enums.EstadoConsulta
   }
@@ -93502,6 +96570,54 @@ export namespace Prisma {
     upsert?: UtilizadorUpsertWithoutConsultasInput
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutConsultasInput, UtilizadorUpdateWithoutConsultasInput>, UtilizadorUncheckedUpdateWithoutConsultasInput>
+  }
+
+  export type AtoConsultaUpdateManyWithoutConsultaNestedInput = {
+    create?: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput> | AtoConsultaCreateWithoutConsultaInput[] | AtoConsultaUncheckedCreateWithoutConsultaInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutConsultaInput | AtoConsultaCreateOrConnectWithoutConsultaInput[]
+    upsert?: AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput | AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput[]
+    createMany?: AtoConsultaCreateManyConsultaInputEnvelope
+    set?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    disconnect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    delete?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    update?: AtoConsultaUpdateWithWhereUniqueWithoutConsultaInput | AtoConsultaUpdateWithWhereUniqueWithoutConsultaInput[]
+    updateMany?: AtoConsultaUpdateManyWithWhereWithoutConsultaInput | AtoConsultaUpdateManyWithWhereWithoutConsultaInput[]
+    deleteMany?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+  }
+
+  export type EpisodioFaturacaoUpdateOneWithoutConsultaNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutConsultaInput
+    upsert?: EpisodioFaturacaoUpsertWithoutConsultaInput
+    disconnect?: EpisodioFaturacaoWhereInput | boolean
+    delete?: EpisodioFaturacaoWhereInput | boolean
+    connect?: EpisodioFaturacaoWhereUniqueInput
+    update?: XOR<XOR<EpisodioFaturacaoUpdateToOneWithWhereWithoutConsultaInput, EpisodioFaturacaoUpdateWithoutConsultaInput>, EpisodioFaturacaoUncheckedUpdateWithoutConsultaInput>
+  }
+
+  export type AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput = {
+    create?: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput> | AtoConsultaCreateWithoutConsultaInput[] | AtoConsultaUncheckedCreateWithoutConsultaInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutConsultaInput | AtoConsultaCreateOrConnectWithoutConsultaInput[]
+    upsert?: AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput | AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput[]
+    createMany?: AtoConsultaCreateManyConsultaInputEnvelope
+    set?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    disconnect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    delete?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    update?: AtoConsultaUpdateWithWhereUniqueWithoutConsultaInput | AtoConsultaUpdateWithWhereUniqueWithoutConsultaInput[]
+    updateMany?: AtoConsultaUpdateManyWithWhereWithoutConsultaInput | AtoConsultaUpdateManyWithWhereWithoutConsultaInput[]
+    deleteMany?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput = {
+    create?: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+    connectOrCreate?: EpisodioFaturacaoCreateOrConnectWithoutConsultaInput
+    upsert?: EpisodioFaturacaoUpsertWithoutConsultaInput
+    disconnect?: EpisodioFaturacaoWhereInput | boolean
+    delete?: EpisodioFaturacaoWhereInput | boolean
+    connect?: EpisodioFaturacaoWhereUniqueInput
+    update?: XOR<XOR<EpisodioFaturacaoUpdateToOneWithWhereWithoutConsultaInput, EpisodioFaturacaoUpdateWithoutConsultaInput>, EpisodioFaturacaoUncheckedUpdateWithoutConsultaInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutAgendasInput = {
@@ -94064,6 +97180,12 @@ export namespace Prisma {
     connect?: DoenteWhereUniqueInput
   }
 
+  export type ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput = {
+    create?: XOR<ConsultaCreateWithoutEpisodioFaturacaoInput, ConsultaUncheckedCreateWithoutEpisodioFaturacaoInput>
+    connectOrCreate?: ConsultaCreateOrConnectWithoutEpisodioFaturacaoInput
+    connect?: ConsultaWhereUniqueInput
+  }
+
   export type UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput = {
     create?: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput
@@ -94108,6 +97230,16 @@ export namespace Prisma {
     upsert?: DoenteUpsertWithoutEpisodiosFaturacaoInput
     connect?: DoenteWhereUniqueInput
     update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutEpisodiosFaturacaoInput, DoenteUpdateWithoutEpisodiosFaturacaoInput>, DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput>
+  }
+
+  export type ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput = {
+    create?: XOR<ConsultaCreateWithoutEpisodioFaturacaoInput, ConsultaUncheckedCreateWithoutEpisodioFaturacaoInput>
+    connectOrCreate?: ConsultaCreateOrConnectWithoutEpisodioFaturacaoInput
+    upsert?: ConsultaUpsertWithoutEpisodioFaturacaoInput
+    disconnect?: ConsultaWhereInput | boolean
+    delete?: ConsultaWhereInput | boolean
+    connect?: ConsultaWhereUniqueInput
+    update?: XOR<XOR<ConsultaUpdateToOneWithWhereWithoutEpisodioFaturacaoInput, ConsultaUpdateWithoutEpisodioFaturacaoInput>, ConsultaUncheckedUpdateWithoutEpisodioFaturacaoInput>
   }
 
   export type UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput = {
@@ -94214,6 +97346,76 @@ export namespace Prisma {
     upsert?: UtilizadorUpsertWithoutPagamentosRegistadosInput
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPagamentosRegistadosInput, UtilizadorUpdateWithoutPagamentosRegistadosInput>, UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput>
+  }
+
+  export type AtoConsultaCreateNestedManyWithoutAtoInput = {
+    create?: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput> | AtoConsultaCreateWithoutAtoInput[] | AtoConsultaUncheckedCreateWithoutAtoInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutAtoInput | AtoConsultaCreateOrConnectWithoutAtoInput[]
+    createMany?: AtoConsultaCreateManyAtoInputEnvelope
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+  }
+
+  export type AtoConsultaUncheckedCreateNestedManyWithoutAtoInput = {
+    create?: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput> | AtoConsultaCreateWithoutAtoInput[] | AtoConsultaUncheckedCreateWithoutAtoInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutAtoInput | AtoConsultaCreateOrConnectWithoutAtoInput[]
+    createMany?: AtoConsultaCreateManyAtoInputEnvelope
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+  }
+
+  export type AtoConsultaUpdateManyWithoutAtoNestedInput = {
+    create?: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput> | AtoConsultaCreateWithoutAtoInput[] | AtoConsultaUncheckedCreateWithoutAtoInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutAtoInput | AtoConsultaCreateOrConnectWithoutAtoInput[]
+    upsert?: AtoConsultaUpsertWithWhereUniqueWithoutAtoInput | AtoConsultaUpsertWithWhereUniqueWithoutAtoInput[]
+    createMany?: AtoConsultaCreateManyAtoInputEnvelope
+    set?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    disconnect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    delete?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    update?: AtoConsultaUpdateWithWhereUniqueWithoutAtoInput | AtoConsultaUpdateWithWhereUniqueWithoutAtoInput[]
+    updateMany?: AtoConsultaUpdateManyWithWhereWithoutAtoInput | AtoConsultaUpdateManyWithWhereWithoutAtoInput[]
+    deleteMany?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+  }
+
+  export type AtoConsultaUncheckedUpdateManyWithoutAtoNestedInput = {
+    create?: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput> | AtoConsultaCreateWithoutAtoInput[] | AtoConsultaUncheckedCreateWithoutAtoInput[]
+    connectOrCreate?: AtoConsultaCreateOrConnectWithoutAtoInput | AtoConsultaCreateOrConnectWithoutAtoInput[]
+    upsert?: AtoConsultaUpsertWithWhereUniqueWithoutAtoInput | AtoConsultaUpsertWithWhereUniqueWithoutAtoInput[]
+    createMany?: AtoConsultaCreateManyAtoInputEnvelope
+    set?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    disconnect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    delete?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    connect?: AtoConsultaWhereUniqueInput | AtoConsultaWhereUniqueInput[]
+    update?: AtoConsultaUpdateWithWhereUniqueWithoutAtoInput | AtoConsultaUpdateWithWhereUniqueWithoutAtoInput[]
+    updateMany?: AtoConsultaUpdateManyWithWhereWithoutAtoInput | AtoConsultaUpdateManyWithWhereWithoutAtoInput[]
+    deleteMany?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+  }
+
+  export type ConsultaCreateNestedOneWithoutAtosConsultaInput = {
+    create?: XOR<ConsultaCreateWithoutAtosConsultaInput, ConsultaUncheckedCreateWithoutAtosConsultaInput>
+    connectOrCreate?: ConsultaCreateOrConnectWithoutAtosConsultaInput
+    connect?: ConsultaWhereUniqueInput
+  }
+
+  export type AtoClinicoCreateNestedOneWithoutAtosConsultaInput = {
+    create?: XOR<AtoClinicoCreateWithoutAtosConsultaInput, AtoClinicoUncheckedCreateWithoutAtosConsultaInput>
+    connectOrCreate?: AtoClinicoCreateOrConnectWithoutAtosConsultaInput
+    connect?: AtoClinicoWhereUniqueInput
+  }
+
+  export type ConsultaUpdateOneRequiredWithoutAtosConsultaNestedInput = {
+    create?: XOR<ConsultaCreateWithoutAtosConsultaInput, ConsultaUncheckedCreateWithoutAtosConsultaInput>
+    connectOrCreate?: ConsultaCreateOrConnectWithoutAtosConsultaInput
+    upsert?: ConsultaUpsertWithoutAtosConsultaInput
+    connect?: ConsultaWhereUniqueInput
+    update?: XOR<XOR<ConsultaUpdateToOneWithWhereWithoutAtosConsultaInput, ConsultaUpdateWithoutAtosConsultaInput>, ConsultaUncheckedUpdateWithoutAtosConsultaInput>
+  }
+
+  export type AtoClinicoUpdateOneRequiredWithoutAtosConsultaNestedInput = {
+    create?: XOR<AtoClinicoCreateWithoutAtosConsultaInput, AtoClinicoUncheckedCreateWithoutAtosConsultaInput>
+    connectOrCreate?: AtoClinicoCreateOrConnectWithoutAtosConsultaInput
+    upsert?: AtoClinicoUpsertWithoutAtosConsultaInput
+    connect?: AtoClinicoWhereUniqueInput
+    update?: XOR<XOR<AtoClinicoUpdateToOneWithWhereWithoutAtosConsultaInput, AtoClinicoUpdateWithoutAtosConsultaInput>, AtoClinicoUncheckedUpdateWithoutAtosConsultaInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutRefreshTokensInput = {
@@ -96204,6 +99406,8 @@ export namespace Prisma {
     checkinEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
+    atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaUncheckedCreateWithoutMedicoInput = {
@@ -96220,6 +99424,8 @@ export namespace Prisma {
     codigo?: string | null
     checkinEm?: Date | string | null
     criadoEm?: Date | string
+    atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaCreateOrConnectWithoutMedicoInput = {
@@ -97080,6 +100286,7 @@ export namespace Prisma {
     notas?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    consulta?: ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput
     itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
     pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
   }
@@ -97087,6 +100294,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedCreateWithoutCriadoPorInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -98703,6 +101911,7 @@ export namespace Prisma {
     NOT?: EpisodioFaturacaoScalarWhereInput | EpisodioFaturacaoScalarWhereInput[]
     id?: StringFilter<"EpisodioFaturacao"> | string
     doenteId?: StringFilter<"EpisodioFaturacao"> | string
+    consultaId?: StringNullableFilter<"EpisodioFaturacao"> | string | null
     estado?: EnumEstadoFaturaFilter<"EpisodioFaturacao"> | $Enums.EstadoFatura
     dataEmissao?: DateTimeNullableFilter<"EpisodioFaturacao"> | Date | string | null
     totalBase?: FloatFilter<"EpisodioFaturacao"> | number
@@ -99797,6 +103006,8 @@ export namespace Prisma {
     checkinEm?: Date | string | null
     criadoEm?: Date | string
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
+    atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaUncheckedCreateWithoutDoenteInput = {
@@ -99813,6 +103024,8 @@ export namespace Prisma {
     codigo?: string | null
     checkinEm?: Date | string | null
     criadoEm?: Date | string
+    atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
   }
 
   export type ConsultaCreateOrConnectWithoutDoenteInput = {
@@ -100043,6 +103256,7 @@ export namespace Prisma {
     tipoCobertura?: string | null
     notas?: string | null
     criadoEm?: Date | string
+    consulta?: ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput
     criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
     itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
     pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
@@ -100050,6 +103264,7 @@ export namespace Prisma {
 
   export type EpisodioFaturacaoUncheckedCreateWithoutDoenteInput = {
     id?: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -115572,6 +118787,67 @@ export namespace Prisma {
     create: XOR<UtilizadorCreateWithoutConsultasInput, UtilizadorUncheckedCreateWithoutConsultasInput>
   }
 
+  export type AtoConsultaCreateWithoutConsultaInput = {
+    id?: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+    ato: AtoClinicoCreateNestedOneWithoutAtosConsultaInput
+  }
+
+  export type AtoConsultaUncheckedCreateWithoutConsultaInput = {
+    id?: string
+    atoId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaCreateOrConnectWithoutConsultaInput = {
+    where: AtoConsultaWhereUniqueInput
+    create: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput>
+  }
+
+  export type AtoConsultaCreateManyConsultaInputEnvelope = {
+    data: AtoConsultaCreateManyConsultaInput | AtoConsultaCreateManyConsultaInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EpisodioFaturacaoCreateWithoutConsultaInput = {
+    id?: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
+    itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoUncheckedCreateWithoutConsultaInput = {
+    id?: string
+    doenteId: string
+    estado?: $Enums.EstadoFatura
+    dataEmissao?: Date | string | null
+    totalBase?: number
+    totalCobrado?: number
+    tipoCobertura?: string | null
+    notas?: string | null
+    criadoPorId: string
+    criadoEm?: Date | string
+    itens?: ItemFaturaUncheckedCreateNestedManyWithoutEpisodioInput
+    pagamentos?: PagamentoUncheckedCreateNestedManyWithoutEpisodioInput
+  }
+
+  export type EpisodioFaturacaoCreateOrConnectWithoutConsultaInput = {
+    where: EpisodioFaturacaoWhereUniqueInput
+    create: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+  }
+
   export type DoenteUpsertWithoutConsultasInput = {
     update: XOR<DoenteUpdateWithoutConsultasInput, DoenteUncheckedUpdateWithoutConsultasInput>
     create: XOR<DoenteCreateWithoutConsultasInput, DoenteUncheckedCreateWithoutConsultasInput>
@@ -115828,6 +119104,75 @@ export namespace Prisma {
     problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
     manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput = {
+    where: AtoConsultaWhereUniqueInput
+    update: XOR<AtoConsultaUpdateWithoutConsultaInput, AtoConsultaUncheckedUpdateWithoutConsultaInput>
+    create: XOR<AtoConsultaCreateWithoutConsultaInput, AtoConsultaUncheckedCreateWithoutConsultaInput>
+  }
+
+  export type AtoConsultaUpdateWithWhereUniqueWithoutConsultaInput = {
+    where: AtoConsultaWhereUniqueInput
+    data: XOR<AtoConsultaUpdateWithoutConsultaInput, AtoConsultaUncheckedUpdateWithoutConsultaInput>
+  }
+
+  export type AtoConsultaUpdateManyWithWhereWithoutConsultaInput = {
+    where: AtoConsultaScalarWhereInput
+    data: XOR<AtoConsultaUpdateManyMutationInput, AtoConsultaUncheckedUpdateManyWithoutConsultaInput>
+  }
+
+  export type AtoConsultaScalarWhereInput = {
+    AND?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+    OR?: AtoConsultaScalarWhereInput[]
+    NOT?: AtoConsultaScalarWhereInput | AtoConsultaScalarWhereInput[]
+    id?: StringFilter<"AtoConsulta"> | string
+    consultaId?: StringFilter<"AtoConsulta"> | string
+    atoId?: StringFilter<"AtoConsulta"> | string
+    quantidade?: IntFilter<"AtoConsulta"> | number
+    precoUnitario?: FloatFilter<"AtoConsulta"> | number
+    criadoEm?: DateTimeFilter<"AtoConsulta"> | Date | string
+  }
+
+  export type EpisodioFaturacaoUpsertWithoutConsultaInput = {
+    update: XOR<EpisodioFaturacaoUpdateWithoutConsultaInput, EpisodioFaturacaoUncheckedUpdateWithoutConsultaInput>
+    create: XOR<EpisodioFaturacaoCreateWithoutConsultaInput, EpisodioFaturacaoUncheckedCreateWithoutConsultaInput>
+    where?: EpisodioFaturacaoWhereInput
+  }
+
+  export type EpisodioFaturacaoUpdateToOneWithWhereWithoutConsultaInput = {
+    where?: EpisodioFaturacaoWhereInput
+    data: XOR<EpisodioFaturacaoUpdateWithoutConsultaInput, EpisodioFaturacaoUncheckedUpdateWithoutConsultaInput>
+  }
+
+  export type EpisodioFaturacaoUpdateWithoutConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
+    itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
+  }
+
+  export type EpisodioFaturacaoUncheckedUpdateWithoutConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
+    dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalBase?: FloatFieldUpdateOperationsInput | number
+    totalCobrado?: FloatFieldUpdateOperationsInput | number
+    tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    itens?: ItemFaturaUncheckedUpdateManyWithoutEpisodioNestedInput
+    pagamentos?: PagamentoUncheckedUpdateManyWithoutEpisodioNestedInput
   }
 
   export type UtilizadorCreateWithoutAgendasInput = {
@@ -123481,6 +126826,47 @@ export namespace Prisma {
     create: XOR<DoenteCreateWithoutEpisodiosFaturacaoInput, DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput>
   }
 
+  export type ConsultaCreateWithoutEpisodioFaturacaoInput = {
+    id?: string
+    nomeDoente?: string | null
+    especialidade: string
+    dataHora: Date | string
+    duracao?: number
+    estado?: $Enums.EstadoConsulta
+    notas?: string | null
+    diagnostico?: string | null
+    proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
+    criadoEm?: Date | string
+    doente?: DoenteCreateNestedOneWithoutConsultasInput
+    medico: UtilizadorCreateNestedOneWithoutConsultasInput
+    atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
+  }
+
+  export type ConsultaUncheckedCreateWithoutEpisodioFaturacaoInput = {
+    id?: string
+    doenteId?: string | null
+    nomeDoente?: string | null
+    medicoId: string
+    especialidade: string
+    dataHora: Date | string
+    duracao?: number
+    estado?: $Enums.EstadoConsulta
+    notas?: string | null
+    diagnostico?: string | null
+    proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
+    criadoEm?: Date | string
+    atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
+  }
+
+  export type ConsultaCreateOrConnectWithoutEpisodioFaturacaoInput = {
+    where: ConsultaWhereUniqueInput
+    create: XOR<ConsultaCreateWithoutEpisodioFaturacaoInput, ConsultaUncheckedCreateWithoutEpisodioFaturacaoInput>
+  }
+
   export type UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput = {
     id?: string
     numeroFuncionario: string
@@ -123791,6 +127177,53 @@ export namespace Prisma {
     problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
+  export type ConsultaUpsertWithoutEpisodioFaturacaoInput = {
+    update: XOR<ConsultaUpdateWithoutEpisodioFaturacaoInput, ConsultaUncheckedUpdateWithoutEpisodioFaturacaoInput>
+    create: XOR<ConsultaCreateWithoutEpisodioFaturacaoInput, ConsultaUncheckedCreateWithoutEpisodioFaturacaoInput>
+    where?: ConsultaWhereInput
+  }
+
+  export type ConsultaUpdateToOneWithWhereWithoutEpisodioFaturacaoInput = {
+    where?: ConsultaWhereInput
+    data: XOR<ConsultaUpdateWithoutEpisodioFaturacaoInput, ConsultaUncheckedUpdateWithoutEpisodioFaturacaoInput>
+  }
+
+  export type ConsultaUpdateWithoutEpisodioFaturacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nomeDoente?: NullableStringFieldUpdateOperationsInput | string | null
+    especialidade?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: IntFieldUpdateOperationsInput | number
+    estado?: EnumEstadoConsultaFieldUpdateOperationsInput | $Enums.EstadoConsulta
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
+    proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneWithoutConsultasNestedInput
+    medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
+    atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
+  }
+
+  export type ConsultaUncheckedUpdateWithoutEpisodioFaturacaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeDoente?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoId?: StringFieldUpdateOperationsInput | string
+    especialidade?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: IntFieldUpdateOperationsInput | number
+    estado?: EnumEstadoConsultaFieldUpdateOperationsInput | $Enums.EstadoConsulta
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
+    proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
+  }
+
   export type UtilizadorUpsertWithoutEpisodiosFaturacaoCriadosInput = {
     update: XOR<UtilizadorUpdateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput>
     create: XOR<UtilizadorCreateWithoutEpisodiosFaturacaoCriadosInput, UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput>
@@ -124004,6 +127437,7 @@ export namespace Prisma {
     notas?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    consulta?: ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput
     criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
     pagamentos?: PagamentoCreateNestedManyWithoutEpisodioInput
   }
@@ -124011,6 +127445,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedCreateWithoutItensInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -124048,6 +127483,7 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    consulta?: ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
     pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
   }
@@ -124055,6 +127491,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateWithoutItensInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -124076,6 +127513,7 @@ export namespace Prisma {
     notas?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutEpisodiosFaturacaoInput
+    consulta?: ConsultaCreateNestedOneWithoutEpisodioFaturacaoInput
     criadoPor: UtilizadorCreateNestedOneWithoutEpisodiosFaturacaoCriadosInput
     itens?: ItemFaturaCreateNestedManyWithoutEpisodioInput
   }
@@ -124083,6 +127521,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedCreateWithoutPagamentosInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -124271,6 +127710,7 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    consulta?: ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
     itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
   }
@@ -124278,6 +127718,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateWithoutPagamentosInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -124444,6 +127885,196 @@ export namespace Prisma {
     problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
     manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+  }
+
+  export type AtoConsultaCreateWithoutAtoInput = {
+    id?: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+    consulta: ConsultaCreateNestedOneWithoutAtosConsultaInput
+  }
+
+  export type AtoConsultaUncheckedCreateWithoutAtoInput = {
+    id?: string
+    consultaId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaCreateOrConnectWithoutAtoInput = {
+    where: AtoConsultaWhereUniqueInput
+    create: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput>
+  }
+
+  export type AtoConsultaCreateManyAtoInputEnvelope = {
+    data: AtoConsultaCreateManyAtoInput | AtoConsultaCreateManyAtoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AtoConsultaUpsertWithWhereUniqueWithoutAtoInput = {
+    where: AtoConsultaWhereUniqueInput
+    update: XOR<AtoConsultaUpdateWithoutAtoInput, AtoConsultaUncheckedUpdateWithoutAtoInput>
+    create: XOR<AtoConsultaCreateWithoutAtoInput, AtoConsultaUncheckedCreateWithoutAtoInput>
+  }
+
+  export type AtoConsultaUpdateWithWhereUniqueWithoutAtoInput = {
+    where: AtoConsultaWhereUniqueInput
+    data: XOR<AtoConsultaUpdateWithoutAtoInput, AtoConsultaUncheckedUpdateWithoutAtoInput>
+  }
+
+  export type AtoConsultaUpdateManyWithWhereWithoutAtoInput = {
+    where: AtoConsultaScalarWhereInput
+    data: XOR<AtoConsultaUpdateManyMutationInput, AtoConsultaUncheckedUpdateManyWithoutAtoInput>
+  }
+
+  export type ConsultaCreateWithoutAtosConsultaInput = {
+    id?: string
+    nomeDoente?: string | null
+    especialidade: string
+    dataHora: Date | string
+    duracao?: number
+    estado?: $Enums.EstadoConsulta
+    notas?: string | null
+    diagnostico?: string | null
+    proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
+    criadoEm?: Date | string
+    doente?: DoenteCreateNestedOneWithoutConsultasInput
+    medico: UtilizadorCreateNestedOneWithoutConsultasInput
+    episodioFaturacao?: EpisodioFaturacaoCreateNestedOneWithoutConsultaInput
+  }
+
+  export type ConsultaUncheckedCreateWithoutAtosConsultaInput = {
+    id?: string
+    doenteId?: string | null
+    nomeDoente?: string | null
+    medicoId: string
+    especialidade: string
+    dataHora: Date | string
+    duracao?: number
+    estado?: $Enums.EstadoConsulta
+    notas?: string | null
+    diagnostico?: string | null
+    proximaConsulta?: Date | string | null
+    codigo?: string | null
+    checkinEm?: Date | string | null
+    criadoEm?: Date | string
+    episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
+  }
+
+  export type ConsultaCreateOrConnectWithoutAtosConsultaInput = {
+    where: ConsultaWhereUniqueInput
+    create: XOR<ConsultaCreateWithoutAtosConsultaInput, ConsultaUncheckedCreateWithoutAtosConsultaInput>
+  }
+
+  export type AtoClinicoCreateWithoutAtosConsultaInput = {
+    id?: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AtoClinicoUncheckedCreateWithoutAtosConsultaInput = {
+    id?: string
+    codigo: string
+    descricao: string
+    categoria: string
+    precoBase: number
+    especialidade?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type AtoClinicoCreateOrConnectWithoutAtosConsultaInput = {
+    where: AtoClinicoWhereUniqueInput
+    create: XOR<AtoClinicoCreateWithoutAtosConsultaInput, AtoClinicoUncheckedCreateWithoutAtosConsultaInput>
+  }
+
+  export type ConsultaUpsertWithoutAtosConsultaInput = {
+    update: XOR<ConsultaUpdateWithoutAtosConsultaInput, ConsultaUncheckedUpdateWithoutAtosConsultaInput>
+    create: XOR<ConsultaCreateWithoutAtosConsultaInput, ConsultaUncheckedCreateWithoutAtosConsultaInput>
+    where?: ConsultaWhereInput
+  }
+
+  export type ConsultaUpdateToOneWithWhereWithoutAtosConsultaInput = {
+    where?: ConsultaWhereInput
+    data: XOR<ConsultaUpdateWithoutAtosConsultaInput, ConsultaUncheckedUpdateWithoutAtosConsultaInput>
+  }
+
+  export type ConsultaUpdateWithoutAtosConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nomeDoente?: NullableStringFieldUpdateOperationsInput | string | null
+    especialidade?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: IntFieldUpdateOperationsInput | number
+    estado?: EnumEstadoConsultaFieldUpdateOperationsInput | $Enums.EstadoConsulta
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
+    proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneWithoutConsultasNestedInput
+    medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUpdateOneWithoutConsultaNestedInput
+  }
+
+  export type ConsultaUncheckedUpdateWithoutAtosConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: NullableStringFieldUpdateOperationsInput | string | null
+    nomeDoente?: NullableStringFieldUpdateOperationsInput | string | null
+    medicoId?: StringFieldUpdateOperationsInput | string
+    especialidade?: StringFieldUpdateOperationsInput | string
+    dataHora?: DateTimeFieldUpdateOperationsInput | Date | string
+    duracao?: IntFieldUpdateOperationsInput | number
+    estado?: EnumEstadoConsultaFieldUpdateOperationsInput | $Enums.EstadoConsulta
+    notas?: NullableStringFieldUpdateOperationsInput | string | null
+    diagnostico?: NullableStringFieldUpdateOperationsInput | string | null
+    proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codigo?: NullableStringFieldUpdateOperationsInput | string | null
+    checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
+  }
+
+  export type AtoClinicoUpsertWithoutAtosConsultaInput = {
+    update: XOR<AtoClinicoUpdateWithoutAtosConsultaInput, AtoClinicoUncheckedUpdateWithoutAtosConsultaInput>
+    create: XOR<AtoClinicoCreateWithoutAtosConsultaInput, AtoClinicoUncheckedCreateWithoutAtosConsultaInput>
+    where?: AtoClinicoWhereInput
+  }
+
+  export type AtoClinicoUpdateToOneWithWhereWithoutAtosConsultaInput = {
+    where?: AtoClinicoWhereInput
+    data: XOR<AtoClinicoUpdateWithoutAtosConsultaInput, AtoClinicoUncheckedUpdateWithoutAtosConsultaInput>
+  }
+
+  export type AtoClinicoUpdateWithoutAtosConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoClinicoUncheckedUpdateWithoutAtosConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    codigo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    categoria?: StringFieldUpdateOperationsInput | string
+    precoBase?: FloatFieldUpdateOperationsInput | number
+    especialidade?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UtilizadorCreateWithoutRefreshTokensInput = {
@@ -126643,6 +130274,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoCreateManyCriadoPorInput = {
     id?: string
     doenteId: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -127713,6 +131345,8 @@ export namespace Prisma {
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
+    atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaUncheckedUpdateWithoutMedicoInput = {
@@ -127729,6 +131363,8 @@ export namespace Prisma {
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaUncheckedUpdateManyWithoutMedicoInput = {
@@ -128652,6 +132288,7 @@ export namespace Prisma {
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutEpisodiosFaturacaoNestedInput
+    consulta?: ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput
     itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
     pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
   }
@@ -128659,6 +132296,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateWithoutCriadoPorInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -128673,6 +132311,7 @@ export namespace Prisma {
   export type EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorInput = {
     id?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -129109,6 +132748,7 @@ export namespace Prisma {
 
   export type EpisodioFaturacaoCreateManyDoenteInput = {
     id?: string
+    consultaId?: string | null
     estado?: $Enums.EstadoFatura
     dataEmissao?: Date | string | null
     totalBase?: number
@@ -129693,6 +133333,8 @@ export namespace Prisma {
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
+    atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaUncheckedUpdateWithoutDoenteInput = {
@@ -129709,6 +133351,8 @@ export namespace Prisma {
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
+    episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
   }
 
   export type ConsultaUncheckedUpdateManyWithoutDoenteInput = {
@@ -129918,6 +133562,7 @@ export namespace Prisma {
     tipoCobertura?: NullableStringFieldUpdateOperationsInput | string | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    consulta?: ConsultaUpdateOneWithoutEpisodioFaturacaoNestedInput
     criadoPor?: UtilizadorUpdateOneRequiredWithoutEpisodiosFaturacaoCriadosNestedInput
     itens?: ItemFaturaUpdateManyWithoutEpisodioNestedInput
     pagamentos?: PagamentoUpdateManyWithoutEpisodioNestedInput
@@ -129925,6 +133570,7 @@ export namespace Prisma {
 
   export type EpisodioFaturacaoUncheckedUpdateWithoutDoenteInput = {
     id?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -129939,6 +133585,7 @@ export namespace Prisma {
 
   export type EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteInput = {
     id?: StringFieldUpdateOperationsInput | string
+    consultaId?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoFaturaFieldUpdateOperationsInput | $Enums.EstadoFatura
     dataEmissao?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     totalBase?: FloatFieldUpdateOperationsInput | number
@@ -130352,6 +133999,38 @@ export namespace Prisma {
     mimeType?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AtoConsultaCreateManyConsultaInput = {
+    id?: string
+    atoId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaUpdateWithoutConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    ato?: AtoClinicoUpdateOneRequiredWithoutAtosConsultaNestedInput
+  }
+
+  export type AtoConsultaUncheckedUpdateWithoutConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    atoId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaUncheckedUpdateManyWithoutConsultaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    atoId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PedidoFarmaciaCreateManyStockItemInput = {
     id?: string
     quantidade: number
@@ -130513,6 +134192,38 @@ export namespace Prisma {
     metodo?: StringFieldUpdateOperationsInput | string
     referencia?: NullableStringFieldUpdateOperationsInput | string | null
     registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaCreateManyAtoInput = {
+    id?: string
+    consultaId: string
+    quantidade?: number
+    precoUnitario: number
+    criadoEm?: Date | string
+  }
+
+  export type AtoConsultaUpdateWithoutAtoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    consulta?: ConsultaUpdateOneRequiredWithoutAtosConsultaNestedInput
+  }
+
+  export type AtoConsultaUncheckedUpdateWithoutAtoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consultaId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AtoConsultaUncheckedUpdateManyWithoutAtoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consultaId?: StringFieldUpdateOperationsInput | string
+    quantidade?: IntFieldUpdateOperationsInput | number
+    precoUnitario?: FloatFieldUpdateOperationsInput | number
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

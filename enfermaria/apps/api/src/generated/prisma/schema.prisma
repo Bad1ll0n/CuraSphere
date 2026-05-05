@@ -833,22 +833,24 @@ enum EstadoConsulta {
 }
 
 model Consulta {
-  id              String         @id @default(uuid())
-  doenteId        String?
-  doente          Doente?        @relation(fields: [doenteId], references: [id])
-  nomeDoente      String?
-  medicoId        String
-  medico          Utilizador     @relation(fields: [medicoId], references: [id])
-  especialidade   String
-  dataHora        DateTime
-  duracao         Int            @default(30)
-  estado          EstadoConsulta @default(agendada)
-  notas           String?
-  diagnostico     String?
-  proximaConsulta DateTime?
-  codigo          String?        @unique // ex: "CON-K7PX" — para check-in no quiosque
-  checkinEm       DateTime? // quando o utente deu entrada
-  criadoEm        DateTime       @default(now())
+  id                String             @id @default(uuid())
+  doenteId          String?
+  doente            Doente?            @relation(fields: [doenteId], references: [id])
+  nomeDoente        String?
+  medicoId          String
+  medico            Utilizador         @relation(fields: [medicoId], references: [id])
+  especialidade     String
+  dataHora          DateTime
+  duracao           Int                @default(30)
+  estado            EstadoConsulta     @default(agendada)
+  notas             String?
+  diagnostico       String?
+  proximaConsulta   DateTime?
+  codigo            String?            @unique
+  checkinEm         DateTime?
+  criadoEm          DateTime           @default(now())
+  atosConsulta      AtoConsulta[]
+  episodioFaturacao EpisodioFaturacao?
 
   @@index([medicoId, dataHora])
   @@index([codigo])
@@ -1244,11 +1246,13 @@ model EpisodioFaturacao {
   id            String       @id @default(uuid())
   doenteId      String
   doente        Doente       @relation(fields: [doenteId], references: [id])
+  consultaId    String?      @unique
+  consulta      Consulta?    @relation(fields: [consultaId], references: [id])
   estado        EstadoFatura @default(pendente)
   dataEmissao   DateTime?
   totalBase     Float        @default(0)
   totalCobrado  Float        @default(0)
-  tipoCobertura String? // 'sns' | 'seguro' | 'particular'
+  tipoCobertura String?
   notas         String?
   criadoPorId   String
   criadoPor     Utilizador   @relation(fields: [criadoPorId], references: [id])
@@ -1287,6 +1291,35 @@ model Pagamento {
   criadoEm            DateTime          @default(now())
 
   @@map("pagamentos")
+}
+
+// ─── Catálogo de Atos Clínicos ───────────────────────────────────────────────
+
+model AtoClinico {
+  id            String        @id @default(uuid())
+  codigo        String        @unique
+  descricao     String
+  categoria     String // 'consulta' | 'exame' | 'procedimento' | 'medicacao' | 'outro'
+  precoBase     Float
+  especialidade String? // se definido, é o ato-base automático desta especialidade
+  ativo         Boolean       @default(true)
+  criadoEm      DateTime      @default(now())
+  atosConsulta  AtoConsulta[]
+
+  @@map("atos_clinicos")
+}
+
+model AtoConsulta {
+  id            String     @id @default(uuid())
+  consultaId    String
+  consulta      Consulta   @relation(fields: [consultaId], references: [id])
+  atoId         String
+  ato           AtoClinico @relation(fields: [atoId], references: [id])
+  quantidade    Int        @default(1)
+  precoUnitario Float
+  criadoEm      DateTime   @default(now())
+
+  @@map("atos_consulta")
 }
 
 // ─── Tickets / Filas de Espera ───────────────────────────────────────────────

@@ -44,6 +44,7 @@ import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { FaturacaoModule } from './faturacao/faturacao.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { EquipamentosModule } from './equipamentos/equipamentos.module';
+import { AtosClinicosModule } from './atos-clinicos/atos-clinicos.module';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { EquipamentosModule } from './equipamentos/equipamentos.module';
     FaturacaoModule,
     TicketsModule,
     EquipamentosModule,
+    AtosClinicosModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

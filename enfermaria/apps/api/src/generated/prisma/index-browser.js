@@ -680,6 +680,7 @@ exports.Prisma.FicheiroPessoalDoenteScalarFieldEnum = {
 exports.Prisma.EpisodioFaturacaoScalarFieldEnum = {
   id: 'id',
   doenteId: 'doenteId',
+  consultaId: 'consultaId',
   estado: 'estado',
   dataEmissao: 'dataEmissao',
   totalBase: 'totalBase',
@@ -708,6 +709,26 @@ exports.Prisma.PagamentoScalarFieldEnum = {
   metodo: 'metodo',
   referencia: 'referencia',
   registadoPorId: 'registadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AtoClinicoScalarFieldEnum = {
+  id: 'id',
+  codigo: 'codigo',
+  descricao: 'descricao',
+  categoria: 'categoria',
+  precoBase: 'precoBase',
+  especialidade: 'especialidade',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AtoConsultaScalarFieldEnum = {
+  id: 'id',
+  consultaId: 'consultaId',
+  atoId: 'atoId',
+  quantidade: 'quantidade',
+  precoUnitario: 'precoUnitario',
   criadoEm: 'criadoEm'
 };
 
@@ -1088,6 +1109,8 @@ exports.Prisma.ModelName = {
   EpisodioFaturacao: 'EpisodioFaturacao',
   ItemFatura: 'ItemFatura',
   Pagamento: 'Pagamento',
+  AtoClinico: 'AtoClinico',
+  AtoConsulta: 'AtoConsulta',
   Ticket: 'Ticket',
   RefreshToken: 'RefreshToken',
   ProblemaClinico: 'ProblemaClinico',

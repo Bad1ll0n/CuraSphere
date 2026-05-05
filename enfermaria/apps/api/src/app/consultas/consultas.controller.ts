@@ -72,13 +72,30 @@ export class ConsultasController {
 
   @Patch(':id/realizar')
   @Roles('medico')
-  realizar(@Param('id') id: string, @Body() dto: any) {
-    return this.service.realizar(id, dto);
+  realizar(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+    return this.service.realizar(id, dto, req.user.id);
   }
 
   @Patch(':id/estado')
   @Roles('medico', 'administrativo')
   atualizarEstado(@Param('id') id: string, @Body('estado') estado: string) {
     return this.service.atualizarEstado(id, estado);
+  }
+
+  @Get(':id/atos')
+  listarAtos(@Param('id') id: string) {
+    return this.service.listarAtos(id);
+  }
+
+  @Post(':id/atos')
+  @Roles('medico', 'enfermeiro', 'tecnico_saude')
+  adicionarAto(@Param('id') id: string, @Body() dto: { atoId: string; quantidade?: number }) {
+    return this.service.adicionarAto(id, dto);
+  }
+
+  @Delete(':id/atos/:atoConsultaId')
+  @Roles('medico', 'enfermeiro', 'tecnico_saude')
+  removerAto(@Param('id') id: string, @Param('atoConsultaId') atoConsultaId: string) {
+    return this.service.removerAto(id, atoConsultaId);
   }
 }

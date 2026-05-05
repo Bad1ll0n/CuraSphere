@@ -102,7 +102,15 @@
       "Bash(powershell -Command \"netstat -ano | Select-String ':3333'\")",
       "Bash(powershell -Command \"Start-Sleep -Seconds 10; netstat -ano | Select-String ':3333|:3000'\")",
       "Bash(powershell -Command \"Start-Sleep -Seconds 25; netstat -ano | Select-String ':3333'\")",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(start cmd *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\src\\\\app\" -Directory)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\web\\\\src\\\\app\\\\\\(dashboard\\)\\\\consultas\\\\\" -Force 2>/dev/null | Select-Object Name, FullName)",
+      "Bash(set PRISMA_MIGRATE_SKIP_PROMPT=1)",
+      "Bash(findstr :3333)",
+      "Bash(findstr LISTENING)",
+      "Bash(taskkill /PID 14748 /F)",
+      "PowerShell(Stop-Process -Id 14748 -Force)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

@@ -58,6 +58,10 @@ export default function ConsultasPage() {
   const [realizarModal, setRealizarModal] = useState<Consulta | null>(null);
   const [realizarForm, setRealizarForm] = useState({ notas: '', diagnostico: '', proximaConsulta: '' });
   const [salvando, setSalvando] = useState(false);
+  const [atosDisponiveis, setAtosDisponiveis] = useState<any[]>([]);
+  const [atosAdicionados, setAtosAdicionados] = useState<any[]>([]);
+  const [atoSelecionado, setAtoSelecionado] = useState('');
+  const [adicionandoAto, setAdicionandoAto] = useState(false);
 
   // ─── Nova marcação state ──────────────────────────────────────────────────
   const [modalNova, setModalNova] = useState(false);
@@ -296,7 +300,20 @@ export default function ConsultasPage() {
                           </button>
                         )}
                         <button
-                          onClick={() => { setRealizarModal(c); setRealizarForm({ notas: c.notas ?? '', diagnostico: c.diagnostico ?? '', proximaConsulta: '' }); }}
+                          onClick={async () => {
+  setRealizarModal(c);
+  setRealizarForm({ notas: c.notas ?? '', diagnostico: c.diagnostico ?? '', proximaConsulta: '' });
+  setAtoSelecionado('');
+  setAtosAdicionados([]);
+  try {
+    const [atosRes, adicionadosRes] = await Promise.all([
+      api.get('/atos-clinicos'),
+      api.get(`/consultas/${c.id}/atos`),
+    ]);
+    setAtosDisponiveis(atosRes.data);
+    setAtosAdicionados(adicionadosRes.data);
+  } catch {}
+}}
                           style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                         >
                           Realizar
@@ -512,7 +529,7 @@ export default function ConsultasPage() {
       {/* ══════ Modal: Realizar ══════════════════════════════════════════════ */}
       {realizarModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)' }}>
-          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 480, padding: '32px', margin: '0 16px' }}>
+          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 520, padding: '32px', margin: '0 16px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
               <h2 style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', margin: 0 }}>Registar Consulta Realizada</h2>
               <button onClick={() => setRealizarModal(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#94a3b8' }}>✕</button>
@@ -544,6 +561,67 @@ export default function ConsultasPage() {
                 style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
               />
             </div>
+            {/* Atos Clínicos */}
+            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 20, marginBottom: 20 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Atos Clínicos</p>
+              {/* Adicionar ato */}
+              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <select
+                  value={atoSelecionado}
+                  onChange={e => setAtoSelecionado(e.target.value)}
+                  style={{ flex: 1, border: '1px solid #e2e8f0', borderRadius: 10, padding: '9px 12px', fontSize: 13, background: '#f8fafc', color: atoSelecionado ? '#0f172a' : '#94a3b8' }}
+                >
+                  <option value="">Selecionar ato...</option>
+                  {atosDisponiveis.map((a: any) => (
+                    <option key={a.id} value={a.id}>{a.descricao} — {a.precoBase.toFixed(2)} €</option>
+                  ))}
+                </select>
+                <button
+                  disabled={!atoSelecionado || adicionandoAto}
+                  onClick={async () => {
+                    if (!atoSelecionado || !realizarModal) return;
+                    setAdicionandoAto(true);
+                    try {
+                      const res = await api.post(`/consultas/${realizarModal.id}/atos`, { atoId: atoSelecionado });
+                      setAtosAdicionados(prev => [...prev, res.data]);
+                      setAtoSelecionado('');
+                    } finally { setAdicionandoAto(false); }
+                  }}
+                  style={{ background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 14px', fontWeight: 700, cursor: 'pointer', opacity: (!atoSelecionado || adicionandoAto) ? 0.5 : 1, whiteSpace: 'nowrap', fontSize: 13 }}
+                >
+                  + Adicionar
+                </button>
+              </div>
+              {/* Lista de atos adicionados */}
+              {atosAdicionados.length > 0 && (
+                <div style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: 10, overflow: 'hidden', marginBottom: 8 }}>
+                  {atosAdicionados.map((ac: any) => (
+                    <div key={ac.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderBottom: '1px solid #f1f5f9' }}>
+                      <span style={{ fontSize: 13, color: '#334155' }}>{ac.ato?.descricao ?? ac.descricao}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>{(ac.precoUnitario ?? 0).toFixed(2)} €</span>
+                        <button
+                          onClick={async () => {
+                            try {
+                              await api.delete(`/consultas/${realizarModal!.id}/atos/${ac.id}`);
+                              setAtosAdicionados(prev => prev.filter(a => a.id !== ac.id));
+                            } catch {}
+                          }}
+                          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0, fontSize: 16, lineHeight: 1 }}
+                        >✕</button>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px 14px', background: '#f1f5f9' }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>
+                      Total: {atosAdicionados.reduce((s: number, a: any) => s + (a.precoUnitario ?? 0) * (a.quantidade ?? 1), 0).toFixed(2)} €
+                    </span>
+                  </div>
+                </div>
+              )}
+              <p style={{ fontSize: 12, color: '#94a3b8' }}>ℹ️ Estes atos serão adicionados automaticamente à fatura.</p>
+            </div>
+
             <div style={{ display: 'flex', gap: 12 }}>
               <button onClick={() => setRealizarModal(null)} style={{ flex: 1, border: '1px solid #e2e8f0', background: '#fff', color: '#64748b', borderRadius: 12, padding: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancelar</button>
               <button onClick={realizar} disabled={salvando} style={{ flex: 1, background: '#10b981', color: '#fff', border: 'none', borderRadius: 12, padding: '12px', fontWeight: 700, cursor: 'pointer', opacity: salvando ? 0.6 : 1 }}>
