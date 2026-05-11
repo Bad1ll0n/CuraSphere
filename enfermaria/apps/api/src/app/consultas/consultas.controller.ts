@@ -43,6 +43,12 @@ export class ConsultasController {
 
   // ─── Marcações ───────────────────────────────────────────────────────────
 
+  @Post('lembretes')
+  @Roles('administrativo')
+  enviarLembretes() {
+    return this.service.enviarLembretes();
+  }
+
   @Post()
   @Roles('medico', 'administrativo')
   agendar(@Body() dto: any) {
@@ -73,7 +79,7 @@ export class ConsultasController {
   @Patch(':id/realizar')
   @Roles('medico')
   realizar(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
-    return this.service.realizar(id, dto, req.user.id);
+    return this.service.realizar(id, dto, req.user.sub);
   }
 
   @Patch(':id/estado')

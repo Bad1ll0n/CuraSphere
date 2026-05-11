@@ -45,6 +45,10 @@ import { FaturacaoModule } from './faturacao/faturacao.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { EquipamentosModule } from './equipamentos/equipamentos.module';
 import { AtosClinicosModule } from './atos-clinicos/atos-clinicos.module';
+import { RhModule } from './rh/rh.module';
+import { EspecialidadesModule } from './especialidades/especialidades.module';
+import { EventosAdversosModule } from './eventos-adversos/eventos-adversos.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
@@ -88,6 +92,10 @@ import { AtosClinicosModule } from './atos-clinicos/atos-clinicos.module';
     TicketsModule,
     EquipamentosModule,
     AtosClinicosModule,
+    RhModule,
+    EspecialidadesModule,
+    EventosAdversosModule,
+    GatewayModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

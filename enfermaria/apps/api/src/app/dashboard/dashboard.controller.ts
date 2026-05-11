@@ -504,14 +504,14 @@ export class DashboardController {
       }),
       // Doentes críticos
       this.prisma.doente.count({ where: { estado: 'critico', ativo: true } }),
-      this.prisma.doente.count({ where: { estado: 'instavel', ativo: true } }),
+      this.prisma.doente.count({ where: { estado: 'grave', ativo: true } }),
       // Taxa de alta com sumário
       this.prisma.doente.count({ where: { dataAlta: { gte: trintaDiasAtras }, ativo: false } }),
       this.prisma.sumarioAlta.count({ where: { criadoEm: { gte: trintaDiasAtras } } }),
       // Medicação
       this.prisma.medicacao.count({
         where: {
-          estado: 'pendente',
+          estadoValidacao: 'pendente',
           doente: { ativo: true },
         },
       }),

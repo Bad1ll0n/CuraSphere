@@ -2,12 +2,13 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../../lib/auth-context';
 import api from '../../lib/api';
+import { useSocket } from '../../lib/use-socket';
 
 // 10 roles-categoria fixas
 const ROLES_MEDICO     = ['medico'];
@@ -39,7 +40,7 @@ const navItems = [
     href: '/doentes',
     label: 'Doentes',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_SAUDE, ...ROLES_FARMACIA],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -159,7 +160,7 @@ const navItems = [
     href: '/iacs',
     label: 'IACS',
     servicos: null,
-    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro'],
+    roles: [...ROLES_MEDICO, ...ROLES_QUALIDADE, 'enfermeiro', 'auxiliar'],
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -178,7 +179,31 @@ const navItems = [
       </svg>
     ),
   },
-  // 14 — Trocas de Turno
+  // 13b — Interconsultas
+  {
+    href: '/interconsultas',
+    label: 'Interconsultas',
+    servicos: null,
+    roles: [...ROLES_MEDICO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+      </svg>
+    ),
+  },
+  // 14 — Passagem de Turno
+  {
+    href: '/passagem-turno',
+    label: 'Passagem de Turno',
+    servicos: null,
+    roles: [...ROLES_CLINICO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+      </svg>
+    ),
+  },
+  // 15 — Trocas de Turno
   {
     href: '/trocas',
     label: 'Trocas de Turno',
@@ -211,6 +236,55 @@ const navItems = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  // 17b — Especialidades (Nutrição, Psicologia, Terapia da Fala, TAE)
+  {
+    href: '/especialidades',
+    label: 'Especialidades',
+    servicos: null,
+    roles: [...ROLES_SAUDE],
+    subRoles: ['nutricao_clinica', 'psicologia_clinica', 'reabilitacao_fala', 'tae'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+      </svg>
+    ),
+  },
+  // 17c — Dashboard Operacional
+  {
+    href: '/operacional',
+    label: 'Operacional',
+    servicos: null,
+    roles: [...ROLES_OPERACIONAL],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      </svg>
+    ),
+  },
+  // 17d — Conformidade / RGPD
+  {
+    href: '/conformidade',
+    label: 'Conformidade',
+    servicos: null,
+    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+  },
+  // 17e — As Minhas Férias (universal)
+  {
+    href: '/ferias',
+    label: 'As Minhas Férias',
+    servicos: null,
+    roles: null,
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
     ),
   },
@@ -252,7 +326,31 @@ const navItems = [
       </svg>
     ),
   },
-  // 20b — Tabela de Atos Clínicos
+  // RH
+  {
+    href: '/rh',
+    label: 'Recursos Humanos',
+    servicos: null,
+    roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+    ),
+  },
+  // 20b — Relatórios Financeiros
+  {
+    href: '/relatorios-financeiros',
+    label: 'Relatórios',
+    servicos: null,
+    roles: [...ROLES_ADMIN, ...ROLES_DIRECAO],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    ),
+  },
+  // 20c — Tabela de Atos Clínicos
   {
     href: '/tabela-atos',
     label: 'Tabela de Atos',
@@ -297,6 +395,30 @@ const navItems = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+      </svg>
+    ),
+  },
+  // Eventos Adversos
+  {
+    href: '/eventos-adversos',
+    label: 'Eventos Adversos',
+    servicos: null,
+    roles: [...ROLES_QUALIDADE, ...ROLES_DIRECAO, ...ROLES_MEDICO, 'enfermeiro', 'auxiliar'],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    ),
+  },
+  // Dashboard Executivo
+  {
+    href: '/dashboard-executivo',
+    label: 'Dashboard Executivo',
+    servicos: null,
+    roles: [...ROLES_DIRECAO, ...ROLES_ADMIN],
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
     ),
   },
@@ -499,6 +621,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [modalConfig, setModalConfig] = useState(false);
   const [tema, setTema] = useState<'light'|'dark'>('light');
 
+  // SOS global via WebSocket
+  const [sosAlerta, setSosAlerta] = useState<{ doenteId: string; doenteNome: string; quarto: string; acionadoPor: string } | null>(null);
+  const sosTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wsToken = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
+  useSocket(wsToken, {
+    'sos:alerta': (data) => {
+      setSosAlerta(data);
+      if (sosTimeoutRef.current) clearTimeout(sosTimeoutRef.current);
+      sosTimeoutRef.current = setTimeout(() => setSosAlerta(null), 30000);
+    },
+  });
+
   useEffect(() => {
     const saved = localStorage.getItem('curasphere-theme') as 'light'|'dark'|null;
     if (saved) setTema(saved);
@@ -527,6 +661,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (!loading && !utilizador) { router.push('/login'); return; }
     if (!loading && utilizador && pathname === '/dashboard') {
       if (utilizador.role === 'ti') router.replace('/dashboard-ti');
+      else if (utilizador.role === 'operacional') router.replace('/operacional');
     }
   }, [utilizador, loading, router, pathname]);
 
@@ -553,6 +688,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">
+      {/* Banner SOS */}
+      {sosAlerta && (
+        <div className="fixed top-4 left-1/2 z-[9999] -translate-x-1/2 flex items-center gap-4 bg-red-600 text-white rounded-2xl shadow-2xl animate-pulse"
+          style={{ padding: '16px 24px', minWidth: '420px', maxWidth: '600px' }}>
+          <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-sm">SOS — {sosAlerta.doenteNome}</p>
+            <p className="text-xs text-red-100">{sosAlerta.quarto} · Por {sosAlerta.acionadoPor}</p>
+          </div>
+          <Link href={`/doentes/${sosAlerta.doenteId}`}
+            onClick={() => setSosAlerta(null)}
+            className="shrink-0 text-xs font-semibold bg-white text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            style={{ padding: '6px 12px' }}>
+            Ver ficha
+          </Link>
+          <button onClick={() => setSosAlerta(null)} className="shrink-0 text-red-200 hover:text-white text-lg leading-none">✕</button>
+        </div>
+      )}
       {/* Sidebar */}
       <aside aria-label="Navegação principal" className="w-64 shrink-0 bg-[#0f172a] flex flex-col border-r border-white/5">
         {/* Logo */}

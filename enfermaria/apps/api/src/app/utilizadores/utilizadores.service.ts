@@ -107,7 +107,7 @@ export class UtilizadoresService {
     return utilizador;
   }
 
-  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string }) {
+  async atualizar(id: string, data: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null }) {
     await this.buscarPorId(id);
     return this.prisma.utilizador.update({
       where: { id },

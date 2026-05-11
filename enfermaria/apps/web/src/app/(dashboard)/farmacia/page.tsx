@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 
@@ -53,24 +55,21 @@ interface PrescricaoPendente {
 
 export default function FarmaciaPage() {
   const { utilizador } = useAuth();
+  const qc = useQueryClient();
   const [tab, setTab] = useState<'stock' | 'pedidos' | 'alertas' | 'validacao'>('stock');
-  const [stock, setStock] = useState<StockItem[]>([]);
-  const [pedidos, setPedidos] = useState<PedidoFarmacia[]>([]);
-  const [alertas, setAlertas] = useState<StockItem[]>([]);
-  const [prescricoes, setPrescricoes] = useState<PrescricaoPendente[]>([]);
-  const [loading, setLoading] = useState(true);
   const [pedidoModal, setPedidoModal] = useState<StockItem | null>(null);
   const [pedidoForm, setPedidoForm] = useState({ quantidade: 1, observacoes: '' });
-  const [salvando, setSalvando] = useState(false);
   const [novoItemModal, setNovoItemModal] = useState(false);
   const [novoItemForm, setNovoItemForm] = useState({ nome: '', tipo: 'medicamento', quantidade: 0, quantidadeMinima: 5, unidade: 'unidades', servico: utilizador?.servico ?? 'farmacia' });
   const [modalRejeitar, setModalRejeitar] = useState<string | null>(null);
   const [motivoRejeicao, setMotivoRejeicao] = useState('');
 
   const isFarmaceutico = utilizador?.role === 'farmaceutico';
+  const isFarmacia = ['farmaceutico', 'tecnico_farmacia'].includes(utilizador?.role ?? '');
 
-  const carregar = async () => {
-    try {
+  const { data = {}, isLoading: loading } = useQuery({
+    queryKey: ['farmacia', isFarmaceutico],
+    queryFn: async () => {
       const requests: Promise<any>[] = [
         api.get('/farmacia/stock'),
         api.get('/farmacia/pedidos'),
@@ -78,55 +77,41 @@ export default function FarmaciaPage() {
       ];
       if (isFarmaceutico) requests.push(api.get('/medicacao/pendentes-validacao'));
       const [s, p, a, presc] = await Promise.all(requests);
-      setStock(s.data);
-      setPedidos(p.data);
-      setAlertas(a.data);
-      if (presc) setPrescricoes(presc.data);
-    } finally { setLoading(false); }
-  };
+      return { stock: s.data ?? [], pedidos: p.data ?? [], alertas: a.data ?? [], prescricoes: presc?.data ?? [] };
+    },
+    staleTime: 30_000,
+  });
 
-  useEffect(() => { carregar(); }, []);
+  const stock: StockItem[] = (data as any).stock ?? [];
+  const pedidos: PedidoFarmacia[] = (data as any).pedidos ?? [];
+  const alertas: StockItem[] = (data as any).alertas ?? [];
+  const prescricoes: PrescricaoPendente[] = (data as any).prescricoes ?? [];
+  const invalidar = () => qc.invalidateQueries({ queryKey: ['farmacia'] });
 
-  const criarPedido = async () => {
-    if (!pedidoModal) return;
-    setSalvando(true);
-    try {
-      await api.post('/farmacia/pedido', { stockItemId: pedidoModal.id, quantidade: pedidoForm.quantidade, observacoes: pedidoForm.observacoes });
-      setPedidoModal(null);
-      setPedidoForm({ quantidade: 1, observacoes: '' });
-      carregar();
-    } finally { setSalvando(false); }
-  };
+  const mutPedido = useMutation({
+    mutationFn: (body: { stockItemId: string; quantidade: number; observacoes: string }) => api.post('/farmacia/pedido', body),
+    onSuccess: () => { setPedidoModal(null); setPedidoForm({ quantidade: 1, observacoes: '' }); invalidar(); },
+  });
 
-  const dispensar = async (id: string) => {
-    await api.patch(`/farmacia/pedido/${id}/dispensar`);
-    carregar();
-  };
+  const mutDispensar = useMutation({
+    mutationFn: (id: string) => api.patch(`/farmacia/pedido/${id}/dispensar`),
+    onSuccess: invalidar,
+  });
 
-  const criarItem = async () => {
-    if (!novoItemForm.nome.trim()) return;
-    setSalvando(true);
-    try {
-      await api.post('/farmacia/stock', novoItemForm);
-      setNovoItemModal(false);
-      carregar();
-    } finally { setSalvando(false); }
-  };
+  const mutNovoItem = useMutation({
+    mutationFn: (body: typeof novoItemForm) => api.post('/farmacia/stock', body),
+    onSuccess: () => { setNovoItemModal(false); invalidar(); },
+  });
 
-  const isFarmacia = ['farmaceutico', 'tecnico_farmacia'].includes(utilizador?.role ?? '');
+  const mutValidar = useMutation({
+    mutationFn: (id: string) => api.patch(`/medicacao/${id}/validar`),
+    onSuccess: invalidar,
+  });
 
-  const validar = async (id: string) => {
-    await api.patch(`/medicacao/${id}/validar`);
-    carregar();
-  };
-
-  const rejeitar = async (id: string) => {
-    if (!motivoRejeicao.trim()) return;
-    await api.patch(`/medicacao/${id}/rejeitar`, { motivoRejeicao });
-    setModalRejeitar(null);
-    setMotivoRejeicao('');
-    carregar();
-  };
+  const mutRejeitar = useMutation({
+    mutationFn: ({ id, motivo }: { id: string; motivo: string }) => api.patch(`/medicacao/${id}/rejeitar`, { motivoRejeicao: motivo }),
+    onSuccess: () => { setModalRejeitar(null); setMotivoRejeicao(''); invalidar(); },
+  });
 
   const TABS: { id: string; label: string; count: number }[] = [
     { id: 'stock',     label: 'Stock',      count: stock.length },
@@ -236,7 +221,7 @@ export default function FarmaciaPage() {
                   </div>
                 </div>
                 {p.estado === 'pendente' && isFarmacia && (
-                  <button onClick={() => dispensar(p.id)}
+                  <button onClick={() => mutDispensar.mutate(p.id)}
                     className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors shrink-0"
                     style={{ padding: '7px 14px' }}>
                     Dispensar
@@ -304,10 +289,13 @@ export default function FarmaciaPage() {
                 </p>
               </div>
               <div className="flex gap-2 shrink-0">
+                <Link href={`/doentes/${p.doente?.id}`}
+                  className="text-xs font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                  style={{ padding: '7px 12px' }}>Ver ficha →</Link>
                 <button onClick={() => { setModalRejeitar(p.id); setMotivoRejeicao(''); }}
                   className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   style={{ padding: '7px 12px' }}>Rejeitar</button>
-                <button onClick={() => validar(p.id)}
+                <button onClick={() => mutValidar.mutate(p.id)}
                   className="text-xs font-semibold bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                   style={{ padding: '7px 14px' }}>Validar</button>
               </div>
@@ -335,7 +323,7 @@ export default function FarmaciaPage() {
               <button onClick={() => setModalRejeitar(null)}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={() => rejeitar(modalRejeitar)} disabled={!motivoRejeicao.trim()}
+              <button onClick={() => mutRejeitar.mutate({ id: modalRejeitar, motivo: motivoRejeicao })} disabled={!motivoRejeicao.trim() || mutRejeitar.isPending}
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>Rejeitar</button>
             </div>
@@ -368,10 +356,10 @@ export default function FarmaciaPage() {
               <button onClick={() => setPedidoModal(null)}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarPedido} disabled={salvando || pedidoForm.quantidade <= 0}
+              <button onClick={() => pedidoModal && mutPedido.mutate({ stockItemId: pedidoModal.id, quantidade: pedidoForm.quantidade, observacoes: pedidoForm.observacoes })} disabled={mutPedido.isPending || pedidoForm.quantidade <= 0}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
-                {salvando ? 'A enviar...' : 'Enviar Pedido'}
+                {mutPedido.isPending ? 'A enviar...' : 'Enviar Pedido'}
               </button>
             </div>
           </div>
@@ -422,10 +410,10 @@ export default function FarmaciaPage() {
               <button onClick={() => setNovoItemModal(false)}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={criarItem} disabled={salvando || !novoItemForm.nome.trim()}
+              <button onClick={() => mutNovoItem.mutate(novoItemForm)} disabled={mutNovoItem.isPending || !novoItemForm.nome.trim()}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
-                {salvando ? 'A criar...' : 'Criar Item'}
+                {mutNovoItem.isPending ? 'A criar...' : 'Criar Item'}
               </button>
             </div>
           </div>

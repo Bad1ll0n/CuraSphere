@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useSocket } from '../../../lib/use-socket';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, BarChart, Bar,
@@ -147,31 +149,104 @@ function DashboardHeader({ utilizador }: { utilizador: { nome: string; role: str
   );
 }
 
+// ─── SOS Banner ──────────────────────────────────────────────────────────────
+
+interface SOSAlerta {
+  doenteId: string;
+  doenteNome: string;
+  quarto?: string;
+  acionadoPor?: string;
+  alertaId?: string;
+  ts: number;
+}
+
+function useSOS() {
+  const [alertas, setAlertas] = useState<SOSAlerta[]>([]);
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
+
+  useSocket(token, {
+    'sos:alerta': (data: any) => {
+      setAlertas(prev => [
+        { doenteId: data.doenteId, doenteNome: data.doenteNome ?? 'Doente', quarto: data.quarto, acionadoPor: data.acionadoPor, alertaId: data.alertaId, ts: Date.now() },
+        ...prev.filter(a => a.doenteId !== data.doenteId),
+      ]);
+    },
+  });
+
+  const acusar = async (alerta: SOSAlerta) => {
+    if (alerta.alertaId) {
+      await api.patch(`/alertas/${alerta.alertaId}/acusar`).catch(() => null);
+    }
+    setAlertas(prev => prev.filter(a => a.doenteId !== alerta.doenteId));
+  };
+
+  return { alertas, acusar };
+}
+
+function SOSBannerGlobal() {
+  const { alertas, acusar } = useSOS();
+  if (alertas.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-2" style={{ marginBottom: '20px' }}>
+      {alertas.map(a => (
+        <div key={a.doenteId} className="flex items-center gap-4 rounded-2xl border-2 border-red-400 bg-red-50 animate-pulse"
+          style={{ padding: '16px 24px' }}>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="w-4 h-4 rounded-full bg-red-600 shrink-0 animate-ping" />
+            <div>
+              <p className="text-red-800 font-bold text-sm">🚨 SOS — {a.doenteNome}</p>
+              <p className="text-red-700 text-xs">
+                {a.quarto && `Quarto ${a.quarto}`}{a.acionadoPor ? ` · Acionado por ${a.acionadoPor}` : ''}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link href={`/doentes/${a.doenteId}`}
+              className="text-xs font-bold bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+              style={{ padding: '8px 16px' }}>
+              Ir para ficha
+            </Link>
+            <button onClick={() => acusar(a)}
+              className="text-xs font-semibold border-2 border-red-400 text-red-700 hover:bg-red-100 rounded-lg transition-colors"
+              style={{ padding: '7px 14px' }}>
+              Acusar
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── Vista 1: Médico ──────────────────────────────────────────────────────────
 
 function DashboardMedico({ utilizador }: { utilizador: any }) {
-  const [doentes, setDoentes] = useState<any[]>([]);
-  const [tarefas, setTarefas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-medico'],
+    queryFn: async () => {
+      const [d, t] = await Promise.all([
+        api.get('/doentes?todos=true').catch(() => ({ data: [] })),
+        api.get('/tarefas/minhas').catch(() => ({ data: [] })),
+      ]);
+      return {
+        doentes: d.data?.data ?? [],
+        tarefas: (t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'),
+      };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/doentes?todos=true').catch(() => ({ data: [] })),
-      api.get('/tarefas/minhas').catch(() => ({ data: [] })),
-    ]).then(([d, t]) => {
-      setDoentes(d.data?.data ?? []);
-      setTarefas((t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'));
-    }).finally(() => setLoading(false));
-  }, []);
-
+  const doentes: any[] = (data as any).doentes ?? [];
+  const tarefas: any[] = (data as any).tarefas ?? [];
   const criticos = doentes.filter((d: any) => d.estado === 'critico' || d.estado === 'grave');
   const urgentes = tarefas.filter((t: any) => t.prioridade === 'urgente' || t.prioridade === 'alta');
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
+      <SOSBannerGlobal />
       <div className="grid grid-cols-4 gap-5" style={{ marginBottom: '32px' }}>
         <StatCard label="Doentes Internados" value={doentes.length} color="bg-violet-600" />
         <StatCard label="Estado Crítico/Grave" value={criticos.length} color={criticos.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
@@ -230,14 +305,11 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
 // ─── Vista 2: Bloco Operatório ────────────────────────────────────────────────
 
 function DashboardBloco({ utilizador }: { utilizador: any }) {
-  const [cirurgias, setCirurgias] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api.get(`/bloco/agenda?data=${hojeISO}`).catch(() => ({ data: [] }))
-      .then((r) => setCirurgias(r.data ?? []))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: cirurgias = [], isLoading } = useQuery<any[]>({
+    queryKey: ['dash-bloco', hojeISO],
+    queryFn: () => api.get(`/bloco/agenda?data=${hojeISO}`).catch(() => ({ data: [] })).then(r => r.data ?? []),
+    staleTime: 60_000,
+  });
 
   const estadosCirurgia: Record<string, { badge: string; label: string }> = {
     agendada:  { badge: 'bg-blue-100 text-blue-700',    label: 'Agendada' },
@@ -247,7 +319,7 @@ function DashboardBloco({ utilizador }: { utilizador: any }) {
     adiada:    { badge: 'bg-slate-100 text-slate-600',  label: 'Adiada' },
   };
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -299,37 +371,28 @@ const TIPO_EXAME_LABELS: Record<string, string> = {
 };
 
 function DashboardImagiologia({ utilizador }: { utilizador: any }) {
-  const [worklist, setWorklist] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const qc = useQueryClient();
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [resultadoModal, setResultadoModal] = useState<any | null>(null);
   const [resultadoTexto, setResultadoTexto] = useState('');
-  const [salvandoResultado, setSalvandoResultado] = useState(false);
 
-  const carregar = async () => {
-    try {
-      const r = await api.get('/exames/worklist');
-      setWorklist(r.data);
-    } catch { setWorklist([]); }
-    finally { setLoading(false); }
-  };
-
-  useEffect(() => { carregar(); }, []);
+  const { data: worklist = [], isLoading } = useQuery<any[]>({
+    queryKey: ['dash-worklist'],
+    queryFn: () => api.get('/exames/worklist').then(r => r.data).catch(() => []),
+    staleTime: 30_000,
+  });
 
   const iniciarExame = async (id: string) => {
     setAtualizando(id);
-    try { await api.patch(`/exames/${id}/estado`, { estado: 'em_progresso' }); await carregar(); }
+    try { await api.patch(`/exames/${id}/estado`, { estado: 'em_progresso' }); qc.invalidateQueries({ queryKey: ['dash-worklist'] }); }
     finally { setAtualizando(null); }
   };
 
-  const registarResultado = async () => {
-    if (!resultadoModal || !resultadoTexto.trim()) return;
-    setSalvandoResultado(true);
-    try {
-      await api.patch(`/exames/${resultadoModal.id}/resultado`, { resultado: resultadoTexto });
-      setResultadoModal(null); setResultadoTexto(''); await carregar();
-    } finally { setSalvandoResultado(false); }
-  };
+  const mutResultado = useMutation({
+    mutationFn: ({ id, resultado }: { id: string; resultado: string }) =>
+      api.patch(`/exames/${id}/resultado`, { resultado }),
+    onSuccess: () => { setResultadoModal(null); setResultadoTexto(''); qc.invalidateQueries({ queryKey: ['dash-worklist'] }); },
+  });
 
   const urgentes = worklist.filter(e => e.urgente).length;
   const emProgresso = worklist.filter(e => e.estado === 'em_progresso').length;
@@ -345,7 +408,7 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
 
       <SecaoTitulo>Worklist — Exames Pendentes</SecaoTitulo>
       <CardContainer>
-        {loading ? (
+        {isLoading ? (
           <Spinner />
         ) : worklist.length === 0 ? (
           <Vazio msg="Worklist limpa — sem exames pendentes" />
@@ -422,10 +485,10 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
               <button onClick={() => setResultadoModal(null)}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50"
                 style={{ padding: '11px' }}>Cancelar</button>
-              <button onClick={registarResultado} disabled={salvandoResultado || !resultadoTexto.trim()}
+              <button onClick={() => mutResultado.mutate({ id: resultadoModal.id, resultado: resultadoTexto })} disabled={mutResultado.isPending || !resultadoTexto.trim()}
                 className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl disabled:opacity-50"
                 style={{ padding: '11px' }}>
-                {salvandoResultado ? 'A guardar...' : 'Guardar'}
+                {mutResultado.isPending ? 'A guardar...' : 'Guardar'}
               </button>
             </div>
           </div>
@@ -438,37 +501,41 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
 // ─── Vista 4: Enfermeiro ──────────────────────────────────────────────────────
 
 function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
-  const [doentes, setDoentes] = useState<any[]>([]);
-  const [tarefas, setTarefas] = useState<any[]>([]);
-  const [turno, setTurno] = useState<any>(null);
-  const [mensagensNaoLidas, setMensagensNaoLidas] = useState(0);
-  const [workload, setWorkload] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-enfermeiro'],
+    queryFn: async () => {
+      const [d, t, turnoR, msg, wl] = await Promise.all([
+        api.get('/doentes').catch(() => ({ data: [] })),
+        api.get('/tarefas/minhas').catch(() => ({ data: [] })),
+        api.get('/turnos/ativo').catch(() => ({ data: null })),
+        api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
+        api.get('/dashboard/workload-turno').catch(() => ({ data: [] })),
+      ]);
+      return {
+        doentes: d.data?.data ?? [],
+        tarefas: (t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'),
+        turno: turnoR.data,
+        mensagensNaoLidas: msg.data?.count ?? msg.data?.length ?? 0,
+        workload: wl.data ?? [],
+      };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/doentes').catch(() => ({ data: [] })),
-      api.get('/tarefas/minhas').catch(() => ({ data: [] })),
-      api.get('/turnos/ativo').catch(() => ({ data: null })),
-      api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
-      api.get('/dashboard/workload-turno').catch(() => ({ data: [] })),
-    ]).then(([d, t, turnoR, msg, wl]) => {
-      setDoentes(d.data?.data ?? []);
-      setTarefas((t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'));
-      setTurno(turnoR.data);
-      setMensagensNaoLidas(msg.data?.count ?? msg.data?.length ?? 0);
-      setWorkload(wl.data ?? []);
-    }).finally(() => setLoading(false));
-  }, []);
-
+  const doentes: any[] = (data as any).doentes ?? [];
+  const tarefas: any[] = (data as any).tarefas ?? [];
+  const turno = (data as any).turno ?? null;
+  const mensagensNaoLidas: number = (data as any).mensagensNaoLidas ?? 0;
+  const workload: any[] = (data as any).workload ?? [];
   const urgentes = tarefas.filter((t: any) => t.prioridade === 'urgente' || t.prioridade === 'alta');
   const isUCI = utilizador.subRole === 'enf_uci';
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
       <DashboardHeader utilizador={utilizador} />
+      <SOSBannerGlobal />
       <div className={`grid grid-cols-4 gap-5`} style={{ marginBottom: '32px' }}>
         <StatCard label="Doentes Atribuídos" value={doentes.length} color="bg-teal-600" />
         <StatCard label="Tarefas Pendentes" value={tarefas.length} color="bg-amber-500" />
@@ -565,30 +632,33 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
 // ─── Vista 5: Chefe de Enfermagem ─────────────────────────────────────────────
 
 function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
-  const [ocupacao, setOcupacao] = useState<any>(null);
-  const [doentes, setDoentes] = useState<any[]>([]);
-  const [analytics, setAnalytics] = useState<any>(null);
-  const [trocas, setTrocas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-chefe-enfermagem'],
+    queryFn: async () => {
+      const [o, d, a, t] = await Promise.all([
+        api.get('/camas/ocupacao').catch(() => ({ data: null })),
+        api.get('/doentes?todos=true').catch(() => ({ data: [] })),
+        api.get('/dashboard/analytics').catch(() => ({ data: null })),
+        api.get('/trocas').catch(() => ({ data: [] })),
+      ]);
+      return {
+        ocupacao: o.data,
+        doentes: d.data?.data ?? [],
+        analytics: a.data,
+        trocas: (t.data ?? []).filter((x: any) => x.estado === 'pendente_chefe'),
+      };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/camas/ocupacao').catch(() => ({ data: null })),
-      api.get('/doentes?todos=true').catch(() => ({ data: [] })),
-      api.get('/dashboard/analytics').catch(() => ({ data: null })),
-      api.get('/trocas').catch(() => ({ data: [] })),
-    ]).then(([o, d, a, t]) => {
-      setOcupacao(o.data);
-      setDoentes(d.data?.data ?? []);
-      setAnalytics(a.data);
-      setTrocas((t.data ?? []).filter((x: any) => x.estado === 'pendente_chefe'));
-    }).finally(() => setLoading(false));
-  }, []);
-
+  const ocupacao = (data as any).ocupacao ?? null;
+  const doentes: any[] = (data as any).doentes ?? [];
+  const analytics = (data as any).analytics ?? null;
+  const trocas: any[] = (data as any).trocas ?? [];
   const criticos = doentes.filter((d: any) => d.estado === 'critico');
   const altasHoje = doentes.filter((d: any) => d.dataAltaPrevista && new Date(d.dataAltaPrevista).toDateString() === new Date().toDateString());
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -659,21 +729,21 @@ function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
 // ─── Vista 6: Reabilitação ────────────────────────────────────────────────────
 
 function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
-  const [sessoes, setSessoes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const isFisio = ['fisioterapeuta', 'reabilitacao_fisica'].includes(utilizador.subRole ?? utilizador.role);
 
-  useEffect(() => {
-    if (!isFisio) { setLoading(false); return; }
-    api.get('/fisioterapia/agenda').catch(() => ({ data: [] }))
-      .then((r) => setSessoes((r.data ?? []).filter((s: any) => new Date(s.data).toDateString() === new Date().toDateString())))
-      .finally(() => setLoading(false));
-  }, [isFisio]);
+  const { data: sessoesRaw = [], isLoading } = useQuery<any[]>({
+    queryKey: ['dash-reabilitacao'],
+    queryFn: () => isFisio
+      ? api.get('/fisioterapia/agenda').catch(() => ({ data: [] })).then(r => r.data ?? [])
+      : Promise.resolve([]),
+    staleTime: 60_000,
+  });
 
+  const sessoes = sessoesRaw.filter((s: any) => new Date(s.data).toDateString() === new Date().toDateString());
   const realizadas = sessoes.filter((s: any) => s.estado === 'realizada');
   const agendadas = sessoes.filter((s: any) => s.estado === 'agendada');
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -716,24 +786,24 @@ function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
 // ─── Vista 7: Farmácia ────────────────────────────────────────────────────────
 
 function DashboardFarmacia({ utilizador }: { utilizador: any }) {
-  const [alertas, setAlertas] = useState<any[]>([]);
-  const [pedidos, setPedidos] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-farmacia'],
+    queryFn: async () => {
+      const [a, p] = await Promise.all([
+        api.get('/farmacia/alertas').catch(() => ({ data: [] })),
+        api.get('/farmacia/pedidos').catch(() => ({ data: [] })),
+      ]);
+      return { alertas: a.data ?? [], pedidos: (p.data ?? []).filter((x: any) => x.estado === 'pendente') };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/farmacia/alertas').catch(() => ({ data: [] })),
-      api.get('/farmacia/pedidos').catch(() => ({ data: [] })),
-    ]).then(([a, p]) => {
-      setAlertas(a.data ?? []);
-      setPedidos((p.data ?? []).filter((x: any) => x.estado === 'pendente'));
-    }).finally(() => setLoading(false));
-  }, []);
-
+  const alertas: any[] = (data as any).alertas ?? [];
+  const pedidos: any[] = (data as any).pedidos ?? [];
   const stockMinimo = alertas.filter((a: any) => a.tipo === 'stock_minimo' || a.quantidade <= a.quantidadeMinima);
   const aExpirar = alertas.filter((a: any) => a.tipo === 'validade' || (a.validade && new Date(a.validade) < new Date(Date.now() + 30 * 86400000)));
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -786,17 +856,46 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
 // ─── Vista 8: Receção / Secretariado ─────────────────────────────────────────
 
 function DashboardRececao({ utilizador }: { utilizador: any }) {
-  const [consultas, setConsultas] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [enviandoLembretes, setEnviandoLembretes] = useState(false);
+  const [lembretesEnviados, setLembretesEnviados] = useState<number | null>(null);
 
-  useEffect(() => {
-    api.get('/consultas').catch(() => ({ data: [] }))
-      .then((r) => {
-        const hoje = new Date().toDateString();
-        setConsultas((r.data ?? []).filter((c: any) => new Date(c.dataHora).toDateString() === hoje));
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  const amanha = new Date(); amanha.setDate(amanha.getDate() + 1);
+  const amanhaStr = amanha.toISOString().split('T')[0];
+
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-rececao'],
+    queryFn: async () => {
+      const hoje = new Date().toDateString();
+      const [r, ra] = await Promise.all([
+        api.get('/consultas').catch(() => ({ data: [] })),
+        api.get(`/consultas?data=${amanhaStr}`).catch(() => ({ data: [] })),
+      ]);
+      return {
+        consultas: (r.data ?? []).filter((c: any) => new Date(c.dataHora).toDateString() === hoje),
+        consultasAmanha: (ra.data ?? []).filter((c: any) => c.estado === 'agendada').length,
+      };
+    },
+    staleTime: 60_000,
+  });
+
+  const { data: salaStats } = useQuery({
+    queryKey: ['dash-sala-espera'],
+    queryFn: () => api.get('/sala-espera/estatisticas').then(r => r.data).catch(() => null),
+    refetchInterval: 30_000,
+  });
+
+  const enviarLembretes = async () => {
+    setEnviandoLembretes(true);
+    try {
+      const res = await api.post('/consultas/lembretes');
+      setLembretesEnviados(res.data?.enviados ?? 0);
+    } catch {
+      setLembretesEnviados(0);
+    } finally { setEnviandoLembretes(false); }
+  };
+
+  const consultas: any[] = (data as any).consultas ?? [];
+  const consultasAmanha: number = (data as any).consultasAmanha ?? 0;
 
   const realizadas = consultas.filter((c: any) => c.estado === 'realizada');
   const faltaram = consultas.filter((c: any) => c.estado === 'faltou');
@@ -809,7 +908,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
     cancelada: { badge: 'bg-slate-100 text-slate-600', label: 'Cancelada' },
   };
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -844,8 +943,60 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
         </CardContainer>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <EmBreve titulo="Sala de Espera em Tempo Real" descricao="Check-in de doentes, tempo de espera, chamada — Fase 7" />
-          <EmBreve titulo="Confirmação Automática" descricao="Envio de lembretes de consulta por SMS/email" />
+          {/* ── Sala de Espera em Tempo Real ── */}
+          <Link href="/sala-espera" className="block">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow transition-shadow" style={{ padding: '20px 24px' }}>
+              <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                  <p className="text-sm font-semibold text-slate-800">Sala de Espera</p>
+                </div>
+                <span className="text-xs text-slate-400">Tempo real</span>
+              </div>
+              {salaStats ? (
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: 'A aguardar', value: salaStats.aguardando, color: 'text-amber-600', bg: 'bg-amber-50' },
+                    { label: 'Em atendimento', value: salaStats.em_atendimento, color: 'text-blue-600', bg: 'bg-blue-50' },
+                    { label: 'Atendidos hoje', value: salaStats.atendidos, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                    { label: 'Tempo médio', value: salaStats.tempoMedioMin !== null ? `${salaStats.tempoMedioMin}min` : '—', color: 'text-slate-600', bg: 'bg-slate-50' },
+                  ].map(({ label, value, color, bg }) => (
+                    <div key={label} className={`${bg} rounded-xl flex flex-col items-center justify-center`} style={{ padding: '10px 8px' }}>
+                      <p className={`text-xl font-bold ${color}`}>{value}</p>
+                      <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{label}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center text-slate-400 text-sm" style={{ padding: '20px 0' }}>A carregar...</div>
+              )}
+            </div>
+          </Link>
+
+          {/* ── Confirmação Automática ── */}
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '14px' }}>
+              <p className="text-sm font-semibold text-slate-800">Confirmação Automática</p>
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">{consultasAmanha} amanhã</span>
+            </div>
+            <p className="text-xs text-slate-400" style={{ marginBottom: '14px' }}>
+              Envia um lembrete interno a todos os médicos com consultas marcadas para amanhã.
+            </p>
+            {lembretesEnviados !== null && (
+              <div className="flex items-center gap-2 bg-emerald-50 rounded-xl text-emerald-700 text-xs font-medium" style={{ padding: '8px 12px', marginBottom: '10px' }}>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                {lembretesEnviados} lembrete{lembretesEnviados !== 1 ? 's' : ''} enviado{lembretesEnviados !== 1 ? 's' : ''}
+              </div>
+            )}
+            <button
+              onClick={enviarLembretes}
+              disabled={enviandoLembretes || consultasAmanha === 0}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-40"
+              style={{ padding: '10px' }}
+            >
+              {enviandoLembretes ? 'A enviar...' : 'Enviar Lembretes'}
+            </button>
+          </div>
         </div>
       </div>
     </>
@@ -855,14 +1006,11 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
 // ─── Vista 9: Transporte ──────────────────────────────────────────────────────
 
 function DashboardTransporte({ utilizador }: { utilizador: any }) {
-  const [pedidos, setPedidos] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api.get('/pedidos-internos').catch(() => ({ data: [] }))
-      .then((r) => setPedidos((r.data ?? []).filter((p: any) => p.tipo === 'transporte')))
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: pedidos = [], isLoading } = useQuery<any[]>({
+    queryKey: ['dash-transporte'],
+    queryFn: () => api.get('/pedidos-internos').catch(() => ({ data: [] })).then(r => (r.data ?? []).filter((p: any) => p.tipo === 'transporte')),
+    staleTime: 60_000,
+  });
 
   const pendentes = pedidos.filter((p: any) => p.estado === 'pendente');
   const emCurso = pedidos.filter((p: any) => p.estado === 'em_curso');
@@ -871,7 +1019,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
   const prioridadeCirurgia: Record<string, number> = { urgente: 0, alta: 1, media: 2, baixa: 3 };
   const pendentesOrdenados = [...pendentes].sort((a, b) => (prioridadeCirurgia[a.prioridade] ?? 3) - (prioridadeCirurgia[b.prioridade] ?? 3));
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -924,16 +1072,13 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
 // ─── Vista 10: TI ─────────────────────────────────────────────────────────────
 
 function DashboardTI({ utilizador }: { utilizador: any }) {
-  const [utilizadores, setUtilizadores] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: utilizadores = [], isLoading } = useQuery<any[]>({
+    queryKey: ['dash-ti'],
+    queryFn: () => api.get('/utilizadores').catch(() => ({ data: [] })).then(r => r.data ?? []),
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    api.get('/utilizadores').catch(() => ({ data: [] }))
-      .then((r) => setUtilizadores(r.data ?? []))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -1015,29 +1160,27 @@ function DashboardQualidade({ utilizador }: { utilizador: any }) {
 // ─── Vista 12: Executivo ──────────────────────────────────────────────────────
 
 function DashboardExecutivo({ utilizador }: { utilizador: any }) {
-  const [kpis, setKpis] = useState<any>(null);
-  const [pessoal, setPessoal] = useState<any>(null);
-  const [urgencia, setUrgencia] = useState<any>(null);
-  const [analytics, setAnalytics] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-executivo'],
+    queryFn: async () => {
+      const [kp, ps, u, a] = await Promise.all([
+        api.get('/dashboard/executivo').catch(() => ({ data: null })),
+        api.get('/dashboard/pessoal').catch(() => ({ data: null })),
+        api.get('/urgencia/dashboard').catch(() => ({ data: null })),
+        api.get('/dashboard/analytics').catch(() => ({ data: null })),
+      ]);
+      return { kpis: kp.data, pessoal: ps.data, urgencia: u.data, analytics: a.data };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/dashboard/executivo').catch(() => ({ data: null })),
-      api.get('/dashboard/pessoal').catch(() => ({ data: null })),
-      api.get('/urgencia/dashboard').catch(() => ({ data: null })),
-      api.get('/dashboard/analytics').catch(() => ({ data: null })),
-    ]).then(([kp, ps, u, a]) => {
-      setKpis(kp.data);
-      setPessoal(ps.data);
-      setUrgencia(u.data);
-      setAnalytics(a.data);
-    }).finally(() => setLoading(false));
-  }, []);
-
+  const kpis = (data as any).kpis ?? null;
+  const pessoal = (data as any).pessoal ?? null;
+  const urgencia = (data as any).urgencia ?? null;
+  const analytics = (data as any).analytics ?? null;
   const pct = kpis?.camas?.taxaOcupacao ?? 0;
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -1175,29 +1318,30 @@ function DashboardExecutivo({ utilizador }: { utilizador: any }) {
 // ─── Vista fallback: Genérico ─────────────────────────────────────────────────
 
 function DashboardGenerico({ utilizador }: { utilizador: any }) {
-  const [ocupacao, setOcupacao] = useState<any>(null);
-  const [doentes, setDoentes] = useState<any[]>([]);
-  const [analytics, setAnalytics] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
   const ROLES_ANALYTICS = ['administrativo', 'enfermeiro', 'medico', 'direcao'];
+  const podeAnalytics = ROLES_ANALYTICS.includes(utilizador?.role ?? '');
 
-  useEffect(() => {
-    Promise.all([
-      api.get('/camas/ocupacao').catch(() => ({ data: null })),
-      api.get('/doentes?todos=true').catch(() => ({ data: [] })),
-    ]).then(([o, d]) => { setOcupacao(o.data); setDoentes(d.data?.data ?? []); }).finally(() => setLoading(false));
-  }, []);
+  const { data = {}, isLoading } = useQuery({
+    queryKey: ['dash-generico', podeAnalytics],
+    queryFn: async () => {
+      const requests: Promise<any>[] = [
+        api.get('/camas/ocupacao').catch(() => ({ data: null })),
+        api.get('/doentes?todos=true').catch(() => ({ data: [] })),
+      ];
+      if (podeAnalytics) requests.push(api.get('/dashboard/analytics').catch(() => ({ data: null })));
+      const [o, d, a] = await Promise.all(requests);
+      return { ocupacao: o.data, doentes: d.data?.data ?? [], analytics: a?.data ?? null };
+    },
+    staleTime: 60_000,
+  });
 
-  useEffect(() => {
-    if (!utilizador || !ROLES_ANALYTICS.includes(utilizador.role)) return;
-    api.get('/dashboard/analytics').then((r) => setAnalytics(r.data)).catch(() => {});
-  }, [utilizador]);
-
+  const ocupacao = (data as any).ocupacao ?? null;
+  const doentes: any[] = (data as any).doentes ?? [];
+  const analytics = (data as any).analytics ?? null;
   const criticos = doentes.filter((d: any) => d.estado === 'critico');
   const altasHoje = doentes.filter((d: any) => d.dataAltaPrevista && new Date(d.dataAltaPrevista).toDateString() === new Date().toDateString());
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   const ocupacaoMap: Record<string, number> = { total: ocupacao?.total ?? 0, ocupadas: ocupacao?.ocupadas ?? 0, livres: ocupacao?.livres ?? 0, emLimpeza: ocupacao?.emLimpeza ?? 0 };
   const statCards = [

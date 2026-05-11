@@ -26,13 +26,33 @@ export class ExamesService {
 
   async registarResultado(id: string, dto: {
     resultado: string; dataResultado?: Date; observacoes?: string;
-  }) {
+  }, userId: string) {
     await this.buscarExame(id);
-    return this.prisma.exame.update({
+    const exame = await this.prisma.exame.update({
       where: { id },
       data: { resultado: dto.resultado, dataResultado: dto.dataResultado ?? new Date(), observacoes: dto.observacoes, estado: 'resultado_disponivel' },
       include: { solicitadoPor: { select: { id: true, nome: true, role: true } }, ficheiros: true },
     });
+
+    // Auto-faturação
+    if (exame.doenteId) {
+      const jaExiste = await this.prisma.episodioFaturacao.findFirst({ where: { doenteId: exame.doenteId, notas: `exame:${id}` } });
+      if (!jaExiste) {
+        const episodio = await this.prisma.episodioFaturacao.create({
+          data: { doenteId: exame.doenteId, estado: 'pendente', totalBase: 0, totalCobrado: 0, notas: `exame:${id}`, criadoPorId: userId },
+        });
+        const ato = await this.prisma.atoClinico.findFirst({
+          where: { OR: [{ especialidade: exame.tipo }, { categoria: 'exame', especialidade: null }], ativo: true },
+          orderBy: { especialidade: 'desc' },
+        });
+        if (ato) {
+          await this.prisma.itemFatura.create({ data: { episodioFaturacaoId: episodio.id, descricao: ato.descricao, categoria: ato.categoria, quantidade: 1, precoUnitario: ato.precoBase, total: ato.precoBase } });
+          await this.prisma.episodioFaturacao.update({ where: { id: episodio.id }, data: { totalBase: ato.precoBase, totalCobrado: ato.precoBase } });
+        }
+      }
+    }
+
+    return exame;
   }
 
   async worklist(tipo?: string) {

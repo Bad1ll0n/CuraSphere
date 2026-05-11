@@ -129,6 +129,22 @@ model Utilizador {
   problemasRegistados          ProblemaClinico[]          @relation("ProblemaRegistado")
   manutencoesReportadas        Manutencao[]               @relation("ManutencaoReportada")
   manutencoesTecnico           Manutencao[]               @relation("ManutencaoTecnico")
+  alertasAcusados              AlertaClinico[]            @relation("AlertaAcusador")
+  // RH
+  ausencias                    Ausencia[]                 @relation("AusenciaUtilizador")
+  ausenciasAprovadas           Ausencia[]                 @relation("AusenciaAprovador")
+  formacoes                    FormacaoUtilizador[]       @relation("FormacaoUtilizador")
+  eventosAdversosRegistados    EventoAdverso[]            @relation("EventoAdversoRegistado")
+  // Especialidades
+  sessoesEspecialidade         SessaoEspecialidade[]      @relation("SessaoEspecialidadeProfissional")
+  // RH expandido
+  avaliacoesComoAvaliado       AvaliacaoDesempenho[]      @relation("AvaliacaoAvaliado")
+  avaliacoesComoAvaliador      AvaliacaoDesempenho[]      @relation("AvaliacaoAvaliador")
+  dadosContratuais             DadosContratuais?
+  // Chefe directo (hierarquia para aprovação de férias)
+  chefeId                      String?
+  chefe                        Utilizador?                @relation("ChefeSubordinado", fields: [chefeId], references: [id])
+  subordinados                 Utilizador[]               @relation("ChefeSubordinado")
 
   @@map("utilizadores")
 }
@@ -208,6 +224,7 @@ model Doente {
   consultas             Consulta[]
   planosReabilitacao    PlanoReabilitacao[]
   sessoesFisioterapia   SessaoFisioterapia[]
+  sessoesEspecialidade  SessaoEspecialidade[]
   pedidosInternos       PedidoInterno[]
   // Novos — Fase 8A
   interconsultas        Interconsulta[]
@@ -216,6 +233,7 @@ model Doente {
   ficheiroPessoal       FicheiroPessoalDoente?
   episodiosFaturacao    EpisodioFaturacao[]
   problemas             ProblemaClinico[]
+  eventosAdversos       EventoAdverso[]          @relation("EventosAdversosDoente")
 
   @@index([ativo])
   @@index([estado])
@@ -613,13 +631,18 @@ model ContactoEmergencia {
 // ─── Alertas Clínicos ─────────────────────────────────────────────────────────
 
 model AlertaClinico {
-  id       String   @id @default(uuid())
-  doenteId String
-  doente   Doente   @relation(fields: [doenteId], references: [id])
-  tipo     String
-  mensagem String
-  lido     Boolean  @default(false)
-  criadoEm DateTime @default(now())
+  id           String      @id @default(uuid())
+  doenteId     String
+  doente       Doente      @relation(fields: [doenteId], references: [id])
+  tipo         String
+  mensagem     String
+  lido         Boolean     @default(false)
+  urgencia     Boolean     @default(false)
+  acusadoPorId String?
+  acusadoPor   Utilizador? @relation("AlertaAcusador", fields: [acusadoPorId], references: [id])
+  acusadoEm    DateTime?
+  escaladoEm   DateTime?
+  criadoEm     DateTime    @default(now())
 
   @@map("alertas_clinicos")
 }
@@ -763,6 +786,9 @@ model EpisodioUrgencia {
   dataSaida           DateTime?
   notas               String?
   sinaisVitaisTriagem Json?
+  preNotificacao      Boolean        @default(false)
+  etaMinutos          Int?
+  condicaoPrevia      String?
 
   @@map("episodios_urgencia")
 }
@@ -1416,4 +1442,125 @@ model Manutencao {
   @@index([equipamentoId])
   @@index([estado])
   @@map("manutencoes")
+}
+
+// ─── RH ──────────────────────────────────────────────────────────────────────
+
+model Ausencia {
+  id            String      @id @default(uuid())
+  utilizadorId  String
+  utilizador    Utilizador  @relation("AusenciaUtilizador", fields: [utilizadorId], references: [id])
+  tipo          String // 'ferias'|'baixa_medica'|'licenca_maternidade'|'falta_justificada'|'outro'
+  dataInicio    DateTime
+  dataFim       DateTime
+  estado        String      @default("pendente") // 'pendente'|'aprovada'|'rejeitada'
+  observacoes   String?
+  aprovadoPorId String?
+  aprovadoPor   Utilizador? @relation("AusenciaAprovador", fields: [aprovadoPorId], references: [id])
+  criadoEm      DateTime    @default(now())
+  atualizadoEm  DateTime    @updatedAt
+
+  @@index([utilizadorId])
+  @@index([estado])
+  @@map("ausencias")
+}
+
+model FormacaoUtilizador {
+  id             String     @id @default(uuid())
+  utilizadorId   String
+  utilizador     Utilizador @relation("FormacaoUtilizador", fields: [utilizadorId], references: [id])
+  nome           String
+  dataRealizacao DateTime
+  dataExpiracao  DateTime?
+  entidade       String?
+  obrigatoria    Boolean    @default(false)
+  criadoEm       DateTime   @default(now())
+
+  @@index([utilizadorId])
+  @@map("formacoes_utilizadores")
+}
+
+// ─── Eventos Adversos ─────────────────────────────────────────────────────────
+
+model EventoAdverso {
+  id             String      @id @default(uuid())
+  tipo           String // 'queda' | 'erro_medicacao' | 'near_miss' | 'infecao' | 'lesao_pressao' | 'outro'
+  gravidade      String // 'sem_dano' | 'dano_leve' | 'dano_moderado' | 'dano_grave' | 'obito'
+  descricao      String
+  servicoId      String? // servico onde ocorreu (enum Servico como string)
+  doenteId       String?
+  doente         Doente?     @relation("EventosAdversosDoente", fields: [doenteId], references: [id])
+  registadoPorId String?
+  registadoPor   Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id])
+  acaoCorretiva  String?
+  estado         String      @default("aberto") // 'aberto' | 'em_investigacao' | 'encerrado'
+  ocorridoEm     DateTime    @default(now())
+  criadoEm       DateTime    @default(now())
+  atualizadoEm   DateTime    @updatedAt
+
+  @@index([tipo])
+  @@index([gravidade])
+  @@index([estado])
+  @@index([ocorridoEm])
+  @@map("eventos_adversos")
+}
+
+// ─── Especialidades Clínicas (Nutrição, Psicologia, Terapia da Fala, TAE) ────
+
+model SessaoEspecialidade {
+  id             String   @id @default(uuid())
+  tipo           String // 'nutricao' | 'psicologia' | 'terapia_fala' | 'tae'
+  doenteId       String
+  profissionalId String
+  data           DateTime
+  duracao        Int // minutos
+  descricao      String?
+  evolucao       String?
+  estado         String   @default("agendada") // agendada | realizada | cancelada | faltou
+  criadoEm       DateTime @default(now())
+
+  doente       Doente     @relation(fields: [doenteId], references: [id])
+  profissional Utilizador @relation("SessaoEspecialidadeProfissional", fields: [profissionalId], references: [id])
+
+  @@index([profissionalId, data])
+  @@index([doenteId])
+  @@map("sessoes_especialidade")
+}
+
+// ─── RH Expandido ─────────────────────────────────────────────────────────────
+
+model AvaliacaoDesempenho {
+  id             String   @id @default(uuid())
+  utilizadorId   String
+  avaliadorId    String
+  periodo        String // "2025-Anual", "2026-S1"
+  dataAvaliacao  DateTime
+  pontuacaoGeral Int // 1-5
+  pontosFortes   String?
+  areasMelhoria  String?
+  observacoes    String?
+  estado         String   @default("rascunho") // rascunho | finalizada | assinada
+  criadoEm       DateTime @default(now())
+
+  utilizador Utilizador @relation("AvaliacaoAvaliado", fields: [utilizadorId], references: [id])
+  avaliador  Utilizador @relation("AvaliacaoAvaliador", fields: [avaliadorId], references: [id])
+
+  @@index([utilizadorId])
+  @@index([avaliadorId])
+  @@map("avaliacoes_desempenho")
+}
+
+model DadosContratuais {
+  id               String    @id @default(uuid())
+  utilizadorId     String    @unique
+  tipoVinculo      String // 'permanente' | 'termo_certo' | 'prestacao_servicos' | 'estagio'
+  dataInicio       DateTime
+  dataFimPrevista  DateTime?
+  diasFeriasAnuais Int       @default(22)
+  criadoEm         DateTime  @default(now())
+  atualizadoEm     DateTime  @updatedAt
+
+  utilizador Utilizador @relation(fields: [utilizadorId], references: [id])
+
+  @@map("dados_contratuais")
 }

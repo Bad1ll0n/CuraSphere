@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 
 interface Incidente {
@@ -168,21 +170,124 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
   );
 }
 
+function PainelSubRole({ subRole, dados }: { subRole: string | undefined; dados: DashTI }) {
+  if (!subRole || subRole === 'it_admin' || subRole === 'cio') return null;
+
+  const acoesAltoRisco = dados.auditoria.recentes.filter(a =>
+    a.acao.toUpperCase().startsWith('DELETE') || a.acao.toUpperCase().startsWith('PATCH')
+  );
+  const incSeg = dados.incidentes.porTipo.find(t => t.tipo === 'seguranca')?.total ?? 0;
+  const incDb  = dados.incidentes.porTipo.find(t => t.tipo === 'base_dados')?.total ?? 0;
+  const incErp = dados.incidentes.porTipo.find(t => t.tipo === 'his_erp')?.total ?? 0;
+  const incDados = dados.incidentes.porTipo.find(t => t.tipo === 'dados_clinicos')?.total ?? 0;
+
+  const paineis: Record<string, React.ReactNode> = {
+    security_officer: (
+      <div className="bg-red-50 border border-red-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
+        <p className="text-xs font-bold text-red-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel Cibersegurança</p>
+        <div className="grid grid-cols-3 gap-4" style={{ marginBottom: '14px' }}>
+          <div className="bg-white rounded-xl border border-red-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Incidentes de Segurança</p>
+            <p className="text-2xl font-bold text-red-600">{incSeg}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-red-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Ações de Alto Risco (hoje)</p>
+            <p className="text-2xl font-bold text-amber-600">{acoesAltoRisco.length}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-red-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">IPs Únicos</p>
+            <p className="text-2xl font-bold text-slate-700">{new Set(dados.auditoria.recentes.map(a => a.ip).filter(Boolean)).size}</p>
+          </div>
+        </div>
+        {acoesAltoRisco.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold text-red-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Ações críticas recentes</p>
+            <div className="flex flex-col gap-1">
+              {acoesAltoRisco.slice(0, 5).map(a => (
+                <div key={a.id} className="flex items-center justify-between bg-white rounded-xl border border-red-100" style={{ padding: '8px 14px' }}>
+                  <span className="text-xs font-semibold text-red-700">{a.acao}</span>
+                  <span className="text-xs text-slate-500">{a.utilizador?.nome ?? 'Sistema'} · {a.ip}</span>
+                  <span className="text-xs text-slate-400">{new Date(a.createdAt).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    ),
+    database_admin: (
+      <div className="bg-blue-50 border border-blue-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
+        <p className="text-xs font-bold text-blue-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel Base de Dados</p>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl border border-blue-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Incidentes BD</p>
+            <p className="text-2xl font-bold text-blue-600">{incDb}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-blue-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Utilizadores Ativos</p>
+            <p className="text-2xl font-bold text-slate-700">{dados.utilizadores.total}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-blue-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Operações Hoje</p>
+            <p className="text-2xl font-bold text-slate-700">{dados.auditoria.acoesHoje}</p>
+          </div>
+        </div>
+      </div>
+    ),
+    his_erp: (
+      <div className="bg-purple-50 border border-purple-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
+        <p className="text-xs font-bold text-purple-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel HIS/ERP</p>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl border border-purple-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Incidentes HIS/ERP</p>
+            <p className="text-2xl font-bold text-purple-600">{incErp}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-purple-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Críticos Abertos</p>
+            <p className="text-2xl font-bold text-red-600">{dados.incidentes.criticos}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-purple-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Resolvidos Hoje</p>
+            <p className="text-2xl font-bold text-green-600">{dados.incidentes.resolvidosHoje}</p>
+          </div>
+        </div>
+      </div>
+    ),
+    dados_clinicos: (
+      <div className="bg-teal-50 border border-teal-200 rounded-2xl" style={{ padding: '20px 24px', marginBottom: '24px' }}>
+        <p className="text-xs font-bold text-teal-600 uppercase tracking-widest" style={{ marginBottom: '14px' }}>Painel BI / Dados Clínicos</p>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl border border-teal-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Incidentes Dados</p>
+            <p className="text-2xl font-bold text-teal-600">{incDados}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-teal-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Utilizadores Ativos</p>
+            <p className="text-2xl font-bold text-slate-700">{dados.utilizadores.total}</p>
+          </div>
+          <div className="bg-white rounded-xl border border-teal-100" style={{ padding: '14px 18px' }}>
+            <p className="text-xs text-slate-500">Queries Hoje</p>
+            <p className="text-2xl font-bold text-slate-700">{dados.auditoria.acoesHoje}</p>
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return <>{paineis[subRole] ?? null}</>;
+}
+
 export default function DashboardTIPage() {
-  const [dados, setDados] = useState<DashTI | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { utilizador } = useAuth();
   const [filtroAtivo, setFiltroAtivo] = useState<FiltroKey>(null);
   const [listaFiltrada, setListaFiltrada] = useState<Incidente[]>([]);
   const [loadingFiltro, setLoadingFiltro] = useState(false);
 
-  const carregar = () => {
-    setLoading(true);
-    api.get('/dashboard/ti')
-      .then(r => setDados(r.data))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => { carregar(); }, []);
+  const { data: dados, isLoading: loading, refetch } = useQuery<DashTI>({
+    queryKey: ['dashboard-ti'],
+    queryFn: () => api.get('/dashboard/ti').then(r => r.data),
+    staleTime: 60_000,
+  });
 
   const abrirFiltro = async (key: FiltroKey) => {
     if (key === null || key === filtroAtivo) { setFiltroAtivo(null); return; }
@@ -204,7 +309,7 @@ export default function DashboardTIPage() {
           <h1 className="text-3xl font-bold text-slate-900">Dashboard TI</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>Monitorização de incidentes, sistema e atividade de utilizadores</p>
         </div>
-        <button onClick={carregar} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
+        <button onClick={() => refetch()} className="border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2" style={{ padding: '10px 18px' }}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -222,6 +327,9 @@ export default function DashboardTIPage() {
         </div>
       ) : dados && (
         <div className="flex flex-col gap-8">
+
+          {/* ── Painel específico por sub-role ── */}
+          <PainelSubRole subRole={utilizador?.subRole} dados={dados} />
 
           {/* ── Incidentes TI ── */}
           <section>

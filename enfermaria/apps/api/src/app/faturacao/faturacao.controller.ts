@@ -10,6 +10,12 @@ import { Roles } from '../auth/roles.decorator';
 export class FaturacaoController {
   constructor(private readonly faturacaoService: FaturacaoService) {}
 
+  @Get('resumo')
+  @Roles('administrativo', 'direcao')
+  resumo(@Query('inicio') inicio?: string, @Query('fim') fim?: string) {
+    return this.faturacaoService.resumo(inicio, fim);
+  }
+
   @Get()
   listar(
     @Query('estado') estado?: string,

@@ -627,6 +627,10 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Consultas externas (agendamento, realização, cancelamento)
 - [x] Farmácia: stock e pedidos de medicação
 - [x] Fisioterapia: planos de reabilitação e sessões
+- [x] Especialidades clínicas: `SessaoEspecialidade` — Nutrição Clínica, Psicologia Clínica, Terapia da Fala, TAE; `GET/POST /especialidades`, `PATCH /especialidades/:id/realizar|cancelar`
+- [x] RH expandido: `AvaliacaoDesempenho` + `DadosContratuais`; endpoints para avaliações, pessoal, saldo de férias, contratos; `POST /rh/ausencias` notifica quando tipo=férias; `GET /rh/ausencias/para-aprovar` para chefes
+- [x] Férias universal: `chefeId` em Utilizador (self-relation ChefeSubordinado); `GET /rh/saldo-ferias` calcula dias usados vs. direito anual
+- [x] Conformidade/RGPD: `GET /audit/conformidade` agrega acessos a dados de doentes, ações de alto risco e gráfico de acessos por dia
 - [x] Pedidos internos (material, manutenção, etc.)
 - [x] Comunicação interna (mensagens + anúncios)
 - [x] Incidentes TI e Pedidos TI
@@ -656,6 +660,11 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Urgência, Bloco, Consultas, Sala de Espera
 - [x] Farmácia (stock + pedidos)
 - [x] Fisioterapia (planos + sessões)
+- [x] Especialidades clínicas (`/especialidades`) — página genérica adaptada ao sub-role: Nutrição, Psicologia, Terapia da Fala, TAE; agendar, registar evolução, cancelar sessões
+- [x] Dashboard Operacional (`/operacional`) — resume tarefas, pedidos internos e equipamentos em manutenção adaptado ao sub-role operacional
+- [x] Conformidade/RGPD (`/conformidade`) — registo de acessos a dados de doentes, ações de alto risco, checklist regulatório (RGPD/DGS/ACSS/SNS), exportação CSV
+- [x] RH expandido — `/rh/pessoal` (vínculos, saldo de férias por colaborador), `/rh/avaliacoes` (criar, editar, finalizar, assinar avaliações por período)
+- [x] Férias universal (`/ferias`) — saldo de férias pessoal, pedir férias, ver pedidos; secção "Para Aprovar" para chefes directos; cancelar pedido pendente
 - [x] Horários com calendário + botão "Gerar Automaticamente" (escala mensal round-robin)
 - [x] Dashboard Qualidade — IACS por agente, tendência 7 dias, alertas clínicos, avaliações de risco, ocupação, taxa de completitude de alta
 - [x] Faturação — lista episódios, criar episódio, adicionar itens, registar pagamentos, emitir/anular
@@ -672,6 +681,11 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Configurações de roles e sub-roles
 - [x] Auditoria log
 - [x] Logo CuraSphere no header
+- [x] SOS banner no dashboard (médico + enfermeiro) — recebe evento `sos:alerta` via WebSocket em tempo real; link directo para ficha; botão "Acusar"; múltiplos alertas simultâneos
+- [x] Botão SOS na ficha do doente — countdown 3s anti-acidental, cancelar, confirmar; chama `POST /alertas/:id/sos`
+- [x] Dispositivos Invasivos na ficha do doente — lista activos com dias de inserção, registar novo, remover
+- [x] Pré-notificação ambulância na página de Urgência — banner "Em Trânsito" com countdown ETA, modal de registo, botão "Chegou"
+- [x] WebSocket em tempo real — hook `useSocket` partilhado; eventos: `urgencia:update`, `urgencia:ambulancia`, `sos:alerta`, `alerta:novo`, `doente:estado`; invalidação automática de queries ao receber eventos
 
 ### Mobile
 - [x] Login com token persistente
@@ -713,8 +727,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
 | Painel de BI / Analytics | Baixa | Dashboard executivo para Direção com gráficos históricos |
 | Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
-| Módulo de RH / gestão de férias | Baixa | RH só gere utilizadores; falta módulo de férias, folgas e saldos |
-| Módulo de RH / gestão de férias | Baixa | RH só gere utilizadores; falta módulo de férias, folgas e saldos |
+| Módulo de RH / gestão de férias | ~~Baixa~~ | ✅ Implementado: `/rh/pessoal`, `/rh/avaliacoes`, `/ferias` com workflow de aprovação por chefe |
 | Telemedicina / Videochamada | Baixa | Fora de âmbito actual |
 | Integrações externas (HL7, FHIR) | Baixa | Exportação de dados clínicos para sistemas externos |
 

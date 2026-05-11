@@ -151,7 +151,8 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   equipa: 'equipa',
   ativo: 'ativo',
   criadoEm: 'criadoEm',
-  atualizadoEm: 'atualizadoEm'
+  atualizadoEm: 'atualizadoEm',
+  chefeId: 'chefeId'
 };
 
 exports.Prisma.CamaScalarFieldEnum = {
@@ -377,6 +378,10 @@ exports.Prisma.AlertaClinicoScalarFieldEnum = {
   tipo: 'tipo',
   mensagem: 'mensagem',
   lido: 'lido',
+  urgencia: 'urgencia',
+  acusadoPorId: 'acusadoPorId',
+  acusadoEm: 'acusadoEm',
+  escaladoEm: 'escaladoEm',
   criadoEm: 'criadoEm'
 };
 
@@ -445,7 +450,10 @@ exports.Prisma.EpisodioUrgenciaScalarFieldEnum = {
   dataEntrada: 'dataEntrada',
   dataSaida: 'dataSaida',
   notas: 'notas',
-  sinaisVitaisTriagem: 'sinaisVitaisTriagem'
+  sinaisVitaisTriagem: 'sinaisVitaisTriagem',
+  preNotificacao: 'preNotificacao',
+  etaMinutos: 'etaMinutos',
+  condicaoPrevia: 'condicaoPrevia'
 };
 
 exports.Prisma.CirurgiaProgramadaScalarFieldEnum = {
@@ -795,6 +803,83 @@ exports.Prisma.ManutencaoScalarFieldEnum = {
   observacoes: 'observacoes'
 };
 
+exports.Prisma.AusenciaScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  tipo: 'tipo',
+  dataInicio: 'dataInicio',
+  dataFim: 'dataFim',
+  estado: 'estado',
+  observacoes: 'observacoes',
+  aprovadoPorId: 'aprovadoPorId',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
+exports.Prisma.FormacaoUtilizadorScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  nome: 'nome',
+  dataRealizacao: 'dataRealizacao',
+  dataExpiracao: 'dataExpiracao',
+  entidade: 'entidade',
+  obrigatoria: 'obrigatoria',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.EventoAdversoScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  gravidade: 'gravidade',
+  descricao: 'descricao',
+  servicoId: 'servicoId',
+  doenteId: 'doenteId',
+  registadoPorId: 'registadoPorId',
+  acaoCorretiva: 'acaoCorretiva',
+  estado: 'estado',
+  ocorridoEm: 'ocorridoEm',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
+exports.Prisma.SessaoEspecialidadeScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  doenteId: 'doenteId',
+  profissionalId: 'profissionalId',
+  data: 'data',
+  duracao: 'duracao',
+  descricao: 'descricao',
+  evolucao: 'evolucao',
+  estado: 'estado',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AvaliacaoDesempenhoScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  avaliadorId: 'avaliadorId',
+  periodo: 'periodo',
+  dataAvaliacao: 'dataAvaliacao',
+  pontuacaoGeral: 'pontuacaoGeral',
+  pontosFortes: 'pontosFortes',
+  areasMelhoria: 'areasMelhoria',
+  observacoes: 'observacoes',
+  estado: 'estado',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.DadosContratuaisScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  tipoVinculo: 'tipoVinculo',
+  dataInicio: 'dataInicio',
+  dataFimPrevista: 'dataFimPrevista',
+  diasFeriasAnuais: 'diasFeriasAnuais',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1115,7 +1200,13 @@ exports.Prisma.ModelName = {
   RefreshToken: 'RefreshToken',
   ProblemaClinico: 'ProblemaClinico',
   Equipamento: 'Equipamento',
-  Manutencao: 'Manutencao'
+  Manutencao: 'Manutencao',
+  Ausencia: 'Ausencia',
+  FormacaoUtilizador: 'FormacaoUtilizador',
+  EventoAdverso: 'EventoAdverso',
+  SessaoEspecialidade: 'SessaoEspecialidade',
+  AvaliacaoDesempenho: 'AvaliacaoDesempenho',
+  DadosContratuais: 'DadosContratuais'
 };
 
 /**

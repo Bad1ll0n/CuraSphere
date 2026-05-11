@@ -457,6 +457,44 @@ export default function DoenteDetalhe() {
   const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
   const podePrescreveMed = utilizador?.role === 'medico';
+  const podeAcionarSOS = ['enfermeiro', 'medico', 'auxiliar', 'tecnico_saude'].includes(utilizador?.role ?? '');
+
+  // SOS
+  const [sosConfirmando, setSosConfirmando] = useState(false);
+  const [sosCount, setSosCount] = useState(3);
+  const [sosEnviado, setSosEnviado] = useState(false);
+  const sosIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const iniciarSOS = () => {
+    setSosConfirmando(true);
+    setSosCount(3);
+    sosIntervalRef.current = setInterval(() => {
+      setSosCount((c) => {
+        if (c <= 1) {
+          clearInterval(sosIntervalRef.current!);
+          enviarSOS();
+          return 0;
+        }
+        return c - 1;
+      });
+    }, 1000);
+  };
+
+  const cancelarSOS = () => {
+    clearInterval(sosIntervalRef.current!);
+    setSosConfirmando(false);
+    setSosCount(3);
+  };
+
+  const enviarSOS = async () => {
+    try {
+      await api.post(`/alertas/${id}/sos`);
+      setSosEnviado(true);
+      setTimeout(() => { setSosEnviado(false); setSosConfirmando(false); }, 5000);
+    } catch {
+      setSosConfirmando(false);
+    }
+  };
 
   // Grupo de role: médicos vêem só médicos; enfermagem vê só enfermagem
   const grupoMedico = ['medico'];
@@ -978,6 +1016,38 @@ export default function DoenteDetalhe() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Botão SOS */}
+          {podeAcionarSOS && doente.ativo && (
+            sosEnviado ? (
+              <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-sm font-semibold rounded-xl" style={{ padding: '10px 18px' }}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+                SOS enviado
+              </div>
+            ) : sosConfirmando ? (
+              <div className="inline-flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 bg-red-600 text-white text-sm font-bold rounded-xl animate-pulse" style={{ padding: '10px 18px' }}>
+                  🚨 A enviar... {sosCount}s
+                </div>
+                <button onClick={cancelarSOS}
+                  className="text-xs text-slate-500 hover:text-slate-700 border border-slate-200 rounded-xl transition-colors"
+                  style={{ padding: '10px 14px' }}>
+                  Cancelar
+                </button>
+              </div>
+            ) : (
+              <button onClick={iniciarSOS}
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-xl transition-colors shadow-sm"
+                style={{ padding: '10px 18px' }}>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 5a1 1 0 011 1v5a1 1 0 01-2 0V8a1 1 0 011-1zm0 10a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                </svg>
+                SOS
+              </button>
+            )
+          )}
+
           <button
             onClick={() => window.open(`/doentes/${id}/print`, '_blank')}
             className="inline-flex items-center gap-2 border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 text-sm font-medium rounded-xl transition-all"

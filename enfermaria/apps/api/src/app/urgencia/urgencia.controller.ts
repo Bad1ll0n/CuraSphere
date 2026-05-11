@@ -15,6 +15,18 @@ export class UrgenciaController {
     return this.service.registarEntrada(dto, req.user.sub);
   }
 
+  @Post('pre-notificacao')
+  @Roles('enfermeiro', 'administrativo', 'medico')
+  preNotificar(@Body() dto: any, @Request() req: any) {
+    return this.service.preNotificar(dto, req.user.sub);
+  }
+
+  @Patch(':id/completar-pre-notificacao')
+  @Roles('enfermeiro', 'administrativo', 'medico')
+  completarPreNotificacao(@Param('id') id: string, @Body() dto: any) {
+    return this.service.completarPreNotificacao(id, dto);
+  }
+
   @Get('lista')
   listaEspera() {
     return this.service.listaEspera();

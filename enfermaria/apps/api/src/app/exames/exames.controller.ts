@@ -34,8 +34,8 @@ export class ExamesController {
 
   @Patch(':id/resultado')
   @Roles('medico', 'farmaceutico', 'administrativo', 'enfermeiro', 'tecnico_saude')
-  registarResultado(@Param('id') id: string, @Body() dto: any) {
-    return this.service.registarResultado(id, dto);
+  registarResultado(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+    return this.service.registarResultado(id, dto, req.user.sub);
   }
 
   @Patch(':id/cancelar')

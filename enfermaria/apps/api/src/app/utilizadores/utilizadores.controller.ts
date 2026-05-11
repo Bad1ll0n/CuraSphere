@@ -44,7 +44,7 @@ export class UtilizadoresController {
   @Patch(':id')
   atualizar(
     @Param('id') id: string,
-    @Body() body: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string },
+    @Body() body: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null },
   ) {
     return this.utilizadoresService.atualizar(id, body);
   }

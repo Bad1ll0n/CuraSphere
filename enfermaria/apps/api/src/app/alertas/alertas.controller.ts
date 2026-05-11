@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AlertasService } from './alertas.service';
 
@@ -20,5 +20,15 @@ export class AlertasController {
   @Patch(':doenteId/ler-todos')
   marcarTodosLidos(@Param('doenteId') doenteId: string) {
     return this.service.marcarTodosLidos(doenteId);
+  }
+
+  @Post(':doenteId/sos')
+  acionarSOS(@Param('doenteId') doenteId: string, @Request() req: any) {
+    return this.service.acionarSOS(doenteId, req.user.sub);
+  }
+
+  @Patch(':id/acusar')
+  acusar(@Param('id') id: string, @Request() req: any) {
+    return this.service.acusar(id, req.user.sub);
   }
 }

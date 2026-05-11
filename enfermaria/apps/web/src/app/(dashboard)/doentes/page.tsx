@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 
@@ -27,34 +28,36 @@ const estadoLabel: Record<string, string> = {
   estavel: 'Estável', grave: 'Grave', critico: 'Crítico', alta_prevista: 'Alta Prevista',
 };
 
+const ROLES_CLINICOS = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
+const LIMIT = 25;
 
 export default function DoentesPagina() {
   const { utilizador } = useAuth();
-  const [doentes, setDoentes] = useState<Doente[]>([]);
-  const [loading, setLoading] = useState(true);
   const [pesquisa, setPesquisa] = useState('');
   const [pagina, setPagina] = useState(1);
-  const [totalPaginas, setTotalPaginas] = useState(1);
-  const [total, setTotal] = useState(0);
-  const LIMIT = 25;
+  const [aba, setAba] = useState<'meus' | 'todos'>('meus');
 
+  const isClinico = ROLES_CLINICOS.includes(utilizador?.role ?? '');
   const podeAdmitir = ['administrativo', 'enfermeiro', 'medico'].includes(utilizador?.role ?? '');
 
-  useEffect(() => {
-    setLoading(true);
-    api.get(`/doentes?page=${pagina}&limit=${LIMIT}`)
-      .then((r) => {
-        setDoentes(r.data.data ?? r.data);
-        setTotal(r.data.total ?? r.data.length);
-        setTotalPaginas(r.data.totalPaginas ?? 1);
-      })
-      .finally(() => setLoading(false));
-  }, [pagina]);
+  const todos = !isClinico || aba === 'todos';
+  const { data, isLoading } = useQuery({
+    queryKey: ['doentes', pagina, todos],
+    queryFn: () =>
+      api.get(`/doentes?page=${pagina}&limit=${LIMIT}${todos ? '&todos=true' : ''}`).then(r => r.data),
+    placeholderData: (prev) => prev,
+  });
+
+  const doentes: Doente[] = data?.data ?? data ?? [];
+  const total: number = data?.total ?? doentes.length;
+  const totalPaginas: number = data?.totalPaginas ?? 1;
+
+  const mudarAba = (novaAba: 'meus' | 'todos') => { setAba(novaAba); setPagina(1); };
 
   const filtrados = doentes.filter((d) =>
     d.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
     d.numeroProcesso.includes(pesquisa) ||
-    d.cama.numero.includes(pesquisa),
+    (d.cama?.numero ?? '').includes(pesquisa),
   );
 
   return (
@@ -84,6 +87,27 @@ export default function DoentesPagina() {
 
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
 
+        {/* Tabs — só para clínicos */}
+        {isClinico && (
+          <div className="flex border-b border-slate-100" style={{ padding: '0 24px' }}>
+            {(['meus', 'todos'] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => mudarAba(t)}
+                className={`text-sm font-medium transition-colors relative ${
+                  aba === t ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'
+                }`}
+                style={{ padding: '14px 0', marginRight: '24px' }}
+              >
+                {t === 'meus' ? 'Meus Doentes' : 'Todos os Doentes'}
+                {aba === t && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Barra de pesquisa */}
         <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '16px 24px' }}>
           <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +129,7 @@ export default function DoentesPagina() {
           )}
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '64px' }}>
             <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -121,10 +145,18 @@ export default function DoentesPagina() {
               </svg>
             </div>
             <p className="text-slate-500 font-medium text-sm" style={{ marginBottom: '4px' }}>
-              {pesquisa ? 'Nenhum doente encontrado' : 'Sem doentes internados'}
+              {pesquisa
+                ? 'Nenhum doente encontrado'
+                : aba === 'meus'
+                  ? 'Sem doentes atribuídos neste turno'
+                  : 'Sem doentes internados'}
             </p>
             <p className="text-slate-400 text-xs">
-              {pesquisa ? 'Tente outro termo de pesquisa' : 'Os doentes admitidos aparecerão aqui'}
+              {pesquisa
+                ? 'Tente outro termo de pesquisa'
+                : aba === 'meus'
+                  ? 'Os doentes do seu turno aparecerão aqui. Veja "Todos os Doentes" para a lista completa.'
+                  : 'Os doentes admitidos aparecerão aqui'}
             </p>
           </div>
         ) : (
@@ -155,7 +187,7 @@ export default function DoentesPagina() {
                     </td>
                     <td style={{ padding: '16px' }}>
                       <span className="text-slate-600 font-medium">
-                        Quarto {d.cama.quarto} · Cama {d.cama.numero}
+                        {d.cama ? `Quarto ${d.cama.quarto} · Cama ${d.cama.numero}` : '—'}
                       </span>
                     </td>
                     <td style={{ padding: '16px', maxWidth: '200px' }}>
@@ -192,7 +224,7 @@ export default function DoentesPagina() {
         )}
 
         {/* Paginação */}
-        {!loading && totalPaginas > 1 && (
+        {!isLoading && totalPaginas > 1 && (
           <div className="flex items-center justify-between border-t border-slate-100" style={{ padding: '16px 24px' }}>
             <span className="text-xs text-slate-500">
               Página {pagina} de {totalPaginas} · {total} doentes

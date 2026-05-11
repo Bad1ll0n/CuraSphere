@@ -94,7 +94,7 @@ export default function UtilizadoresPagina() {
   const [erro, setErro] = useState('');
 
   const [editando, setEditando] = useState<Utilizador | null>(null);
-  const [formEdit, setFormEdit] = useState({ nome: '', role: '', subRole: '', servico: 'internamento', ordemExperiencia: '', equipa: '' });
+  const [formEdit, setFormEdit] = useState({ nome: '', role: '', subRole: '', servico: 'internamento', ordemExperiencia: '', equipa: '', chefeId: '' });
   const [erroEdit, setErroEdit] = useState('');
 
   // Agenda (médicos)
@@ -144,7 +144,7 @@ export default function UtilizadoresPagina() {
 
   const abrirEditar = async (u: Utilizador) => {
     setEditando(u);
-    setFormEdit({ nome: u.nome, role: u.role, subRole: u.subRole ?? '', servico: u.servico ?? 'internamento', ordemExperiencia: u.ordemExperiencia?.toString() ?? '', equipa: u.equipa ?? '' });
+    setFormEdit({ nome: u.nome, role: u.role, subRole: u.subRole ?? '', servico: u.servico ?? 'internamento', ordemExperiencia: u.ordemExperiencia?.toString() ?? '', equipa: u.equipa ?? '', chefeId: (u as any).chefeId ?? '' });
     setErroEdit('');
     if (u.role === 'medico') {
       try {
@@ -170,6 +170,7 @@ export default function UtilizadoresPagina() {
         servico: formEdit.servico,
         ordemExperiencia: formEdit.ordemExperiencia ? Number(formEdit.ordemExperiencia) : undefined,
         equipa: formEdit.equipa || undefined,
+        chefeId: formEdit.chefeId || null,
       });
       if (formEdit.role === 'medico') {
         await Promise.all(agendaEdit.map((d, i) =>
@@ -341,6 +342,17 @@ export default function UtilizadoresPagina() {
                   </select>
                 </div>
               )}
+              <div style={{ marginBottom: '16px' }}>
+                <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Chefe Directo</label>
+                <select value={formEdit.chefeId} onChange={(e) => setFormEdit((f) => ({ ...f, chefeId: e.target.value }))}
+                  className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 bg-white transition"
+                  style={{ padding: '10px 14px' }}>
+                  <option value="">Sem chefe atribuído</option>
+                  {utilizadores.filter(u => u.id !== editando?.id).map(u => (
+                    <option key={u.id} value={u.id}>{u.nome} ({u.role})</option>
+                  ))}
+                </select>
+              </div>
               <div style={{ marginBottom: '16px' }}>
                 <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>Ordem Experiência <span className="text-xs text-slate-400 font-normal">(1 = mais experiente)</span></label>
                 <input type="number" min="1" value={formEdit.ordemExperiencia} onChange={(e) => setFormEdit((f) => ({ ...f, ordemExperiencia: e.target.value }))}

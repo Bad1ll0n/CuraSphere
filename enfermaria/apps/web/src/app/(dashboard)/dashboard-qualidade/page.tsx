@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 
@@ -71,18 +71,21 @@ function KpiCard({ titulo, valor, sub, cor, icone }: { titulo: string; valor: st
 
 export default function DashboardQualidade() {
   const { utilizador } = useAuth();
-  const [dados, setDados] = useState<DadosQualidade | null>(null);
-  const [loading, setLoading] = useState(true);
-
   const podeVer = ['qualidade', 'direcao', 'medico', 'enfermeiro'].includes(utilizador?.role ?? '');
 
-  useEffect(() => {
-    if (!podeVer) return;
-    api.get('/dashboard/qualidade')
-      .then(r => setDados(r.data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: dados, isLoading: loading, isError: erro } = useQuery<DadosQualidade>({
+    queryKey: ['dashboard-qualidade'],
+    queryFn: () => api.get('/dashboard/qualidade').then(r => r.data),
+    enabled: podeVer,
+    staleTime: 60_000,
+  });
+
+  const { data: eventosIndicadores = null } = useQuery({
+    queryKey: ['eventos-adversos-indicadores'],
+    queryFn: () => api.get('/eventos-adversos/indicadores').then(r => r.data).catch(() => null),
+    enabled: podeVer,
+    staleTime: 60_000,
+  });
 
   if (!podeVer) {
     return (
@@ -111,7 +114,16 @@ export default function DashboardQualidade() {
     );
   }
 
-  if (!dados) return null;
+  if (erro || !dados) return (
+    <div style={{ padding: '40px 48px' }}>
+      <div className="bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3" style={{ padding: '20px 24px' }}>
+        <svg className="w-5 h-5 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+        <p className="text-red-700 text-sm font-medium">Erro ao carregar dados de qualidade. Tenta recarregar a página.</p>
+      </div>
+    </div>
+  );
 
   const maxTendencia = Math.max(...dados.iacs.tendencia.map(t => t.total), 1);
 
@@ -234,7 +246,7 @@ export default function DashboardQualidade() {
             <div className="flex items-center justify-between bg-orange-50 rounded-xl" style={{ padding: '10px 14px' }}>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-orange-500" />
-                <span className="text-sm text-slate-700">Instáveis</span>
+                <span className="text-sm text-slate-700">Graves</span>
               </div>
               <span className="text-sm font-bold text-orange-600">{dados.doentes.instaveis}</span>
             </div>
@@ -347,6 +359,85 @@ export default function DashboardQualidade() {
           </div>
 
         </div>
+
+        {/* ── Eventos Adversos ── */}
+        {eventosIndicadores && (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '28px', marginTop: '24px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-slate-800">Eventos Adversos</h2>
+                  <p className="text-xs text-slate-400">Últimos 30 dias</p>
+                </div>
+              </div>
+              <a href="/eventos-adversos" className="text-xs font-medium text-indigo-600 hover:text-indigo-800">Ver todos →</a>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '20px' }}>
+              {[
+                { label: 'Registados (30d)', value: eventosIndicadores.total30d, cor: 'text-slate-800' },
+                { label: 'Em Aberto', value: eventosIndicadores.abertos, cor: eventosIndicadores.abertos > 0 ? 'text-amber-600' : 'text-slate-800' },
+                { label: 'Este Mês', value: eventosIndicadores.totalMes, cor: 'text-slate-800' },
+                { label: 'Mês Anterior', value: eventosIndicadores.totalMesPassado, cor: 'text-slate-400' },
+              ].map(s => (
+                <div key={s.label} className="bg-slate-50 rounded-xl" style={{ padding: '14px 16px' }}>
+                  <p className={`text-2xl font-bold ${s.cor}`}>{s.value}</p>
+                  <p className="text-xs text-slate-500" style={{ marginTop: '3px' }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Por Tipo</p>
+                <div className="flex flex-col gap-2">
+                  {eventosIndicadores.porTipo.slice(0, 5).map(t => {
+                    const TIPO_LABEL: Record<string, string> = { queda: 'Queda', erro_medicacao: 'Erro Medicação', near_miss: 'Near Miss', infecao: 'Infeção', lesao_pressao: 'Lesão Pressão', outro: 'Outro' };
+                    const max = Math.max(...eventosIndicadores.porTipo.map(x => x.total), 1);
+                    return (
+                      <div key={t.tipo} className="flex items-center gap-2">
+                        <span className="text-xs text-slate-600 w-28 shrink-0">{TIPO_LABEL[t.tipo] ?? t.tipo}</span>
+                        <div className="flex-1 bg-slate-100 rounded-full h-2">
+                          <div className="bg-red-400 h-2 rounded-full transition-all" style={{ width: `${Math.round((t.total / max) * 100)}%` }} />
+                        </div>
+                        <span className="text-xs font-medium text-slate-700 w-4 text-right">{t.total}</span>
+                      </div>
+                    );
+                  })}
+                  {eventosIndicadores.porTipo.length === 0 && <p className="text-xs text-slate-400">Sem dados</p>}
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Por Gravidade</p>
+                <div className="flex flex-col gap-2">
+                  {(['obito', 'dano_grave', 'dano_moderado', 'dano_leve', 'sem_dano'] as const).map(g => {
+                    const item = eventosIndicadores.porGravidade.find(x => x.gravidade === g);
+                    if (!item) return null;
+                    const LABEL: Record<string, string> = { sem_dano: 'Sem Dano', dano_leve: 'Dano Leve', dano_moderado: 'Moderado', dano_grave: 'Grave', obito: 'Óbito' };
+                    const COR: Record<string, string> = { sem_dano: 'bg-green-400', dano_leve: 'bg-yellow-400', dano_moderado: 'bg-orange-400', dano_grave: 'bg-red-500', obito: 'bg-slate-700' };
+                    const max = Math.max(...eventosIndicadores.porGravidade.map(x => x.total), 1);
+                    return (
+                      <div key={g} className="flex items-center gap-2">
+                        <span className="text-xs text-slate-600 w-28 shrink-0">{LABEL[g]}</span>
+                        <div className="flex-1 bg-slate-100 rounded-full h-2">
+                          <div className={`${COR[g]} h-2 rounded-full transition-all`} style={{ width: `${Math.round((item.total / max) * 100)}%` }} />
+                        </div>
+                        <span className="text-xs font-medium text-slate-700 w-4 text-right">{item.total}</span>
+                      </div>
+                    );
+                  })}
+                  {eventosIndicadores.porGravidade.length === 0 && <p className="text-xs text-slate-400">Sem dados</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

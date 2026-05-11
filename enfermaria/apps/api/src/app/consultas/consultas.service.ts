@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -13,6 +14,7 @@ export class ConsultasService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ticketsService: TicketsService,
+    private readonly notificacoesService: NotificacoesService,
   ) {}
 
   // ─── Agenda semanal ───────────────────────────────────────────────────────
@@ -282,6 +284,37 @@ export class ConsultasService {
     });
 
     return { consulta: atualizada, ticket, jaFezCheckin: false };
+  }
+
+  async enviarLembretes() {
+    const amanha = new Date();
+    amanha.setDate(amanha.getDate() + 1);
+    amanha.setHours(0, 0, 0, 0);
+    const amanhaFim = new Date(amanha);
+    amanhaFim.setHours(23, 59, 59, 999);
+
+    const consultas = await this.prisma.consulta.findMany({
+      where: { estado: 'agendada', dataHora: { gte: amanha, lte: amanhaFim } },
+      include: { medico: { select: { id: true, nome: true } }, doente: { select: { nome: true } } },
+    });
+
+    const medicoIds = [...new Set(consultas.map((c) => c.medicoId))];
+    let enviados = 0;
+
+    for (const medicoId of medicoIds) {
+      const consultasMedico = consultas.filter((c) => c.medicoId === medicoId);
+      const nomes = consultasMedico.map((c) => c.nomeDoente ?? c.doente?.nome ?? 'Utente').join(', ');
+      await this.notificacoesService
+        .enviarParaUtilizador(
+          medicoId,
+          `${consultasMedico.length} consulta${consultasMedico.length > 1 ? 's' : ''} amanhã`,
+          `Doentes: ${nomes}`,
+        )
+        .catch(() => {});
+      enviados += consultasMedico.length;
+    }
+
+    return { enviados, medicos: medicoIds.length };
   }
 
   private async buscar(id: string) {

@@ -33,8 +33,8 @@ export class BlocoController {
 
   @Patch('cirurgia/:id/notas-pos')
   @Roles('medico')
-  registarNotasPos(@Param('id') id: string, @Body() dto: any) {
-    return this.service.registarNotasPos(id, dto);
+  registarNotasPos(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+    return this.service.registarNotasPos(id, dto, req.user.sub);
   }
 
   @Get('cirurgia/:id/checklist')

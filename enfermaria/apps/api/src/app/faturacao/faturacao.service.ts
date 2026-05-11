@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
 export class FaturacaoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   async listar(estado?: string, page = 1, limit = 25) {
     const skip = (page - 1) * limit;
@@ -140,14 +144,55 @@ export class FaturacaoService {
   }
 
   async mudarEstado(episodioId: string, estado: string) {
-    const ep = await this.prisma.episodioFaturacao.findUnique({ where: { id: episodioId } });
+    const ep = await this.prisma.episodioFaturacao.findUnique({
+      where: { id: episodioId },
+      include: { doente: { select: { id: true, nome: true } }, criadoPor: { select: { id: true } } },
+    });
     if (!ep) throw new NotFoundException('Episódio não encontrado');
 
     const dataEmissao = estado === 'emitida' ? new Date() : undefined;
-    return this.prisma.episodioFaturacao.update({
+    const updated = await this.prisma.episodioFaturacao.update({
       where: { id: episodioId },
       data: { estado: estado as any, ...(dataEmissao ? { dataEmissao } : {}) },
     });
+
+    if (estado === 'emitida' && ep.criadoPorId) {
+      this.notificacoes
+        .enviarParaUtilizador(
+          ep.criadoPorId,
+          'Fatura emitida',
+          `Fatura do doente ${(ep as any).doente?.nome ?? 'desconhecido'} foi emitida e aguarda pagamento.`,
+        )
+        .catch(() => {});
+    }
+
+    return updated;
+  }
+
+  async resumo(inicio?: string, fim?: string) {
+    const where: any = {};
+    if (inicio || fim) {
+      where.criadoEm = {};
+      if (inicio) where.criadoEm.gte = new Date(inicio);
+      if (fim) { const f = new Date(fim); f.setHours(23, 59, 59, 999); where.criadoEm.lte = f; }
+    }
+
+    const episodios = await this.prisma.episodioFaturacao.findMany({
+      where,
+      include: { itens: true, pagamentos: true, doente: { select: { nome: true, numeroProcesso: true } } },
+      orderBy: { criadoEm: 'desc' },
+    });
+
+    const stats = { totalFaturado: 0, totalPago: 0, totalPendente: 0, totalAnulado: 0, countPorEstado: {} as Record<string, number> };
+    for (const ep of episodios) {
+      stats.countPorEstado[ep.estado] = (stats.countPorEstado[ep.estado] ?? 0) + 1;
+      if (ep.estado !== 'anulada') stats.totalFaturado += ep.totalCobrado;
+      if (ep.estado === 'paga') stats.totalPago += ep.totalCobrado;
+      if (ep.estado === 'pendente' || ep.estado === 'emitida') stats.totalPendente += ep.totalCobrado;
+      if (ep.estado === 'anulada') stats.totalAnulado += ep.totalCobrado;
+    }
+
+    return { stats, episodios };
   }
 
   private async recalcularTotal(episodioId: string) {
