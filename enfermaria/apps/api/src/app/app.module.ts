@@ -49,6 +49,8 @@ import { RhModule } from './rh/rh.module';
 import { EspecialidadesModule } from './especialidades/especialidades.module';
 import { EventosAdversosModule } from './eventos-adversos/eventos-adversos.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { CatalogoModule } from './catalogo/catalogo.module';
+import { FornecedoresModule } from './fornecedores/fornecedores.module';
 
 @Module({
   imports: [
@@ -96,6 +98,8 @@ import { GatewayModule } from './gateway/gateway.module';
     EspecialidadesModule,
     EventosAdversosModule,
     GatewayModule,
+    CatalogoModule,
+    FornecedoresModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

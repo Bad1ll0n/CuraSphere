@@ -40,6 +40,8 @@ const UTILIZADORES = [
   { num: 'QA001', nome: 'Qual. Teresa Monteiro',    role: 'qualidade',     subRole: 'quality_manager',  servico: 'internamento', ordem: 1 },
   // Direção
   { num: 'DR001', nome: 'Dir. Manuel Azevedo',      role: 'direcao',       subRole: 'ceo_hospitalar',   servico: 'internamento', ordem: 1 },
+  // Operacional
+  { num: 'OP001', nome: 'Op. Bruno Figueiredo',     role: 'operacional',   subRole: 'facilities',       servico: 'internamento', ordem: 1 },
 ];
 
 // ─────────────────────────── CAMAS ───────────────────────────

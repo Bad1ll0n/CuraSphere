@@ -14,7 +14,7 @@ interface Doente {
   diagnosticoPrincipal: string;
   dataAdmissao: string;
   dataAltaPrevista?: string;
-  cama: { numero: string; quarto: string };
+  cama: { numero: string; quarto: string; servico?: string };
 }
 
 const estadoCor: Record<string, { badge: string; dot: string }> = {
@@ -34,6 +34,8 @@ const LIMIT = 25;
 export default function DoentesPagina() {
   const { utilizador } = useAuth();
   const [pesquisa, setPesquisa] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroServico, setFiltroServico] = useState('');
   const [pagina, setPagina] = useState(1);
   const [aba, setAba] = useState<'meus' | 'todos'>('meus');
 
@@ -54,11 +56,12 @@ export default function DoentesPagina() {
 
   const mudarAba = (novaAba: 'meus' | 'todos') => { setAba(novaAba); setPagina(1); };
 
-  const filtrados = doentes.filter((d) =>
-    d.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
-    d.numeroProcesso.includes(pesquisa) ||
-    (d.cama?.numero ?? '').includes(pesquisa),
-  );
+  const filtrados = doentes.filter((d) => {
+    const matchText = !pesquisa || d.nome.toLowerCase().includes(pesquisa.toLowerCase()) || d.numeroProcesso.includes(pesquisa) || (d.cama?.numero ?? '').includes(pesquisa);
+    const matchEstado = !filtroEstado || d.estado === filtroEstado;
+    const matchServico = !filtroServico || d.cama?.servico === filtroServico;
+    return matchText && matchEstado && matchServico;
+  });
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: '1280px', margin: '0 auto' }}>
@@ -107,6 +110,30 @@ export default function DoentesPagina() {
             ))}
           </div>
         )}
+
+        {/* Filtros */}
+        <div className="flex flex-wrap items-center gap-3 border-b border-slate-100" style={{ padding: '12px 24px' }}>
+          <select value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPagina(1); }}
+            className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '7px 12px' }}>
+            <option value="">Todos os estados</option>
+            <option value="estavel">Estável</option>
+            <option value="grave">Grave</option>
+            <option value="critico">Crítico</option>
+          </select>
+          <select value={filtroServico} onChange={e => { setFiltroServico(e.target.value); setPagina(1); }}
+            className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '7px 12px' }}>
+            <option value="">Todos os serviços</option>
+            <option value="internamento">Internamento</option>
+            <option value="urgencia">Urgência</option>
+            <option value="uci">UCI</option>
+            <option value="bloco_operatorio">Bloco Operatório</option>
+          </select>
+          {(filtroEstado || filtroServico) && (
+            <button onClick={() => { setFiltroEstado(''); setFiltroServico(''); }} className="text-xs text-slate-400 hover:text-slate-600">Limpar filtros</button>
+          )}
+        </div>
 
         {/* Barra de pesquisa */}
         <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '16px 24px' }}>

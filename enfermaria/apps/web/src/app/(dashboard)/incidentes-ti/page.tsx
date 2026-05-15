@@ -80,6 +80,9 @@ export default function IncidentesTIPage() {
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [atualizando, setAtualizando] = useState<string | null>(null);
+  const [tiUsers, setTiUsers] = useState<Array<{ id: string; nome: string }>>([]);
+  const [atribuindoResp, setAtribuindoResp] = useState<string | null>(null);
+  const [respDropdown, setRespDropdown] = useState<Record<string, string>>({});
 
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
@@ -97,7 +100,20 @@ export default function IncidentesTIPage() {
     }
   };
 
+  const carregarTiUsers = async () => {
+    if (tiUsers.length > 0) return;
+    try {
+      const { data } = await api.get('/utilizadores?roles=ti');
+      const lista = Array.isArray(data) ? data : (data?.utilizadores ?? data?.data ?? []);
+      setTiUsers(lista);
+    } catch { /* silencioso */ }
+  };
+
   useEffect(() => { carregar(); }, []);
+
+  useEffect(() => {
+    if (expandido) carregarTiUsers();
+  }, [expandido]);
 
   const criarIncidente = async () => {
     if (!titulo.trim() || !descricao.trim()) { setErro('Título e descrição são obrigatórios'); return; }
@@ -119,6 +135,17 @@ export default function IncidentesTIPage() {
       setIncidentes(prev => prev.map(i => i.id === id ? { ...i, estado } : i));
     } catch { /* silencioso */ }
     finally { setAtualizando(null); }
+  };
+
+  const atribuirResponsavel = async (id: string, responsavelId: string) => {
+    if (!responsavelId) return;
+    setAtribuindoResp(id);
+    try {
+      await api.patch(`/incidentes-ti/${id}`, { responsavelId });
+      const user = tiUsers.find(u => u.id === responsavelId);
+      setIncidentes(prev => prev.map(i => i.id === id ? { ...i, responsavel: user ? { id: user.id, nome: user.nome, role: 'ti' } : i.responsavel } : i));
+    } catch { /* silencioso */ }
+    finally { setAtribuindoResp(null); }
   };
 
   const eTI = utilizador?.role === 'ti';
@@ -282,12 +309,32 @@ export default function IncidentesTIPage() {
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Descrição</p>
                         <p className="text-sm text-slate-700 leading-relaxed">{inc.descricao}</p>
 
-                        {inc.responsavel && (
-                          <div style={{ marginTop: '16px' }}>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Responsável</p>
-                            <p className="text-sm text-slate-700">{inc.responsavel.nome}</p>
-                          </div>
-                        )}
+                        <div style={{ marginTop: '16px' }}>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Responsável</p>
+                          {eTI ? (
+                            <div className="flex items-center gap-2">
+                              <select
+                                value={respDropdown[inc.id] ?? inc.responsavel?.id ?? ''}
+                                onChange={e => setRespDropdown(prev => ({ ...prev, [inc.id]: e.target.value }))}
+                                className="flex-1 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                style={{ padding: '6px 10px' }}
+                              >
+                                <option value="">— Sem responsável —</option>
+                                {tiUsers.map(u => <option key={u.id} value={u.id}>{u.nome}</option>)}
+                              </select>
+                              <button
+                                onClick={() => atribuirResponsavel(inc.id, respDropdown[inc.id] ?? '')}
+                                disabled={atribuindoResp === inc.id || !respDropdown[inc.id]}
+                                className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                                style={{ padding: '6px 12px', whiteSpace: 'nowrap' }}
+                              >
+                                {atribuindoResp === inc.id ? '...' : 'Guardar'}
+                              </button>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-slate-700">{inc.responsavel?.nome ?? '—'}</p>
+                          )}
+                        </div>
                       </div>
 
                       {/* Info + Ações */}

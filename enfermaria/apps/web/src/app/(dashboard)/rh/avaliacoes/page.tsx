@@ -53,6 +53,7 @@ export default function AvaliacoesPage() {
   const qc = useQueryClient();
   const [filtroPeriodo, setFiltroPeriodo] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroColaborador, setFiltroColaborador] = useState('');
   const [modal, setModal] = useState(false);
   const [editando, setEditando] = useState<Avaliacao | null>(null);
   const [form, setForm] = useState({
@@ -61,11 +62,12 @@ export default function AvaliacoesPage() {
   });
 
   const { data: avaliacoes = [], isLoading } = useQuery<Avaliacao[]>({
-    queryKey: ['rh-avaliacoes', filtroPeriodo, filtroEstado],
+    queryKey: ['rh-avaliacoes', filtroPeriodo, filtroEstado, filtroColaborador],
     queryFn: () => {
       const params = new URLSearchParams();
-      if (filtroPeriodo) params.set('periodo', filtroPeriodo);
-      if (filtroEstado) params.set('estado', filtroEstado);
+      if (filtroPeriodo)     params.set('periodo', filtroPeriodo);
+      if (filtroEstado)      params.set('estado', filtroEstado);
+      if (filtroColaborador) params.set('utilizadorId', filtroColaborador);
       return api.get(`/rh/avaliacoes?${params}`).then(r => r.data);
     },
     staleTime: 30_000,
@@ -106,7 +108,7 @@ export default function AvaliacoesPage() {
       </div>
 
       {/* Filtros */}
-      <div className="flex gap-3" style={{ marginBottom: '20px' }}>
+      <div className="flex gap-3 flex-wrap" style={{ marginBottom: '20px' }}>
         <select value={filtroPeriodo} onChange={e => setFiltroPeriodo(e.target.value)}
           className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           style={{ padding: '9px 14px' }}>
@@ -120,6 +122,12 @@ export default function AvaliacoesPage() {
           <option value="rascunho">Rascunho</option>
           <option value="finalizada">Finalizada</option>
           <option value="assinada">Assinada</option>
+        </select>
+        <select value={filtroColaborador} onChange={e => setFiltroColaborador(e.target.value)}
+          className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ padding: '9px 14px' }}>
+          <option value="">Todos os colaboradores</option>
+          {colaboradores.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
         </select>
       </div>
 

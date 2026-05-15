@@ -6,7 +6,7 @@ import { TipoTurno } from '../common/enums';
 export class HorariosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listar() {
+  async listar(page = 1, limit = 12) {
     return this.prisma.escala.findMany({
       include: {
         turnos: {
@@ -20,6 +20,8 @@ export class HorariosService {
         criadaPor: { select: { id: true, nome: true } },
       },
       orderBy: [{ ano: 'desc' }, { mes: 'desc' }],
+      take: limit,
+      skip: (page - 1) * limit,
     });
   }
 
@@ -197,15 +199,20 @@ export class HorariosService {
     const tipos: TipoTurno[] = ['manha', 'tarde', 'noite'];
     let turnosCriados = 0;
 
+    // Pre-load all existing turns for this scale in one query — avoids 90 findFirst calls in the loop
+    const turnosExistentes = await this.prisma.horarioTurno.findMany({
+      where: { escalId: escala.id },
+      select: { tipo: true, data: true },
+    });
+    const turnosExistentesSet = new Set(
+      turnosExistentes.map(t => `${t.tipo}_${t.data.toISOString()}`)
+    );
+
     for (let dia = 1; dia <= diasNoMes; dia++) {
       const dataDia = new Date(`${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}T00:00:00.000Z`);
 
       for (const tipo of tipos) {
-        // Verificar se já existe turno para este dia e tipo
-        const jaExiste = await this.prisma.horarioTurno.findFirst({
-          where: { escalId: escala.id, tipo, data: dataDia },
-        });
-        if (jaExiste) continue;
+        if (turnosExistentesSet.has(`${tipo}_${dataDia.toISOString()}`)) continue;
 
         // Distribuir profissionais em round-robin por tipo de turno
         const turnoIndex = (dia - 1) * 3 + tipos.indexOf(tipo);

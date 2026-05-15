@@ -98,6 +98,19 @@ export class EquipamentosService {
     return manutencao;
   }
 
+  async alertasManutencao() {
+    const agora = new Date();
+    const em30Dias = new Date(agora);
+    em30Dias.setDate(em30Dias.getDate() + 30);
+    return this.prisma.equipamento.findMany({
+      where: {
+        proximaManutencao: { lte: em30Dias },
+        estado: { not: 'abatido' },
+      },
+      orderBy: { proximaManutencao: 'asc' },
+    });
+  }
+
   async atualizarManutencao(
     id: string,
     dto: { estado?: string; observacoes?: string; tecnicoId?: string },

@@ -282,6 +282,9 @@ exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
   id: 'id',
   administradoEm: 'administradoEm',
   observacoes: 'observacoes',
+  verificacao5Certas: 'verificacao5Certas',
+  naoAdministrada: 'naoAdministrada',
+  motivoNaoAdmin: 'motivoNaoAdmin',
   medicacaoId: 'medicacaoId',
   doenteId: 'doenteId',
   administradoPorId: 'administradoPorId'
@@ -338,7 +341,9 @@ exports.Prisma.SinalVitalScalarFieldEnum = {
   saturacaoO2: 'saturacaoO2',
   frequenciaRespiratoria: 'frequenciaRespiratoria',
   peso: 'peso',
-  notas: 'notas'
+  notas: 'notas',
+  avpu: 'avpu',
+  news2: 'news2'
 };
 
 exports.Prisma.AuditLogScalarFieldEnum = {
@@ -540,6 +545,8 @@ exports.Prisma.StockItemScalarFieldEnum = {
   unidade: 'unidade',
   validade: 'validade',
   servico: 'servico',
+  precoUnitario: 'precoUnitario',
+  catalogoId: 'catalogoId',
   criadoEm: 'criadoEm'
 };
 
@@ -553,6 +560,69 @@ exports.Prisma.PedidoFarmaciaScalarFieldEnum = {
   processadoPorId: 'processadoPorId',
   observacoes: 'observacoes',
   criadoEm: 'criadoEm'
+};
+
+exports.Prisma.CatalogoMedicamentoScalarFieldEnum = {
+  id: 'id',
+  dci: 'dci',
+  nomeMarca: 'nomeMarca',
+  formaFarmaceutica: 'formaFarmaceutica',
+  classeTerap: 'classeTerap',
+  unidade: 'unidade',
+  concentracao: 'concentracao',
+  codigoATC: 'codigoATC',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.AjusteStockScalarFieldEnum = {
+  id: 'id',
+  stockItemId: 'stockItemId',
+  delta: 'delta',
+  tipo: 'tipo',
+  motivo: 'motivo',
+  utilizadorId: 'utilizadorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.TransferenciaStockScalarFieldEnum = {
+  id: 'id',
+  stockItemId: 'stockItemId',
+  quantidade: 'quantidade',
+  servicoOrigem: 'servicoOrigem',
+  servicoDestino: 'servicoDestino',
+  motivo: 'motivo',
+  estado: 'estado',
+  solicitadoPorId: 'solicitadoPorId',
+  confirmadoPorId: 'confirmadoPorId',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
+exports.Prisma.FornecedorScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  nif: 'nif',
+  email: 'email',
+  telefone: 'telefone',
+  morada: 'morada',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.EncomendaFornecedorScalarFieldEnum = {
+  id: 'id',
+  fornecedorId: 'fornecedorId',
+  stockItemId: 'stockItemId',
+  quantidadeEncomendada: 'quantidadeEncomendada',
+  precoUnitario: 'precoUnitario',
+  estado: 'estado',
+  dataEntregaPrevista: 'dataEntregaPrevista',
+  dataEntregaReal: 'dataEntregaReal',
+  observacoes: 'observacoes',
+  recebioPorId: 'recebioPorId',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
 };
 
 exports.Prisma.PlanoReabilitacaoScalarFieldEnum = {
@@ -1181,6 +1251,11 @@ exports.Prisma.ModelName = {
   CheckinSalaEspera: 'CheckinSalaEspera',
   StockItem: 'StockItem',
   PedidoFarmacia: 'PedidoFarmacia',
+  CatalogoMedicamento: 'CatalogoMedicamento',
+  AjusteStock: 'AjusteStock',
+  TransferenciaStock: 'TransferenciaStock',
+  Fornecedor: 'Fornecedor',
+  EncomendaFornecedor: 'EncomendaFornecedor',
   PlanoReabilitacao: 'PlanoReabilitacao',
   SessaoFisioterapia: 'SessaoFisioterapia',
   PedidoInterno: 'PedidoInterno',

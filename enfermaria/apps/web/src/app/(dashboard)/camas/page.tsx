@@ -46,6 +46,7 @@ export default function CamasPagina() {
   const [mostrarFormCama, setMostrarFormCama] = useState(false);
   const [novaCama, setNovaCama] = useState({ numero: '', quarto: '' });
   const [qrCama, setQrCama] = useState<Cama | null>(null);
+  const [filtroQuarto, setFiltroQuarto] = useState('');
 
   const podeGerir = ['administrativo', 'enfermeiro'].includes(utilizador?.role ?? '');
   const podeCriar = utilizador?.role === 'administrativo';
@@ -101,7 +102,7 @@ export default function CamasPagina() {
         )}
       </div>
 
-      {/* Legenda */}
+      {/* Legenda + Filtro */}
       <div className="flex items-center gap-6 bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '16px 24px', marginBottom: '32px' }}>
         {Object.entries(estadoLabel).map(([k, v]) => (
           <div key={k} className="flex items-center gap-2">
@@ -109,6 +110,14 @@ export default function CamasPagina() {
             <span className="text-sm text-slate-600">{v}</span>
           </div>
         ))}
+        <div className="ml-auto">
+          <select value={filtroQuarto} onChange={e => setFiltroQuarto(e.target.value)}
+            className="border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '7px 12px' }}>
+            <option value="">Todos os quartos</option>
+            {quartos.map(q => <option key={q} value={q}>Quarto {q}</option>)}
+          </select>
+        </div>
       </div>
 
       {loading ? (
@@ -125,7 +134,7 @@ export default function CamasPagina() {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          {quartos.map((quarto) => (
+          {quartos.filter(q => !filtroQuarto || q === filtroQuarto).map((quarto) => (
             <div key={quarto}>
               <div className="flex items-center gap-3" style={{ marginBottom: '16px' }}>
                 <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Quarto {quarto}</h2>

@@ -23,10 +23,10 @@ interface Tarefa {
 const ORDEM_PRIORIDADE = ['urgente', 'alta', 'media', 'baixa'];
 
 const prioridadeConfig: Record<string, { label: string; cor: string; bg: string; dot: string }> = {
-  urgente: { label: 'Urgente', cor: 'text-red-700',    bg: 'bg-red-50 border-red-200',    dot: 'bg-red-500' },
+  urgente: { label: 'Urgente', cor: 'text-red-700',    bg: 'bg-red-50 border-red-200',       dot: 'bg-red-500' },
   alta:    { label: 'Alta',    cor: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', dot: 'bg-orange-500' },
-  media:   { label: 'Média',   cor: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200',   dot: 'bg-blue-500' },
-  baixa:   { label: 'Baixa',   cor: 'text-slate-600',  bg: 'bg-slate-50 border-slate-200', dot: 'bg-slate-400' },
+  media:   { label: 'Média',   cor: 'text-blue-700',   bg: 'bg-blue-50 border-blue-200',     dot: 'bg-blue-500' },
+  baixa:   { label: 'Baixa',   cor: 'text-slate-600',  bg: 'bg-slate-50 border-slate-200',   dot: 'bg-slate-400' },
 };
 
 const estadoDoenteCor: Record<string, string> = {
@@ -56,6 +56,11 @@ export default function TarefasPage() {
   const [loading, setLoading] = useState(true);
   const [atualizando, setAtualizando] = useState<string | null>(null);
 
+  // Filtros
+  const [filtroEstado, setFiltroEstado] = useState('');
+  const [filtroPrioridade, setFiltroPrioridade] = useState('');
+  const [filtroGrupo, setFiltroGrupo] = useState('');
+
   // Modal nova tarefa
   const [modalNovaTarefa, setModalNovaTarefa] = useState(false);
   const [doentes, setDoentes] = useState<{ id: string; nome: string; cama: { quarto: string; numero: string } }[]>([]);
@@ -68,6 +73,14 @@ export default function TarefasPage() {
   const [tPrazo, setTPrazo] = useState('');
   const [criando, setCriando] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Modal editar tarefa
+  const [modalEditarTarefa, setModalEditarTarefa] = useState<Tarefa | null>(null);
+  const [eDesc, setEDesc] = useState('');
+  const [ePrioridade, setEPrioridade] = useState<'baixa' | 'media' | 'alta' | 'urgente'>('media');
+  const [eGrupo, setEGrupo] = useState('enfermeiro');
+  const [ePrazo, setEPrazo] = useState('');
+  const [editando, setEditando] = useState(false);
 
   const carregar = async () => {
     setLoading(true);
@@ -87,7 +100,7 @@ export default function TarefasPage() {
     setModalNovaTarefa(true);
     try {
       const r = await api.get('/doentes?todos=true');
-      setDoentes(r.data);
+      setDoentes(r.data?.data ?? r.data ?? []);
     } catch { setDoentes([]); }
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -97,11 +110,8 @@ export default function TarefasPage() {
     setCriando(true);
     try {
       await api.post(`/doentes/${doenteSelId}/tarefa`, {
-        descricao: tDesc,
-        tipo: tTipo,
-        prioridade: tPrioridade,
-        grupoResponsavel: tGrupo,
-        prazo: tPrazo ? new Date(tPrazo) : undefined,
+        descricao: tDesc, tipo: tTipo, prioridade: tPrioridade,
+        grupoResponsavel: tGrupo, prazo: tPrazo ? new Date(tPrazo) : undefined,
       });
       setModalNovaTarefa(false);
       await carregar();
@@ -112,15 +122,37 @@ export default function TarefasPage() {
     }
   };
 
+  const abrirEditar = (tarefa: Tarefa) => {
+    setModalEditarTarefa(tarefa);
+    setEDesc(tarefa.descricao);
+    setEPrioridade(tarefa.prioridade as any);
+    setEGrupo(tarefa.grupoResponsavel ?? 'enfermeiro');
+    setEPrazo(tarefa.prazo ? new Date(tarefa.prazo).toISOString().slice(0, 16) : '');
+  };
+
+  const editarTarefa = async () => {
+    if (!modalEditarTarefa || !eDesc.trim()) return;
+    setEditando(true);
+    try {
+      await api.patch(`/tarefas/${modalEditarTarefa.id}`, {
+        descricao: eDesc, prioridade: ePrioridade,
+        grupoResponsavel: eGrupo, prazo: ePrazo || null,
+      });
+      setModalEditarTarefa(null);
+      await carregar();
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao editar tarefa');
+    } finally {
+      setEditando(false);
+    }
+  };
+
   const marcarProgresso = async (tarefa: Tarefa) => {
     setAtualizando(tarefa.id);
     try {
-      const novoEstado = tarefa.estado === 'pendente' ? 'em_progresso' : 'pendente';
-      await api.patch(`/tarefas/${tarefa.id}/estado`, { estado: novoEstado });
+      await api.patch(`/tarefas/${tarefa.id}/estado`, { estado: tarefa.estado === 'pendente' ? 'em_progresso' : 'pendente' });
       await carregar();
-    } finally {
-      setAtualizando(null);
-    }
+    } finally { setAtualizando(null); }
   };
 
   const marcarConcluida = async (tarefaId: string) => {
@@ -128,23 +160,29 @@ export default function TarefasPage() {
     try {
       await api.patch(`/tarefas/${tarefaId}/estado`, { estado: 'concluida' });
       await carregar();
-    } finally {
-      setAtualizando(null);
-    }
+    } finally { setAtualizando(null); }
   };
 
-  // Agrupar por prioridade
+  // Filtrar + agrupar
+  const filtradas = tarefas.filter(t => {
+    const matchEstado = !filtroEstado || t.estado === filtroEstado;
+    const matchPrioridade = !filtroPrioridade || t.prioridade === filtroPrioridade;
+    const matchGrupo = !filtroGrupo || t.grupoResponsavel === filtroGrupo;
+    return matchEstado && matchPrioridade && matchGrupo;
+  });
+
   const grupos = ORDEM_PRIORIDADE
-    .map((p) => ({ prioridade: p, itens: tarefas.filter((t) => t.prioridade === p) }))
+    .map((p) => ({ prioridade: p, itens: filtradas.filter((t) => t.prioridade === p) }))
     .filter((g) => g.itens.length > 0);
 
   const totalUrgentes = tarefas.filter((t) => t.prioridade === 'urgente').length;
+  const podeCriar = ROLES_CRIAR_TAREFA.includes(utilizador?.role ?? '');
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: '860px', margin: '0 auto' }}>
 
       {/* Header */}
-      <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
+      <div className="flex items-start justify-between" style={{ marginBottom: '24px' }}>
         <div>
           <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
             <h1 className="text-3xl font-bold text-slate-900">As Minhas Tarefas</h1>
@@ -158,7 +196,7 @@ export default function TarefasPage() {
           <p className="text-slate-500 text-sm">Tarefas pendentes dos teus doentes neste turno</p>
         </div>
         <div className="flex items-center gap-3">
-          {ROLES_CRIAR_TAREFA.includes(utilizador?.role ?? '') && (
+          {podeCriar && (
             <button onClick={abrirModalNovaTarefa}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
               style={{ padding: '9px 18px' }}>
@@ -179,6 +217,44 @@ export default function TarefasPage() {
         </div>
       </div>
 
+      {/* Filtros */}
+      <div className="flex flex-wrap items-center gap-3 bg-white border border-slate-100 rounded-2xl shadow-sm" style={{ padding: '14px 20px', marginBottom: '24px' }}>
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Filtrar:</span>
+        <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)}
+          className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ padding: '6px 12px' }}>
+          <option value="">Todos os estados</option>
+          <option value="pendente">Pendente</option>
+          <option value="em_progresso">Em Progresso</option>
+        </select>
+        <select value={filtroPrioridade} onChange={e => setFiltroPrioridade(e.target.value)}
+          className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ padding: '6px 12px' }}>
+          <option value="">Todas as prioridades</option>
+          <option value="urgente">Urgente</option>
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+        </select>
+        <select value={filtroGrupo} onChange={e => setFiltroGrupo(e.target.value)}
+          className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          style={{ padding: '6px 12px' }}>
+          <option value="">Todos os grupos</option>
+          <option value="medico">Médico</option>
+          <option value="enfermeiro">Enfermagem</option>
+          <option value="auxiliar">Auxiliar</option>
+        </select>
+        {(filtroEstado || filtroPrioridade || filtroGrupo) && (
+          <button onClick={() => { setFiltroEstado(''); setFiltroPrioridade(''); setFiltroGrupo(''); }}
+            className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+            Limpar
+          </button>
+        )}
+        {(filtroEstado || filtroPrioridade || filtroGrupo) && (
+          <span className="text-xs text-slate-400 ml-auto">{filtradas.length} de {tarefas.length} tarefas</span>
+        )}
+      </div>
+
       {loading ? (
         <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
           <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
@@ -187,15 +263,19 @@ export default function TarefasPage() {
           </svg>
           <span className="text-sm">A carregar tarefas...</span>
         </div>
-      ) : tarefas.length === 0 ? (
+      ) : filtradas.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center" style={{ padding: '80px' }}>
           <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center" style={{ marginBottom: '16px' }}>
             <svg className="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p className="text-slate-700 font-semibold" style={{ marginBottom: '6px' }}>Sem tarefas pendentes</p>
-          <p className="text-slate-400 text-sm">Sem tarefas pendentes para os teus doentes neste turno</p>
+          <p className="text-slate-700 font-semibold" style={{ marginBottom: '6px' }}>
+            {tarefas.length === 0 ? 'Sem tarefas pendentes' : 'Sem tarefas com estes filtros'}
+          </p>
+          <p className="text-slate-400 text-sm">
+            {tarefas.length === 0 ? 'Sem tarefas pendentes para os teus doentes neste turno' : 'Tenta ajustar os filtros'}
+          </p>
         </div>
       ) : (
         <div className="flex flex-col gap-6">
@@ -203,24 +283,23 @@ export default function TarefasPage() {
             const cfg = prioridadeConfig[prioridade];
             return (
               <div key={prioridade}>
-                {/* Cabeçalho do grupo */}
                 <div className="flex items-center gap-3" style={{ marginBottom: '12px' }}>
                   <span className={`w-2.5 h-2.5 rounded-full ${cfg.dot}`} />
                   <span className={`text-sm font-bold ${cfg.cor}`}>{cfg.label}</span>
                   <span className="text-xs text-slate-400 font-medium">{itens.length} tarefa{itens.length !== 1 ? 's' : ''}</span>
                   <div className="flex-1 h-px bg-slate-100" />
                 </div>
-
-                {/* Cartões */}
                 <div className="flex flex-col gap-3">
                   {itens.map((tarefa) => (
                     <TarefaCard
                       key={tarefa.id}
                       tarefa={tarefa}
                       atualizando={atualizando === tarefa.id}
+                      podeCriar={podeCriar}
                       onVerDoente={() => router.push(`/doentes/${tarefa.doente.id}`)}
                       onToggleProgresso={() => marcarProgresso(tarefa)}
                       onConcluir={() => marcarConcluida(tarefa.id)}
+                      onEditar={() => abrirEditar(tarefa)}
                     />
                   ))}
                 </div>
@@ -238,19 +317,12 @@ export default function TarefasPage() {
               <h2 className="text-lg font-bold text-slate-900">Nova Tarefa</h2>
               <button onClick={() => setModalNovaTarefa(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
             </div>
-
-            {/* Doente */}
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Doente *</label>
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Pesquisar doente..."
-                value={searchDoente}
+              <input ref={inputRef} type="text" placeholder="Pesquisar doente..." value={searchDoente}
                 onChange={(e) => { setSearchDoente(e.target.value); setDoenteSelId(''); }}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                style={{ padding: '10px 14px' }}
-              />
+                style={{ padding: '10px 14px' }} />
               {searchDoente.length >= 2 && !doenteSelId && (
                 <div className="border border-slate-200 rounded-xl bg-white shadow-lg" style={{ maxHeight: '160px', overflowY: 'auto', marginTop: '4px' }}>
                   {doentes.filter((d) => d.nome.toLowerCase().includes(searchDoente.toLowerCase())).slice(0, 8).map((d) => (
@@ -264,18 +336,12 @@ export default function TarefasPage() {
                 </div>
               )}
             </div>
-
-            {/* Descrição */}
             <div style={{ marginBottom: '16px' }}>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
-              <textarea value={tDesc} onChange={(e) => setTDesc(e.target.value)}
-                placeholder="Descrever a tarefa..."
-                rows={3}
+              <textarea value={tDesc} onChange={(e) => setTDesc(e.target.value)} placeholder="Descrever a tarefa..." rows={3}
                 className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 style={{ padding: '10px 14px' }} />
             </div>
-
-            {/* Tipo + Prioridade */}
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '16px' }}>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
@@ -300,8 +366,6 @@ export default function TarefasPage() {
                 </select>
               </div>
             </div>
-
-            {/* Grupo + Prazo */}
             <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '24px' }}>
               <div>
                 <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
@@ -320,13 +384,10 @@ export default function TarefasPage() {
                   style={{ padding: '8px 12px' }} />
               </div>
             </div>
-
             <div className="flex gap-3">
               <button onClick={() => setModalNovaTarefa(false)}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
-                style={{ padding: '11px' }}>
-                Cancelar
-              </button>
+                style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={criarTarefa} disabled={criando || !doenteSelId || !tDesc.trim()}
                 className="flex-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ padding: '11px 24px', flex: 2 }}>
@@ -336,16 +397,78 @@ export default function TarefasPage() {
           </div>
         </div>
       )}
+
+      {/* Modal Editar Tarefa */}
+      {modalEditarTarefa && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Editar Tarefa</h2>
+                <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{modalEditarTarefa.doente.nome}</p>
+              </div>
+              <button onClick={() => setModalEditarTarefa(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Descrição *</label>
+              <textarea value={eDesc} onChange={e => setEDesc(e.target.value)} rows={3}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                style={{ padding: '10px 14px' }} />
+            </div>
+            <div className="grid grid-cols-2 gap-4" style={{ marginBottom: '14px' }}>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prioridade</label>
+                <select value={ePrioridade} onChange={e => setEPrioridade(e.target.value as any)}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '8px 12px' }}>
+                  <option value="baixa">Baixa</option>
+                  <option value="media">Média</option>
+                  <option value="alta">Alta</option>
+                  <option value="urgente">Urgente</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Grupo Responsável</label>
+                <select value={eGrupo} onChange={e => setEGrupo(e.target.value)}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '8px 12px' }}>
+                  <option value="enfermeiro">Enfermagem</option>
+                  <option value="medico">Médico</option>
+                  <option value="auxiliar">Auxiliar</option>
+                </select>
+              </div>
+            </div>
+            <div style={{ marginBottom: '24px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Prazo</label>
+              <input type="datetime-local" value={ePrazo} onChange={e => setEPrazo(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                style={{ padding: '8px 12px' }} />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalEditarTarefa(null)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={editarTarefa} disabled={editando || !eDesc.trim()}
+                className="flex-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px 24px', flex: 2 }}>
+                {editando ? 'A guardar...' : 'Guardar Alterações'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onConcluir }: {
+function TarefaCard({ tarefa, atualizando, podeCriar, onVerDoente, onToggleProgresso, onConcluir, onEditar }: {
   tarefa: Tarefa;
   atualizando: boolean;
+  podeCriar: boolean;
   onVerDoente: () => void;
   onToggleProgresso: () => void;
   onConcluir: () => void;
+  onEditar: () => void;
 }) {
   const prazoDate = tarefa.prazo ? new Date(tarefa.prazo) : null;
   const atrasada = prazoDate && prazoDate < new Date();
@@ -354,20 +477,14 @@ function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onCon
     <div className={`bg-white rounded-2xl border shadow-sm ${atrasada ? 'border-red-200' : 'border-slate-100'}`}
       style={{ padding: '20px 24px' }}>
       <div className="flex items-start gap-4">
-
         {/* Check circle */}
-        <button
-          onClick={onConcluir}
-          disabled={atualizando}
-          title="Marcar como concluída"
+        <button onClick={onConcluir} disabled={atualizando} title="Marcar como concluída"
           className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
             tarefa.estado === 'em_progresso'
               ? 'border-blue-400 bg-blue-50 hover:bg-blue-100'
               : 'border-slate-300 hover:border-green-400 hover:bg-green-50'
           } disabled:opacity-40`}>
-          {tarefa.estado === 'em_progresso' && (
-            <span className="w-2 h-2 rounded-full bg-blue-500" />
-          )}
+          {tarefa.estado === 'em_progresso' && <span className="w-2 h-2 rounded-full bg-blue-500" />}
         </button>
 
         {/* Conteúdo */}
@@ -380,7 +497,6 @@ function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onCon
           </div>
 
           <div className="flex items-center gap-3 flex-wrap" style={{ marginTop: '8px' }}>
-            {/* Doente */}
             <button onClick={onVerDoente}
               className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -391,32 +507,22 @@ function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onCon
                 {estadoDoenteLabel[tarefa.doente.estado]}
               </span>
             </button>
-
             <span className="text-slate-200 text-xs">·</span>
-
-            {/* Cama */}
-            <span className="text-xs text-slate-400">
-              Q{tarefa.doente.cama.quarto} · C{tarefa.doente.cama.numero}
-            </span>
-
+            <span className="text-xs text-slate-400">Q{tarefa.doente.cama.quarto} · C{tarefa.doente.cama.numero}</span>
             <span className="text-slate-200 text-xs">·</span>
-
-            {/* Tipo */}
-            <span className="text-xs text-slate-400">
-              {tarefa.tipo === 'clinica' ? 'Clínica' : 'Logística'}
-            </span>
-
-            {/* Criador */}
+            <span className="text-xs text-slate-400">{tarefa.tipo === 'clinica' ? 'Clínica' : 'Logística'}</span>
+            {tarefa.grupoResponsavel && (
+              <>
+                <span className="text-slate-200 text-xs">·</span>
+                <span className="text-xs text-slate-400 capitalize">{tarefa.grupoResponsavel}</span>
+              </>
+            )}
             {tarefa.criadoPor && (
               <>
                 <span className="text-slate-200 text-xs">·</span>
-                <span className="text-xs text-slate-400">
-                  Por {tarefa.criadoPor.nome} às {new Date(tarefa.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
-                </span>
+                <span className="text-xs text-slate-400">Por {tarefa.criadoPor.nome} às {new Date(tarefa.criadaEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
               </>
             )}
-
-            {/* Prazo */}
             {prazoDate && (
               <>
                 <span className="text-slate-200 text-xs">·</span>
@@ -428,18 +534,25 @@ function TarefaCard({ tarefa, atualizando, onVerDoente, onToggleProgresso, onCon
           </div>
         </div>
 
-        {/* Botão progresso */}
-        <button
-          onClick={onToggleProgresso}
-          disabled={atualizando}
-          className={`text-xs font-medium rounded-lg border transition-colors shrink-0 disabled:opacity-40 ${
-            tarefa.estado === 'em_progresso'
-              ? 'border-blue-200 text-blue-600 bg-blue-50 hover:bg-blue-100'
-              : 'border-slate-200 text-slate-500 hover:bg-slate-50'
-          }`}
-          style={{ padding: '6px 12px' }}>
-          {tarefa.estado === 'em_progresso' ? 'Pausar' : 'Iniciar'}
-        </button>
+        {/* Acções */}
+        <div className="flex items-center gap-2 shrink-0">
+          {podeCriar && (
+            <button onClick={onEditar}
+              className="text-xs font-medium rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors disabled:opacity-40"
+              style={{ padding: '6px 10px' }}>
+              ✏️
+            </button>
+          )}
+          <button onClick={onToggleProgresso} disabled={atualizando}
+            className={`text-xs font-medium rounded-lg border transition-colors shrink-0 disabled:opacity-40 ${
+              tarefa.estado === 'em_progresso'
+                ? 'border-blue-200 text-blue-600 bg-blue-50 hover:bg-blue-100'
+                : 'border-slate-200 text-slate-500 hover:bg-slate-50'
+            }`}
+            style={{ padding: '6px 12px' }}>
+            {tarefa.estado === 'em_progresso' ? 'Pausar' : 'Iniciar'}
+          </button>
+        </div>
       </div>
     </div>
   );

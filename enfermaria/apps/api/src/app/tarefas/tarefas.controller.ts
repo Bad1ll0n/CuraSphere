@@ -37,4 +37,12 @@ export class TarefasController {
   ) {
     return this.tarefasService.atualizarEstado(id, body.estado);
   }
+
+  @Patch(':id')
+  editar(
+    @Param('id') id: string,
+    @Body() body: { descricao?: string; prioridade?: PrioridadeTarefa; prazo?: string | null; grupoResponsavel?: string },
+  ) {
+    return this.tarefasService.editar(id, body);
+  }
 }

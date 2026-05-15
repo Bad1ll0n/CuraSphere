@@ -31,6 +31,11 @@ export class ComunicacaoController {
     return this.service.contarNaoLidas(req.user.sub);
   }
 
+  @Get('mensagens/enviadas')
+  enviadas(@Request() req: any) {
+    return this.service.enviadas(req.user.sub);
+  }
+
   @Post('mensagens')
   enviarMensagem(@Body() dto: any, @Request() req: any) {
     return this.service.enviarMensagem(dto, req.user.sub);

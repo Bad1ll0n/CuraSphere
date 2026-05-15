@@ -27,9 +27,10 @@ const ROLES_ANUNCIO = ['enfermeiro', 'medico', 'administrativo', 'direcao'];
 
 export default function ComunicacaoPage() {
   const { utilizador } = useAuth();
-  const [tab, setTab] = useState<'anuncios' | 'mensagens'>('anuncios');
+  const [tab, setTab] = useState<'anuncios' | 'mensagens' | 'enviadas'>('anuncios');
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
+  const [mensagensEnviadas, setMensagensEnviadas] = useState<Array<Mensagem & { destinatario?: { nome: string } }>>([]);
   const [naoLidas, setNaoLidas] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -43,14 +44,16 @@ export default function ComunicacaoPage() {
 
   const carregar = async () => {
     try {
-      const [a, m, nl] = await Promise.all([
+      const [a, m, nl, env] = await Promise.all([
         api.get('/comunicacao/anuncios'),
         api.get('/comunicacao/mensagens'),
         api.get('/comunicacao/mensagens/nao-lidas'),
+        api.get('/comunicacao/mensagens/enviadas'),
       ]);
       setAnuncios(a.data);
       setMensagens(m.data);
       setNaoLidas(nl.data.naoLidas);
+      setMensagensEnviadas(env.data);
     } finally { setLoading(false); }
   };
 
@@ -118,8 +121,9 @@ export default function ComunicacaoPage() {
       {/* Tabs */}
       <div className="flex gap-1 bg-slate-100 rounded-xl p-1" style={{ marginBottom: '24px', width: 'fit-content' }}>
         {[
-          { id: 'anuncios',   label: 'Anúncios', badge: 0 },
-          { id: 'mensagens',  label: 'Mensagens', badge: naoLidas },
+          { id: 'anuncios',  label: 'Anúncios',   badge: 0 },
+          { id: 'mensagens', label: 'Recebidas',   badge: naoLidas },
+          { id: 'enviadas',  label: 'Enviadas',    badge: 0 },
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id as any)}
             className={`flex items-center gap-2 font-semibold text-sm rounded-lg transition-all ${tab === t.id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
@@ -138,6 +142,26 @@ export default function ComunicacaoPage() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
+        </div>
+      ) : tab === 'enviadas' ? (
+        <div className="grid gap-3">
+          {mensagensEnviadas.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-slate-200 text-center" style={{ padding: '60px 40px' }}>
+              <p className="text-slate-500">Não enviou nenhuma mensagem.</p>
+            </div>
+          ) : mensagensEnviadas.map(m => (
+            <div key={m.id} className="bg-white rounded-2xl border border-slate-200 flex items-start gap-4" style={{ padding: '20px 24px' }}>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
+                  <p className="text-sm font-semibold text-slate-700">{m.assunto ?? '(sem assunto)'}</p>
+                </div>
+                <p className="text-slate-600 text-sm" style={{ marginBottom: '8px' }}>{m.texto}</p>
+                <p className="text-slate-400 text-xs">
+                  Para {(m as any).destinatario?.nome ?? '—'} · {new Date(m.criadaEm).toLocaleDateString('pt-PT')}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       ) : tab === 'anuncios' ? (
         <div className="grid gap-4">

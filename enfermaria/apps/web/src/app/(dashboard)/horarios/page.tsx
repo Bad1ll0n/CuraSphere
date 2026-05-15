@@ -137,6 +137,18 @@ export default function HorariosPagina() {
   const submeterTurno = async () => {
     if (!escala || !modalDia) return;
     if (novoTurno.profissionaisIds.length === 0) { setErroModal('Selecione pelo menos um profissional.'); return; }
+
+    // Detectar conflitos: profissionais já com turno neste dia
+    const turnosDoDia = turnosPorDia[modalDia] ?? [];
+    const profissionaisComTurno = new Set(turnosDoDia.flatMap(t => t.profissionais.map(p => p.utilizadorId)));
+    const conflitos = novoTurno.profissionaisIds.filter(id => profissionaisComTurno.has(id));
+    if (conflitos.length > 0) {
+      const nomes = conflitos.map(id => profissionais.find(p => p.id === id)?.nome ?? id).join(', ');
+      setErroModal(`Conflito: ${nomes} já ${conflitos.length === 1 ? 'tem' : 'têm'} turno neste dia. Confirme para continuar.`);
+      if (!window.confirm(`${nomes} já ${conflitos.length === 1 ? 'tem' : 'têm'} turno em ${modalDia}. Deseja continuar mesmo assim?`)) return;
+      setErroModal('');
+    }
+
     setSalvando(true);
     setErroModal('');
     try {

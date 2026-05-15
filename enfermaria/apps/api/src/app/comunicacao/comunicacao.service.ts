@@ -29,6 +29,14 @@ export class ComunicacaoService {
     });
   }
 
+  async enviadas(utilizadorId: string) {
+    return this.prisma.mensagemInterna.findMany({
+      where: { remetenteId: utilizadorId },
+      orderBy: { criadaEm: 'desc' },
+      include: { destinatario: { select: { id: true, nome: true, role: true, servico: true } } },
+    });
+  }
+
   async enviarMensagem(dto: { destinatarioId: string; assunto?: string; texto: string }, remetenteId: string) {
     const dest = await this.prisma.utilizador.findUnique({ where: { id: dto.destinatarioId } });
     if (!dest) throw new NotFoundException('Destinatário não encontrado');

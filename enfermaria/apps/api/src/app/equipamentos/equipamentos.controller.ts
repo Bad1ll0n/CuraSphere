@@ -30,6 +30,12 @@ export class EquipamentosController {
     return this.service.atualizar(id, body);
   }
 
+  @Get('alertas-manutencao')
+  @Roles('operacional', 'ti', 'medico', 'enfermeiro', 'direcao')
+  alertasManutencao() {
+    return this.service.alertasManutencao();
+  }
+
   @Get('manutencoes')
   @Roles('operacional', 'ti', 'direcao', 'administrativo')
   listarManutencoes() {

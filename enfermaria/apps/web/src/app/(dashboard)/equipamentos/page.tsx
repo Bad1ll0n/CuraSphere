@@ -1,25 +1,25 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+import api from '../../../lib/api';
 
 const TIPOS_EQUIP: Record<string, { label: string; icon: string }> = {
-  cama_eletrica:   { label: 'Cama Eléctrica',    icon: '🛏️' },
-  ventilador:      { label: 'Ventilador',         icon: '🌬️' },
-  monitor:         { label: 'Monitor',            icon: '📺' },
-  cadeira_rodas:   { label: 'Cadeira de Rodas',   icon: '♿' },
-  bomba_perfusao:  { label: 'Bomba de Perfusão',  icon: '💉' },
-  desfibrilhador:  { label: 'Desfibrilhador',     icon: '⚡' },
-  outro:           { label: 'Outro',              icon: '🔧' },
+  cama_eletrica:  { label: 'Cama Eléctrica',   icon: '🛏️' },
+  ventilador:     { label: 'Ventilador',        icon: '🌬️' },
+  monitor:        { label: 'Monitor',           icon: '📺' },
+  cadeira_rodas:  { label: 'Cadeira de Rodas',  icon: '♿' },
+  bomba_perfusao: { label: 'Bomba de Perfusão', icon: '💉' },
+  desfibrilhador: { label: 'Desfibrilhador',   icon: '⚡' },
+  outro:          { label: 'Outro',             icon: '🔧' },
 };
 
 const ESTADO_INFO: Record<string, { label: string; cor: string; dot: string }> = {
-  operacional:    { label: 'Operacional',     cor: '#10b981', dot: '🟢' },
-  em_manutencao:  { label: 'Em Manutenção',   cor: '#f59e0b', dot: '🟡' },
-  avariado:       { label: 'Avariado',        cor: '#ef4444', dot: '🔴' },
-  abatido:        { label: 'Abatido',         cor: '#6b7280', dot: '⚫' },
+  operacional:   { label: 'Operacional',   cor: '#10b981', dot: '🟢' },
+  em_manutencao: { label: 'Em Manutenção', cor: '#f59e0b', dot: '🟡' },
+  avariado:      { label: 'Avariado',      cor: '#ef4444', dot: '🔴' },
+  abatido:       { label: 'Abatido',       cor: '#6b7280', dot: '⚫' },
 };
 
 const PRIORIDADE_COR: Record<string, string> = {
@@ -52,96 +52,124 @@ interface Manutencao {
   tecnico?: { nome: string; role: string };
 }
 
+interface Tecnico {
+  id: string;
+  nome: string;
+  role: string;
+  subRole?: string;
+}
+
 const formEqVazio = { nome: '', tipo: 'monitor', numeroSerie: '', localizacao: '', proximaManutencao: '' };
 const formManVazio = { tipo: 'corretiva', descricao: '', prioridade: 'normal', observacoes: '' };
+const formEditarVazio = { nome: '', tipo: 'monitor', numeroSerie: '', localizacao: '', estado: 'operacional', proximaManutencao: '' };
+
+function alertaBadge(eq: Equipamento) {
+  if (!eq.proximaManutencao) return null;
+  const agora = new Date();
+  const data = new Date(eq.proximaManutencao);
+  const diff = (data.getTime() - agora.getTime()) / (1000 * 60 * 60 * 24);
+  if (diff < 0)  return { cor: '#ef4444', label: 'Vencida' };
+  if (diff <= 7) return { cor: '#f59e0b', label: `${Math.round(diff)} dias` };
+  return { cor: '#eab308', label: `${Math.round(diff)} dias` };
+}
 
 export default function EquipamentosPage() {
   const { utilizador } = useAuth();
-  const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const qc = useQueryClient();
   const role = utilizador?.role ?? '';
   const podeGerirEquip = ['operacional', 'ti'].includes(role);
   const podeVerManutencoes = ['operacional', 'ti', 'direcao', 'administrativo'].includes(role);
   const podeReportarAvaria = ['operacional', 'ti', 'enfermeiro', 'medico', 'auxiliar'].includes(role);
 
-  const [aba, setAba] = useState<'inventario' | 'manutencoes'>('inventario');
-  const [equipamentos, setEquipamentos] = useState<Equipamento[]>([]);
-  const [manutencoes, setManutencoes] = useState<Manutencao[]>([]);
+  const [aba, setAba] = useState<'inventario' | 'manutencoes' | 'alertas'>('inventario');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroManEstado, setFiltroManEstado] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  // Modal novo equipamento
   const [modalEq, setModalEq] = useState(false);
   const [formEq, setFormEq] = useState(formEqVazio);
-  const [criandoEq, setCriandoEq] = useState(false);
-  const [erroEq, setErroEq] = useState('');
-
-  // Modal reportar avaria / nova manutenção
   const [modalMan, setModalMan] = useState<{ equipamentoId: string; nome: string } | null>(null);
   const [formMan, setFormMan] = useState(formManVazio);
-  const [criandoMan, setCriandoMan] = useState(false);
-  const [erroMan, setErroMan] = useState('');
+  const [modalEditarEq, setModalEditarEq] = useState<Equipamento | null>(null);
+  const [formEditarEq, setFormEditarEq] = useState(formEditarVazio);
+  const [modalAtualizarMan, setModalAtualizarMan] = useState<{ id: string; novoEstado: string; equipamentoNome: string } | null>(null);
+  const [tecnicoId, setTecnicoId] = useState('');
 
-  const headers = { Authorization: `Bearer ${token}` };
+  const invalidar = () => {
+    qc.invalidateQueries({ queryKey: ['equipamentos'] });
+    qc.invalidateQueries({ queryKey: ['manutencoes'] });
+    qc.invalidateQueries({ queryKey: ['alertas-manutencao'] });
+  };
 
-  const carregarEquipamentos = useCallback(async () => {
-    const q = filtroEstado ? `?estado=${filtroEstado}` : '';
-    const res = await fetch(`${API}/equipamentos${q}`, { headers }).catch(() => null);
-    if (res?.ok) setEquipamentos(await res.json());
-  }, [filtroEstado, token]);
+  const { data: equipamentos = [], isLoading } = useQuery<Equipamento[]>({
+    queryKey: ['equipamentos', filtroEstado],
+    queryFn: () => api.get(`/equipamentos${filtroEstado ? `?estado=${filtroEstado}` : ''}`).then(r => r.data ?? []),
+    staleTime: 30_000,
+  });
 
-  const carregarManutencoes = useCallback(async () => {
-    const res = await fetch(`${API}/equipamentos/manutencoes`, { headers }).catch(() => null);
-    if (res?.ok) setManutencoes(await res.json());
-  }, [token]);
+  const { data: manutencoes = [] } = useQuery<Manutencao[]>({
+    queryKey: ['manutencoes'],
+    queryFn: () => api.get('/equipamentos/manutencoes').then(r => r.data ?? []),
+    staleTime: 30_000,
+    enabled: podeVerManutencoes,
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([carregarEquipamentos(), carregarManutencoes()]).finally(() => setLoading(false));
-  }, [carregarEquipamentos, carregarManutencoes]);
+  const { data: alertasManutencao = [] } = useQuery<Equipamento[]>({
+    queryKey: ['alertas-manutencao'],
+    queryFn: () => api.get('/equipamentos/alertas-manutencao').then(r => r.data ?? []),
+    staleTime: 60_000,
+    enabled: aba === 'alertas',
+  });
 
-  async function criarEquipamento(e: React.FormEvent) {
-    e.preventDefault();
-    setCriandoEq(true); setErroEq('');
-    const res = await fetch(`${API}/equipamentos`, {
-      method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome: formEq.nome, tipo: formEq.tipo, numeroSerie: formEq.numeroSerie || undefined, localizacao: formEq.localizacao || undefined, proximaManutencao: formEq.proximaManutencao || undefined }),
-    });
-    if (res.ok) { setModalEq(false); setFormEq(formEqVazio); carregarEquipamentos(); }
-    else { const err = await res.json().catch(() => ({})); setErroEq(err.message ?? 'Erro ao criar equipamento'); }
-    setCriandoEq(false);
-  }
+  const { data: tecnicos = [] } = useQuery<Tecnico[]>({
+    queryKey: ['tecnicos-equip'],
+    queryFn: () => api.get('/utilizadores?roles=operacional,ti').then(r => {
+      const d = r.data;
+      return Array.isArray(d) ? d : (d?.utilizadores ?? d?.data ?? []);
+    }),
+    staleTime: 300_000,
+    enabled: podeGerirEquip,
+  });
 
-  async function reportarAvaria(e: React.FormEvent) {
-    e.preventDefault();
-    if (!modalMan) return;
-    setCriandoMan(true); setErroMan('');
-    const res = await fetch(`${API}/equipamentos/${modalMan.equipamentoId}/manutencoes`, {
-      method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tipo: formMan.tipo, descricao: formMan.descricao, prioridade: formMan.prioridade, observacoes: formMan.observacoes || undefined }),
-    });
-    if (res.ok) { setModalMan(null); setFormMan(formManVazio); carregarEquipamentos(); carregarManutencoes(); }
-    else { const err = await res.json().catch(() => ({})); setErroMan(err.message ?? 'Erro ao reportar'); }
-    setCriandoMan(false);
-  }
+  const mutCriarEq = useMutation({
+    mutationFn: (body: typeof formEq) => api.post('/equipamentos', {
+      ...body,
+      numeroSerie: body.numeroSerie || undefined,
+      localizacao: body.localizacao || undefined,
+      proximaManutencao: body.proximaManutencao || undefined,
+    }),
+    onSuccess: () => { setModalEq(false); setFormEq(formEqVazio); invalidar(); },
+  });
 
-  async function atualizarManutencao(id: string, estado: string) {
-    await fetch(`${API}/equipamentos/manutencoes/${id}`, {
-      method: 'PATCH',
-      headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ estado }),
-    });
-    carregarEquipamentos();
-    carregarManutencoes();
-  }
+  const mutEditarEq = useMutation({
+    mutationFn: ({ id, body }: { id: string; body: typeof formEditarEq }) => api.patch(`/equipamentos/${id}`, {
+      ...body,
+      numeroSerie: body.numeroSerie || undefined,
+      localizacao: body.localizacao || undefined,
+      proximaManutencao: body.proximaManutencao || undefined,
+    }),
+    onSuccess: () => { setModalEditarEq(null); setFormEditarEq(formEditarVazio); invalidar(); },
+  });
 
-  const manutencoesFiltradas = manutencoes.filter(m => !filtroManEstado || m.estado === filtroManEstado);
+  const mutCriarMan = useMutation({
+    mutationFn: (body: typeof formMan) => api.post(`/equipamentos/${modalMan!.equipamentoId}/manutencoes`, {
+      ...body,
+      observacoes: body.observacoes || undefined,
+    }),
+    onSuccess: () => { setModalMan(null); setFormMan(formManVazio); invalidar(); },
+  });
+
+  const mutAtualizarMan = useMutation({
+    mutationFn: ({ id, estado, tecnicoIdVal }: { id: string; estado: string; tecnicoIdVal?: string }) =>
+      api.patch(`/equipamentos/manutencoes/${id}`, { estado, tecnicoId: tecnicoIdVal || undefined }),
+    onSuccess: () => { setModalAtualizarMan(null); setTecnicoId(''); invalidar(); },
+  });
+
+  const manutencoesFiltradas = (manutencoes as Manutencao[]).filter(m => !filtroManEstado || m.estado === filtroManEstado);
+
+  const inputStyle = { width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' as const };
+  const labelStyle = { display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase' as const, letterSpacing: 1 };
 
   return (
     <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: '#0f172a', color: '#fff' }}>
-      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Equipamentos</h1>
@@ -157,7 +185,11 @@ export default function EquipamentosPage() {
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: 4, marginBottom: 24, background: '#1e293b', borderRadius: 10, padding: 4, width: 'fit-content' }}>
-        {[{ key: 'inventario', label: '📦 Inventário' }, { key: 'manutencoes', label: '🔧 Manutenções' }].map(t => (
+        {[
+          { key: 'inventario',  label: '📦 Inventário' },
+          { key: 'manutencoes', label: '🔧 Manutenções' },
+          { key: 'alertas',     label: `⚠️ Alertas${(alertasManutencao as Equipamento[]).length > 0 ? ` (${(alertasManutencao as Equipamento[]).length})` : ''}` },
+        ].map(t => (
           <button key={t.key} onClick={() => setAba(t.key as any)}
             style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: aba === t.key ? '#334155' : 'transparent', color: aba === t.key ? '#fff' : '#64748b', fontSize: 14, fontWeight: aba === t.key ? 600 : 400, cursor: 'pointer' }}>
             {t.label}
@@ -165,11 +197,10 @@ export default function EquipamentosPage() {
         ))}
       </div>
 
-      {loading ? (
+      {isLoading && aba === 'inventario' ? (
         <div style={{ color: '#64748b', textAlign: 'center', padding: 48 }}>A carregar...</div>
       ) : aba === 'inventario' ? (
         <>
-          {/* Filtro estado */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'operacional', 'em_manutencao', 'avariado', 'abatido'].map(e => (
               <button key={e} onClick={() => setFiltroEstado(e)}
@@ -178,18 +209,18 @@ export default function EquipamentosPage() {
               </button>
             ))}
           </div>
-
           {equipamentos.length === 0 ? (
-            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: '48px', textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>🔧</div>
               <p>Sem equipamentos registados.</p>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
-              {equipamentos.map(eq => {
+              {(equipamentos as Equipamento[]).map(eq => {
                 const ti = TIPOS_EQUIP[eq.tipo] ?? { label: eq.tipo, icon: '🔧' };
                 const es = ESTADO_INFO[eq.estado] ?? { label: eq.estado, cor: '#6b7280', dot: '⚫' };
                 const manAtiva = eq.manutencoes?.[0];
+                const alerta = alertaBadge(eq);
                 return (
                   <div key={eq.id} style={{ background: '#1e293b', border: `1px solid ${eq.estado === 'avariado' ? '#ef444440' : eq.estado === 'em_manutencao' ? '#f59e0b40' : '#334155'}`, borderRadius: 12, padding: '16px 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -200,31 +231,40 @@ export default function EquipamentosPage() {
                           <p style={{ color: '#64748b', fontSize: 12, marginTop: 2 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
                         </div>
                       </div>
-                      <span style={{ background: `${es.cor}20`, color: es.cor, borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap' }}>
-                        {es.dot} {es.label}
-                      </span>
+                      <span style={{ background: `${es.cor}20`, color: es.cor, borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap' }}>{es.dot} {es.label}</span>
                     </div>
-
                     {eq.numeroSerie && <p style={{ color: '#475569', fontSize: 11, margin: '4px 0' }}>S/N: {eq.numeroSerie}</p>}
                     {eq.proximaManutencao && (
-                      <p style={{ color: '#94a3b8', fontSize: 11, margin: '4px 0' }}>
-                        Próxima manutenção: {new Date(eq.proximaManutencao).toLocaleDateString('pt-PT')}
-                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '4px 0' }}>
+                        <p style={{ color: '#94a3b8', fontSize: 11, margin: 0 }}>Próxima manutenção: {new Date(eq.proximaManutencao).toLocaleDateString('pt-PT')}</p>
+                        {alerta && <span style={{ background: `${alerta.cor}20`, color: alerta.cor, borderRadius: 10, padding: '1px 6px', fontSize: 10, fontWeight: 700 }}>{alerta.label}</span>}
+                      </div>
                     )}
-
                     {manAtiva && (
                       <div style={{ background: '#0f172a', borderRadius: 8, padding: '6px 10px', marginTop: 8, fontSize: 12 }}>
-                        <span style={{ color: PRIORIDADE_COR[manAtiva.prioridade] ?? '#6b7280', fontWeight: 600 }}>
-                          {manAtiva.tipo === 'corretiva' ? '🔴 Corretiva' : '🟡 Preventiva'}
-                        </span>
+                        <span style={{ color: PRIORIDADE_COR[manAtiva.prioridade] ?? '#6b7280', fontWeight: 600 }}>{manAtiva.tipo === 'corretiva' ? '🔴 Corretiva' : '🟡 Preventiva'}</span>
                         <span style={{ color: '#64748b', marginLeft: 6 }}>{manAtiva.descricao}</span>
                       </div>
                     )}
-
+                    {podeGerirEquip && (
+                      <button onClick={() => {
+                        setModalEditarEq(eq);
+                        setFormEditarEq({
+                          nome: eq.nome,
+                          tipo: eq.tipo,
+                          numeroSerie: eq.numeroSerie ?? '',
+                          localizacao: eq.localizacao ?? '',
+                          estado: eq.estado,
+                          proximaManutencao: eq.proximaManutencao ? new Date(eq.proximaManutencao).toISOString().split('T')[0] : '',
+                        });
+                      }}
+                        style={{ marginTop: 10, width: '100%', padding: '6px 0', borderRadius: 7, border: '1px solid #3b82f6', background: 'transparent', color: '#3b82f6', fontSize: 12, cursor: 'pointer' }}>
+                        ✏️ Editar
+                      </button>
+                    )}
                     {podeReportarAvaria && eq.estado === 'operacional' && (
-                      <button
-                        onClick={() => { setModalMan({ equipamentoId: eq.id, nome: eq.nome }); setFormMan(formManVazio); }}
-                        style={{ marginTop: 10, width: '100%', padding: '6px 0', borderRadius: 7, border: '1px solid #ef4444', background: 'transparent', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
+                      <button onClick={() => { setModalMan({ equipamentoId: eq.id, nome: eq.nome }); setFormMan(formManVazio); }}
+                        style={{ marginTop: podeGerirEquip ? 6 : 10, width: '100%', padding: '6px 0', borderRadius: 7, border: '1px solid #ef4444', background: 'transparent', color: '#ef4444', fontSize: 12, cursor: 'pointer' }}>
                         Reportar Avaria
                       </button>
                     )}
@@ -234,9 +274,8 @@ export default function EquipamentosPage() {
             </div>
           )}
         </>
-      ) : (
+      ) : aba === 'manutencoes' ? (
         <>
-          {/* Filtro manutenções */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'pendente', 'em_curso', 'concluida', 'cancelada'].map(e => (
               <button key={e} onClick={() => setFiltroManEstado(e)}
@@ -245,9 +284,8 @@ export default function EquipamentosPage() {
               </button>
             ))}
           </div>
-
           {manutencoesFiltradas.length === 0 ? (
-            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: '48px', textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>🔧</div>
               <p>Sem manutenções registadas.</p>
             </div>
@@ -258,7 +296,6 @@ export default function EquipamentosPage() {
                   <div style={{ width: 40, height: 40, borderRadius: 10, background: `${PRIORIDADE_COR[m.prioridade] ?? '#6b7280'}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
                     {m.tipo === 'corretiva' ? '🔴' : '🟡'}
                   </div>
-
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                       <span style={{ fontWeight: 700, fontSize: 14 }}>{m.equipamento.nome}</span>
@@ -272,22 +309,18 @@ export default function EquipamentosPage() {
                       {m.equipamento.localizacao && `${m.equipamento.localizacao} · `}
                       {new Date(m.dataReporte).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
                       {m.reportadoPor && ` · ${m.reportadoPor.nome}`}
+                      {m.tecnico && ` · Técnico: ${m.tecnico.nome}`}
                     </p>
                   </div>
-
                   {podeGerirEquip && (
                     <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
                       {m.estado === 'pendente' && (
-                        <button onClick={() => atualizarManutencao(m.id, 'em_curso')}
-                          style={{ padding: '6px 12px', borderRadius: 7, border: 'none', background: '#f59e0b', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
-                          Iniciar
-                        </button>
+                        <button onClick={() => { setModalAtualizarMan({ id: m.id, novoEstado: 'em_curso', equipamentoNome: m.equipamento.nome }); setTecnicoId(''); }}
+                          style={{ padding: '6px 12px', borderRadius: 7, border: 'none', background: '#f59e0b', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Iniciar</button>
                       )}
                       {m.estado === 'em_curso' && (
-                        <button onClick={() => atualizarManutencao(m.id, 'concluida')}
-                          style={{ padding: '6px 12px', borderRadius: 7, border: 'none', background: '#10b981', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
-                          Concluir
-                        </button>
+                        <button onClick={() => { setModalAtualizarMan({ id: m.id, novoEstado: 'concluida', equipamentoNome: m.equipamento.nome }); setTecnicoId(''); }}
+                          style={{ padding: '6px 12px', borderRadius: 7, border: 'none', background: '#10b981', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Concluir</button>
                       )}
                     </div>
                   )}
@@ -296,71 +329,196 @@ export default function EquipamentosPage() {
             </div>
           )}
         </>
+      ) : (
+        // ── Tab Alertas de Manutenção ──────────────────────────────────────────
+        <>
+          <div style={{ background: '#f59e0b10', border: '1px solid #f59e0b30', borderRadius: 10, padding: '12px 16px', marginBottom: 20, fontSize: 13, color: '#fbbf24' }}>
+            Equipamentos com manutenção preventiva a vencer nos próximos 30 dias ou já vencida.
+          </div>
+          {(alertasManutencao as Equipamento[]).length === 0 ? (
+            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+              <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
+              <p>Sem manutenções preventivas a vencer nos próximos 30 dias.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {(alertasManutencao as Equipamento[]).map(eq => {
+                const ti = TIPOS_EQUIP[eq.tipo] ?? { label: eq.tipo, icon: '🔧' };
+                const alerta = alertaBadge(eq)!;
+                return (
+                  <div key={eq.id} style={{ background: '#1e293b', border: `1px solid ${alerta.cor}40`, borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 10, background: `${alerta.cor}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
+                      {ti.icon}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                        <span style={{ fontWeight: 700, fontSize: 15 }}>{eq.nome}</span>
+                        <span style={{ background: `${alerta.cor}20`, color: alerta.cor, borderRadius: 20, padding: '2px 10px', fontSize: 12, fontWeight: 700 }}>{alerta.label}</span>
+                      </div>
+                      <p style={{ color: '#64748b', fontSize: 12, margin: 0 }}>{ti.label}{eq.localizacao ? ` · ${eq.localizacao}` : ''}</p>
+                      <p style={{ color: '#94a3b8', fontSize: 12, marginTop: 4 }}>
+                        Próxima manutenção: <strong style={{ color: alerta.cor }}>{new Date(eq.proximaManutencao!).toLocaleDateString('pt-PT')}</strong>
+                      </p>
+                    </div>
+                    {podeReportarAvaria && (
+                      <button onClick={() => { setModalMan({ equipamentoId: eq.id, nome: eq.nome }); setFormMan({ ...formManVazio, tipo: 'preventiva' }); setAba('inventario'); }}
+                        style={{ padding: '8px 14px', borderRadius: 8, border: 'none', background: '#f59e0b', color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer', flexShrink: 0 }}>
+                        Agendar
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
       )}
 
       {/* Modal Novo Equipamento */}
       {modalEq && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}
-          onClick={e => { if (e.target === e.currentTarget) setModalEq(false); }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: '28px', width: '100%', maxWidth: 480 }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Novo Equipamento</h2>
               <button onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
-            {erroEq && <div style={{ background: '#ef444420', border: '1px solid #ef4444', borderRadius: 8, padding: '8px 12px', marginBottom: 16, color: '#fca5a5', fontSize: 13 }}>{erroEq}</div>}
-            <form onSubmit={criarEquipamento} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nome *</label>
-                <input required value={formEq.nome} onChange={e => setFormEq(f => ({ ...f, nome: e.target.value }))}
-                  style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
-                  placeholder="Ex: Ventilador UCI-01" />
+                <label style={labelStyle}>Nome *</label>
+                <input value={formEq.nome} onChange={e => setFormEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} placeholder="Ex: Ventilador UCI-01" />
               </div>
               <div>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo *</label>
-                <select value={formEq.tipo} onChange={e => setFormEq(f => ({ ...f, tipo: e.target.value }))}
-                  style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}>
+                <label style={labelStyle}>Tipo *</label>
+                <select value={formEq.tipo} onChange={e => setFormEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
                   {Object.entries(TIPOS_EQUIP).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
                 </select>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Localização</label>
-                  <input value={formEq.localizacao} onChange={e => setFormEq(f => ({ ...f, localizacao: e.target.value }))}
-                    style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
-                    placeholder="Ex: UCI / Ala B" />
+                  <label style={labelStyle}>Localização</label>
+                  <input value={formEq.localizacao} onChange={e => setFormEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
                 </div>
                 <div>
-                  <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Nº de Série</label>
-                  <input value={formEq.numeroSerie} onChange={e => setFormEq(f => ({ ...f, numeroSerie: e.target.value }))}
-                    style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
-                    placeholder="SN-XXXXX" />
+                  <label style={labelStyle}>Nº de Série</label>
+                  <input value={formEq.numeroSerie} onChange={e => setFormEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
                 </div>
               </div>
               <div>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Próxima Manutenção Preventiva</label>
-                <input type="date" value={formEq.proximaManutencao} onChange={e => setFormEq(f => ({ ...f, proximaManutencao: e.target.value }))}
-                  style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }} />
+                <label style={labelStyle}>Próxima Manutenção Preventiva</label>
+                <input type="date" value={formEq.proximaManutencao} onChange={e => setFormEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-                <button type="button" onClick={() => setModalEq(false)}
-                  style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>
-                  Cancelar
-                </button>
-                <button type="submit" disabled={criandoEq || !formEq.nome.trim()}
-                  style={{ flex: 2, padding: '10px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: criandoEq || !formEq.nome.trim() ? 0.5 : 1 }}>
-                  {criandoEq ? 'A criar...' : 'Criar Equipamento'}
+                <button onClick={() => setModalEq(false)}
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                <button onClick={() => mutCriarEq.mutate(formEq)} disabled={mutCriarEq.isPending || !formEq.nome.trim()}
+                  style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarEq.isPending || !formEq.nome.trim() ? 0.5 : 1 }}>
+                  {mutCriarEq.isPending ? 'A criar...' : 'Criar Equipamento'}
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Modal Reportar Avaria / Manutenção */}
+      {/* Modal Editar Equipamento */}
+      {modalEditarEq && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Editar Equipamento</h2>
+                <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>{modalEditarEq.nome}</p>
+              </div>
+              <button onClick={() => setModalEditarEq(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <label style={labelStyle}>Nome *</label>
+                <input value={formEditarEq.nome} onChange={e => setFormEditarEq(f => ({ ...f, nome: e.target.value }))} style={inputStyle} />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={labelStyle}>Tipo</label>
+                  <select value={formEditarEq.tipo} onChange={e => setFormEditarEq(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
+                    {Object.entries(TIPOS_EQUIP).map(([k, v]) => <option key={k} value={k}>{v.icon} {v.label}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label style={labelStyle}>Estado</label>
+                  <select value={formEditarEq.estado} onChange={e => setFormEditarEq(f => ({ ...f, estado: e.target.value }))} style={inputStyle}>
+                    {Object.entries(ESTADO_INFO).map(([k, v]) => <option key={k} value={k}>{v.dot} {v.label}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={labelStyle}>Localização</label>
+                  <input value={formEditarEq.localizacao} onChange={e => setFormEditarEq(f => ({ ...f, localizacao: e.target.value }))} style={inputStyle} placeholder="Ex: UCI / Ala B" />
+                </div>
+                <div>
+                  <label style={labelStyle}>Nº de Série</label>
+                  <input value={formEditarEq.numeroSerie} onChange={e => setFormEditarEq(f => ({ ...f, numeroSerie: e.target.value }))} style={inputStyle} placeholder="SN-XXXXX" />
+                </div>
+              </div>
+              <div>
+                <label style={labelStyle}>Próxima Manutenção Preventiva</label>
+                <input type="date" value={formEditarEq.proximaManutencao} onChange={e => setFormEditarEq(f => ({ ...f, proximaManutencao: e.target.value }))} style={inputStyle} />
+              </div>
+              <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+                <button onClick={() => setModalEditarEq(null)}
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                <button onClick={() => mutEditarEq.mutate({ id: modalEditarEq.id, body: formEditarEq })} disabled={mutEditarEq.isPending || !formEditarEq.nome.trim()}
+                  style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutEditarEq.isPending || !formEditarEq.nome.trim() ? 0.5 : 1 }}>
+                  {mutEditarEq.isPending ? 'A guardar...' : 'Guardar Alterações'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Atualizar Manutenção (com seleção de técnico) */}
+      {modalAtualizarMan && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 400 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>
+                  {modalAtualizarMan.novoEstado === 'em_curso' ? '▶️ Iniciar Manutenção' : '✅ Concluir Manutenção'}
+                </h2>
+                <p style={{ color: '#64748b', fontSize: 13, marginTop: 4 }}>{modalAtualizarMan.equipamentoNome}</p>
+              </div>
+              <button onClick={() => setModalAtualizarMan(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <label style={labelStyle}>Técnico Responsável</label>
+                <select value={tecnicoId} onChange={e => setTecnicoId(e.target.value)} style={inputStyle}>
+                  <option value="">— Sem atribuição —</option>
+                  {(tecnicos as Tecnico[]).map(t => (
+                    <option key={t.id} value={t.id}>{t.nome} ({t.role}{t.subRole ? `/${t.subRole}` : ''})</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
+                <button onClick={() => setModalAtualizarMan(null)}
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                <button
+                  onClick={() => mutAtualizarMan.mutate({ id: modalAtualizarMan.id, estado: modalAtualizarMan.novoEstado, tecnicoIdVal: tecnicoId || undefined })}
+                  disabled={mutAtualizarMan.isPending}
+                  style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: modalAtualizarMan.novoEstado === 'em_curso' ? '#f59e0b' : '#10b981', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutAtualizarMan.isPending ? 0.5 : 1 }}>
+                  {mutAtualizarMan.isPending ? 'A actualizar...' : (modalAtualizarMan.novoEstado === 'em_curso' ? 'Iniciar' : 'Concluir')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Reportar Avaria */}
       {modalMan && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}
-          onClick={e => { if (e.target === e.currentTarget) setModalMan(null); }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: '28px', width: '100%', maxWidth: 440 }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
+          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 440 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Reportar Ocorrência</h2>
@@ -368,21 +526,18 @@ export default function EquipamentosPage() {
               </div>
               <button onClick={() => setModalMan(null)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
             </div>
-            {erroMan && <div style={{ background: '#ef444420', border: '1px solid #ef4444', borderRadius: 8, padding: '8px 12px', marginBottom: 16, color: '#fca5a5', fontSize: 13 }}>{erroMan}</div>}
-            <form onSubmit={reportarAvaria} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Tipo</label>
-                  <select value={formMan.tipo} onChange={e => setFormMan(f => ({ ...f, tipo: e.target.value }))}
-                    style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}>
-                    <option value="corretiva">🔴 Corretiva (avaria)</option>
+                  <label style={labelStyle}>Tipo</label>
+                  <select value={formMan.tipo} onChange={e => setFormMan(f => ({ ...f, tipo: e.target.value }))} style={inputStyle}>
+                    <option value="corretiva">🔴 Corretiva</option>
                     <option value="preventiva">🟡 Preventiva</option>
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Prioridade</label>
-                  <select value={formMan.prioridade} onChange={e => setFormMan(f => ({ ...f, prioridade: e.target.value }))}
-                    style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}>
+                  <label style={labelStyle}>Prioridade</label>
+                  <select value={formMan.prioridade} onChange={e => setFormMan(f => ({ ...f, prioridade: e.target.value }))} style={inputStyle}>
                     <option value="urgente">🚨 Urgente</option>
                     <option value="alta">⚠️ Alta</option>
                     <option value="normal">Normal</option>
@@ -391,28 +546,25 @@ export default function EquipamentosPage() {
                 </div>
               </div>
               <div>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Descrição *</label>
-                <textarea required value={formMan.descricao} onChange={e => setFormMan(f => ({ ...f, descricao: e.target.value }))} rows={3}
-                  style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, resize: 'vertical', boxSizing: 'border-box' }}
-                  placeholder="Descreva o problema ou intervenção necessária..." />
+                <label style={labelStyle}>Descrição *</label>
+                <textarea value={formMan.descricao} onChange={e => setFormMan(f => ({ ...f, descricao: e.target.value }))} rows={3}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                  placeholder="Descreva o problema ou intervenção..." />
               </div>
               <div>
-                <label style={{ display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase', letterSpacing: 1 }}>Observações</label>
-                <input value={formMan.observacoes} onChange={e => setFormMan(f => ({ ...f, observacoes: e.target.value }))}
-                  style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                <label style={labelStyle}>Observações</label>
+                <input value={formMan.observacoes} onChange={e => setFormMan(f => ({ ...f, observacoes: e.target.value }))} style={inputStyle}
                   placeholder="Informações adicionais (opcional)" />
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-                <button type="button" onClick={() => setModalMan(null)}
-                  style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>
-                  Cancelar
-                </button>
-                <button type="submit" disabled={criandoMan || !formMan.descricao.trim()}
-                  style={{ flex: 2, padding: '10px', borderRadius: 8, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: criandoMan || !formMan.descricao.trim() ? 0.5 : 1 }}>
-                  {criandoMan ? 'A reportar...' : 'Reportar'}
+                <button onClick={() => setModalMan(null)}
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                <button onClick={() => mutCriarMan.mutate(formMan)} disabled={mutCriarMan.isPending || !formMan.descricao.trim()}
+                  style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarMan.isPending || !formMan.descricao.trim() ? 0.5 : 1 }}>
+                  {mutCriarMan.isPending ? 'A reportar...' : 'Reportar'}
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

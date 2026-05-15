@@ -66,6 +66,14 @@ export default function FaturacaoPage() {
   const [registandoPagamento, setRegistandoPagamento] = useState(false);
 
   const podeVer = utilizador?.role === 'administrativo';
+  const [resumo, setResumo] = useState<{ totalFaturado: number; totalPago: number; totalPendente: number; totalAnulado: number } | null>(null);
+
+  const carregarResumo = async () => {
+    try {
+      const r = await api.get('/faturacao/resumo');
+      setResumo(r.data);
+    } catch { /* silencioso */ }
+  };
 
   const carregar = async () => {
     setLoading(true);
@@ -78,7 +86,8 @@ export default function FaturacaoPage() {
     } catch { /* silencioso */ } finally { setLoading(false); }
   };
 
-  useEffect(() => { if (podeVer) carregar(); }, [page, filtroEstado]);
+  useEffect(() => { if (podeVer) { carregar(); carregarResumo(); } }, [page, filtroEstado]);
+  useEffect(() => { if (podeVer) carregarResumo(); }, []);
 
   const abrirDetalhe = async (ep: Episodio) => {
     setLoadingDetalhe(true);
@@ -193,6 +202,25 @@ export default function FaturacaoPage() {
           </button>
         </div>
       </div>
+
+      {/* Resumo financeiro */}
+      {resumo && (
+        <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '24px' }}>
+          {[
+            { label: 'Total Faturado', value: resumo.totalFaturado, cor: 'text-slate-800', bg: 'bg-slate-50', borda: 'border-slate-200' },
+            { label: 'Pago',           value: resumo.totalPago,     cor: 'text-emerald-700', bg: 'bg-emerald-50', borda: 'border-emerald-200' },
+            { label: 'Pendente',       value: resumo.totalPendente, cor: 'text-amber-700', bg: 'bg-amber-50', borda: 'border-amber-200' },
+            { label: 'Anulado',        value: resumo.totalAnulado,  cor: 'text-red-600', bg: 'bg-red-50', borda: 'border-red-200' },
+          ].map(k => (
+            <div key={k.label} className={`rounded-2xl border ${k.bg} ${k.borda}`} style={{ padding: '18px 20px' }}>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{k.label}</p>
+              <p className={`text-2xl font-bold ${k.cor}`} style={{ marginTop: '4px' }}>
+                {k.value.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' })}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Lista */}
       {loading ? (

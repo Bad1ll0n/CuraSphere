@@ -42,6 +42,8 @@ const ROLE_LABEL: Record<string, string> = {
 export default function PessoalPage() {
   const qc = useQueryClient();
   const [filtroRole, setFiltroRole] = useState('');
+  const [pesquisa, setPesquisa] = useState('');
+  const [filtroServico, setFiltroServico] = useState('');
   const [modalPessoa, setModalPessoa] = useState<Pessoal | null>(null);
   const [contrato, setContrato] = useState({
     tipoVinculo: 'permanente', dataInicio: '', dataFimPrevista: '', diasFeriasAnuais: 22,
@@ -59,8 +61,14 @@ export default function PessoalPage() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['rh-pessoal'] }); setModalPessoa(null); },
   });
 
-  const filtrado = filtroRole ? pessoal.filter(p => p.role === filtroRole) : pessoal;
   const roles = [...new Set(pessoal.map(p => p.role))];
+  const servicos = [...new Set(pessoal.map(p => p.servico).filter(Boolean) as string[])].sort();
+  const filtrado = pessoal.filter(p => {
+    if (filtroRole && p.role !== filtroRole) return false;
+    if (filtroServico && p.servico !== filtroServico) return false;
+    if (pesquisa && !p.nome.toLowerCase().includes(pesquisa.toLowerCase())) return false;
+    return true;
+  });
 
   const abrirModal = (p: Pessoal) => {
     setModalPessoa(p);
@@ -79,12 +87,24 @@ export default function PessoalPage() {
           <h1 className="text-2xl font-bold text-slate-900">Gestão de Pessoal</h1>
           <p className="text-sm text-slate-500" style={{ marginTop: '4px' }}>Dados contratuais, vínculos e saldo de férias</p>
         </div>
-        <select value={filtroRole} onChange={e => setFiltroRole(e.target.value)}
-          className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          style={{ padding: '9px 14px' }}>
-          <option value="">Todas as roles</option>
-          {roles.map(r => <option key={r} value={r}>{ROLE_LABEL[r] ?? r}</option>)}
-        </select>
+        <div className="flex items-center gap-3">
+          <input value={pesquisa} onChange={e => setPesquisa(e.target.value)}
+            placeholder="Pesquisar por nome..."
+            className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '9px 14px', width: '200px' }} />
+          <select value={filtroRole} onChange={e => setFiltroRole(e.target.value)}
+            className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '9px 14px' }}>
+            <option value="">Todas as roles</option>
+            {roles.map(r => <option key={r} value={r}>{ROLE_LABEL[r] ?? r}</option>)}
+          </select>
+          <select value={filtroServico} onChange={e => setFiltroServico(e.target.value)}
+            className="border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ padding: '9px 14px' }}>
+            <option value="">Todos os serviços</option>
+            {servicos.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
       </div>
 
       {isLoading ? (

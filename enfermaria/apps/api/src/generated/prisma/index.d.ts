@@ -204,6 +204,31 @@ export type StockItem = $Result.DefaultSelection<Prisma.$StockItemPayload>
  */
 export type PedidoFarmacia = $Result.DefaultSelection<Prisma.$PedidoFarmaciaPayload>
 /**
+ * Model CatalogoMedicamento
+ * 
+ */
+export type CatalogoMedicamento = $Result.DefaultSelection<Prisma.$CatalogoMedicamentoPayload>
+/**
+ * Model AjusteStock
+ * 
+ */
+export type AjusteStock = $Result.DefaultSelection<Prisma.$AjusteStockPayload>
+/**
+ * Model TransferenciaStock
+ * 
+ */
+export type TransferenciaStock = $Result.DefaultSelection<Prisma.$TransferenciaStockPayload>
+/**
+ * Model Fornecedor
+ * 
+ */
+export type Fornecedor = $Result.DefaultSelection<Prisma.$FornecedorPayload>
+/**
+ * Model EncomendaFornecedor
+ * 
+ */
+export type EncomendaFornecedor = $Result.DefaultSelection<Prisma.$EncomendaFornecedorPayload>
+/**
  * Model PlanoReabilitacao
  * 
  */
@@ -1274,6 +1299,56 @@ export class PrismaClient<
   get pedidoFarmacia(): Prisma.PedidoFarmaciaDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.catalogoMedicamento`: Exposes CRUD operations for the **CatalogoMedicamento** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CatalogoMedicamentos
+    * const catalogoMedicamentos = await prisma.catalogoMedicamento.findMany()
+    * ```
+    */
+  get catalogoMedicamento(): Prisma.CatalogoMedicamentoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.ajusteStock`: Exposes CRUD operations for the **AjusteStock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AjusteStocks
+    * const ajusteStocks = await prisma.ajusteStock.findMany()
+    * ```
+    */
+  get ajusteStock(): Prisma.AjusteStockDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.transferenciaStock`: Exposes CRUD operations for the **TransferenciaStock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TransferenciaStocks
+    * const transferenciaStocks = await prisma.transferenciaStock.findMany()
+    * ```
+    */
+  get transferenciaStock(): Prisma.TransferenciaStockDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fornecedor`: Exposes CRUD operations for the **Fornecedor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Fornecedors
+    * const fornecedors = await prisma.fornecedor.findMany()
+    * ```
+    */
+  get fornecedor(): Prisma.FornecedorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.encomendaFornecedor`: Exposes CRUD operations for the **EncomendaFornecedor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EncomendaFornecedors
+    * const encomendaFornecedors = await prisma.encomendaFornecedor.findMany()
+    * ```
+    */
+  get encomendaFornecedor(): Prisma.EncomendaFornecedorDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.planoReabilitacao`: Exposes CRUD operations for the **PlanoReabilitacao** model.
     * Example usage:
     * ```ts
@@ -2011,6 +2086,11 @@ export namespace Prisma {
     CheckinSalaEspera: 'CheckinSalaEspera',
     StockItem: 'StockItem',
     PedidoFarmacia: 'PedidoFarmacia',
+    CatalogoMedicamento: 'CatalogoMedicamento',
+    AjusteStock: 'AjusteStock',
+    TransferenciaStock: 'TransferenciaStock',
+    Fornecedor: 'Fornecedor',
+    EncomendaFornecedor: 'EncomendaFornecedor',
     PlanoReabilitacao: 'PlanoReabilitacao',
     SessaoFisioterapia: 'SessaoFisioterapia',
     PedidoInterno: 'PedidoInterno',
@@ -2055,7 +2135,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4871,6 +4951,376 @@ export namespace Prisma {
           }
         }
       }
+      CatalogoMedicamento: {
+        payload: Prisma.$CatalogoMedicamentoPayload<ExtArgs>
+        fields: Prisma.CatalogoMedicamentoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CatalogoMedicamentoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CatalogoMedicamentoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          findFirst: {
+            args: Prisma.CatalogoMedicamentoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CatalogoMedicamentoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          findMany: {
+            args: Prisma.CatalogoMedicamentoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>[]
+          }
+          create: {
+            args: Prisma.CatalogoMedicamentoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          createMany: {
+            args: Prisma.CatalogoMedicamentoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CatalogoMedicamentoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>[]
+          }
+          delete: {
+            args: Prisma.CatalogoMedicamentoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          update: {
+            args: Prisma.CatalogoMedicamentoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          deleteMany: {
+            args: Prisma.CatalogoMedicamentoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CatalogoMedicamentoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CatalogoMedicamentoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>[]
+          }
+          upsert: {
+            args: Prisma.CatalogoMedicamentoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CatalogoMedicamentoPayload>
+          }
+          aggregate: {
+            args: Prisma.CatalogoMedicamentoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCatalogoMedicamento>
+          }
+          groupBy: {
+            args: Prisma.CatalogoMedicamentoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CatalogoMedicamentoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CatalogoMedicamentoCountArgs<ExtArgs>
+            result: $Utils.Optional<CatalogoMedicamentoCountAggregateOutputType> | number
+          }
+        }
+      }
+      AjusteStock: {
+        payload: Prisma.$AjusteStockPayload<ExtArgs>
+        fields: Prisma.AjusteStockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AjusteStockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AjusteStockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          findFirst: {
+            args: Prisma.AjusteStockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AjusteStockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          findMany: {
+            args: Prisma.AjusteStockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>[]
+          }
+          create: {
+            args: Prisma.AjusteStockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          createMany: {
+            args: Prisma.AjusteStockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AjusteStockCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>[]
+          }
+          delete: {
+            args: Prisma.AjusteStockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          update: {
+            args: Prisma.AjusteStockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          deleteMany: {
+            args: Prisma.AjusteStockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AjusteStockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AjusteStockUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>[]
+          }
+          upsert: {
+            args: Prisma.AjusteStockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AjusteStockPayload>
+          }
+          aggregate: {
+            args: Prisma.AjusteStockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAjusteStock>
+          }
+          groupBy: {
+            args: Prisma.AjusteStockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AjusteStockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AjusteStockCountArgs<ExtArgs>
+            result: $Utils.Optional<AjusteStockCountAggregateOutputType> | number
+          }
+        }
+      }
+      TransferenciaStock: {
+        payload: Prisma.$TransferenciaStockPayload<ExtArgs>
+        fields: Prisma.TransferenciaStockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TransferenciaStockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TransferenciaStockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          findFirst: {
+            args: Prisma.TransferenciaStockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TransferenciaStockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          findMany: {
+            args: Prisma.TransferenciaStockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>[]
+          }
+          create: {
+            args: Prisma.TransferenciaStockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          createMany: {
+            args: Prisma.TransferenciaStockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TransferenciaStockCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>[]
+          }
+          delete: {
+            args: Prisma.TransferenciaStockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          update: {
+            args: Prisma.TransferenciaStockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          deleteMany: {
+            args: Prisma.TransferenciaStockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TransferenciaStockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TransferenciaStockUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>[]
+          }
+          upsert: {
+            args: Prisma.TransferenciaStockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransferenciaStockPayload>
+          }
+          aggregate: {
+            args: Prisma.TransferenciaStockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTransferenciaStock>
+          }
+          groupBy: {
+            args: Prisma.TransferenciaStockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TransferenciaStockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TransferenciaStockCountArgs<ExtArgs>
+            result: $Utils.Optional<TransferenciaStockCountAggregateOutputType> | number
+          }
+        }
+      }
+      Fornecedor: {
+        payload: Prisma.$FornecedorPayload<ExtArgs>
+        fields: Prisma.FornecedorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FornecedorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FornecedorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          findFirst: {
+            args: Prisma.FornecedorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FornecedorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          findMany: {
+            args: Prisma.FornecedorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>[]
+          }
+          create: {
+            args: Prisma.FornecedorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          createMany: {
+            args: Prisma.FornecedorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FornecedorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>[]
+          }
+          delete: {
+            args: Prisma.FornecedorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          update: {
+            args: Prisma.FornecedorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          deleteMany: {
+            args: Prisma.FornecedorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FornecedorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FornecedorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>[]
+          }
+          upsert: {
+            args: Prisma.FornecedorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FornecedorPayload>
+          }
+          aggregate: {
+            args: Prisma.FornecedorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFornecedor>
+          }
+          groupBy: {
+            args: Prisma.FornecedorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FornecedorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FornecedorCountArgs<ExtArgs>
+            result: $Utils.Optional<FornecedorCountAggregateOutputType> | number
+          }
+        }
+      }
+      EncomendaFornecedor: {
+        payload: Prisma.$EncomendaFornecedorPayload<ExtArgs>
+        fields: Prisma.EncomendaFornecedorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EncomendaFornecedorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EncomendaFornecedorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          findFirst: {
+            args: Prisma.EncomendaFornecedorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EncomendaFornecedorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          findMany: {
+            args: Prisma.EncomendaFornecedorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>[]
+          }
+          create: {
+            args: Prisma.EncomendaFornecedorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          createMany: {
+            args: Prisma.EncomendaFornecedorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EncomendaFornecedorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>[]
+          }
+          delete: {
+            args: Prisma.EncomendaFornecedorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          update: {
+            args: Prisma.EncomendaFornecedorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          deleteMany: {
+            args: Prisma.EncomendaFornecedorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EncomendaFornecedorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EncomendaFornecedorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>[]
+          }
+          upsert: {
+            args: Prisma.EncomendaFornecedorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EncomendaFornecedorPayload>
+          }
+          aggregate: {
+            args: Prisma.EncomendaFornecedorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEncomendaFornecedor>
+          }
+          groupBy: {
+            args: Prisma.EncomendaFornecedorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EncomendaFornecedorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EncomendaFornecedorCountArgs<ExtArgs>
+            result: $Utils.Optional<EncomendaFornecedorCountAggregateOutputType> | number
+          }
+        }
+      }
       PlanoReabilitacao: {
         payload: Prisma.$PlanoReabilitacaoPayload<ExtArgs>
         fields: Prisma.PlanoReabilitacaoFieldRefs
@@ -6929,6 +7379,11 @@ export namespace Prisma {
     checkinSalaEspera?: CheckinSalaEsperaOmit
     stockItem?: StockItemOmit
     pedidoFarmacia?: PedidoFarmaciaOmit
+    catalogoMedicamento?: CatalogoMedicamentoOmit
+    ajusteStock?: AjusteStockOmit
+    transferenciaStock?: TransferenciaStockOmit
+    fornecedor?: FornecedorOmit
+    encomendaFornecedor?: EncomendaFornecedorOmit
     planoReabilitacao?: PlanoReabilitacaoOmit
     sessaoFisioterapia?: SessaoFisioterapiaOmit
     pedidoInterno?: PedidoInternoOmit
@@ -7134,6 +7589,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado: number
     avaliacoesComoAvaliador: number
     subordinados: number
+    ajustesStock: number
+    transferenciasSolicitadas: number
+    transferenciasConfirmadas: number
+    encomendasRecebidas: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7205,6 +7664,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: boolean | UtilizadorCountOutputTypeCountAvaliacoesComoAvaliadoArgs
     avaliacoesComoAvaliador?: boolean | UtilizadorCountOutputTypeCountAvaliacoesComoAvaliadorArgs
     subordinados?: boolean | UtilizadorCountOutputTypeCountSubordinadosArgs
+    ajustesStock?: boolean | UtilizadorCountOutputTypeCountAjustesStockArgs
+    transferenciasSolicitadas?: boolean | UtilizadorCountOutputTypeCountTransferenciasSolicitadasArgs
+    transferenciasConfirmadas?: boolean | UtilizadorCountOutputTypeCountTransferenciasConfirmadasArgs
+    encomendasRecebidas?: boolean | UtilizadorCountOutputTypeCountEncomendasRecebidasArgs
   }
 
   // Custom InputTypes
@@ -7692,6 +8155,34 @@ export namespace Prisma {
    */
   export type UtilizadorCountOutputTypeCountSubordinadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UtilizadorWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountAjustesStockArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AjusteStockWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTransferenciasSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransferenciaStockWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTransferenciasConfirmadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransferenciaStockWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountEncomendasRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EncomendaFornecedorWhereInput
   }
 
 
@@ -8215,10 +8706,16 @@ export namespace Prisma {
 
   export type StockItemCountOutputType = {
     pedidos: number
+    ajustes: number
+    transferencias: number
+    encomendas: number
   }
 
   export type StockItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pedidos?: boolean | StockItemCountOutputTypeCountPedidosArgs
+    ajustes?: boolean | StockItemCountOutputTypeCountAjustesArgs
+    transferencias?: boolean | StockItemCountOutputTypeCountTransferenciasArgs
+    encomendas?: boolean | StockItemCountOutputTypeCountEncomendasArgs
   }
 
   // Custom InputTypes
@@ -8237,6 +8734,89 @@ export namespace Prisma {
    */
   export type StockItemCountOutputTypeCountPedidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PedidoFarmaciaWhereInput
+  }
+
+  /**
+   * StockItemCountOutputType without action
+   */
+  export type StockItemCountOutputTypeCountAjustesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AjusteStockWhereInput
+  }
+
+  /**
+   * StockItemCountOutputType without action
+   */
+  export type StockItemCountOutputTypeCountTransferenciasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransferenciaStockWhereInput
+  }
+
+  /**
+   * StockItemCountOutputType without action
+   */
+  export type StockItemCountOutputTypeCountEncomendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EncomendaFornecedorWhereInput
+  }
+
+
+  /**
+   * Count Type CatalogoMedicamentoCountOutputType
+   */
+
+  export type CatalogoMedicamentoCountOutputType = {
+    stockItems: number
+  }
+
+  export type CatalogoMedicamentoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItems?: boolean | CatalogoMedicamentoCountOutputTypeCountStockItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CatalogoMedicamentoCountOutputType without action
+   */
+  export type CatalogoMedicamentoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamentoCountOutputType
+     */
+    select?: CatalogoMedicamentoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CatalogoMedicamentoCountOutputType without action
+   */
+  export type CatalogoMedicamentoCountOutputTypeCountStockItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StockItemWhereInput
+  }
+
+
+  /**
+   * Count Type FornecedorCountOutputType
+   */
+
+  export type FornecedorCountOutputType = {
+    encomendas: number
+  }
+
+  export type FornecedorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    encomendas?: boolean | FornecedorCountOutputTypeCountEncomendasArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FornecedorCountOutputType without action
+   */
+  export type FornecedorCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FornecedorCountOutputType
+     */
+    select?: FornecedorCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FornecedorCountOutputType without action
+   */
+  export type FornecedorCountOutputTypeCountEncomendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EncomendaFornecedorWhereInput
   }
 
 
@@ -10931,6 +11511,10 @@ export namespace Prisma {
     dadosContratuais?: boolean | Utilizador$dadosContratuaisArgs<ExtArgs>
     chefe?: boolean | Utilizador$chefeArgs<ExtArgs>
     subordinados?: boolean | Utilizador$subordinadosArgs<ExtArgs>
+    ajustesStock?: boolean | Utilizador$ajustesStockArgs<ExtArgs>
+    transferenciasSolicitadas?: boolean | Utilizador$transferenciasSolicitadasArgs<ExtArgs>
+    transferenciasConfirmadas?: boolean | Utilizador$transferenciasConfirmadasArgs<ExtArgs>
+    encomendasRecebidas?: boolean | Utilizador$encomendasRecebidasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -11056,6 +11640,10 @@ export namespace Prisma {
     dadosContratuais?: boolean | Utilizador$dadosContratuaisArgs<ExtArgs>
     chefe?: boolean | Utilizador$chefeArgs<ExtArgs>
     subordinados?: boolean | Utilizador$subordinadosArgs<ExtArgs>
+    ajustesStock?: boolean | Utilizador$ajustesStockArgs<ExtArgs>
+    transferenciasSolicitadas?: boolean | Utilizador$transferenciasSolicitadasArgs<ExtArgs>
+    transferenciasConfirmadas?: boolean | Utilizador$transferenciasConfirmadasArgs<ExtArgs>
+    encomendasRecebidas?: boolean | Utilizador$encomendasRecebidasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11138,6 +11726,10 @@ export namespace Prisma {
       dadosContratuais: Prisma.$DadosContratuaisPayload<ExtArgs> | null
       chefe: Prisma.$UtilizadorPayload<ExtArgs> | null
       subordinados: Prisma.$UtilizadorPayload<ExtArgs>[]
+      ajustesStock: Prisma.$AjusteStockPayload<ExtArgs>[]
+      transferenciasSolicitadas: Prisma.$TransferenciaStockPayload<ExtArgs>[]
+      transferenciasConfirmadas: Prisma.$TransferenciaStockPayload<ExtArgs>[]
+      encomendasRecebidas: Prisma.$EncomendaFornecedorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11617,6 +12209,10 @@ export namespace Prisma {
     dadosContratuais<T extends Utilizador$dadosContratuaisArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$dadosContratuaisArgs<ExtArgs>>): Prisma__DadosContratuaisClient<$Result.GetResult<Prisma.$DadosContratuaisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     chefe<T extends Utilizador$chefeArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$chefeArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     subordinados<T extends Utilizador$subordinadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$subordinadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ajustesStock<T extends Utilizador$ajustesStockArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$ajustesStockArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transferenciasSolicitadas<T extends Utilizador$transferenciasSolicitadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$transferenciasSolicitadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transferenciasConfirmadas<T extends Utilizador$transferenciasConfirmadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$transferenciasConfirmadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    encomendasRecebidas<T extends Utilizador$encomendasRecebidasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$encomendasRecebidasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13722,6 +14318,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UtilizadorScalarFieldEnum | UtilizadorScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.ajustesStock
+   */
+  export type Utilizador$ajustesStockArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    where?: AjusteStockWhereInput
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    cursor?: AjusteStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AjusteStockScalarFieldEnum | AjusteStockScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.transferenciasSolicitadas
+   */
+  export type Utilizador$transferenciasSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    where?: TransferenciaStockWhereInput
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    cursor?: TransferenciaStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.transferenciasConfirmadas
+   */
+  export type Utilizador$transferenciasConfirmadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    where?: TransferenciaStockWhereInput
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    cursor?: TransferenciaStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.encomendasRecebidas
+   */
+  export type Utilizador$encomendasRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    where?: EncomendaFornecedorWhereInput
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
   }
 
   /**
@@ -27123,6 +27815,9 @@ export namespace Prisma {
     id: string | null
     administradoEm: Date | null
     observacoes: string | null
+    verificacao5Certas: boolean | null
+    naoAdministrada: boolean | null
+    motivoNaoAdmin: string | null
     medicacaoId: string | null
     doenteId: string | null
     administradoPorId: string | null
@@ -27132,6 +27827,9 @@ export namespace Prisma {
     id: string | null
     administradoEm: Date | null
     observacoes: string | null
+    verificacao5Certas: boolean | null
+    naoAdministrada: boolean | null
+    motivoNaoAdmin: string | null
     medicacaoId: string | null
     doenteId: string | null
     administradoPorId: string | null
@@ -27141,6 +27839,9 @@ export namespace Prisma {
     id: number
     administradoEm: number
     observacoes: number
+    verificacao5Certas: number
+    naoAdministrada: number
+    motivoNaoAdmin: number
     medicacaoId: number
     doenteId: number
     administradoPorId: number
@@ -27152,6 +27853,9 @@ export namespace Prisma {
     id?: true
     administradoEm?: true
     observacoes?: true
+    verificacao5Certas?: true
+    naoAdministrada?: true
+    motivoNaoAdmin?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27161,6 +27865,9 @@ export namespace Prisma {
     id?: true
     administradoEm?: true
     observacoes?: true
+    verificacao5Certas?: true
+    naoAdministrada?: true
+    motivoNaoAdmin?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27170,6 +27877,9 @@ export namespace Prisma {
     id?: true
     administradoEm?: true
     observacoes?: true
+    verificacao5Certas?: true
+    naoAdministrada?: true
+    motivoNaoAdmin?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27252,6 +27962,9 @@ export namespace Prisma {
     id: string
     administradoEm: Date
     observacoes: string | null
+    verificacao5Certas: boolean
+    naoAdministrada: boolean
+    motivoNaoAdmin: string | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -27278,6 +27991,9 @@ export namespace Prisma {
     id?: boolean
     administradoEm?: boolean
     observacoes?: boolean
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -27290,6 +28006,9 @@ export namespace Prisma {
     id?: boolean
     administradoEm?: boolean
     observacoes?: boolean
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -27302,6 +28021,9 @@ export namespace Prisma {
     id?: boolean
     administradoEm?: boolean
     observacoes?: boolean
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -27314,12 +28036,15 @@ export namespace Prisma {
     id?: boolean
     administradoEm?: boolean
     observacoes?: boolean
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
   }
 
-  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
+  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "verificacao5Certas" | "naoAdministrada" | "motivoNaoAdmin" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
   export type RegistoMedicacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     medicacao?: boolean | MedicacaoDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -27347,6 +28072,9 @@ export namespace Prisma {
       id: string
       administradoEm: Date
       observacoes: string | null
+      verificacao5Certas: boolean
+      naoAdministrada: boolean
+      motivoNaoAdmin: string | null
       medicacaoId: string
       doenteId: string
       administradoPorId: string
@@ -27779,6 +28507,9 @@ export namespace Prisma {
     readonly id: FieldRef<"RegistoMedicacao", 'String'>
     readonly administradoEm: FieldRef<"RegistoMedicacao", 'DateTime'>
     readonly observacoes: FieldRef<"RegistoMedicacao", 'String'>
+    readonly verificacao5Certas: FieldRef<"RegistoMedicacao", 'Boolean'>
+    readonly naoAdministrada: FieldRef<"RegistoMedicacao", 'Boolean'>
+    readonly motivoNaoAdmin: FieldRef<"RegistoMedicacao", 'String'>
     readonly medicacaoId: FieldRef<"RegistoMedicacao", 'String'>
     readonly doenteId: FieldRef<"RegistoMedicacao", 'String'>
     readonly administradoPorId: FieldRef<"RegistoMedicacao", 'String'>
@@ -33722,6 +34453,7 @@ export namespace Prisma {
     saturacaoO2: number | null
     frequenciaRespiratoria: number | null
     peso: number | null
+    news2: number | null
   }
 
   export type SinalVitalSumAggregateOutputType = {
@@ -33732,6 +34464,7 @@ export namespace Prisma {
     saturacaoO2: number | null
     frequenciaRespiratoria: number | null
     peso: number | null
+    news2: number | null
   }
 
   export type SinalVitalMinAggregateOutputType = {
@@ -33747,6 +34480,8 @@ export namespace Prisma {
     frequenciaRespiratoria: number | null
     peso: number | null
     notas: string | null
+    avpu: string | null
+    news2: number | null
   }
 
   export type SinalVitalMaxAggregateOutputType = {
@@ -33762,6 +34497,8 @@ export namespace Prisma {
     frequenciaRespiratoria: number | null
     peso: number | null
     notas: string | null
+    avpu: string | null
+    news2: number | null
   }
 
   export type SinalVitalCountAggregateOutputType = {
@@ -33777,6 +34514,8 @@ export namespace Prisma {
     frequenciaRespiratoria: number
     peso: number
     notas: number
+    avpu: number
+    news2: number
     _all: number
   }
 
@@ -33789,6 +34528,7 @@ export namespace Prisma {
     saturacaoO2?: true
     frequenciaRespiratoria?: true
     peso?: true
+    news2?: true
   }
 
   export type SinalVitalSumAggregateInputType = {
@@ -33799,6 +34539,7 @@ export namespace Prisma {
     saturacaoO2?: true
     frequenciaRespiratoria?: true
     peso?: true
+    news2?: true
   }
 
   export type SinalVitalMinAggregateInputType = {
@@ -33814,6 +34555,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: true
     peso?: true
     notas?: true
+    avpu?: true
+    news2?: true
   }
 
   export type SinalVitalMaxAggregateInputType = {
@@ -33829,6 +34572,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: true
     peso?: true
     notas?: true
+    avpu?: true
+    news2?: true
   }
 
   export type SinalVitalCountAggregateInputType = {
@@ -33844,6 +34589,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: true
     peso?: true
     notas?: true
+    avpu?: true
+    news2?: true
     _all?: true
   }
 
@@ -33946,6 +34693,8 @@ export namespace Prisma {
     frequenciaRespiratoria: number | null
     peso: number | null
     notas: string | null
+    avpu: string | null
+    news2: number | null
     _count: SinalVitalCountAggregateOutputType | null
     _avg: SinalVitalAvgAggregateOutputType | null
     _sum: SinalVitalSumAggregateOutputType | null
@@ -33980,6 +34729,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: boolean
     peso?: boolean
     notas?: boolean
+    avpu?: boolean
+    news2?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sinalVital"]>
@@ -33997,6 +34748,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: boolean
     peso?: boolean
     notas?: boolean
+    avpu?: boolean
+    news2?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sinalVital"]>
@@ -34014,6 +34767,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: boolean
     peso?: boolean
     notas?: boolean
+    avpu?: boolean
+    news2?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sinalVital"]>
@@ -34031,9 +34786,11 @@ export namespace Prisma {
     frequenciaRespiratoria?: boolean
     peso?: boolean
     notas?: boolean
+    avpu?: boolean
+    news2?: boolean
   }
 
-  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas", ExtArgs["result"]["sinalVital"]>
+  export type SinalVitalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "registadoPorId" | "data" | "pressaoSistolica" | "pressaoDiastolica" | "pulso" | "temperatura" | "saturacaoO2" | "frequenciaRespiratoria" | "peso" | "notas" | "avpu" | "news2", ExtArgs["result"]["sinalVital"]>
   export type SinalVitalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -34066,6 +34823,8 @@ export namespace Prisma {
       frequenciaRespiratoria: number | null
       peso: number | null
       notas: string | null
+      avpu: string | null
+      news2: number | null
     }, ExtArgs["result"]["sinalVital"]>
     composites: {}
   }
@@ -34503,6 +35262,8 @@ export namespace Prisma {
     readonly frequenciaRespiratoria: FieldRef<"SinalVital", 'Int'>
     readonly peso: FieldRef<"SinalVital", 'Float'>
     readonly notas: FieldRef<"SinalVital", 'String'>
+    readonly avpu: FieldRef<"SinalVital", 'String'>
+    readonly news2: FieldRef<"SinalVital", 'Int'>
   }
     
 
@@ -52296,11 +53057,13 @@ export namespace Prisma {
   export type StockItemAvgAggregateOutputType = {
     quantidade: number | null
     quantidadeMinima: number | null
+    precoUnitario: number | null
   }
 
   export type StockItemSumAggregateOutputType = {
     quantidade: number | null
     quantidadeMinima: number | null
+    precoUnitario: number | null
   }
 
   export type StockItemMinAggregateOutputType = {
@@ -52312,6 +53075,8 @@ export namespace Prisma {
     unidade: string | null
     validade: Date | null
     servico: string | null
+    precoUnitario: number | null
+    catalogoId: string | null
     criadoEm: Date | null
   }
 
@@ -52324,6 +53089,8 @@ export namespace Prisma {
     unidade: string | null
     validade: Date | null
     servico: string | null
+    precoUnitario: number | null
+    catalogoId: string | null
     criadoEm: Date | null
   }
 
@@ -52336,6 +53103,8 @@ export namespace Prisma {
     unidade: number
     validade: number
     servico: number
+    precoUnitario: number
+    catalogoId: number
     criadoEm: number
     _all: number
   }
@@ -52344,11 +53113,13 @@ export namespace Prisma {
   export type StockItemAvgAggregateInputType = {
     quantidade?: true
     quantidadeMinima?: true
+    precoUnitario?: true
   }
 
   export type StockItemSumAggregateInputType = {
     quantidade?: true
     quantidadeMinima?: true
+    precoUnitario?: true
   }
 
   export type StockItemMinAggregateInputType = {
@@ -52360,6 +53131,8 @@ export namespace Prisma {
     unidade?: true
     validade?: true
     servico?: true
+    precoUnitario?: true
+    catalogoId?: true
     criadoEm?: true
   }
 
@@ -52372,6 +53145,8 @@ export namespace Prisma {
     unidade?: true
     validade?: true
     servico?: true
+    precoUnitario?: true
+    catalogoId?: true
     criadoEm?: true
   }
 
@@ -52384,6 +53159,8 @@ export namespace Prisma {
     unidade?: true
     validade?: true
     servico?: true
+    precoUnitario?: true
+    catalogoId?: true
     criadoEm?: true
     _all?: true
   }
@@ -52483,6 +53260,8 @@ export namespace Prisma {
     unidade: string
     validade: Date | null
     servico: string
+    precoUnitario: number | null
+    catalogoId: string | null
     criadoEm: Date
     _count: StockItemCountAggregateOutputType | null
     _avg: StockItemAvgAggregateOutputType | null
@@ -52514,8 +53293,14 @@ export namespace Prisma {
     unidade?: boolean
     validade?: boolean
     servico?: boolean
+    precoUnitario?: boolean
+    catalogoId?: boolean
     criadoEm?: boolean
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
     pedidos?: boolean | StockItem$pedidosArgs<ExtArgs>
+    ajustes?: boolean | StockItem$ajustesArgs<ExtArgs>
+    transferencias?: boolean | StockItem$transferenciasArgs<ExtArgs>
+    encomendas?: boolean | StockItem$encomendasArgs<ExtArgs>
     _count?: boolean | StockItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["stockItem"]>
 
@@ -52528,7 +53313,10 @@ export namespace Prisma {
     unidade?: boolean
     validade?: boolean
     servico?: boolean
+    precoUnitario?: boolean
+    catalogoId?: boolean
     criadoEm?: boolean
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
   }, ExtArgs["result"]["stockItem"]>
 
   export type StockItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -52540,7 +53328,10 @@ export namespace Prisma {
     unidade?: boolean
     validade?: boolean
     servico?: boolean
+    precoUnitario?: boolean
+    catalogoId?: boolean
     criadoEm?: boolean
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
   }, ExtArgs["result"]["stockItem"]>
 
   export type StockItemSelectScalar = {
@@ -52552,21 +53343,35 @@ export namespace Prisma {
     unidade?: boolean
     validade?: boolean
     servico?: boolean
+    precoUnitario?: boolean
+    catalogoId?: boolean
     criadoEm?: boolean
   }
 
-  export type StockItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "tipo" | "quantidade" | "quantidadeMinima" | "unidade" | "validade" | "servico" | "criadoEm", ExtArgs["result"]["stockItem"]>
+  export type StockItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "tipo" | "quantidade" | "quantidadeMinima" | "unidade" | "validade" | "servico" | "precoUnitario" | "catalogoId" | "criadoEm", ExtArgs["result"]["stockItem"]>
   export type StockItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
     pedidos?: boolean | StockItem$pedidosArgs<ExtArgs>
+    ajustes?: boolean | StockItem$ajustesArgs<ExtArgs>
+    transferencias?: boolean | StockItem$transferenciasArgs<ExtArgs>
+    encomendas?: boolean | StockItem$encomendasArgs<ExtArgs>
     _count?: boolean | StockItemCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type StockItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type StockItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type StockItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
+  }
+  export type StockItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    catalogo?: boolean | StockItem$catalogoArgs<ExtArgs>
+  }
 
   export type $StockItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "StockItem"
     objects: {
+      catalogo: Prisma.$CatalogoMedicamentoPayload<ExtArgs> | null
       pedidos: Prisma.$PedidoFarmaciaPayload<ExtArgs>[]
+      ajustes: Prisma.$AjusteStockPayload<ExtArgs>[]
+      transferencias: Prisma.$TransferenciaStockPayload<ExtArgs>[]
+      encomendas: Prisma.$EncomendaFornecedorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -52577,6 +53382,8 @@ export namespace Prisma {
       unidade: string
       validade: Date | null
       servico: string
+      precoUnitario: number | null
+      catalogoId: string | null
       criadoEm: Date
     }, ExtArgs["result"]["stockItem"]>
     composites: {}
@@ -52972,7 +53779,11 @@ export namespace Prisma {
    */
   export interface Prisma__StockItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    catalogo<T extends StockItem$catalogoArgs<ExtArgs> = {}>(args?: Subset<T, StockItem$catalogoArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     pedidos<T extends StockItem$pedidosArgs<ExtArgs> = {}>(args?: Subset<T, StockItem$pedidosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoFarmaciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ajustes<T extends StockItem$ajustesArgs<ExtArgs> = {}>(args?: Subset<T, StockItem$ajustesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transferencias<T extends StockItem$transferenciasArgs<ExtArgs> = {}>(args?: Subset<T, StockItem$transferenciasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    encomendas<T extends StockItem$encomendasArgs<ExtArgs> = {}>(args?: Subset<T, StockItem$encomendasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -53010,6 +53821,8 @@ export namespace Prisma {
     readonly unidade: FieldRef<"StockItem", 'String'>
     readonly validade: FieldRef<"StockItem", 'DateTime'>
     readonly servico: FieldRef<"StockItem", 'String'>
+    readonly precoUnitario: FieldRef<"StockItem", 'Float'>
+    readonly catalogoId: FieldRef<"StockItem", 'String'>
     readonly criadoEm: FieldRef<"StockItem", 'DateTime'>
   }
     
@@ -53260,6 +54073,10 @@ export namespace Prisma {
      */
     data: StockItemCreateManyInput | StockItemCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockItemIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -53330,6 +54147,10 @@ export namespace Prisma {
      * Limit how many StockItems to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockItemIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -53399,6 +54220,25 @@ export namespace Prisma {
   }
 
   /**
+   * StockItem.catalogo
+   */
+  export type StockItem$catalogoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    where?: CatalogoMedicamentoWhereInput
+  }
+
+  /**
    * StockItem.pedidos
    */
   export type StockItem$pedidosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -53420,6 +54260,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PedidoFarmaciaScalarFieldEnum | PedidoFarmaciaScalarFieldEnum[]
+  }
+
+  /**
+   * StockItem.ajustes
+   */
+  export type StockItem$ajustesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    where?: AjusteStockWhereInput
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    cursor?: AjusteStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AjusteStockScalarFieldEnum | AjusteStockScalarFieldEnum[]
+  }
+
+  /**
+   * StockItem.transferencias
+   */
+  export type StockItem$transferenciasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    where?: TransferenciaStockWhereInput
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    cursor?: TransferenciaStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * StockItem.encomendas
+   */
+  export type StockItem$encomendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    where?: EncomendaFornecedorWhereInput
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
   }
 
   /**
@@ -54617,6 +55529,5803 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PedidoFarmaciaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CatalogoMedicamento
+   */
+
+  export type AggregateCatalogoMedicamento = {
+    _count: CatalogoMedicamentoCountAggregateOutputType | null
+    _min: CatalogoMedicamentoMinAggregateOutputType | null
+    _max: CatalogoMedicamentoMaxAggregateOutputType | null
+  }
+
+  export type CatalogoMedicamentoMinAggregateOutputType = {
+    id: string | null
+    dci: string | null
+    nomeMarca: string | null
+    formaFarmaceutica: string | null
+    classeTerap: string | null
+    unidade: string | null
+    concentracao: string | null
+    codigoATC: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type CatalogoMedicamentoMaxAggregateOutputType = {
+    id: string | null
+    dci: string | null
+    nomeMarca: string | null
+    formaFarmaceutica: string | null
+    classeTerap: string | null
+    unidade: string | null
+    concentracao: string | null
+    codigoATC: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type CatalogoMedicamentoCountAggregateOutputType = {
+    id: number
+    dci: number
+    nomeMarca: number
+    formaFarmaceutica: number
+    classeTerap: number
+    unidade: number
+    concentracao: number
+    codigoATC: number
+    ativo: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type CatalogoMedicamentoMinAggregateInputType = {
+    id?: true
+    dci?: true
+    nomeMarca?: true
+    formaFarmaceutica?: true
+    classeTerap?: true
+    unidade?: true
+    concentracao?: true
+    codigoATC?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type CatalogoMedicamentoMaxAggregateInputType = {
+    id?: true
+    dci?: true
+    nomeMarca?: true
+    formaFarmaceutica?: true
+    classeTerap?: true
+    unidade?: true
+    concentracao?: true
+    codigoATC?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type CatalogoMedicamentoCountAggregateInputType = {
+    id?: true
+    dci?: true
+    nomeMarca?: true
+    formaFarmaceutica?: true
+    classeTerap?: true
+    unidade?: true
+    concentracao?: true
+    codigoATC?: true
+    ativo?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type CatalogoMedicamentoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CatalogoMedicamento to aggregate.
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CatalogoMedicamentos to fetch.
+     */
+    orderBy?: CatalogoMedicamentoOrderByWithRelationInput | CatalogoMedicamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CatalogoMedicamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CatalogoMedicamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CatalogoMedicamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CatalogoMedicamentos
+    **/
+    _count?: true | CatalogoMedicamentoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CatalogoMedicamentoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CatalogoMedicamentoMaxAggregateInputType
+  }
+
+  export type GetCatalogoMedicamentoAggregateType<T extends CatalogoMedicamentoAggregateArgs> = {
+        [P in keyof T & keyof AggregateCatalogoMedicamento]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCatalogoMedicamento[P]>
+      : GetScalarType<T[P], AggregateCatalogoMedicamento[P]>
+  }
+
+
+
+
+  export type CatalogoMedicamentoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CatalogoMedicamentoWhereInput
+    orderBy?: CatalogoMedicamentoOrderByWithAggregationInput | CatalogoMedicamentoOrderByWithAggregationInput[]
+    by: CatalogoMedicamentoScalarFieldEnum[] | CatalogoMedicamentoScalarFieldEnum
+    having?: CatalogoMedicamentoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CatalogoMedicamentoCountAggregateInputType | true
+    _min?: CatalogoMedicamentoMinAggregateInputType
+    _max?: CatalogoMedicamentoMaxAggregateInputType
+  }
+
+  export type CatalogoMedicamentoGroupByOutputType = {
+    id: string
+    dci: string
+    nomeMarca: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao: string | null
+    codigoATC: string | null
+    ativo: boolean
+    criadoEm: Date
+    _count: CatalogoMedicamentoCountAggregateOutputType | null
+    _min: CatalogoMedicamentoMinAggregateOutputType | null
+    _max: CatalogoMedicamentoMaxAggregateOutputType | null
+  }
+
+  type GetCatalogoMedicamentoGroupByPayload<T extends CatalogoMedicamentoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CatalogoMedicamentoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CatalogoMedicamentoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CatalogoMedicamentoGroupByOutputType[P]>
+            : GetScalarType<T[P], CatalogoMedicamentoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CatalogoMedicamentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dci?: boolean
+    nomeMarca?: boolean
+    formaFarmaceutica?: boolean
+    classeTerap?: boolean
+    unidade?: boolean
+    concentracao?: boolean
+    codigoATC?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    stockItems?: boolean | CatalogoMedicamento$stockItemsArgs<ExtArgs>
+    _count?: boolean | CatalogoMedicamentoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["catalogoMedicamento"]>
+
+  export type CatalogoMedicamentoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dci?: boolean
+    nomeMarca?: boolean
+    formaFarmaceutica?: boolean
+    classeTerap?: boolean
+    unidade?: boolean
+    concentracao?: boolean
+    codigoATC?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["catalogoMedicamento"]>
+
+  export type CatalogoMedicamentoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dci?: boolean
+    nomeMarca?: boolean
+    formaFarmaceutica?: boolean
+    classeTerap?: boolean
+    unidade?: boolean
+    concentracao?: boolean
+    codigoATC?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["catalogoMedicamento"]>
+
+  export type CatalogoMedicamentoSelectScalar = {
+    id?: boolean
+    dci?: boolean
+    nomeMarca?: boolean
+    formaFarmaceutica?: boolean
+    classeTerap?: boolean
+    unidade?: boolean
+    concentracao?: boolean
+    codigoATC?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }
+
+  export type CatalogoMedicamentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dci" | "nomeMarca" | "formaFarmaceutica" | "classeTerap" | "unidade" | "concentracao" | "codigoATC" | "ativo" | "criadoEm", ExtArgs["result"]["catalogoMedicamento"]>
+  export type CatalogoMedicamentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItems?: boolean | CatalogoMedicamento$stockItemsArgs<ExtArgs>
+    _count?: boolean | CatalogoMedicamentoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CatalogoMedicamentoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CatalogoMedicamentoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CatalogoMedicamentoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CatalogoMedicamento"
+    objects: {
+      stockItems: Prisma.$StockItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dci: string
+      nomeMarca: string | null
+      formaFarmaceutica: string
+      classeTerap: string
+      unidade: string
+      concentracao: string | null
+      codigoATC: string | null
+      ativo: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["catalogoMedicamento"]>
+    composites: {}
+  }
+
+  type CatalogoMedicamentoGetPayload<S extends boolean | null | undefined | CatalogoMedicamentoDefaultArgs> = $Result.GetResult<Prisma.$CatalogoMedicamentoPayload, S>
+
+  type CatalogoMedicamentoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CatalogoMedicamentoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CatalogoMedicamentoCountAggregateInputType | true
+    }
+
+  export interface CatalogoMedicamentoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CatalogoMedicamento'], meta: { name: 'CatalogoMedicamento' } }
+    /**
+     * Find zero or one CatalogoMedicamento that matches the filter.
+     * @param {CatalogoMedicamentoFindUniqueArgs} args - Arguments to find a CatalogoMedicamento
+     * @example
+     * // Get one CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CatalogoMedicamentoFindUniqueArgs>(args: SelectSubset<T, CatalogoMedicamentoFindUniqueArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CatalogoMedicamento that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CatalogoMedicamentoFindUniqueOrThrowArgs} args - Arguments to find a CatalogoMedicamento
+     * @example
+     * // Get one CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CatalogoMedicamentoFindUniqueOrThrowArgs>(args: SelectSubset<T, CatalogoMedicamentoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CatalogoMedicamento that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoFindFirstArgs} args - Arguments to find a CatalogoMedicamento
+     * @example
+     * // Get one CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CatalogoMedicamentoFindFirstArgs>(args?: SelectSubset<T, CatalogoMedicamentoFindFirstArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CatalogoMedicamento that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoFindFirstOrThrowArgs} args - Arguments to find a CatalogoMedicamento
+     * @example
+     * // Get one CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CatalogoMedicamentoFindFirstOrThrowArgs>(args?: SelectSubset<T, CatalogoMedicamentoFindFirstOrThrowArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CatalogoMedicamentos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CatalogoMedicamentos
+     * const catalogoMedicamentos = await prisma.catalogoMedicamento.findMany()
+     * 
+     * // Get first 10 CatalogoMedicamentos
+     * const catalogoMedicamentos = await prisma.catalogoMedicamento.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const catalogoMedicamentoWithIdOnly = await prisma.catalogoMedicamento.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CatalogoMedicamentoFindManyArgs>(args?: SelectSubset<T, CatalogoMedicamentoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CatalogoMedicamento.
+     * @param {CatalogoMedicamentoCreateArgs} args - Arguments to create a CatalogoMedicamento.
+     * @example
+     * // Create one CatalogoMedicamento
+     * const CatalogoMedicamento = await prisma.catalogoMedicamento.create({
+     *   data: {
+     *     // ... data to create a CatalogoMedicamento
+     *   }
+     * })
+     * 
+     */
+    create<T extends CatalogoMedicamentoCreateArgs>(args: SelectSubset<T, CatalogoMedicamentoCreateArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CatalogoMedicamentos.
+     * @param {CatalogoMedicamentoCreateManyArgs} args - Arguments to create many CatalogoMedicamentos.
+     * @example
+     * // Create many CatalogoMedicamentos
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CatalogoMedicamentoCreateManyArgs>(args?: SelectSubset<T, CatalogoMedicamentoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CatalogoMedicamentos and returns the data saved in the database.
+     * @param {CatalogoMedicamentoCreateManyAndReturnArgs} args - Arguments to create many CatalogoMedicamentos.
+     * @example
+     * // Create many CatalogoMedicamentos
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CatalogoMedicamentos and only return the `id`
+     * const catalogoMedicamentoWithIdOnly = await prisma.catalogoMedicamento.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CatalogoMedicamentoCreateManyAndReturnArgs>(args?: SelectSubset<T, CatalogoMedicamentoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CatalogoMedicamento.
+     * @param {CatalogoMedicamentoDeleteArgs} args - Arguments to delete one CatalogoMedicamento.
+     * @example
+     * // Delete one CatalogoMedicamento
+     * const CatalogoMedicamento = await prisma.catalogoMedicamento.delete({
+     *   where: {
+     *     // ... filter to delete one CatalogoMedicamento
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CatalogoMedicamentoDeleteArgs>(args: SelectSubset<T, CatalogoMedicamentoDeleteArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CatalogoMedicamento.
+     * @param {CatalogoMedicamentoUpdateArgs} args - Arguments to update one CatalogoMedicamento.
+     * @example
+     * // Update one CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CatalogoMedicamentoUpdateArgs>(args: SelectSubset<T, CatalogoMedicamentoUpdateArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CatalogoMedicamentos.
+     * @param {CatalogoMedicamentoDeleteManyArgs} args - Arguments to filter CatalogoMedicamentos to delete.
+     * @example
+     * // Delete a few CatalogoMedicamentos
+     * const { count } = await prisma.catalogoMedicamento.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CatalogoMedicamentoDeleteManyArgs>(args?: SelectSubset<T, CatalogoMedicamentoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CatalogoMedicamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CatalogoMedicamentos
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CatalogoMedicamentoUpdateManyArgs>(args: SelectSubset<T, CatalogoMedicamentoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CatalogoMedicamentos and returns the data updated in the database.
+     * @param {CatalogoMedicamentoUpdateManyAndReturnArgs} args - Arguments to update many CatalogoMedicamentos.
+     * @example
+     * // Update many CatalogoMedicamentos
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CatalogoMedicamentos and only return the `id`
+     * const catalogoMedicamentoWithIdOnly = await prisma.catalogoMedicamento.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CatalogoMedicamentoUpdateManyAndReturnArgs>(args: SelectSubset<T, CatalogoMedicamentoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CatalogoMedicamento.
+     * @param {CatalogoMedicamentoUpsertArgs} args - Arguments to update or create a CatalogoMedicamento.
+     * @example
+     * // Update or create a CatalogoMedicamento
+     * const catalogoMedicamento = await prisma.catalogoMedicamento.upsert({
+     *   create: {
+     *     // ... data to create a CatalogoMedicamento
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CatalogoMedicamento we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CatalogoMedicamentoUpsertArgs>(args: SelectSubset<T, CatalogoMedicamentoUpsertArgs<ExtArgs>>): Prisma__CatalogoMedicamentoClient<$Result.GetResult<Prisma.$CatalogoMedicamentoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CatalogoMedicamentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoCountArgs} args - Arguments to filter CatalogoMedicamentos to count.
+     * @example
+     * // Count the number of CatalogoMedicamentos
+     * const count = await prisma.catalogoMedicamento.count({
+     *   where: {
+     *     // ... the filter for the CatalogoMedicamentos we want to count
+     *   }
+     * })
+    **/
+    count<T extends CatalogoMedicamentoCountArgs>(
+      args?: Subset<T, CatalogoMedicamentoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CatalogoMedicamentoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CatalogoMedicamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CatalogoMedicamentoAggregateArgs>(args: Subset<T, CatalogoMedicamentoAggregateArgs>): Prisma.PrismaPromise<GetCatalogoMedicamentoAggregateType<T>>
+
+    /**
+     * Group by CatalogoMedicamento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CatalogoMedicamentoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CatalogoMedicamentoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CatalogoMedicamentoGroupByArgs['orderBy'] }
+        : { orderBy?: CatalogoMedicamentoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CatalogoMedicamentoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCatalogoMedicamentoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CatalogoMedicamento model
+   */
+  readonly fields: CatalogoMedicamentoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CatalogoMedicamento.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CatalogoMedicamentoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    stockItems<T extends CatalogoMedicamento$stockItemsArgs<ExtArgs> = {}>(args?: Subset<T, CatalogoMedicamento$stockItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CatalogoMedicamento model
+   */
+  interface CatalogoMedicamentoFieldRefs {
+    readonly id: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly dci: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly nomeMarca: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly formaFarmaceutica: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly classeTerap: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly unidade: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly concentracao: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly codigoATC: FieldRef<"CatalogoMedicamento", 'String'>
+    readonly ativo: FieldRef<"CatalogoMedicamento", 'Boolean'>
+    readonly criadoEm: FieldRef<"CatalogoMedicamento", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CatalogoMedicamento findUnique
+   */
+  export type CatalogoMedicamentoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which CatalogoMedicamento to fetch.
+     */
+    where: CatalogoMedicamentoWhereUniqueInput
+  }
+
+  /**
+   * CatalogoMedicamento findUniqueOrThrow
+   */
+  export type CatalogoMedicamentoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which CatalogoMedicamento to fetch.
+     */
+    where: CatalogoMedicamentoWhereUniqueInput
+  }
+
+  /**
+   * CatalogoMedicamento findFirst
+   */
+  export type CatalogoMedicamentoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which CatalogoMedicamento to fetch.
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CatalogoMedicamentos to fetch.
+     */
+    orderBy?: CatalogoMedicamentoOrderByWithRelationInput | CatalogoMedicamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CatalogoMedicamentos.
+     */
+    cursor?: CatalogoMedicamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CatalogoMedicamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CatalogoMedicamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CatalogoMedicamentos.
+     */
+    distinct?: CatalogoMedicamentoScalarFieldEnum | CatalogoMedicamentoScalarFieldEnum[]
+  }
+
+  /**
+   * CatalogoMedicamento findFirstOrThrow
+   */
+  export type CatalogoMedicamentoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which CatalogoMedicamento to fetch.
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CatalogoMedicamentos to fetch.
+     */
+    orderBy?: CatalogoMedicamentoOrderByWithRelationInput | CatalogoMedicamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CatalogoMedicamentos.
+     */
+    cursor?: CatalogoMedicamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CatalogoMedicamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CatalogoMedicamentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CatalogoMedicamentos.
+     */
+    distinct?: CatalogoMedicamentoScalarFieldEnum | CatalogoMedicamentoScalarFieldEnum[]
+  }
+
+  /**
+   * CatalogoMedicamento findMany
+   */
+  export type CatalogoMedicamentoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter, which CatalogoMedicamentos to fetch.
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CatalogoMedicamentos to fetch.
+     */
+    orderBy?: CatalogoMedicamentoOrderByWithRelationInput | CatalogoMedicamentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CatalogoMedicamentos.
+     */
+    cursor?: CatalogoMedicamentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CatalogoMedicamentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CatalogoMedicamentos.
+     */
+    skip?: number
+    distinct?: CatalogoMedicamentoScalarFieldEnum | CatalogoMedicamentoScalarFieldEnum[]
+  }
+
+  /**
+   * CatalogoMedicamento create
+   */
+  export type CatalogoMedicamentoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CatalogoMedicamento.
+     */
+    data: XOR<CatalogoMedicamentoCreateInput, CatalogoMedicamentoUncheckedCreateInput>
+  }
+
+  /**
+   * CatalogoMedicamento createMany
+   */
+  export type CatalogoMedicamentoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CatalogoMedicamentos.
+     */
+    data: CatalogoMedicamentoCreateManyInput | CatalogoMedicamentoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CatalogoMedicamento createManyAndReturn
+   */
+  export type CatalogoMedicamentoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * The data used to create many CatalogoMedicamentos.
+     */
+    data: CatalogoMedicamentoCreateManyInput | CatalogoMedicamentoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CatalogoMedicamento update
+   */
+  export type CatalogoMedicamentoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CatalogoMedicamento.
+     */
+    data: XOR<CatalogoMedicamentoUpdateInput, CatalogoMedicamentoUncheckedUpdateInput>
+    /**
+     * Choose, which CatalogoMedicamento to update.
+     */
+    where: CatalogoMedicamentoWhereUniqueInput
+  }
+
+  /**
+   * CatalogoMedicamento updateMany
+   */
+  export type CatalogoMedicamentoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CatalogoMedicamentos.
+     */
+    data: XOR<CatalogoMedicamentoUpdateManyMutationInput, CatalogoMedicamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which CatalogoMedicamentos to update
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * Limit how many CatalogoMedicamentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CatalogoMedicamento updateManyAndReturn
+   */
+  export type CatalogoMedicamentoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * The data used to update CatalogoMedicamentos.
+     */
+    data: XOR<CatalogoMedicamentoUpdateManyMutationInput, CatalogoMedicamentoUncheckedUpdateManyInput>
+    /**
+     * Filter which CatalogoMedicamentos to update
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * Limit how many CatalogoMedicamentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CatalogoMedicamento upsert
+   */
+  export type CatalogoMedicamentoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CatalogoMedicamento to update in case it exists.
+     */
+    where: CatalogoMedicamentoWhereUniqueInput
+    /**
+     * In case the CatalogoMedicamento found by the `where` argument doesn't exist, create a new CatalogoMedicamento with this data.
+     */
+    create: XOR<CatalogoMedicamentoCreateInput, CatalogoMedicamentoUncheckedCreateInput>
+    /**
+     * In case the CatalogoMedicamento was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CatalogoMedicamentoUpdateInput, CatalogoMedicamentoUncheckedUpdateInput>
+  }
+
+  /**
+   * CatalogoMedicamento delete
+   */
+  export type CatalogoMedicamentoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+    /**
+     * Filter which CatalogoMedicamento to delete.
+     */
+    where: CatalogoMedicamentoWhereUniqueInput
+  }
+
+  /**
+   * CatalogoMedicamento deleteMany
+   */
+  export type CatalogoMedicamentoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CatalogoMedicamentos to delete
+     */
+    where?: CatalogoMedicamentoWhereInput
+    /**
+     * Limit how many CatalogoMedicamentos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CatalogoMedicamento.stockItems
+   */
+  export type CatalogoMedicamento$stockItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockItem
+     */
+    select?: StockItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockItem
+     */
+    omit?: StockItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockItemInclude<ExtArgs> | null
+    where?: StockItemWhereInput
+    orderBy?: StockItemOrderByWithRelationInput | StockItemOrderByWithRelationInput[]
+    cursor?: StockItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StockItemScalarFieldEnum | StockItemScalarFieldEnum[]
+  }
+
+  /**
+   * CatalogoMedicamento without action
+   */
+  export type CatalogoMedicamentoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CatalogoMedicamento
+     */
+    select?: CatalogoMedicamentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CatalogoMedicamento
+     */
+    omit?: CatalogoMedicamentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CatalogoMedicamentoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AjusteStock
+   */
+
+  export type AggregateAjusteStock = {
+    _count: AjusteStockCountAggregateOutputType | null
+    _avg: AjusteStockAvgAggregateOutputType | null
+    _sum: AjusteStockSumAggregateOutputType | null
+    _min: AjusteStockMinAggregateOutputType | null
+    _max: AjusteStockMaxAggregateOutputType | null
+  }
+
+  export type AjusteStockAvgAggregateOutputType = {
+    delta: number | null
+  }
+
+  export type AjusteStockSumAggregateOutputType = {
+    delta: number | null
+  }
+
+  export type AjusteStockMinAggregateOutputType = {
+    id: string | null
+    stockItemId: string | null
+    delta: number | null
+    tipo: string | null
+    motivo: string | null
+    utilizadorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type AjusteStockMaxAggregateOutputType = {
+    id: string | null
+    stockItemId: string | null
+    delta: number | null
+    tipo: string | null
+    motivo: string | null
+    utilizadorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type AjusteStockCountAggregateOutputType = {
+    id: number
+    stockItemId: number
+    delta: number
+    tipo: number
+    motivo: number
+    utilizadorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type AjusteStockAvgAggregateInputType = {
+    delta?: true
+  }
+
+  export type AjusteStockSumAggregateInputType = {
+    delta?: true
+  }
+
+  export type AjusteStockMinAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    delta?: true
+    tipo?: true
+    motivo?: true
+    utilizadorId?: true
+    criadoEm?: true
+  }
+
+  export type AjusteStockMaxAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    delta?: true
+    tipo?: true
+    motivo?: true
+    utilizadorId?: true
+    criadoEm?: true
+  }
+
+  export type AjusteStockCountAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    delta?: true
+    tipo?: true
+    motivo?: true
+    utilizadorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type AjusteStockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AjusteStock to aggregate.
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AjusteStocks to fetch.
+     */
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AjusteStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AjusteStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AjusteStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AjusteStocks
+    **/
+    _count?: true | AjusteStockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AjusteStockAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AjusteStockSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AjusteStockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AjusteStockMaxAggregateInputType
+  }
+
+  export type GetAjusteStockAggregateType<T extends AjusteStockAggregateArgs> = {
+        [P in keyof T & keyof AggregateAjusteStock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAjusteStock[P]>
+      : GetScalarType<T[P], AggregateAjusteStock[P]>
+  }
+
+
+
+
+  export type AjusteStockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AjusteStockWhereInput
+    orderBy?: AjusteStockOrderByWithAggregationInput | AjusteStockOrderByWithAggregationInput[]
+    by: AjusteStockScalarFieldEnum[] | AjusteStockScalarFieldEnum
+    having?: AjusteStockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AjusteStockCountAggregateInputType | true
+    _avg?: AjusteStockAvgAggregateInputType
+    _sum?: AjusteStockSumAggregateInputType
+    _min?: AjusteStockMinAggregateInputType
+    _max?: AjusteStockMaxAggregateInputType
+  }
+
+  export type AjusteStockGroupByOutputType = {
+    id: string
+    stockItemId: string
+    delta: number
+    tipo: string
+    motivo: string
+    utilizadorId: string
+    criadoEm: Date
+    _count: AjusteStockCountAggregateOutputType | null
+    _avg: AjusteStockAvgAggregateOutputType | null
+    _sum: AjusteStockSumAggregateOutputType | null
+    _min: AjusteStockMinAggregateOutputType | null
+    _max: AjusteStockMaxAggregateOutputType | null
+  }
+
+  type GetAjusteStockGroupByPayload<T extends AjusteStockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AjusteStockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AjusteStockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AjusteStockGroupByOutputType[P]>
+            : GetScalarType<T[P], AjusteStockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AjusteStockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    delta?: boolean
+    tipo?: boolean
+    motivo?: boolean
+    utilizadorId?: boolean
+    criadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ajusteStock"]>
+
+  export type AjusteStockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    delta?: boolean
+    tipo?: boolean
+    motivo?: boolean
+    utilizadorId?: boolean
+    criadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ajusteStock"]>
+
+  export type AjusteStockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    delta?: boolean
+    tipo?: boolean
+    motivo?: boolean
+    utilizadorId?: boolean
+    criadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["ajusteStock"]>
+
+  export type AjusteStockSelectScalar = {
+    id?: boolean
+    stockItemId?: boolean
+    delta?: boolean
+    tipo?: boolean
+    motivo?: boolean
+    utilizadorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type AjusteStockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stockItemId" | "delta" | "tipo" | "motivo" | "utilizadorId" | "criadoEm", ExtArgs["result"]["ajusteStock"]>
+  export type AjusteStockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AjusteStockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type AjusteStockIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $AjusteStockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AjusteStock"
+    objects: {
+      stockItem: Prisma.$StockItemPayload<ExtArgs>
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      stockItemId: string
+      delta: number
+      tipo: string
+      motivo: string
+      utilizadorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["ajusteStock"]>
+    composites: {}
+  }
+
+  type AjusteStockGetPayload<S extends boolean | null | undefined | AjusteStockDefaultArgs> = $Result.GetResult<Prisma.$AjusteStockPayload, S>
+
+  type AjusteStockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AjusteStockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AjusteStockCountAggregateInputType | true
+    }
+
+  export interface AjusteStockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AjusteStock'], meta: { name: 'AjusteStock' } }
+    /**
+     * Find zero or one AjusteStock that matches the filter.
+     * @param {AjusteStockFindUniqueArgs} args - Arguments to find a AjusteStock
+     * @example
+     * // Get one AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AjusteStockFindUniqueArgs>(args: SelectSubset<T, AjusteStockFindUniqueArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AjusteStock that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AjusteStockFindUniqueOrThrowArgs} args - Arguments to find a AjusteStock
+     * @example
+     * // Get one AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AjusteStockFindUniqueOrThrowArgs>(args: SelectSubset<T, AjusteStockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AjusteStock that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockFindFirstArgs} args - Arguments to find a AjusteStock
+     * @example
+     * // Get one AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AjusteStockFindFirstArgs>(args?: SelectSubset<T, AjusteStockFindFirstArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AjusteStock that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockFindFirstOrThrowArgs} args - Arguments to find a AjusteStock
+     * @example
+     * // Get one AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AjusteStockFindFirstOrThrowArgs>(args?: SelectSubset<T, AjusteStockFindFirstOrThrowArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AjusteStocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AjusteStocks
+     * const ajusteStocks = await prisma.ajusteStock.findMany()
+     * 
+     * // Get first 10 AjusteStocks
+     * const ajusteStocks = await prisma.ajusteStock.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const ajusteStockWithIdOnly = await prisma.ajusteStock.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AjusteStockFindManyArgs>(args?: SelectSubset<T, AjusteStockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AjusteStock.
+     * @param {AjusteStockCreateArgs} args - Arguments to create a AjusteStock.
+     * @example
+     * // Create one AjusteStock
+     * const AjusteStock = await prisma.ajusteStock.create({
+     *   data: {
+     *     // ... data to create a AjusteStock
+     *   }
+     * })
+     * 
+     */
+    create<T extends AjusteStockCreateArgs>(args: SelectSubset<T, AjusteStockCreateArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AjusteStocks.
+     * @param {AjusteStockCreateManyArgs} args - Arguments to create many AjusteStocks.
+     * @example
+     * // Create many AjusteStocks
+     * const ajusteStock = await prisma.ajusteStock.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AjusteStockCreateManyArgs>(args?: SelectSubset<T, AjusteStockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AjusteStocks and returns the data saved in the database.
+     * @param {AjusteStockCreateManyAndReturnArgs} args - Arguments to create many AjusteStocks.
+     * @example
+     * // Create many AjusteStocks
+     * const ajusteStock = await prisma.ajusteStock.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AjusteStocks and only return the `id`
+     * const ajusteStockWithIdOnly = await prisma.ajusteStock.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AjusteStockCreateManyAndReturnArgs>(args?: SelectSubset<T, AjusteStockCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AjusteStock.
+     * @param {AjusteStockDeleteArgs} args - Arguments to delete one AjusteStock.
+     * @example
+     * // Delete one AjusteStock
+     * const AjusteStock = await prisma.ajusteStock.delete({
+     *   where: {
+     *     // ... filter to delete one AjusteStock
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AjusteStockDeleteArgs>(args: SelectSubset<T, AjusteStockDeleteArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AjusteStock.
+     * @param {AjusteStockUpdateArgs} args - Arguments to update one AjusteStock.
+     * @example
+     * // Update one AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AjusteStockUpdateArgs>(args: SelectSubset<T, AjusteStockUpdateArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AjusteStocks.
+     * @param {AjusteStockDeleteManyArgs} args - Arguments to filter AjusteStocks to delete.
+     * @example
+     * // Delete a few AjusteStocks
+     * const { count } = await prisma.ajusteStock.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AjusteStockDeleteManyArgs>(args?: SelectSubset<T, AjusteStockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AjusteStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AjusteStocks
+     * const ajusteStock = await prisma.ajusteStock.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AjusteStockUpdateManyArgs>(args: SelectSubset<T, AjusteStockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AjusteStocks and returns the data updated in the database.
+     * @param {AjusteStockUpdateManyAndReturnArgs} args - Arguments to update many AjusteStocks.
+     * @example
+     * // Update many AjusteStocks
+     * const ajusteStock = await prisma.ajusteStock.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AjusteStocks and only return the `id`
+     * const ajusteStockWithIdOnly = await prisma.ajusteStock.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AjusteStockUpdateManyAndReturnArgs>(args: SelectSubset<T, AjusteStockUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AjusteStock.
+     * @param {AjusteStockUpsertArgs} args - Arguments to update or create a AjusteStock.
+     * @example
+     * // Update or create a AjusteStock
+     * const ajusteStock = await prisma.ajusteStock.upsert({
+     *   create: {
+     *     // ... data to create a AjusteStock
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AjusteStock we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AjusteStockUpsertArgs>(args: SelectSubset<T, AjusteStockUpsertArgs<ExtArgs>>): Prisma__AjusteStockClient<$Result.GetResult<Prisma.$AjusteStockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AjusteStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockCountArgs} args - Arguments to filter AjusteStocks to count.
+     * @example
+     * // Count the number of AjusteStocks
+     * const count = await prisma.ajusteStock.count({
+     *   where: {
+     *     // ... the filter for the AjusteStocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends AjusteStockCountArgs>(
+      args?: Subset<T, AjusteStockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AjusteStockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AjusteStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AjusteStockAggregateArgs>(args: Subset<T, AjusteStockAggregateArgs>): Prisma.PrismaPromise<GetAjusteStockAggregateType<T>>
+
+    /**
+     * Group by AjusteStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AjusteStockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AjusteStockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AjusteStockGroupByArgs['orderBy'] }
+        : { orderBy?: AjusteStockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AjusteStockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAjusteStockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AjusteStock model
+   */
+  readonly fields: AjusteStockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AjusteStock.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AjusteStockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    stockItem<T extends StockItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StockItemDefaultArgs<ExtArgs>>): Prisma__StockItemClient<$Result.GetResult<Prisma.$StockItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AjusteStock model
+   */
+  interface AjusteStockFieldRefs {
+    readonly id: FieldRef<"AjusteStock", 'String'>
+    readonly stockItemId: FieldRef<"AjusteStock", 'String'>
+    readonly delta: FieldRef<"AjusteStock", 'Float'>
+    readonly tipo: FieldRef<"AjusteStock", 'String'>
+    readonly motivo: FieldRef<"AjusteStock", 'String'>
+    readonly utilizadorId: FieldRef<"AjusteStock", 'String'>
+    readonly criadoEm: FieldRef<"AjusteStock", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AjusteStock findUnique
+   */
+  export type AjusteStockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter, which AjusteStock to fetch.
+     */
+    where: AjusteStockWhereUniqueInput
+  }
+
+  /**
+   * AjusteStock findUniqueOrThrow
+   */
+  export type AjusteStockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter, which AjusteStock to fetch.
+     */
+    where: AjusteStockWhereUniqueInput
+  }
+
+  /**
+   * AjusteStock findFirst
+   */
+  export type AjusteStockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter, which AjusteStock to fetch.
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AjusteStocks to fetch.
+     */
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AjusteStocks.
+     */
+    cursor?: AjusteStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AjusteStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AjusteStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AjusteStocks.
+     */
+    distinct?: AjusteStockScalarFieldEnum | AjusteStockScalarFieldEnum[]
+  }
+
+  /**
+   * AjusteStock findFirstOrThrow
+   */
+  export type AjusteStockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter, which AjusteStock to fetch.
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AjusteStocks to fetch.
+     */
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AjusteStocks.
+     */
+    cursor?: AjusteStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AjusteStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AjusteStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AjusteStocks.
+     */
+    distinct?: AjusteStockScalarFieldEnum | AjusteStockScalarFieldEnum[]
+  }
+
+  /**
+   * AjusteStock findMany
+   */
+  export type AjusteStockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter, which AjusteStocks to fetch.
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AjusteStocks to fetch.
+     */
+    orderBy?: AjusteStockOrderByWithRelationInput | AjusteStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AjusteStocks.
+     */
+    cursor?: AjusteStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AjusteStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AjusteStocks.
+     */
+    skip?: number
+    distinct?: AjusteStockScalarFieldEnum | AjusteStockScalarFieldEnum[]
+  }
+
+  /**
+   * AjusteStock create
+   */
+  export type AjusteStockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AjusteStock.
+     */
+    data: XOR<AjusteStockCreateInput, AjusteStockUncheckedCreateInput>
+  }
+
+  /**
+   * AjusteStock createMany
+   */
+  export type AjusteStockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AjusteStocks.
+     */
+    data: AjusteStockCreateManyInput | AjusteStockCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AjusteStock createManyAndReturn
+   */
+  export type AjusteStockCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * The data used to create many AjusteStocks.
+     */
+    data: AjusteStockCreateManyInput | AjusteStockCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AjusteStock update
+   */
+  export type AjusteStockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AjusteStock.
+     */
+    data: XOR<AjusteStockUpdateInput, AjusteStockUncheckedUpdateInput>
+    /**
+     * Choose, which AjusteStock to update.
+     */
+    where: AjusteStockWhereUniqueInput
+  }
+
+  /**
+   * AjusteStock updateMany
+   */
+  export type AjusteStockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AjusteStocks.
+     */
+    data: XOR<AjusteStockUpdateManyMutationInput, AjusteStockUncheckedUpdateManyInput>
+    /**
+     * Filter which AjusteStocks to update
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * Limit how many AjusteStocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AjusteStock updateManyAndReturn
+   */
+  export type AjusteStockUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * The data used to update AjusteStocks.
+     */
+    data: XOR<AjusteStockUpdateManyMutationInput, AjusteStockUncheckedUpdateManyInput>
+    /**
+     * Filter which AjusteStocks to update
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * Limit how many AjusteStocks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AjusteStock upsert
+   */
+  export type AjusteStockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AjusteStock to update in case it exists.
+     */
+    where: AjusteStockWhereUniqueInput
+    /**
+     * In case the AjusteStock found by the `where` argument doesn't exist, create a new AjusteStock with this data.
+     */
+    create: XOR<AjusteStockCreateInput, AjusteStockUncheckedCreateInput>
+    /**
+     * In case the AjusteStock was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AjusteStockUpdateInput, AjusteStockUncheckedUpdateInput>
+  }
+
+  /**
+   * AjusteStock delete
+   */
+  export type AjusteStockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+    /**
+     * Filter which AjusteStock to delete.
+     */
+    where: AjusteStockWhereUniqueInput
+  }
+
+  /**
+   * AjusteStock deleteMany
+   */
+  export type AjusteStockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AjusteStocks to delete
+     */
+    where?: AjusteStockWhereInput
+    /**
+     * Limit how many AjusteStocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AjusteStock without action
+   */
+  export type AjusteStockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AjusteStock
+     */
+    select?: AjusteStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AjusteStock
+     */
+    omit?: AjusteStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AjusteStockInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TransferenciaStock
+   */
+
+  export type AggregateTransferenciaStock = {
+    _count: TransferenciaStockCountAggregateOutputType | null
+    _avg: TransferenciaStockAvgAggregateOutputType | null
+    _sum: TransferenciaStockSumAggregateOutputType | null
+    _min: TransferenciaStockMinAggregateOutputType | null
+    _max: TransferenciaStockMaxAggregateOutputType | null
+  }
+
+  export type TransferenciaStockAvgAggregateOutputType = {
+    quantidade: number | null
+  }
+
+  export type TransferenciaStockSumAggregateOutputType = {
+    quantidade: number | null
+  }
+
+  export type TransferenciaStockMinAggregateOutputType = {
+    id: string | null
+    stockItemId: string | null
+    quantidade: number | null
+    servicoOrigem: string | null
+    servicoDestino: string | null
+    motivo: string | null
+    estado: string | null
+    solicitadoPorId: string | null
+    confirmadoPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type TransferenciaStockMaxAggregateOutputType = {
+    id: string | null
+    stockItemId: string | null
+    quantidade: number | null
+    servicoOrigem: string | null
+    servicoDestino: string | null
+    motivo: string | null
+    estado: string | null
+    solicitadoPorId: string | null
+    confirmadoPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type TransferenciaStockCountAggregateOutputType = {
+    id: number
+    stockItemId: number
+    quantidade: number
+    servicoOrigem: number
+    servicoDestino: number
+    motivo: number
+    estado: number
+    solicitadoPorId: number
+    confirmadoPorId: number
+    criadoEm: number
+    atualizadoEm: number
+    _all: number
+  }
+
+
+  export type TransferenciaStockAvgAggregateInputType = {
+    quantidade?: true
+  }
+
+  export type TransferenciaStockSumAggregateInputType = {
+    quantidade?: true
+  }
+
+  export type TransferenciaStockMinAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    quantidade?: true
+    servicoOrigem?: true
+    servicoDestino?: true
+    motivo?: true
+    estado?: true
+    solicitadoPorId?: true
+    confirmadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type TransferenciaStockMaxAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    quantidade?: true
+    servicoOrigem?: true
+    servicoDestino?: true
+    motivo?: true
+    estado?: true
+    solicitadoPorId?: true
+    confirmadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type TransferenciaStockCountAggregateInputType = {
+    id?: true
+    stockItemId?: true
+    quantidade?: true
+    servicoOrigem?: true
+    servicoDestino?: true
+    motivo?: true
+    estado?: true
+    solicitadoPorId?: true
+    confirmadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+    _all?: true
+  }
+
+  export type TransferenciaStockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TransferenciaStock to aggregate.
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TransferenciaStocks to fetch.
+     */
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TransferenciaStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TransferenciaStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TransferenciaStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TransferenciaStocks
+    **/
+    _count?: true | TransferenciaStockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TransferenciaStockAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TransferenciaStockSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TransferenciaStockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TransferenciaStockMaxAggregateInputType
+  }
+
+  export type GetTransferenciaStockAggregateType<T extends TransferenciaStockAggregateArgs> = {
+        [P in keyof T & keyof AggregateTransferenciaStock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTransferenciaStock[P]>
+      : GetScalarType<T[P], AggregateTransferenciaStock[P]>
+  }
+
+
+
+
+  export type TransferenciaStockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransferenciaStockWhereInput
+    orderBy?: TransferenciaStockOrderByWithAggregationInput | TransferenciaStockOrderByWithAggregationInput[]
+    by: TransferenciaStockScalarFieldEnum[] | TransferenciaStockScalarFieldEnum
+    having?: TransferenciaStockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TransferenciaStockCountAggregateInputType | true
+    _avg?: TransferenciaStockAvgAggregateInputType
+    _sum?: TransferenciaStockSumAggregateInputType
+    _min?: TransferenciaStockMinAggregateInputType
+    _max?: TransferenciaStockMaxAggregateInputType
+  }
+
+  export type TransferenciaStockGroupByOutputType = {
+    id: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo: string | null
+    estado: string
+    solicitadoPorId: string
+    confirmadoPorId: string | null
+    criadoEm: Date
+    atualizadoEm: Date
+    _count: TransferenciaStockCountAggregateOutputType | null
+    _avg: TransferenciaStockAvgAggregateOutputType | null
+    _sum: TransferenciaStockSumAggregateOutputType | null
+    _min: TransferenciaStockMinAggregateOutputType | null
+    _max: TransferenciaStockMaxAggregateOutputType | null
+  }
+
+  type GetTransferenciaStockGroupByPayload<T extends TransferenciaStockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TransferenciaStockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TransferenciaStockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TransferenciaStockGroupByOutputType[P]>
+            : GetScalarType<T[P], TransferenciaStockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TransferenciaStockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    quantidade?: boolean
+    servicoOrigem?: boolean
+    servicoDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    solicitadoPorId?: boolean
+    confirmadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["transferenciaStock"]>
+
+  export type TransferenciaStockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    quantidade?: boolean
+    servicoOrigem?: boolean
+    servicoDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    solicitadoPorId?: boolean
+    confirmadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["transferenciaStock"]>
+
+  export type TransferenciaStockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    stockItemId?: boolean
+    quantidade?: boolean
+    servicoOrigem?: boolean
+    servicoDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    solicitadoPorId?: boolean
+    confirmadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["transferenciaStock"]>
+
+  export type TransferenciaStockSelectScalar = {
+    id?: boolean
+    stockItemId?: boolean
+    quantidade?: boolean
+    servicoOrigem?: boolean
+    servicoDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    solicitadoPorId?: boolean
+    confirmadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+  }
+
+  export type TransferenciaStockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stockItemId" | "quantidade" | "servicoOrigem" | "servicoDestino" | "motivo" | "estado" | "solicitadoPorId" | "confirmadoPorId" | "criadoEm" | "atualizadoEm", ExtArgs["result"]["transferenciaStock"]>
+  export type TransferenciaStockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }
+  export type TransferenciaStockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }
+  export type TransferenciaStockIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    confirmadoPor?: boolean | TransferenciaStock$confirmadoPorArgs<ExtArgs>
+  }
+
+  export type $TransferenciaStockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TransferenciaStock"
+    objects: {
+      stockItem: Prisma.$StockItemPayload<ExtArgs>
+      solicitadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+      confirmadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      stockItemId: string
+      quantidade: number
+      servicoOrigem: string
+      servicoDestino: string
+      motivo: string | null
+      estado: string
+      solicitadoPorId: string
+      confirmadoPorId: string | null
+      criadoEm: Date
+      atualizadoEm: Date
+    }, ExtArgs["result"]["transferenciaStock"]>
+    composites: {}
+  }
+
+  type TransferenciaStockGetPayload<S extends boolean | null | undefined | TransferenciaStockDefaultArgs> = $Result.GetResult<Prisma.$TransferenciaStockPayload, S>
+
+  type TransferenciaStockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TransferenciaStockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TransferenciaStockCountAggregateInputType | true
+    }
+
+  export interface TransferenciaStockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TransferenciaStock'], meta: { name: 'TransferenciaStock' } }
+    /**
+     * Find zero or one TransferenciaStock that matches the filter.
+     * @param {TransferenciaStockFindUniqueArgs} args - Arguments to find a TransferenciaStock
+     * @example
+     * // Get one TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TransferenciaStockFindUniqueArgs>(args: SelectSubset<T, TransferenciaStockFindUniqueArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TransferenciaStock that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TransferenciaStockFindUniqueOrThrowArgs} args - Arguments to find a TransferenciaStock
+     * @example
+     * // Get one TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TransferenciaStockFindUniqueOrThrowArgs>(args: SelectSubset<T, TransferenciaStockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TransferenciaStock that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockFindFirstArgs} args - Arguments to find a TransferenciaStock
+     * @example
+     * // Get one TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TransferenciaStockFindFirstArgs>(args?: SelectSubset<T, TransferenciaStockFindFirstArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TransferenciaStock that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockFindFirstOrThrowArgs} args - Arguments to find a TransferenciaStock
+     * @example
+     * // Get one TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TransferenciaStockFindFirstOrThrowArgs>(args?: SelectSubset<T, TransferenciaStockFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TransferenciaStocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TransferenciaStocks
+     * const transferenciaStocks = await prisma.transferenciaStock.findMany()
+     * 
+     * // Get first 10 TransferenciaStocks
+     * const transferenciaStocks = await prisma.transferenciaStock.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const transferenciaStockWithIdOnly = await prisma.transferenciaStock.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TransferenciaStockFindManyArgs>(args?: SelectSubset<T, TransferenciaStockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TransferenciaStock.
+     * @param {TransferenciaStockCreateArgs} args - Arguments to create a TransferenciaStock.
+     * @example
+     * // Create one TransferenciaStock
+     * const TransferenciaStock = await prisma.transferenciaStock.create({
+     *   data: {
+     *     // ... data to create a TransferenciaStock
+     *   }
+     * })
+     * 
+     */
+    create<T extends TransferenciaStockCreateArgs>(args: SelectSubset<T, TransferenciaStockCreateArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TransferenciaStocks.
+     * @param {TransferenciaStockCreateManyArgs} args - Arguments to create many TransferenciaStocks.
+     * @example
+     * // Create many TransferenciaStocks
+     * const transferenciaStock = await prisma.transferenciaStock.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TransferenciaStockCreateManyArgs>(args?: SelectSubset<T, TransferenciaStockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TransferenciaStocks and returns the data saved in the database.
+     * @param {TransferenciaStockCreateManyAndReturnArgs} args - Arguments to create many TransferenciaStocks.
+     * @example
+     * // Create many TransferenciaStocks
+     * const transferenciaStock = await prisma.transferenciaStock.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TransferenciaStocks and only return the `id`
+     * const transferenciaStockWithIdOnly = await prisma.transferenciaStock.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TransferenciaStockCreateManyAndReturnArgs>(args?: SelectSubset<T, TransferenciaStockCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TransferenciaStock.
+     * @param {TransferenciaStockDeleteArgs} args - Arguments to delete one TransferenciaStock.
+     * @example
+     * // Delete one TransferenciaStock
+     * const TransferenciaStock = await prisma.transferenciaStock.delete({
+     *   where: {
+     *     // ... filter to delete one TransferenciaStock
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TransferenciaStockDeleteArgs>(args: SelectSubset<T, TransferenciaStockDeleteArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TransferenciaStock.
+     * @param {TransferenciaStockUpdateArgs} args - Arguments to update one TransferenciaStock.
+     * @example
+     * // Update one TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TransferenciaStockUpdateArgs>(args: SelectSubset<T, TransferenciaStockUpdateArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TransferenciaStocks.
+     * @param {TransferenciaStockDeleteManyArgs} args - Arguments to filter TransferenciaStocks to delete.
+     * @example
+     * // Delete a few TransferenciaStocks
+     * const { count } = await prisma.transferenciaStock.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TransferenciaStockDeleteManyArgs>(args?: SelectSubset<T, TransferenciaStockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TransferenciaStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TransferenciaStocks
+     * const transferenciaStock = await prisma.transferenciaStock.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TransferenciaStockUpdateManyArgs>(args: SelectSubset<T, TransferenciaStockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TransferenciaStocks and returns the data updated in the database.
+     * @param {TransferenciaStockUpdateManyAndReturnArgs} args - Arguments to update many TransferenciaStocks.
+     * @example
+     * // Update many TransferenciaStocks
+     * const transferenciaStock = await prisma.transferenciaStock.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TransferenciaStocks and only return the `id`
+     * const transferenciaStockWithIdOnly = await prisma.transferenciaStock.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TransferenciaStockUpdateManyAndReturnArgs>(args: SelectSubset<T, TransferenciaStockUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TransferenciaStock.
+     * @param {TransferenciaStockUpsertArgs} args - Arguments to update or create a TransferenciaStock.
+     * @example
+     * // Update or create a TransferenciaStock
+     * const transferenciaStock = await prisma.transferenciaStock.upsert({
+     *   create: {
+     *     // ... data to create a TransferenciaStock
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TransferenciaStock we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TransferenciaStockUpsertArgs>(args: SelectSubset<T, TransferenciaStockUpsertArgs<ExtArgs>>): Prisma__TransferenciaStockClient<$Result.GetResult<Prisma.$TransferenciaStockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TransferenciaStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockCountArgs} args - Arguments to filter TransferenciaStocks to count.
+     * @example
+     * // Count the number of TransferenciaStocks
+     * const count = await prisma.transferenciaStock.count({
+     *   where: {
+     *     // ... the filter for the TransferenciaStocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends TransferenciaStockCountArgs>(
+      args?: Subset<T, TransferenciaStockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TransferenciaStockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TransferenciaStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TransferenciaStockAggregateArgs>(args: Subset<T, TransferenciaStockAggregateArgs>): Prisma.PrismaPromise<GetTransferenciaStockAggregateType<T>>
+
+    /**
+     * Group by TransferenciaStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransferenciaStockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TransferenciaStockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TransferenciaStockGroupByArgs['orderBy'] }
+        : { orderBy?: TransferenciaStockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TransferenciaStockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransferenciaStockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TransferenciaStock model
+   */
+  readonly fields: TransferenciaStockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TransferenciaStock.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TransferenciaStockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    stockItem<T extends StockItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StockItemDefaultArgs<ExtArgs>>): Prisma__StockItemClient<$Result.GetResult<Prisma.$StockItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    solicitadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    confirmadoPor<T extends TransferenciaStock$confirmadoPorArgs<ExtArgs> = {}>(args?: Subset<T, TransferenciaStock$confirmadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TransferenciaStock model
+   */
+  interface TransferenciaStockFieldRefs {
+    readonly id: FieldRef<"TransferenciaStock", 'String'>
+    readonly stockItemId: FieldRef<"TransferenciaStock", 'String'>
+    readonly quantidade: FieldRef<"TransferenciaStock", 'Float'>
+    readonly servicoOrigem: FieldRef<"TransferenciaStock", 'String'>
+    readonly servicoDestino: FieldRef<"TransferenciaStock", 'String'>
+    readonly motivo: FieldRef<"TransferenciaStock", 'String'>
+    readonly estado: FieldRef<"TransferenciaStock", 'String'>
+    readonly solicitadoPorId: FieldRef<"TransferenciaStock", 'String'>
+    readonly confirmadoPorId: FieldRef<"TransferenciaStock", 'String'>
+    readonly criadoEm: FieldRef<"TransferenciaStock", 'DateTime'>
+    readonly atualizadoEm: FieldRef<"TransferenciaStock", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TransferenciaStock findUnique
+   */
+  export type TransferenciaStockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter, which TransferenciaStock to fetch.
+     */
+    where: TransferenciaStockWhereUniqueInput
+  }
+
+  /**
+   * TransferenciaStock findUniqueOrThrow
+   */
+  export type TransferenciaStockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter, which TransferenciaStock to fetch.
+     */
+    where: TransferenciaStockWhereUniqueInput
+  }
+
+  /**
+   * TransferenciaStock findFirst
+   */
+  export type TransferenciaStockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter, which TransferenciaStock to fetch.
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TransferenciaStocks to fetch.
+     */
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TransferenciaStocks.
+     */
+    cursor?: TransferenciaStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TransferenciaStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TransferenciaStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TransferenciaStocks.
+     */
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * TransferenciaStock findFirstOrThrow
+   */
+  export type TransferenciaStockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter, which TransferenciaStock to fetch.
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TransferenciaStocks to fetch.
+     */
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TransferenciaStocks.
+     */
+    cursor?: TransferenciaStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TransferenciaStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TransferenciaStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TransferenciaStocks.
+     */
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * TransferenciaStock findMany
+   */
+  export type TransferenciaStockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter, which TransferenciaStocks to fetch.
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TransferenciaStocks to fetch.
+     */
+    orderBy?: TransferenciaStockOrderByWithRelationInput | TransferenciaStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TransferenciaStocks.
+     */
+    cursor?: TransferenciaStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TransferenciaStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TransferenciaStocks.
+     */
+    skip?: number
+    distinct?: TransferenciaStockScalarFieldEnum | TransferenciaStockScalarFieldEnum[]
+  }
+
+  /**
+   * TransferenciaStock create
+   */
+  export type TransferenciaStockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TransferenciaStock.
+     */
+    data: XOR<TransferenciaStockCreateInput, TransferenciaStockUncheckedCreateInput>
+  }
+
+  /**
+   * TransferenciaStock createMany
+   */
+  export type TransferenciaStockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TransferenciaStocks.
+     */
+    data: TransferenciaStockCreateManyInput | TransferenciaStockCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TransferenciaStock createManyAndReturn
+   */
+  export type TransferenciaStockCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * The data used to create many TransferenciaStocks.
+     */
+    data: TransferenciaStockCreateManyInput | TransferenciaStockCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TransferenciaStock update
+   */
+  export type TransferenciaStockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TransferenciaStock.
+     */
+    data: XOR<TransferenciaStockUpdateInput, TransferenciaStockUncheckedUpdateInput>
+    /**
+     * Choose, which TransferenciaStock to update.
+     */
+    where: TransferenciaStockWhereUniqueInput
+  }
+
+  /**
+   * TransferenciaStock updateMany
+   */
+  export type TransferenciaStockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TransferenciaStocks.
+     */
+    data: XOR<TransferenciaStockUpdateManyMutationInput, TransferenciaStockUncheckedUpdateManyInput>
+    /**
+     * Filter which TransferenciaStocks to update
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * Limit how many TransferenciaStocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TransferenciaStock updateManyAndReturn
+   */
+  export type TransferenciaStockUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * The data used to update TransferenciaStocks.
+     */
+    data: XOR<TransferenciaStockUpdateManyMutationInput, TransferenciaStockUncheckedUpdateManyInput>
+    /**
+     * Filter which TransferenciaStocks to update
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * Limit how many TransferenciaStocks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TransferenciaStock upsert
+   */
+  export type TransferenciaStockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TransferenciaStock to update in case it exists.
+     */
+    where: TransferenciaStockWhereUniqueInput
+    /**
+     * In case the TransferenciaStock found by the `where` argument doesn't exist, create a new TransferenciaStock with this data.
+     */
+    create: XOR<TransferenciaStockCreateInput, TransferenciaStockUncheckedCreateInput>
+    /**
+     * In case the TransferenciaStock was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TransferenciaStockUpdateInput, TransferenciaStockUncheckedUpdateInput>
+  }
+
+  /**
+   * TransferenciaStock delete
+   */
+  export type TransferenciaStockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+    /**
+     * Filter which TransferenciaStock to delete.
+     */
+    where: TransferenciaStockWhereUniqueInput
+  }
+
+  /**
+   * TransferenciaStock deleteMany
+   */
+  export type TransferenciaStockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TransferenciaStocks to delete
+     */
+    where?: TransferenciaStockWhereInput
+    /**
+     * Limit how many TransferenciaStocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TransferenciaStock.confirmadoPor
+   */
+  export type TransferenciaStock$confirmadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * TransferenciaStock without action
+   */
+  export type TransferenciaStockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransferenciaStock
+     */
+    select?: TransferenciaStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransferenciaStock
+     */
+    omit?: TransferenciaStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransferenciaStockInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Fornecedor
+   */
+
+  export type AggregateFornecedor = {
+    _count: FornecedorCountAggregateOutputType | null
+    _min: FornecedorMinAggregateOutputType | null
+    _max: FornecedorMaxAggregateOutputType | null
+  }
+
+  export type FornecedorMinAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    nif: string | null
+    email: string | null
+    telefone: string | null
+    morada: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type FornecedorMaxAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    nif: string | null
+    email: string | null
+    telefone: string | null
+    morada: string | null
+    ativo: boolean | null
+    criadoEm: Date | null
+  }
+
+  export type FornecedorCountAggregateOutputType = {
+    id: number
+    nome: number
+    nif: number
+    email: number
+    telefone: number
+    morada: number
+    ativo: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type FornecedorMinAggregateInputType = {
+    id?: true
+    nome?: true
+    nif?: true
+    email?: true
+    telefone?: true
+    morada?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type FornecedorMaxAggregateInputType = {
+    id?: true
+    nome?: true
+    nif?: true
+    email?: true
+    telefone?: true
+    morada?: true
+    ativo?: true
+    criadoEm?: true
+  }
+
+  export type FornecedorCountAggregateInputType = {
+    id?: true
+    nome?: true
+    nif?: true
+    email?: true
+    telefone?: true
+    morada?: true
+    ativo?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type FornecedorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Fornecedor to aggregate.
+     */
+    where?: FornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fornecedors to fetch.
+     */
+    orderBy?: FornecedorOrderByWithRelationInput | FornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Fornecedors
+    **/
+    _count?: true | FornecedorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FornecedorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FornecedorMaxAggregateInputType
+  }
+
+  export type GetFornecedorAggregateType<T extends FornecedorAggregateArgs> = {
+        [P in keyof T & keyof AggregateFornecedor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFornecedor[P]>
+      : GetScalarType<T[P], AggregateFornecedor[P]>
+  }
+
+
+
+
+  export type FornecedorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FornecedorWhereInput
+    orderBy?: FornecedorOrderByWithAggregationInput | FornecedorOrderByWithAggregationInput[]
+    by: FornecedorScalarFieldEnum[] | FornecedorScalarFieldEnum
+    having?: FornecedorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FornecedorCountAggregateInputType | true
+    _min?: FornecedorMinAggregateInputType
+    _max?: FornecedorMaxAggregateInputType
+  }
+
+  export type FornecedorGroupByOutputType = {
+    id: string
+    nome: string
+    nif: string | null
+    email: string | null
+    telefone: string | null
+    morada: string | null
+    ativo: boolean
+    criadoEm: Date
+    _count: FornecedorCountAggregateOutputType | null
+    _min: FornecedorMinAggregateOutputType | null
+    _max: FornecedorMaxAggregateOutputType | null
+  }
+
+  type GetFornecedorGroupByPayload<T extends FornecedorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FornecedorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FornecedorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FornecedorGroupByOutputType[P]>
+            : GetScalarType<T[P], FornecedorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FornecedorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    nif?: boolean
+    email?: boolean
+    telefone?: boolean
+    morada?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+    encomendas?: boolean | Fornecedor$encomendasArgs<ExtArgs>
+    _count?: boolean | FornecedorCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["fornecedor"]>
+
+  export type FornecedorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    nif?: boolean
+    email?: boolean
+    telefone?: boolean
+    morada?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["fornecedor"]>
+
+  export type FornecedorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    nif?: boolean
+    email?: boolean
+    telefone?: boolean
+    morada?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }, ExtArgs["result"]["fornecedor"]>
+
+  export type FornecedorSelectScalar = {
+    id?: boolean
+    nome?: boolean
+    nif?: boolean
+    email?: boolean
+    telefone?: boolean
+    morada?: boolean
+    ativo?: boolean
+    criadoEm?: boolean
+  }
+
+  export type FornecedorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "nif" | "email" | "telefone" | "morada" | "ativo" | "criadoEm", ExtArgs["result"]["fornecedor"]>
+  export type FornecedorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    encomendas?: boolean | Fornecedor$encomendasArgs<ExtArgs>
+    _count?: boolean | FornecedorCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FornecedorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type FornecedorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $FornecedorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Fornecedor"
+    objects: {
+      encomendas: Prisma.$EncomendaFornecedorPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nome: string
+      nif: string | null
+      email: string | null
+      telefone: string | null
+      morada: string | null
+      ativo: boolean
+      criadoEm: Date
+    }, ExtArgs["result"]["fornecedor"]>
+    composites: {}
+  }
+
+  type FornecedorGetPayload<S extends boolean | null | undefined | FornecedorDefaultArgs> = $Result.GetResult<Prisma.$FornecedorPayload, S>
+
+  type FornecedorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FornecedorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FornecedorCountAggregateInputType | true
+    }
+
+  export interface FornecedorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Fornecedor'], meta: { name: 'Fornecedor' } }
+    /**
+     * Find zero or one Fornecedor that matches the filter.
+     * @param {FornecedorFindUniqueArgs} args - Arguments to find a Fornecedor
+     * @example
+     * // Get one Fornecedor
+     * const fornecedor = await prisma.fornecedor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FornecedorFindUniqueArgs>(args: SelectSubset<T, FornecedorFindUniqueArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Fornecedor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FornecedorFindUniqueOrThrowArgs} args - Arguments to find a Fornecedor
+     * @example
+     * // Get one Fornecedor
+     * const fornecedor = await prisma.fornecedor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FornecedorFindUniqueOrThrowArgs>(args: SelectSubset<T, FornecedorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Fornecedor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorFindFirstArgs} args - Arguments to find a Fornecedor
+     * @example
+     * // Get one Fornecedor
+     * const fornecedor = await prisma.fornecedor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FornecedorFindFirstArgs>(args?: SelectSubset<T, FornecedorFindFirstArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Fornecedor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorFindFirstOrThrowArgs} args - Arguments to find a Fornecedor
+     * @example
+     * // Get one Fornecedor
+     * const fornecedor = await prisma.fornecedor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FornecedorFindFirstOrThrowArgs>(args?: SelectSubset<T, FornecedorFindFirstOrThrowArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Fornecedors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Fornecedors
+     * const fornecedors = await prisma.fornecedor.findMany()
+     * 
+     * // Get first 10 Fornecedors
+     * const fornecedors = await prisma.fornecedor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fornecedorWithIdOnly = await prisma.fornecedor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FornecedorFindManyArgs>(args?: SelectSubset<T, FornecedorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Fornecedor.
+     * @param {FornecedorCreateArgs} args - Arguments to create a Fornecedor.
+     * @example
+     * // Create one Fornecedor
+     * const Fornecedor = await prisma.fornecedor.create({
+     *   data: {
+     *     // ... data to create a Fornecedor
+     *   }
+     * })
+     * 
+     */
+    create<T extends FornecedorCreateArgs>(args: SelectSubset<T, FornecedorCreateArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Fornecedors.
+     * @param {FornecedorCreateManyArgs} args - Arguments to create many Fornecedors.
+     * @example
+     * // Create many Fornecedors
+     * const fornecedor = await prisma.fornecedor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FornecedorCreateManyArgs>(args?: SelectSubset<T, FornecedorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Fornecedors and returns the data saved in the database.
+     * @param {FornecedorCreateManyAndReturnArgs} args - Arguments to create many Fornecedors.
+     * @example
+     * // Create many Fornecedors
+     * const fornecedor = await prisma.fornecedor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Fornecedors and only return the `id`
+     * const fornecedorWithIdOnly = await prisma.fornecedor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FornecedorCreateManyAndReturnArgs>(args?: SelectSubset<T, FornecedorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Fornecedor.
+     * @param {FornecedorDeleteArgs} args - Arguments to delete one Fornecedor.
+     * @example
+     * // Delete one Fornecedor
+     * const Fornecedor = await prisma.fornecedor.delete({
+     *   where: {
+     *     // ... filter to delete one Fornecedor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FornecedorDeleteArgs>(args: SelectSubset<T, FornecedorDeleteArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Fornecedor.
+     * @param {FornecedorUpdateArgs} args - Arguments to update one Fornecedor.
+     * @example
+     * // Update one Fornecedor
+     * const fornecedor = await prisma.fornecedor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FornecedorUpdateArgs>(args: SelectSubset<T, FornecedorUpdateArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Fornecedors.
+     * @param {FornecedorDeleteManyArgs} args - Arguments to filter Fornecedors to delete.
+     * @example
+     * // Delete a few Fornecedors
+     * const { count } = await prisma.fornecedor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FornecedorDeleteManyArgs>(args?: SelectSubset<T, FornecedorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Fornecedors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Fornecedors
+     * const fornecedor = await prisma.fornecedor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FornecedorUpdateManyArgs>(args: SelectSubset<T, FornecedorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Fornecedors and returns the data updated in the database.
+     * @param {FornecedorUpdateManyAndReturnArgs} args - Arguments to update many Fornecedors.
+     * @example
+     * // Update many Fornecedors
+     * const fornecedor = await prisma.fornecedor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Fornecedors and only return the `id`
+     * const fornecedorWithIdOnly = await prisma.fornecedor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FornecedorUpdateManyAndReturnArgs>(args: SelectSubset<T, FornecedorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Fornecedor.
+     * @param {FornecedorUpsertArgs} args - Arguments to update or create a Fornecedor.
+     * @example
+     * // Update or create a Fornecedor
+     * const fornecedor = await prisma.fornecedor.upsert({
+     *   create: {
+     *     // ... data to create a Fornecedor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Fornecedor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FornecedorUpsertArgs>(args: SelectSubset<T, FornecedorUpsertArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Fornecedors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorCountArgs} args - Arguments to filter Fornecedors to count.
+     * @example
+     * // Count the number of Fornecedors
+     * const count = await prisma.fornecedor.count({
+     *   where: {
+     *     // ... the filter for the Fornecedors we want to count
+     *   }
+     * })
+    **/
+    count<T extends FornecedorCountArgs>(
+      args?: Subset<T, FornecedorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FornecedorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Fornecedor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FornecedorAggregateArgs>(args: Subset<T, FornecedorAggregateArgs>): Prisma.PrismaPromise<GetFornecedorAggregateType<T>>
+
+    /**
+     * Group by Fornecedor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FornecedorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FornecedorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FornecedorGroupByArgs['orderBy'] }
+        : { orderBy?: FornecedorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FornecedorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFornecedorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Fornecedor model
+   */
+  readonly fields: FornecedorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Fornecedor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FornecedorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    encomendas<T extends Fornecedor$encomendasArgs<ExtArgs> = {}>(args?: Subset<T, Fornecedor$encomendasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Fornecedor model
+   */
+  interface FornecedorFieldRefs {
+    readonly id: FieldRef<"Fornecedor", 'String'>
+    readonly nome: FieldRef<"Fornecedor", 'String'>
+    readonly nif: FieldRef<"Fornecedor", 'String'>
+    readonly email: FieldRef<"Fornecedor", 'String'>
+    readonly telefone: FieldRef<"Fornecedor", 'String'>
+    readonly morada: FieldRef<"Fornecedor", 'String'>
+    readonly ativo: FieldRef<"Fornecedor", 'Boolean'>
+    readonly criadoEm: FieldRef<"Fornecedor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Fornecedor findUnique
+   */
+  export type FornecedorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which Fornecedor to fetch.
+     */
+    where: FornecedorWhereUniqueInput
+  }
+
+  /**
+   * Fornecedor findUniqueOrThrow
+   */
+  export type FornecedorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which Fornecedor to fetch.
+     */
+    where: FornecedorWhereUniqueInput
+  }
+
+  /**
+   * Fornecedor findFirst
+   */
+  export type FornecedorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which Fornecedor to fetch.
+     */
+    where?: FornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fornecedors to fetch.
+     */
+    orderBy?: FornecedorOrderByWithRelationInput | FornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Fornecedors.
+     */
+    cursor?: FornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Fornecedors.
+     */
+    distinct?: FornecedorScalarFieldEnum | FornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * Fornecedor findFirstOrThrow
+   */
+  export type FornecedorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which Fornecedor to fetch.
+     */
+    where?: FornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fornecedors to fetch.
+     */
+    orderBy?: FornecedorOrderByWithRelationInput | FornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Fornecedors.
+     */
+    cursor?: FornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Fornecedors.
+     */
+    distinct?: FornecedorScalarFieldEnum | FornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * Fornecedor findMany
+   */
+  export type FornecedorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which Fornecedors to fetch.
+     */
+    where?: FornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fornecedors to fetch.
+     */
+    orderBy?: FornecedorOrderByWithRelationInput | FornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Fornecedors.
+     */
+    cursor?: FornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fornecedors.
+     */
+    skip?: number
+    distinct?: FornecedorScalarFieldEnum | FornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * Fornecedor create
+   */
+  export type FornecedorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Fornecedor.
+     */
+    data: XOR<FornecedorCreateInput, FornecedorUncheckedCreateInput>
+  }
+
+  /**
+   * Fornecedor createMany
+   */
+  export type FornecedorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Fornecedors.
+     */
+    data: FornecedorCreateManyInput | FornecedorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Fornecedor createManyAndReturn
+   */
+  export type FornecedorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * The data used to create many Fornecedors.
+     */
+    data: FornecedorCreateManyInput | FornecedorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Fornecedor update
+   */
+  export type FornecedorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Fornecedor.
+     */
+    data: XOR<FornecedorUpdateInput, FornecedorUncheckedUpdateInput>
+    /**
+     * Choose, which Fornecedor to update.
+     */
+    where: FornecedorWhereUniqueInput
+  }
+
+  /**
+   * Fornecedor updateMany
+   */
+  export type FornecedorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Fornecedors.
+     */
+    data: XOR<FornecedorUpdateManyMutationInput, FornecedorUncheckedUpdateManyInput>
+    /**
+     * Filter which Fornecedors to update
+     */
+    where?: FornecedorWhereInput
+    /**
+     * Limit how many Fornecedors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Fornecedor updateManyAndReturn
+   */
+  export type FornecedorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * The data used to update Fornecedors.
+     */
+    data: XOR<FornecedorUpdateManyMutationInput, FornecedorUncheckedUpdateManyInput>
+    /**
+     * Filter which Fornecedors to update
+     */
+    where?: FornecedorWhereInput
+    /**
+     * Limit how many Fornecedors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Fornecedor upsert
+   */
+  export type FornecedorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Fornecedor to update in case it exists.
+     */
+    where: FornecedorWhereUniqueInput
+    /**
+     * In case the Fornecedor found by the `where` argument doesn't exist, create a new Fornecedor with this data.
+     */
+    create: XOR<FornecedorCreateInput, FornecedorUncheckedCreateInput>
+    /**
+     * In case the Fornecedor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FornecedorUpdateInput, FornecedorUncheckedUpdateInput>
+  }
+
+  /**
+   * Fornecedor delete
+   */
+  export type FornecedorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+    /**
+     * Filter which Fornecedor to delete.
+     */
+    where: FornecedorWhereUniqueInput
+  }
+
+  /**
+   * Fornecedor deleteMany
+   */
+  export type FornecedorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Fornecedors to delete
+     */
+    where?: FornecedorWhereInput
+    /**
+     * Limit how many Fornecedors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Fornecedor.encomendas
+   */
+  export type Fornecedor$encomendasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    where?: EncomendaFornecedorWhereInput
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * Fornecedor without action
+   */
+  export type FornecedorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fornecedor
+     */
+    select?: FornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Fornecedor
+     */
+    omit?: FornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FornecedorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EncomendaFornecedor
+   */
+
+  export type AggregateEncomendaFornecedor = {
+    _count: EncomendaFornecedorCountAggregateOutputType | null
+    _avg: EncomendaFornecedorAvgAggregateOutputType | null
+    _sum: EncomendaFornecedorSumAggregateOutputType | null
+    _min: EncomendaFornecedorMinAggregateOutputType | null
+    _max: EncomendaFornecedorMaxAggregateOutputType | null
+  }
+
+  export type EncomendaFornecedorAvgAggregateOutputType = {
+    quantidadeEncomendada: number | null
+    precoUnitario: number | null
+  }
+
+  export type EncomendaFornecedorSumAggregateOutputType = {
+    quantidadeEncomendada: number | null
+    precoUnitario: number | null
+  }
+
+  export type EncomendaFornecedorMinAggregateOutputType = {
+    id: string | null
+    fornecedorId: string | null
+    stockItemId: string | null
+    quantidadeEncomendada: number | null
+    precoUnitario: number | null
+    estado: string | null
+    dataEntregaPrevista: Date | null
+    dataEntregaReal: Date | null
+    observacoes: string | null
+    recebioPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type EncomendaFornecedorMaxAggregateOutputType = {
+    id: string | null
+    fornecedorId: string | null
+    stockItemId: string | null
+    quantidadeEncomendada: number | null
+    precoUnitario: number | null
+    estado: string | null
+    dataEntregaPrevista: Date | null
+    dataEntregaReal: Date | null
+    observacoes: string | null
+    recebioPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type EncomendaFornecedorCountAggregateOutputType = {
+    id: number
+    fornecedorId: number
+    stockItemId: number
+    quantidadeEncomendada: number
+    precoUnitario: number
+    estado: number
+    dataEntregaPrevista: number
+    dataEntregaReal: number
+    observacoes: number
+    recebioPorId: number
+    criadoEm: number
+    atualizadoEm: number
+    _all: number
+  }
+
+
+  export type EncomendaFornecedorAvgAggregateInputType = {
+    quantidadeEncomendada?: true
+    precoUnitario?: true
+  }
+
+  export type EncomendaFornecedorSumAggregateInputType = {
+    quantidadeEncomendada?: true
+    precoUnitario?: true
+  }
+
+  export type EncomendaFornecedorMinAggregateInputType = {
+    id?: true
+    fornecedorId?: true
+    stockItemId?: true
+    quantidadeEncomendada?: true
+    precoUnitario?: true
+    estado?: true
+    dataEntregaPrevista?: true
+    dataEntregaReal?: true
+    observacoes?: true
+    recebioPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type EncomendaFornecedorMaxAggregateInputType = {
+    id?: true
+    fornecedorId?: true
+    stockItemId?: true
+    quantidadeEncomendada?: true
+    precoUnitario?: true
+    estado?: true
+    dataEntregaPrevista?: true
+    dataEntregaReal?: true
+    observacoes?: true
+    recebioPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type EncomendaFornecedorCountAggregateInputType = {
+    id?: true
+    fornecedorId?: true
+    stockItemId?: true
+    quantidadeEncomendada?: true
+    precoUnitario?: true
+    estado?: true
+    dataEntregaPrevista?: true
+    dataEntregaReal?: true
+    observacoes?: true
+    recebioPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+    _all?: true
+  }
+
+  export type EncomendaFornecedorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EncomendaFornecedor to aggregate.
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EncomendaFornecedors to fetch.
+     */
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EncomendaFornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EncomendaFornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EncomendaFornecedors
+    **/
+    _count?: true | EncomendaFornecedorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EncomendaFornecedorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EncomendaFornecedorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EncomendaFornecedorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EncomendaFornecedorMaxAggregateInputType
+  }
+
+  export type GetEncomendaFornecedorAggregateType<T extends EncomendaFornecedorAggregateArgs> = {
+        [P in keyof T & keyof AggregateEncomendaFornecedor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEncomendaFornecedor[P]>
+      : GetScalarType<T[P], AggregateEncomendaFornecedor[P]>
+  }
+
+
+
+
+  export type EncomendaFornecedorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EncomendaFornecedorWhereInput
+    orderBy?: EncomendaFornecedorOrderByWithAggregationInput | EncomendaFornecedorOrderByWithAggregationInput[]
+    by: EncomendaFornecedorScalarFieldEnum[] | EncomendaFornecedorScalarFieldEnum
+    having?: EncomendaFornecedorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EncomendaFornecedorCountAggregateInputType | true
+    _avg?: EncomendaFornecedorAvgAggregateInputType
+    _sum?: EncomendaFornecedorSumAggregateInputType
+    _min?: EncomendaFornecedorMinAggregateInputType
+    _max?: EncomendaFornecedorMaxAggregateInputType
+  }
+
+  export type EncomendaFornecedorGroupByOutputType = {
+    id: string
+    fornecedorId: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario: number | null
+    estado: string
+    dataEntregaPrevista: Date | null
+    dataEntregaReal: Date | null
+    observacoes: string | null
+    recebioPorId: string | null
+    criadoEm: Date
+    atualizadoEm: Date
+    _count: EncomendaFornecedorCountAggregateOutputType | null
+    _avg: EncomendaFornecedorAvgAggregateOutputType | null
+    _sum: EncomendaFornecedorSumAggregateOutputType | null
+    _min: EncomendaFornecedorMinAggregateOutputType | null
+    _max: EncomendaFornecedorMaxAggregateOutputType | null
+  }
+
+  type GetEncomendaFornecedorGroupByPayload<T extends EncomendaFornecedorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EncomendaFornecedorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EncomendaFornecedorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EncomendaFornecedorGroupByOutputType[P]>
+            : GetScalarType<T[P], EncomendaFornecedorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EncomendaFornecedorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fornecedorId?: boolean
+    stockItemId?: boolean
+    quantidadeEncomendada?: boolean
+    precoUnitario?: boolean
+    estado?: boolean
+    dataEntregaPrevista?: boolean
+    dataEntregaReal?: boolean
+    observacoes?: boolean
+    recebioPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }, ExtArgs["result"]["encomendaFornecedor"]>
+
+  export type EncomendaFornecedorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fornecedorId?: boolean
+    stockItemId?: boolean
+    quantidadeEncomendada?: boolean
+    precoUnitario?: boolean
+    estado?: boolean
+    dataEntregaPrevista?: boolean
+    dataEntregaReal?: boolean
+    observacoes?: boolean
+    recebioPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }, ExtArgs["result"]["encomendaFornecedor"]>
+
+  export type EncomendaFornecedorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fornecedorId?: boolean
+    stockItemId?: boolean
+    quantidadeEncomendada?: boolean
+    precoUnitario?: boolean
+    estado?: boolean
+    dataEntregaPrevista?: boolean
+    dataEntregaReal?: boolean
+    observacoes?: boolean
+    recebioPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }, ExtArgs["result"]["encomendaFornecedor"]>
+
+  export type EncomendaFornecedorSelectScalar = {
+    id?: boolean
+    fornecedorId?: boolean
+    stockItemId?: boolean
+    quantidadeEncomendada?: boolean
+    precoUnitario?: boolean
+    estado?: boolean
+    dataEntregaPrevista?: boolean
+    dataEntregaReal?: boolean
+    observacoes?: boolean
+    recebioPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+  }
+
+  export type EncomendaFornecedorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fornecedorId" | "stockItemId" | "quantidadeEncomendada" | "precoUnitario" | "estado" | "dataEntregaPrevista" | "dataEntregaReal" | "observacoes" | "recebioPorId" | "criadoEm" | "atualizadoEm", ExtArgs["result"]["encomendaFornecedor"]>
+  export type EncomendaFornecedorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }
+  export type EncomendaFornecedorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }
+  export type EncomendaFornecedorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fornecedor?: boolean | FornecedorDefaultArgs<ExtArgs>
+    stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
+    recebioPor?: boolean | EncomendaFornecedor$recebioPorArgs<ExtArgs>
+  }
+
+  export type $EncomendaFornecedorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EncomendaFornecedor"
+    objects: {
+      fornecedor: Prisma.$FornecedorPayload<ExtArgs>
+      stockItem: Prisma.$StockItemPayload<ExtArgs>
+      recebioPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fornecedorId: string
+      stockItemId: string
+      quantidadeEncomendada: number
+      precoUnitario: number | null
+      estado: string
+      dataEntregaPrevista: Date | null
+      dataEntregaReal: Date | null
+      observacoes: string | null
+      recebioPorId: string | null
+      criadoEm: Date
+      atualizadoEm: Date
+    }, ExtArgs["result"]["encomendaFornecedor"]>
+    composites: {}
+  }
+
+  type EncomendaFornecedorGetPayload<S extends boolean | null | undefined | EncomendaFornecedorDefaultArgs> = $Result.GetResult<Prisma.$EncomendaFornecedorPayload, S>
+
+  type EncomendaFornecedorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EncomendaFornecedorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EncomendaFornecedorCountAggregateInputType | true
+    }
+
+  export interface EncomendaFornecedorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EncomendaFornecedor'], meta: { name: 'EncomendaFornecedor' } }
+    /**
+     * Find zero or one EncomendaFornecedor that matches the filter.
+     * @param {EncomendaFornecedorFindUniqueArgs} args - Arguments to find a EncomendaFornecedor
+     * @example
+     * // Get one EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EncomendaFornecedorFindUniqueArgs>(args: SelectSubset<T, EncomendaFornecedorFindUniqueArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EncomendaFornecedor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EncomendaFornecedorFindUniqueOrThrowArgs} args - Arguments to find a EncomendaFornecedor
+     * @example
+     * // Get one EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EncomendaFornecedorFindUniqueOrThrowArgs>(args: SelectSubset<T, EncomendaFornecedorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EncomendaFornecedor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorFindFirstArgs} args - Arguments to find a EncomendaFornecedor
+     * @example
+     * // Get one EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EncomendaFornecedorFindFirstArgs>(args?: SelectSubset<T, EncomendaFornecedorFindFirstArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EncomendaFornecedor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorFindFirstOrThrowArgs} args - Arguments to find a EncomendaFornecedor
+     * @example
+     * // Get one EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EncomendaFornecedorFindFirstOrThrowArgs>(args?: SelectSubset<T, EncomendaFornecedorFindFirstOrThrowArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EncomendaFornecedors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EncomendaFornecedors
+     * const encomendaFornecedors = await prisma.encomendaFornecedor.findMany()
+     * 
+     * // Get first 10 EncomendaFornecedors
+     * const encomendaFornecedors = await prisma.encomendaFornecedor.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const encomendaFornecedorWithIdOnly = await prisma.encomendaFornecedor.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EncomendaFornecedorFindManyArgs>(args?: SelectSubset<T, EncomendaFornecedorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EncomendaFornecedor.
+     * @param {EncomendaFornecedorCreateArgs} args - Arguments to create a EncomendaFornecedor.
+     * @example
+     * // Create one EncomendaFornecedor
+     * const EncomendaFornecedor = await prisma.encomendaFornecedor.create({
+     *   data: {
+     *     // ... data to create a EncomendaFornecedor
+     *   }
+     * })
+     * 
+     */
+    create<T extends EncomendaFornecedorCreateArgs>(args: SelectSubset<T, EncomendaFornecedorCreateArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EncomendaFornecedors.
+     * @param {EncomendaFornecedorCreateManyArgs} args - Arguments to create many EncomendaFornecedors.
+     * @example
+     * // Create many EncomendaFornecedors
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EncomendaFornecedorCreateManyArgs>(args?: SelectSubset<T, EncomendaFornecedorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EncomendaFornecedors and returns the data saved in the database.
+     * @param {EncomendaFornecedorCreateManyAndReturnArgs} args - Arguments to create many EncomendaFornecedors.
+     * @example
+     * // Create many EncomendaFornecedors
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EncomendaFornecedors and only return the `id`
+     * const encomendaFornecedorWithIdOnly = await prisma.encomendaFornecedor.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EncomendaFornecedorCreateManyAndReturnArgs>(args?: SelectSubset<T, EncomendaFornecedorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EncomendaFornecedor.
+     * @param {EncomendaFornecedorDeleteArgs} args - Arguments to delete one EncomendaFornecedor.
+     * @example
+     * // Delete one EncomendaFornecedor
+     * const EncomendaFornecedor = await prisma.encomendaFornecedor.delete({
+     *   where: {
+     *     // ... filter to delete one EncomendaFornecedor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EncomendaFornecedorDeleteArgs>(args: SelectSubset<T, EncomendaFornecedorDeleteArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EncomendaFornecedor.
+     * @param {EncomendaFornecedorUpdateArgs} args - Arguments to update one EncomendaFornecedor.
+     * @example
+     * // Update one EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EncomendaFornecedorUpdateArgs>(args: SelectSubset<T, EncomendaFornecedorUpdateArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EncomendaFornecedors.
+     * @param {EncomendaFornecedorDeleteManyArgs} args - Arguments to filter EncomendaFornecedors to delete.
+     * @example
+     * // Delete a few EncomendaFornecedors
+     * const { count } = await prisma.encomendaFornecedor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EncomendaFornecedorDeleteManyArgs>(args?: SelectSubset<T, EncomendaFornecedorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EncomendaFornecedors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EncomendaFornecedors
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EncomendaFornecedorUpdateManyArgs>(args: SelectSubset<T, EncomendaFornecedorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EncomendaFornecedors and returns the data updated in the database.
+     * @param {EncomendaFornecedorUpdateManyAndReturnArgs} args - Arguments to update many EncomendaFornecedors.
+     * @example
+     * // Update many EncomendaFornecedors
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EncomendaFornecedors and only return the `id`
+     * const encomendaFornecedorWithIdOnly = await prisma.encomendaFornecedor.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EncomendaFornecedorUpdateManyAndReturnArgs>(args: SelectSubset<T, EncomendaFornecedorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EncomendaFornecedor.
+     * @param {EncomendaFornecedorUpsertArgs} args - Arguments to update or create a EncomendaFornecedor.
+     * @example
+     * // Update or create a EncomendaFornecedor
+     * const encomendaFornecedor = await prisma.encomendaFornecedor.upsert({
+     *   create: {
+     *     // ... data to create a EncomendaFornecedor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EncomendaFornecedor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EncomendaFornecedorUpsertArgs>(args: SelectSubset<T, EncomendaFornecedorUpsertArgs<ExtArgs>>): Prisma__EncomendaFornecedorClient<$Result.GetResult<Prisma.$EncomendaFornecedorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EncomendaFornecedors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorCountArgs} args - Arguments to filter EncomendaFornecedors to count.
+     * @example
+     * // Count the number of EncomendaFornecedors
+     * const count = await prisma.encomendaFornecedor.count({
+     *   where: {
+     *     // ... the filter for the EncomendaFornecedors we want to count
+     *   }
+     * })
+    **/
+    count<T extends EncomendaFornecedorCountArgs>(
+      args?: Subset<T, EncomendaFornecedorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EncomendaFornecedorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EncomendaFornecedor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EncomendaFornecedorAggregateArgs>(args: Subset<T, EncomendaFornecedorAggregateArgs>): Prisma.PrismaPromise<GetEncomendaFornecedorAggregateType<T>>
+
+    /**
+     * Group by EncomendaFornecedor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EncomendaFornecedorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EncomendaFornecedorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EncomendaFornecedorGroupByArgs['orderBy'] }
+        : { orderBy?: EncomendaFornecedorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EncomendaFornecedorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEncomendaFornecedorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EncomendaFornecedor model
+   */
+  readonly fields: EncomendaFornecedorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EncomendaFornecedor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EncomendaFornecedorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    fornecedor<T extends FornecedorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FornecedorDefaultArgs<ExtArgs>>): Prisma__FornecedorClient<$Result.GetResult<Prisma.$FornecedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    stockItem<T extends StockItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StockItemDefaultArgs<ExtArgs>>): Prisma__StockItemClient<$Result.GetResult<Prisma.$StockItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recebioPor<T extends EncomendaFornecedor$recebioPorArgs<ExtArgs> = {}>(args?: Subset<T, EncomendaFornecedor$recebioPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EncomendaFornecedor model
+   */
+  interface EncomendaFornecedorFieldRefs {
+    readonly id: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly fornecedorId: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly stockItemId: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly quantidadeEncomendada: FieldRef<"EncomendaFornecedor", 'Float'>
+    readonly precoUnitario: FieldRef<"EncomendaFornecedor", 'Float'>
+    readonly estado: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly dataEntregaPrevista: FieldRef<"EncomendaFornecedor", 'DateTime'>
+    readonly dataEntregaReal: FieldRef<"EncomendaFornecedor", 'DateTime'>
+    readonly observacoes: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly recebioPorId: FieldRef<"EncomendaFornecedor", 'String'>
+    readonly criadoEm: FieldRef<"EncomendaFornecedor", 'DateTime'>
+    readonly atualizadoEm: FieldRef<"EncomendaFornecedor", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EncomendaFornecedor findUnique
+   */
+  export type EncomendaFornecedorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which EncomendaFornecedor to fetch.
+     */
+    where: EncomendaFornecedorWhereUniqueInput
+  }
+
+  /**
+   * EncomendaFornecedor findUniqueOrThrow
+   */
+  export type EncomendaFornecedorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which EncomendaFornecedor to fetch.
+     */
+    where: EncomendaFornecedorWhereUniqueInput
+  }
+
+  /**
+   * EncomendaFornecedor findFirst
+   */
+  export type EncomendaFornecedorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which EncomendaFornecedor to fetch.
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EncomendaFornecedors to fetch.
+     */
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EncomendaFornecedors.
+     */
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EncomendaFornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EncomendaFornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EncomendaFornecedors.
+     */
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * EncomendaFornecedor findFirstOrThrow
+   */
+  export type EncomendaFornecedorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which EncomendaFornecedor to fetch.
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EncomendaFornecedors to fetch.
+     */
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EncomendaFornecedors.
+     */
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EncomendaFornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EncomendaFornecedors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EncomendaFornecedors.
+     */
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * EncomendaFornecedor findMany
+   */
+  export type EncomendaFornecedorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter, which EncomendaFornecedors to fetch.
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EncomendaFornecedors to fetch.
+     */
+    orderBy?: EncomendaFornecedorOrderByWithRelationInput | EncomendaFornecedorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EncomendaFornecedors.
+     */
+    cursor?: EncomendaFornecedorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EncomendaFornecedors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EncomendaFornecedors.
+     */
+    skip?: number
+    distinct?: EncomendaFornecedorScalarFieldEnum | EncomendaFornecedorScalarFieldEnum[]
+  }
+
+  /**
+   * EncomendaFornecedor create
+   */
+  export type EncomendaFornecedorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EncomendaFornecedor.
+     */
+    data: XOR<EncomendaFornecedorCreateInput, EncomendaFornecedorUncheckedCreateInput>
+  }
+
+  /**
+   * EncomendaFornecedor createMany
+   */
+  export type EncomendaFornecedorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EncomendaFornecedors.
+     */
+    data: EncomendaFornecedorCreateManyInput | EncomendaFornecedorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EncomendaFornecedor createManyAndReturn
+   */
+  export type EncomendaFornecedorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * The data used to create many EncomendaFornecedors.
+     */
+    data: EncomendaFornecedorCreateManyInput | EncomendaFornecedorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EncomendaFornecedor update
+   */
+  export type EncomendaFornecedorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EncomendaFornecedor.
+     */
+    data: XOR<EncomendaFornecedorUpdateInput, EncomendaFornecedorUncheckedUpdateInput>
+    /**
+     * Choose, which EncomendaFornecedor to update.
+     */
+    where: EncomendaFornecedorWhereUniqueInput
+  }
+
+  /**
+   * EncomendaFornecedor updateMany
+   */
+  export type EncomendaFornecedorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EncomendaFornecedors.
+     */
+    data: XOR<EncomendaFornecedorUpdateManyMutationInput, EncomendaFornecedorUncheckedUpdateManyInput>
+    /**
+     * Filter which EncomendaFornecedors to update
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * Limit how many EncomendaFornecedors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EncomendaFornecedor updateManyAndReturn
+   */
+  export type EncomendaFornecedorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * The data used to update EncomendaFornecedors.
+     */
+    data: XOR<EncomendaFornecedorUpdateManyMutationInput, EncomendaFornecedorUncheckedUpdateManyInput>
+    /**
+     * Filter which EncomendaFornecedors to update
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * Limit how many EncomendaFornecedors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EncomendaFornecedor upsert
+   */
+  export type EncomendaFornecedorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EncomendaFornecedor to update in case it exists.
+     */
+    where: EncomendaFornecedorWhereUniqueInput
+    /**
+     * In case the EncomendaFornecedor found by the `where` argument doesn't exist, create a new EncomendaFornecedor with this data.
+     */
+    create: XOR<EncomendaFornecedorCreateInput, EncomendaFornecedorUncheckedCreateInput>
+    /**
+     * In case the EncomendaFornecedor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EncomendaFornecedorUpdateInput, EncomendaFornecedorUncheckedUpdateInput>
+  }
+
+  /**
+   * EncomendaFornecedor delete
+   */
+  export type EncomendaFornecedorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
+    /**
+     * Filter which EncomendaFornecedor to delete.
+     */
+    where: EncomendaFornecedorWhereUniqueInput
+  }
+
+  /**
+   * EncomendaFornecedor deleteMany
+   */
+  export type EncomendaFornecedorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EncomendaFornecedors to delete
+     */
+    where?: EncomendaFornecedorWhereInput
+    /**
+     * Limit how many EncomendaFornecedors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EncomendaFornecedor.recebioPor
+   */
+  export type EncomendaFornecedor$recebioPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * EncomendaFornecedor without action
+   */
+  export type EncomendaFornecedorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EncomendaFornecedor
+     */
+    select?: EncomendaFornecedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EncomendaFornecedor
+     */
+    omit?: EncomendaFornecedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EncomendaFornecedorInclude<ExtArgs> | null
   }
 
 
@@ -84683,6 +91392,9 @@ export namespace Prisma {
     id: 'id',
     administradoEm: 'administradoEm',
     observacoes: 'observacoes',
+    verificacao5Certas: 'verificacao5Certas',
+    naoAdministrada: 'naoAdministrada',
+    motivoNaoAdmin: 'motivoNaoAdmin',
     medicacaoId: 'medicacaoId',
     doenteId: 'doenteId',
     administradoPorId: 'administradoPorId'
@@ -84757,7 +91469,9 @@ export namespace Prisma {
     saturacaoO2: 'saturacaoO2',
     frequenciaRespiratoria: 'frequenciaRespiratoria',
     peso: 'peso',
-    notas: 'notas'
+    notas: 'notas',
+    avpu: 'avpu',
+    news2: 'news2'
   };
 
   export type SinalVitalScalarFieldEnum = (typeof SinalVitalScalarFieldEnum)[keyof typeof SinalVitalScalarFieldEnum]
@@ -85007,6 +91721,8 @@ export namespace Prisma {
     unidade: 'unidade',
     validade: 'validade',
     servico: 'servico',
+    precoUnitario: 'precoUnitario',
+    catalogoId: 'catalogoId',
     criadoEm: 'criadoEm'
   };
 
@@ -85026,6 +91742,84 @@ export namespace Prisma {
   };
 
   export type PedidoFarmaciaScalarFieldEnum = (typeof PedidoFarmaciaScalarFieldEnum)[keyof typeof PedidoFarmaciaScalarFieldEnum]
+
+
+  export const CatalogoMedicamentoScalarFieldEnum: {
+    id: 'id',
+    dci: 'dci',
+    nomeMarca: 'nomeMarca',
+    formaFarmaceutica: 'formaFarmaceutica',
+    classeTerap: 'classeTerap',
+    unidade: 'unidade',
+    concentracao: 'concentracao',
+    codigoATC: 'codigoATC',
+    ativo: 'ativo',
+    criadoEm: 'criadoEm'
+  };
+
+  export type CatalogoMedicamentoScalarFieldEnum = (typeof CatalogoMedicamentoScalarFieldEnum)[keyof typeof CatalogoMedicamentoScalarFieldEnum]
+
+
+  export const AjusteStockScalarFieldEnum: {
+    id: 'id',
+    stockItemId: 'stockItemId',
+    delta: 'delta',
+    tipo: 'tipo',
+    motivo: 'motivo',
+    utilizadorId: 'utilizadorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type AjusteStockScalarFieldEnum = (typeof AjusteStockScalarFieldEnum)[keyof typeof AjusteStockScalarFieldEnum]
+
+
+  export const TransferenciaStockScalarFieldEnum: {
+    id: 'id',
+    stockItemId: 'stockItemId',
+    quantidade: 'quantidade',
+    servicoOrigem: 'servicoOrigem',
+    servicoDestino: 'servicoDestino',
+    motivo: 'motivo',
+    estado: 'estado',
+    solicitadoPorId: 'solicitadoPorId',
+    confirmadoPorId: 'confirmadoPorId',
+    criadoEm: 'criadoEm',
+    atualizadoEm: 'atualizadoEm'
+  };
+
+  export type TransferenciaStockScalarFieldEnum = (typeof TransferenciaStockScalarFieldEnum)[keyof typeof TransferenciaStockScalarFieldEnum]
+
+
+  export const FornecedorScalarFieldEnum: {
+    id: 'id',
+    nome: 'nome',
+    nif: 'nif',
+    email: 'email',
+    telefone: 'telefone',
+    morada: 'morada',
+    ativo: 'ativo',
+    criadoEm: 'criadoEm'
+  };
+
+  export type FornecedorScalarFieldEnum = (typeof FornecedorScalarFieldEnum)[keyof typeof FornecedorScalarFieldEnum]
+
+
+  export const EncomendaFornecedorScalarFieldEnum: {
+    id: 'id',
+    fornecedorId: 'fornecedorId',
+    stockItemId: 'stockItemId',
+    quantidadeEncomendada: 'quantidadeEncomendada',
+    precoUnitario: 'precoUnitario',
+    estado: 'estado',
+    dataEntregaPrevista: 'dataEntregaPrevista',
+    dataEntregaReal: 'dataEntregaReal',
+    observacoes: 'observacoes',
+    recebioPorId: 'recebioPorId',
+    criadoEm: 'criadoEm',
+    atualizadoEm: 'atualizadoEm'
+  };
+
+  export type EncomendaFornecedorScalarFieldEnum = (typeof EncomendaFornecedorScalarFieldEnum)[keyof typeof EncomendaFornecedorScalarFieldEnum]
 
 
   export const PlanoReabilitacaoScalarFieldEnum: {
@@ -86181,6 +92975,10 @@ export namespace Prisma {
     dadosContratuais?: XOR<DadosContratuaisNullableScalarRelationFilter, DadosContratuaisWhereInput> | null
     chefe?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     subordinados?: UtilizadorListRelationFilter
+    ajustesStock?: AjusteStockListRelationFilter
+    transferenciasSolicitadas?: TransferenciaStockListRelationFilter
+    transferenciasConfirmadas?: TransferenciaStockListRelationFilter
+    encomendasRecebidas?: EncomendaFornecedorListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -86267,6 +93065,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisOrderByWithRelationInput
     chefe?: UtilizadorOrderByWithRelationInput
     subordinados?: UtilizadorOrderByRelationAggregateInput
+    ajustesStock?: AjusteStockOrderByRelationAggregateInput
+    transferenciasSolicitadas?: TransferenciaStockOrderByRelationAggregateInput
+    transferenciasConfirmadas?: TransferenciaStockOrderByRelationAggregateInput
+    encomendasRecebidas?: EncomendaFornecedorOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -86356,6 +93158,10 @@ export namespace Prisma {
     dadosContratuais?: XOR<DadosContratuaisNullableScalarRelationFilter, DadosContratuaisWhereInput> | null
     chefe?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
     subordinados?: UtilizadorListRelationFilter
+    ajustesStock?: AjusteStockListRelationFilter
+    transferenciasSolicitadas?: TransferenciaStockListRelationFilter
+    transferenciasConfirmadas?: TransferenciaStockListRelationFilter
+    encomendasRecebidas?: EncomendaFornecedorListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -87342,6 +94148,9 @@ export namespace Prisma {
     id?: StringFilter<"RegistoMedicacao"> | string
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
+    motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -87354,6 +94163,9 @@ export namespace Prisma {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrderInput | SortOrder
+    verificacao5Certas?: SortOrder
+    naoAdministrada?: SortOrder
+    motivoNaoAdmin?: SortOrderInput | SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -87369,6 +94181,9 @@ export namespace Prisma {
     NOT?: RegistoMedicacaoWhereInput | RegistoMedicacaoWhereInput[]
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
+    motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -87381,6 +94196,9 @@ export namespace Prisma {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrderInput | SortOrder
+    verificacao5Certas?: SortOrder
+    naoAdministrada?: SortOrder
+    motivoNaoAdmin?: SortOrderInput | SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -87396,6 +94214,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
     administradoEm?: DateTimeWithAggregatesFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableWithAggregatesFilter<"RegistoMedicacao"> | string | null
+    verificacao5Certas?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
+    naoAdministrada?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
+    motivoNaoAdmin?: StringNullableWithAggregatesFilter<"RegistoMedicacao"> | string | null
     medicacaoId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
     doenteId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
@@ -87725,6 +94546,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
     peso?: FloatNullableFilter<"SinalVital"> | number | null
     notas?: StringNullableFilter<"SinalVital"> | string | null
+    avpu?: StringNullableFilter<"SinalVital"> | string | null
+    news2?: IntNullableFilter<"SinalVital"> | number | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }
@@ -87742,6 +94565,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrderInput | SortOrder
     peso?: SortOrderInput | SortOrder
     notas?: SortOrderInput | SortOrder
+    avpu?: SortOrderInput | SortOrder
+    news2?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     registadoPor?: UtilizadorOrderByWithRelationInput
   }
@@ -87762,6 +94587,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
     peso?: FloatNullableFilter<"SinalVital"> | number | null
     notas?: StringNullableFilter<"SinalVital"> | string | null
+    avpu?: StringNullableFilter<"SinalVital"> | string | null
+    news2?: IntNullableFilter<"SinalVital"> | number | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }, "id">
@@ -87779,6 +94606,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrderInput | SortOrder
     peso?: SortOrderInput | SortOrder
     notas?: SortOrderInput | SortOrder
+    avpu?: SortOrderInput | SortOrder
+    news2?: SortOrderInput | SortOrder
     _count?: SinalVitalCountOrderByAggregateInput
     _avg?: SinalVitalAvgOrderByAggregateInput
     _max?: SinalVitalMaxOrderByAggregateInput
@@ -87802,6 +94631,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
     peso?: FloatNullableWithAggregatesFilter<"SinalVital"> | number | null
     notas?: StringNullableWithAggregatesFilter<"SinalVital"> | string | null
+    avpu?: StringNullableWithAggregatesFilter<"SinalVital"> | string | null
+    news2?: IntNullableWithAggregatesFilter<"SinalVital"> | number | null
   }
 
   export type AuditLogWhereInput = {
@@ -89055,8 +95886,14 @@ export namespace Prisma {
     unidade?: StringFilter<"StockItem"> | string
     validade?: DateTimeNullableFilter<"StockItem"> | Date | string | null
     servico?: StringFilter<"StockItem"> | string
+    precoUnitario?: FloatNullableFilter<"StockItem"> | number | null
+    catalogoId?: StringNullableFilter<"StockItem"> | string | null
     criadoEm?: DateTimeFilter<"StockItem"> | Date | string
+    catalogo?: XOR<CatalogoMedicamentoNullableScalarRelationFilter, CatalogoMedicamentoWhereInput> | null
     pedidos?: PedidoFarmaciaListRelationFilter
+    ajustes?: AjusteStockListRelationFilter
+    transferencias?: TransferenciaStockListRelationFilter
+    encomendas?: EncomendaFornecedorListRelationFilter
   }
 
   export type StockItemOrderByWithRelationInput = {
@@ -89068,8 +95905,14 @@ export namespace Prisma {
     unidade?: SortOrder
     validade?: SortOrderInput | SortOrder
     servico?: SortOrder
+    precoUnitario?: SortOrderInput | SortOrder
+    catalogoId?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
+    catalogo?: CatalogoMedicamentoOrderByWithRelationInput
     pedidos?: PedidoFarmaciaOrderByRelationAggregateInput
+    ajustes?: AjusteStockOrderByRelationAggregateInput
+    transferencias?: TransferenciaStockOrderByRelationAggregateInput
+    encomendas?: EncomendaFornecedorOrderByRelationAggregateInput
   }
 
   export type StockItemWhereUniqueInput = Prisma.AtLeast<{
@@ -89084,8 +95927,14 @@ export namespace Prisma {
     unidade?: StringFilter<"StockItem"> | string
     validade?: DateTimeNullableFilter<"StockItem"> | Date | string | null
     servico?: StringFilter<"StockItem"> | string
+    precoUnitario?: FloatNullableFilter<"StockItem"> | number | null
+    catalogoId?: StringNullableFilter<"StockItem"> | string | null
     criadoEm?: DateTimeFilter<"StockItem"> | Date | string
+    catalogo?: XOR<CatalogoMedicamentoNullableScalarRelationFilter, CatalogoMedicamentoWhereInput> | null
     pedidos?: PedidoFarmaciaListRelationFilter
+    ajustes?: AjusteStockListRelationFilter
+    transferencias?: TransferenciaStockListRelationFilter
+    encomendas?: EncomendaFornecedorListRelationFilter
   }, "id">
 
   export type StockItemOrderByWithAggregationInput = {
@@ -89097,6 +95946,8 @@ export namespace Prisma {
     unidade?: SortOrder
     validade?: SortOrderInput | SortOrder
     servico?: SortOrder
+    precoUnitario?: SortOrderInput | SortOrder
+    catalogoId?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: StockItemCountOrderByAggregateInput
     _avg?: StockItemAvgOrderByAggregateInput
@@ -89117,6 +95968,8 @@ export namespace Prisma {
     unidade?: StringWithAggregatesFilter<"StockItem"> | string
     validade?: DateTimeNullableWithAggregatesFilter<"StockItem"> | Date | string | null
     servico?: StringWithAggregatesFilter<"StockItem"> | string
+    precoUnitario?: FloatNullableWithAggregatesFilter<"StockItem"> | number | null
+    catalogoId?: StringNullableWithAggregatesFilter<"StockItem"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"StockItem"> | Date | string
   }
 
@@ -89201,6 +96054,417 @@ export namespace Prisma {
     processadoPorId?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
     observacoes?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"PedidoFarmacia"> | Date | string
+  }
+
+  export type CatalogoMedicamentoWhereInput = {
+    AND?: CatalogoMedicamentoWhereInput | CatalogoMedicamentoWhereInput[]
+    OR?: CatalogoMedicamentoWhereInput[]
+    NOT?: CatalogoMedicamentoWhereInput | CatalogoMedicamentoWhereInput[]
+    id?: StringFilter<"CatalogoMedicamento"> | string
+    dci?: StringFilter<"CatalogoMedicamento"> | string
+    nomeMarca?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    formaFarmaceutica?: StringFilter<"CatalogoMedicamento"> | string
+    classeTerap?: StringFilter<"CatalogoMedicamento"> | string
+    unidade?: StringFilter<"CatalogoMedicamento"> | string
+    concentracao?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    codigoATC?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    ativo?: BoolFilter<"CatalogoMedicamento"> | boolean
+    criadoEm?: DateTimeFilter<"CatalogoMedicamento"> | Date | string
+    stockItems?: StockItemListRelationFilter
+  }
+
+  export type CatalogoMedicamentoOrderByWithRelationInput = {
+    id?: SortOrder
+    dci?: SortOrder
+    nomeMarca?: SortOrderInput | SortOrder
+    formaFarmaceutica?: SortOrder
+    classeTerap?: SortOrder
+    unidade?: SortOrder
+    concentracao?: SortOrderInput | SortOrder
+    codigoATC?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    stockItems?: StockItemOrderByRelationAggregateInput
+  }
+
+  export type CatalogoMedicamentoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CatalogoMedicamentoWhereInput | CatalogoMedicamentoWhereInput[]
+    OR?: CatalogoMedicamentoWhereInput[]
+    NOT?: CatalogoMedicamentoWhereInput | CatalogoMedicamentoWhereInput[]
+    dci?: StringFilter<"CatalogoMedicamento"> | string
+    nomeMarca?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    formaFarmaceutica?: StringFilter<"CatalogoMedicamento"> | string
+    classeTerap?: StringFilter<"CatalogoMedicamento"> | string
+    unidade?: StringFilter<"CatalogoMedicamento"> | string
+    concentracao?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    codigoATC?: StringNullableFilter<"CatalogoMedicamento"> | string | null
+    ativo?: BoolFilter<"CatalogoMedicamento"> | boolean
+    criadoEm?: DateTimeFilter<"CatalogoMedicamento"> | Date | string
+    stockItems?: StockItemListRelationFilter
+  }, "id">
+
+  export type CatalogoMedicamentoOrderByWithAggregationInput = {
+    id?: SortOrder
+    dci?: SortOrder
+    nomeMarca?: SortOrderInput | SortOrder
+    formaFarmaceutica?: SortOrder
+    classeTerap?: SortOrder
+    unidade?: SortOrder
+    concentracao?: SortOrderInput | SortOrder
+    codigoATC?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    _count?: CatalogoMedicamentoCountOrderByAggregateInput
+    _max?: CatalogoMedicamentoMaxOrderByAggregateInput
+    _min?: CatalogoMedicamentoMinOrderByAggregateInput
+  }
+
+  export type CatalogoMedicamentoScalarWhereWithAggregatesInput = {
+    AND?: CatalogoMedicamentoScalarWhereWithAggregatesInput | CatalogoMedicamentoScalarWhereWithAggregatesInput[]
+    OR?: CatalogoMedicamentoScalarWhereWithAggregatesInput[]
+    NOT?: CatalogoMedicamentoScalarWhereWithAggregatesInput | CatalogoMedicamentoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CatalogoMedicamento"> | string
+    dci?: StringWithAggregatesFilter<"CatalogoMedicamento"> | string
+    nomeMarca?: StringNullableWithAggregatesFilter<"CatalogoMedicamento"> | string | null
+    formaFarmaceutica?: StringWithAggregatesFilter<"CatalogoMedicamento"> | string
+    classeTerap?: StringWithAggregatesFilter<"CatalogoMedicamento"> | string
+    unidade?: StringWithAggregatesFilter<"CatalogoMedicamento"> | string
+    concentracao?: StringNullableWithAggregatesFilter<"CatalogoMedicamento"> | string | null
+    codigoATC?: StringNullableWithAggregatesFilter<"CatalogoMedicamento"> | string | null
+    ativo?: BoolWithAggregatesFilter<"CatalogoMedicamento"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"CatalogoMedicamento"> | Date | string
+  }
+
+  export type AjusteStockWhereInput = {
+    AND?: AjusteStockWhereInput | AjusteStockWhereInput[]
+    OR?: AjusteStockWhereInput[]
+    NOT?: AjusteStockWhereInput | AjusteStockWhereInput[]
+    id?: StringFilter<"AjusteStock"> | string
+    stockItemId?: StringFilter<"AjusteStock"> | string
+    delta?: FloatFilter<"AjusteStock"> | number
+    tipo?: StringFilter<"AjusteStock"> | string
+    motivo?: StringFilter<"AjusteStock"> | string
+    utilizadorId?: StringFilter<"AjusteStock"> | string
+    criadoEm?: DateTimeFilter<"AjusteStock"> | Date | string
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type AjusteStockOrderByWithRelationInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    delta?: SortOrder
+    tipo?: SortOrder
+    motivo?: SortOrder
+    utilizadorId?: SortOrder
+    criadoEm?: SortOrder
+    stockItem?: StockItemOrderByWithRelationInput
+    utilizador?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type AjusteStockWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AjusteStockWhereInput | AjusteStockWhereInput[]
+    OR?: AjusteStockWhereInput[]
+    NOT?: AjusteStockWhereInput | AjusteStockWhereInput[]
+    stockItemId?: StringFilter<"AjusteStock"> | string
+    delta?: FloatFilter<"AjusteStock"> | number
+    tipo?: StringFilter<"AjusteStock"> | string
+    motivo?: StringFilter<"AjusteStock"> | string
+    utilizadorId?: StringFilter<"AjusteStock"> | string
+    criadoEm?: DateTimeFilter<"AjusteStock"> | Date | string
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type AjusteStockOrderByWithAggregationInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    delta?: SortOrder
+    tipo?: SortOrder
+    motivo?: SortOrder
+    utilizadorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: AjusteStockCountOrderByAggregateInput
+    _avg?: AjusteStockAvgOrderByAggregateInput
+    _max?: AjusteStockMaxOrderByAggregateInput
+    _min?: AjusteStockMinOrderByAggregateInput
+    _sum?: AjusteStockSumOrderByAggregateInput
+  }
+
+  export type AjusteStockScalarWhereWithAggregatesInput = {
+    AND?: AjusteStockScalarWhereWithAggregatesInput | AjusteStockScalarWhereWithAggregatesInput[]
+    OR?: AjusteStockScalarWhereWithAggregatesInput[]
+    NOT?: AjusteStockScalarWhereWithAggregatesInput | AjusteStockScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AjusteStock"> | string
+    stockItemId?: StringWithAggregatesFilter<"AjusteStock"> | string
+    delta?: FloatWithAggregatesFilter<"AjusteStock"> | number
+    tipo?: StringWithAggregatesFilter<"AjusteStock"> | string
+    motivo?: StringWithAggregatesFilter<"AjusteStock"> | string
+    utilizadorId?: StringWithAggregatesFilter<"AjusteStock"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"AjusteStock"> | Date | string
+  }
+
+  export type TransferenciaStockWhereInput = {
+    AND?: TransferenciaStockWhereInput | TransferenciaStockWhereInput[]
+    OR?: TransferenciaStockWhereInput[]
+    NOT?: TransferenciaStockWhereInput | TransferenciaStockWhereInput[]
+    id?: StringFilter<"TransferenciaStock"> | string
+    stockItemId?: StringFilter<"TransferenciaStock"> | string
+    quantidade?: FloatFilter<"TransferenciaStock"> | number
+    servicoOrigem?: StringFilter<"TransferenciaStock"> | string
+    servicoDestino?: StringFilter<"TransferenciaStock"> | string
+    motivo?: StringNullableFilter<"TransferenciaStock"> | string | null
+    estado?: StringFilter<"TransferenciaStock"> | string
+    solicitadoPorId?: StringFilter<"TransferenciaStock"> | string
+    confirmadoPorId?: StringNullableFilter<"TransferenciaStock"> | string | null
+    criadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    confirmadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type TransferenciaStockOrderByWithRelationInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    quantidade?: SortOrder
+    servicoOrigem?: SortOrder
+    servicoDestino?: SortOrder
+    motivo?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    solicitadoPorId?: SortOrder
+    confirmadoPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    stockItem?: StockItemOrderByWithRelationInput
+    solicitadoPor?: UtilizadorOrderByWithRelationInput
+    confirmadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type TransferenciaStockWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TransferenciaStockWhereInput | TransferenciaStockWhereInput[]
+    OR?: TransferenciaStockWhereInput[]
+    NOT?: TransferenciaStockWhereInput | TransferenciaStockWhereInput[]
+    stockItemId?: StringFilter<"TransferenciaStock"> | string
+    quantidade?: FloatFilter<"TransferenciaStock"> | number
+    servicoOrigem?: StringFilter<"TransferenciaStock"> | string
+    servicoDestino?: StringFilter<"TransferenciaStock"> | string
+    motivo?: StringNullableFilter<"TransferenciaStock"> | string | null
+    estado?: StringFilter<"TransferenciaStock"> | string
+    solicitadoPorId?: StringFilter<"TransferenciaStock"> | string
+    confirmadoPorId?: StringNullableFilter<"TransferenciaStock"> | string | null
+    criadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    confirmadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type TransferenciaStockOrderByWithAggregationInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    quantidade?: SortOrder
+    servicoOrigem?: SortOrder
+    servicoDestino?: SortOrder
+    motivo?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    solicitadoPorId?: SortOrder
+    confirmadoPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    _count?: TransferenciaStockCountOrderByAggregateInput
+    _avg?: TransferenciaStockAvgOrderByAggregateInput
+    _max?: TransferenciaStockMaxOrderByAggregateInput
+    _min?: TransferenciaStockMinOrderByAggregateInput
+    _sum?: TransferenciaStockSumOrderByAggregateInput
+  }
+
+  export type TransferenciaStockScalarWhereWithAggregatesInput = {
+    AND?: TransferenciaStockScalarWhereWithAggregatesInput | TransferenciaStockScalarWhereWithAggregatesInput[]
+    OR?: TransferenciaStockScalarWhereWithAggregatesInput[]
+    NOT?: TransferenciaStockScalarWhereWithAggregatesInput | TransferenciaStockScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    stockItemId?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    quantidade?: FloatWithAggregatesFilter<"TransferenciaStock"> | number
+    servicoOrigem?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    servicoDestino?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    motivo?: StringNullableWithAggregatesFilter<"TransferenciaStock"> | string | null
+    estado?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    solicitadoPorId?: StringWithAggregatesFilter<"TransferenciaStock"> | string
+    confirmadoPorId?: StringNullableWithAggregatesFilter<"TransferenciaStock"> | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"TransferenciaStock"> | Date | string
+    atualizadoEm?: DateTimeWithAggregatesFilter<"TransferenciaStock"> | Date | string
+  }
+
+  export type FornecedorWhereInput = {
+    AND?: FornecedorWhereInput | FornecedorWhereInput[]
+    OR?: FornecedorWhereInput[]
+    NOT?: FornecedorWhereInput | FornecedorWhereInput[]
+    id?: StringFilter<"Fornecedor"> | string
+    nome?: StringFilter<"Fornecedor"> | string
+    nif?: StringNullableFilter<"Fornecedor"> | string | null
+    email?: StringNullableFilter<"Fornecedor"> | string | null
+    telefone?: StringNullableFilter<"Fornecedor"> | string | null
+    morada?: StringNullableFilter<"Fornecedor"> | string | null
+    ativo?: BoolFilter<"Fornecedor"> | boolean
+    criadoEm?: DateTimeFilter<"Fornecedor"> | Date | string
+    encomendas?: EncomendaFornecedorListRelationFilter
+  }
+
+  export type FornecedorOrderByWithRelationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    nif?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    morada?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    encomendas?: EncomendaFornecedorOrderByRelationAggregateInput
+  }
+
+  export type FornecedorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    nif?: string
+    AND?: FornecedorWhereInput | FornecedorWhereInput[]
+    OR?: FornecedorWhereInput[]
+    NOT?: FornecedorWhereInput | FornecedorWhereInput[]
+    nome?: StringFilter<"Fornecedor"> | string
+    email?: StringNullableFilter<"Fornecedor"> | string | null
+    telefone?: StringNullableFilter<"Fornecedor"> | string | null
+    morada?: StringNullableFilter<"Fornecedor"> | string | null
+    ativo?: BoolFilter<"Fornecedor"> | boolean
+    criadoEm?: DateTimeFilter<"Fornecedor"> | Date | string
+    encomendas?: EncomendaFornecedorListRelationFilter
+  }, "id" | "nif">
+
+  export type FornecedorOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    nif?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
+    morada?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+    _count?: FornecedorCountOrderByAggregateInput
+    _max?: FornecedorMaxOrderByAggregateInput
+    _min?: FornecedorMinOrderByAggregateInput
+  }
+
+  export type FornecedorScalarWhereWithAggregatesInput = {
+    AND?: FornecedorScalarWhereWithAggregatesInput | FornecedorScalarWhereWithAggregatesInput[]
+    OR?: FornecedorScalarWhereWithAggregatesInput[]
+    NOT?: FornecedorScalarWhereWithAggregatesInput | FornecedorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Fornecedor"> | string
+    nome?: StringWithAggregatesFilter<"Fornecedor"> | string
+    nif?: StringNullableWithAggregatesFilter<"Fornecedor"> | string | null
+    email?: StringNullableWithAggregatesFilter<"Fornecedor"> | string | null
+    telefone?: StringNullableWithAggregatesFilter<"Fornecedor"> | string | null
+    morada?: StringNullableWithAggregatesFilter<"Fornecedor"> | string | null
+    ativo?: BoolWithAggregatesFilter<"Fornecedor"> | boolean
+    criadoEm?: DateTimeWithAggregatesFilter<"Fornecedor"> | Date | string
+  }
+
+  export type EncomendaFornecedorWhereInput = {
+    AND?: EncomendaFornecedorWhereInput | EncomendaFornecedorWhereInput[]
+    OR?: EncomendaFornecedorWhereInput[]
+    NOT?: EncomendaFornecedorWhereInput | EncomendaFornecedorWhereInput[]
+    id?: StringFilter<"EncomendaFornecedor"> | string
+    fornecedorId?: StringFilter<"EncomendaFornecedor"> | string
+    stockItemId?: StringFilter<"EncomendaFornecedor"> | string
+    quantidadeEncomendada?: FloatFilter<"EncomendaFornecedor"> | number
+    precoUnitario?: FloatNullableFilter<"EncomendaFornecedor"> | number | null
+    estado?: StringFilter<"EncomendaFornecedor"> | string
+    dataEntregaPrevista?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    dataEntregaReal?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    observacoes?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    recebioPorId?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    criadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
+    atualizadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
+    fornecedor?: XOR<FornecedorScalarRelationFilter, FornecedorWhereInput>
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    recebioPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type EncomendaFornecedorOrderByWithRelationInput = {
+    id?: SortOrder
+    fornecedorId?: SortOrder
+    stockItemId?: SortOrder
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    dataEntregaPrevista?: SortOrderInput | SortOrder
+    dataEntregaReal?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    recebioPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    fornecedor?: FornecedorOrderByWithRelationInput
+    stockItem?: StockItemOrderByWithRelationInput
+    recebioPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type EncomendaFornecedorWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EncomendaFornecedorWhereInput | EncomendaFornecedorWhereInput[]
+    OR?: EncomendaFornecedorWhereInput[]
+    NOT?: EncomendaFornecedorWhereInput | EncomendaFornecedorWhereInput[]
+    fornecedorId?: StringFilter<"EncomendaFornecedor"> | string
+    stockItemId?: StringFilter<"EncomendaFornecedor"> | string
+    quantidadeEncomendada?: FloatFilter<"EncomendaFornecedor"> | number
+    precoUnitario?: FloatNullableFilter<"EncomendaFornecedor"> | number | null
+    estado?: StringFilter<"EncomendaFornecedor"> | string
+    dataEntregaPrevista?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    dataEntregaReal?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    observacoes?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    recebioPorId?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    criadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
+    atualizadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
+    fornecedor?: XOR<FornecedorScalarRelationFilter, FornecedorWhereInput>
+    stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
+    recebioPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type EncomendaFornecedorOrderByWithAggregationInput = {
+    id?: SortOrder
+    fornecedorId?: SortOrder
+    stockItemId?: SortOrder
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    dataEntregaPrevista?: SortOrderInput | SortOrder
+    dataEntregaReal?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    recebioPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    _count?: EncomendaFornecedorCountOrderByAggregateInput
+    _avg?: EncomendaFornecedorAvgOrderByAggregateInput
+    _max?: EncomendaFornecedorMaxOrderByAggregateInput
+    _min?: EncomendaFornecedorMinOrderByAggregateInput
+    _sum?: EncomendaFornecedorSumOrderByAggregateInput
+  }
+
+  export type EncomendaFornecedorScalarWhereWithAggregatesInput = {
+    AND?: EncomendaFornecedorScalarWhereWithAggregatesInput | EncomendaFornecedorScalarWhereWithAggregatesInput[]
+    OR?: EncomendaFornecedorScalarWhereWithAggregatesInput[]
+    NOT?: EncomendaFornecedorScalarWhereWithAggregatesInput | EncomendaFornecedorScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EncomendaFornecedor"> | string
+    fornecedorId?: StringWithAggregatesFilter<"EncomendaFornecedor"> | string
+    stockItemId?: StringWithAggregatesFilter<"EncomendaFornecedor"> | string
+    quantidadeEncomendada?: FloatWithAggregatesFilter<"EncomendaFornecedor"> | number
+    precoUnitario?: FloatNullableWithAggregatesFilter<"EncomendaFornecedor"> | number | null
+    estado?: StringWithAggregatesFilter<"EncomendaFornecedor"> | string
+    dataEntregaPrevista?: DateTimeNullableWithAggregatesFilter<"EncomendaFornecedor"> | Date | string | null
+    dataEntregaReal?: DateTimeNullableWithAggregatesFilter<"EncomendaFornecedor"> | Date | string | null
+    observacoes?: StringNullableWithAggregatesFilter<"EncomendaFornecedor"> | string | null
+    recebioPorId?: StringNullableWithAggregatesFilter<"EncomendaFornecedor"> | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"EncomendaFornecedor"> | Date | string
+    atualizadoEm?: DateTimeWithAggregatesFilter<"EncomendaFornecedor"> | Date | string
   }
 
   export type PlanoReabilitacaoWhereInput = {
@@ -91525,6 +98789,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -91610,6 +98878,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -91695,6 +98967,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -91780,6 +99056,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -92817,6 +100097,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
@@ -92826,6 +100109,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -92835,6 +100121,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
@@ -92844,6 +100133,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
@@ -92853,6 +100145,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -92862,12 +100157,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RegistoMedicacaoUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
@@ -93162,6 +100463,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
     doente: DoenteCreateNestedOneWithoutSinaisVitaisInput
     registadoPor: UtilizadorCreateNestedOneWithoutSinaisVitaisRegistadosInput
   }
@@ -93179,6 +100482,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type SinalVitalUpdateInput = {
@@ -93192,6 +100497,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
     doente?: DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput
     registadoPor?: UtilizadorUpdateOneRequiredWithoutSinaisVitaisRegistadosNestedInput
   }
@@ -93209,6 +100516,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SinalVitalCreateManyInput = {
@@ -93224,6 +100533,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type SinalVitalUpdateManyMutationInput = {
@@ -93237,6 +100548,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SinalVitalUncheckedUpdateManyInput = {
@@ -93252,6 +100565,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AuditLogCreateInput = {
@@ -94581,8 +101896,13 @@ export namespace Prisma {
     unidade: string
     validade?: Date | string | null
     servico: string
+    precoUnitario?: number | null
     criadoEm?: Date | string
+    catalogo?: CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput
     pedidos?: PedidoFarmaciaCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutStockItemInput
   }
 
   export type StockItemUncheckedCreateInput = {
@@ -94594,8 +101914,13 @@ export namespace Prisma {
     unidade: string
     validade?: Date | string | null
     servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
     criadoEm?: Date | string
     pedidos?: PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockUncheckedCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput
   }
 
   export type StockItemUpdateInput = {
@@ -94607,8 +101932,13 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    catalogo?: CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput
     pedidos?: PedidoFarmaciaUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUpdateManyWithoutStockItemNestedInput
   }
 
   export type StockItemUncheckedUpdateInput = {
@@ -94620,8 +101950,13 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     pedidos?: PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput
   }
 
   export type StockItemCreateManyInput = {
@@ -94633,6 +101968,8 @@ export namespace Prisma {
     unidade: string
     validade?: Date | string | null
     servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
     criadoEm?: Date | string
   }
 
@@ -94645,6 +101982,7 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -94657,6 +101995,8 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -94739,6 +102079,447 @@ export namespace Prisma {
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CatalogoMedicamentoCreateInput = {
+    id?: string
+    dci: string
+    nomeMarca?: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao?: string | null
+    codigoATC?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    stockItems?: StockItemCreateNestedManyWithoutCatalogoInput
+  }
+
+  export type CatalogoMedicamentoUncheckedCreateInput = {
+    id?: string
+    dci: string
+    nomeMarca?: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao?: string | null
+    codigoATC?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    stockItems?: StockItemUncheckedCreateNestedManyWithoutCatalogoInput
+  }
+
+  export type CatalogoMedicamentoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItems?: StockItemUpdateManyWithoutCatalogoNestedInput
+  }
+
+  export type CatalogoMedicamentoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItems?: StockItemUncheckedUpdateManyWithoutCatalogoNestedInput
+  }
+
+  export type CatalogoMedicamentoCreateManyInput = {
+    id?: string
+    dci: string
+    nomeMarca?: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao?: string | null
+    codigoATC?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type CatalogoMedicamentoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CatalogoMedicamentoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockCreateInput = {
+    id?: string
+    delta: number
+    tipo: string
+    motivo: string
+    criadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutAjustesInput
+    utilizador: UtilizadorCreateNestedOneWithoutAjustesStockInput
+  }
+
+  export type AjusteStockUncheckedCreateInput = {
+    id?: string
+    stockItemId: string
+    delta: number
+    tipo: string
+    motivo: string
+    utilizadorId: string
+    criadoEm?: Date | string
+  }
+
+  export type AjusteStockUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutAjustesNestedInput
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAjustesStockNestedInput
+  }
+
+  export type AjusteStockUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockCreateManyInput = {
+    id?: string
+    stockItemId: string
+    delta: number
+    tipo: string
+    motivo: string
+    utilizadorId: string
+    criadoEm?: Date | string
+  }
+
+  export type AjusteStockUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockCreateInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutTransferenciasInput
+    solicitadoPor: UtilizadorCreateNestedOneWithoutTransferenciasSolicitadasInput
+    confirmadoPor?: UtilizadorCreateNestedOneWithoutTransferenciasConfirmadasInput
+  }
+
+  export type TransferenciaStockUncheckedCreateInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutTransferenciasNestedInput
+    solicitadoPor?: UtilizadorUpdateOneRequiredWithoutTransferenciasSolicitadasNestedInput
+    confirmadoPor?: UtilizadorUpdateOneWithoutTransferenciasConfirmadasNestedInput
+  }
+
+  export type TransferenciaStockUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockCreateManyInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FornecedorCreateInput = {
+    id?: string
+    nome: string
+    nif?: string | null
+    email?: string | null
+    telefone?: string | null
+    morada?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutFornecedorInput
+  }
+
+  export type FornecedorUncheckedCreateInput = {
+    id?: string
+    nome: string
+    nif?: string | null
+    email?: string | null
+    telefone?: string | null
+    morada?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutFornecedorInput
+  }
+
+  export type FornecedorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    encomendas?: EncomendaFornecedorUpdateManyWithoutFornecedorNestedInput
+  }
+
+  export type FornecedorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutFornecedorNestedInput
+  }
+
+  export type FornecedorCreateManyInput = {
+    id?: string
+    nome: string
+    nif?: string | null
+    email?: string | null
+    telefone?: string | null
+    morada?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type FornecedorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FornecedorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorCreateInput = {
+    id?: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    fornecedor: FornecedorCreateNestedOneWithoutEncomendasInput
+    stockItem: StockItemCreateNestedOneWithoutEncomendasInput
+    recebioPor?: UtilizadorCreateNestedOneWithoutEncomendasRecebidasInput
+  }
+
+  export type EncomendaFornecedorUncheckedCreateInput = {
+    id?: string
+    fornecedorId: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    fornecedor?: FornecedorUpdateOneRequiredWithoutEncomendasNestedInput
+    stockItem?: StockItemUpdateOneRequiredWithoutEncomendasNestedInput
+    recebioPor?: UtilizadorUpdateOneWithoutEncomendasRecebidasNestedInput
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorCreateManyInput = {
+    id?: string
+    fornecedorId: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PlanoReabilitacaoCreateInput = {
@@ -97496,6 +105277,24 @@ export namespace Prisma {
     none?: UtilizadorWhereInput
   }
 
+  export type AjusteStockListRelationFilter = {
+    every?: AjusteStockWhereInput
+    some?: AjusteStockWhereInput
+    none?: AjusteStockWhereInput
+  }
+
+  export type TransferenciaStockListRelationFilter = {
+    every?: TransferenciaStockWhereInput
+    some?: TransferenciaStockWhereInput
+    none?: TransferenciaStockWhereInput
+  }
+
+  export type EncomendaFornecedorListRelationFilter = {
+    every?: EncomendaFornecedorWhereInput
+    some?: EncomendaFornecedorWhereInput
+    none?: EncomendaFornecedorWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -97694,6 +105493,18 @@ export namespace Prisma {
   }
 
   export type UtilizadorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AjusteStockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransferenciaStockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EncomendaFornecedorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -98469,6 +106280,9 @@ export namespace Prisma {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrder
+    verificacao5Certas?: SortOrder
+    naoAdministrada?: SortOrder
+    motivoNaoAdmin?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -98478,6 +106292,9 @@ export namespace Prisma {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrder
+    verificacao5Certas?: SortOrder
+    naoAdministrada?: SortOrder
+    motivoNaoAdmin?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -98487,6 +106304,9 @@ export namespace Prisma {
     id?: SortOrder
     administradoEm?: SortOrder
     observacoes?: SortOrder
+    verificacao5Certas?: SortOrder
+    naoAdministrada?: SortOrder
+    motivoNaoAdmin?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -98696,6 +106516,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
     notas?: SortOrder
+    avpu?: SortOrder
+    news2?: SortOrder
   }
 
   export type SinalVitalAvgOrderByAggregateInput = {
@@ -98706,6 +106528,7 @@ export namespace Prisma {
     saturacaoO2?: SortOrder
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
+    news2?: SortOrder
   }
 
   export type SinalVitalMaxOrderByAggregateInput = {
@@ -98721,6 +106544,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
     notas?: SortOrder
+    avpu?: SortOrder
+    news2?: SortOrder
   }
 
   export type SinalVitalMinOrderByAggregateInput = {
@@ -98736,6 +106561,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
     notas?: SortOrder
+    avpu?: SortOrder
+    news2?: SortOrder
   }
 
   export type SinalVitalSumOrderByAggregateInput = {
@@ -98746,6 +106573,7 @@ export namespace Prisma {
     saturacaoO2?: SortOrder
     frequenciaRespiratoria?: SortOrder
     peso?: SortOrder
+    news2?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -99603,6 +107431,11 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type CatalogoMedicamentoNullableScalarRelationFilter = {
+    is?: CatalogoMedicamentoWhereInput | null
+    isNot?: CatalogoMedicamentoWhereInput | null
+  }
+
   export type StockItemCountOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
@@ -99612,12 +107445,15 @@ export namespace Prisma {
     unidade?: SortOrder
     validade?: SortOrder
     servico?: SortOrder
+    precoUnitario?: SortOrder
+    catalogoId?: SortOrder
     criadoEm?: SortOrder
   }
 
   export type StockItemAvgOrderByAggregateInput = {
     quantidade?: SortOrder
     quantidadeMinima?: SortOrder
+    precoUnitario?: SortOrder
   }
 
   export type StockItemMaxOrderByAggregateInput = {
@@ -99629,6 +107465,8 @@ export namespace Prisma {
     unidade?: SortOrder
     validade?: SortOrder
     servico?: SortOrder
+    precoUnitario?: SortOrder
+    catalogoId?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -99641,12 +107479,15 @@ export namespace Prisma {
     unidade?: SortOrder
     validade?: SortOrder
     servico?: SortOrder
+    precoUnitario?: SortOrder
+    catalogoId?: SortOrder
     criadoEm?: SortOrder
   }
 
   export type StockItemSumOrderByAggregateInput = {
     quantidade?: SortOrder
     quantidadeMinima?: SortOrder
+    precoUnitario?: SortOrder
   }
 
   export type EnumTipoStockWithAggregatesFilter<$PrismaModel = never> = {
@@ -99739,6 +107580,236 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoPedidoFarmaciaFilter<$PrismaModel>
     _max?: NestedEnumEstadoPedidoFarmaciaFilter<$PrismaModel>
+  }
+
+  export type StockItemListRelationFilter = {
+    every?: StockItemWhereInput
+    some?: StockItemWhereInput
+    none?: StockItemWhereInput
+  }
+
+  export type StockItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CatalogoMedicamentoCountOrderByAggregateInput = {
+    id?: SortOrder
+    dci?: SortOrder
+    nomeMarca?: SortOrder
+    formaFarmaceutica?: SortOrder
+    classeTerap?: SortOrder
+    unidade?: SortOrder
+    concentracao?: SortOrder
+    codigoATC?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type CatalogoMedicamentoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dci?: SortOrder
+    nomeMarca?: SortOrder
+    formaFarmaceutica?: SortOrder
+    classeTerap?: SortOrder
+    unidade?: SortOrder
+    concentracao?: SortOrder
+    codigoATC?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type CatalogoMedicamentoMinOrderByAggregateInput = {
+    id?: SortOrder
+    dci?: SortOrder
+    nomeMarca?: SortOrder
+    formaFarmaceutica?: SortOrder
+    classeTerap?: SortOrder
+    unidade?: SortOrder
+    concentracao?: SortOrder
+    codigoATC?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AjusteStockCountOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    delta?: SortOrder
+    tipo?: SortOrder
+    motivo?: SortOrder
+    utilizadorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AjusteStockAvgOrderByAggregateInput = {
+    delta?: SortOrder
+  }
+
+  export type AjusteStockMaxOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    delta?: SortOrder
+    tipo?: SortOrder
+    motivo?: SortOrder
+    utilizadorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AjusteStockMinOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    delta?: SortOrder
+    tipo?: SortOrder
+    motivo?: SortOrder
+    utilizadorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type AjusteStockSumOrderByAggregateInput = {
+    delta?: SortOrder
+  }
+
+  export type TransferenciaStockCountOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    quantidade?: SortOrder
+    servicoOrigem?: SortOrder
+    servicoDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    solicitadoPorId?: SortOrder
+    confirmadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type TransferenciaStockAvgOrderByAggregateInput = {
+    quantidade?: SortOrder
+  }
+
+  export type TransferenciaStockMaxOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    quantidade?: SortOrder
+    servicoOrigem?: SortOrder
+    servicoDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    solicitadoPorId?: SortOrder
+    confirmadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type TransferenciaStockMinOrderByAggregateInput = {
+    id?: SortOrder
+    stockItemId?: SortOrder
+    quantidade?: SortOrder
+    servicoOrigem?: SortOrder
+    servicoDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    solicitadoPorId?: SortOrder
+    confirmadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type TransferenciaStockSumOrderByAggregateInput = {
+    quantidade?: SortOrder
+  }
+
+  export type FornecedorCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    nif?: SortOrder
+    email?: SortOrder
+    telefone?: SortOrder
+    morada?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type FornecedorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    nif?: SortOrder
+    email?: SortOrder
+    telefone?: SortOrder
+    morada?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type FornecedorMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    nif?: SortOrder
+    email?: SortOrder
+    telefone?: SortOrder
+    morada?: SortOrder
+    ativo?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type FornecedorScalarRelationFilter = {
+    is?: FornecedorWhereInput
+    isNot?: FornecedorWhereInput
+  }
+
+  export type EncomendaFornecedorCountOrderByAggregateInput = {
+    id?: SortOrder
+    fornecedorId?: SortOrder
+    stockItemId?: SortOrder
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrder
+    estado?: SortOrder
+    dataEntregaPrevista?: SortOrder
+    dataEntregaReal?: SortOrder
+    observacoes?: SortOrder
+    recebioPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type EncomendaFornecedorAvgOrderByAggregateInput = {
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrder
+  }
+
+  export type EncomendaFornecedorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fornecedorId?: SortOrder
+    stockItemId?: SortOrder
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrder
+    estado?: SortOrder
+    dataEntregaPrevista?: SortOrder
+    dataEntregaReal?: SortOrder
+    observacoes?: SortOrder
+    recebioPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type EncomendaFornecedorMinOrderByAggregateInput = {
+    id?: SortOrder
+    fornecedorId?: SortOrder
+    stockItemId?: SortOrder
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrder
+    estado?: SortOrder
+    dataEntregaPrevista?: SortOrder
+    dataEntregaReal?: SortOrder
+    observacoes?: SortOrder
+    recebioPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type EncomendaFornecedorSumOrderByAggregateInput = {
+    quantidadeEncomendada?: SortOrder
+    precoUnitario?: SortOrder
   }
 
   export type PlanoReabilitacaoCountOrderByAggregateInput = {
@@ -101591,6 +109662,34 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput | UtilizadorWhereUniqueInput[]
   }
 
+  export type AjusteStockCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput> | AjusteStockCreateWithoutUtilizadorInput[] | AjusteStockUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutUtilizadorInput | AjusteStockCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AjusteStockCreateManyUtilizadorInputEnvelope
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput = {
+    create?: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput> | TransferenciaStockCreateWithoutSolicitadoPorInput[] | TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput | TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput[]
+    createMany?: TransferenciaStockCreateManySolicitadoPorInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput = {
+    create?: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput> | TransferenciaStockCreateWithoutConfirmadoPorInput[] | TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput | TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput[]
+    createMany?: TransferenciaStockCreateManyConfirmadoPorInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput> | EncomendaFornecedorCreateWithoutRecebioPorInput[] | EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput | EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput[]
+    createMany?: EncomendaFornecedorCreateManyRecebioPorInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -102071,6 +110170,34 @@ export namespace Prisma {
     connectOrCreate?: UtilizadorCreateOrConnectWithoutChefeInput | UtilizadorCreateOrConnectWithoutChefeInput[]
     createMany?: UtilizadorCreateManyChefeInputEnvelope
     connect?: UtilizadorWhereUniqueInput | UtilizadorWhereUniqueInput[]
+  }
+
+  export type AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput> | AjusteStockCreateWithoutUtilizadorInput[] | AjusteStockUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutUtilizadorInput | AjusteStockCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: AjusteStockCreateManyUtilizadorInputEnvelope
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput = {
+    create?: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput> | TransferenciaStockCreateWithoutSolicitadoPorInput[] | TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput | TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput[]
+    createMany?: TransferenciaStockCreateManySolicitadoPorInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput = {
+    create?: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput> | TransferenciaStockCreateWithoutConfirmadoPorInput[] | TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput | TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput[]
+    createMany?: TransferenciaStockCreateManyConfirmadoPorInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput> | EncomendaFornecedorCreateWithoutRecebioPorInput[] | EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput | EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput[]
+    createMany?: EncomendaFornecedorCreateManyRecebioPorInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -103065,6 +111192,62 @@ export namespace Prisma {
     deleteMany?: UtilizadorScalarWhereInput | UtilizadorScalarWhereInput[]
   }
 
+  export type AjusteStockUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput> | AjusteStockCreateWithoutUtilizadorInput[] | AjusteStockUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutUtilizadorInput | AjusteStockCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AjusteStockUpsertWithWhereUniqueWithoutUtilizadorInput | AjusteStockUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AjusteStockCreateManyUtilizadorInputEnvelope
+    set?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    disconnect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    delete?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    update?: AjusteStockUpdateWithWhereUniqueWithoutUtilizadorInput | AjusteStockUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AjusteStockUpdateManyWithWhereWithoutUtilizadorInput | AjusteStockUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput> | TransferenciaStockCreateWithoutSolicitadoPorInput[] | TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput | TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutSolicitadoPorInput | TransferenciaStockUpsertWithWhereUniqueWithoutSolicitadoPorInput[]
+    createMany?: TransferenciaStockCreateManySolicitadoPorInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutSolicitadoPorInput | TransferenciaStockUpdateWithWhereUniqueWithoutSolicitadoPorInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutSolicitadoPorInput | TransferenciaStockUpdateManyWithWhereWithoutSolicitadoPorInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput> | TransferenciaStockCreateWithoutConfirmadoPorInput[] | TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput | TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutConfirmadoPorInput | TransferenciaStockUpsertWithWhereUniqueWithoutConfirmadoPorInput[]
+    createMany?: TransferenciaStockCreateManyConfirmadoPorInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutConfirmadoPorInput | TransferenciaStockUpdateWithWhereUniqueWithoutConfirmadoPorInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutConfirmadoPorInput | TransferenciaStockUpdateManyWithWhereWithoutConfirmadoPorInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput> | EncomendaFornecedorCreateWithoutRecebioPorInput[] | EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput | EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutRecebioPorInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutRecebioPorInput[]
+    createMany?: EncomendaFornecedorCreateManyRecebioPorInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutRecebioPorInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutRecebioPorInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutRecebioPorInput | EncomendaFornecedorUpdateManyWithWhereWithoutRecebioPorInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -104025,6 +112208,62 @@ export namespace Prisma {
     update?: UtilizadorUpdateWithWhereUniqueWithoutChefeInput | UtilizadorUpdateWithWhereUniqueWithoutChefeInput[]
     updateMany?: UtilizadorUpdateManyWithWhereWithoutChefeInput | UtilizadorUpdateManyWithWhereWithoutChefeInput[]
     deleteMany?: UtilizadorScalarWhereInput | UtilizadorScalarWhereInput[]
+  }
+
+  export type AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput> | AjusteStockCreateWithoutUtilizadorInput[] | AjusteStockUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutUtilizadorInput | AjusteStockCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: AjusteStockUpsertWithWhereUniqueWithoutUtilizadorInput | AjusteStockUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: AjusteStockCreateManyUtilizadorInputEnvelope
+    set?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    disconnect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    delete?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    update?: AjusteStockUpdateWithWhereUniqueWithoutUtilizadorInput | AjusteStockUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: AjusteStockUpdateManyWithWhereWithoutUtilizadorInput | AjusteStockUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput> | TransferenciaStockCreateWithoutSolicitadoPorInput[] | TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput | TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutSolicitadoPorInput | TransferenciaStockUpsertWithWhereUniqueWithoutSolicitadoPorInput[]
+    createMany?: TransferenciaStockCreateManySolicitadoPorInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutSolicitadoPorInput | TransferenciaStockUpdateWithWhereUniqueWithoutSolicitadoPorInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutSolicitadoPorInput | TransferenciaStockUpdateManyWithWhereWithoutSolicitadoPorInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput> | TransferenciaStockCreateWithoutConfirmadoPorInput[] | TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput | TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutConfirmadoPorInput | TransferenciaStockUpsertWithWhereUniqueWithoutConfirmadoPorInput[]
+    createMany?: TransferenciaStockCreateManyConfirmadoPorInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutConfirmadoPorInput | TransferenciaStockUpdateWithWhereUniqueWithoutConfirmadoPorInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutConfirmadoPorInput | TransferenciaStockUpdateManyWithWhereWithoutConfirmadoPorInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput> | EncomendaFornecedorCreateWithoutRecebioPorInput[] | EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput | EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutRecebioPorInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutRecebioPorInput[]
+    createMany?: EncomendaFornecedorCreateManyRecebioPorInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutRecebioPorInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutRecebioPorInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutRecebioPorInput | EncomendaFornecedorUpdateManyWithWhereWithoutRecebioPorInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
   }
 
   export type DoenteCreateNestedOneWithoutCamaInput = {
@@ -106953,6 +115192,12 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutCheckinsAtendidosInput, UtilizadorUpdateWithoutCheckinsAtendidosInput>, UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput>
   }
 
+  export type CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput = {
+    create?: XOR<CatalogoMedicamentoCreateWithoutStockItemsInput, CatalogoMedicamentoUncheckedCreateWithoutStockItemsInput>
+    connectOrCreate?: CatalogoMedicamentoCreateOrConnectWithoutStockItemsInput
+    connect?: CatalogoMedicamentoWhereUniqueInput
+  }
+
   export type PedidoFarmaciaCreateNestedManyWithoutStockItemInput = {
     create?: XOR<PedidoFarmaciaCreateWithoutStockItemInput, PedidoFarmaciaUncheckedCreateWithoutStockItemInput> | PedidoFarmaciaCreateWithoutStockItemInput[] | PedidoFarmaciaUncheckedCreateWithoutStockItemInput[]
     connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutStockItemInput | PedidoFarmaciaCreateOrConnectWithoutStockItemInput[]
@@ -106960,11 +115205,53 @@ export namespace Prisma {
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
   }
 
+  export type AjusteStockCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput> | AjusteStockCreateWithoutStockItemInput[] | AjusteStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutStockItemInput | AjusteStockCreateOrConnectWithoutStockItemInput[]
+    createMany?: AjusteStockCreateManyStockItemInputEnvelope
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput> | TransferenciaStockCreateWithoutStockItemInput[] | TransferenciaStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutStockItemInput | TransferenciaStockCreateOrConnectWithoutStockItemInput[]
+    createMany?: TransferenciaStockCreateManyStockItemInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput> | EncomendaFornecedorCreateWithoutStockItemInput[] | EncomendaFornecedorUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutStockItemInput | EncomendaFornecedorCreateOrConnectWithoutStockItemInput[]
+    createMany?: EncomendaFornecedorCreateManyStockItemInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+  }
+
   export type PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput = {
     create?: XOR<PedidoFarmaciaCreateWithoutStockItemInput, PedidoFarmaciaUncheckedCreateWithoutStockItemInput> | PedidoFarmaciaCreateWithoutStockItemInput[] | PedidoFarmaciaUncheckedCreateWithoutStockItemInput[]
     connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutStockItemInput | PedidoFarmaciaCreateOrConnectWithoutStockItemInput[]
     createMany?: PedidoFarmaciaCreateManyStockItemInputEnvelope
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+  }
+
+  export type AjusteStockUncheckedCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput> | AjusteStockCreateWithoutStockItemInput[] | AjusteStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutStockItemInput | AjusteStockCreateOrConnectWithoutStockItemInput[]
+    createMany?: AjusteStockCreateManyStockItemInputEnvelope
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+  }
+
+  export type TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput> | TransferenciaStockCreateWithoutStockItemInput[] | TransferenciaStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutStockItemInput | TransferenciaStockCreateOrConnectWithoutStockItemInput[]
+    createMany?: TransferenciaStockCreateManyStockItemInputEnvelope
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput> | EncomendaFornecedorCreateWithoutStockItemInput[] | EncomendaFornecedorUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutStockItemInput | EncomendaFornecedorCreateOrConnectWithoutStockItemInput[]
+    createMany?: EncomendaFornecedorCreateManyStockItemInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
   }
 
   export type EnumTipoStockFieldUpdateOperationsInput = {
@@ -106977,6 +115264,16 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput = {
+    create?: XOR<CatalogoMedicamentoCreateWithoutStockItemsInput, CatalogoMedicamentoUncheckedCreateWithoutStockItemsInput>
+    connectOrCreate?: CatalogoMedicamentoCreateOrConnectWithoutStockItemsInput
+    upsert?: CatalogoMedicamentoUpsertWithoutStockItemsInput
+    disconnect?: CatalogoMedicamentoWhereInput | boolean
+    delete?: CatalogoMedicamentoWhereInput | boolean
+    connect?: CatalogoMedicamentoWhereUniqueInput
+    update?: XOR<XOR<CatalogoMedicamentoUpdateToOneWithWhereWithoutStockItemsInput, CatalogoMedicamentoUpdateWithoutStockItemsInput>, CatalogoMedicamentoUncheckedUpdateWithoutStockItemsInput>
   }
 
   export type PedidoFarmaciaUpdateManyWithoutStockItemNestedInput = {
@@ -106993,6 +115290,48 @@ export namespace Prisma {
     deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
   }
 
+  export type AjusteStockUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput> | AjusteStockCreateWithoutStockItemInput[] | AjusteStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutStockItemInput | AjusteStockCreateOrConnectWithoutStockItemInput[]
+    upsert?: AjusteStockUpsertWithWhereUniqueWithoutStockItemInput | AjusteStockUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: AjusteStockCreateManyStockItemInputEnvelope
+    set?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    disconnect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    delete?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    update?: AjusteStockUpdateWithWhereUniqueWithoutStockItemInput | AjusteStockUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: AjusteStockUpdateManyWithWhereWithoutStockItemInput | AjusteStockUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput> | TransferenciaStockCreateWithoutStockItemInput[] | TransferenciaStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutStockItemInput | TransferenciaStockCreateOrConnectWithoutStockItemInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutStockItemInput | TransferenciaStockUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: TransferenciaStockCreateManyStockItemInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutStockItemInput | TransferenciaStockUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutStockItemInput | TransferenciaStockUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type EncomendaFornecedorUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput> | EncomendaFornecedorCreateWithoutStockItemInput[] | EncomendaFornecedorUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutStockItemInput | EncomendaFornecedorCreateOrConnectWithoutStockItemInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutStockItemInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: EncomendaFornecedorCreateManyStockItemInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutStockItemInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutStockItemInput | EncomendaFornecedorUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+  }
+
   export type PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput = {
     create?: XOR<PedidoFarmaciaCreateWithoutStockItemInput, PedidoFarmaciaUncheckedCreateWithoutStockItemInput> | PedidoFarmaciaCreateWithoutStockItemInput[] | PedidoFarmaciaUncheckedCreateWithoutStockItemInput[]
     connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutStockItemInput | PedidoFarmaciaCreateOrConnectWithoutStockItemInput[]
@@ -107005,6 +115344,48 @@ export namespace Prisma {
     update?: PedidoFarmaciaUpdateWithWhereUniqueWithoutStockItemInput | PedidoFarmaciaUpdateWithWhereUniqueWithoutStockItemInput[]
     updateMany?: PedidoFarmaciaUpdateManyWithWhereWithoutStockItemInput | PedidoFarmaciaUpdateManyWithWhereWithoutStockItemInput[]
     deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
+  }
+
+  export type AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput> | AjusteStockCreateWithoutStockItemInput[] | AjusteStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: AjusteStockCreateOrConnectWithoutStockItemInput | AjusteStockCreateOrConnectWithoutStockItemInput[]
+    upsert?: AjusteStockUpsertWithWhereUniqueWithoutStockItemInput | AjusteStockUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: AjusteStockCreateManyStockItemInputEnvelope
+    set?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    disconnect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    delete?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    connect?: AjusteStockWhereUniqueInput | AjusteStockWhereUniqueInput[]
+    update?: AjusteStockUpdateWithWhereUniqueWithoutStockItemInput | AjusteStockUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: AjusteStockUpdateManyWithWhereWithoutStockItemInput | AjusteStockUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput> | TransferenciaStockCreateWithoutStockItemInput[] | TransferenciaStockUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: TransferenciaStockCreateOrConnectWithoutStockItemInput | TransferenciaStockCreateOrConnectWithoutStockItemInput[]
+    upsert?: TransferenciaStockUpsertWithWhereUniqueWithoutStockItemInput | TransferenciaStockUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: TransferenciaStockCreateManyStockItemInputEnvelope
+    set?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    disconnect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    delete?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    connect?: TransferenciaStockWhereUniqueInput | TransferenciaStockWhereUniqueInput[]
+    update?: TransferenciaStockUpdateWithWhereUniqueWithoutStockItemInput | TransferenciaStockUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: TransferenciaStockUpdateManyWithWhereWithoutStockItemInput | TransferenciaStockUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput> | EncomendaFornecedorCreateWithoutStockItemInput[] | EncomendaFornecedorUncheckedCreateWithoutStockItemInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutStockItemInput | EncomendaFornecedorCreateOrConnectWithoutStockItemInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutStockItemInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutStockItemInput[]
+    createMany?: EncomendaFornecedorCreateManyStockItemInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutStockItemInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutStockItemInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutStockItemInput | EncomendaFornecedorUpdateManyWithWhereWithoutStockItemInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
   }
 
   export type StockItemCreateNestedOneWithoutPedidosInput = {
@@ -107053,6 +115434,206 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutStockPedidosProcessadosInput, UtilizadorUpdateWithoutStockPedidosProcessadosInput>, UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput>
+  }
+
+  export type StockItemCreateNestedManyWithoutCatalogoInput = {
+    create?: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput> | StockItemCreateWithoutCatalogoInput[] | StockItemUncheckedCreateWithoutCatalogoInput[]
+    connectOrCreate?: StockItemCreateOrConnectWithoutCatalogoInput | StockItemCreateOrConnectWithoutCatalogoInput[]
+    createMany?: StockItemCreateManyCatalogoInputEnvelope
+    connect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+  }
+
+  export type StockItemUncheckedCreateNestedManyWithoutCatalogoInput = {
+    create?: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput> | StockItemCreateWithoutCatalogoInput[] | StockItemUncheckedCreateWithoutCatalogoInput[]
+    connectOrCreate?: StockItemCreateOrConnectWithoutCatalogoInput | StockItemCreateOrConnectWithoutCatalogoInput[]
+    createMany?: StockItemCreateManyCatalogoInputEnvelope
+    connect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+  }
+
+  export type StockItemUpdateManyWithoutCatalogoNestedInput = {
+    create?: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput> | StockItemCreateWithoutCatalogoInput[] | StockItemUncheckedCreateWithoutCatalogoInput[]
+    connectOrCreate?: StockItemCreateOrConnectWithoutCatalogoInput | StockItemCreateOrConnectWithoutCatalogoInput[]
+    upsert?: StockItemUpsertWithWhereUniqueWithoutCatalogoInput | StockItemUpsertWithWhereUniqueWithoutCatalogoInput[]
+    createMany?: StockItemCreateManyCatalogoInputEnvelope
+    set?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    disconnect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    delete?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    connect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    update?: StockItemUpdateWithWhereUniqueWithoutCatalogoInput | StockItemUpdateWithWhereUniqueWithoutCatalogoInput[]
+    updateMany?: StockItemUpdateManyWithWhereWithoutCatalogoInput | StockItemUpdateManyWithWhereWithoutCatalogoInput[]
+    deleteMany?: StockItemScalarWhereInput | StockItemScalarWhereInput[]
+  }
+
+  export type StockItemUncheckedUpdateManyWithoutCatalogoNestedInput = {
+    create?: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput> | StockItemCreateWithoutCatalogoInput[] | StockItemUncheckedCreateWithoutCatalogoInput[]
+    connectOrCreate?: StockItemCreateOrConnectWithoutCatalogoInput | StockItemCreateOrConnectWithoutCatalogoInput[]
+    upsert?: StockItemUpsertWithWhereUniqueWithoutCatalogoInput | StockItemUpsertWithWhereUniqueWithoutCatalogoInput[]
+    createMany?: StockItemCreateManyCatalogoInputEnvelope
+    set?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    disconnect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    delete?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    connect?: StockItemWhereUniqueInput | StockItemWhereUniqueInput[]
+    update?: StockItemUpdateWithWhereUniqueWithoutCatalogoInput | StockItemUpdateWithWhereUniqueWithoutCatalogoInput[]
+    updateMany?: StockItemUpdateManyWithWhereWithoutCatalogoInput | StockItemUpdateManyWithWhereWithoutCatalogoInput[]
+    deleteMany?: StockItemScalarWhereInput | StockItemScalarWhereInput[]
+  }
+
+  export type StockItemCreateNestedOneWithoutAjustesInput = {
+    create?: XOR<StockItemCreateWithoutAjustesInput, StockItemUncheckedCreateWithoutAjustesInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutAjustesInput
+    connect?: StockItemWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutAjustesStockInput = {
+    create?: XOR<UtilizadorCreateWithoutAjustesStockInput, UtilizadorUncheckedCreateWithoutAjustesStockInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAjustesStockInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type StockItemUpdateOneRequiredWithoutAjustesNestedInput = {
+    create?: XOR<StockItemCreateWithoutAjustesInput, StockItemUncheckedCreateWithoutAjustesInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutAjustesInput
+    upsert?: StockItemUpsertWithoutAjustesInput
+    connect?: StockItemWhereUniqueInput
+    update?: XOR<XOR<StockItemUpdateToOneWithWhereWithoutAjustesInput, StockItemUpdateWithoutAjustesInput>, StockItemUncheckedUpdateWithoutAjustesInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutAjustesStockNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutAjustesStockInput, UtilizadorUncheckedCreateWithoutAjustesStockInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutAjustesStockInput
+    upsert?: UtilizadorUpsertWithoutAjustesStockInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAjustesStockInput, UtilizadorUpdateWithoutAjustesStockInput>, UtilizadorUncheckedUpdateWithoutAjustesStockInput>
+  }
+
+  export type StockItemCreateNestedOneWithoutTransferenciasInput = {
+    create?: XOR<StockItemCreateWithoutTransferenciasInput, StockItemUncheckedCreateWithoutTransferenciasInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutTransferenciasInput
+    connect?: StockItemWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTransferenciasSolicitadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransferenciasSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTransferenciasConfirmadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransferenciasConfirmadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type StockItemUpdateOneRequiredWithoutTransferenciasNestedInput = {
+    create?: XOR<StockItemCreateWithoutTransferenciasInput, StockItemUncheckedCreateWithoutTransferenciasInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutTransferenciasInput
+    upsert?: StockItemUpsertWithoutTransferenciasInput
+    connect?: StockItemWhereUniqueInput
+    update?: XOR<XOR<StockItemUpdateToOneWithWhereWithoutTransferenciasInput, StockItemUpdateWithoutTransferenciasInput>, StockItemUncheckedUpdateWithoutTransferenciasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutTransferenciasSolicitadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransferenciasSolicitadasInput
+    upsert?: UtilizadorUpsertWithoutTransferenciasSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTransferenciasSolicitadasInput, UtilizadorUpdateWithoutTransferenciasSolicitadasInput>, UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutTransferenciasConfirmadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTransferenciasConfirmadasInput
+    upsert?: UtilizadorUpsertWithoutTransferenciasConfirmadasInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTransferenciasConfirmadasInput, UtilizadorUpdateWithoutTransferenciasConfirmadasInput>, UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput>
+  }
+
+  export type EncomendaFornecedorCreateNestedManyWithoutFornecedorInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput> | EncomendaFornecedorCreateWithoutFornecedorInput[] | EncomendaFornecedorUncheckedCreateWithoutFornecedorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutFornecedorInput | EncomendaFornecedorCreateOrConnectWithoutFornecedorInput[]
+    createMany?: EncomendaFornecedorCreateManyFornecedorInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedCreateNestedManyWithoutFornecedorInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput> | EncomendaFornecedorCreateWithoutFornecedorInput[] | EncomendaFornecedorUncheckedCreateWithoutFornecedorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutFornecedorInput | EncomendaFornecedorCreateOrConnectWithoutFornecedorInput[]
+    createMany?: EncomendaFornecedorCreateManyFornecedorInputEnvelope
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+  }
+
+  export type EncomendaFornecedorUpdateManyWithoutFornecedorNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput> | EncomendaFornecedorCreateWithoutFornecedorInput[] | EncomendaFornecedorUncheckedCreateWithoutFornecedorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutFornecedorInput | EncomendaFornecedorCreateOrConnectWithoutFornecedorInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutFornecedorInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutFornecedorInput[]
+    createMany?: EncomendaFornecedorCreateManyFornecedorInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutFornecedorInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutFornecedorInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutFornecedorInput | EncomendaFornecedorUpdateManyWithWhereWithoutFornecedorInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutFornecedorNestedInput = {
+    create?: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput> | EncomendaFornecedorCreateWithoutFornecedorInput[] | EncomendaFornecedorUncheckedCreateWithoutFornecedorInput[]
+    connectOrCreate?: EncomendaFornecedorCreateOrConnectWithoutFornecedorInput | EncomendaFornecedorCreateOrConnectWithoutFornecedorInput[]
+    upsert?: EncomendaFornecedorUpsertWithWhereUniqueWithoutFornecedorInput | EncomendaFornecedorUpsertWithWhereUniqueWithoutFornecedorInput[]
+    createMany?: EncomendaFornecedorCreateManyFornecedorInputEnvelope
+    set?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    disconnect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    delete?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    connect?: EncomendaFornecedorWhereUniqueInput | EncomendaFornecedorWhereUniqueInput[]
+    update?: EncomendaFornecedorUpdateWithWhereUniqueWithoutFornecedorInput | EncomendaFornecedorUpdateWithWhereUniqueWithoutFornecedorInput[]
+    updateMany?: EncomendaFornecedorUpdateManyWithWhereWithoutFornecedorInput | EncomendaFornecedorUpdateManyWithWhereWithoutFornecedorInput[]
+    deleteMany?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+  }
+
+  export type FornecedorCreateNestedOneWithoutEncomendasInput = {
+    create?: XOR<FornecedorCreateWithoutEncomendasInput, FornecedorUncheckedCreateWithoutEncomendasInput>
+    connectOrCreate?: FornecedorCreateOrConnectWithoutEncomendasInput
+    connect?: FornecedorWhereUniqueInput
+  }
+
+  export type StockItemCreateNestedOneWithoutEncomendasInput = {
+    create?: XOR<StockItemCreateWithoutEncomendasInput, StockItemUncheckedCreateWithoutEncomendasInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutEncomendasInput
+    connect?: StockItemWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutEncomendasRecebidasInput = {
+    create?: XOR<UtilizadorCreateWithoutEncomendasRecebidasInput, UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutEncomendasRecebidasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type FornecedorUpdateOneRequiredWithoutEncomendasNestedInput = {
+    create?: XOR<FornecedorCreateWithoutEncomendasInput, FornecedorUncheckedCreateWithoutEncomendasInput>
+    connectOrCreate?: FornecedorCreateOrConnectWithoutEncomendasInput
+    upsert?: FornecedorUpsertWithoutEncomendasInput
+    connect?: FornecedorWhereUniqueInput
+    update?: XOR<XOR<FornecedorUpdateToOneWithWhereWithoutEncomendasInput, FornecedorUpdateWithoutEncomendasInput>, FornecedorUncheckedUpdateWithoutEncomendasInput>
+  }
+
+  export type StockItemUpdateOneRequiredWithoutEncomendasNestedInput = {
+    create?: XOR<StockItemCreateWithoutEncomendasInput, StockItemUncheckedCreateWithoutEncomendasInput>
+    connectOrCreate?: StockItemCreateOrConnectWithoutEncomendasInput
+    upsert?: StockItemUpsertWithoutEncomendasInput
+    connect?: StockItemWhereUniqueInput
+    update?: XOR<XOR<StockItemUpdateToOneWithWhereWithoutEncomendasInput, StockItemUpdateWithoutEncomendasInput>, StockItemUncheckedUpdateWithoutEncomendasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutEncomendasRecebidasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutEncomendasRecebidasInput, UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutEncomendasRecebidasInput
+    upsert?: UtilizadorUpsertWithoutEncomendasRecebidasInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutEncomendasRecebidasInput, UtilizadorUpdateWithoutEncomendasRecebidasInput>, UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput>
   }
 
   export type DoenteCreateNestedOneWithoutPlanosReabilitacaoInput = {
@@ -109073,6 +117654,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -109081,6 +117665,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     doenteId: string
   }
@@ -109446,6 +118033,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
     doente: DoenteCreateNestedOneWithoutSinaisVitaisInput
   }
 
@@ -109461,6 +118050,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type SinalVitalCreateOrConnectWithoutRegistadoPorInput = {
@@ -111306,6 +119897,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSubordinadosInput = {
@@ -111390,6 +119985,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSubordinadosInput = {
@@ -111479,6 +120078,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChefeInput = {
@@ -111563,6 +120166,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChefeInput = {
@@ -111572,6 +120179,144 @@ export namespace Prisma {
 
   export type UtilizadorCreateManyChefeInputEnvelope = {
     data: UtilizadorCreateManyChefeInput | UtilizadorCreateManyChefeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AjusteStockCreateWithoutUtilizadorInput = {
+    id?: string
+    delta: number
+    tipo: string
+    motivo: string
+    criadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutAjustesInput
+  }
+
+  export type AjusteStockUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    stockItemId: string
+    delta: number
+    tipo: string
+    motivo: string
+    criadoEm?: Date | string
+  }
+
+  export type AjusteStockCreateOrConnectWithoutUtilizadorInput = {
+    where: AjusteStockWhereUniqueInput
+    create: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AjusteStockCreateManyUtilizadorInputEnvelope = {
+    data: AjusteStockCreateManyUtilizadorInput | AjusteStockCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransferenciaStockCreateWithoutSolicitadoPorInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutTransferenciasInput
+    confirmadoPor?: UtilizadorCreateNestedOneWithoutTransferenciasConfirmadasInput
+  }
+
+  export type TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateOrConnectWithoutSolicitadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    create: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput>
+  }
+
+  export type TransferenciaStockCreateManySolicitadoPorInputEnvelope = {
+    data: TransferenciaStockCreateManySolicitadoPorInput | TransferenciaStockCreateManySolicitadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransferenciaStockCreateWithoutConfirmadoPorInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutTransferenciasInput
+    solicitadoPor: UtilizadorCreateNestedOneWithoutTransferenciasSolicitadasInput
+  }
+
+  export type TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateOrConnectWithoutConfirmadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    create: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput>
+  }
+
+  export type TransferenciaStockCreateManyConfirmadoPorInputEnvelope = {
+    data: TransferenciaStockCreateManyConfirmadoPorInput | TransferenciaStockCreateManyConfirmadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EncomendaFornecedorCreateWithoutRecebioPorInput = {
+    id?: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    fornecedor: FornecedorCreateNestedOneWithoutEncomendasInput
+    stockItem: StockItemCreateNestedOneWithoutEncomendasInput
+  }
+
+  export type EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput = {
+    id?: string
+    fornecedorId: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorCreateOrConnectWithoutRecebioPorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    create: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput>
+  }
+
+  export type EncomendaFornecedorCreateManyRecebioPorInputEnvelope = {
+    data: EncomendaFornecedorCreateManyRecebioPorInput | EncomendaFornecedorCreateManyRecebioPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -111768,6 +120513,9 @@ export namespace Prisma {
     id?: StringFilter<"RegistoMedicacao"> | string
     administradoEm?: DateTimeFilter<"RegistoMedicacao"> | Date | string
     observacoes?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
+    naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
+    motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -112056,6 +120804,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: IntNullableFilter<"SinalVital"> | number | null
     peso?: FloatNullableFilter<"SinalVital"> | number | null
     notas?: StringNullableFilter<"SinalVital"> | string | null
+    avpu?: StringNullableFilter<"SinalVital"> | string | null
+    news2?: IntNullableFilter<"SinalVital"> | number | null
   }
 
   export type DispositivoTokenUpsertWithWhereUniqueWithoutUtilizadorInput = {
@@ -113510,6 +122260,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSubordinadosInput = {
@@ -113594,6 +122348,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithWhereUniqueWithoutChefeInput = {
@@ -113629,6 +122387,118 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"Utilizador"> | Date | string
     atualizadoEm?: DateTimeFilter<"Utilizador"> | Date | string
     chefeId?: StringNullableFilter<"Utilizador"> | string | null
+  }
+
+  export type AjusteStockUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: AjusteStockWhereUniqueInput
+    update: XOR<AjusteStockUpdateWithoutUtilizadorInput, AjusteStockUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<AjusteStockCreateWithoutUtilizadorInput, AjusteStockUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type AjusteStockUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: AjusteStockWhereUniqueInput
+    data: XOR<AjusteStockUpdateWithoutUtilizadorInput, AjusteStockUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type AjusteStockUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: AjusteStockScalarWhereInput
+    data: XOR<AjusteStockUpdateManyMutationInput, AjusteStockUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type AjusteStockScalarWhereInput = {
+    AND?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+    OR?: AjusteStockScalarWhereInput[]
+    NOT?: AjusteStockScalarWhereInput | AjusteStockScalarWhereInput[]
+    id?: StringFilter<"AjusteStock"> | string
+    stockItemId?: StringFilter<"AjusteStock"> | string
+    delta?: FloatFilter<"AjusteStock"> | number
+    tipo?: StringFilter<"AjusteStock"> | string
+    motivo?: StringFilter<"AjusteStock"> | string
+    utilizadorId?: StringFilter<"AjusteStock"> | string
+    criadoEm?: DateTimeFilter<"AjusteStock"> | Date | string
+  }
+
+  export type TransferenciaStockUpsertWithWhereUniqueWithoutSolicitadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    update: XOR<TransferenciaStockUpdateWithoutSolicitadoPorInput, TransferenciaStockUncheckedUpdateWithoutSolicitadoPorInput>
+    create: XOR<TransferenciaStockCreateWithoutSolicitadoPorInput, TransferenciaStockUncheckedCreateWithoutSolicitadoPorInput>
+  }
+
+  export type TransferenciaStockUpdateWithWhereUniqueWithoutSolicitadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    data: XOR<TransferenciaStockUpdateWithoutSolicitadoPorInput, TransferenciaStockUncheckedUpdateWithoutSolicitadoPorInput>
+  }
+
+  export type TransferenciaStockUpdateManyWithWhereWithoutSolicitadoPorInput = {
+    where: TransferenciaStockScalarWhereInput
+    data: XOR<TransferenciaStockUpdateManyMutationInput, TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorInput>
+  }
+
+  export type TransferenciaStockScalarWhereInput = {
+    AND?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+    OR?: TransferenciaStockScalarWhereInput[]
+    NOT?: TransferenciaStockScalarWhereInput | TransferenciaStockScalarWhereInput[]
+    id?: StringFilter<"TransferenciaStock"> | string
+    stockItemId?: StringFilter<"TransferenciaStock"> | string
+    quantidade?: FloatFilter<"TransferenciaStock"> | number
+    servicoOrigem?: StringFilter<"TransferenciaStock"> | string
+    servicoDestino?: StringFilter<"TransferenciaStock"> | string
+    motivo?: StringNullableFilter<"TransferenciaStock"> | string | null
+    estado?: StringFilter<"TransferenciaStock"> | string
+    solicitadoPorId?: StringFilter<"TransferenciaStock"> | string
+    confirmadoPorId?: StringNullableFilter<"TransferenciaStock"> | string | null
+    criadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TransferenciaStock"> | Date | string
+  }
+
+  export type TransferenciaStockUpsertWithWhereUniqueWithoutConfirmadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    update: XOR<TransferenciaStockUpdateWithoutConfirmadoPorInput, TransferenciaStockUncheckedUpdateWithoutConfirmadoPorInput>
+    create: XOR<TransferenciaStockCreateWithoutConfirmadoPorInput, TransferenciaStockUncheckedCreateWithoutConfirmadoPorInput>
+  }
+
+  export type TransferenciaStockUpdateWithWhereUniqueWithoutConfirmadoPorInput = {
+    where: TransferenciaStockWhereUniqueInput
+    data: XOR<TransferenciaStockUpdateWithoutConfirmadoPorInput, TransferenciaStockUncheckedUpdateWithoutConfirmadoPorInput>
+  }
+
+  export type TransferenciaStockUpdateManyWithWhereWithoutConfirmadoPorInput = {
+    where: TransferenciaStockScalarWhereInput
+    data: XOR<TransferenciaStockUpdateManyMutationInput, TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorInput>
+  }
+
+  export type EncomendaFornecedorUpsertWithWhereUniqueWithoutRecebioPorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    update: XOR<EncomendaFornecedorUpdateWithoutRecebioPorInput, EncomendaFornecedorUncheckedUpdateWithoutRecebioPorInput>
+    create: XOR<EncomendaFornecedorCreateWithoutRecebioPorInput, EncomendaFornecedorUncheckedCreateWithoutRecebioPorInput>
+  }
+
+  export type EncomendaFornecedorUpdateWithWhereUniqueWithoutRecebioPorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    data: XOR<EncomendaFornecedorUpdateWithoutRecebioPorInput, EncomendaFornecedorUncheckedUpdateWithoutRecebioPorInput>
+  }
+
+  export type EncomendaFornecedorUpdateManyWithWhereWithoutRecebioPorInput = {
+    where: EncomendaFornecedorScalarWhereInput
+    data: XOR<EncomendaFornecedorUpdateManyMutationInput, EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorInput>
+  }
+
+  export type EncomendaFornecedorScalarWhereInput = {
+    AND?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+    OR?: EncomendaFornecedorScalarWhereInput[]
+    NOT?: EncomendaFornecedorScalarWhereInput | EncomendaFornecedorScalarWhereInput[]
+    id?: StringFilter<"EncomendaFornecedor"> | string
+    fornecedorId?: StringFilter<"EncomendaFornecedor"> | string
+    stockItemId?: StringFilter<"EncomendaFornecedor"> | string
+    quantidadeEncomendada?: FloatFilter<"EncomendaFornecedor"> | number
+    precoUnitario?: FloatNullableFilter<"EncomendaFornecedor"> | number | null
+    estado?: StringFilter<"EncomendaFornecedor"> | string
+    dataEntregaPrevista?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    dataEntregaReal?: DateTimeNullableFilter<"EncomendaFornecedor"> | Date | string | null
+    observacoes?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    recebioPorId?: StringNullableFilter<"EncomendaFornecedor"> | string | null
+    criadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
+    atualizadoEm?: DateTimeFilter<"EncomendaFornecedor"> | Date | string
   }
 
   export type DoenteCreateWithoutCamaInput = {
@@ -113936,6 +122806,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -114020,6 +122894,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -114163,6 +123041,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -114171,6 +123052,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     administradoPorId: string
   }
@@ -114244,6 +123128,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
     registadoPor: UtilizadorCreateNestedOneWithoutSinaisVitaisRegistadosInput
   }
 
@@ -114259,6 +123145,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type SinalVitalCreateOrConnectWithoutDoenteInput = {
@@ -115123,6 +124011,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -115207,6 +124099,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -115834,6 +124730,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -115918,6 +124818,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -116176,6 +125080,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -116260,6 +125168,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -116539,6 +125451,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -116623,6 +125539,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -116859,6 +125779,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -116943,6 +125867,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -117095,6 +126023,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -117179,6 +126111,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -117316,6 +126252,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -117400,6 +126340,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -117923,6 +126867,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -118007,6 +126955,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -118212,6 +127164,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -118296,6 +127252,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -118479,6 +127439,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -118563,6 +127527,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -118768,6 +127736,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -118852,6 +127824,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -119066,6 +128042,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -119150,6 +128130,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -119392,6 +128376,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -119476,6 +128464,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -119659,6 +128651,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -119743,6 +128739,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -119832,6 +128832,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -119916,6 +128920,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -120152,6 +129160,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -120236,6 +129248,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -120331,6 +129347,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -120415,6 +129435,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -120635,6 +129659,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -120719,6 +129747,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -120808,6 +129840,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -120892,6 +129928,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -120903,6 +129943,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -120911,6 +129954,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     doenteId: string
     administradoPorId: string
   }
@@ -121123,6 +130169,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -121207,6 +130257,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -121302,6 +130356,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -121386,6 +130444,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -121624,6 +130686,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -121708,6 +130774,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -121958,6 +131028,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -122042,6 +131116,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -122126,6 +131204,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -122210,6 +131292,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -122338,6 +131424,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -122422,6 +131512,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -122723,6 +131817,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -122807,6 +131905,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -122936,6 +132038,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -123020,6 +132126,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -123104,6 +132214,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -123188,6 +132302,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -123277,6 +132395,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -123361,6 +132483,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -123473,6 +132599,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -123557,6 +132687,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -123657,6 +132791,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -123741,6 +132879,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -123836,6 +132978,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -123920,6 +133066,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -124044,6 +133194,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -124128,6 +133282,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -124334,6 +133492,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -124418,6 +133580,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -124507,6 +133673,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -124591,6 +133761,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -124825,6 +133999,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -124909,6 +134087,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -125004,6 +134186,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -125088,6 +134274,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -125271,6 +134461,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -125355,6 +134549,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -125560,6 +134758,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -125644,6 +134846,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -125728,6 +134934,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -125812,6 +135022,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -125912,6 +135126,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -125996,6 +135214,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -126587,6 +135809,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAlertasAcusadosInput = {
@@ -126671,6 +135897,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAlertasAcusadosInput = {
@@ -126876,6 +136106,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAlertasAcusadosInput = {
@@ -126960,6 +136194,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
@@ -127143,6 +136381,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -127227,6 +136469,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -127432,6 +136678,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -127516,6 +136766,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -127699,6 +136953,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -127783,6 +137041,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -127988,6 +137250,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -128072,6 +137338,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -128156,6 +137426,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -128240,6 +137514,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -128340,6 +137618,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -128424,6 +137706,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -128607,6 +137893,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -128691,6 +137981,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -128920,6 +138214,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -129004,6 +138302,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -129286,6 +138588,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -129370,6 +138676,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -129459,6 +138769,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -129543,6 +138857,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -129748,6 +139066,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -129832,6 +139154,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -129927,6 +139253,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -130011,6 +139341,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -130194,6 +139528,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -130278,6 +139616,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -130367,6 +139709,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -130451,6 +139797,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -130687,6 +140037,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -130771,6 +140125,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -130866,6 +140224,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -130950,6 +140312,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -131110,6 +140476,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -131194,6 +140564,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -131283,6 +140657,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -131367,6 +140745,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -131456,6 +140838,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -131540,6 +140926,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -131685,6 +141075,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -131769,6 +141163,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -131864,6 +141262,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -131948,6 +141350,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -132043,6 +141449,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -132127,6 +141537,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -132310,6 +141724,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -132394,6 +141812,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -132660,6 +142082,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -132744,6 +142170,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput = {
@@ -132897,6 +142327,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAgendasInput = {
@@ -132981,6 +142415,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAgendasInput = {
@@ -133081,6 +142519,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAgendasInput = {
@@ -133165,6 +142607,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -133249,6 +142695,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -133333,6 +142783,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -133422,6 +142876,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -133506,6 +142964,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -133606,6 +143068,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -133690,6 +143156,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -133785,6 +143255,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -133869,6 +143343,41 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type CatalogoMedicamentoCreateWithoutStockItemsInput = {
+    id?: string
+    dci: string
+    nomeMarca?: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao?: string | null
+    codigoATC?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type CatalogoMedicamentoUncheckedCreateWithoutStockItemsInput = {
+    id?: string
+    dci: string
+    nomeMarca?: string | null
+    formaFarmaceutica: string
+    classeTerap: string
+    unidade: string
+    concentracao?: string | null
+    codigoATC?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type CatalogoMedicamentoCreateOrConnectWithoutStockItemsInput = {
+    where: CatalogoMedicamentoWhereUniqueInput
+    create: XOR<CatalogoMedicamentoCreateWithoutStockItemsInput, CatalogoMedicamentoUncheckedCreateWithoutStockItemsInput>
   }
 
   export type PedidoFarmaciaCreateWithoutStockItemInput = {
@@ -133903,6 +143412,145 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AjusteStockCreateWithoutStockItemInput = {
+    id?: string
+    delta: number
+    tipo: string
+    motivo: string
+    criadoEm?: Date | string
+    utilizador: UtilizadorCreateNestedOneWithoutAjustesStockInput
+  }
+
+  export type AjusteStockUncheckedCreateWithoutStockItemInput = {
+    id?: string
+    delta: number
+    tipo: string
+    motivo: string
+    utilizadorId: string
+    criadoEm?: Date | string
+  }
+
+  export type AjusteStockCreateOrConnectWithoutStockItemInput = {
+    where: AjusteStockWhereUniqueInput
+    create: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type AjusteStockCreateManyStockItemInputEnvelope = {
+    data: AjusteStockCreateManyStockItemInput | AjusteStockCreateManyStockItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransferenciaStockCreateWithoutStockItemInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    solicitadoPor: UtilizadorCreateNestedOneWithoutTransferenciasSolicitadasInput
+    confirmadoPor?: UtilizadorCreateNestedOneWithoutTransferenciasConfirmadasInput
+  }
+
+  export type TransferenciaStockUncheckedCreateWithoutStockItemInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateOrConnectWithoutStockItemInput = {
+    where: TransferenciaStockWhereUniqueInput
+    create: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type TransferenciaStockCreateManyStockItemInputEnvelope = {
+    data: TransferenciaStockCreateManyStockItemInput | TransferenciaStockCreateManyStockItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EncomendaFornecedorCreateWithoutStockItemInput = {
+    id?: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    fornecedor: FornecedorCreateNestedOneWithoutEncomendasInput
+    recebioPor?: UtilizadorCreateNestedOneWithoutEncomendasRecebidasInput
+  }
+
+  export type EncomendaFornecedorUncheckedCreateWithoutStockItemInput = {
+    id?: string
+    fornecedorId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorCreateOrConnectWithoutStockItemInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    create: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type EncomendaFornecedorCreateManyStockItemInputEnvelope = {
+    data: EncomendaFornecedorCreateManyStockItemInput | EncomendaFornecedorCreateManyStockItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CatalogoMedicamentoUpsertWithoutStockItemsInput = {
+    update: XOR<CatalogoMedicamentoUpdateWithoutStockItemsInput, CatalogoMedicamentoUncheckedUpdateWithoutStockItemsInput>
+    create: XOR<CatalogoMedicamentoCreateWithoutStockItemsInput, CatalogoMedicamentoUncheckedCreateWithoutStockItemsInput>
+    where?: CatalogoMedicamentoWhereInput
+  }
+
+  export type CatalogoMedicamentoUpdateToOneWithWhereWithoutStockItemsInput = {
+    where?: CatalogoMedicamentoWhereInput
+    data: XOR<CatalogoMedicamentoUpdateWithoutStockItemsInput, CatalogoMedicamentoUncheckedUpdateWithoutStockItemsInput>
+  }
+
+  export type CatalogoMedicamentoUpdateWithoutStockItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CatalogoMedicamentoUncheckedUpdateWithoutStockItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dci?: StringFieldUpdateOperationsInput | string
+    nomeMarca?: NullableStringFieldUpdateOperationsInput | string | null
+    formaFarmaceutica?: StringFieldUpdateOperationsInput | string
+    classeTerap?: StringFieldUpdateOperationsInput | string
+    unidade?: StringFieldUpdateOperationsInput | string
+    concentracao?: NullableStringFieldUpdateOperationsInput | string | null
+    codigoATC?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PedidoFarmaciaUpsertWithWhereUniqueWithoutStockItemInput = {
     where: PedidoFarmaciaWhereUniqueInput
     update: XOR<PedidoFarmaciaUpdateWithoutStockItemInput, PedidoFarmaciaUncheckedUpdateWithoutStockItemInput>
@@ -133919,6 +143567,54 @@ export namespace Prisma {
     data: XOR<PedidoFarmaciaUpdateManyMutationInput, PedidoFarmaciaUncheckedUpdateManyWithoutStockItemInput>
   }
 
+  export type AjusteStockUpsertWithWhereUniqueWithoutStockItemInput = {
+    where: AjusteStockWhereUniqueInput
+    update: XOR<AjusteStockUpdateWithoutStockItemInput, AjusteStockUncheckedUpdateWithoutStockItemInput>
+    create: XOR<AjusteStockCreateWithoutStockItemInput, AjusteStockUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type AjusteStockUpdateWithWhereUniqueWithoutStockItemInput = {
+    where: AjusteStockWhereUniqueInput
+    data: XOR<AjusteStockUpdateWithoutStockItemInput, AjusteStockUncheckedUpdateWithoutStockItemInput>
+  }
+
+  export type AjusteStockUpdateManyWithWhereWithoutStockItemInput = {
+    where: AjusteStockScalarWhereInput
+    data: XOR<AjusteStockUpdateManyMutationInput, AjusteStockUncheckedUpdateManyWithoutStockItemInput>
+  }
+
+  export type TransferenciaStockUpsertWithWhereUniqueWithoutStockItemInput = {
+    where: TransferenciaStockWhereUniqueInput
+    update: XOR<TransferenciaStockUpdateWithoutStockItemInput, TransferenciaStockUncheckedUpdateWithoutStockItemInput>
+    create: XOR<TransferenciaStockCreateWithoutStockItemInput, TransferenciaStockUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type TransferenciaStockUpdateWithWhereUniqueWithoutStockItemInput = {
+    where: TransferenciaStockWhereUniqueInput
+    data: XOR<TransferenciaStockUpdateWithoutStockItemInput, TransferenciaStockUncheckedUpdateWithoutStockItemInput>
+  }
+
+  export type TransferenciaStockUpdateManyWithWhereWithoutStockItemInput = {
+    where: TransferenciaStockScalarWhereInput
+    data: XOR<TransferenciaStockUpdateManyMutationInput, TransferenciaStockUncheckedUpdateManyWithoutStockItemInput>
+  }
+
+  export type EncomendaFornecedorUpsertWithWhereUniqueWithoutStockItemInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    update: XOR<EncomendaFornecedorUpdateWithoutStockItemInput, EncomendaFornecedorUncheckedUpdateWithoutStockItemInput>
+    create: XOR<EncomendaFornecedorCreateWithoutStockItemInput, EncomendaFornecedorUncheckedCreateWithoutStockItemInput>
+  }
+
+  export type EncomendaFornecedorUpdateWithWhereUniqueWithoutStockItemInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    data: XOR<EncomendaFornecedorUpdateWithoutStockItemInput, EncomendaFornecedorUncheckedUpdateWithoutStockItemInput>
+  }
+
+  export type EncomendaFornecedorUpdateManyWithWhereWithoutStockItemInput = {
+    where: EncomendaFornecedorScalarWhereInput
+    data: XOR<EncomendaFornecedorUpdateManyMutationInput, EncomendaFornecedorUncheckedUpdateManyWithoutStockItemInput>
+  }
+
   export type StockItemCreateWithoutPedidosInput = {
     id?: string
     nome: string
@@ -133928,7 +143624,12 @@ export namespace Prisma {
     unidade: string
     validade?: Date | string | null
     servico: string
+    precoUnitario?: number | null
     criadoEm?: Date | string
+    catalogo?: CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput
+    ajustes?: AjusteStockCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutStockItemInput
   }
 
   export type StockItemUncheckedCreateWithoutPedidosInput = {
@@ -133940,7 +143641,12 @@ export namespace Prisma {
     unidade: string
     validade?: Date | string | null
     servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
     criadoEm?: Date | string
+    ajustes?: AjusteStockUncheckedCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput
   }
 
   export type StockItemCreateOrConnectWithoutPedidosInput = {
@@ -134030,6 +143736,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -134114,6 +143824,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -134203,6 +143917,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -134287,6 +144005,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -134314,7 +144036,12 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    catalogo?: CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput
+    ajustes?: AjusteStockUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUpdateManyWithoutStockItemNestedInput
   }
 
   export type StockItemUncheckedUpdateWithoutPedidosInput = {
@@ -134326,7 +144053,12 @@ export namespace Prisma {
     unidade?: StringFieldUpdateOperationsInput | string
     validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    ajustes?: AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosSolicitadosInput = {
@@ -134422,6 +144154,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -134506,6 +144242,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -134601,6 +144341,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -134685,6 +144429,1925 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type StockItemCreateWithoutCatalogoInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+    pedidos?: PedidoFarmaciaCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemUncheckedCreateWithoutCatalogoInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+    pedidos?: PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockUncheckedCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemCreateOrConnectWithoutCatalogoInput = {
+    where: StockItemWhereUniqueInput
+    create: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput>
+  }
+
+  export type StockItemCreateManyCatalogoInputEnvelope = {
+    data: StockItemCreateManyCatalogoInput | StockItemCreateManyCatalogoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StockItemUpsertWithWhereUniqueWithoutCatalogoInput = {
+    where: StockItemWhereUniqueInput
+    update: XOR<StockItemUpdateWithoutCatalogoInput, StockItemUncheckedUpdateWithoutCatalogoInput>
+    create: XOR<StockItemCreateWithoutCatalogoInput, StockItemUncheckedCreateWithoutCatalogoInput>
+  }
+
+  export type StockItemUpdateWithWhereUniqueWithoutCatalogoInput = {
+    where: StockItemWhereUniqueInput
+    data: XOR<StockItemUpdateWithoutCatalogoInput, StockItemUncheckedUpdateWithoutCatalogoInput>
+  }
+
+  export type StockItemUpdateManyWithWhereWithoutCatalogoInput = {
+    where: StockItemScalarWhereInput
+    data: XOR<StockItemUpdateManyMutationInput, StockItemUncheckedUpdateManyWithoutCatalogoInput>
+  }
+
+  export type StockItemScalarWhereInput = {
+    AND?: StockItemScalarWhereInput | StockItemScalarWhereInput[]
+    OR?: StockItemScalarWhereInput[]
+    NOT?: StockItemScalarWhereInput | StockItemScalarWhereInput[]
+    id?: StringFilter<"StockItem"> | string
+    nome?: StringFilter<"StockItem"> | string
+    tipo?: EnumTipoStockFilter<"StockItem"> | $Enums.TipoStock
+    quantidade?: FloatFilter<"StockItem"> | number
+    quantidadeMinima?: FloatFilter<"StockItem"> | number
+    unidade?: StringFilter<"StockItem"> | string
+    validade?: DateTimeNullableFilter<"StockItem"> | Date | string | null
+    servico?: StringFilter<"StockItem"> | string
+    precoUnitario?: FloatNullableFilter<"StockItem"> | number | null
+    catalogoId?: StringNullableFilter<"StockItem"> | string | null
+    criadoEm?: DateTimeFilter<"StockItem"> | Date | string
+  }
+
+  export type StockItemCreateWithoutAjustesInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+    catalogo?: CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput
+    pedidos?: PedidoFarmaciaCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemUncheckedCreateWithoutAjustesInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
+    criadoEm?: Date | string
+    pedidos?: PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemCreateOrConnectWithoutAjustesInput = {
+    where: StockItemWhereUniqueInput
+    create: XOR<StockItemCreateWithoutAjustesInput, StockItemUncheckedCreateWithoutAjustesInput>
+  }
+
+  export type UtilizadorCreateWithoutAjustesStockInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutAjustesStockInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutAjustesStockInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutAjustesStockInput, UtilizadorUncheckedCreateWithoutAjustesStockInput>
+  }
+
+  export type StockItemUpsertWithoutAjustesInput = {
+    update: XOR<StockItemUpdateWithoutAjustesInput, StockItemUncheckedUpdateWithoutAjustesInput>
+    create: XOR<StockItemCreateWithoutAjustesInput, StockItemUncheckedCreateWithoutAjustesInput>
+    where?: StockItemWhereInput
+  }
+
+  export type StockItemUpdateToOneWithWhereWithoutAjustesInput = {
+    where?: StockItemWhereInput
+    data: XOR<StockItemUpdateWithoutAjustesInput, StockItemUncheckedUpdateWithoutAjustesInput>
+  }
+
+  export type StockItemUpdateWithoutAjustesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    catalogo?: CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput
+    pedidos?: PedidoFarmaciaUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type StockItemUncheckedUpdateWithoutAjustesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pedidos?: PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutAjustesStockInput = {
+    update: XOR<UtilizadorUpdateWithoutAjustesStockInput, UtilizadorUncheckedUpdateWithoutAjustesStockInput>
+    create: XOR<UtilizadorCreateWithoutAjustesStockInput, UtilizadorUncheckedCreateWithoutAjustesStockInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutAjustesStockInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutAjustesStockInput, UtilizadorUncheckedUpdateWithoutAjustesStockInput>
+  }
+
+  export type UtilizadorUpdateWithoutAjustesStockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutAjustesStockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type StockItemCreateWithoutTransferenciasInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+    catalogo?: CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput
+    pedidos?: PedidoFarmaciaCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemUncheckedCreateWithoutTransferenciasInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
+    criadoEm?: Date | string
+    pedidos?: PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockUncheckedCreateNestedManyWithoutStockItemInput
+    encomendas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemCreateOrConnectWithoutTransferenciasInput = {
+    where: StockItemWhereUniqueInput
+    create: XOR<StockItemCreateWithoutTransferenciasInput, StockItemUncheckedCreateWithoutTransferenciasInput>
+  }
+
+  export type UtilizadorCreateWithoutTransferenciasSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTransferenciasSolicitadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput>
+  }
+
+  export type UtilizadorCreateWithoutTransferenciasConfirmadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTransferenciasConfirmadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput>
+  }
+
+  export type StockItemUpsertWithoutTransferenciasInput = {
+    update: XOR<StockItemUpdateWithoutTransferenciasInput, StockItemUncheckedUpdateWithoutTransferenciasInput>
+    create: XOR<StockItemCreateWithoutTransferenciasInput, StockItemUncheckedCreateWithoutTransferenciasInput>
+    where?: StockItemWhereInput
+  }
+
+  export type StockItemUpdateToOneWithWhereWithoutTransferenciasInput = {
+    where?: StockItemWhereInput
+    data: XOR<StockItemUpdateWithoutTransferenciasInput, StockItemUncheckedUpdateWithoutTransferenciasInput>
+  }
+
+  export type StockItemUpdateWithoutTransferenciasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    catalogo?: CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput
+    pedidos?: PedidoFarmaciaUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type StockItemUncheckedUpdateWithoutTransferenciasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pedidos?: PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTransferenciasSolicitadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput>
+    create: XOR<UtilizadorCreateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTransferenciasSolicitadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTransferenciasSolicitadasInput, UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTransferenciasSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTransferenciasConfirmadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput>
+    create: XOR<UtilizadorCreateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTransferenciasConfirmadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTransferenciasConfirmadasInput, UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTransferenciasConfirmadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type EncomendaFornecedorCreateWithoutFornecedorInput = {
+    id?: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutEncomendasInput
+    recebioPor?: UtilizadorCreateNestedOneWithoutEncomendasRecebidasInput
+  }
+
+  export type EncomendaFornecedorUncheckedCreateWithoutFornecedorInput = {
+    id?: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorCreateOrConnectWithoutFornecedorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    create: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput>
+  }
+
+  export type EncomendaFornecedorCreateManyFornecedorInputEnvelope = {
+    data: EncomendaFornecedorCreateManyFornecedorInput | EncomendaFornecedorCreateManyFornecedorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EncomendaFornecedorUpsertWithWhereUniqueWithoutFornecedorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    update: XOR<EncomendaFornecedorUpdateWithoutFornecedorInput, EncomendaFornecedorUncheckedUpdateWithoutFornecedorInput>
+    create: XOR<EncomendaFornecedorCreateWithoutFornecedorInput, EncomendaFornecedorUncheckedCreateWithoutFornecedorInput>
+  }
+
+  export type EncomendaFornecedorUpdateWithWhereUniqueWithoutFornecedorInput = {
+    where: EncomendaFornecedorWhereUniqueInput
+    data: XOR<EncomendaFornecedorUpdateWithoutFornecedorInput, EncomendaFornecedorUncheckedUpdateWithoutFornecedorInput>
+  }
+
+  export type EncomendaFornecedorUpdateManyWithWhereWithoutFornecedorInput = {
+    where: EncomendaFornecedorScalarWhereInput
+    data: XOR<EncomendaFornecedorUpdateManyMutationInput, EncomendaFornecedorUncheckedUpdateManyWithoutFornecedorInput>
+  }
+
+  export type FornecedorCreateWithoutEncomendasInput = {
+    id?: string
+    nome: string
+    nif?: string | null
+    email?: string | null
+    telefone?: string | null
+    morada?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type FornecedorUncheckedCreateWithoutEncomendasInput = {
+    id?: string
+    nome: string
+    nif?: string | null
+    email?: string | null
+    telefone?: string | null
+    morada?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+  }
+
+  export type FornecedorCreateOrConnectWithoutEncomendasInput = {
+    where: FornecedorWhereUniqueInput
+    create: XOR<FornecedorCreateWithoutEncomendasInput, FornecedorUncheckedCreateWithoutEncomendasInput>
+  }
+
+  export type StockItemCreateWithoutEncomendasInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+    catalogo?: CatalogoMedicamentoCreateNestedOneWithoutStockItemsInput
+    pedidos?: PedidoFarmaciaCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemUncheckedCreateWithoutEncomendasInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    catalogoId?: string | null
+    criadoEm?: Date | string
+    pedidos?: PedidoFarmaciaUncheckedCreateNestedManyWithoutStockItemInput
+    ajustes?: AjusteStockUncheckedCreateNestedManyWithoutStockItemInput
+    transferencias?: TransferenciaStockUncheckedCreateNestedManyWithoutStockItemInput
+  }
+
+  export type StockItemCreateOrConnectWithoutEncomendasInput = {
+    where: StockItemWhereUniqueInput
+    create: XOR<StockItemCreateWithoutEncomendasInput, StockItemUncheckedCreateWithoutEncomendasInput>
+  }
+
+  export type UtilizadorCreateWithoutEncomendasRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutEncomendasRecebidasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutEncomendasRecebidasInput, UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput>
+  }
+
+  export type FornecedorUpsertWithoutEncomendasInput = {
+    update: XOR<FornecedorUpdateWithoutEncomendasInput, FornecedorUncheckedUpdateWithoutEncomendasInput>
+    create: XOR<FornecedorCreateWithoutEncomendasInput, FornecedorUncheckedCreateWithoutEncomendasInput>
+    where?: FornecedorWhereInput
+  }
+
+  export type FornecedorUpdateToOneWithWhereWithoutEncomendasInput = {
+    where?: FornecedorWhereInput
+    data: XOR<FornecedorUpdateWithoutEncomendasInput, FornecedorUncheckedUpdateWithoutEncomendasInput>
+  }
+
+  export type FornecedorUpdateWithoutEncomendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FornecedorUncheckedUpdateWithoutEncomendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    nif?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    morada?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StockItemUpsertWithoutEncomendasInput = {
+    update: XOR<StockItemUpdateWithoutEncomendasInput, StockItemUncheckedUpdateWithoutEncomendasInput>
+    create: XOR<StockItemCreateWithoutEncomendasInput, StockItemUncheckedCreateWithoutEncomendasInput>
+    where?: StockItemWhereInput
+  }
+
+  export type StockItemUpdateToOneWithWhereWithoutEncomendasInput = {
+    where?: StockItemWhereInput
+    data: XOR<StockItemUpdateWithoutEncomendasInput, StockItemUncheckedUpdateWithoutEncomendasInput>
+  }
+
+  export type StockItemUpdateWithoutEncomendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    catalogo?: CatalogoMedicamentoUpdateOneWithoutStockItemsNestedInput
+    pedidos?: PedidoFarmaciaUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type StockItemUncheckedUpdateWithoutEncomendasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    catalogoId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pedidos?: PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutEncomendasRecebidasInput = {
+    update: XOR<UtilizadorUpdateWithoutEncomendasRecebidasInput, UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput>
+    create: XOR<UtilizadorCreateWithoutEncomendasRecebidasInput, UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutEncomendasRecebidasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutEncomendasRecebidasInput, UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput>
+  }
+
+  export type UtilizadorUpdateWithoutEncomendasRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -134868,6 +146531,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -134952,6 +146619,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -135189,6 +146860,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -135273,6 +146948,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -135499,6 +147178,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -135583,6 +147266,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -135821,6 +147508,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -135905,6 +147596,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -136088,6 +147783,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -136172,6 +147871,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -136261,6 +147964,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -136345,6 +148052,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -136550,6 +148261,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -136634,6 +148349,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -136729,6 +148448,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -136813,6 +148536,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -136897,6 +148624,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -136981,6 +148712,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -137081,6 +148816,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -137165,6 +148904,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -137249,6 +148992,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -137333,6 +149080,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -137422,6 +149173,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -137506,6 +149261,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -137606,6 +149365,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -137690,6 +149453,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -137785,6 +149552,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -137869,6 +149640,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -138052,6 +149827,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -138136,6 +149915,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -138225,6 +150008,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -138309,6 +150096,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -138514,6 +150305,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -138598,6 +150393,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -138693,6 +150492,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -138777,6 +150580,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -138960,6 +150767,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -139044,6 +150855,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -139249,6 +151064,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -139333,6 +151152,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutIncidentesCriadosInput = {
@@ -139417,6 +151240,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
@@ -139501,6 +151328,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
@@ -139590,6 +151421,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
@@ -139674,6 +151509,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
@@ -139774,6 +151613,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
@@ -139858,6 +151701,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
@@ -139953,6 +151800,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
@@ -140037,6 +151888,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutPedidosTICriadosInput = {
@@ -140121,6 +151976,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
@@ -140205,6 +152064,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
@@ -140294,6 +152157,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
@@ -140378,6 +152245,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
@@ -140478,6 +152349,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
@@ -140562,6 +152437,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
@@ -140657,6 +152536,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
@@ -140741,6 +152624,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutFicheiroPessoalInput = {
@@ -140924,6 +152811,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -141008,6 +152899,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput = {
@@ -141213,6 +153108,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -141297,6 +153196,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
@@ -141521,6 +153424,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -141605,6 +153512,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput = {
@@ -141915,6 +153826,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -141999,6 +153914,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput = {
@@ -142240,6 +154159,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput = {
@@ -142324,6 +154247,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput = {
@@ -142465,6 +154392,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput = {
@@ -142549,6 +154480,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type AtoConsultaCreateWithoutAtoInput = {
@@ -142823,6 +154758,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
@@ -142907,6 +154846,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
@@ -143007,6 +154950,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
@@ -143091,6 +155038,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutProblemasInput = {
@@ -143274,6 +155225,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutProblemasRegistadosInput = {
@@ -143358,6 +155313,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutProblemasRegistadosInput = {
@@ -143563,6 +155522,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput = {
@@ -143647,6 +155610,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type ManutencaoCreateWithoutEquipamentoInput = {
@@ -143812,6 +155779,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesReportadasInput = {
@@ -143896,6 +155867,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesReportadasInput = {
@@ -143985,6 +155960,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput = {
@@ -144069,6 +156048,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput = {
@@ -144204,6 +156187,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput = {
@@ -144288,6 +156275,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutManutencoesTecnicoInput = {
@@ -144383,6 +156374,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput = {
@@ -144467,6 +156462,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAusenciasInput = {
@@ -144551,6 +156550,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasInput = {
@@ -144635,6 +156638,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasInput = {
@@ -144724,6 +156731,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasAprovadasInput = {
@@ -144808,6 +156819,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasAprovadasInput = {
@@ -144908,6 +156923,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasInput = {
@@ -144992,6 +157011,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAusenciasAprovadasInput = {
@@ -145087,6 +157110,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasAprovadasInput = {
@@ -145171,6 +157198,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutFormacoesInput = {
@@ -145255,6 +157286,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFormacoesInput = {
@@ -145339,6 +157374,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFormacoesInput = {
@@ -145439,6 +157478,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFormacoesInput = {
@@ -145523,6 +157566,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutEventosAdversosInput = {
@@ -145706,6 +157753,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEventosAdversosRegistadosInput = {
@@ -145790,6 +157841,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEventosAdversosRegistadosInput = {
@@ -145995,6 +158050,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEventosAdversosRegistadosInput = {
@@ -146079,6 +158138,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type DoenteCreateWithoutSessoesEspecialidadeInput = {
@@ -146262,6 +158325,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -146346,6 +158413,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -146551,6 +158622,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -146635,6 +158710,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -146719,6 +158798,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -146803,6 +158886,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadoInput = {
@@ -146892,6 +158979,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadorInput = {
@@ -146976,6 +159067,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
     dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadorInput = {
@@ -147076,6 +159171,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadoInput = {
@@ -147160,6 +159259,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesComoAvaliadorInput = {
@@ -147255,6 +159358,10 @@ export namespace Prisma {
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadorInput = {
@@ -147339,6 +159446,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDadosContratuaisInput = {
@@ -147423,6 +159534,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
     chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
     subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDadosContratuaisInput = {
@@ -147507,6 +159622,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
     subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDadosContratuaisInput = {
@@ -147607,6 +159726,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
     chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDadosContratuaisInput = {
@@ -147691,6 +159814,10 @@ export namespace Prisma {
     avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -147799,6 +159926,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     doenteId: string
   }
@@ -147905,6 +160035,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type DispositivoTokenCreateManyUtilizadorInput = {
@@ -148531,6 +160663,55 @@ export namespace Prisma {
     atualizadoEm?: Date | string
   }
 
+  export type AjusteStockCreateManyUtilizadorInput = {
+    id?: string
+    stockItemId: string
+    delta: number
+    tipo: string
+    motivo: string
+    criadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateManySolicitadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateManyConfirmadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorCreateManyRecebioPorInput = {
+    id?: string
+    fornecedorId: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
   export type TurnoUpdateWithoutChefeTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
@@ -148759,6 +160940,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -148767,6 +160951,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
   }
@@ -148775,6 +160962,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
   }
@@ -149120,6 +161310,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
     doente?: DoenteUpdateOneRequiredWithoutSinaisVitaisNestedInput
   }
 
@@ -149135,6 +161327,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SinalVitalUncheckedUpdateManyWithoutRegistadoPorInput = {
@@ -149149,6 +161343,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type DispositivoTokenUpdateWithoutUtilizadorInput = {
@@ -151078,6 +163274,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChefeInput = {
@@ -151162,6 +163362,10 @@ export namespace Prisma {
     avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
     dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
     subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateManyWithoutChefeInput = {
@@ -151175,6 +163379,153 @@ export namespace Prisma {
     ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
     equipa?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutAjustesNestedInput
+  }
+
+  export type AjusteStockUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUpdateWithoutSolicitadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutTransferenciasNestedInput
+    confirmadoPor?: UtilizadorUpdateOneWithoutTransferenciasConfirmadasNestedInput
+  }
+
+  export type TransferenciaStockUncheckedUpdateWithoutSolicitadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUpdateWithoutConfirmadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutTransferenciasNestedInput
+    solicitadoPor?: UtilizadorUpdateOneRequiredWithoutTransferenciasSolicitadasNestedInput
+  }
+
+  export type TransferenciaStockUncheckedUpdateWithoutConfirmadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUpdateWithoutRecebioPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    fornecedor?: FornecedorUpdateOneRequiredWithoutEncomendasNestedInput
+    stockItem?: StockItemUpdateOneRequiredWithoutEncomendasNestedInput
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateWithoutRecebioPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -151228,6 +163579,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     medicacaoId: string
     administradoPorId: string
   }
@@ -151258,6 +163612,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: number | null
     peso?: number | null
     notas?: string | null
+    avpu?: string | null
+    news2?: number | null
   }
 
   export type AlergiaCreateManyDoenteInput = {
@@ -151634,6 +163990,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -151642,6 +164001,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -151650,6 +164012,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -151707,6 +164072,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
     registadoPor?: UtilizadorUpdateOneRequiredWithoutSinaisVitaisRegistadosNestedInput
   }
 
@@ -151722,6 +164089,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SinalVitalUncheckedUpdateManyWithoutDoenteInput = {
@@ -151736,6 +164105,8 @@ export namespace Prisma {
     frequenciaRespiratoria?: NullableIntFieldUpdateOperationsInput | number | null
     peso?: NullableFloatFieldUpdateOperationsInput | number | null
     notas?: NullableStringFieldUpdateOperationsInput | string | null
+    avpu?: NullableStringFieldUpdateOperationsInput | string | null
+    news2?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AlergiaUpdateWithoutDoenteInput = {
@@ -152651,6 +165022,9 @@ export namespace Prisma {
     id?: string
     administradoEm?: Date | string
     observacoes?: string | null
+    verificacao5Certas?: boolean
+    naoAdministrada?: boolean
+    motivoNaoAdmin?: string | null
     doenteId: string
     administradoPorId: string
   }
@@ -152659,6 +165033,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -152667,6 +165044,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -152675,6 +165055,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     administradoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
+    naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
+    motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -152864,6 +165247,42 @@ export namespace Prisma {
     criadoEm?: Date | string
   }
 
+  export type AjusteStockCreateManyStockItemInput = {
+    id?: string
+    delta: number
+    tipo: string
+    motivo: string
+    utilizadorId: string
+    criadoEm?: Date | string
+  }
+
+  export type TransferenciaStockCreateManyStockItemInput = {
+    id?: string
+    quantidade: number
+    servicoOrigem: string
+    servicoDestino: string
+    motivo?: string | null
+    estado?: string
+    solicitadoPorId: string
+    confirmadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorCreateManyStockItemInput = {
+    id?: string
+    fornecedorId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
   export type PedidoFarmaciaUpdateWithoutStockItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantidade?: FloatFieldUpdateOperationsInput | number
@@ -152895,6 +165314,230 @@ export namespace Prisma {
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    utilizador?: UtilizadorUpdateOneRequiredWithoutAjustesStockNestedInput
+  }
+
+  export type AjusteStockUncheckedUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AjusteStockUncheckedUpdateManyWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    tipo?: StringFieldUpdateOperationsInput | string
+    motivo?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    solicitadoPor?: UtilizadorUpdateOneRequiredWithoutTransferenciasSolicitadasNestedInput
+    confirmadoPor?: UtilizadorUpdateOneWithoutTransferenciasConfirmadasNestedInput
+  }
+
+  export type TransferenciaStockUncheckedUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransferenciaStockUncheckedUpdateManyWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servicoOrigem?: StringFieldUpdateOperationsInput | string
+    servicoDestino?: StringFieldUpdateOperationsInput | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    confirmadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    fornecedor?: FornecedorUpdateOneRequiredWithoutEncomendasNestedInput
+    recebioPor?: UtilizadorUpdateOneWithoutEncomendasRecebidasNestedInput
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutStockItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fornecedorId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StockItemCreateManyCatalogoInput = {
+    id?: string
+    nome: string
+    tipo: $Enums.TipoStock
+    quantidade?: number
+    quantidadeMinima?: number
+    unidade: string
+    validade?: Date | string | null
+    servico: string
+    precoUnitario?: number | null
+    criadoEm?: Date | string
+  }
+
+  export type StockItemUpdateWithoutCatalogoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pedidos?: PedidoFarmaciaUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type StockItemUncheckedUpdateWithoutCatalogoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    pedidos?: PedidoFarmaciaUncheckedUpdateManyWithoutStockItemNestedInput
+    ajustes?: AjusteStockUncheckedUpdateManyWithoutStockItemNestedInput
+    transferencias?: TransferenciaStockUncheckedUpdateManyWithoutStockItemNestedInput
+    encomendas?: EncomendaFornecedorUncheckedUpdateManyWithoutStockItemNestedInput
+  }
+
+  export type StockItemUncheckedUpdateManyWithoutCatalogoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoStockFieldUpdateOperationsInput | $Enums.TipoStock
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidadeMinima?: FloatFieldUpdateOperationsInput | number
+    unidade?: StringFieldUpdateOperationsInput | string
+    validade?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    servico?: StringFieldUpdateOperationsInput | string
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorCreateManyFornecedorInput = {
+    id?: string
+    stockItemId: string
+    quantidadeEncomendada: number
+    precoUnitario?: number | null
+    estado?: string
+    dataEntregaPrevista?: Date | string | null
+    dataEntregaReal?: Date | string | null
+    observacoes?: string | null
+    recebioPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type EncomendaFornecedorUpdateWithoutFornecedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutEncomendasNestedInput
+    recebioPor?: UtilizadorUpdateOneWithoutEncomendasRecebidasNestedInput
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateWithoutFornecedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EncomendaFornecedorUncheckedUpdateManyWithoutFornecedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidadeEncomendada?: FloatFieldUpdateOperationsInput | number
+    precoUnitario?: NullableFloatFieldUpdateOperationsInput | number | null
+    estado?: StringFieldUpdateOperationsInput | string
+    dataEntregaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataEntregaReal?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    recebioPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessaoFisioterapiaCreateManyPlanoInput = {

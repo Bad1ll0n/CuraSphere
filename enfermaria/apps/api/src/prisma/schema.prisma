@@ -145,7 +145,14 @@ model Utilizador {
   chefeId                    String?
   chefe                      Utilizador?                @relation("ChefeSubordinado", fields: [chefeId], references: [id])
   subordinados               Utilizador[]               @relation("ChefeSubordinado")
+  // Inventário expandido
+  ajustesStock               AjusteStock[]              @relation("AjustesFeitos")
+  transferenciasSolicitadas  TransferenciaStock[]       @relation("TransfSolicitadas")
+  transferenciasConfirmadas  TransferenciaStock[]       @relation("TransfConfirmadas")
+  encomendasRecebidas        EncomendaFornecedor[]      @relation("EncomendasRecebidas")
 
+  @@index([role, ativo])
+  @@index([servico])
   @@map("utilizadores")
 }
 
@@ -166,6 +173,7 @@ model Cama {
 
   doente Doente?
 
+  @@index([quarto, estado])
   @@map("camas")
 }
 
@@ -265,6 +273,8 @@ model Turno {
   passagensTurnoAnterior PassagemTurno[] @relation("PassagemTurnoAnterior")
   passagensTurnoAtual    PassagemTurno[] @relation("PassagemTurnoAtual")
 
+  @@index([chefeTurnoId])
+  @@index([dataInicio])
   @@map("turnos")
 }
 
@@ -462,8 +472,11 @@ model Medicacao {
 
 model RegistoMedicacao {
   id             String   @id @default(uuid())
-  administradoEm DateTime @default(now())
-  observacoes    String?
+  administradoEm     DateTime @default(now())
+  observacoes        String?
+  verificacao5Certas Boolean  @default(false)
+  naoAdministrada    Boolean  @default(false)
+  motivoNaoAdmin     String?
 
   medicacaoId       String
   doenteId          String
@@ -473,6 +486,8 @@ model RegistoMedicacao {
   doente          Doente     @relation(fields: [doenteId], references: [id])
   administradoPor Utilizador @relation(fields: [administradoPorId], references: [id])
 
+  @@index([medicacaoId])
+  @@index([doenteId, administradoEm])
   @@map("registos_medicacao")
 }
 
@@ -568,6 +583,7 @@ model SinalVital {
   registadoPorId        String
   registadoPor          Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id])
   data                  DateTime   @default(now())
+
   pressaoSistolica      Int?
   pressaoDiastolica     Int?
   pulso                 Int?
@@ -576,7 +592,10 @@ model SinalVital {
   frequenciaRespiratoria Int?
   peso                  Float?
   notas                 String?
+  avpu                  String?    // A=Alert V=Voice P=Pain U=Unresponsive (NEWS2)
+  news2                 Int?       // score NEWS2 calculado automaticamente
 
+  @@index([doenteId, data])
   @@map("sinais_vitais")
 }
 
@@ -611,6 +630,7 @@ model Alergia {
   notas      String?
   criadaEm   DateTime @default(now())
 
+  @@index([doenteId])
   @@map("alergias")
 }
 
@@ -644,6 +664,8 @@ model AlertaClinico {
   escaladoEm   DateTime?
   criadoEm DateTime @default(now())
 
+  @@index([doenteId, lido])
+  @@index([criadoEm])
   @@map("alertas_clinicos")
 }
 
@@ -790,6 +812,7 @@ model EpisodioUrgencia {
   etaMinutos        Int?
   condicaoPrevia    String?
 
+  @@index([estadoEpisodio, dataEntrada])
   @@map("episodios_urgencia")
 }
 
@@ -823,6 +846,8 @@ model CirurgiaProgramada {
   criadoEm           DateTime       @default(now())
   checklist          ChecklistCirurgia?
 
+  @@index([dataHora])
+  @@index([estado])
   @@map("cirurgias_programadas")
 }
 
@@ -953,10 +978,18 @@ model StockItem {
   unidade          String
   validade         DateTime?
   servico          String
+  precoUnitario    Float?
+  catalogoId       String?
+  catalogo         CatalogoMedicamento? @relation(fields: [catalogoId], references: [id])
   criadoEm         DateTime  @default(now())
 
-  pedidos PedidoFarmacia[]
+  pedidos       PedidoFarmacia[]
+  ajustes       AjusteStock[]
+  transferencias TransferenciaStock[]
+  encomendas    EncomendaFornecedor[]
 
+  @@index([catalogoId])
+  @@index([servico])
   @@map("stock_items")
 }
 
@@ -974,7 +1007,98 @@ model PedidoFarmacia {
   observacoes     String?
   criadoEm        DateTime             @default(now())
 
+  @@index([estado, criadoEm])
   @@map("pedidos_farmacia")
+}
+
+model CatalogoMedicamento {
+  id                String      @id @default(uuid())
+  dci               String
+  nomeMarca         String?
+  formaFarmaceutica String
+  classeTerap       String
+  unidade           String
+  concentracao      String?
+  codigoATC         String?
+  ativo             Boolean     @default(true)
+  criadoEm          DateTime    @default(now())
+
+  stockItems StockItem[]
+
+  @@map("catalogo_medicamentos")
+}
+
+model AjusteStock {
+  id           String    @id @default(uuid())
+  stockItemId  String
+  stockItem    StockItem @relation(fields: [stockItemId], references: [id])
+  delta        Float
+  tipo         String    // "entrada" | "saida" | "ajuste" | "desperdicio" | "validade" | "encomenda" | "transferencia"
+  motivo       String
+  utilizadorId String
+  utilizador   Utilizador @relation("AjustesFeitos", fields: [utilizadorId], references: [id])
+  criadoEm     DateTime  @default(now())
+
+  @@index([stockItemId])
+  @@index([criadoEm])
+  @@map("ajustes_stock")
+}
+
+model TransferenciaStock {
+  id              String      @id @default(uuid())
+  stockItemId     String
+  stockItem       StockItem   @relation(fields: [stockItemId], references: [id])
+  quantidade      Float
+  servicoOrigem   String
+  servicoDestino  String
+  motivo          String?
+  estado          String      @default("pendente") // pendente | confirmada | cancelada
+  solicitadoPorId String
+  solicitadoPor   Utilizador  @relation("TransfSolicitadas", fields: [solicitadoPorId], references: [id])
+  confirmadoPorId String?
+  confirmadoPor   Utilizador? @relation("TransfConfirmadas", fields: [confirmadoPorId], references: [id])
+  criadoEm        DateTime    @default(now())
+  atualizadoEm    DateTime    @updatedAt
+
+  @@index([stockItemId])
+  @@map("transferencias_stock")
+}
+
+model Fornecedor {
+  id        String   @id @default(uuid())
+  nome      String
+  nif       String?  @unique
+  email     String?
+  telefone  String?
+  morada    String?
+  ativo     Boolean  @default(true)
+  criadoEm DateTime @default(now())
+
+  encomendas EncomendaFornecedor[]
+
+  @@map("fornecedores")
+}
+
+model EncomendaFornecedor {
+  id                    String      @id @default(uuid())
+  fornecedorId          String
+  fornecedor            Fornecedor  @relation(fields: [fornecedorId], references: [id])
+  stockItemId           String
+  stockItem             StockItem   @relation(fields: [stockItemId], references: [id])
+  quantidadeEncomendada Float
+  precoUnitario         Float?
+  estado                String      @default("pendente") // pendente | recebida | parcial | cancelada
+  dataEntregaPrevista   DateTime?
+  dataEntregaReal       DateTime?
+  observacoes           String?
+  recebioPorId          String?
+  recebioPor            Utilizador? @relation("EncomendasRecebidas", fields: [recebioPorId], references: [id])
+  criadoEm              DateTime    @default(now())
+  atualizadoEm          DateTime    @updatedAt
+
+  @@index([fornecedorId])
+  @@index([stockItemId])
+  @@map("encomendas_fornecedor")
 }
 
 // ─── Fisioterapia / Reabilitação ──────────────────────────────────────────────
@@ -1054,6 +1178,7 @@ model PedidoInterno {
   criadoEm        DateTime            @default(now())
   concluidoEm     DateTime?
 
+  @@index([estado, criadoEm])
   @@map("pedidos_internos")
 }
 
@@ -1084,6 +1209,8 @@ model MensagemInterna {
   lida           Boolean    @default(false)
   criadaEm      DateTime   @default(now())
 
+  @@index([destinatarioId, lida])
+  @@index([remetenteId])
   @@map("mensagens_internas")
 }
 

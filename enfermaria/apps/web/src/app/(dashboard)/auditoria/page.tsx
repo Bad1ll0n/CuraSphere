@@ -90,6 +90,7 @@ export default function AuditoriaPagina() {
   const [filtroAcao, setFiltroAcao] = useState('');
   const [filtroDe, setFiltroDe] = useState('');
   const [filtroAte, setFiltroAte] = useState('');
+  const [filtroEntidade, setFiltroEntidade] = useState('');
 
   const ROLES_AUDITORIA = ['ti', 'qualidade', 'direcao', 'administrativo'];
 
@@ -107,10 +108,11 @@ export default function AuditoriaPagina() {
     setLoading(true);
     try {
       const params: Record<string, string> = { page: String(pg) };
-      if (filtroUtilizador) params['utilizadorId'] = filtroUtilizador;
-      if (filtroAcao)       params['acao']          = filtroAcao;
-      if (filtroDe)         params['de']            = filtroDe;
-      if (filtroAte)        params['ate']           = filtroAte;
+      if (filtroUtilizador) params['utilizadorId']   = filtroUtilizador;
+      if (filtroAcao)       params['acao']            = filtroAcao;
+      if (filtroDe)         params['de']              = filtroDe;
+      if (filtroAte)        params['ate']             = filtroAte;
+      if (filtroEntidade)   params['entidadeTipo']    = filtroEntidade;
 
       const r = await api.get<Resposta>('/audit/logs', { params });
       setLogs(r.data.logs);
@@ -138,6 +140,28 @@ export default function AuditoriaPagina() {
     setFiltroAcao('');
     setFiltroDe('');
     setFiltroAte('');
+    setFiltroEntidade('');
+  };
+
+  const exportarCSV = () => {
+    const linhas = [
+      ['Data', 'Utilizador', 'Role', 'Ação', 'Entidade', 'ID Entidade', 'IP'],
+      ...logs.map(l => [
+        formatarData(l.createdAt),
+        l.utilizador?.nome ?? '—',
+        l.utilizador?.role ?? '—',
+        l.acao,
+        l.entidadeTipo ?? '—',
+        l.entidadeId ?? '—',
+        l.ip ?? '—',
+      ]),
+    ];
+    const csv = linhas.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `auditoria-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click(); URL.revokeObjectURL(url);
   };
 
   if (authLoading || !utilizador) return null;
@@ -158,7 +182,7 @@ export default function AuditoriaPagina() {
       <form onSubmit={aplicarFiltros}>
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px', marginBottom: '24px' }}>
           <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '16px' }}>Filtros</p>
-          <div className="grid grid-cols-4 gap-4" style={{ marginBottom: '16px' }}>
+          <div className="grid grid-cols-5 gap-4" style={{ marginBottom: '16px' }}>
             {/* Utilizador */}
             <div>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
@@ -218,6 +242,24 @@ export default function AuditoriaPagina() {
                 style={{ padding: '9px 12px' }}
               />
             </div>
+
+            {/* Entidade */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>
+                Entidade
+              </label>
+              <select
+                value={filtroEntidade}
+                onChange={(e) => setFiltroEntidade(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                style={{ padding: '9px 12px' }}
+              >
+                <option value="">Todas</option>
+                {['Doente', 'Utilizador', 'StockItem', 'Medicacao', 'Tarefa', 'Cama', 'Equipamento', 'IncidenteTI', 'EpisodioFaturacao', 'Turno'].map(e => (
+                  <option key={e} value={e}>{e}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -236,6 +278,19 @@ export default function AuditoriaPagina() {
             >
               Limpar
             </button>
+            {logs.length > 0 && (
+              <button
+                type="button"
+                onClick={exportarCSV}
+                className="flex items-center gap-2 border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+                style={{ padding: '9px 20px' }}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Exportar CSV
+              </button>
+            )}
             {total > 0 && (
               <span className="text-xs text-slate-400" style={{ marginLeft: '8px' }}>
                 {total} registo{total !== 1 ? 's' : ''} encontrado{total !== 1 ? 's' : ''}

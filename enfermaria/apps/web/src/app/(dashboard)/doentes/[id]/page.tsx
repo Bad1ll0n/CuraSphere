@@ -19,6 +19,8 @@ interface Doente {
   dataAltaPrevista?: string;
   dataAlta?: string;
   ativo: boolean;
+  emIsolamento: boolean;
+  motivoIsolamento?: string;
   cama: { numero: string; quarto: string };
   atribuicoes: { enfermeiro: { id: string; nome: string; role: string } }[];
   atribuicoesHorario: { utilizador: { id: string; nome: string; role: string }; horarioTurno: { tipo: string; data: string } }[];
@@ -304,6 +306,9 @@ export default function DoenteDetalhe() {
   const [loading, setLoading] = useState(true);
   const [alterandoEstado, setAlterandoEstado] = useState(false);
   const [salvandoAlta, setSalvandoAlta] = useState(false);
+  const [modalIsolamento, setModalIsolamento] = useState(false);
+  const [motivoIsolamentoInput, setMotivoIsolamentoInput] = useState('');
+  const [salvandoIsolamento, setSalvandoIsolamento] = useState(false);
 
   // Modals
   const [modalQR, setModalQR] = useState(false);
@@ -330,6 +335,7 @@ export default function DoenteDetalhe() {
   const [svFreqResp, setSvFreqResp] = useState('');
   const [svPeso, setSvPeso] = useState('');
   const [svNotas, setSvNotas] = useState('');
+  const [svAvpu, setSvAvpu] = useState('A');
 
   // Alergias
   const [alergias, setAlergias] = useState<any[]>([]);
@@ -656,6 +662,7 @@ export default function DoenteDetalhe() {
         frequenciaRespiratoria: svFreqResp  ? parseInt(svFreqResp)  : undefined,
         peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
         notas: svNotas || undefined,
+        avpu: svAvpu || undefined,
       });
       setModalSinalVital(false);
       carregarSinaisVitais();
@@ -754,6 +761,19 @@ export default function DoenteDetalhe() {
     await api.patch(`/doentes/${id}/estado`, { estado: novoEstado });
     setAlterandoEstado(false);
     carregar();
+  };
+
+  const toggleIsolamento = async (ativar: boolean) => {
+    if (ativar && !motivoIsolamentoInput.trim()) return;
+    setSalvandoIsolamento(true);
+    try {
+      await api.patch(`/doentes/${id}/isolamento`, { emIsolamento: ativar, motivoIsolamento: ativar ? motivoIsolamentoInput : undefined });
+      setModalIsolamento(false);
+      setMotivoIsolamentoInput('');
+      carregar();
+    } finally {
+      setSalvandoIsolamento(false);
+    }
   };
 
   // Deadline de edição com base no turno real:
@@ -1013,6 +1033,28 @@ export default function DoenteDetalhe() {
             </div>
           </div>
           <p className="text-slate-400 text-sm font-mono">{doente.numeroProcesso}</p>
+          <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
+            {doente.emIsolamento && (
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded-lg" style={{ padding: '4px 10px' }}>
+                🔶 Em Isolamento{doente.motivoIsolamento ? `: ${doente.motivoIsolamento}` : ''}
+              </span>
+            )}
+            {podeAlterarEstado && doente.ativo && (
+              doente.emIsolamento ? (
+                <button onClick={() => toggleIsolamento(false)}
+                  className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                  style={{ padding: '4px 10px' }}>
+                  Remover Isolamento
+                </button>
+              ) : (
+                <button onClick={() => { setMotivoIsolamentoInput(''); setModalIsolamento(true); }}
+                  className="text-xs font-semibold border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
+                  style={{ padding: '4px 10px' }}>
+                  🔶 Activar Isolamento
+                </button>
+              )
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -1570,7 +1612,7 @@ export default function DoenteDetalhe() {
           </div>
           <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
           {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
-            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setModalSinalVital(true); }} />
+            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setModalSinalVital(true); }} />
           )}
         </div>
         {sinaisVitais.length === 0 ? (
@@ -1600,6 +1642,21 @@ export default function DoenteDetalhe() {
                 </ResponsiveContainer>
               </div>
             )}
+            {/* Banner NEWS2 se score alto */}
+            {sinaisVitais[0]?.news2 != null && sinaisVitais[0].news2 >= 5 && (
+              <div className={`rounded-xl flex items-center gap-3 text-sm font-medium ${sinaisVitais[0].news2 >= 7 ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`} style={{ padding: '12px 16px', marginBottom: '12px' }}>
+                <span className={`text-xl font-black ${sinaisVitais[0].news2 >= 7 ? 'text-red-600' : 'text-amber-600'}`}>{sinaisVitais[0].news2}</span>
+                <div>
+                  <p className="font-semibold" style={{ margin: 0 }}>
+                    NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : 'ALTO'} — Score {sinaisVitais[0].news2}
+                  </p>
+                  <p className="text-xs opacity-80" style={{ margin: 0 }}>
+                    {sinaisVitais[0].news2 >= 7 ? 'Resposta imediata necessária. Activar equipa de emergência.' : 'Monitorização frequente e avaliação clínica urgente.'}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Tabela */}
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -1611,6 +1668,7 @@ export default function DoenteDetalhe() {
                     <th className="text-center pb-2">Temp ºC</th>
                     <th className="text-center pb-2">SpO₂ %</th>
                     <th className="text-center pb-2">FR</th>
+                    <th className="text-center pb-2">NEWS2</th>
                     <th className="text-left pb-2">Registado por</th>
                   </tr>
                 </thead>
@@ -1628,6 +1686,13 @@ export default function DoenteDetalhe() {
                         <td className={`py-2.5 text-center font-semibold ${tempCrit ? 'text-red-600' : 'text-slate-700'}`}>{sv.temperatura != null ? sv.temperatura.toFixed(1) : '—'}</td>
                         <td className={`py-2.5 text-center font-semibold ${spO2Crit ? 'text-red-600' : 'text-slate-700'}`}>{sv.saturacaoO2 != null ? `${sv.saturacaoO2}%` : '—'}</td>
                         <td className="py-2.5 text-center text-slate-600">{sv.frequenciaRespiratoria ?? '—'}</td>
+                        <td className="py-2.5 text-center">
+                          {sv.news2 != null ? (
+                            <span className={`text-xs font-bold rounded-md px-2 py-0.5 ${sv.news2 >= 7 ? 'bg-red-100 text-red-700' : sv.news2 >= 5 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                              {sv.news2}
+                            </span>
+                          ) : '—'}
+                        </td>
                         <td className="py-2.5 text-slate-400 text-xs">{sv.registadoPor?.nome}</td>
                       </tr>
                     );
@@ -2375,13 +2440,27 @@ export default function DoenteDetalhe() {
               </div>
             ))}
           </div>
-          <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
-            <input type="number" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+          <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Peso (kg)</label>
+              <input type="number" value={svPeso} onChange={(e) => setSvPeso(e.target.value)} placeholder="70.5" className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Consciência (AVPU)</label>
+              <select value={svAvpu} onChange={(e) => setSvAvpu(e.target.value)} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" style={{ padding: '8px 12px' }}>
+                <option value="A">A — Alert (Alerta)</option>
+                <option value="V">V — Voice (Responde à voz)</option>
+                <option value="P">P — Pain (Responde à dor)</option>
+                <option value="U">U — Unresponsive (Sem resposta)</option>
+              </select>
+            </div>
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>
             <textarea rows={2} value={svNotas} onChange={(e) => setSvNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" style={{ padding: '8px 12px' }} />
+          </div>
+          <div className="rounded-xl text-xs text-slate-500 bg-slate-50 border border-slate-100" style={{ padding: '10px 14px', marginBottom: '16px' }}>
+            O score NEWS2 é calculado automaticamente com base nos valores registados. Score ≥5 gera alerta clínico.
           </div>
           <ModalFooter onCancel={() => setModalSinalVital(false)} onConfirm={submeterSinalVital} loading={salvando} disabled={salvando} labelConfirm="Guardar" />
         </Modal>
@@ -2882,6 +2961,32 @@ export default function DoenteDetalhe() {
                 className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
                 {salvandoEdicao ? 'A guardar...' : 'Guardar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Activar Isolamento */}
+      {modalIsolamento && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
+              <button onClick={() => setModalIsolamento(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo do Isolamento *</label>
+              <textarea value={motivoIsolamentoInput} onChange={e => setMotivoIsolamentoInput(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
+                style={{ padding: '10px 14px' }} rows={3}
+                placeholder="Ex: MRSA, Clostrídio, contacto suspeito COVID..." />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalIsolamento(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={() => toggleIsolamento(true)} disabled={!motivoIsolamentoInput.trim() || salvandoIsolamento}
+                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                {salvandoIsolamento ? 'A guardar...' : 'Activar'}
               </button>
             </div>
           </div>

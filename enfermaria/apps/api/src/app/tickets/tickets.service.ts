@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Subject } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 
 const LETRAS: Record<string, string> = {
@@ -16,16 +16,18 @@ const ORDEM_PRIORIDADE = ['prioritario', 'senior', 'normal'];
 
 @Injectable()
 export class TicketsService {
-  private readonly eventos$ = new Subject<{ data: string; type?: string }>();
+  private readonly eventos$ = new Subject<{ data: string; type?: string; tipo?: string }>();
 
   constructor(private readonly prisma: PrismaService) {}
 
-  eventStream() {
-    return this.eventos$.asObservable();
+  eventStream(tipo?: string) {
+    const obs = this.eventos$.asObservable();
+    if (!tipo) return obs;
+    return obs.pipe(filter(e => !e.tipo || e.tipo === tipo));
   }
 
-  private emit(type: string, payload: unknown) {
-    this.eventos$.next({ type, data: JSON.stringify(payload) });
+  private emit(type: string, payload: unknown, tipo?: string) {
+    this.eventos$.next({ type, data: JSON.stringify(payload), tipo });
   }
 
   async tirarSenha(body: {
@@ -58,7 +60,7 @@ export class TicketsService {
       },
     });
 
-    this.emit('novo_ticket', { ticket, fila: await this.listarFila() });
+    this.emit('novo_ticket', { ticket, fila: await this.listarFila() }, ticket.tipo);
     return ticket;
   }
 
@@ -87,7 +89,7 @@ export class TicketsService {
       ticket: atualizado,
       fila: await this.listarFila(),
       ultimos: await this.ultimos(5),
-    });
+    }, atualizado.tipo);
     return atualizado;
   }
 

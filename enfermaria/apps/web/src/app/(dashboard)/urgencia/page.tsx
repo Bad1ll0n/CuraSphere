@@ -57,7 +57,19 @@ export default function UrgenciaPage() {
   const [modalAmb, setModalAmb] = useState(false);
   const [formAmb, setFormAmb] = useState({ queixaPrincipal: '', triagem: 'vermelho', nomeTemporario: '', etaMinutos: 10, condicaoPrevia: '' });
   const [etaMap, setEtaMap] = useState<Record<string, number>>({});
+  const [modalAtribuir, setModalAtribuir] = useState<string | null>(null);
+  const [medicoSelecionadoId, setMedicoSelecionadoId] = useState('');
   const etaRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const { data: medicos = [] } = useQuery<Array<{ id: string; nome: string }>>({
+    queryKey: ['medicos-select'],
+    queryFn: () => api.get('/utilizadores?roles=medico').then(r => {
+      const d = r.data;
+      return Array.isArray(d) ? d : (d?.utilizadores ?? d?.data ?? []);
+    }),
+    staleTime: 300_000,
+    enabled: !!modalAtribuir,
+  });
 
   const { data: episodios = [], isLoading } = useQuery<EpisodioUrgencia[]>({
     queryKey: ['urgencia-lista'],
@@ -131,11 +143,18 @@ export default function UrgenciaPage() {
     onSuccess: invalidar,
   });
 
+  const mutAtribuirMedico = useMutation({
+    mutationFn: ({ id, medicoResponsavelId }: { id: string; medicoResponsavelId: string }) =>
+      api.patch(`/urgencia/${id}/atribuir-medico`, { medicoResponsavelId }),
+    onSuccess: () => { setModalAtribuir(null); setMedicoSelecionadoId(''); invalidar(); },
+  });
+
   const emTransito = episodios.filter(e => e.preNotificacao && e.estadoEpisodio === 'triagem');
   const ativos = episodios.filter(e => !['alta_urgencia', 'internado', 'transferido'].includes(e.estadoEpisodio) && !(e.preNotificacao && e.estadoEpisodio === 'triagem'));
 
   const podeRegistar = ['enfermeiro', 'medico', 'administrativo'].includes(utilizador?.role ?? '');
   const podePreNotificar = ['enfermeiro', 'medico', 'administrativo'].includes(utilizador?.role ?? '');
+  const podeAtribuirMedico = ['medico', 'administrativo'].includes(utilizador?.role ?? '');
 
   const formatEta = (segundos: number) => {
     if (segundos <= 0) return 'A chegar...';
@@ -297,6 +316,9 @@ export default function UrgenciaPage() {
                           {ep.triadoPor && (
                             <span className="text-xs text-slate-400">Triado por {ep.triadoPor.nome}</span>
                           )}
+                          {ep.medicoResponsavel && (
+                            <span className="text-xs text-blue-600 font-medium">👨‍⚕️ {ep.medicoResponsavel.nome}</span>
+                          )}
                         </div>
                       </div>
                       <div className="flex flex-col gap-2 shrink-0">
@@ -312,6 +334,13 @@ export default function UrgenciaPage() {
                             className="text-xs font-semibold bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                             style={{ padding: '7px 14px' }}>
                             Dar alta
+                          </button>
+                        )}
+                        {podeAtribuirMedico && (
+                          <button onClick={() => { setModalAtribuir(ep.id); setMedicoSelecionadoId(ep.medicoResponsavel?.id ?? ''); }}
+                            className="text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg transition-colors"
+                            style={{ padding: '7px 14px' }}>
+                            {ep.medicoResponsavel ? '↩ Médico' : '+ Médico'}
                           </button>
                         )}
                       </div>
@@ -373,6 +402,41 @@ export default function UrgenciaPage() {
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
                 style={{ padding: '11px' }}>
                 {mutEntrada.isPending ? 'A registar...' : 'Registar Entrada'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Atribuir Médico */}
+      {modalAtribuir && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Atribuir Médico Responsável</h2>
+              <button onClick={() => setModalAtribuir(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '24px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Médico</label>
+              <select value={medicoSelecionadoId} onChange={e => setMedicoSelecionadoId(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                style={{ padding: '10px 14px' }}>
+                <option value="">— Seleccionar médico —</option>
+                {medicos.map(m => (
+                  <option key={m.id} value={m.id}>{m.nome}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalAtribuir(null)}
+                className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>Cancelar</button>
+              <button
+                onClick={() => mutAtribuirMedico.mutate({ id: modalAtribuir, medicoResponsavelId: medicoSelecionadoId })}
+                disabled={mutAtribuirMedico.isPending || !medicoSelecionadoId}
+                className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                style={{ padding: '11px' }}>
+                {mutAtribuirMedico.isPending ? 'A guardar...' : 'Confirmar'}
               </button>
             </div>
           </div>

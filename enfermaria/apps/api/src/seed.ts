@@ -8,19 +8,20 @@ async function main() {
 
   const admin = await prisma.utilizador.upsert({
     where: { numeroFuncionario: '00001' },
-    update: {},
+    update: { role: 'enfermeiro', subRole: 'supervisor_enfermagem', nome: 'Supervisor Enfermagem' },
     create: {
-      nome: 'Chefe de Enfermeiros',
+      nome: 'Supervisor Enfermagem',
       numeroFuncionario: '00001',
       passwordHash: hash,
-      role: 'chefe_enfermeiros',
+      role: 'enfermeiro',
+      subRole: 'supervisor_enfermagem',
       ordemExperiencia: 1,
     },
   });
 
   const admin2 = await prisma.utilizador.upsert({
     where: { numeroFuncionario: '00002' },
-    update: {},
+    update: { role: 'administrativo' },
     create: {
       nome: 'Administrativo',
       numeroFuncionario: '00002',
@@ -31,19 +32,20 @@ async function main() {
 
   const itAdmin = await prisma.utilizador.upsert({
     where: { numeroFuncionario: '00003' },
-    update: {},
+    update: { role: 'ti', subRole: 'it_admin', nome: 'IT Admin' },
     create: {
       nome: 'IT Admin',
       numeroFuncionario: '00003',
       passwordHash: hash,
-      role: 'it_admin',
+      role: 'ti',
+      subRole: 'it_admin',
     },
   });
 
-  console.log('Utilizadores criados:');
-  console.log(' -', admin.nome, '| Nº', admin.numeroFuncionario, '| Role:', admin.role);
+  console.log('Utilizadores criados/actualizados:');
+  console.log(' -', admin.nome, '| Nº', admin.numeroFuncionario, '| Role:', admin.role, '/', admin.subRole);
   console.log(' -', admin2.nome, '| Nº', admin2.numeroFuncionario, '| Role:', admin2.role);
-  console.log(' -', itAdmin.nome, '| Nº', itAdmin.numeroFuncionario, '| Role:', itAdmin.role);
+  console.log(' -', itAdmin.nome, '| Nº', itAdmin.numeroFuncionario, '| Role:', itAdmin.role, '/', itAdmin.subRole);
   console.log('Password de todos: admin123');
 }
 

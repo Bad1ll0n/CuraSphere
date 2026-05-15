@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../../lib/api';
 
@@ -50,11 +50,23 @@ const CHECK_LABEL: Record<CheckState, string> = {
   conforme: 'Conforme', verificar: 'A Verificar', nao_conforme: 'Não Conforme',
 };
 
+const LS_KEY = 'curasphere_conformidade_checklist';
+
 export default function ConformidadePage() {
   const [checkStates, setCheckStates] = useState<Record<string, CheckState>>(
     Object.fromEntries(CHECKLIST.map(c => [c.id, 'verificar']))
   );
   const [aba, setAba] = useState<'rgpd' | 'checklist' | 'alto_risco'>('rgpd');
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(LS_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as Record<string, CheckState>;
+        setCheckStates(prev => ({ ...prev, ...parsed }));
+      }
+    } catch { /* silencioso */ }
+  }, []);
 
   const { data, isLoading } = useQuery<ConformidadeDados>({
     queryKey: ['conformidade'],
@@ -66,7 +78,9 @@ export default function ConformidadePage() {
     const estados: CheckState[] = ['verificar', 'conforme', 'nao_conforme'];
     setCheckStates(prev => {
       const idx = estados.indexOf(prev[id]);
-      return { ...prev, [id]: estados[(idx + 1) % 3] };
+      const next = { ...prev, [id]: estados[(idx + 1) % 3] };
+      try { localStorage.setItem(LS_KEY, JSON.stringify(next)); } catch { /* silencioso */ }
+      return next;
     });
   };
 

@@ -41,6 +41,7 @@ export class MedicacaoService {
     medicacaoId: string;
     administradoPorId: string;
     observacoes?: string;
+    verificacao5Certas?: boolean;
   }) {
     const medicacao = await this.prisma.medicacao.findUnique({ where: { id: data.medicacaoId } });
     if (!medicacao) throw new NotFoundException('Medicação não encontrada');
@@ -52,10 +53,35 @@ export class MedicacaoService {
         doenteId: medicacao.doenteId,
         administradoPorId: data.administradoPorId,
         observacoes: data.observacoes,
+        verificacao5Certas: data.verificacao5Certas ?? false,
       },
       include: {
         administradoPor: { select: { id: true, nome: true } },
         medicacao: { select: { nome: true, dose: true, via: true } },
+      },
+    });
+  }
+
+  async naoAdministrar(data: {
+    medicacaoId: string;
+    registadoPorId: string;
+    motivo: string;
+  }) {
+    const medicacao = await this.prisma.medicacao.findUnique({ where: { id: data.medicacaoId } });
+    if (!medicacao) throw new NotFoundException('Medicação não encontrada');
+
+    return this.prisma.registoMedicacao.create({
+      data: {
+        medicacaoId: data.medicacaoId,
+        doenteId: medicacao.doenteId,
+        administradoPorId: data.registadoPorId,
+        naoAdministrada: true,
+        motivoNaoAdmin: data.motivo,
+        verificacao5Certas: false,
+      },
+      include: {
+        administradoPor: { select: { id: true, nome: true } },
+        medicacao: { select: { nome: true, dose: true } },
       },
     });
   }
@@ -120,7 +146,7 @@ export class MedicacaoService {
     });
   }
 
-  async pendentesValidacao() {
+  async pendentesValidacao(page = 1, limit = 100) {
     return this.prisma.medicacao.findMany({
       where: { ativo: true, estadoValidacao: null },
       include: {
@@ -128,6 +154,8 @@ export class MedicacaoService {
         prescritoPor: { select: { nome: true, role: true } },
       },
       orderBy: { iniciadoEm: 'desc' },
+      take: limit,
+      skip: (page - 1) * limit,
     });
   }
 

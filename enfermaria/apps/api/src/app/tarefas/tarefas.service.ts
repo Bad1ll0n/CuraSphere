@@ -139,6 +139,21 @@ export class TarefasService {
     });
   }
 
+  async editar(id: string, dto: { descricao?: string; prioridade?: PrioridadeTarefa; prazo?: string | null; grupoResponsavel?: string }) {
+    const tarefa = await this.prisma.tarefa.findUnique({ where: { id } });
+    if (!tarefa) throw new NotFoundException('Tarefa não encontrada');
+    return this.prisma.tarefa.update({
+      where: { id },
+      data: {
+        ...(dto.descricao !== undefined && { descricao: dto.descricao }),
+        ...(dto.prioridade !== undefined && { prioridade: dto.prioridade }),
+        ...(dto.grupoResponsavel !== undefined && { grupoResponsavel: dto.grupoResponsavel }),
+        ...(dto.prazo !== undefined && { prazo: dto.prazo ? new Date(dto.prazo) : null }),
+      },
+      include: { doente: { select: { id: true, nome: true } } },
+    });
+  }
+
   async transitarParaTurno(turnoAnteriorId: string, turnoAtualId: string) {
     const tarefasPendentes = await this.prisma.tarefa.findMany({
       where: {

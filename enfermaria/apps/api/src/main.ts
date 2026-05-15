@@ -1,7 +1,9 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
+import * as compression from 'compression';
 import { AppModule } from './app/app.module';
+import { AllExceptionsFilter } from './app/common/exception.filter';
 
 const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao';
 
@@ -16,8 +18,10 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
+  app.use((compression as any)());
   app.use((helmet as any).default());
 
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
 
   const origensPermitidas = process.env.ALLOWED_ORIGINS

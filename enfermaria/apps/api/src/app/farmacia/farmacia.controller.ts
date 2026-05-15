@@ -14,16 +14,26 @@ export class FarmaciaController {
     return this.service.listarStock(servico);
   }
 
-  @Post('stock')
   @Roles('farmaceutico', 'administrativo')
+  @Post('stock')
   criarStockItem(@Body() dto: any) {
     return this.service.criarStockItem(dto);
   }
 
-  @Patch('stock/:id')
   @Roles('farmaceutico')
-  atualizarQuantidade(@Param('id') id: string, @Body('quantidade') quantidade: number) {
-    return this.service.atualizarQuantidade(id, quantidade);
+  @Patch('stock/:id')
+  atualizarQuantidade(
+    @Param('id') id: string,
+    @Body() body: { quantidade: number; motivo: string; tipo: string },
+    @Request() req: any,
+  ) {
+    return this.service.atualizarQuantidade(id, body.quantidade, body.motivo, body.tipo, req.user.sub);
+  }
+
+  @Roles('farmaceutico', 'administrativo', 'enfermeiro', 'medico')
+  @Get('stock/:id/historico')
+  historicoAjustes(@Param('id') id: string) {
+    return this.service.historicoAjustes(id);
   }
 
   @Post('pedido')
@@ -37,15 +47,56 @@ export class FarmaciaController {
     return this.service.listarPedidos(s);
   }
 
-  @Patch('pedido/:id/dispensar')
   @Roles('farmaceutico')
+  @Patch('pedido/:id/dispensar')
   dispensar(@Param('id') id: string, @Request() req: any) {
     return this.service.dispensar(id, req.user.sub);
   }
 
-  @Get('alertas')
   @Roles('farmaceutico', 'administrativo', 'enfermeiro', 'medico')
+  @Get('alertas')
   alertas() {
     return this.service.alertas();
+  }
+
+  // ── Transferências ──────────────────────────────────────────────────────────
+
+  @Post('stock/:id/transferir')
+  criarTransferencia(
+    @Param('id') id: string,
+    @Body() body: { servicoDestino: string; quantidade: number; motivo?: string },
+    @Request() req: any,
+  ) {
+    return this.service.criarTransferencia(id, body.servicoDestino, body.quantidade, body.motivo, req.user.sub);
+  }
+
+  @Roles('farmaceutico', 'administrativo')
+  @Get('transferencias')
+  listarTransferencias(@Query('servico') servico?: string) {
+    return this.service.listarTransferencias(servico);
+  }
+
+  @Roles('farmaceutico')
+  @Patch('transferencias/:id/confirmar')
+  confirmarTransferencia(@Param('id') id: string, @Request() req: any) {
+    return this.service.confirmarTransferencia(id, req.user.sub);
+  }
+
+  @Roles('farmaceutico', 'administrativo')
+  @Patch('transferencias/:id/cancelar')
+  cancelarTransferencia(@Param('id') id: string) {
+    return this.service.cancelarTransferencia(id);
+  }
+
+  // ── Relatório de gastos ────────────────────────────────────────────────────
+
+  @Roles('farmaceutico', 'administrativo', 'direcao')
+  @Get('relatorio-gastos')
+  relatorioGastos(
+    @Query('servico') servico?: string,
+    @Query('dataInicio') dataInicio?: string,
+    @Query('dataFim') dataFim?: string,
+  ) {
+    return this.service.relatorioGastos(servico, dataInicio, dataFim);
   }
 }

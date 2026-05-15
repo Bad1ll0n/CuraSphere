@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { MedicacaoService } from './medicacao.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -35,13 +35,28 @@ export class MedicacaoController {
   @Post(':id/administrar')
   registarAdministracao(
     @Param('id') id: string,
-    @Body() body: { observacoes?: string },
+    @Body() body: { observacoes?: string; verificacao5Certas?: boolean },
     @Request() req: any,
   ) {
     return this.medicacaoService.registarAdministracao({
       medicacaoId: id,
       administradoPorId: req.user.sub,
       observacoes: body.observacoes,
+      verificacao5Certas: body.verificacao5Certas,
+    });
+  }
+
+  @Roles('enfermeiro')
+  @Post(':id/nao-administrar')
+  naoAdministrar(
+    @Param('id') id: string,
+    @Body() body: { motivo: string },
+    @Request() req: any,
+  ) {
+    return this.medicacaoService.naoAdministrar({
+      medicacaoId: id,
+      registadoPorId: req.user.sub,
+      motivo: body.motivo,
     });
   }
 
@@ -56,21 +71,21 @@ export class MedicacaoController {
     return this.medicacaoService.mar(req.user.sub);
   }
 
+  @Roles('farmaceutico')
   @Get('pendentes-validacao')
-  pendentesValidacao(@Request() req: any) {
-    if (req.user.role !== 'farmaceutico') throw new ForbiddenException();
+  pendentesValidacao() {
     return this.medicacaoService.pendentesValidacao();
   }
 
+  @Roles('farmaceutico')
   @Patch(':id/validar')
   validar(@Param('id') id: string, @Request() req: any) {
-    if (req.user.role !== 'farmaceutico') throw new ForbiddenException();
     return this.medicacaoService.validarPrescricao(id, req.user.sub);
   }
 
+  @Roles('farmaceutico')
   @Patch(':id/rejeitar')
   rejeitar(@Param('id') id: string, @Body() body: { motivoRejeicao: string }, @Request() req: any) {
-    if (req.user.role !== 'farmaceutico') throw new ForbiddenException();
     return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, body.motivoRejeicao);
   }
 }

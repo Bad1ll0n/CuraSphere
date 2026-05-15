@@ -168,8 +168,8 @@ export class QuiosqueController {
 
   @Sse('eventos')
   @SkipThrottle()
-  eventos() {
-    return this.service.eventStream().pipe(
+  eventos(@Query('tipo') tipo?: string) {
+    return this.service.eventStream(tipo).pipe(
       map((evento) => ({
         type: evento.type ?? 'mensagem',
         data: evento.data,

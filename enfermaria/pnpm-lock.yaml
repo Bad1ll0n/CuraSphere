@@ -258,6 +258,9 @@ importers:
       '@prisma/client':
         specifier: ^6.19.3
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
+      '@types/compression':
+        specifier: ^1.8.1
+        version: 1.8.1
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -267,6 +270,9 @@ importers:
       class-validator:
         specifier: ^0.15.1
         version: 0.15.1
+      compression:
+        specifier: ^1.8.1
+        version: 1.8.1
       helmet:
         specifier: ^8.1.0
         version: 8.1.0
@@ -3686,6 +3692,9 @@ packages:
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
+
+  '@types/compression@1.8.1':
+    resolution: {integrity: sha512-kCFuWS0ebDbmxs0AXYn6e2r2nrGAb5KwQhknjSPSPgJcGd8+HVSILlUyFhGqML2gk39HcG7D1ydW9/qpYkN00Q==}
 
   '@types/connect-history-api-fallback@1.5.4':
     resolution: {integrity: sha512-n6Cr2xS1h4uAulPRdlw6Jl6s1oG8KrVilPN2yUITEs+K48EzMJJ3W1xy8K5eWuFvjp3R74AOIGSmp2UfBJ8HFw==}
@@ -15055,6 +15064,11 @@ snapshots:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
     optional: true
+
+  '@types/compression@1.8.1':
+    dependencies:
+      '@types/express': 4.17.25
+      '@types/node': 20.19.9
 
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:

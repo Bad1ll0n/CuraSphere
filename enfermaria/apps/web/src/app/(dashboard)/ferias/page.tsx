@@ -47,7 +47,16 @@ function calcularDiasUteis(inicio: string, fim: string): number {
 export default function FeriasPage() {
   const qc = useQueryClient();
   const [modal, setModal] = useState(false);
-  const [form, setForm] = useState({ dataInicio: '', dataFim: '', observacoes: '' });
+  const [form, setForm] = useState({ tipo: 'ferias', dataInicio: '', dataFim: '', observacoes: '' });
+
+  const TIPOS_AUSENCIA = [
+    { value: 'ferias', label: 'Férias' },
+    { value: 'baixa_medica', label: 'Baixa Médica' },
+    { value: 'formacao', label: 'Formação' },
+    { value: 'servico_externo', label: 'Serviço Externo' },
+    { value: 'licenca', label: 'Licença' },
+    { value: 'outro', label: 'Outro' },
+  ];
 
   const { data: saldo } = useQuery<SaldoFerias>({
     queryKey: ['saldo-ferias'],
@@ -57,7 +66,7 @@ export default function FeriasPage() {
 
   const { data: minhasFerias = [] } = useQuery<Ausencia[]>({
     queryKey: ['minhas-ferias'],
-    queryFn: () => api.get('/rh/ausencias/minhas').then(r => r.data.filter((a: Ausencia) => a.tipo === 'ferias')),
+    queryFn: () => api.get('/rh/ausencias/minhas').then(r => r.data),
     staleTime: 30_000,
   });
 
@@ -68,12 +77,12 @@ export default function FeriasPage() {
   });
 
   const mutPedir = useMutation({
-    mutationFn: (dto: typeof form) => api.post('/rh/ausencias', { ...dto, tipo: 'ferias' }),
+    mutationFn: (dto: typeof form) => api.post('/rh/ausencias', dto),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['minhas-ferias'] });
       qc.invalidateQueries({ queryKey: ['saldo-ferias'] });
       setModal(false);
-      setForm({ dataInicio: '', dataFim: '', observacoes: '' });
+      setForm({ tipo: 'ferias', dataInicio: '', dataFim: '', observacoes: '' });
     },
   });
 
@@ -113,7 +122,7 @@ export default function FeriasPage() {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Pedir Férias
+          Pedir Ausência
         </button>
       </div>
 
@@ -220,8 +229,16 @@ export default function FeriasPage() {
       {modal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" style={{ padding: '24px' }}>
           <div className="bg-white rounded-2xl shadow-xl w-full" style={{ maxWidth: '440px', padding: '28px' }}>
-            <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Pedir Férias</h2>
+            <h2 className="text-lg font-bold text-slate-900" style={{ marginBottom: '20px' }}>Pedir Ausência</h2>
             <div className="flex flex-col gap-4">
+              <div>
+                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tipo</label>
+                <select value={form.tipo} onChange={e => setForm(f => ({ ...f, tipo: e.target.value }))}
+                  className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ padding: '10px 14px', marginTop: '6px' }}>
+                  {TIPOS_AUSENCIA.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                </select>
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Data Início</label>

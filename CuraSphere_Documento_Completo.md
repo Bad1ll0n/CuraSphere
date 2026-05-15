@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-04-29 (sessão 4)
+> **Última actualização:** 2026-05-15 (sessão 6)
 > **Estado geral:** Em desenvolvimento activo — backend completo, web e mobile funcionais
 
 ---
@@ -213,8 +213,9 @@ GET    /medicacao/mar                  → MAR global (todas as medicações act
 ### 5.6 Sinais Vitais
 ```
 GET    /sinais-vitais/:doenteId        → histórico
-POST   /sinais-vitais                  → registar (temp, TA, FC, FR, SpO2, Glicemia, Dor, IMC)
+POST   /sinais-vitais                  → registar (TA, FC, FR, SpO2, Temp, Peso, AVPU, Notas)
 ```
+**NEWS2 automático:** após cada registo, o score NEWS2 (National Early Warning Score 2) é calculado automaticamente a partir de FR, SpO2, Temperatura, TA sistólica, Pulso e AVPU. Score ≥5 gera `AlertaClinico` + push notification; score ≥7 com prioridade crítica. Campo `avpu` (A/V/P/U) e `news2` adicionados ao modelo `SinalVital`.
 
 ### 5.7 Notas Clínicas (SOAP)
 ```
@@ -340,15 +341,52 @@ PATCH  /consultas/:id/cancelar         → cancelar
 
 ### 5.22 Farmácia
 ```
-GET    /farmacia/stock                 → inventário de stock
-POST   /farmacia/stock                 → criar item
-PATCH  /farmacia/stock/:id             → actualizar stock
-GET    /farmacia/pedidos               → pedidos de medicação
-POST   /farmacia/pedidos               → criar pedido
-PATCH  /farmacia/pedidos/:id/estado    → aprovar/recusar/dispensar
+GET    /farmacia/stock                        → inventário de stock (inclui catalogo.dci, precoUnitario)
+POST   /farmacia/stock                        → criar item (aceita catalogoId?, precoUnitario?)
+PATCH  /farmacia/stock/:id                    → ajustar quantidade (exige motivo + tipo + utilizadorId)
+GET    /farmacia/stock/:id/historico          → histórico de ajustes (AjusteStock ordenado por data)
+POST   /farmacia/stock/:id/transferir         → solicitar transferência entre serviços
+GET    /farmacia/transferencias               → lista transferências (filtro por serviço)
+PATCH  /farmacia/transferencias/:id/confirmar → confirmar transferência (debita origem, credita destino)
+PATCH  /farmacia/transferencias/:id/cancelar  → cancelar transferência pendente
+GET    /farmacia/relatorio-gastos             → custo total por item (δ negativos × precoUnitario)
+GET    /farmacia/pedidos                      → pedidos de medicação
+POST   /farmacia/pedidos                      → criar pedido
+PATCH  /farmacia/pedidos/:id/estado           → aprovar/recusar/dispensar
 ```
 
-### 5.23 Fisioterapia
+### 5.23 Catálogo de Medicamentos
+```
+GET    /catalogo                       → lista medicamentos activos (filtro: search por DCI/marca/classe)
+POST   /catalogo                       → criar entrada (farmaceutico, administrativo)
+PATCH  /catalogo/:id                   → editar entrada
+DELETE /catalogo/:id                   → desactivar (ativo=false)
+```
+
+### 5.24 Fornecedores e Encomendas
+```
+GET    /fornecedores                           → lista fornecedores activos
+POST   /fornecedores                           → criar fornecedor (farmaceutico, administrativo)
+PATCH  /fornecedores/:id                       → editar fornecedor
+DELETE /fornecedores/:id                       → desactivar fornecedor
+GET    /fornecedores/encomendas?estado=        → lista encomendas (inclui fornecedor, stockItem, recebioPor)
+POST   /fornecedores/encomendas                → criar encomenda (associar fornecedor + stockItem)
+PATCH  /fornecedores/encomendas/:id/receber    → receber encomenda (incrementa stock + cria AjusteStock)
+```
+
+### 5.25 Equipamentos
+```
+GET    /equipamentos                         → lista equipamentos (filtros: search, estado)
+POST   /equipamentos                         → criar equipamento (operacional, ti)
+PATCH  /equipamentos/:id                     → actualizar equipamento/estado
+GET    /equipamentos/alertas-manutencao      → equipamentos com proximaManutencao ≤ 30 dias
+GET    /equipamentos/manutencoes             → lista todas as manutenções
+GET    /equipamentos/:id/manutencoes         → manutenções de um equipamento específico
+POST   /equipamentos/:id/manutencoes         → criar pedido de manutenção
+PATCH  /equipamentos/manutencoes/:id         → actualizar estado de manutenção (operacional, ti)
+```
+
+### 5.26 Fisioterapia
 ```
 GET    /fisioterapia/planos/:doenteId  → planos de reabilitação
 POST   /fisioterapia/planos            → criar plano
@@ -356,14 +394,14 @@ POST   /fisioterapia/sessoes           → registar sessão
 GET    /fisioterapia/sessoes/:planoId  → sessões de um plano
 ```
 
-### 5.24 Pedidos Internos
+### 5.27 Pedidos Internos
 ```
 GET    /pedidos-internos               → lista (por departamento / criador)
 POST   /pedidos-internos               → criar pedido (material, manutenção, limpeza, etc.)
 PATCH  /pedidos-internos/:id/estado    → actualizar estado
 ```
 
-### 5.25 Comunicação
+### 5.28 Comunicação
 ```
 GET    /comunicacao/mensagens          → inbox do utilizador
 POST   /comunicacao/mensagens          → enviar mensagem
@@ -372,7 +410,7 @@ GET    /comunicacao/anuncios           → anúncios activos
 POST   /comunicacao/anuncios           → criar anúncio (ti/it_admin ou direcao)
 ```
 
-### 5.26 Incidentes TI
+### 5.29 Incidentes TI
 ```
 GET    /incidentes-ti                  → lista (filtros: estado, prioridade, tipo)
 POST   /incidentes-ti                  → reportar incidente
@@ -380,7 +418,7 @@ PATCH  /incidentes-ti/:id              → editar / atribuir / resolver
 PATCH  /incidentes-ti/:id/estado       → actualizar estado
 ```
 
-### 5.27 Pedidos TI
+### 5.30 Pedidos TI
 ```
 GET    /pedidos-ti                     → lista pedidos
 POST   /pedidos-ti                     → criar pedido
@@ -388,7 +426,7 @@ PATCH  /pedidos-ti/:id/estado          → actualizar estado
 PATCH  /pedidos-ti/:id/atribuir        → atribuir técnico
 ```
 
-### 5.28 Configurações (Roles)
+### 5.31 Configurações (Roles)
 ```
 GET    /configuracoes/roles                  → lista roles activas (auth req)
 POST   /configuracoes/roles                  → criar role (ti/it_admin)
@@ -402,23 +440,23 @@ PATCH  /configuracoes/subroles/:id           → editar
 DELETE /configuracoes/subroles/:id           → desactivar
 ```
 
-### 5.29 Dashboard
+### 5.32 Dashboard
 ```
 GET    /dashboard                      → KPIs clínicos (camas, doentes, alertas)
 GET    /dashboard/ti                   → KPIs TI (incidentes, pedidos, uptime)
 ```
 
-### 5.30 Auditoria
+### 5.33 Auditoria
 ```
 GET    /audit                          → log de auditoria (ti, qualidade)
 ```
 
-### 5.31 Notificações Push
+### 5.34 Notificações Push
 ```
 POST   /notificacoes/registar-token    → registar token Expo push
 ```
 
-### 5.32 Contactos de Emergência
+### 5.35 Contactos de Emergência
 ```
 GET    /contactos/:doenteId
 POST   /contactos
@@ -469,7 +507,9 @@ DELETE /contactos/:id
 | Bloco Operatório | `/bloco` | medico, enfermeiro | bloco_operatorio | ✅ Checklist WHO |
 | Consultas Externas | `/consultas` | medico, admin | consultas_externas | ✅ Marcações com picker de slots + agenda semanal por médico + check-in + código de marcação |
 | Sala de Espera | `/sala-espera` | enfermeiro, auxiliar, admin | urgencia | ✅ Fila triagem |
-| Farmácia | `/farmacia` | farmaceutico | todos | ✅ Stock + pedidos |
+| Farmácia | `/farmacia` | farmaceutico | todos | ✅ Stock + pedidos + ajuste c/ motivo + histórico + transferências + relatório de gastos |
+| Catálogo de Medicamentos | `/catalogo` | farmaceutico, admin, medico, enfermeiro | todos | ✅ Lista DCI/classe/forma; modal criar/editar; pesquisa |
+| Fornecedores | `/fornecedores` | farmaceutico, admin | todos | ✅ Tab Fornecedores + Tab Encomendas; receber encomenda com increment automático de stock |
 | Fisioterapia | `/fisioterapia` | tecnico_saude | todos | ✅ Planos + sessões |
 
 ### 6.5 Gestão e Suporte
@@ -477,6 +517,7 @@ DELETE /contactos/:id
 |--------|------|-------|--------|
 | Comunicação | `/comunicacao` | todos | ✅ Mensagens + anúncios |
 | Pedidos Internos | `/pedidos-internos` | clínico + admin + operacional | ✅ |
+| Equipamentos | `/equipamentos` | operacional, ti, direcao | ✅ Lista + manutenções + **Tab Alertas** (badge por urgência); React Query |
 | Pedidos TI | `/pedidos-ti` | ti | ✅ |
 | Incidentes TI | `/incidentes-ti` | ti | ✅ |
 | Utilizadores | `/utilizadores` | ti (subRole: it_admin) | ✅ CRUD + subRole dinâmico |
@@ -570,11 +611,14 @@ DELETE /contactos/:id
 | Bloco Operatório*** | ✅ | ✅ | — | — | — | — | — | — | — | — |
 | Consultas**** | ✅ | — | — | — | — | ✅ | — | — | — | — |
 | Farmácia | — | — | — | — | ✅ | — | — | — | — | — |
+| Catálogo | ✅ | ✅ | — | — | ✅ | ✅ | — | — | — | — |
+| Fornecedores | — | — | — | — | ✅ | ✅ | — | — | — | — |
 | Fisioterapia | — | — | — | ✅ | — | — | — | — | — | — |
 | MAR | — | ✅ | ✅ | — | — | — | — | — | — | — |
 | IACS | ✅ | ✅ | — | — | — | — | — | — | ✅ | — |
 | Worklist | ✅ | — | — | ✅ | — | — | — | — | — | — |
 | Sala de Espera** | — | ✅ | ✅ | — | — | ✅ | — | — | — | — |
+| Equipamentos | — | — | — | — | — | — | ✅ | ✅ | — | ✅ |
 | Pedidos Internos | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | — | — |
 | Comunicação | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Dashboard TI | — | — | — | — | — | — | — | ✅ | — | ✅ |
@@ -609,23 +653,26 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] CRUD completo de utilizadores (com role/subRole dinâmico)
 - [x] Gestão de doentes: admissão, alta, transferência, isolamento
 - [x] Gestão de camas: ocupar, libertar, estados
-- [x] Prescrição e administração de medicação (com MAR)
-- [x] Registo de sinais vitais (8 parâmetros)
+- [x] Prescrição e administração de medicação (com MAR + **5 Corretas** + **Não Administrada com motivo** via `POST /medicacao/:id/nao-administrar`; campos `naoAdministrada Boolean` + `motivoNaoAdmin String?` em `RegistoMedicacao`)
+- [x] Registo de sinais vitais (TA, FC, FR, SpO2, Temp, Peso, AVPU) + **NEWS2 automático** (score calculado após registo; alertas ≥5/≥7; campos `avpu` + `news2` em `SinalVital`)
 - [x] Notas clínicas SOAP
 - [x] Escalas clínicas (14 tipos: Braden, Glasgow, Morse, NIHSS, MRC, etc.)
 - [x] Dispositivos invasivos (10 tipos: CVC, SNG, SV, etc.)
 - [x] Exames: solicitar, worklist, resultados, upload de ficheiros
 - [x] Interconsultas (pedido + resposta)
 - [x] Alergias e alertas clínicos
-- [x] Tarefas (CRUD + conclusão)
+- [x] Tarefas (CRUD + conclusão + **editar descrição/prioridade/prazo/grupo** via `PATCH /tarefas/:id`)
 - [x] Turnos e horários com chefeTurnoId
 - [x] Trocas de turno (pedido → aceitação → aprovação chefe)
 - [x] Atribuições doente–profissional
-- [x] Urgência (episódios, triagem, alta)
+- [x] Urgência (episódios, triagem, alta; **atribuir médico responsável** via `PATCH /urgencia/:id/atribuir-medico`)
 - [x] Sala de espera (check-in, chamada, atendimento)
 - [x] Bloco operatório (agendamento, checklist WHO)
 - [x] Consultas externas (agendamento, realização, cancelamento)
-- [x] Farmácia: stock e pedidos de medicação
+- [x] Farmácia: stock e pedidos de medicação; **histórico de ajustes** com motivo/tipo/utilizador; **transferências entre serviços** (pendente → confirmada → decrementar origem / upsert destino); **relatório de gastos** por serviço/período (δ negativos × precoUnitario); `AjusteStock` criado atomicamente em $transaction
+- [x] **Catálogo de Medicamentos** — modelo `CatalogoMedicamento` com DCI, formaFarmaceutica, classeTerap, concentração, código ATC; CRUD via `/catalogo` (farmaceutico, administrativo)
+- [x] **Fornecedores e Encomendas** — modelos `Fornecedor` + `EncomendaFornecedor`; receber encomenda incrementa `StockItem.quantidade` e cria `AjusteStock` tipo='encomenda' em $transaction
+- [x] Equipamentos: gestão de equipamentos e manutenções; **alertas de manutenção preventiva** (`GET /equipamentos/alertas-manutencao`) — equipamentos com `proximaManutencao` ≤ 30 dias, excluindo estado 'abatido'
 - [x] Fisioterapia: planos de reabilitação e sessões
 - [x] Especialidades clínicas: `SessaoEspecialidade` — Nutrição Clínica, Psicologia Clínica, Terapia da Fala, TAE; `GET/POST /especialidades`, `PATCH /especialidades/:id/realizar|cancelar`
 - [x] RH expandido: `AvaliacaoDesempenho` + `DadosContratuais`; endpoints para avaliações, pessoal, saldo de férias, contratos; `POST /rh/ausencias` notifica quando tipo=férias; `GET /rh/ausencias/para-aprovar` para chefes
@@ -633,7 +680,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Conformidade/RGPD: `GET /audit/conformidade` agrega acessos a dados de doentes, ações de alto risco e gráfico de acessos por dia
 - [x] Pedidos internos (material, manutenção, etc.)
 - [x] Comunicação interna (mensagens + anúncios)
-- [x] Incidentes TI e Pedidos TI
+- [x] Incidentes TI e Pedidos TI (**atribuir responsável** TI via dropdown)
 - [x] Configurações (CRUD de roles e sub-roles via API)
 - [x] Dashboard KPIs (clínico + TI + Qualidade)
 - [x] Geração automática de escala mensal (`POST /horarios/gerar-automatico`) — round-robin por médicos/enfermeiros/auxiliares
@@ -658,25 +705,38 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Worklist de exames
 - [x] IACS — doentes em isolamento
 - [x] Urgência, Bloco, Consultas, Sala de Espera
-- [x] Farmácia (stock + pedidos)
+- [x] Farmácia — ajuste c/ motivo/tipo obrigatório; modal histórico de ajustes; modal transferir entre serviços; Tab Transferências (confirmar/cancelar); Tab Relatório de Gastos com filtros serviço + período
+- [x] Catálogo de Medicamentos (`/catalogo`) — tabela DCI/marca/forma/classe/ATC; pesquisa; modal criar/editar (farmaceutico, administrativo)
+- [x] Fornecedores (`/fornecedores`) — Tab Fornecedores (cards); Tab Encomendas (filtro estado, modal Nova Encomenda, modal Receber)
+- [x] Equipamentos (`/equipamentos`) — **botão Editar** (`PATCH /equipamentos/:id`); **dropdown técnico** na modal de manutenção (`PATCH /equipamentos/manutencoes/:id` com `tecnicoId`); Tab Alertas com badges por urgência
 - [x] Fisioterapia (planos + sessões)
 - [x] Especialidades clínicas (`/especialidades`) — página genérica adaptada ao sub-role: Nutrição, Psicologia, Terapia da Fala, TAE; agendar, registar evolução, cancelar sessões
 - [x] Dashboard Operacional (`/operacional`) — resume tarefas, pedidos internos e equipamentos em manutenção adaptado ao sub-role operacional
-- [x] Conformidade/RGPD (`/conformidade`) — registo de acessos a dados de doentes, ações de alto risco, checklist regulatório (RGPD/DGS/ACSS/SNS), exportação CSV
-- [x] RH expandido — `/rh/pessoal` (vínculos, saldo de férias por colaborador), `/rh/avaliacoes` (criar, editar, finalizar, assinar avaliações por período)
-- [x] Férias universal (`/ferias`) — saldo de férias pessoal, pedir férias, ver pedidos; secção "Para Aprovar" para chefes directos; cancelar pedido pendente
-- [x] Horários com calendário + botão "Gerar Automaticamente" (escala mensal round-robin)
+- [x] Conformidade/RGPD (`/conformidade`) — registo de acessos, checklist **persistido em localStorage**; exportação CSV
+- [x] RH expandido — `/rh/pessoal` (**pesquisa por nome + filtro serviço**), `/rh/avaliacoes` (**filtro por colaborador**)
+- [x] Férias/Ausências (`/ferias`) — saldo, pedir férias, **outros tipos de ausência** (baixa médica, formação, licença…); secção "Para Aprovar" para chefes
+- [x] Horários com calendário + geração automática + **aviso de conflito** ao atribuir profissionais já com turno no mesmo dia
 - [x] Dashboard Qualidade — IACS por agente, tendência 7 dias, alertas clínicos, avaliações de risco, ocupação, taxa de completitude de alta
-- [x] Faturação — lista episódios, criar episódio, adicionar itens, registar pagamentos, emitir/anular
+- [x] Faturação — lista episódios, criar episódio, adicionar itens, registar pagamentos, emitir/anular; **resumo financeiro** (totalFaturado/pago/pendente/anulado) via `GET /faturacao/resumo`
 - [x] Receção / Gestão de Filas — painel front-desk com SSE em tempo real; chamar próximo por prioridade; re-chamar; concluir; stats diárias por tipo
 - [x] Quiosque self-service — página pública; 7 tipos de serviço; checkbox prioritário/sénior; nome opcional; senha emitida instantaneamente
 - [x] Painel de Chamadas — página pública com `EventSource`; flash no número chamado; fila lateral; histórico; reconexão automática
 - [x] Ficha do doente: secção "Dados Administrativos" para role `administrativo` (NIF, SNS, morada, seguro) — invisível a clínicos
-- [x] Tarefas
+- [x] Tarefas — **botão Editar** (descrição/prioridade/prazo/grupo) + **filtros** por estado/prioridade/grupo
+- [x] Doentes lista — **filtros por estado e serviço**
+- [x] Doentes ficha — **badge de isolamento + toggle activar/desactivar** (`PATCH /doentes/:id/isolamento`)
+- [x] Farmácia — **campo catalogoId** no modal "Novo Item" (auto-preenchimento nome/unidade do catálogo)
+- [x] Urgência — **botão "Atribuir Médico"** por episódio com dropdown de médicos
+- [x] Incidentes TI — **dropdown "Atribuir Responsável"** no detalhe expandido (só visível ao role `ti`)
+- [x] MAR — **botão "Não administrada"** com selecção de motivo; registo guardado em `RegistoMedicacao.naoAdministrada`
+- [x] Conformidade — checklist regulatório **persistido em localStorage**
+- [x] Camas — **filtro por quarto** na barra de legenda
+- [x] Auditoria — **filtro por tipo de entidade** + **exportar CSV** (com BOM UTF-8)
+- [x] Comunicação — **tab "Enviadas"** (`GET /comunicacao/mensagens/enviadas`)
+- [x] Passagem de turno — **banner de alertas clínicos** (doentes em estado crítico/grave)
 - [x] Trocas de turno
 - [x] Atribuições
-- [x] Comunicação (mensagens + anúncios)
-- [x] Pedidos internos, Pedidos TI, Incidentes TI
+- [x] Seed: corrigidos roles inválidos (00001→enfermeiro/supervisor_enfermagem; 00003→ti/it_admin); adicionado OP001 (operacional/facilities)
 - [x] Utilizadores (CRUD + roles dinâmicos + sub-roles)
 - [x] Configurações de roles e sub-roles
 - [x] Auditoria log
@@ -698,7 +758,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Lista de doentes
 - [x] Camas, Tarefas, Horários
 - [x] Trocas de turno com aprovação de chefe
-- [x] Atribuições, Passagem de turno
+- [x] Atribuições, Passagem de turno (**resumo estruturado**: painel 4 KPIs, badges inline por doente, tarefas com chips de estado, botão "Fechar Turno" com modal + copiar resumo para clipboard)
 - [x] Pedidos TI, Incidentes TI
 - [x] Utilizadores com sub-roles dinâmicos (carregados da API)
 - [x] Auditoria
@@ -736,16 +796,19 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Feature | O que existe | O que falta |
 |---------|-------------|------------|
 | Push notifications | Trigger implementado em Trocas + Tarefas | Alertas clínicos críticos ainda sem push; leitura confirmada |
-| Comunicação | Mensagens 1-a-1 + anúncios (web + mobile) | Grupos/broadcast por serviço; attachments; leitura confirmada |
+| Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) | Grupos/broadcast por serviço; attachments; leitura confirmada |
 | Dashboard Direção | Acede a Dashboard TI + Qualidade | Falta dashboard executivo (KPIs financeiros, ocupação hospitalar, etc.) |
-| Horários | Calendário + geração automática mensal | Gestão de folgas, férias, trocas de dia de folga |
+| Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) | Gestão de folgas, trocas de dia de folga |
 | Bloco Operatório | Lista + checklist | Falta vista de sala (quais salas livres/ocupadas em tempo real) |
-| Urgência | Episódios + triagem Manchester + mobile | Falta protocolo de triagem Manchester completo no mobile |
+| Urgência | Episódios + triagem Manchester + mobile + **atribuir médico** (sessão 6) | Falta protocolo de triagem Manchester completo no mobile |
 | IACS | Lista isolados + activar/desactivar (web + mobile) | Falta registo de culturas microbiológicas, histórico de surtos |
 | Exames | Solicitar + resultado texto | Falta visualizador DICOM integrado para imagiologia |
 | Worklist mobile | Ausente | Falta screen de worklist para tecnico_saude no mobile |
 | Pedidos Internos mobile | Ausente | Falta screen de pedidos internos no mobile |
 | Bloco Operatório mobile | Ausente | Falta screen de bloco para medico/enfermeiro no mobile |
+| MAR | Administrar + **Não Administrada com motivo** (sessão 6) | — |
+| Incidentes TI | Lista + workflow estados + **atribuir responsável** (sessão 6) | Notas/comentários por incidente |
+| Conformidade checklist | RGPD/DGS/ACSS/SNS + **persistido em localStorage** (sessão 6) | Sincronização com backend |
 
 ### 10.3 Divergências Web vs. Mobile
 
@@ -825,8 +888,8 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Modelo | Descrição |
 |--------|-----------|
 | `Medicacao` | Prescrição de medicamento (dose, via, frequência, horários) |
-| `RegistoMedicacao` | Registo de administração de medicamento |
-| `SinalVital` | Registo de sinais vitais (8 parâmetros) |
+| `RegistoMedicacao` | Registo de administração de medicamento (inclui `verificacao5Certas Boolean`) |
+| `SinalVital` | Registo de sinais vitais (TA, FC, FR, SpO2, Temp, Peso, AVPU) + NEWS2 calculado automaticamente |
 | `NotaClinica` | Nota SOAP (Subjectivo, Objectivo, Avaliação, Plano) |
 | `EscalaClinica` | Avaliação com escala (14 tipos) |
 | `DispositivoInvasivo` | Dispositivo invasivo activo/removido (10 tipos) |
@@ -857,8 +920,13 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | `CirurgiaProgramada` | Cirurgia agendada no bloco |
 | `ChecklistCirurgia` | Checklist WHO para cirurgia |
 | `Consulta` | Consulta externa agendada |
-| `StockItem` | Item de stock da farmácia |
+| `StockItem` | Item de stock da farmácia (+ `precoUnitario Float?`, `catalogoId String?`) |
 | `PedidoFarmacia` | Pedido de medicação à farmácia |
+| `CatalogoMedicamento` | Catálogo padronizado: DCI, formaFarmaceutica, classeTerap, unidade, concentracao?, codigoATC?, ativo |
+| `AjusteStock` | Auditoria de movimentos de stock: stockItemId, delta Float, tipo, motivo, utilizadorId, criadoEm |
+| `TransferenciaStock` | Transferência entre serviços: stockItemId, servicoOrigem, servicoDestino, quantidade, estado (pendente/confirmada/cancelada), solicitadoPorId, confirmadoPorId? |
+| `Fornecedor` | Fornecedor externo: nome, nif?, email?, telefone?, morada?, ativo |
+| `EncomendaFornecedor` | Encomenda a fornecedor: fornecedorId, stockItemId, quantidadeEncomendada, precoUnitario?, estado (pendente/recebida/parcial/cancelada), dataEntregaPrevista?, dataEntregaReal?, recebioPorId? |
 | `PlanoReabilitacao` | Plano de fisioterapia/reabilitação |
 | `SessaoFisioterapia` | Sessão individual de fisioterapia |
 
