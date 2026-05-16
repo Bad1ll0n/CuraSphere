@@ -9,6 +9,8 @@ import { Utilizador } from '../lib/auth';
 
 interface Props { utilizador: Utilizador; onVoltar: () => void }
 
+interface Ausencia { id: string; utilizadorId?: string; utilizador: { id: string; nome: string }; dataInicio: string; dataFim: string; estado: string }
+
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
 const tipoCor: Record<string, string> = { manha: '#f59e0b', tarde: '#f97316', noite: '#6366f1' };
 const roleLabel: Record<string, string> = {
@@ -26,6 +28,7 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
   const [ano, setAno] = useState(hoje.getFullYear());
   const [escala, setEscala] = useState<any>(null);
   const [meuHorario, setMeuHorario] = useState<any[]>([]);
+  const [ausencias, setAusencias] = useState<Ausencia[]>([]);
   const [profissionais, setProfissionais] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -54,14 +57,24 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
   // Calendário
   const [diaSelec, setDiaSelec] = useState<number | null>(null);
 
+  const isAusenteNoDia = (profId: string, diaStr: string) => {
+    const dia = new Date(diaStr + 'T12:00:00Z');
+    return ausencias.some(a =>
+      a.utilizador.id === profId &&
+      new Date(a.dataInicio) <= dia && new Date(a.dataFim) >= dia
+    );
+  };
+
   const carregar = async () => {
     try {
-      const [escalR, meuR] = await Promise.all([
+      const [escalR, meuR, ausR] = await Promise.all([
         api.get(`/horarios/mes?mes=${mes}&ano=${ano}`).catch(() => ({ data: null })),
         api.get(`/horarios/meu?mes=${mes}&ano=${ano}`),
+        api.get(`/horarios/ausencias?mes=${mes}&ano=${ano}`).catch(() => ({ data: [] })),
       ]);
       setEscala(escalR.data);
       setMeuHorario(meuR.data);
+      setAusencias(ausR.data ?? []);
     } catch {} finally {
       setLoading(false);
       setRefreshing(false);
@@ -252,6 +265,9 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
                           <View key={t} style={[s.dot, { backgroundColor: tipoCor[t] }]} />
                         ))}
                       </View>
+                      {utilizador && isAusenteNoDia(utilizador.id, str) && (
+                        <Text style={s.feriasBadge}>Férias</Text>
+                      )}
                     </TouchableOpacity>
                   );
                 })}
@@ -323,19 +339,23 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
 
             <Text style={s.formLabel}>Profissionais</Text>
             <ScrollView style={{ maxHeight: 220 }}>
-              {profissionais.map((p) => (
-                <TouchableOpacity
-                  key={p.id}
-                  style={[s.profRow, novoProfs.includes(p.id) && s.profRowAtivo]}
-                  onPress={() => toggleProf(p.id, novoProfs, setNovoProfs)}
-                >
-                  <View style={s.profInfo}>
-                    <Text style={s.profNome}>{p.nome}</Text>
-                    <Text style={s.profRole}>{roleLabel[p.role] ?? p.role}</Text>
-                  </View>
-                  {novoProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
-                </TouchableOpacity>
-              ))}
+              {profissionais.map((p) => {
+                const ausente = modalDia ? isAusenteNoDia(p.id, modalDia) : false;
+                return (
+                  <TouchableOpacity
+                    key={p.id}
+                    style={[s.profRow, novoProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
+                    onPress={() => !ausente && toggleProf(p.id, novoProfs, setNovoProfs)}
+                    activeOpacity={ausente ? 1 : 0.7}
+                  >
+                    <View style={s.profInfo}>
+                      <Text style={[s.profNome, ausente && { color: '#94a3b8' }]}>{p.nome}</Text>
+                      <Text style={s.profRole}>{roleLabel[p.role] ?? p.role}{ausente ? ' · em férias' : ''}</Text>
+                    </View>
+                    {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : novoProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
+                  </TouchableOpacity>
+                );
+              })}
             </ScrollView>
 
             {erroModal ? <Text style={s.erroTexto}>{erroModal}</Text> : null}
@@ -376,19 +396,24 @@ export default function HorariosScreen({ utilizador, onVoltar }: Props) {
 
             <Text style={s.formLabel}>Profissionais</Text>
             <ScrollView style={{ maxHeight: 200 }}>
-              {profissionais.map((p) => (
-                <TouchableOpacity
-                  key={p.id}
-                  style={[s.profRow, editProfs.includes(p.id) && s.profRowAtivo]}
-                  onPress={() => toggleProf(p.id, editProfs, setEditProfs)}
-                >
-                  <View style={s.profInfo}>
-                    <Text style={s.profNome}>{p.nome}</Text>
-                    <Text style={s.profRole}>{roleLabel[p.role] ?? p.role}</Text>
-                  </View>
-                  {editProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
-                </TouchableOpacity>
-              ))}
+              {profissionais.map((p) => {
+                const diaStr = turnoEditando ? new Date(turnoEditando.data).toISOString().split('T')[0] : null;
+                const ausente = diaStr ? isAusenteNoDia(p.id, diaStr) : false;
+                return (
+                  <TouchableOpacity
+                    key={p.id}
+                    style={[s.profRow, editProfs.includes(p.id) && s.profRowAtivo, ausente && s.profRowAusente]}
+                    onPress={() => !ausente && toggleProf(p.id, editProfs, setEditProfs)}
+                    activeOpacity={ausente ? 1 : 0.7}
+                  >
+                    <View style={s.profInfo}>
+                      <Text style={[s.profNome, ausente && { color: '#94a3b8' }]}>{p.nome}</Text>
+                      <Text style={s.profRole}>{roleLabel[p.role] ?? p.role}{ausente ? ' · em férias' : ''}</Text>
+                    </View>
+                    {ausente ? <Text style={s.ausenteLabel}>Férias</Text> : editProfs.includes(p.id) && <Text style={s.check}>✓</Text>}
+                  </TouchableOpacity>
+                );
+              })}
             </ScrollView>
 
             {erroEdit ? <Text style={s.erroTexto}>{erroEdit}</Text> : null}
@@ -485,4 +510,7 @@ const s = StyleSheet.create({
   submeterBtn: { flex: 2, paddingVertical: 12, borderRadius: 10, backgroundColor: '#2563eb', alignItems: 'center' },
   submeterBtnDes: { backgroundColor: '#93c5fd' },
   submeterBtnTexto: { fontWeight: '700', color: '#fff', fontSize: 14 },
+  feriasBadge: { fontSize: 8, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 3, paddingVertical: 1, borderRadius: 4, marginTop: 2 },
+  profRowAusente: { opacity: 0.5 },
+  ausenteLabel: { fontSize: 10, fontWeight: '700', color: '#d97706', backgroundColor: '#fef3c7', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 },
 });

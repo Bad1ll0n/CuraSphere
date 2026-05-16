@@ -571,7 +571,7 @@ DELETE /contactos/:id
 | `CamasScreen` | Clínico + Admin | Grid de camas, estado |
 | `TarefasScreen` | Clínico + Operacional + Admin | Lista de tarefas, filtros |
 | `TurnoScreen` | Clínico | Turno actual, membros |
-| `HorariosScreen` | Clínico + Admin | Horário semanal pessoal |
+| `HorariosScreen` | Clínico + Admin | Horário mensal + badge férias + criação/edição de turnos; profissionais em férias bloqueados |
 | `TrocasScreen` | Clínico | Pedidos de troca + aprovação chefe |
 | `AtribuicoesScreen` | Medico + Enfermeiro | Doentes atribuídos |
 | `PassagemTurnoScreen` | Medico + Enfermeiro | Registo de passagem de turno |
@@ -581,6 +581,13 @@ DELETE /contactos/:id
 | `AuditoriaScreen` | TI + Qualidade | Log de auditoria |
 | `MaisScreen` | Todos | Menu extra — items visíveis por role |
 | `PerfilScreen` | Todos | Perfil do utilizador, editar |
+| `FeriasScreen` | Todos | Saldo de férias, pedidos, aprovação chefe |
+| `PedidosInternosScreen` | Clínico + Admin + Operacional | Pedidos internos por prioridade/estado; aceitar/concluir para operacional |
+| `InterconsultasScreen` | Medico | Interconsultas recebidas/enviadas + resposta clínica |
+| `WorklistScreen` | Tecnico Saúde + Medico | Lista de trabalho por estado; iniciar/concluir |
+| `EspecialidadesScreen` | Tecnico Saúde | Sessões de especialidade; registar evolução |
+| `BlocoScreen` | Medico + Enfermeiro | Cirurgias agendadas por estado; detalhes de equipa |
+| `CatalogoScreen` | Farmacêutico + Admin + Medico + Enfermeiro | Catálogo de medicamentos; CRUD para farmacêutico/admin |
 
 ### 7.3 Menu "Mais" — Items por Role
 
@@ -588,13 +595,27 @@ DELETE /contactos/:id
 |------|----------------|
 | Utilizadores | ti (it_admin) |
 | Auditoria | ti, qualidade |
+| Comunicação | todos |
 | Meu Turno | clínico |
 | Passagem de Turno | medico, enfermeiro |
 | Horários | clínico + admin |
 | Atribuições | medico, enfermeiro |
 | Camas | medico, enfermeiro, admin |
 | Trocas de Turno | clínico |
-| Perfil | todos |
+| IACS | medico, enfermeiro, qualidade |
+| MAR | enfermeiro |
+| Urgência | medico, enfermeiro, admin |
+| Sala de Espera | enfermeiro, admin |
+| Consultas | medico, admin |
+| Farmácia | farmaceutico, medico |
+| Fisioterapia | tecnico_saude, medico |
+| **As Minhas Férias** | **todos** |
+| **Pedidos Internos** | **clínico + admin + operacional** |
+| **Interconsultas** | **medico** |
+| **Worklist** | **tecnico_saude + medico** |
+| **Especialidades** | **tecnico_saude** |
+| **Bloco Operatório** | **medico + enfermeiro** |
+| **Catálogo** | **farmaceutico + admin + medico + enfermeiro** |
 | Terminar Sessão | todos |
 
 ### 7.4 Permissões Clínicas no DoenteDetalheScreen

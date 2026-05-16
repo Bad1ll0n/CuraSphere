@@ -22,13 +22,22 @@ import SalaEsperaScreen from './SalaEsperaScreen';
 import IACSScreen from './IACSScreen';
 import MARScreen from './MARScreen';
 import ComunicacaoScreen from './ComunicacaoScreen';
+import FeriasScreen from './FeriasScreen';
+import PedidosInternosScreen from './PedidosInternosScreen';
+import InterconsultasScreen from './InterconsultasScreen';
+import WorklistScreen from './WorklistScreen';
+import EspecialidadesScreen from './EspecialidadesScreen';
+import BlocoScreen from './BlocoScreen';
+import CatalogoScreen from './CatalogoScreen';
 
 type SubTela =
   | null
   | 'horarios' | 'atribuicoes' | 'camas' | 'trocas' | 'utilizadores'
   | 'turno' | 'passagem' | 'auditoria' | 'dashboardti' | 'pedidosti'
   | 'farmacia' | 'fisioterapia' | 'consultas' | 'urgencia'
-  | 'salaespera' | 'iacs' | 'mar' | 'comunicacao';
+  | 'salaespera' | 'iacs' | 'mar' | 'comunicacao'
+  | 'ferias' | 'pedidosInternos' | 'interconsultas' | 'worklist'
+  | 'especialidades' | 'bloco' | 'catalogo';
 
 const ROLES_MEDICO     = ['medico'];
 const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
@@ -74,6 +83,13 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'iacs')         return <IACSScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'mar')          return <MARScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'comunicacao')  return <ComunicacaoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'ferias')          return <FeriasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'pedidosInternos') return <PedidosInternosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'interconsultas')  return <InterconsultasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'worklist')        return <WorklistScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'especialidades')  return <EspecialidadesScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'bloco')           return <BlocoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'catalogo')        return <CatalogoScreen utilizador={utilizador} onVoltar={voltar} />;
 
   const confirmarLogout = async () => {
     if (Platform.OS === 'web') {
@@ -98,6 +114,7 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   const eFarmaceutico = role === 'farmaceutico';
   const eTecnicoSaude = role === 'tecnico_saude';
   const eAdmin = ROLES_ADMIN.includes(role);
+  const eOperacional = role === 'operacional';
 
   const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean }[] = [
     // — TI
@@ -120,6 +137,14 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     { key: 'consultas',    icon: 'calendar-number-outline',  cor: '#10b981', titulo: 'Consultas',          sub: 'Consultas externas agendadas',     visivel: eMedico || eAdmin },
     { key: 'farmacia',     icon: 'flask-outline',            cor: '#ec4899', titulo: 'Farmácia',           sub: 'Stock e pedidos de medicação',     visivel: eFarmaceutico || eMedico },
     { key: 'fisioterapia', icon: 'fitness-outline',          cor: '#14b8a6', titulo: 'Fisioterapia',       sub: 'Planos de reabilitação',           visivel: eTecnicoSaude || eMedico },
+    // — Novos ecrãs
+    { key: 'ferias',          icon: 'umbrella-outline',              cor: '#0ea5e9', titulo: 'As Minhas Férias',    sub: 'Pedidos e saldo de férias',              visivel: true },
+    { key: 'pedidosInternos', icon: 'list-outline',                  cor: '#f97316', titulo: 'Pedidos Internos',    sub: 'Transporte, limpeza, equipamentos',       visivel: eClinical || eAdmin || eOperacional },
+    { key: 'interconsultas',  icon: 'chatbubble-ellipses-outline',   cor: '#8b5cf6', titulo: 'Interconsultas',      sub: 'Pedidos entre especialistas',            visivel: eMedico },
+    { key: 'worklist',        icon: 'clipboard-outline',             cor: '#06b6d4', titulo: 'Worklist',            sub: 'Lista de trabalho',                      visivel: eTecnicoSaude || eMedico },
+    { key: 'especialidades',  icon: 'ribbon-outline',                cor: '#14b8a6', titulo: 'Especialidades',      sub: 'Sessões de especialidade',               visivel: eTecnicoSaude },
+    { key: 'bloco',           icon: 'cut-outline',                   cor: '#7c3aed', titulo: 'Bloco Operatório',    sub: 'Cirurgias agendadas',                    visivel: eMedico || eEnfermagem },
+    { key: 'catalogo',        icon: 'book-outline',                  cor: '#ec4899', titulo: 'Catálogo',            sub: 'Medicamentos e fármacos',                visivel: eFarmaceutico || eAdmin || eMedico || eEnfermagem },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);
