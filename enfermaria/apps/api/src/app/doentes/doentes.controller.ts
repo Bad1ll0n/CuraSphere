@@ -1,5 +1,7 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res } from '@nestjs/common';
+import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
+import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -8,7 +10,10 @@ import { EstadoDoente } from '../common/enums';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
 export class DoenteController {
-  constructor(private readonly doenteService: DoenteService) {}
+  constructor(
+    private readonly doenteService: DoenteService,
+    private readonly pdfService: PdfService,
+  ) {}
 
   @Get()
   listar(
@@ -135,6 +140,18 @@ export class DoenteController {
   @Get(':id/sumario-alta')
   getSumarioAlta(@Param('id') doenteId: string) {
     return this.doenteService.getSumarioAlta(doenteId);
+  }
+
+  @Get(':id/timeline')
+  getTimeline(@Param('id') doenteId: string) {
+    return this.doenteService.timeline(doenteId);
+  }
+
+  @Get(':id/alta/pdf')
+  async pdfAlta(@Param('id') doenteId: string, @Res() res: Response) {
+    const buffer = await this.pdfService.gerarSumarioAlta(doenteId);
+    res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="alta-${doenteId}.pdf"` });
+    res.send(buffer);
   }
 
   @Post(':id/tarefa')

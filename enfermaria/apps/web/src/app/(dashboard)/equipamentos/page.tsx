@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 const TIPOS_EQUIP: Record<string, { label: string; icon: string }> = {
   cama_eletrica:  { label: 'Cama Eléctrica',   icon: '🛏️' },
@@ -76,6 +77,7 @@ function alertaBadge(eq: Equipamento) {
 export default function EquipamentosPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const role = utilizador?.role ?? '';
   const podeGerirEquip = ['operacional', 'ti'].includes(role);
   const podeVerManutencoes = ['operacional', 'ti', 'direcao', 'administrativo'].includes(role);
@@ -136,7 +138,8 @@ export default function EquipamentosPage() {
       localizacao: body.localizacao || undefined,
       proximaManutencao: body.proximaManutencao || undefined,
     }),
-    onSuccess: () => { setModalEq(false); setFormEq(formEqVazio); invalidar(); },
+    onSuccess: () => { toast.success('Equipamento criado'); setModalEq(false); setFormEq(formEqVazio); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar equipamento'),
   });
 
   const mutEditarEq = useMutation({
@@ -146,7 +149,8 @@ export default function EquipamentosPage() {
       localizacao: body.localizacao || undefined,
       proximaManutencao: body.proximaManutencao || undefined,
     }),
-    onSuccess: () => { setModalEditarEq(null); setFormEditarEq(formEditarVazio); invalidar(); },
+    onSuccess: () => { toast.success('Equipamento actualizado'); setModalEditarEq(null); setFormEditarEq(formEditarVazio); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar equipamento'),
   });
 
   const mutCriarMan = useMutation({
@@ -154,13 +158,15 @@ export default function EquipamentosPage() {
       ...body,
       observacoes: body.observacoes || undefined,
     }),
-    onSuccess: () => { setModalMan(null); setFormMan(formManVazio); invalidar(); },
+    onSuccess: () => { toast.success('Ocorrência reportada'); setModalMan(null); setFormMan(formManVazio); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao reportar ocorrência'),
   });
 
   const mutAtualizarMan = useMutation({
     mutationFn: ({ id, estado, tecnicoIdVal }: { id: string; estado: string; tecnicoIdVal?: string }) =>
       api.patch(`/equipamentos/manutencoes/${id}`, { estado, tecnicoId: tecnicoIdVal || undefined }),
-    onSuccess: () => { setModalAtualizarMan(null); setTecnicoId(''); invalidar(); },
+    onSuccess: () => { toast.success('Manutenção actualizada'); setModalAtualizarMan(null); setTecnicoId(''); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar manutenção'),
   });
 
   const manutencoesFiltradas = (manutencoes as Manutencao[]).filter(m => !filtroManEstado || m.estado === filtroManEstado);
@@ -204,7 +210,7 @@ export default function EquipamentosPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'operacional', 'em_manutencao', 'avariado', 'abatido'].map(e => (
               <button key={e} onClick={() => setFiltroEstado(e)}
-                style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #334155', background: filtroEstado === e ? '#3b82f6' : 'transparent', color: filtroEstado === e ? '#fff' : '#94a3b8', fontSize: 13, cursor: 'pointer' }}>
+                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: filtroEstado === e ? '#3b82f6' : 'transparent', color: filtroEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
                 {e === '' ? 'Todos' : ESTADO_INFO[e]?.dot + ' ' + (ESTADO_INFO[e]?.label ?? e)}
               </button>
             ))}
@@ -279,7 +285,7 @@ export default function EquipamentosPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'pendente', 'em_curso', 'concluida', 'cancelada'].map(e => (
               <button key={e} onClick={() => setFiltroManEstado(e)}
-                style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #334155', background: filtroManEstado === e ? '#3b82f6' : 'transparent', color: filtroManEstado === e ? '#fff' : '#94a3b8', fontSize: 13, cursor: 'pointer' }}>
+                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: filtroManEstado === e ? '#3b82f6' : 'transparent', color: filtroManEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
                 {e === '' ? 'Todas' : e.charAt(0).toUpperCase() + e.slice(1).replace('_', ' ')}
               </button>
             ))}

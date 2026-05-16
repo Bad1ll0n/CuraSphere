@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../../lib/api';
+import { useToast } from '../../../../components/toast';
 
 interface Pessoal {
   id: string;
@@ -41,6 +42,7 @@ const ROLE_LABEL: Record<string, string> = {
 
 export default function PessoalPage() {
   const qc = useQueryClient();
+  const toast = useToast();
   const [filtroRole, setFiltroRole] = useState('');
   const [pesquisa, setPesquisa] = useState('');
   const [filtroServico, setFiltroServico] = useState('');
@@ -58,7 +60,8 @@ export default function PessoalPage() {
   const mutContrato = useMutation({
     mutationFn: ({ id, dto }: { id: string; dto: typeof contrato }) =>
       api.post(`/rh/pessoal/${id}/contrato`, dto),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['rh-pessoal'] }); setModalPessoa(null); },
+    onSuccess: () => { toast.success('Dados contratuais guardados'); qc.invalidateQueries({ queryKey: ['rh-pessoal'] }); setModalPessoa(null); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao guardar contrato'),
   });
 
   const roles = [...new Set(pessoal.map(p => p.role))];

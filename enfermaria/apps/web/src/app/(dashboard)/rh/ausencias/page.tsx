@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../../lib/auth-context';
 import api from '../../../../lib/api';
+import { useToast } from '../../../../components/toast';
 
 interface Ausencia {
   id: string;
@@ -41,6 +42,7 @@ function diasEntre(ini: string, fim: string) {
 export default function AusenciasPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const searchParams = useSearchParams();
   const [aba, setAba] = useState<'todas' | 'minhas'>('todas');
   const [filtroEstado, setFiltroEstado] = useState(searchParams.get('estado') ?? '');
@@ -67,13 +69,25 @@ export default function AusenciasPage() {
 
   const invalidar = () => qc.invalidateQueries({ queryKey: ['ausencias'] });
 
-  const mutAprovar = useMutation({ mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/aprovar`), onSuccess: invalidar });
-  const mutRejeitar = useMutation({ mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/rejeitar`), onSuccess: invalidar });
-  const mutCancelar = useMutation({ mutationFn: (id: string) => api.delete(`/rh/ausencias/${id}`), onSuccess: invalidar });
+  const mutAprovar = useMutation({
+    mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/aprovar`),
+    onSuccess: () => { toast.success('Ausência aprovada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao aprovar ausência'),
+  });
+  const mutRejeitar = useMutation({
+    mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/rejeitar`),
+    onSuccess: () => { toast.success('Ausência rejeitada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar ausência'),
+  });
+  const mutCancelar = useMutation({
+    mutationFn: (id: string) => api.delete(`/rh/ausencias/${id}`),
+    onSuccess: () => { toast.success('Pedido cancelado'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao cancelar pedido'),
+  });
   const mutNova = useMutation({
     mutationFn: (body: object) => api.post('/rh/ausencias', body),
-    onSuccess: () => { setModalNova(false); setNovaInicio(''); setNovaFim(''); setNovaObs(''); setAba('minhas'); invalidar(); },
-    onError: () => setErroNova('Erro ao submeter pedido.'),
+    onSuccess: () => { toast.success('Pedido de ausência submetido'); setModalNova(false); setNovaInicio(''); setNovaFim(''); setNovaObs(''); setAba('minhas'); invalidar(); },
+    onError: (e: any) => { toast.error(e?.response?.data?.message ?? 'Erro ao submeter pedido'); setErroNova('Erro ao submeter pedido.'); },
   });
 
   const criarAusencia = () => {

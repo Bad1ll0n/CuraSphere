@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../../lib/auth-context';
 import api from '../../../../lib/api';
+import { useToast } from '../../../../components/toast';
 
 interface Formacao {
   id: string;
@@ -20,6 +21,7 @@ interface Formacao {
 export default function FormacoesPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [aba, setAba] = useState<'todas' | 'minhas'>('minhas');
   const [modalNova, setModalNova] = useState(false);
   const [novaUtilizadorId, setNovaUtilizadorId] = useState('');
@@ -50,14 +52,20 @@ export default function FormacoesPage() {
 
   const invalidar = () => qc.invalidateQueries({ queryKey: ['formacoes'] });
 
-  const mutApagar = useMutation({ mutationFn: (id: string) => api.delete(`/rh/formacoes/${id}`), onSuccess: invalidar });
+  const mutApagar = useMutation({
+    mutationFn: (id: string) => api.delete(`/rh/formacoes/${id}`),
+    onSuccess: () => { toast.success('Formação removida'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao remover formação'),
+  });
   const mutNova = useMutation({
     mutationFn: (body: object) => api.post('/rh/formacoes', body),
     onSuccess: () => {
+      toast.success('Formação registada com sucesso');
       setModalNova(false);
       setNovaNome(''); setNovaData(''); setNovaExpiracao(''); setNovaEntidade(''); setNovaObrigatoria(false);
       invalidar();
     },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar formação'),
   });
 
   const criarFormacao = () => {

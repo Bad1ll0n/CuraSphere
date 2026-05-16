@@ -51,6 +51,7 @@ import { EventosAdversosModule } from './eventos-adversos/eventos-adversos.modul
 import { GatewayModule } from './gateway/gateway.module';
 import { CatalogoModule } from './catalogo/catalogo.module';
 import { FornecedoresModule } from './fornecedores/fornecedores.module';
+import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { FornecedoresModule } from './fornecedores/fornecedores.module';
     GatewayModule,
     CatalogoModule,
     FornecedoresModule,
+    ReconciliacaoModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

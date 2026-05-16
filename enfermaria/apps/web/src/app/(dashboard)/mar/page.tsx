@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 const MOTIVOS_NAO_ADMIN = [
   { value: 'recusou', label: 'Recusou tomar' },
@@ -79,6 +80,7 @@ function getCertasValues(med: Medicacao | undefined): string[] {
 }
 
 export default function MarPage() {
+  const toast = useToast();
   const [medicacoes, setMedicacoes] = useState<Medicacao[]>([]);
   const [loading, setLoading] = useState(true);
   const [administrando, setAdministrando] = useState<string | null>(null);
@@ -118,10 +120,13 @@ export default function MarPage() {
     setRegistandoNaoAdmin(true);
     try {
       await api.post(`/medicacao/${modalNaoAdmin}/nao-administrar`, { motivo });
+      toast.success('Não-administração registada');
       setModalNaoAdmin(null);
       setMotivoSelecionado('recusou');
       setMotivoOutro('');
       carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao registar');
     } finally { setRegistandoNaoAdmin(false); }
   };
 
@@ -133,10 +138,13 @@ export default function MarPage() {
         observacoes: obs || undefined,
         verificacao5Certas: true,
       });
+      toast.success('Medicação administrada');
       setModalId(null);
       setObs('');
       setCertas([false, false, false, false, false]);
       carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao administrar medicação');
     } finally { setAdministrando(null); }
   };
 
@@ -170,8 +178,9 @@ export default function MarPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
-          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+        <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar MAR"
+          className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '80px' }}>
+          <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>

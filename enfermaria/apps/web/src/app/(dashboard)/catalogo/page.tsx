@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface CatalogoItem {
   id: string;
@@ -23,6 +24,7 @@ const CLASSES = ['analgésico', 'antibiótico', 'anticoagulante', 'anti-hiperten
 export default function CatalogoPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<'criar' | 'editar' | null>(null);
   const [editItem, setEditItem] = useState<CatalogoItem | null>(null);
@@ -40,17 +42,20 @@ export default function CatalogoPage() {
 
   const mutCriar = useMutation({
     mutationFn: (body: typeof form) => api.post('/catalogo', body),
-    onSuccess: () => { setModal(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onSuccess: () => { toast.success('Medicamento adicionado ao catálogo'); setModal(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao adicionar medicamento'),
   });
 
   const mutEditar = useMutation({
     mutationFn: (body: Partial<typeof form>) => api.patch(`/catalogo/${editItem!.id}`, body),
-    onSuccess: () => { setModal(null); setEditItem(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onSuccess: () => { toast.success('Medicamento actualizado'); setModal(null); setEditItem(null); resetForm(); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar medicamento'),
   });
 
   const mutDesativar = useMutation({
     mutationFn: (id: string) => api.delete(`/catalogo/${id}`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['catalogo'] }),
+    onSuccess: () => { toast.success('Medicamento removido do catálogo'); qc.invalidateQueries({ queryKey: ['catalogo'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao remover medicamento'),
   });
 
   const abrirEditar = (item: CatalogoItem) => {

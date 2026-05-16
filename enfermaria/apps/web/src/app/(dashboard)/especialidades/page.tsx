@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Sessao {
   id: string;
@@ -41,6 +42,7 @@ const ESTADO_LABEL: Record<string, string> = {
 export default function EspecialidadesPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const subRole = utilizador?.subRole ?? '';
   const titulo = SUBROLE_TITULO[subRole] ?? 'Especialidades';
 
@@ -63,17 +65,20 @@ export default function EspecialidadesPage() {
 
   const mutCriar = useMutation({
     mutationFn: (dto: typeof form) => api.post('/especialidades', dto),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['especialidades'] }); setModal(null); setForm({ doenteId: '', data: '', duracao: 60, descricao: '' }); },
+    onSuccess: () => { toast.success('Sessão agendada com sucesso'); qc.invalidateQueries({ queryKey: ['especialidades'] }); setModal(null); setForm({ doenteId: '', data: '', duracao: 60, descricao: '' }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao agendar sessão'),
   });
 
   const mutRealizar = useMutation({
     mutationFn: ({ id, evolucao }: { id: string; evolucao: string }) => api.patch(`/especialidades/${id}/realizar`, { evolucao }),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['especialidades'] }); setModal(null); setSessaoSel(null); setEvolucaoText(''); },
+    onSuccess: () => { toast.success('Evolução registada'); qc.invalidateQueries({ queryKey: ['especialidades'] }); setModal(null); setSessaoSel(null); setEvolucaoText(''); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar evolução'),
   });
 
   const mutCancelar = useMutation({
     mutationFn: (id: string) => api.patch(`/especialidades/${id}/cancelar`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['especialidades'] }),
+    onSuccess: () => { toast.success('Sessão cancelada'); qc.invalidateQueries({ queryKey: ['especialidades'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao cancelar sessão'),
   });
 
   const agendadas = sessoes.filter(s => s.estado === 'agendada');

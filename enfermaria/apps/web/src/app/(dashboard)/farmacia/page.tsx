@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface StockItem {
   id: string;
@@ -91,6 +92,7 @@ const SERVICOS = ['internamento', 'urgencia', 'bloco_operatorio', 'consultas_ext
 export default function FarmaciaPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [tab, setTab] = useState<'stock' | 'pedidos' | 'alertas' | 'validacao' | 'transferencias' | 'relatorio'>('stock');
 
   // Modais
@@ -172,12 +174,14 @@ export default function FarmaciaPage() {
   // Mutations
   const mutPedido = useMutation({
     mutationFn: (body: any) => api.post('/farmacia/pedido', body),
-    onSuccess: () => { setPedidoModal(null); setPedidoForm({ quantidade: 1, observacoes: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Pedido criado com sucesso'); setPedidoModal(null); setPedidoForm({ quantidade: 1, observacoes: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar pedido'),
   });
 
   const mutDispensar = useMutation({
     mutationFn: (id: string) => api.patch(`/farmacia/pedido/${id}/dispensar`),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Pedido dispensado'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao dispensar'),
   });
 
   const mutNovoItem = useMutation({
@@ -186,37 +190,44 @@ export default function FarmaciaPage() {
       precoUnitario: body.precoUnitario ? Number(body.precoUnitario) : undefined,
       catalogoId: body.catalogoId || undefined,
     }),
-    onSuccess: () => { setNovoItemModal(false); setNovoItemForm({ nome: '', tipo: 'medicamento', quantidade: 0, quantidadeMinima: 5, unidade: 'unidades', servico: utilizador?.servico ?? 'farmacia', precoUnitario: '', catalogoId: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Item criado no stock'); setNovoItemModal(false); setNovoItemForm({ nome: '', tipo: 'medicamento', quantidade: 0, quantidadeMinima: 5, unidade: 'unidades', servico: utilizador?.servico ?? 'farmacia', precoUnitario: '', catalogoId: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar item'),
   });
 
   const mutAjustar = useMutation({
     mutationFn: (body: any) => api.patch(`/farmacia/stock/${ajustarModal!.id}`, body),
-    onSuccess: () => { setAjustarModal(null); setAjustarForm({ quantidade: 0, motivo: '', tipo: 'ajuste' }); invalidar(); },
+    onSuccess: () => { toast.success('Stock ajustado com sucesso'); setAjustarModal(null); setAjustarForm({ quantidade: 0, motivo: '', tipo: 'ajuste' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao ajustar stock'),
   });
 
   const mutTransferir = useMutation({
     mutationFn: (body: any) => api.post(`/farmacia/stock/${transferirModal!.id}/transferir`, body),
-    onSuccess: () => { setTransferirModal(null); setTransferirForm({ servicoDestino: '', quantidade: 1, motivo: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Transferência criada com sucesso'); setTransferirModal(null); setTransferirForm({ servicoDestino: '', quantidade: 1, motivo: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar transferência'),
   });
 
   const mutConfirmarTransf = useMutation({
     mutationFn: (id: string) => api.patch(`/farmacia/transferencias/${id}/confirmar`),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Transferência confirmada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao confirmar transferência'),
   });
 
   const mutCancelarTransf = useMutation({
     mutationFn: (id: string) => api.patch(`/farmacia/transferencias/${id}/cancelar`),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Transferência cancelada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao cancelar transferência'),
   });
 
   const mutValidar = useMutation({
     mutationFn: (id: string) => api.patch(`/medicacao/${id}/validar`),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Prescrição validada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao validar prescrição'),
   });
 
   const mutRejeitar = useMutation({
     mutationFn: ({ id, motivo }: { id: string; motivo: string }) => api.patch(`/medicacao/${id}/rejeitar`, { motivoRejeicao: motivo }),
-    onSuccess: () => { setModalRejeitar(null); setMotivoRejeicao(''); invalidar(); },
+    onSuccess: () => { toast.success('Prescrição rejeitada'); setModalRejeitar(null); setMotivoRejeicao(''); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar prescrição'),
   });
 
   const TABS = [
@@ -239,7 +250,7 @@ export default function FarmaciaPage() {
         </div>
         {isFarmacia && (
           <button onClick={() => setNovoItemModal(true)}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
             style={{ padding: '10px 20px' }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
             Novo Item
@@ -332,7 +343,7 @@ export default function FarmaciaPage() {
                 </div>
                 {p.estado === 'pendente' && isFarmacia && (
                   <button onClick={() => mutDispensar.mutate(p.id)}
-                    className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors shrink-0"
+                    className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
                     style={{ padding: '7px 14px' }}>Dispensar</button>
                 )}
               </div>
@@ -393,7 +404,7 @@ export default function FarmaciaPage() {
                       className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
                       style={{ padding: '7px 12px' }}>Cancelar</button>
                     <button onClick={() => mutConfirmarTransf.mutate(t.id)}
-                      className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                      className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                       style={{ padding: '7px 14px' }}>Confirmar</button>
                   </div>
                 )}
@@ -561,7 +572,7 @@ export default function FarmaciaPage() {
               <button onClick={() => setPedidoModal(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={() => mutPedido.mutate({ stockItemId: pedidoModal.id, quantidade: pedidoForm.quantidade, observacoes: pedidoForm.observacoes, servico: pedidoModal.servico })}
                 disabled={mutPedido.isPending || pedidoForm.quantidade <= 0}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {mutPedido.isPending ? 'A enviar...' : 'Enviar Pedido'}
               </button>
             </div>
@@ -688,7 +699,7 @@ export default function FarmaciaPage() {
               <button onClick={() => setTransferirModal(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={() => mutTransferir.mutate({ servicoDestino: transferirForm.servicoDestino, quantidade: transferirForm.quantidade, motivo: transferirForm.motivo || undefined })}
                 disabled={mutTransferir.isPending || !transferirForm.servicoDestino || transferirForm.quantidade <= 0}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {mutTransferir.isPending ? 'A transferir...' : 'Criar Transferência'}
               </button>
             </div>
@@ -771,7 +782,7 @@ export default function FarmaciaPage() {
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
               <button onClick={() => setNovoItemModal(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={() => mutNovoItem.mutate(novoItemForm)} disabled={mutNovoItem.isPending || !novoItemForm.nome.trim()}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
                 {mutNovoItem.isPending ? 'A criar...' : 'Criar Item'}
               </button>
             </div>

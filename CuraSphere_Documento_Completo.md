@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-15 (sessão 6)
+> **Última actualização:** 2026-05-15 (sessão 8)
 > **Estado geral:** Em desenvolvimento activo — backend completo, web e mobile funcionais
 
 ---
@@ -189,6 +189,8 @@ PATCH  /doentes/:id/alta               → dar alta
 PATCH  /doentes/:id/transferir         → transferir serviço
 PATCH  /doentes/:id/isolamento         → activar/desactivar isolamento
 GET    /doentes/iacs/isolados          → doentes em isolamento activo
+GET    /doentes/:id/timeline           → timeline clínica unificada (cronológica: admissão, sinais vitais, prescrições, administrações MAR, notas SOAP, tarefas, alertas, exames)
+GET    /doentes/:id/alta/pdf           → PDF da nota de alta (dados, alergias, medicação, sinais vitais, notas clínicas)
 ```
 
 ### 5.4 Camas
@@ -208,7 +210,10 @@ PATCH  /medicacao/:id                  → editar prescrição
 DELETE /medicacao/:id                  → cancelar prescrição
 POST   /medicacao/:id/administrar      → registar administração
 GET    /medicacao/mar                  → MAR global (todas as medicações activas)
+GET    /medicacao/interacoes?doenteId=&nome= → verificar interacções medicamentosas
 ```
+**Verificação de alergias:** `prescrever()` consulta alergias activas antes de criar prescrição. Se houver correspondência, lança `409 ConflictException` com detalhes da alergia. Pode ser sobreposto com `forcarApesarDeAlergia=true`.
+**Verificação de interacções:** `interacoes.json` com 50 pares de interacções medicamentosas; warning não-bloqueante retornado em `POST /medicacao` e consultável via `GET /medicacao/interacoes`.
 
 ### 5.6 Sinais Vitais
 ```
@@ -267,6 +272,7 @@ GET    /alertas/:doenteId
 POST   /alertas
 PATCH  /alertas/:id/resolver
 ```
+**SOS contextual:** `acionarSOS()` carrega em paralelo os últimos sinais vitais, medicações activas, alergias e diagnóstico principal. Push notification inclui NEWS2, TA, FC, SpO₂, lista de medicações e alergias. Campo `pushData.contextoClinico` transporta o pacote clínico completo.
 
 ### 5.14 Tarefas
 ```
@@ -450,6 +456,19 @@ GET    /dashboard/ti                   → KPIs TI (incidentes, pedidos, uptime)
 ```
 GET    /audit                          → log de auditoria (ti, qualidade)
 ```
+
+### 5.36 Reconciliação Clínica MAR↔Farmácia
+```
+GET    /reconciliacao                  → pendências detectadas (prescrições sem validação farmácia >2h, medicações activas sem registo MAR em 24h, pedidos farmácia pendentes >1h)
+```
+**Auto-verificação** a cada 30 minutos via `setInterval`. Gera alertas automáticos ao detectar divergências.
+
+### 5.37 Relatórios PDF
+```
+GET    /doentes/:id/alta/pdf           → nota de alta em PDF (pdfmake)
+GET    /turnos/:id/relatorio/pdf       → relatório de turno em PDF (doentes, tarefas, notas)
+```
+Serviço partilhado em `apps/api/src/app/common/pdf.service.ts` usando `pdfmake`.
 
 ### 5.34 Notificações Push
 ```
@@ -687,13 +706,38 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Ficha pessoal do doente (`FicheiroPessoalDoente`) — modelo separado com NIF, SNS, morada, seguro; acesso restrito a `administrativo` via `GET/PATCH /doentes/:id/ficha-pessoal`
 - [x] Módulo de Faturação — `EpisodioFaturacao`, `ItemFatura`, `Pagamento`; endpoints completos; estados: pendente→emitida→paga/isenta/anulada
 - [x] Sistema de Tickets / Filas — modelo `Ticket` (sequência diária por tipo, prioridade); `QuiosqueController` público com SSE; `TicketsController` autenticado; fila prioritário→sénior→normal FIFO
-- [x] Notificações push com trigger real — TrocasService (novo pedido, aceitação, aprovação chefe) + TarefasService (nova tarefa atribuída)
+- [x] Notificações push com trigger real — TrocasService (novo pedido, aceitação, aprovação chefe) + TarefasService (nova tarefa atribuída) + **Tarefas urgentes pendentes >30min** (verificação a cada 10 min via `OnApplicationBootstrap`, notifica atribuído + criador)
+- [x] **Verificação de alergias na prescrição** — `medicacao.service.ts:prescrever()` cruza com alergias activas antes de criar; lança `409 ConflictException` com detalhes; override via `forcarApesarDeAlergia=true`
+- [x] **Verificação de interacções medicamentosas** — `interacoes.json` com 50 pares; warning não-bloqueante em `prescrever()`; endpoint `GET /medicacao/interacoes?doenteId=&nome=`
+- [x] **SOS contextual com dados clínicos** — `alertas.service.ts:acionarSOS()` carrega últimos sinais vitais, medicações activas, alergias e diagnóstico em paralelo; push notification body inclui NEWS2, TA, FC, SpO₂, lista de medicações e alergias; `pushData.contextoClinico` com pacote clínico completo
+- [x] **Reconciliação Clínica MAR↔Farmácia** — módulo `reconciliacao/`; verifica prescrições sem validação farmácia >2h, medicações sem registo MAR em 24h, pedidos pendentes >1h; executa automaticamente a cada 30 min; endpoint `GET /reconciliacao`
+- [x] **Geração de PDF** — `common/pdf.service.ts` com `pdfmake`; nota de alta (`GET /doentes/:id/alta/pdf`) e relatório de turno (`GET /turnos/:id/relatorio/pdf`)
+- [x] **Timeline clínica unificada** — `GET /doentes/:id/timeline` devolve lista cronológica de todos os eventos: admissão, sinais vitais, prescrições, administrações MAR, notas SOAP, tarefas, alertas, exames
 - [x] Paginação em Utilizadores (`page`, `limit`, `totalPaginas`)
 - [x] Seed de dados de demo (`seed-demo.ts`) — 17 utilizadores, 13 camas, 8 doentes, sinais vitais, tarefas, stock, incidentes, anúncios
 - [x] Contactos de emergência do doente
 - [x] Migração de dados: todos os utilizadores convertidos para nova taxonomia de roles
 
 ### Web Frontend
+- [x] **Sistema de Toast Universal** — `components/toast.tsx` com `ToastProvider` + hook `useToast`; integrado em `client-layout.tsx`; `onSuccess`/`onError` em todas as páginas com mutações (mar, tarefas, passagem-turno, doentes/[id], farmácia, férias, urgência, equipamentos, fornecedores, catálogo, dashboard, operacional, especialidades, eventos-adversos, rh/formações, rh/ausências, interconsultas)
+- [x] **Componentes partilhados — Acessibilidade e UI (sessão 8)**
+  - `components/confirm-modal.tsx` — substitui todos os `confirm()` nativos; `role="dialog"`, focus trap, tecla Escape, focus inicial no botão Cancelar, backdrop blur; 6 ocorrências substituídas em `doentes/[id]/page.tsx`
+  - `components/breadcrumb.tsx` — navegação semântica com `aria-label="Localização"` e `aria-current="page"` no último item; usado em `doentes/[id]/page.tsx` em substituição do link "← Voltar a Doentes"
+  - `components/page-header.tsx` — título `<h1>` padronizado com slot de acções; garante hierarquia de headings consistente
+- [x] **Acessibilidade WCAG AA (sessão 8)**
+  - Todos os botões de ícone têm `aria-label` explícito (fechar modais, limpar pesquisa, remover alergia/contacto, apagar nota)
+  - Tabelas com `scope="col"` nos cabeçalhos (`doentes/page.tsx`, sinais vitais em `doentes/[id]/page.tsx`)
+  - Formulários com `htmlFor`/`id` explícitos (modal de password, filtros, modal de alergia, modal de dispositivo)
+  - Loading states com `role="status" aria-live="polite"` (doentes, MAR, tarefas)
+  - Modal de password com `role="dialog"`, campos com IDs correctos, mensagem de sucesso inline em vez de `alert()` nativo
+  - Botões desactivados com contraste visível: `disabled:bg-slate-200 disabled:text-slate-400`
+- [x] **Standardização de UI (sessão 8)**
+  - Botão primário: `bg-blue-600 hover:bg-blue-700` em toda a app (farmácia migrada de `bg-emerald-*` para `bg-blue-*`)
+  - Todos os modais com `backdropFilter: blur(4px)` para consistência visual
+  - Títulos de página: `text-2xl` uniforme (eliminado mix com `text-3xl`)
+  - Tabelas: cabeçalho `bg-slate-50` e texto `text-slate-600` (maior contraste que `text-slate-400` anterior)
+- [x] **Sidebar mobile (sessão 8)** — `client-layout.tsx`: botão hamburger (`md:hidden`), aside com `fixed md:relative`, overlay backdrop escurecido, fecho automático ao clicar em item de navegação
+- [x] **Gráfico de Sinais Vitais** — `doentes/[id]/page.tsx` com Recharts `LineChart` mostrando TA, Pulso, SpO₂, Temperatura ao longo do tempo; banner NEWS2 visível quando score ≥5
 - [x] Login + gestão de sessão (refresh automático)
 - [x] Sidebar dinâmico por role + serviço + sub-role
 - [x] Dashboard clínico e TI
@@ -781,7 +825,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 
 | Feature | Prioridade | Notas |
 |---------|-----------|-------|
-| Relatórios e exportação PDF | Média | Só existe impressão de ficha do doente; faltam relatórios de turnos, produtividade, etc. |
+| Relatórios e exportação PDF | ~~Média~~ | ✅ Implementado: nota de alta PDF (`GET /doentes/:id/alta/pdf`) e relatório de turno PDF (`GET /turnos/:id/relatorio/pdf`) via pdfmake; faltam relatórios de produtividade |
 | Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
 | Aprovação de pedidos farmácia pelo médico | Alta | O médico não valida o pedido antes da dispensa |
 | Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
@@ -795,7 +839,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 
 | Feature | O que existe | O que falta |
 |---------|-------------|------------|
-| Push notifications | Trigger implementado em Trocas + Tarefas | Alertas clínicos críticos ainda sem push; leitura confirmada |
+| Push notifications | Trigger em Trocas + Tarefas + **Tarefas urgentes pendentes** + **SOS contextual** + **NEWS2 ≥5/≥7** (sessão 7) | Leitura confirmada de notificações |
 | Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) | Grupos/broadcast por serviço; attachments; leitura confirmada |
 | Dashboard Direção | Acede a Dashboard TI + Qualidade | Falta dashboard executivo (KPIs financeiros, ocupação hospitalar, etc.) |
 | Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) | Gestão de folgas, trocas de dia de folga |
@@ -839,6 +883,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | SSE / Tempo Real | Tickets usam SSE; restantes módulos ainda sem actualizações em tempo real |
 | Seed de dados de teste | `seed-demo.ts` criado com dados hospitalares realistas |
 | Documentação API (Swagger) | Não configurado |
+| ~~Acessibilidade (WCAG AA)~~ | ✅ Resolvido (sessão 8): `aria-label`, `scope="col"`, `htmlFor`/`id`, `role="dialog"`, `aria-live="polite"`, `confirm()` → `<ConfirmModal>`, contraste de botões desactivados |
 
 ---
 
@@ -847,14 +892,15 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 ### Prioridade Alta — Próximas 2 semanas
 1. **Aprovação de pedidos farmácia pelo médico** — validação clínica antes da dispensa
 2. **Paginação nos restantes endpoints** — doentes, tarefas, trocas, comunicação
-3. **Alertas críticos com push** — alertas clínicos críticos ainda sem trigger de notificação
+3. ~~**Alertas críticos com push**~~ — ✅ Concluído (NEWS2 ≥5/≥7 + SOS contextual + tarefas urgentes)
+4. ~~**Relatórios PDF**~~ — ✅ Concluído (nota de alta + relatório de turno via pdfmake)
 
 ### Prioridade Média — Próximo mês
-4. **Relatórios PDF** — exportação de turnos, produtividade, relatórios clínicos
 5. **Bloco Operatório mobile** — médicos/enfermeiros de bloco sem módulo mobile
 6. **Worklist mobile** — técnicos de saúde sem módulo de exames no mobile
 7. **Dashboard executivo (Direção)** — KPIs financeiros, produtividade, ocupação histórica
-8. **Gestão de folgas e férias** — RH sem módulo de gestão de ausências
+8. **Leitura confirmada de notificações push** — feedback de entrega/leitura
+9. **Reconciliação MAR↔Farmácia — notificações activas** — actualmente só endpoint GET; falta trigger de push/alerta quando divergência detectada
 
 ### Prioridade Baixa — Backlog
 9. Módulo de faturação para administrativo/billing
@@ -937,6 +983,23 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | `IncidenteTI` | Incidente tecnológico reportado |
 | `PedidoTI` | Pedido de suporte/equipamento TI |
 | `NotificacaoPush` | Token de notificação push por dispositivo |
+
+### 12.6 Segurança Clínica e Utilitários (sessão 7)
+
+| Artefacto | Tipo | Descrição |
+|-----------|------|-----------|
+| `interacoes.json` | Ficheiro | 50 pares de interacções medicamentosas para verificação em `prescrever()` |
+| `pdf.service.ts` | Serviço | Geração de PDF com `pdfmake`; partilhado por doentes (alta) e turnos (relatório) |
+| `reconciliacao/` | Módulo | Reconciliação MAR↔Farmácia; `setInterval` 30 min; endpoint `GET /reconciliacao` |
+| `toast.tsx` | Componente web | `ToastProvider` + hook `useToast`; feedback visual universal de sucesso/erro em todas as páginas |
+
+### 12.7 Componentes Partilhados Web (sessão 8)
+
+| Componente | Caminho | Descrição |
+|------------|---------|-----------|
+| `confirm-modal.tsx` | `apps/web/src/components/` | Modal de confirmação acessível; substitui `confirm()` nativo; `role="dialog"`, focus trap, Escape, backdrop blur |
+| `breadcrumb.tsx` | `apps/web/src/components/` | Breadcrumb semântico; `aria-label="Localização"`; `aria-current="page"` no último item |
+| `page-header.tsx` | `apps/web/src/components/` | Header padronizado com `<h1>` e slot para acções; garante hierarquia de headings consistente |
 
 ---
 

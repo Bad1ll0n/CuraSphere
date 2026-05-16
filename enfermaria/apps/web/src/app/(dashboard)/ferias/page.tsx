@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Ausencia {
   id: string;
@@ -46,6 +47,7 @@ function calcularDiasUteis(inicio: string, fim: string): number {
 
 export default function FeriasPage() {
   const qc = useQueryClient();
+  const toast = useToast();
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ tipo: 'ferias', dataInicio: '', dataFim: '', observacoes: '' });
 
@@ -79,29 +81,35 @@ export default function FeriasPage() {
   const mutPedir = useMutation({
     mutationFn: (dto: typeof form) => api.post('/rh/ausencias', dto),
     onSuccess: () => {
+      toast.success('Pedido enviado com sucesso');
       qc.invalidateQueries({ queryKey: ['minhas-ferias'] });
       qc.invalidateQueries({ queryKey: ['saldo-ferias'] });
       setModal(false);
       setForm({ tipo: 'ferias', dataInicio: '', dataFim: '', observacoes: '' });
     },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao enviar pedido'),
   });
 
   const mutAprovar = useMutation({
     mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/aprovar`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['ferias-para-aprovar'] }),
+    onSuccess: () => { toast.success('Pedido aprovado'); qc.invalidateQueries({ queryKey: ['ferias-para-aprovar'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao aprovar pedido'),
   });
 
   const mutRejeitar = useMutation({
     mutationFn: (id: string) => api.patch(`/rh/ausencias/${id}/rejeitar`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['ferias-para-aprovar'] }),
+    onSuccess: () => { toast.success('Pedido rejeitado'); qc.invalidateQueries({ queryKey: ['ferias-para-aprovar'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar pedido'),
   });
 
   const mutCancelar = useMutation({
     mutationFn: (id: string) => api.delete(`/rh/ausencias/${id}`),
     onSuccess: () => {
+      toast.success('Pedido cancelado');
       qc.invalidateQueries({ queryKey: ['minhas-ferias'] });
       qc.invalidateQueries({ queryKey: ['saldo-ferias'] });
     },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao cancelar pedido'),
   });
 
   const diasSolicitados = calcularDiasUteis(form.dataInicio, form.dataFim);

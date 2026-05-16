@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 import { useSocket } from '../../../lib/use-socket';
+import { useToast } from '../../../components/toast';
 import { useState } from 'react';
 
 interface EpisodioUrgencia {
@@ -51,6 +52,7 @@ const ORDEM_CORES = ['vermelho', 'laranja', 'amarelo', 'verde', 'azul'];
 export default function UrgenciaPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
 
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ queixaPrincipal: '', triagem: 'verde', nomeTemporario: '', notas: '' });
@@ -125,28 +127,33 @@ export default function UrgenciaPage() {
 
   const mutEntrada = useMutation({
     mutationFn: (body: typeof form) => api.post('/urgencia/episodio', body),
-    onSuccess: () => { setModal(false); setForm({ queixaPrincipal: '', triagem: 'verde', nomeTemporario: '', notas: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Entrada registada na urgência'); setModal(false); setForm({ queixaPrincipal: '', triagem: 'verde', nomeTemporario: '', notas: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar entrada'),
   });
 
   const mutPreNotif = useMutation({
     mutationFn: (body: typeof formAmb) => api.post('/urgencia/pre-notificacao', body),
-    onSuccess: () => { setModalAmb(false); setFormAmb({ queixaPrincipal: '', triagem: 'vermelho', nomeTemporario: '', etaMinutos: 10, condicaoPrevia: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Equipa notificada'); setModalAmb(false); setFormAmb({ queixaPrincipal: '', triagem: 'vermelho', nomeTemporario: '', etaMinutos: 10, condicaoPrevia: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao enviar notificação'),
   });
 
   const mutEstado = useMutation({
     mutationFn: ({ id, estado }: { id: string; estado: string }) => api.patch(`/urgencia/${id}/estado`, { estado }),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Estado actualizado'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar estado'),
   });
 
   const mutCompletar = useMutation({
     mutationFn: (id: string) => api.patch(`/urgencia/${id}/completar-pre-notificacao`, {}),
-    onSuccess: invalidar,
+    onSuccess: () => { toast.success('Chegada confirmada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao confirmar chegada'),
   });
 
   const mutAtribuirMedico = useMutation({
     mutationFn: ({ id, medicoResponsavelId }: { id: string; medicoResponsavelId: string }) =>
       api.patch(`/urgencia/${id}/atribuir-medico`, { medicoResponsavelId }),
-    onSuccess: () => { setModalAtribuir(null); setMedicoSelecionadoId(''); invalidar(); },
+    onSuccess: () => { toast.success('Médico atribuído'); setModalAtribuir(null); setMedicoSelecionadoId(''); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao atribuir médico'),
   });
 
   const emTransito = episodios.filter(e => e.preNotificacao && e.estadoEpisodio === 'triagem');

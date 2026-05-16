@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 import { useSocket } from '../../../lib/use-socket';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip,
@@ -372,6 +373,7 @@ const TIPO_EXAME_LABELS: Record<string, string> = {
 
 function DashboardImagiologia({ utilizador }: { utilizador: any }) {
   const qc = useQueryClient();
+  const toast = useToast();
   const [atualizando, setAtualizando] = useState<string | null>(null);
   const [resultadoModal, setResultadoModal] = useState<any | null>(null);
   const [resultadoTexto, setResultadoTexto] = useState('');
@@ -391,7 +393,8 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
   const mutResultado = useMutation({
     mutationFn: ({ id, resultado }: { id: string; resultado: string }) =>
       api.patch(`/exames/${id}/resultado`, { resultado }),
-    onSuccess: () => { setResultadoModal(null); setResultadoTexto(''); qc.invalidateQueries({ queryKey: ['dash-worklist'] }); },
+    onSuccess: () => { toast.success('Resultado registado'); setResultadoModal(null); setResultadoTexto(''); qc.invalidateQueries({ queryKey: ['dash-worklist'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar resultado'),
   });
 
   const urgentes = worklist.filter(e => e.urgente).length;

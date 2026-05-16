@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../../lib/api';
+import { useToast } from '../../../../components/toast';
 
 interface Avaliacao {
   id: string;
@@ -51,6 +52,7 @@ const PERIODOS = ['2026-Anual', '2026-S1', '2026-S2', '2025-Anual', '2025-S1', '
 
 export default function AvaliacoesPage() {
   const qc = useQueryClient();
+  const toast = useToast();
   const [filtroPeriodo, setFiltroPeriodo] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroColaborador, setFiltroColaborador] = useState('');
@@ -81,13 +83,15 @@ export default function AvaliacoesPage() {
 
   const mutCriar = useMutation({
     mutationFn: (dto: typeof form) => api.post('/rh/avaliacoes', dto),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['rh-avaliacoes'] }); setModal(false); },
+    onSuccess: () => { toast.success('Avaliação criada com sucesso'); qc.invalidateQueries({ queryKey: ['rh-avaliacoes'] }); setModal(false); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar avaliação'),
   });
 
   const mutAtualizar = useMutation({
     mutationFn: ({ id, dto }: { id: string; dto: Partial<typeof form> & { estado?: string } }) =>
       api.patch(`/rh/avaliacoes/${id}`, dto),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['rh-avaliacoes'] }); setEditando(null); },
+    onSuccess: () => { toast.success('Avaliação guardada'); qc.invalidateQueries({ queryKey: ['rh-avaliacoes'] }); setEditando(null); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao guardar avaliação'),
   });
 
   return (

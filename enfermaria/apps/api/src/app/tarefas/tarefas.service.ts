@@ -1,14 +1,62 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
-export class TarefasService {
+export class TarefasService implements OnApplicationBootstrap, OnApplicationShutdown {
+  private readonly logger = new Logger(TarefasService.name);
+  private intervalo: ReturnType<typeof setInterval> | null = null;
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
   ) {}
+
+  onApplicationBootstrap() {
+    // Verificar tarefas urgentes não iniciadas a cada 10 minutos
+    this.intervalo = setInterval(() => this.alertarTarefasUrgentesPendentes(), 10 * 60 * 1000);
+  }
+
+  onApplicationShutdown() {
+    if (this.intervalo) clearInterval(this.intervalo);
+  }
+
+  async alertarTarefasUrgentesPendentes() {
+    try {
+      const limiar = new Date(Date.now() - 30 * 60 * 1000); // 30 minutos atrás
+      const tarefas = await this.prisma.tarefa.findMany({
+        where: {
+          prioridade: 'urgente',
+          estado: 'pendente',
+          criadaEm: { lt: limiar },
+        },
+        include: {
+          doente: { select: { nome: true } },
+          responsavel: { select: { id: true } },
+          criadoPor: { select: { id: true } },
+        },
+        take: 20,
+      });
+
+      for (const t of tarefas) {
+        const titulo = `⚠ Tarefa urgente pendente — ${t.doente.nome}`;
+        const corpo = `"${t.descricao}" está pendente há mais de 30 minutos. Acção imediata necessária.`;
+        const ids = new Set<string>();
+        if (t.responsavel?.id) ids.add(t.responsavel.id);
+        if (t.criadoPor?.id) ids.add(t.criadoPor.id);
+        for (const id of ids) {
+          this.notificacoes.enviarParaUtilizador(id, titulo, corpo, { tarefaId: t.id, doenteId: t.doenteId }).catch(() => {});
+        }
+      }
+
+      if (tarefas.length > 0) {
+        this.logger.warn(`${tarefas.length} tarefa(s) urgente(s) pendente(s) há >30min — notificações enviadas`);
+      }
+    } catch (e) {
+      this.logger.error('Erro ao verificar tarefas urgentes', e);
+    }
+  }
 
   /**
    * Lista tarefas pendentes/em_progresso:

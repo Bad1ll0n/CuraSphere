@@ -1,5 +1,7 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request, Res } from '@nestjs/common';
+import type { Response } from 'express';
 import { TurnosService } from './turnos.service';
+import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -8,7 +10,10 @@ import { TipoTurno } from '../common/enums';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
 export class TurnosController {
-  constructor(private readonly turnosService: TurnosService) {}
+  constructor(
+    private readonly turnosService: TurnosService,
+    private readonly pdfService: PdfService,
+  ) {}
 
   @Get('ativo')
   turnoAtivo() {
@@ -56,5 +61,12 @@ export class TurnosController {
     chefeTurnoId: string;
   }) {
     return this.turnosService.criar(body);
+  }
+
+  @Get(':id/relatorio/pdf')
+  async pdfRelatorio(@Param('id') turnoId: string, @Res() res: Response) {
+    const buffer = await this.pdfService.gerarRelatorioTurno(turnoId);
+    res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="turno-${turnoId}.pdf"` });
+    res.send(buffer);
   }
 }

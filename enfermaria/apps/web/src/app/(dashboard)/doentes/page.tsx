@@ -69,7 +69,7 @@ export default function DoentesPagina() {
       {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Doentes</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Doentes</h1>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
             {total} {total === 1 ? 'doente internado' : 'doentes internados'}
           </p>
@@ -113,7 +113,8 @@ export default function DoentesPagina() {
 
         {/* Filtros */}
         <div className="flex flex-wrap items-center gap-3 border-b border-slate-100" style={{ padding: '12px 24px' }}>
-          <select value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPagina(1); }}
+          <label htmlFor="filtro-estado" className="sr-only">Filtrar por estado</label>
+          <select id="filtro-estado" value={filtroEstado} onChange={e => { setFiltroEstado(e.target.value); setPagina(1); }}
             className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             style={{ padding: '7px 12px' }}>
             <option value="">Todos os estados</option>
@@ -121,7 +122,8 @@ export default function DoentesPagina() {
             <option value="grave">Grave</option>
             <option value="critico">Crítico</option>
           </select>
-          <select value={filtroServico} onChange={e => { setFiltroServico(e.target.value); setPagina(1); }}
+          <label htmlFor="filtro-servico" className="sr-only">Filtrar por serviço</label>
+          <select id="filtro-servico" value={filtroServico} onChange={e => { setFiltroServico(e.target.value); setPagina(1); }}
             className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             style={{ padding: '7px 12px' }}>
             <option value="">Todos os serviços</option>
@@ -148,8 +150,8 @@ export default function DoentesPagina() {
             className="flex-1 text-sm text-slate-700 placeholder-slate-400 bg-transparent focus:outline-none"
           />
           {pesquisa && (
-            <button onClick={() => setPesquisa('')} className="text-slate-400 hover:text-slate-600 transition-colors">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={() => setPesquisa('')} aria-label="Limpar pesquisa" className="text-slate-400 hover:text-slate-600 transition-colors">
+              <svg className="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -157,8 +159,9 @@ export default function DoentesPagina() {
         </div>
 
         {isLoading ? (
-          <div className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '64px' }}>
-            <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+          <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar doentes"
+            className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '64px' }}>
+            <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -190,15 +193,15 @@ export default function DoentesPagina() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100">
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 24px' }}>Doente</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Processo</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Diagnóstico</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Admissão</th>
-                  <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Alta Prevista</th>
-                  <th style={{ padding: '13px 24px' }}></th>
+                <tr className="bg-slate-50 border-b border-slate-100">
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 24px' }}>Doente</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Processo</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Diagnóstico</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Admissão</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Alta Prevista</th>
+                  <th scope="col" style={{ padding: '13px 24px' }}><span className="sr-only">Ações</span></th>
                 </tr>
               </thead>
               <tbody>

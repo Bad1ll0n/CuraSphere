@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { MedicacaoService } from './medicacao.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -87,5 +87,10 @@ export class MedicacaoController {
   @Patch(':id/rejeitar')
   rejeitar(@Param('id') id: string, @Body() body: { motivoRejeicao: string }, @Request() req: any) {
     return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, body.motivoRejeicao);
+  }
+
+  @Get('interacoes')
+  verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string) {
+    return this.medicacaoService.verificarInteracoes(doenteId, nome);
   }
 }

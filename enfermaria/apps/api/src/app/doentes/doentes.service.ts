@@ -615,4 +615,95 @@ export class DoenteService {
       return doente;
     });
   }
+
+  async timeline(doenteId: string) {
+    const doente = await this.prisma.doente.findUnique({
+      where: { id: doenteId },
+      select: { id: true, nome: true, dataAdmissao: true, dataAlta: true },
+    });
+    if (!doente) throw new Error('Doente não encontrado');
+
+    const [sinaisVitais, medicacoes, registosMed, notasClinicas, tarefas, alertas, exames] = await Promise.all([
+      this.prisma.sinalVital.findMany({
+        where: { doenteId },
+        orderBy: { data: 'desc' },
+        take: 30,
+        select: { id: true, data: true, pressaoSistolica: true, pressaoDiastolica: true, pulso: true, saturacaoO2: true, temperatura: true, news2: true, registadoPor: { select: { nome: true } } },
+      }),
+      this.prisma.medicacao.findMany({
+        where: { doenteId },
+        orderBy: { iniciadoEm: 'desc' },
+        take: 20,
+        select: { id: true, iniciadoEm: true, nome: true, dose: true, via: true, frequencia: true, ativo: true, prescritoPor: { select: { nome: true } } },
+      }),
+      this.prisma.registoMedicacao.findMany({
+        where: { doenteId },
+        orderBy: { administradoEm: 'desc' },
+        take: 20,
+        select: { id: true, administradoEm: true, naoAdministrada: true, motivoNaoAdmin: true, medicacao: { select: { nome: true, dose: true } }, administradoPor: { select: { nome: true } } },
+      }),
+      this.prisma.notaClinica.findMany({
+        where: { doenteId },
+        orderBy: { criadaEm: 'desc' },
+        take: 20,
+        select: { id: true, criadaEm: true, tipo: true, texto: true, autor: { select: { nome: true, role: true } } },
+      }).catch(() => []),
+      this.prisma.tarefa.findMany({
+        where: { doenteId },
+        orderBy: { criadaEm: 'desc' },
+        take: 20,
+        select: { id: true, criadaEm: true, descricao: true, estado: true, prioridade: true, tipo: true },
+      }),
+      this.prisma.alertaClinico.findMany({
+        where: { doenteId },
+        orderBy: { criadoEm: 'desc' },
+        take: 15,
+        select: { id: true, criadoEm: true, tipo: true, mensagem: true, urgencia: true, lido: true },
+      }),
+      this.prisma.exame.findMany({
+        where: { doenteId },
+        orderBy: { criadoEm: 'desc' },
+        take: 20,
+        select: { id: true, criadoEm: true, tipo: true, descricao: true, estado: true, resultado: true, solicitadoPor: { select: { nome: true } } },
+      }).catch(() => []),
+    ]);
+
+    const eventos: { id: string; data: string; categoria: string; titulo: string; detalhe?: string; cor: string; icone: string }[] = [];
+
+    if (doente.dataAdmissao) {
+      eventos.push({ id: 'admissao', data: doente.dataAdmissao.toISOString(), categoria: 'admissao', titulo: 'Admissão hospitalar', cor: '#2563eb', icone: '🏥' });
+    }
+    if (doente.dataAlta) {
+      eventos.push({ id: 'alta', data: doente.dataAlta.toISOString(), categoria: 'alta', titulo: 'Alta hospitalar', cor: '#059669', icone: '🏠' });
+    }
+    for (const s of sinaisVitais) {
+      const parts: string[] = [];
+      if (s.pressaoSistolica) parts.push(`TA ${s.pressaoSistolica}/${s.pressaoDiastolica ?? '?'}`);
+      if (s.pulso) parts.push(`FC ${s.pulso}`);
+      if (s.saturacaoO2) parts.push(`SpO₂ ${s.saturacaoO2}%`);
+      if (s.news2 != null) parts.push(`NEWS2=${s.news2}`);
+      eventos.push({ id: s.id, data: new Date(s.data).toISOString(), categoria: 'sinal_vital', titulo: 'Sinais vitais', detalhe: parts.join(' · '), cor: s.news2 != null && s.news2 >= 5 ? '#dc2626' : '#0891b2', icone: '📊' });
+    }
+    for (const m of medicacoes) {
+      eventos.push({ id: m.id, data: new Date(m.iniciadoEm).toISOString(), categoria: 'medicacao', titulo: `Prescrição: ${m.nome} ${m.dose}`, detalhe: `${m.via} · ${m.frequencia}${m.ativo ? '' : ' (descontinuada)'}`, cor: '#7c3aed', icone: '💊' });
+    }
+    for (const r of registosMed) {
+      eventos.push({ id: r.id, data: new Date(r.administradoEm).toISOString(), categoria: 'administracao', titulo: r.naoAdministrada ? `Não administrado: ${r.medicacao.nome}` : `Administrado: ${r.medicacao.nome} ${r.medicacao.dose}`, detalhe: r.naoAdministrada ? `Motivo: ${r.motivoNaoAdmin}` : `Por: ${r.administradoPor.nome}`, cor: r.naoAdministrada ? '#f59e0b' : '#059669', icone: r.naoAdministrada ? '⚠' : '✓' });
+    }
+    for (const n of notasClinicas as any[]) {
+      eventos.push({ id: n.id, data: new Date(n.criadaEm).toISOString(), categoria: 'nota', titulo: `Nota ${n.tipo ?? 'clínica'}`, detalhe: n.texto?.slice(0, 120), cor: '#374151', icone: '📝' });
+    }
+    for (const t of tarefas) {
+      eventos.push({ id: t.id, data: new Date(t.criadaEm).toISOString(), categoria: 'tarefa', titulo: t.descricao, detalhe: `${t.prioridade} · ${t.estado}`, cor: t.prioridade === 'urgente' ? '#dc2626' : '#f59e0b', icone: '✅' });
+    }
+    for (const a of alertas) {
+      eventos.push({ id: a.id, data: new Date(a.criadoEm).toISOString(), categoria: 'alerta', titulo: a.mensagem, detalhe: a.tipo, cor: a.urgencia ? '#dc2626' : '#f59e0b', icone: '🚨' });
+    }
+    for (const e of exames as any[]) {
+      eventos.push({ id: e.id, data: new Date(e.criadoEm).toISOString(), categoria: 'exame', titulo: `Exame: ${e.tipo ?? e.descricao}`, detalhe: e.resultado ? `Resultado: ${e.resultado.slice(0, 80)}` : e.estado, cor: '#0284c7', icone: '🔬' });
+    }
+
+    eventos.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+    return { doente: { id: doente.id, nome: doente.nome }, total: eventos.length, eventos };
+  }
 }

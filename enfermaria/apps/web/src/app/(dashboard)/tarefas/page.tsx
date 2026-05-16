@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Doente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
 interface Tarefa {
@@ -51,6 +52,7 @@ const ROLES_CRIAR_TAREFA = ['enfermeiro', 'medico'];
 
 export default function TarefasPage() {
   const { utilizador } = useAuth();
+  const toast = useToast();
   const router = useRouter();
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState(true);
@@ -113,10 +115,11 @@ export default function TarefasPage() {
         descricao: tDesc, tipo: tTipo, prioridade: tPrioridade,
         grupoResponsavel: tGrupo, prazo: tPrazo ? new Date(tPrazo) : undefined,
       });
+      toast.success('Tarefa criada com sucesso');
       setModalNovaTarefa(false);
       await carregar();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao criar tarefa');
+      toast.error(e?.response?.data?.message ?? 'Erro ao criar tarefa');
     } finally {
       setCriando(false);
     }
@@ -138,10 +141,11 @@ export default function TarefasPage() {
         descricao: eDesc, prioridade: ePrioridade,
         grupoResponsavel: eGrupo, prazo: ePrazo || null,
       });
+      toast.success('Tarefa actualizada');
       setModalEditarTarefa(null);
       await carregar();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao editar tarefa');
+      toast.error(e?.response?.data?.message ?? 'Erro ao editar tarefa');
     } finally {
       setEditando(false);
     }
@@ -152,6 +156,8 @@ export default function TarefasPage() {
     try {
       await api.patch(`/tarefas/${tarefa.id}/estado`, { estado: tarefa.estado === 'pendente' ? 'em_progresso' : 'pendente' });
       await carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao actualizar tarefa');
     } finally { setAtualizando(null); }
   };
 
@@ -159,7 +165,10 @@ export default function TarefasPage() {
     setAtualizando(tarefaId);
     try {
       await api.patch(`/tarefas/${tarefaId}/estado`, { estado: 'concluida' });
+      toast.success('Tarefa concluída');
       await carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao concluir tarefa');
     } finally { setAtualizando(null); }
   };
 
@@ -256,8 +265,9 @@ export default function TarefasPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
-          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+        <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar tarefas"
+          className="flex items-center justify-center gap-3 text-slate-400" style={{ paddingTop: '80px' }}>
+          <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>

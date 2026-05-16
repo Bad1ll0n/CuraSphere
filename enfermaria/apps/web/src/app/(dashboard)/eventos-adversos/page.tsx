@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface EventoAdverso {
   id: string;
@@ -52,6 +53,7 @@ const SERVICOS = ['internamento', 'urgencia', 'bloco', 'consultas', 'farmacia', 
 export default function EventosAdversosPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [filtroTipo, setFiltroTipo] = useState('');
   const [filtroGravidade, setFiltroGravidade] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
@@ -92,15 +94,18 @@ export default function EventosAdversosPage() {
   const mutCriar = useMutation({
     mutationFn: (body: object) => api.post('/eventos-adversos', body),
     onSuccess: () => {
+      toast.success('Evento adverso registado');
       setModalNovo(false);
       setForm({ tipo: 'queda', gravidade: 'dano_leve', descricao: '', servicoId: '', doenteId: '', acaoCorretiva: '', ocorridoEm: new Date().toISOString().slice(0, 16) });
       invalidar();
     },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar evento'),
   });
 
   const mutAcao = useMutation({
     mutationFn: ({ id, body }: { id: string; body: object }) => api.patch(`/eventos-adversos/${id}`, body),
-    onSuccess: () => { setModalAcao(null); invalidar(); },
+    onSuccess: () => { toast.success('Evento adverso actualizado'); setModalAcao(null); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar evento'),
   });
 
   const criar = () => {

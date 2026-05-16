@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Tarefa {
   id: string;
@@ -84,6 +85,7 @@ const TIPO_PEDIDO_LABEL: Record<string, string> = {
 export default function OperacionalPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const subRole = utilizador?.subRole ?? '';
   const tipoPedido = SUBROLE_TIPO_PEDIDO[subRole];
 
@@ -111,12 +113,14 @@ export default function OperacionalPage() {
 
   const mutConcluirTarefa = useMutation({
     mutationFn: (id: string) => api.patch(`/tarefas/${id}/concluir`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['tarefas-operacional'] }),
+    onSuccess: () => { toast.success('Tarefa concluída'); qc.invalidateQueries({ queryKey: ['tarefas-operacional'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao concluir tarefa'),
   });
 
   const mutConcluirPedido = useMutation({
     mutationFn: (id: string) => api.patch(`/pedidos-internos/${id}/concluir`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['pedidos-operacional'] }),
+    onSuccess: () => { toast.success('Pedido concluído'); qc.invalidateQueries({ queryKey: ['pedidos-operacional'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao concluir pedido'),
   });
 
   const tarefasAtivas = tarefas.filter(t => t.estado === 'pendente' || t.estado === 'em_progresso');

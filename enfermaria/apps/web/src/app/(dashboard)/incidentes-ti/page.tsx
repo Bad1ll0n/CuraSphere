@@ -208,7 +208,7 @@ export default function IncidentesTIPage() {
             <button
               key={e.value}
               onClick={() => setFiltroEstado(e.value)}
-              className={`text-xs font-semibold rounded-lg px-3 py-1.5 transition-all ${filtroEstado === e.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`text-sm font-semibold rounded-lg px-4 py-2 transition-all ${filtroEstado === e.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               {'label' in e ? e.label : e.value}
             </button>

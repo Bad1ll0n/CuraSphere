@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import QRCode from 'react-qr-code';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../../../../lib/auth-context';
 import api from '../../../../lib/api';
+import { useToast } from '../../../../components/toast';
+import { ConfirmModal } from '../../../../components/confirm-modal';
+import { Breadcrumb } from '../../../../components/breadcrumb';
 
 interface Doente {
   id: string;
@@ -450,6 +452,12 @@ export default function DoenteDetalhe() {
   const [medVia, setMedVia] = useState('');
   const [medFreq, setMedFreq] = useState('');
 
+  const toast = useToast();
+  const [confirmarAcao, setConfirmarAcao] = useState<{
+    titulo: string; mensagem: string; variant: 'danger' | 'warning';
+    onConfirmar: () => void;
+  } | null>(null);
+
   const eAdmin = utilizador?.role === 'administrativo';
 
   // Ficha pessoal (dados admin — só carregados para role administrativo)
@@ -495,9 +503,11 @@ export default function DoenteDetalhe() {
   const enviarSOS = async () => {
     try {
       await api.post(`/alertas/${id}/sos`);
+      toast.success('Alerta SOS enviado');
       setSosEnviado(true);
       setTimeout(() => { setSosEnviado(false); setSosConfirmando(false); }, 5000);
-    } catch {
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
       setSosConfirmando(false);
     }
   };
@@ -527,16 +537,23 @@ export default function DoenteDetalhe() {
     medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
   };
 
-  const concluirMedicacao = async (medId: string) => {
-    if (!confirm('Confirmar conclusão desta medicação?')) return;
-    try {
-      await api.patch(`/medicacao/${medId}/descontinuar`);
-      carregar();
-    } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao concluir medicação');
-    }
+  const concluirMedicacao = (medId: string) => {
+    setConfirmarAcao({
+      titulo: 'Descontinuar Medicação',
+      mensagem: 'Confirmar conclusão desta medicação? Esta acção não pode ser revertida.',
+      variant: 'warning',
+      onConfirmar: async () => {
+        setConfirmarAcao(null);
+        try {
+          await api.patch(`/medicacao/${medId}/descontinuar`);
+          toast.success('Medicação descontinuada');
+          carregar();
+        } catch (e: any) {
+          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+        }
+      },
+    });
   };
-
   const abrirHistoricoMed = async () => {
     setLoadingHistoricoMed(true);
     setModalHistoricoMed(true);
@@ -613,10 +630,11 @@ export default function DoenteDetalhe() {
         diagnosticoPrincipal: editDiagnostico || undefined,
         dataAltaPrevista: editAltaPrevista ? new Date(editAltaPrevista) : null,
       });
+      toast.success('Guardado com sucesso');
       setModalEditarDoente(false);
       await carregar();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao editar doente');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoEdicao(false); }
   };
 
@@ -625,10 +643,11 @@ export default function DoenteDetalhe() {
     setSalvando(true);
     try {
       await api.post(`/escalas/${id}`, { tipo: modalEscala, itens: escalaItens });
+      toast.success('Guardado com sucesso');
       setModalEscala(null); setEscalaItens({});
       carregarEscalas();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao registar escala');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvando(false); }
   };
 
@@ -646,7 +665,7 @@ export default function DoenteDetalhe() {
       setModalAltaEstruturada(false);
       router.push('/doentes');
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao registar alta');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoAlta(false); }
   };
 
@@ -664,10 +683,11 @@ export default function DoenteDetalhe() {
         notas: svNotas || undefined,
         avpu: svAvpu || undefined,
       });
+      toast.success('Sinais vitais registados');
       setModalSinalVital(false);
       carregarSinaisVitais();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao registar sinais vitais');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvando(false); }
   };
 
@@ -676,10 +696,11 @@ export default function DoenteDetalhe() {
     setSalvando(true);
     try {
       await api.post(`/alergias/${id}`, { alergenio, tipo: alergiaTipo, severidade: alergiaSev, notas: alergiaNotas || undefined });
+      toast.success('Guardado com sucesso');
       setModalAlergia(false); setAlergenio(''); setAlergiaNotas('');
       carregarAlergias();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao registar alergia');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvando(false); }
   };
 
@@ -688,14 +709,29 @@ export default function DoenteDetalhe() {
     try {
       const r = await api.patch(`/doentes/${id}/ficha-pessoal`, fichaForm);
       setFicheiroPessoal(r.data);
+      toast.success('Guardado com sucesso');
       setEditandoFicha(false);
-    } catch { /* silencioso */ } finally { setSalvandoFicha(false); }
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+    } finally { setSalvandoFicha(false); }
   };
 
-  const removerAlergia = async (alergiaId: string) => {
-    if (!confirm('Remover esta alergia?')) return;
-    await api.delete(`/alergias/${alergiaId}`);
-    carregarAlergias();
+  const removerAlergia = (alergiaId: string, nomeAlergenio: string) => {
+    setConfirmarAcao({
+      titulo: 'Remover Alergia',
+      mensagem: `Remover alergia a "${nomeAlergenio}"? Esta acção não pode ser revertida.`,
+      variant: 'danger',
+      onConfirmar: async () => {
+        setConfirmarAcao(null);
+        try {
+          await api.delete(`/alergias/${alergiaId}`);
+          toast.success('Removido');
+          carregarAlergias();
+        } catch (e: any) {
+          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+        }
+      },
+    });
   };
 
   const submeterContacto = async () => {
@@ -703,17 +739,30 @@ export default function DoenteDetalhe() {
     setSalvando(true);
     try {
       await api.post(`/contactos/${id}`, { nome: ctNome, relacao: ctRelacao, telefone: ctTel, principal: ctPrincipal });
+      toast.success('Guardado com sucesso');
       setModalContacto(false); setCtNome(''); setCtTel(''); setCtPrincipal(false);
       carregarContactos();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao guardar contacto');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvando(false); }
   };
 
-  const removerContacto = async (ctId: string) => {
-    if (!confirm('Remover este contacto?')) return;
-    await api.delete(`/contactos/${ctId}`);
-    carregarContactos();
+  const removerContacto = (ctId: string, nomeContacto: string) => {
+    setConfirmarAcao({
+      titulo: 'Remover Contacto',
+      mensagem: `Remover contacto "${nomeContacto}"? Esta acção não pode ser revertida.`,
+      variant: 'danger',
+      onConfirmar: async () => {
+        setConfirmarAcao(null);
+        try {
+          await api.delete(`/contactos/${ctId}`);
+          toast.success('Removido');
+          carregarContactos();
+        } catch (e: any) {
+          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -768,9 +817,12 @@ export default function DoenteDetalhe() {
     setSalvandoIsolamento(true);
     try {
       await api.patch(`/doentes/${id}/isolamento`, { emIsolamento: ativar, motivoIsolamento: ativar ? motivoIsolamentoInput : undefined });
+      toast.success('Guardado com sucesso');
       setModalIsolamento(false);
       setMotivoIsolamentoInput('');
       carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally {
       setSalvandoIsolamento(false);
     }
@@ -814,14 +866,22 @@ export default function DoenteDetalhe() {
     setSalvandoNota(true);
     try {
       await api.patch(`/doentes/${id}/nota/${notaId}`, { texto: notaEditTexto });
+      toast.success('Nota guardada');
       setNotaEditandoId(null);
       carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoNota(false); }
   };
 
   const apagarNota = async (notaId: string) => {
-    await api.delete(`/doentes/${id}/nota/${notaId}`);
-    carregar();
+    try {
+      await api.delete(`/doentes/${id}/nota/${notaId}`);
+      toast.success('Removido');
+      carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+    }
   };
 
   const abrirModalTarefa = () => {
@@ -835,9 +895,10 @@ export default function DoenteDetalhe() {
     setSalvando(true); setErroModal('');
     try {
       await api.post(`/doentes/${id}/nota`, { texto: notaTexto });
+      toast.success('Nota guardada');
       setModalNota(false); setNotaTexto(''); carregar();
     } catch (e: any) {
-      setErroModal(e.response?.data?.message ?? 'Erro ao guardar nota');
+      setErroModal(e?.response?.data?.message ?? 'Erro ao guardar nota');
     } finally { setSalvando(false); }
   };
 
@@ -852,9 +913,10 @@ export default function DoenteDetalhe() {
         grupoResponsavel: tarefaGrupo,
         prazo: tarefaPrazo || undefined,
       });
+      toast.success('Tarefa criada');
       setModalTarefa(false); carregar();
     } catch (e: any) {
-      setErroModal(e.response?.data?.message ?? 'Erro ao criar tarefa');
+      setErroModal(e?.response?.data?.message ?? 'Erro ao criar tarefa');
     } finally { setSalvando(false); }
   };
 
@@ -863,9 +925,10 @@ export default function DoenteDetalhe() {
     setSalvando(true); setErroModal('');
     try {
       await api.post('/medicacao/prescrever', { doenteId: id, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq });
+      toast.success('Prescrição guardada');
       setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); carregar();
     } catch (e: any) {
-      setErroModal(e.response?.data?.message ?? 'Erro ao prescrever medicação');
+      setErroModal(e?.response?.data?.message ?? 'Erro ao prescrever medicação');
     } finally { setSalvando(false); }
   };
 
@@ -880,20 +943,32 @@ export default function DoenteDetalhe() {
       } else {
         await api.post(`/notas-clinicas/${id}`, soapForm);
       }
+      toast.success('Nota guardada');
       setModalNotaClinica(false);
       setSoapForm({ subjetivo: '', objetivo: '', avaliacao: '', plano: '' });
       carregarNotasClincias();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao guardar nota');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoSoap(false); }
   };
 
-  const apagarNotaClinica = async (notaId: string) => {
-    if (!confirm('Apagar esta nota clínica?')) return;
-    await api.delete(`/notas-clinicas/${notaId}`);
-    carregarNotasClincias();
+  const apagarNotaClinica = (notaId: string) => {
+    setConfirmarAcao({
+      titulo: 'Apagar Nota Clínica',
+      mensagem: 'Apagar esta nota clínica permanentemente? Esta acção não pode ser revertida.',
+      variant: 'danger',
+      onConfirmar: async () => {
+        setConfirmarAcao(null);
+        try {
+          await api.delete(`/notas-clinicas/${notaId}`);
+          toast.success('Nota apagada');
+          carregarNotasClincias();
+        } catch (e: any) {
+          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+        }
+      },
+    });
   };
-
   const submeterEscalaClinica = async () => {
     setSalvandoEscalaClinica(true);
     try {
@@ -903,11 +978,12 @@ export default function DoenteDetalhe() {
       await api.post(`/escalas-clinicas/${id}`, {
         tipo: tipoEscalaClinica, valores: valoresEscalaClinica, pontuacao, classificacao,
       });
+      toast.success('Guardado com sucesso');
       setModalEscalaClinica(false);
       setValoresEscalaClinica({});
       carregarEscalasClinicas();
     } catch (e: any) {
-      alert(e.response?.data?.message ?? 'Erro ao registar escala');
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoEscalaClinica(false); }
   };
 
@@ -917,9 +993,12 @@ export default function DoenteDetalhe() {
       await api.post(`/interconsultas/doente/${id}`, {
         especialidadeAlvo: intercEspecialidade, motivo: intercMotivo, urgente: intercUrgente,
       });
+      toast.success('Guardado com sucesso');
       setModalInterconsulta(false);
       setIntercMotivo(''); setIntercUrgente(false);
       carregarInterconsultas();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoInterc(false); }
   };
 
@@ -927,9 +1006,12 @@ export default function DoenteDetalhe() {
     if (!intercResposta.trim()) return;
     try {
       await api.patch(`/interconsultas/${intercId}/responder`, { resposta: intercResposta });
+      toast.success('Guardado com sucesso');
       setModalIntercResposta(null); setIntercResposta('');
       carregarInterconsultas();
-    } catch (e: any) { alert(e.response?.data?.message ?? 'Erro'); }
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+    }
   };
 
   const submeterProblema = async () => {
@@ -940,17 +1022,25 @@ export default function DoenteDetalhe() {
         descricao: probDescricao, tipo: probTipo,
         dataInicio: probDataInicio || undefined,
       });
+      toast.success('Guardado com sucesso');
       setModalProblema(false);
       setProbDescricao(''); setProbTipo('comorbilidade'); setProbDataInicio('');
       const r = await api.get(`/doentes/${id}/problemas`);
       setProblemas(r.data ?? []);
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoProb(false); }
   };
 
   const resolverProblema = async (probId: string) => {
-    await api.patch(`/doentes/${id}/problemas/${probId}`, { estado: 'resolvido', dataFim: new Date().toISOString().split('T')[0] });
-    const r = await api.get(`/doentes/${id}/problemas`);
-    setProblemas(r.data ?? []);
+    try {
+      await api.patch(`/doentes/${id}/problemas/${probId}`, { estado: 'resolvido', dataFim: new Date().toISOString().split('T')[0] });
+      toast.success('Guardado com sucesso');
+      const r = await api.get(`/doentes/${id}/problemas`);
+      setProblemas(r.data ?? []);
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+    }
   };
 
   const submeterDispositivo = async () => {
@@ -959,16 +1049,31 @@ export default function DoenteDetalhe() {
       await api.post(`/dispositivos-invasivos/doente/${id}`, {
         tipo: dispTipo, localizacao: dispLocalizacao || undefined, observacoes: dispObservacoes || undefined,
       });
+      toast.success('Guardado com sucesso');
       setModalDispositivo(false);
       setDispLocalizacao(''); setDispObservacoes('');
       carregarDispositivos();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoDisp(false); }
   };
 
-  const removerDispositivo = async (dispId: string) => {
-    if (!confirm('Confirmar remoção do dispositivo?')) return;
-    await api.patch(`/dispositivos-invasivos/${dispId}/remover`);
-    carregarDispositivos();
+  const removerDispositivo = (dispId: string) => {
+    setConfirmarAcao({
+      titulo: 'Remover Dispositivo',
+      mensagem: 'Confirmar remoção deste dispositivo invasivo? O registo ficará marcado como removido.',
+      variant: 'warning',
+      onConfirmar: async () => {
+        setConfirmarAcao(null);
+        try {
+          await api.patch(`/dispositivos-invasivos/${dispId}/remover`);
+          toast.success('Dispositivo removido');
+          carregarDispositivos();
+        } catch (e: any) {
+          toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+        }
+      },
+    });
   };
 
   if (loading) return (
@@ -988,21 +1093,19 @@ export default function DoenteDetalhe() {
   return (
     <div style={{ padding: '40px 48px', maxWidth: '1100px', margin: '0 auto' }}>
 
-      {/* Back */}
-      <Link href="/doentes"
-        className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-slate-600 transition-colors"
-        style={{ marginBottom: '24px', display: 'inline-flex' }}>
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-        Voltar a Doentes
-      </Link>
+      {/* Breadcrumb */}
+      <div style={{ marginBottom: '24px' }}>
+        <Breadcrumb items={[
+          { label: 'Doentes', href: '/doentes' },
+          { label: doente.nome },
+        ]} />
+      </div>
 
       {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: '28px' }}>
         <div>
           <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
-            <h1 className="text-3xl font-bold text-slate-900">{doente.nome}</h1>
+            <h1 className="text-2xl font-bold text-slate-900">{doente.nome}</h1>
             <div className="relative">
               <button
                 onClick={() => podeAlterarEstado && setAlterandoEstado((v) => !v)}
@@ -1324,7 +1427,7 @@ export default function DoenteDetalhe() {
               </span>
             )}
             <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
-              <button onClick={abrirHistoricoMed} title="Histórico de medicação"
+              <button onClick={abrirHistoricoMed} aria-label="Histórico de medicação"
                 className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
                 <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1436,8 +1539,11 @@ export default function DoenteDetalhe() {
                           onClick={async () => {
                             try {
                               await api.patch(`/tarefas/${t.id}/estado`, { estado: 'concluida' });
+                              toast.success('Guardado com sucesso');
                               carregar();
-                            } catch { /* ignore */ }
+                            } catch (e: any) {
+                              toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+                            }
                           }}
                           title="Concluir tarefa"
                           className="w-6 h-6 rounded-full border-2 border-slate-300 hover:border-green-500 hover:bg-green-50 flex items-center justify-center transition-all"
@@ -1518,7 +1624,7 @@ export default function DoenteDetalhe() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </button>
-                          <button onClick={() => apagarNota(n.id)} title="Apagar"
+                          <button onClick={() => apagarNota(n.id)} aria-label="Apagar nota de turno"
                             className="w-6 h-6 rounded-md hover:bg-red-100 flex items-center justify-center transition-colors">
                             <svg className="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1562,7 +1668,7 @@ export default function DoenteDetalhe() {
                       <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
                       <span className="text-xs text-slate-400 ml-2">{a.tipo}</span>
                     </div>
-                    <button onClick={() => removerAlergia(a.id)} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                    <button onClick={() => removerAlergia(a.id, a.alergenio)} aria-label={`Remover alergia ${a.alergenio}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
                   </div>
                 );
               })}
@@ -1594,7 +1700,7 @@ export default function DoenteDetalhe() {
                     </div>
                     <span className="text-xs text-slate-400">{c.relacao} · {c.telefone}</span>
                   </div>
-                  <button onClick={() => removerContacto(c.id)} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
+                  <button onClick={() => removerContacto(c.id, c.nome)} aria-label={`Remover contacto ${c.nome}`} className="text-red-400 hover:text-red-600 text-xs transition-colors">✕</button>
                 </div>
               ))}
             </div>
@@ -1661,15 +1767,15 @@ export default function DoenteDetalhe() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-xs text-slate-400 font-semibold uppercase tracking-wide border-b border-slate-100">
-                    <th className="text-left pb-2">Data/Hora</th>
-                    <th className="text-center pb-2">TA (mmHg)</th>
-                    <th className="text-center pb-2">Pulso</th>
-                    <th className="text-center pb-2">Temp ºC</th>
-                    <th className="text-center pb-2">SpO₂ %</th>
-                    <th className="text-center pb-2">FR</th>
-                    <th className="text-center pb-2">NEWS2</th>
-                    <th className="text-left pb-2">Registado por</th>
+                  <tr className="bg-slate-50 text-xs text-slate-600 font-semibold uppercase tracking-wide border-b border-slate-100">
+                    <th scope="col" className="text-left pb-2">Data/Hora</th>
+                    <th scope="col" className="text-center pb-2">TA (mmHg)</th>
+                    <th scope="col" className="text-center pb-2">Pulso</th>
+                    <th scope="col" className="text-center pb-2">Temp ºC</th>
+                    <th scope="col" className="text-center pb-2">SpO₂ %</th>
+                    <th scope="col" className="text-center pb-2">FR</th>
+                    <th scope="col" className="text-center pb-2">NEWS2</th>
+                    <th scope="col" className="text-left pb-2">Registado por</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1785,9 +1891,12 @@ export default function DoenteDetalhe() {
           setSalvandoExame(true);
           try {
             await api.post(`/exames/${id}`, exameForm);
+            toast.success('Guardado com sucesso');
             setModalExame(false);
             setExameForm({ tipo: 'analise_clinica', descricao: '', urgente: false });
             carregarExames();
+          } catch (e: any) {
+            toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
           } finally { setSalvandoExame(false); }
         };
 
@@ -1796,16 +1905,31 @@ export default function DoenteDetalhe() {
           setSalvandoExame(true);
           try {
             await api.patch(`/exames/${resultadoModal.id}/resultado`, { resultado: resultadoTexto });
+            toast.success('Guardado com sucesso');
             setResultadoModal(null);
             setResultadoTexto('');
             carregarExames();
+          } catch (e: any) {
+            toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
           } finally { setSalvandoExame(false); }
         };
 
-        const cancelarExame = async (exameId: string) => {
-          if (!confirm('Cancelar este exame?')) return;
-          await api.patch(`/exames/${exameId}/cancelar`);
-          carregarExames();
+        const cancelarExame = (exameId: string) => {
+          setConfirmarAcao({
+            titulo: 'Cancelar Exame',
+            mensagem: 'Cancelar este exame? Esta acção não pode ser revertida.',
+            variant: 'warning',
+            onConfirmar: async () => {
+              setConfirmarAcao(null);
+              try {
+                await api.patch(`/exames/${exameId}/cancelar`);
+                toast.success('Exame cancelado');
+                carregarExames();
+              } catch (e: any) {
+                toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
+              }
+            },
+          });
         };
 
         return (
@@ -1878,7 +2002,7 @@ export default function DoenteDetalhe() {
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(TIPO_EXAME_LABELS).map(([v, l]) => (
                         <button key={v} onClick={() => setExameForm(f => ({ ...f, tipo: v }))}
-                          className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${exameForm.tipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+                          className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${exameForm.tipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
                           {l}
                         </button>
                       ))}
@@ -2239,6 +2363,7 @@ export default function DoenteDetalhe() {
             {/* Modal Adicionar Problema */}
             {modalProblema && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                style={{ backdropFilter: 'blur(4px)' }}
                 onClick={e => { if (e.target === e.currentTarget) setModalProblema(false); }}>
                 <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md">
                   <div className="flex items-center justify-between mb-4">
@@ -2368,14 +2493,14 @@ export default function DoenteDetalhe() {
       {modalAlergia && (
         <Modal titulo="Registar Alergia" onClose={() => setModalAlergia(false)}>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente alérgeno *</label>
-            <input type="text" value={alergenio} onChange={(e) => setAlergenio(e.target.value)} placeholder="Ex: Penicilina, Ibuprofeno..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+            <label htmlFor="alergia-alergenio" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Agente alérgeno *</label>
+            <input id="alergia-alergenio" type="text" value={alergenio} onChange={(e) => setAlergenio(e.target.value)} placeholder="Ex: Penicilina, Ibuprofeno..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
             <div className="flex gap-2 flex-wrap">
               {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
-                <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
+                <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
               ))}
             </div>
           </div>
@@ -2383,13 +2508,13 @@ export default function DoenteDetalhe() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
             <div className="flex gap-2 flex-wrap">
               {['ligeira', 'moderada', 'grave', 'anafilaxia'].map((s) => (
-                <button key={s} onClick={() => setAlergiaSev(s)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
+                <button key={s} onClick={() => setAlergiaSev(s)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
               ))}
             </div>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
-            <input type="text" value={alergiaNotas} onChange={(e) => setAlergiaNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
+            <label htmlFor="alergia-notas" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Notas</label>
+            <input id="alergia-notas" type="text" value={alergiaNotas} onChange={(e) => setAlergiaNotas(e.target.value)} placeholder="Observações..." className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '10px 14px' }} />
           </div>
           <ModalFooter onCancel={() => setModalAlergia(false)} onConfirm={submeterAlergia} loading={salvando} disabled={!alergenio.trim() || salvando} labelConfirm="Registar" />
         </Modal>
@@ -2406,7 +2531,7 @@ export default function DoenteDetalhe() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</label>
             <div className="flex gap-2 flex-wrap">
               {['cônjuge', 'filho/a', 'pai/mãe', 'outro'].map((r) => (
-                <button key={r} onClick={() => setCtRelacao(r)} className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
+                <button key={r} onClick={() => setCtRelacao(r)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
               ))}
             </div>
           </div>
@@ -2969,7 +3094,7 @@ export default function DoenteDetalhe() {
 
       {/* Modal Activar Isolamento */}
       {modalIsolamento && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
           <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
               <h2 className="text-lg font-bold text-slate-900">🔶 Activar Isolamento</h2>
@@ -3316,7 +3441,7 @@ export default function DoenteDetalhe() {
               <div className="flex flex-wrap gap-2" style={{ marginBottom: '24px' }}>
                 {escalasDisponiveis.map(tipo => (
                   <button key={tipo} onClick={() => { setTipoEscalaClinica(tipo); setValoresEscalaClinica({}); }}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${tipoEscalaClinica === tipo ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
+                    className={`text-sm font-bold px-4 py-2 rounded-lg border transition-colors ${tipoEscalaClinica === tipo ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
                     {tipo}
                   </button>
                 ))}
@@ -3421,8 +3546,8 @@ export default function DoenteDetalhe() {
       {modalDispositivo && (
         <Modal titulo="Registar Dispositivo Invasivo" onClose={() => setModalDispositivo(false)}>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo *</label>
-            <select value={dispTipo} onChange={(e) => setDispTipo(e.target.value)}
+            <label htmlFor="disp-tipo" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo *</label>
+            <select id="disp-tipo" value={dispTipo} onChange={(e) => setDispTipo(e.target.value)}
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               style={{ padding: '10px 14px' }}>
               {[
@@ -3440,15 +3565,15 @@ export default function DoenteDetalhe() {
             </select>
           </div>
           <div style={{ marginBottom: '14px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Localização / Acesso</label>
-            <input type="text" value={dispLocalizacao} onChange={(e) => setDispLocalizacao(e.target.value)}
+            <label htmlFor="disp-localizacao" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Localização / Acesso</label>
+            <input id="disp-localizacao" type="text" value={dispLocalizacao} onChange={(e) => setDispLocalizacao(e.target.value)}
               placeholder="Ex: Subclávia D, Femoral E, Dorso mão esq..."
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               style={{ padding: '10px 14px' }} />
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
-            <textarea value={dispObservacoes} onChange={(e) => setDispObservacoes(e.target.value)}
+            <label htmlFor="disp-obs" className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações</label>
+            <textarea id="disp-obs" value={dispObservacoes} onChange={(e) => setDispObservacoes(e.target.value)}
               placeholder="Calibre, lúmen, intercorrências..."
               className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               style={{ padding: '10px 14px' }} rows={2} />
@@ -3457,6 +3582,15 @@ export default function DoenteDetalhe() {
             loading={salvandoDisp} disabled={salvandoDisp} labelConfirm="Registar Dispositivo" />
         </Modal>
       )}
+
+      <ConfirmModal
+        isOpen={!!confirmarAcao}
+        titulo={confirmarAcao?.titulo ?? ''}
+        mensagem={confirmarAcao?.mensagem ?? ''}
+        variant={confirmarAcao?.variant ?? 'danger'}
+        onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
+        onCancelar={() => setConfirmarAcao(null)}
+      />
     </div>
   );
 }

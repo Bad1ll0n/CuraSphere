@@ -26,6 +26,15 @@ interface Utilizador {
   ordemExperiencia?: number;
 }
 
+interface Ausencia {
+  id: string;
+  tipo: string;
+  dataInicio: string;
+  dataFim: string;
+  estado: string;
+  utilizador: { id: string; nome: string };
+}
+
 const tipoLabel: Record<string, string> = { manha: 'Manhã', tarde: 'Tarde', noite: 'Noite' };
 const tipoCor: Record<string, { pill: string; cal: string }> = {
   manha: { pill: 'bg-amber-100 text-amber-700',   cal: 'bg-amber-50 text-amber-700 border border-amber-200' },
@@ -51,6 +60,7 @@ export default function HorariosPagina() {
   const [escala, setEscala] = useState<Escala | null>(null);
   const [_meuHorario, setMeuHorario] = useState<any[]>([]);
   const [profissionais, setProfissionais] = useState<Utilizador[]>([]);
+  const [ausencias, setAusencias] = useState<Ausencia[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState('');
 
@@ -83,12 +93,14 @@ export default function HorariosPagina() {
     setLoading(true);
     setErro('');
     try {
-      const [escalR, meuR] = await Promise.all([
+      const [escalR, meuR, ausenciasR] = await Promise.all([
         api.get(`/horarios/mes?mes=${mes}&ano=${ano}`).catch(() => ({ data: null })),
         api.get(`/horarios/meu?mes=${mes}&ano=${ano}`),
+        api.get(`/horarios/ausencias?mes=${mes}&ano=${ano}`).catch(() => ({ data: [] })),
       ]);
       setEscala(escalR.data);
       setMeuHorario(meuR.data);
+      setAusencias(ausenciasR.data ?? []);
     } catch {
       setErro('Erro ao carregar horários');
     } finally {
@@ -215,6 +227,15 @@ export default function HorariosPagina() {
     } finally {
       setGerandoAuto(false);
     }
+  };
+
+  const isAusenteNoDia = (profId: string, diaStr: string) => {
+    const dia = new Date(diaStr + 'T12:00:00Z');
+    return ausencias.some(a =>
+      a.utilizador.id === profId &&
+      new Date(a.dataInicio) <= dia &&
+      new Date(a.dataFim) >= dia
+    );
   };
 
   const toggleEditProfissional = (id: string) => {
@@ -376,6 +397,11 @@ export default function HorariosPagina() {
                         {diaNum}
                       </span>
                     </div>
+                    {utilizador && isAusenteNoDia(utilizador.id, dia) && (
+                      <div className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-md text-center" style={{ padding: '2px 4px', marginBottom: '3px' }}>
+                        Férias
+                      </div>
+                    )}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                       {(['manha', 'tarde', 'noite'] as const).map((tipo) => {
                         const t = turnos.find((x) => x.tipo === tipo);
@@ -470,19 +496,23 @@ export default function HorariosPagina() {
               <div className="border border-slate-200 rounded-xl overflow-hidden" style={{ maxHeight: '260px', overflowY: 'auto' }}>
                 {profissionais.sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
                   const selected = novoTurno.profissionaisIds.includes(p.id);
+                  const ausente = modalDia ? isAusenteNoDia(p.id, modalDia) : false;
                   return (
                     <div
                       key={p.id}
-                      onClick={() => toggleProfissional(p.id)}
-                      className={`flex items-center justify-between cursor-pointer transition-colors ${selected ? 'bg-blue-50' : 'hover:bg-slate-50'}`}
+                      onClick={() => !ausente && toggleProfissional(p.id)}
+                      className={`flex items-center justify-between transition-colors ${ausente ? 'opacity-50 cursor-not-allowed bg-slate-50' : selected ? 'bg-blue-50 cursor-pointer' : 'hover:bg-slate-50 cursor-pointer'}`}
                       style={{ padding: '12px 16px', borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none' }}
                     >
                       <div>
-                        <p className="text-sm font-medium text-slate-800">{p.nome}</p>
-                        <p className="text-xs text-slate-400">{roleLabel[p.role] ?? p.role}</p>
+                        <p className={`text-sm font-medium ${ausente ? 'text-slate-400' : 'text-slate-800'}`}>{p.nome}</p>
+                        <p className="text-xs text-slate-400">
+                          {roleLabel[p.role] ?? p.role}
+                          {ausente && <span className="ml-1 text-amber-500 font-semibold">(em férias)</span>}
+                        </p>
                       </div>
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'}`}>
-                        {selected && (
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ausente ? 'border-slate-200 bg-slate-100' : selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'}`}>
+                        {selected && !ausente && (
                           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                           </svg>
@@ -566,17 +596,22 @@ export default function HorariosPagina() {
               <div className="border border-slate-200 rounded-xl overflow-hidden" style={{ maxHeight: '220px', overflowY: 'auto' }}>
                 {profissionais.sort((a, b) => (a.equipa ?? '').localeCompare(b.equipa ?? '') || (a.ordemExperiencia ?? 999) - (b.ordemExperiencia ?? 999)).map((p, i, arr) => {
                   const selected = editTurno.profissionaisIds.includes(p.id);
+                  const diaTurno = turnoEditando ? turnoEditando.data.split('T')[0] : null;
+                  const ausente = diaTurno ? isAusenteNoDia(p.id, diaTurno) : false;
                   return (
                     <div key={p.id}
-                      onClick={() => toggleEditProfissional(p.id)}
-                      className={`flex items-center justify-between cursor-pointer transition-colors ${selected ? 'bg-blue-50' : 'hover:bg-slate-50'}`}
+                      onClick={() => !ausente && toggleEditProfissional(p.id)}
+                      className={`flex items-center justify-between transition-colors ${ausente ? 'opacity-50 cursor-not-allowed bg-slate-50' : selected ? 'bg-blue-50 cursor-pointer' : 'hover:bg-slate-50 cursor-pointer'}`}
                       style={{ padding: '12px 16px', borderBottom: i < arr.length - 1 ? '1px solid #f1f5f9' : 'none' }}>
                       <div>
-                        <p className="text-sm font-medium text-slate-800">{p.nome}</p>
-                        <p className="text-xs text-slate-400">Enfermeiro{p.equipa ? ` · Equipa ${p.equipa}` : ''}</p>
+                        <p className={`text-sm font-medium ${ausente ? 'text-slate-400' : 'text-slate-800'}`}>{p.nome}</p>
+                        <p className="text-xs text-slate-400">
+                          {roleLabel[p.role] ?? p.role}{p.equipa ? ` · Equipa ${p.equipa}` : ''}
+                          {ausente && <span className="ml-1 text-amber-500 font-semibold">(em férias)</span>}
+                        </p>
                       </div>
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'}`}>
-                        {selected && (
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ausente ? 'border-slate-200 bg-slate-100' : selected ? 'bg-blue-600 border-blue-600' : 'border-slate-300'}`}>
+                        {selected && !ausente && (
                           <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                           </svg>

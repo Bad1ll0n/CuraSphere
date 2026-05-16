@@ -70,6 +70,21 @@ export class HorariosService {
     const dataFim = new Date(diaStr + 'T23:59:59.999Z');
     const dataNormalizada = dataInicio;
 
+    // Bloquear profissionais em ausência aprovada nesta data
+    const emAusencia = await this.prisma.ausencia.findMany({
+      where: {
+        utilizadorId: { in: data.profissionaisIds },
+        estado: 'aprovada',
+        dataInicio: { lte: dataFim },
+        dataFim:    { gte: dataInicio },
+      },
+      include: { utilizador: { select: { nome: true } } },
+    });
+    if (emAusencia.length > 0) {
+      const nomes = emAusencia.map((a) => a.utilizador.nome).join(', ');
+      throw new BadRequestException(`Profissional(is) em ausência aprovada nesta data: ${nomes}`);
+    }
+
     // Determinar o grupo dos profissionais a adicionar
     const grupoMedico = ['medico', 'chefe_medicos'];
     const grupoEnfermagem = ['enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'auxiliar'];
@@ -146,6 +161,22 @@ export class HorariosService {
     }
 
     if (data.profissionaisIds) {
+      const diaStrE = new Date(turno.data).toISOString().split('T')[0];
+      const dataInicioE = new Date(diaStrE + 'T00:00:00.000Z');
+      const dataFimE = new Date(diaStrE + 'T23:59:59.999Z');
+      const emAusenciaE = await this.prisma.ausencia.findMany({
+        where: {
+          utilizadorId: { in: data.profissionaisIds },
+          estado: 'aprovada',
+          dataInicio: { lte: dataFimE },
+          dataFim:    { gte: dataInicioE },
+        },
+        include: { utilizador: { select: { nome: true } } },
+      });
+      if (emAusenciaE.length > 0) {
+        const nomes = emAusenciaE.map((a) => a.utilizador.nome).join(', ');
+        throw new BadRequestException(`Profissional(is) em ausência aprovada nesta data: ${nomes}`);
+      }
       await this.prisma.horarioTurnoProfissional.deleteMany({ where: { horarioTurnoId: turnoId } });
       await this.prisma.horarioTurnoProfissional.createMany({
         data: data.profissionaisIds.map((id) => ({ horarioTurnoId: turnoId, utilizadorId: id })),
@@ -195,6 +226,18 @@ export class HorariosService {
     const enfermeiros = profissionais.filter(p => p.role === 'enfermeiro');
     const auxiliares = profissionais.filter(p => p.role === 'auxiliar');
 
+    // Pré-carregar ausências aprovadas do mês para evitar N queries no loop
+    const mesInicio = new Date(Date.UTC(ano, mes - 1, 1));
+    const mesFim = new Date(Date.UTC(ano, mes, 0, 23, 59, 59, 999));
+    const ausenciasMes = await this.prisma.ausencia.findMany({
+      where: {
+        estado: 'aprovada',
+        dataInicio: { lte: mesFim },
+        dataFim:    { gte: mesInicio },
+      },
+      select: { utilizadorId: true, dataInicio: true, dataFim: true },
+    });
+
     const diasNoMes = new Date(ano, mes, 0).getDate();
     const tipos: TipoTurno[] = ['manha', 'tarde', 'noite'];
     let turnosCriados = 0;
@@ -214,6 +257,16 @@ export class HorariosService {
       for (const tipo of tipos) {
         if (turnosExistentesSet.has(`${tipo}_${dataDia.toISOString()}`)) continue;
 
+        // Filtrar ausentes neste dia
+        const ausentesNoDia = new Set(
+          ausenciasMes
+            .filter(a => a.dataInicio <= dataDia && a.dataFim >= dataDia)
+            .map(a => a.utilizadorId)
+        );
+        const medicosDisp = medicos.filter(p => !ausentesNoDia.has(p.id));
+        const enfermeirosDisp = enfermeiros.filter(p => !ausentesNoDia.has(p.id));
+        const auxiliaresDisp = auxiliares.filter(p => !ausentesNoDia.has(p.id));
+
         // Distribuir profissionais em round-robin por tipo de turno
         const turnoIndex = (dia - 1) * 3 + tipos.indexOf(tipo);
         const getProfRoundRobin = (lista: typeof profissionais, n: number) => {
@@ -228,9 +281,9 @@ export class HorariosService {
         };
 
         const profIds = [
-          ...getProfRoundRobin(medicos, 1),
-          ...getProfRoundRobin(enfermeiros, 2),
-          ...getProfRoundRobin(auxiliares, 1),
+          ...getProfRoundRobin(medicosDisp, 1),
+          ...getProfRoundRobin(enfermeirosDisp, 2),
+          ...getProfRoundRobin(auxiliaresDisp, 1),
         ];
 
         if (profIds.length === 0) continue;
@@ -267,6 +320,20 @@ export class HorariosService {
         horarioTurno: { select: { id: true, tipo: true, data: true } },
       },
       orderBy: { horarioTurno: { data: 'asc' } },
+    });
+  }
+
+  async ausenciasAprovadas(mes: number, ano: number) {
+    const inicio = new Date(Date.UTC(ano, mes - 1, 1));
+    const fim = new Date(Date.UTC(ano, mes, 0, 23, 59, 59, 999));
+    return this.prisma.ausencia.findMany({
+      where: {
+        estado: 'aprovada',
+        dataInicio: { lte: fim },
+        dataFim:    { gte: inicio },
+      },
+      include: { utilizador: { select: { id: true, nome: true } } },
+      orderBy: { dataInicio: 'asc' },
     });
   }
 }

@@ -1,5 +1,31 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import * as interacoesJson from './interacoes.json';
+
+interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
+const INTERACOES: Interacao[] = interacoesJson as Interacao[];
+
+function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Interacao[] {
+  const medNorm = nomeMed.toLowerCase();
+  const encontradas: Interacao[] = [];
+  for (const med of medicacoesAtivas) {
+    const ativaNorm = med.toLowerCase();
+    for (const interacao of INTERACOES) {
+      const m1 = interacao.med1.toLowerCase();
+      const m2 = interacao.med2.toLowerCase();
+      const matchNovo = medNorm.includes(m1) || m1.includes(medNorm.split(' ')[0]);
+      const matchAtivo = ativaNorm.includes(m2) || m2.includes(ativaNorm.split(' ')[0]);
+      const matchNovo2 = medNorm.includes(m2) || m2.includes(medNorm.split(' ')[0]);
+      const matchAtivo2 = ativaNorm.includes(m1) || m1.includes(ativaNorm.split(' ')[0]);
+      if ((matchNovo && matchAtivo) || (matchNovo2 && matchAtivo2)) {
+        if (!encontradas.find((e) => e.med1 === interacao.med1 && e.med2 === interacao.med2)) {
+          encontradas.push(interacao);
+        }
+      }
+    }
+  }
+  return encontradas;
+}
 
 @Injectable()
 export class MedicacaoService {
@@ -27,14 +53,54 @@ export class MedicacaoService {
     via: string;
     frequencia: string;
     prescritoPorId: string;
+    forcarApesarDeAlergia?: boolean;
+    justificativaOverride?: string;
   }) {
     const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
     if (!doente) throw new NotFoundException('Doente não encontrado');
 
-    return this.prisma.medicacao.create({
-      data,
+    if (!data.forcarApesarDeAlergia) {
+      const alergias = await this.prisma.alergia.findMany({ where: { doenteId: data.doenteId } });
+      const nomeNorm = data.nome.toLowerCase();
+      const alergiaMatch = alergias.find((a) => {
+        const alg = a.alergenio.toLowerCase();
+        const palavrasMed = nomeNorm.split(/\s+/).filter((w) => w.length > 3);
+        const palavrasAlg = alg.split(/\s+/).filter((w) => w.length > 3);
+        return (
+          palavrasAlg.some((w) => nomeNorm.includes(w)) ||
+          palavrasMed.some((w) => alg.includes(w))
+        );
+      });
+      if (alergiaMatch) {
+        throw new ConflictException(
+          `ALERGIA: ${doente.nome} tem alergia registada a "${alergiaMatch.alergenio}" (severidade: ${alergiaMatch.severidade}). Para prescrever mesmo assim, envie forcarApesarDeAlergia=true com justificativaOverride.`,
+        );
+      }
+    }
+
+    // Verificar interações medicamentosas (não bloqueante — apenas aviso)
+    const medicacoesAtivas = await this.prisma.medicacao.findMany({
+      where: { doenteId: data.doenteId, ativo: true },
+      select: { nome: true },
+    });
+    const nomesMeds = medicacoesAtivas.map((m) => m.nome);
+    const interacoesDetectadas = verificarInteracao(data.nome, nomesMeds);
+
+    const { forcarApesarDeAlergia: _, justificativaOverride: __, ...dadosMedicacao } = data;
+    const medicacao = await this.prisma.medicacao.create({
+      data: dadosMedicacao,
       include: { prescritoPor: { select: { id: true, nome: true } } },
     });
+
+    return { ...medicacao, avisoInteracoes: interacoesDetectadas };
+  }
+
+  async verificarInteracoes(doenteId: string, nomeMed: string): Promise<Interacao[]> {
+    const medicacoesAtivas = await this.prisma.medicacao.findMany({
+      where: { doenteId, ativo: true },
+      select: { nome: true },
+    });
+    return verificarInteracao(nomeMed, medicacoesAtivas.map((m) => m.nome));
   }
 
   async registarAdministracao(data: {

@@ -105,7 +105,7 @@ export default function PedidosInternosPage() {
         {['todos', 'pendente', 'em_curso', 'concluido'].map(e => (
           <button key={e} onClick={() => setFiltroEstado(e)}
             className={`text-sm font-medium rounded-xl border transition-all ${filtroEstado === e ? 'bg-slate-900 text-white border-slate-900' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}
-            style={{ padding: '7px 16px' }}>
+            style={{ padding: '9px 20px' }}>
             {e === 'todos' ? 'Todos' : ESTADO_CONFIG[e]?.label ?? e}
           </button>
         ))}

@@ -110,12 +110,12 @@ export default function WorklistPage() {
       <div className="flex flex-wrap items-center gap-3" style={{ marginBottom: '20px' }}>
         <div className="flex gap-2 flex-wrap">
           <button onClick={() => setFiltroEstado('')}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${filtroEstado === '' ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+            className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroEstado === '' ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
             Todos
           </button>
           {['solicitado', 'em_progresso'].map(e => (
             <button key={e} onClick={() => setFiltroEstado(e)}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${filtroEstado === e ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+              className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroEstado === e ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
               {ESTADO_CFG[e]?.label}
             </button>
           ))}
@@ -123,12 +123,12 @@ export default function WorklistPage() {
         <div className="w-px h-5 bg-slate-200" />
         <div className="flex gap-2 flex-wrap">
           <button onClick={() => setFiltroTipo('')}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${filtroTipo === '' ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+            className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroTipo === '' ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
             Todos os tipos
           </button>
           {Object.entries(TIPO_LABELS).map(([v, l]) => (
             <button key={v} onClick={() => setFiltroTipo(v)}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${filtroTipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+              className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroTipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
               {TIPO_ICONS[v]} {l}
             </button>
           ))}

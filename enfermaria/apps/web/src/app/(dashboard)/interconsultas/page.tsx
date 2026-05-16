@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Interconsulta {
   id: string;
@@ -41,6 +42,7 @@ const ESTADO_LABEL: Record<string, string> = {
 export default function InterconsultasPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [aba, setAba] = useState<'recebidas' | 'enviadas'>('recebidas');
   const [modalNova, setModalNova] = useState(false);
   const [novaDoenteId, setNovaDoenteId] = useState('');
@@ -77,15 +79,25 @@ export default function InterconsultasPage() {
   const enviadas: Interconsulta[] = (data as any).enviadas ?? [];
   const invalidar = () => qc.invalidateQueries({ queryKey: ['interconsultas'] });
 
-  const mutAceitar = useMutation({ mutationFn: (id: string) => api.patch(`/interconsultas/${id}/aceitar`), onSuccess: invalidar });
-  const mutCancelar = useMutation({ mutationFn: (id: string) => api.patch(`/interconsultas/${id}/cancelar`), onSuccess: invalidar });
+  const mutAceitar = useMutation({
+    mutationFn: (id: string) => api.patch(`/interconsultas/${id}/aceitar`),
+    onSuccess: () => { toast.success('Interconsulta aceite'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao aceitar interconsulta'),
+  });
+  const mutCancelar = useMutation({
+    mutationFn: (id: string) => api.patch(`/interconsultas/${id}/cancelar`),
+    onSuccess: () => { toast.success('Interconsulta cancelada'); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao cancelar interconsulta'),
+  });
   const mutResponder = useMutation({
     mutationFn: ({ id, resposta }: { id: string; resposta: string }) => api.patch(`/interconsultas/${id}/responder`, { resposta }),
-    onSuccess: () => { setModalResposta(null); setTextoResposta(''); invalidar(); },
+    onSuccess: () => { toast.success('Resposta enviada com sucesso'); setModalResposta(null); setTextoResposta(''); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao enviar resposta'),
   });
   const mutNova = useMutation({
     mutationFn: ({ doenteId, body }: { doenteId: string; body: object }) => api.post(`/interconsultas/doente/${doenteId}`, body),
-    onSuccess: () => { setModalNova(false); setNovaDoenteId(''); setNovaMotivo(''); setNovaUrgente(false); invalidar(); },
+    onSuccess: () => { toast.success('Interconsulta enviada'); setModalNova(false); setNovaDoenteId(''); setNovaMotivo(''); setNovaUrgente(false); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao enviar interconsulta'),
   });
 
   const pendentesCount = recebidas.filter(i => i.estado === 'pendente').length;

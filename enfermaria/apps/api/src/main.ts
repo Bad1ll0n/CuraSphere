@@ -18,7 +18,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
-  app.use((compression as any)());
+  app.use((compression as any).default());
   app.use((helmet as any).default());
 
   app.useGlobalFilters(new AllExceptionsFilter());

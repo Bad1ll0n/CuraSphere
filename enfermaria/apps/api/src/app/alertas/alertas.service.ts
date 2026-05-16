@@ -45,25 +45,80 @@ export class AlertasService {
   // ─── SOS ──────────────────────────────────────────────────────────────────
 
   async acionarSOS(doenteId: string, acionadoPorId: string) {
-    const alerta = await this.prisma.alertaClinico.create({
-      data: {
-        doenteId,
-        tipo: 'sos',
-        mensagem: 'EMERGÊNCIA — Botão SOS acionado. Resposta imediata necessária.',
-        urgencia: true,
-      },
-      include: {
-        doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
-      },
-    });
+    // Carregar dados clínicos contextuais em paralelo
+    const [alerta, ultimoSinal, medicacoesAtivas, alergias] = await Promise.all([
+      this.prisma.alertaClinico.create({
+        data: {
+          doenteId,
+          tipo: 'sos',
+          mensagem: 'EMERGÊNCIA — Botão SOS acionado. Resposta imediata necessária.',
+          urgencia: true,
+        },
+        include: {
+          doente: {
+            select: {
+              id: true, nome: true,
+              diagnosticoPrincipal: true,
+              cama: { select: { numero: true, quarto: true } },
+            },
+          },
+        },
+      }),
+      this.prisma.sinalVital.findFirst({
+        where: { doenteId },
+        orderBy: { data: 'desc' },
+        select: { pressaoSistolica: true, pressaoDiastolica: true, pulso: true, saturacaoO2: true, temperatura: true, news2: true, data: true },
+      }),
+      this.prisma.medicacao.findMany({
+        where: { doenteId, ativo: true },
+        select: { nome: true, dose: true, via: true },
+        take: 5,
+        orderBy: { iniciadoEm: 'desc' },
+      }),
+      this.prisma.alergia.findMany({
+        where: { doenteId },
+        select: { alergenio: true, severidade: true },
+      }),
+    ]);
 
     const doente = alerta.doente as any;
     const localizacao = doente?.cama
       ? `Quarto ${doente.cama.quarto}, Cama ${doente.cama.numero}`
       : 'Localização desconhecida';
     const titulo = `🚨 SOS — ${doente?.nome ?? 'Doente'} (${localizacao})`;
-    const corpo = 'EMERGÊNCIA — Resposta imediata necessária. Toque para abrir a ficha.';
-    const pushData = { doenteId, tipo: 'sos', alertaId: alerta.id };
+
+    // Compor corpo da notificação com contexto clínico
+    const linhasContexto: string[] = [];
+    if (ultimoSinal) {
+      const partes: string[] = [];
+      if (ultimoSinal.pressaoSistolica) partes.push(`TA ${ultimoSinal.pressaoSistolica}/${ultimoSinal.pressaoDiastolica ?? '?'}`);
+      if (ultimoSinal.pulso) partes.push(`FC ${ultimoSinal.pulso}`);
+      if (ultimoSinal.saturacaoO2) partes.push(`SpO₂ ${ultimoSinal.saturacaoO2}%`);
+      if (ultimoSinal.news2 != null) partes.push(`NEWS2=${ultimoSinal.news2}`);
+      if (partes.length) linhasContexto.push(partes.join(' · '));
+    }
+    if (alergias.length > 0) {
+      linhasContexto.push(`Alergias: ${alergias.map(a => a.alergenio).join(', ')}`);
+    }
+    if (medicacoesAtivas.length > 0) {
+      linhasContexto.push(`Medicações: ${medicacoesAtivas.map(m => m.nome).join(', ')}`);
+    }
+    const corpo = linhasContexto.length > 0
+      ? `EMERGÊNCIA — ${linhasContexto.join(' | ')}`
+      : 'EMERGÊNCIA — Resposta imediata necessária.';
+
+    const pushData = {
+      doenteId,
+      tipo: 'sos',
+      alertaId: alerta.id,
+      contextoClinico: {
+        diagnostico: doente?.diagnosticoPrincipal ?? null,
+        news2: ultimoSinal?.news2 ?? null,
+        ultimosSinais: ultimoSinal ?? null,
+        medicacoesAtivas,
+        alergias,
+      },
+    };
 
     const notificadosIds = new Set<string>();
 

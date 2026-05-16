@@ -207,7 +207,7 @@ export default function RegistosAdministrativosPage() {
         <div style={{ display: 'flex', gap: 6 }}>
           <button
             onClick={() => setFiltroTipo('')}
-            style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #334155', background: !filtroTipo ? '#3b82f6' : 'transparent', color: !filtroTipo ? '#fff' : '#94a3b8', fontSize: 13, cursor: 'pointer' }}
+            style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: !filtroTipo ? '#3b82f6' : 'transparent', color: !filtroTipo ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}
           >
             Todos
           </button>
@@ -215,7 +215,7 @@ export default function RegistosAdministrativosPage() {
             <button
               key={t.value}
               onClick={() => setFiltroTipo(prev => prev === t.value ? '' : t.value)}
-              style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #334155', background: filtroTipo === t.value ? '#3b82f6' : 'transparent', color: filtroTipo === t.value ? '#fff' : '#94a3b8', fontSize: 13, cursor: 'pointer' }}
+              style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: filtroTipo === t.value ? '#3b82f6' : 'transparent', color: filtroTipo === t.value ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}
             >
               {t.icon} {t.label}
             </button>

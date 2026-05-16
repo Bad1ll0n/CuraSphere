@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 type EstadoDoente = 'estavel' | 'grave' | 'critico' | 'alta_prevista';
 
@@ -125,6 +126,7 @@ function gerarTextoResumo(turno: Turno | null, dados: DadosDoente[]): string {
 }
 
 export default function PassagemTurnoPage() {
+  const toast = useToast();
   const [turno, setTurno] = useState<Turno | null>(null);
   const [dados, setDados] = useState<DadosDoente[]>([]);
   const [loading, setLoading] = useState(true);
@@ -174,12 +176,13 @@ export default function PassagemTurnoPage() {
     setErroCheckin('');
     try {
       await api.post('/turnos/check-in');
+      toast.success('Check-in realizado');
       setFezCheckin(true);
       await carregar();
     } catch (e: any) {
       const msg = e.response?.data?.message ?? 'Erro ao fazer check-in';
       if (msg.includes('já realizado')) { setFezCheckin(true); await carregar(); }
-      else setErroCheckin(msg);
+      else { setErroCheckin(msg); toast.error(msg); }
     } finally {
       setCheckinLoading(false);
     }
@@ -190,8 +193,10 @@ export default function PassagemTurnoPage() {
     try {
       await api.post('/turnos/confirmar-passagem');
       setConfirmou(true);
-    } catch { }
-    finally { setConfirmarLoading(false); }
+      toast.success('Passagem de turno confirmada');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao confirmar passagem');
+    } finally { setConfirmarLoading(false); }
   }
 
   async function adicionarNota(doenteId: string, turnoId: string) {
@@ -199,11 +204,13 @@ export default function PassagemTurnoPage() {
     setSalvandoNota(true);
     try {
       await api.post('/turnos/nota', { turnoId, doenteId, texto: textoNota.trim() });
+      toast.success('Nota adicionada');
       setNotaAberta(null);
       setTextoNota('');
       await carregar();
-    } catch { }
-    finally { setSalvandoNota(false); }
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao guardar nota');
+    } finally { setSalvandoNota(false); }
   }
 
   function copiarResumo() {

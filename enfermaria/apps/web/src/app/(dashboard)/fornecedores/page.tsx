@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
+import { useToast } from '../../../components/toast';
 
 interface Fornecedor {
   id: string;
@@ -42,6 +43,7 @@ const ESTADO_CFG: Record<string, { label: string; bg: string; text: string }> = 
 export default function FornecedoresPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
+  const toast = useToast();
   const [tab, setTab] = useState<'fornecedores' | 'encomendas'>('fornecedores');
   const [filtroEstado, setFiltroEstado] = useState('');
 
@@ -80,27 +82,32 @@ export default function FornecedoresPage() {
 
   const mutCriarForn = useMutation({
     mutationFn: (body: typeof formForn) => api.post('/fornecedores', body),
-    onSuccess: () => { setModalForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onSuccess: () => { toast.success('Fornecedor criado'); setModalForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar fornecedor'),
   });
 
   const mutEditarForn = useMutation({
     mutationFn: (body: Partial<typeof formForn>) => api.patch(`/fornecedores/${editForn!.id}`, body),
-    onSuccess: () => { setModalForn(null); setEditForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onSuccess: () => { toast.success('Fornecedor actualizado'); setModalForn(null); setEditForn(null); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao actualizar fornecedor'),
   });
 
   const mutDesativarForn = useMutation({
     mutationFn: (id: string) => api.delete(`/fornecedores/${id}`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['fornecedores'] }),
+    onSuccess: () => { toast.success('Fornecedor removido'); qc.invalidateQueries({ queryKey: ['fornecedores'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao remover fornecedor'),
   });
 
   const mutCriarEncomenda = useMutation({
     mutationFn: (body: any) => api.post('/fornecedores/encomendas', { ...body, precoUnitario: body.precoUnitario ? Number(body.precoUnitario) : undefined }),
-    onSuccess: () => { setModalEncomenda(false); setFormEnc({ fornecedorId: '', stockItemId: '', quantidadeEncomendada: 1, precoUnitario: '', dataEntregaPrevista: '', observacoes: '' }); invalidar(); },
+    onSuccess: () => { toast.success('Encomenda criada'); setModalEncomenda(false); setFormEnc({ fornecedorId: '', stockItemId: '', quantidadeEncomendada: 1, precoUnitario: '', dataEntregaPrevista: '', observacoes: '' }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao criar encomenda'),
   });
 
   const mutReceberEncomenda = useMutation({
     mutationFn: () => api.patch(`/fornecedores/encomendas/${modalReceber!.id}/receber`, { quantidadeRecebida: qtdRecebida }),
-    onSuccess: () => { setModalReceber(null); setQtdRecebida(0); invalidar(); qc.invalidateQueries({ queryKey: ['farmacia'] }); },
+    onSuccess: () => { toast.success('Recepção registada'); setModalReceber(null); setQtdRecebida(0); invalidar(); qc.invalidateQueries({ queryKey: ['farmacia'] }); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao registar recepção'),
   });
 
   const abrirEditarForn = (f: Fornecedor) => {

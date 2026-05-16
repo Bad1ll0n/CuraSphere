@@ -15,6 +15,15 @@ export class HorariosController {
     return this.horariosService.listar();
   }
 
+  @Get('ausencias')
+  ausenciasMes(@Query('mes') mes: string, @Query('ano') ano: string) {
+    const agora = new Date();
+    return this.horariosService.ausenciasAprovadas(
+      Number(mes) || agora.getMonth() + 1,
+      Number(ano) || agora.getFullYear(),
+    );
+  }
+
   @Get('mes')
   buscarPorMes(@Query('mes') mes: string, @Query('ano') ano: string) {
     return this.horariosService.buscarPorMes(Number(mes), Number(ano));
