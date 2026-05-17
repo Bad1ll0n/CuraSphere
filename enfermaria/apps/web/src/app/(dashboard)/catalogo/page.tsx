@@ -103,7 +103,8 @@ export default function CatalogoPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
-                  {['DCI', 'Nome de Marca', 'Forma', 'Classe Terapêutica', 'Concentração', 'Cód. ATC', ''].map(h => (
+                  <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px 12px 32px' }}>DCI</th>
+                  {['Nome de Marca', 'Forma', 'Classe Terapêutica', 'Concentração', 'Cód. ATC', ''].map(h => (
                     <th key={h} className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>{h}</th>
                   ))}
                 </tr>
@@ -111,7 +112,7 @@ export default function CatalogoPage() {
               <tbody>
                 {catalogo.map(item => (
                   <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="font-semibold text-slate-900" style={{ padding: '14px 20px' }}>{item.dci}</td>
+                    <td className="font-semibold text-slate-900" style={{ padding: '14px 20px 14px 32px' }}>{item.dci}</td>
                     <td className="text-slate-500" style={{ padding: '14px 20px' }}>{item.nomeMarca || '—'}</td>
                     <td style={{ padding: '14px 20px' }}>
                       <span className="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">{item.formaFarmaceutica}</span>

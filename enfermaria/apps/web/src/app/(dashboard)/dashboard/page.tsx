@@ -1077,7 +1077,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
 function DashboardTI({ utilizador }: { utilizador: any }) {
   const { data: utilizadores = [], isLoading } = useQuery<any[]>({
     queryKey: ['dash-ti'],
-    queryFn: () => api.get('/utilizadores').catch(() => ({ data: [] })).then(r => r.data ?? []),
+    queryFn: () => api.get('/utilizadores').catch(() => ({ data: { data: [] } })).then(r => r.data?.data ?? r.data ?? []),
     staleTime: 60_000,
   });
 

@@ -107,8 +107,96 @@ const ANUNCIOS = [
 ];
 
 // ─────────────────────────── MAIN ───────────────────────────
+const ROLES_CONFIG = [
+  { chave: 'medico',         label: 'Médico',                    categoria: 'clinico', ordem: 1,
+    subRoles: [
+      { chave: 'clinico_geral',    label: 'Clínico Geral',        ordem: 1 },
+      { chave: 'cardiologista',    label: 'Cardiologista',         ordem: 2 },
+      { chave: 'cirurgiao_geral',  label: 'Cirurgião Geral',       ordem: 3 },
+      { chave: 'neurologista',     label: 'Neurologista',          ordem: 4 },
+      { chave: 'ortopedista',      label: 'Ortopedista',           ordem: 5 },
+      { chave: 'pediatra',         label: 'Pediatra',              ordem: 6 },
+    ]},
+  { chave: 'enfermeiro',     label: 'Enfermeiro',                categoria: 'clinico', ordem: 2,
+    subRoles: [
+      { chave: 'generalista',          label: 'Generalista',           ordem: 1 },
+      { chave: 'triador',              label: 'Triador',               ordem: 2 },
+      { chave: 'supervisor_enfermagem',label: 'Supervisor de Enfermagem', ordem: 3 },
+      { chave: 'especialista_uci',     label: 'Especialista UCI',       ordem: 4 },
+    ]},
+  { chave: 'auxiliar',       label: 'Auxiliar',                  categoria: 'clinico', ordem: 3,
+    subRoles: [
+      { chave: 'apoio_geral',     label: 'Apoio Geral',            ordem: 1 },
+      { chave: 'auxiliar_bloco',  label: 'Auxiliar de Bloco',      ordem: 2 },
+    ]},
+  { chave: 'tecnico_saude',  label: 'Técnico de Saúde',          categoria: 'clinico', ordem: 4,
+    subRoles: [
+      { chave: 'reabilitacao_fisica',  label: 'Reabilitação Física',  ordem: 1 },
+      { chave: 'nutricao_clinica',     label: 'Nutrição Clínica',      ordem: 2 },
+      { chave: 'psicologia_clinica',   label: 'Psicologia Clínica',    ordem: 3 },
+      { chave: 'reabilitacao_fala',    label: 'Reabilitação da Fala',  ordem: 4 },
+      { chave: 'tae',                  label: 'TAE',                   ordem: 5 },
+    ]},
+  { chave: 'farmaceutico',   label: 'Farmacêutico',              categoria: 'suporte', ordem: 5,
+    subRoles: [
+      { chave: 'farmaceutico_hospitalar', label: 'Farmacêutico Hospitalar', ordem: 1 },
+      { chave: 'farmaceutico_clinico',    label: 'Farmacêutico Clínico',    ordem: 2 },
+    ]},
+  { chave: 'administrativo', label: 'Administrativo',            categoria: 'suporte', ordem: 6,
+    subRoles: [
+      { chave: 'front_desk',    label: 'Front Desk',      ordem: 1 },
+      { chave: 'secretariado',  label: 'Secretariado',    ordem: 2 },
+      { chave: 'faturacao',     label: 'Faturação',       ordem: 3 },
+    ]},
+  { chave: 'operacional',    label: 'Operacional',               categoria: 'suporte', ordem: 7,
+    subRoles: [
+      { chave: 'facilities',    label: 'Facilities',    ordem: 1 },
+      { chave: 'transporte',    label: 'Transporte',    ordem: 2 },
+      { chave: 'limpeza',       label: 'Limpeza',       ordem: 3 },
+    ]},
+  { chave: 'ti',             label: 'Tecnologias de Informação', categoria: 'ti',      ordem: 8,
+    subRoles: [
+      { chave: 'it_admin',         label: 'IT Admin',           ordem: 1 },
+      { chave: 'sysadmin',         label: 'Sysadmin',           ordem: 2 },
+      { chave: 'his_erp',          label: 'HIS/ERP',            ordem: 3 },
+      { chave: 'database_admin',   label: 'Database Admin',     ordem: 4 },
+      { chave: 'security_officer', label: 'Security Officer',   ordem: 5 },
+      { chave: 'dados_clinicos',   label: 'Dados Clínicos',     ordem: 6 },
+      { chave: 'cio',              label: 'CIO',                ordem: 7 },
+    ]},
+  { chave: 'qualidade',      label: 'Qualidade',                 categoria: 'gestao',  ordem: 9,
+    subRoles: [
+      { chave: 'quality_manager', label: 'Quality Manager', ordem: 1 },
+      { chave: 'auditor',         label: 'Auditor',         ordem: 2 },
+    ]},
+  { chave: 'direcao',        label: 'Direção',                   categoria: 'gestao',  ordem: 10,
+    subRoles: [
+      { chave: 'ceo_hospitalar',    label: 'CEO Hospitalar',    ordem: 1 },
+      { chave: 'diretor_clinico',   label: 'Diretor Clínico',   ordem: 2 },
+      { chave: 'diretor_enfermagem',label: 'Diretor de Enfermagem', ordem: 3 },
+    ]},
+];
+
 async function main() {
   console.log('🏥  Seed de demo CuraSphere...\n');
+
+  // 0. Roles e SubRoles
+  console.log('🔑  Roles e SubRoles...');
+  for (const r of ROLES_CONFIG) {
+    await prisma.roleConfig.upsert({
+      where: { chave: r.chave },
+      update: { label: r.label, categoria: r.categoria, ordem: r.ordem },
+      create: { chave: r.chave, label: r.label, categoria: r.categoria, ordem: r.ordem },
+    });
+    for (const sr of r.subRoles) {
+      await prisma.subRoleConfig.upsert({
+        where: { chave: sr.chave },
+        update: { label: sr.label, ordem: sr.ordem, roleChave: r.chave },
+        create: { chave: sr.chave, label: sr.label, roleChave: r.chave, ordem: sr.ordem },
+      });
+    }
+  }
+  console.log(`   ✓ ${ROLES_CONFIG.length} roles + sub-roles`);
 
   // 1. Utilizadores
   console.log('👤  Utilizadores...');

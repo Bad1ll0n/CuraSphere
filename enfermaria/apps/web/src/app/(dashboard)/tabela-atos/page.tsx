@@ -186,7 +186,7 @@ export default function TabelaAtosPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 20px' }}>Código</th>
+                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 20px 12px 32px' }}>Código</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Descrição</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Categoria</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Especialidade (auto)</th>
@@ -201,7 +201,7 @@ export default function TabelaAtosPage() {
                 const espLabel = ESPECIALIDADES.find(e => e.value === ato.especialidade)?.label;
                 return (
                   <tr key={ato.id} className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${!ato.ativo ? 'opacity-50' : ''}`}>
-                    <td className="font-mono text-xs text-slate-600 font-semibold" style={{ padding: '14px 20px' }}>{ato.codigo}</td>
+                    <td className="font-mono text-xs text-slate-600 font-semibold" style={{ padding: '14px 20px 14px 32px' }}>{ato.codigo}</td>
                     <td className="text-slate-800 font-medium" style={{ padding: '14px 16px' }}>{ato.descricao}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catStyle.bg} ${catStyle.text}`}>

@@ -458,7 +458,7 @@ export default function FarmaciaPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200">
-                      <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Item</th>
+                      <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px 12px 32px' }}>Item</th>
                       <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Serviço</th>
                       <th className="text-right font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Consumo</th>
                       <th className="text-right font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Custo</th>
@@ -467,7 +467,7 @@ export default function FarmaciaPage() {
                   <tbody>
                     {(relatorio.itens ?? []).map((item: any, i: number) => (
                       <tr key={i} className="border-b border-slate-100 hover:bg-slate-50">
-                        <td className="font-medium text-slate-900" style={{ padding: '12px 20px' }}>{item.nome}</td>
+                        <td className="font-medium text-slate-900" style={{ padding: '12px 20px 12px 32px' }}>{item.nome}</td>
                         <td className="text-slate-500" style={{ padding: '12px 20px' }}>{item.servico}</td>
                         <td className="text-right text-slate-700" style={{ padding: '12px 20px' }}>{item.consumo} {item.unidade}</td>
                         <td className="text-right font-semibold text-slate-900" style={{ padding: '12px 20px' }}>{item.custo > 0 ? `${item.custo.toFixed(2)}€` : '—'}</td>

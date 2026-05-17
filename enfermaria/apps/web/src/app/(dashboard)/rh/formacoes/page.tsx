@@ -45,7 +45,7 @@ export default function FormacoesPage() {
 
   const { data: utilizadoresLista = [] } = useQuery<{ id: string; nome: string; role: string }[]>({
     queryKey: ['utilizadores-lista'],
-    queryFn: () => api.get('/utilizadores').then(r => r.data).catch(() => []),
+    queryFn: () => api.get('/utilizadores').then(r => r.data?.data ?? r.data ?? []).catch(() => []),
     enabled: modalNova && isGestor,
     staleTime: 300_000,
   });

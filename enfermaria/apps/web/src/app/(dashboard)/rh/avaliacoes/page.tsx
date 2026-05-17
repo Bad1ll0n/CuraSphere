@@ -77,7 +77,7 @@ export default function AvaliacoesPage() {
 
   const { data: colaboradores = [] } = useQuery<Colaborador[]>({
     queryKey: ['colaboradores-lista'],
-    queryFn: () => api.get('/utilizadores').then(r => Array.isArray(r.data) ? r.data : r.data.utilizadores ?? []),
+    queryFn: () => api.get('/utilizadores').then(r => r.data?.data ?? r.data ?? []),
     staleTime: 300_000,
   });
 

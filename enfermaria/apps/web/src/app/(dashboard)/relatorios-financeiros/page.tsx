@@ -232,7 +232,8 @@ export default function RelatoriosFinanceirosPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
             <thead>
               <tr style={{ background: 'var(--table-head, #f8fafc)' }}>
-                {['Data', 'Doente', 'Nº Processo', 'Estado', 'Total Base', 'Total Cobrado', 'Origem'].map((h) => (
+                <th style={{ padding: '10px 16px 10px 28px', textAlign: 'left', fontWeight: 600, fontSize: 12, color: 'var(--text-secondary, #64748b)', whiteSpace: 'nowrap' }}>Data</th>
+                {['Doente', 'Nº Processo', 'Estado', 'Total Base', 'Total Cobrado', 'Origem'].map((h) => (
                   <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontWeight: 600, fontSize: 12, color: 'var(--text-secondary, #64748b)', whiteSpace: 'nowrap' }}>
                     {h}
                   </th>
@@ -249,7 +250,7 @@ export default function RelatoriosFinanceirosPage() {
               ) : (
                 filtrados.map((ep) => (
                   <tr key={ep.id} style={{ borderTop: '1px solid var(--border, #e2e8f0)' }}>
-                    <td style={{ padding: '10px 16px', whiteSpace: 'nowrap' }}>
+                    <td style={{ padding: '10px 16px 10px 28px', whiteSpace: 'nowrap' }}>
                       {new Date(ep.criadoEm).toLocaleDateString('pt-PT')}
                     </td>
                     <td style={{ padding: '10px 16px' }}>

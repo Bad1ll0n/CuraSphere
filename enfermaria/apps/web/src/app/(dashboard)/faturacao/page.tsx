@@ -234,7 +234,8 @@ export default function FaturacaoPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                {['Doente', 'Processo', 'Cobertura', 'Total', 'Estado', 'Criado em', ''].map(h => (
+                <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '14px 20px 14px 32px' }}>Doente</th>
+                {['Processo', 'Cobertura', 'Total', 'Estado', 'Criado em', ''].map(h => (
                   <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '14px 20px' }}>{h}</th>
                 ))}
               </tr>
@@ -244,7 +245,7 @@ export default function FaturacaoPage() {
                 <tr key={ep.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer"
                   onClick={() => abrirDetalhe(ep)}
                   style={{ borderBottom: i < episodios.length - 1 ? undefined : 'none' }}>
-                  <td style={{ padding: '16px 20px' }}>
+                  <td style={{ padding: '16px 20px 16px 32px' }}>
                     <p className="font-medium text-slate-800">{ep.doente.nome}</p>
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>por {ep.criadoPor.nome}</p>
                   </td>

@@ -131,7 +131,7 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
       <table className="w-full">
         <thead>
           <tr className="border-b border-slate-50">
-            <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-6 py-3">Incidente</th>
+            <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '12px 16px 12px 40px' }}>Incidente</th>
             <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Tipo</th>
             <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Prioridade</th>
             <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Estado</th>
@@ -142,7 +142,7 @@ function TabelaIncidentes({ incidentes, titulo }: { incidentes: Incidente[]; tit
         <tbody className="divide-y divide-slate-50">
           {incidentes.map(inc => (
             <tr key={inc.id} className="hover:bg-slate-50 transition-colors">
-              <td className="px-6 py-3">
+              <td style={{ padding: '12px 16px 12px 40px' }}>
                 <p className="text-sm font-medium text-slate-900">{inc.titulo}</p>
               </td>
               <td className="px-4 py-3">

@@ -113,7 +113,7 @@ export default function HorariosPagina() {
   useEffect(() => {
     if (isChefe) {
       api.get('/utilizadores').then((r) => {
-        const todos: Utilizador[] = r.data;
+        const todos: Utilizador[] = r.data?.data ?? r.data ?? [];
         // chefe_medicos vê só médicos; chefe_enfermeiros vê enfermeiros/auxiliares
         setProfissionais(todos.filter((u) => grupoDoChefe.includes(u.role)));
       }).catch(() => {});

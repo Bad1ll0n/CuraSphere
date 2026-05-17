@@ -106,7 +106,7 @@ export default function UtilizadoresPagina() {
       api.get('/utilizadores'),
       api.get('/configuracoes/roles'),
     ]);
-    setUtilizadores(resUtil.data);
+    setUtilizadores(resUtil.data?.data ?? resUtil.data ?? []);
     const r: RoleOpc[] = resRoles.data;
     setRoles(r);
     if (!form.role && r.length > 0) setForm((f) => ({ ...f, role: r[0].chave }));
@@ -205,8 +205,18 @@ export default function UtilizadoresPagina() {
     ));
   };
 
-  const rolesComUtilizadores = roles.filter((r) => utilizadores.some((u) => u.role === r.chave && u.ativo));
-  const porRole = Object.fromEntries(roles.map((r) => [r.chave, utilizadores.filter((u) => u.role === r.chave && u.ativo)]));
+  const ROLE_LABEL_MAP: Record<string, string> = {
+    medico: 'Médicos', enfermeiro: 'Enfermeiros', auxiliar: 'Auxiliares',
+    tecnico_saude: 'Técnicos de Saúde', farmaceutico: 'Farmacêuticos',
+    administrativo: 'Administrativos', operacional: 'Operacionais',
+    ti: 'Tecnologias de Informação', qualidade: 'Qualidade', direcao: 'Direção',
+  };
+  const rolesEfetivos: RoleOpc[] = roles.length > 0
+    ? roles
+    : [...new Set(utilizadores.filter(u => u.ativo).map(u => u.role))]
+        .map(chave => ({ id: chave, chave, label: ROLE_LABEL_MAP[chave] ?? chave, subRoles: [] }));
+  const rolesComUtilizadores = rolesEfetivos.filter((r) => utilizadores.some((u) => u.role === r.chave && u.ativo));
+  const porRole = Object.fromEntries(rolesEfetivos.map((r) => [r.chave, utilizadores.filter((u) => u.role === r.chave && u.ativo)]));
   const equipasExistentes = [...new Set(utilizadores.map((u) => u.equipa).filter(Boolean) as string[])].sort();
 
   const subRolesParaRole = (chave: string) => rolesMap[chave]?.subRoles ?? [];

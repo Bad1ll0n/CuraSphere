@@ -194,7 +194,7 @@ export default function DoentesPagina() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 24px' }}>Doente</th>
+                  <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 24px 13px 36px' }}>Doente</th>
                   <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Processo</th>
                   <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
                   <th scope="col" className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Diagnóstico</th>
@@ -209,7 +209,7 @@ export default function DoentesPagina() {
                   <tr key={d.id}
                     className="hover:bg-slate-50 transition-colors"
                     style={{ borderTop: i > 0 ? '1px solid #f8fafc' : undefined }}>
-                    <td style={{ padding: '16px 24px' }}>
+                    <td style={{ padding: '16px 24px 16px 36px' }}>
                       <span className="font-semibold text-slate-800">{d.nome}</span>
                     </td>
                     <td style={{ padding: '16px' }}>

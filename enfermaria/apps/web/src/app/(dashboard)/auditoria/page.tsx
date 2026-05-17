@@ -101,7 +101,7 @@ export default function AuditoriaPagina() {
   }, [utilizador, authLoading, router]);
 
   useEffect(() => {
-    api.get('/utilizadores').then((r) => setUtilizadores(r.data)).catch(() => {});
+    api.get('/utilizadores').then((r) => setUtilizadores(r.data?.data ?? r.data ?? [])).catch(() => {});
   }, []);
 
   const carregar = useCallback(async (pg = 1) => {

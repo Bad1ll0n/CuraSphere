@@ -122,7 +122,7 @@ export default function PessoalPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px' }}>Colaborador</th>
+                <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 20px 12px 32px' }}>Colaborador</th>
                 <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Role</th>
                 <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Vínculo</th>
                 <th className="text-left font-semibold text-slate-600 text-xs uppercase tracking-wide" style={{ padding: '12px 16px' }}>Fim Contrato</th>
@@ -137,7 +137,7 @@ export default function PessoalPage() {
                 const aExpirar = p.dadosContratuais?.dataFimPrevista && new Date(p.dadosContratuais.dataFimPrevista) < new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
                 return (
                   <tr key={p.id} className="hover:bg-slate-50 transition-colors">
-                    <td style={{ padding: '14px 20px' }}>
+                    <td style={{ padding: '14px 20px 14px 32px' }}>
                       <p className="font-medium text-slate-800">{p.nome}</p>
                       {p.chefe && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Chefe: {p.chefe.nome}</p>}
                     </td>

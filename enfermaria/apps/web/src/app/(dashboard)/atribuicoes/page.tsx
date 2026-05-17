@@ -254,7 +254,7 @@ export default function AtribuicoesPage() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-slate-100">
-                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 24px' }}>Doente</th>
+                          <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 24px 13px 36px' }}>Doente</th>
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Estado</th>
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Cama</th>
                           <th className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wide" style={{ padding: '13px 16px' }}>Profissional Atribuído</th>
@@ -265,7 +265,7 @@ export default function AtribuicoesPage() {
                           const atrib = atribuicaoDe(d.id);
                           return (
                             <tr key={d.id} className="hover:bg-slate-50 transition-colors" style={{ borderTop: i > 0 ? '1px solid #f8fafc' : undefined }}>
-                              <td style={{ padding: '14px 24px' }}>
+                              <td style={{ padding: '14px 24px 14px 36px' }}>
                                 <p className="font-semibold text-slate-800">{d.nome}</p>
                                 <p className="text-xs text-slate-400 font-mono" style={{ marginTop: '2px' }}>{d.numeroProcesso}</p>
                               </td>

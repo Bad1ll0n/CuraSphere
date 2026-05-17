@@ -97,7 +97,7 @@ export default function DoentesAdminPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 20px' }}>Utente</th>
+                <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 20px 14px 32px' }}>Utente</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 12px' }}>Localização</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 12px' }}>Estado</th>
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ padding: '14px 12px' }}>Admissão</th>
@@ -113,7 +113,7 @@ export default function DoentesAdminPage() {
                   style={{ borderTop: i > 0 ? '1px solid #f8fafc' : 'none' }}
                   onClick={() => router.push(`/doentes-admin/${d.id}`)}
                 >
-                  <td style={{ padding: '16px 20px' }}>
+                  <td style={{ padding: '16px 20px 16px 32px' }}>
                     <p className="font-semibold text-slate-800">{d.nome}</p>
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Proc. {d.numeroProcesso}</p>
                   </td>
