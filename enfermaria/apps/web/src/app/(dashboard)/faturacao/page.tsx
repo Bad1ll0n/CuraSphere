@@ -250,7 +250,7 @@ export default function FaturacaoPage() {
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>por {ep.criadoPor.nome}</p>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
-                    <span className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">{ep.doente.numeroProcesso}</span>
+                    <span className="text-xs font-mono text-slate-500 bg-slate-100 badge-pad py-0.5 rounded">{ep.doente.numeroProcesso}</span>
                   </td>
                   <td style={{ padding: '16px 20px' }}>
                     <span className="text-xs text-slate-500 capitalize">{ep.tipoCobertura ?? '—'}</span>

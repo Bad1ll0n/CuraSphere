@@ -134,7 +134,7 @@ export default function PedidosInternosPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
                       <p className="font-semibold text-slate-900 text-sm">{TIPO_LABELS[p.tipo] ?? p.tipo}</p>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${prio.bg} ${prio.text}`}>{prio.label}</span>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${prio.bg} ${prio.text}`}>{prio.label}</span>
                     </div>
                     <p className="text-slate-600 text-sm">{p.descricao}</p>
                     {(p.localOrigem || p.localDestino) && (
@@ -143,7 +143,7 @@ export default function PedidosInternosPage() {
                       </p>
                     )}
                     <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${est.bg} ${est.text}`}>{est.label}</span>
+                      <span className={`text-xs font-medium badge-pad py-1 rounded-full ${est.bg} ${est.text}`}>{est.label}</span>
                       <span className="text-xs text-slate-400">por {p.solicitadoPor?.nome}</span>
                       {p.executadoPor && <span className="text-xs text-slate-400">· {p.executadoPor.nome}</span>}
                     </div>

@@ -229,7 +229,7 @@ export default function FornecedoresPage() {
                       )}
                       {e.observacoes && <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{e.observacoes}</p>}
                       <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                        <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                         <span className="text-xs text-slate-400">{new Date(e.criadoEm).toLocaleDateString('pt-PT')}</span>
                         {e.recebioPor && <span className="text-xs text-slate-400">Recebido por {e.recebioPor.nome}</span>}
                       </div>

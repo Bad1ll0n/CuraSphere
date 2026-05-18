@@ -186,10 +186,10 @@ export default function OperacionalPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                         <span className="text-sm font-semibold text-slate-800">{p.descricao}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${PRIORIDADE_COR[p.prioridade] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${PRIORIDADE_COR[p.prioridade] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
                           {p.prioridade}
                         </span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[p.estado] ?? ''}`}>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[p.estado] ?? ''}`}>
                           {ESTADO_LABEL[p.estado] ?? p.estado}
                         </span>
                       </div>
@@ -223,8 +223,8 @@ export default function OperacionalPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                         <span className="text-sm font-semibold text-slate-800">{t.titulo}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${PRIORIDADE_COR[t.prioridade] ?? ''}`}>{t.prioridade}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[t.estado] ?? ''}`}>{ESTADO_LABEL[t.estado] ?? t.estado}</span>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${PRIORIDADE_COR[t.prioridade] ?? ''}`}>{t.prioridade}</span>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[t.estado] ?? ''}`}>{ESTADO_LABEL[t.estado] ?? t.estado}</span>
                       </div>
                       {t.doente && (
                         <p className="text-xs text-slate-500">

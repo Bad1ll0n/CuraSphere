@@ -55,10 +55,11 @@ export class ExamesService {
     return exame;
   }
 
-  async worklist(tipo?: string) {
+  async worklist(tipo?: string, estado?: string) {
+    const estados = estado ? [estado] : ['solicitado', 'em_progresso'];
     return this.prisma.exame.findMany({
       where: {
-        estado: { in: ['solicitado', 'em_progresso'] },
+        estado: { in: estados as any[] },
         ...(tipo ? { tipo: tipo as any } : {}),
       },
       orderBy: [{ urgente: 'desc' }, { criadoEm: 'asc' }],

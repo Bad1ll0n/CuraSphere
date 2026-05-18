@@ -86,7 +86,7 @@ function acaoCor(acao: string) {
 
 function Badge({ value, map }: { value: string; map: Record<string, string> }) {
   return (
-    <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full ${map[value] ?? 'bg-slate-100 text-slate-500'}`}>
+    <span className={`inline-block text-xs font-semibold badge-pad py-0.5 rounded-full ${map[value] ?? 'bg-slate-100 text-slate-500'}`}>
       {value}
     </span>
   );
@@ -471,7 +471,7 @@ export default function DashboardTIPage() {
                       return (
                         <div key={a.acao}>
                           <div className="flex items-center justify-between" style={{ marginBottom: '4px' }}>
-                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${acaoCor(a.acao)}`}>{a.acao}</span>
+                            <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${acaoCor(a.acao)}`}>{a.acao}</span>
                             <span className="text-xs font-bold text-slate-700">{a.total}</span>
                           </div>
                           <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -494,7 +494,7 @@ export default function DashboardTIPage() {
                   <div className="divide-y divide-slate-50">
                     {dados.auditoria.recentes.map(a => (
                       <div key={a.id} className="flex items-start gap-3" style={{ padding: '12px 16px' }}>
-                        <span className={`text-xs font-semibold px-1.5 py-0.5 rounded shrink-0 ${acaoCor(a.acao)}`}>{a.acao.substring(0, 12)}</span>
+                        <span className={`text-xs font-semibold badge-pad py-0.5 rounded shrink-0 ${acaoCor(a.acao)}`}>{a.acao.substring(0, 12)}</span>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium text-slate-800 truncate">{a.utilizador?.nome ?? 'Sistema'}</p>
                           {a.entidadeTipo && <p className="text-xs text-slate-400">{a.entidadeTipo}</p>}

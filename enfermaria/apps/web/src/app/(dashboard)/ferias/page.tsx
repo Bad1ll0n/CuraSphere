@@ -209,7 +209,7 @@ export default function FeriasPage() {
                       {new Date(a.dataInicio).toLocaleDateString('pt-PT')} → {new Date(a.dataFim).toLocaleDateString('pt-PT')}
                     </p>
                     <span className="text-xs text-slate-400">{dias} dias úteis</span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
+                    <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
                       {ESTADO_LABEL[a.estado]}
                     </span>
                   </div>

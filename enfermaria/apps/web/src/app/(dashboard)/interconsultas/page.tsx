@@ -142,7 +142,7 @@ export default function InterconsultasPage() {
           >
             {t.label}
             {t.badge > 0 && (
-              <span className="text-xs font-bold bg-amber-500 text-white rounded-full px-1.5 py-0.5 leading-none">
+              <span className="text-xs font-bold bg-amber-500 text-white rounded-full badge-pad py-0.5 leading-none">
                 {t.badge}
               </span>
             )}
@@ -310,11 +310,11 @@ function InterconsultaCard({
           <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '6px' }}>
             <span className="text-sm font-bold text-slate-800">{ic.especialidadeAlvo}</span>
             {ic.urgente && (
-              <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 badge-pad py-0.5 rounded-full">
                 Urgente
               </span>
             )}
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ESTADO_COR[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+            <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${ESTADO_COR[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>
               {ESTADO_LABEL[ic.estado] ?? ic.estado}
             </span>
           </div>

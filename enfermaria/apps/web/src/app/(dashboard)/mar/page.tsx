@@ -222,14 +222,14 @@ export default function MarPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-semibold text-slate-800">{m.nome}</span>
                           <span className="text-xs text-slate-500">{m.dose}</span>
-                          <span className={`text-xs font-medium rounded-md px-2 py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
+                          <span className={`text-xs font-medium rounded-md badge-pad py-0.5 ${viaCor[m.via] ?? 'bg-slate-100 text-slate-600'}`}>{m.via.toUpperCase()}</span>
                           {validacao && (
                             <span className={`text-xs font-medium ${validacaoCor[validacao] ?? 'text-slate-400'}`}>
                               {validacao === 'aprovada' ? '✓ Validada' : '✗ Rejeitada'}
                             </span>
                           )}
                           {ultimaAdmin?.verificacao5Certas && (
-                            <span className="text-xs font-medium text-emerald-600 bg-emerald-50 rounded-md px-2 py-0.5">5✓</span>
+                            <span className="text-xs font-medium text-emerald-600 bg-emerald-50 rounded-md badge-pad py-0.5">5✓</span>
                           )}
                         </div>
                         <div className="flex items-center gap-3" style={{ marginTop: '4px' }}>

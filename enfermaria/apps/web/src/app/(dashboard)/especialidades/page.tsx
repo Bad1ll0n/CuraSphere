@@ -144,7 +144,7 @@ export default function EspecialidadesPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
                         <p className="text-sm font-semibold text-slate-800">{s.doente?.nome ?? s.doenteId}</p>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[s.estado]}`}>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[s.estado]}`}>
                           {ESTADO_LABEL[s.estado]}
                         </span>
                       </div>
@@ -184,7 +184,7 @@ export default function EspecialidadesPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
                           <p className="text-sm font-medium text-slate-800">{s.doente?.nome ?? s.doenteId}</p>
-                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[s.estado]}`}>
+                          <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[s.estado]}`}>
                             {ESTADO_LABEL[s.estado]}
                           </span>
                         </div>

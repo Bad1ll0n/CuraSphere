@@ -1297,7 +1297,7 @@ export default function DoenteDetalhe() {
                     {unicos.map((a) => (
                       <div key={a.utilizador.id} className="flex items-center justify-between">
                         <span className="text-sm font-medium text-slate-800">{a.utilizador.nome}</span>
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${
                           a.horarioTurno.tipo === 'manha' ? 'bg-amber-50 text-amber-700' :
                           a.horarioTurno.tipo === 'tarde' ? 'bg-orange-50 text-orange-700' :
                           'bg-indigo-50 text-indigo-700'
@@ -1326,7 +1326,7 @@ export default function DoenteDetalhe() {
                 </svg>
               </div>
               <span className="text-sm font-semibold text-slate-700">Dados Administrativos</span>
-              <span className="text-xs text-slate-300 bg-slate-100 px-2 py-0.5 rounded-full font-medium">Confidencial</span>
+              <span className="text-xs text-slate-300 bg-slate-100 badge-pad py-0.5 rounded-full font-medium">Confidencial</span>
             </div>
             <div className="flex items-center gap-2">
               <a href={`/faturacao`} className="text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
@@ -1422,7 +1422,7 @@ export default function DoenteDetalhe() {
             </div>
             <span className="text-sm font-semibold text-slate-700">Medicação Ativa</span>
             {doente.medicacoes.length > 0 && (
-              <span className="text-xs font-medium text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+              <span className="text-xs font-medium text-pink-600 bg-pink-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                 {doente.medicacoes.length}
               </span>
             )}
@@ -1476,7 +1476,7 @@ export default function DoenteDetalhe() {
             </div>
             <span className="text-sm font-semibold text-slate-700">Tarefas Pendentes</span>
             {doente.tarefas.length > 0 && (
-              <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+              <span className="text-xs font-medium text-amber-600 bg-amber-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                 {doente.tarefas.length}
               </span>
             )}
@@ -1531,7 +1531,7 @@ export default function DoenteDetalhe() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${prioridadeCor[t.prioridade]}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${prioridadeCor[t.prioridade]}`}>
                         {prioridadeLabel[t.prioridade]}
                       </span>
                       {podeConcluir && (
@@ -1663,7 +1663,7 @@ export default function DoenteDetalhe() {
                 const sevCor: Record<string, string> = { anafilaxia: 'bg-red-100 text-red-700', grave: 'bg-orange-100 text-orange-700', moderada: 'bg-yellow-100 text-yellow-700', ligeira: 'bg-slate-100 text-slate-600' };
                 return (
                   <div key={a.id} className="flex items-center gap-3 rounded-lg bg-slate-50" style={{ padding: '10px 12px' }}>
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${sevCor[a.severidade] ?? 'bg-slate-100 text-slate-600'}`}>{a.severidade}</span>
+                    <span className={`text-xs font-bold badge-pad py-0.5 rounded-full ${sevCor[a.severidade] ?? 'bg-slate-100 text-slate-600'}`}>{a.severidade}</span>
                     <div className="flex-1">
                       <span className="text-sm font-semibold text-slate-800">{a.alergenio}</span>
                       <span className="text-xs text-slate-400 ml-2">{a.tipo}</span>
@@ -1696,7 +1696,7 @@ export default function DoenteDetalhe() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold text-slate-800">{c.nome}</span>
-                      {c.principal && <span className="text-xs bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">Principal</span>}
+                      {c.principal && <span className="text-xs bg-blue-100 text-blue-700 font-bold badge-pad py-0.5 rounded">Principal</span>}
                     </div>
                     <span className="text-xs text-slate-400">{c.relacao} · {c.telefone}</span>
                   </div>
@@ -1794,7 +1794,7 @@ export default function DoenteDetalhe() {
                         <td className="py-2.5 text-center text-slate-600">{sv.frequenciaRespiratoria ?? '—'}</td>
                         <td className="py-2.5 text-center">
                           {sv.news2 != null ? (
-                            <span className={`text-xs font-bold rounded-md px-2 py-0.5 ${sv.news2 >= 7 ? 'bg-red-100 text-red-700' : sv.news2 >= 5 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                            <span className={`text-xs font-bold rounded-md badge-pad py-0.5 ${sv.news2 >= 7 ? 'bg-red-100 text-red-700' : sv.news2 >= 5 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
                               {sv.news2}
                             </span>
                           ) : '—'}
@@ -1853,7 +1853,7 @@ export default function DoenteDetalhe() {
                         <div className="text-xs text-slate-400" style={{ marginTop: '2px' }}>pontos</div>
                       </div>
                       <div className="flex-1">
-                        <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full ${riscoConfig[av.risco]?.cor ?? 'bg-slate-100 text-slate-600'}`}>
+                        <span className={`inline-block text-xs font-bold badge-pad py-1 rounded-full ${riscoConfig[av.risco]?.cor ?? 'bg-slate-100 text-slate-600'}`}>
                           {riscoConfig[av.risco]?.label ?? av.risco}
                         </span>
                         <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>
@@ -1953,9 +1953,9 @@ export default function DoenteDetalhe() {
                     <div key={e.id} className="flex items-start justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '14px 16px' }}>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
-                          <span className="text-xs font-semibold text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-full">{TIPO_EXAME_LABELS[e.tipo] ?? e.tipo}</span>
-                          {e.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">URGENTE</span>}
-                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                          <span className="text-xs font-semibold text-slate-500 bg-white border border-slate-200 badge-pad py-0.5 rounded-full">{TIPO_EXAME_LABELS[e.tipo] ?? e.tipo}</span>
+                          {e.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 badge-pad py-0.5 rounded-full">URGENTE</span>}
+                          <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                         </div>
                         <p className="text-sm text-slate-700">{e.descricao}</p>
                         {e.resultado && (
@@ -2002,7 +2002,7 @@ export default function DoenteDetalhe() {
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(TIPO_EXAME_LABELS).map(([v, l]) => (
                         <button key={v} onClick={() => setExameForm(f => ({ ...f, tipo: v }))}
-                          className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${exameForm.tipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+                          className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${exameForm.tipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
                           {l}
                         </button>
                       ))}
@@ -2081,7 +2081,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Notas Clínicas SOAP</span>
               {notasClincias.length > 0 && (
-                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {notasClincias.length}
                 </span>
               )}
@@ -2171,7 +2171,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Escalas Clínicas</span>
               {escalasClinicas.length > 0 && (
-                <span className="text-xs font-medium text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-violet-600 bg-violet-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {escalasClinicas.length} registos
                 </span>
               )}
@@ -2194,7 +2194,7 @@ export default function DoenteDetalhe() {
                   return (
                     <div key={e.id} className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '14px 16px' }}>
                       <div className="flex items-center gap-3">
-                        <span className={`text-xs font-bold px-2.5 py-1 rounded-lg bg-${cor}-100 text-${cor}-700`}>{e.tipo}</span>
+                        <span className={`text-xs font-bold badge-pad py-1 rounded-lg bg-${cor}-100 text-${cor}-700`}>{e.tipo}</span>
                         <div>
                           {e.pontuacao !== null && e.pontuacao !== undefined && (
                             <p className="text-sm font-semibold text-slate-800">
@@ -2239,7 +2239,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Interconsultas</span>
               {interconsultas.filter((i: any) => i.estado === 'pendente').length > 0 && (
-                <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-amber-600 bg-amber-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {interconsultas.filter((i: any) => i.estado === 'pendente').length} pendente(s)
                 </span>
               )}
@@ -2257,8 +2257,8 @@ export default function DoenteDetalhe() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-sm font-semibold text-slate-800">{ic.especialidadeAlvo}</span>
-                          {ic.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Urgente</span>}
-                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${estadoCor[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>{ic.estado}</span>
+                          {ic.urgente && <span className="text-xs font-bold text-red-600 bg-red-50 badge-pad py-0.5 rounded-full">Urgente</span>}
+                          <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${estadoCor[ic.estado] ?? 'bg-slate-100 text-slate-500'}`}>{ic.estado}</span>
                         </div>
                         <p className="text-xs text-slate-500" style={{ marginTop: '4px' }}>{ic.motivo}</p>
                         <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>
@@ -2312,7 +2312,7 @@ export default function DoenteDetalhe() {
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-slate-700">Lista de Problemas</span>
                 {ativos.length > 0 && (
-                  <span className="text-xs bg-red-100 text-red-700 rounded-full px-2 py-0.5 font-medium">{ativos.length} ativo(s)</span>
+                  <span className="text-xs bg-red-100 text-red-700 rounded-full badge-pad py-0.5 font-medium">{ativos.length} ativo(s)</span>
                 )}
               </div>
               {podeCriar && (
@@ -2330,7 +2330,7 @@ export default function DoenteDetalhe() {
                 {[...ativos, ...cronicos].map((p: any) => (
                   <div key={p.id} className="flex items-center justify-between rounded-lg" style={{ padding: '8px 12px', background: '#f8fafc' }}>
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className={`text-xs rounded-full px-2 py-0.5 font-medium shrink-0 ${TIPO_COR[p.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`text-xs rounded-full badge-pad py-0.5 font-medium shrink-0 ${TIPO_COR[p.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
                         {TIPO_LABEL[p.tipo] ?? p.tipo}
                       </span>
                       <span className="text-sm text-slate-700 truncate">{p.descricao}</span>
@@ -2447,7 +2447,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Dispositivos Invasivos</span>
               {ativos.length > 0 && (
-                <span className="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-teal-600 bg-teal-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {ativos.length} ativo{ativos.length !== 1 ? 's' : ''}
                 </span>
               )}
@@ -2463,7 +2463,7 @@ export default function DoenteDetalhe() {
                   const dias = diasInsercao(d.dataInsercao);
                   return (
                     <div key={d.id} className="flex items-center gap-3 border border-slate-100 rounded-xl" style={{ padding: '12px 16px' }}>
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg shrink-0 ${COR_TIPO[d.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`text-xs font-semibold badge-pad py-1 rounded-lg shrink-0 ${COR_TIPO[d.tipo] ?? 'bg-slate-100 text-slate-600'}`}>
                         {TIPOS_DISP[d.tipo] ?? d.tipo}
                       </span>
                       <div className="flex-1 min-w-0">
@@ -2500,7 +2500,7 @@ export default function DoenteDetalhe() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Tipo</label>
             <div className="flex gap-2 flex-wrap">
               {['medicamento', 'alimento', 'ambiental', 'outro'].map((t) => (
-                <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
+                <button key={t} onClick={() => setAlergiaTipo(t)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaTipo === t ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{t}</button>
               ))}
             </div>
           </div>
@@ -2508,7 +2508,7 @@ export default function DoenteDetalhe() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Severidade</label>
             <div className="flex gap-2 flex-wrap">
               {['ligeira', 'moderada', 'grave', 'anafilaxia'].map((s) => (
-                <button key={s} onClick={() => setAlergiaSev(s)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
+                <button key={s} onClick={() => setAlergiaSev(s)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${alergiaSev === s ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{s}</button>
               ))}
             </div>
           </div>
@@ -2531,7 +2531,7 @@ export default function DoenteDetalhe() {
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Relação</label>
             <div className="flex gap-2 flex-wrap">
               {['cônjuge', 'filho/a', 'pai/mãe', 'outro'].map((r) => (
-                <button key={r} onClick={() => setCtRelacao(r)} className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
+                <button key={r} onClick={() => setCtRelacao(r)} className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${ctRelacao === r ? 'bg-blue-600 text-white border-blue-600' : 'border-slate-200 text-slate-600 hover:border-blue-300'}`}>{r}</button>
               ))}
             </div>
           </div>
@@ -2849,7 +2849,7 @@ export default function DoenteDetalhe() {
                           )}
                         </div>
                       </div>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md shrink-0 ${prioridadeCor[t.prioridade]}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-md shrink-0 ${prioridadeCor[t.prioridade]}`}>
                         {prioridadeLabel[t.prioridade]}
                       </span>
                     </div>
@@ -2891,7 +2891,7 @@ export default function DoenteDetalhe() {
           <div className="flex flex-col gap-1 border border-slate-100 rounded-xl" style={{ padding: '12px 16px' }}>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-medium text-slate-800">{fmtData(c.dataHora)}</span>
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+              <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                 {ESTADO_LABEL[c.estado] ?? c.estado}
               </span>
               <span className="text-xs text-slate-400 font-mono">{c.codigo}</span>
@@ -2915,7 +2915,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Consultas</span>
               {consultas.length > 0 && (
-                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-blue-600 bg-blue-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {consultas.length}
                 </span>
               )}
@@ -2985,7 +2985,7 @@ export default function DoenteDetalhe() {
               </div>
               <span className="text-sm font-semibold text-slate-700">Faturação</span>
               {faturacao.length > 0 && (
-                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
+                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 badge-pad py-0.5 rounded-full" style={{ marginLeft: '4px' }}>
                   {faturacao.length} episódio{faturacao.length !== 1 ? 's' : ''}
                 </span>
               )}
@@ -3011,7 +3011,7 @@ export default function DoenteDetalhe() {
                   return (
                     <div key={e.id} className="border border-slate-100 rounded-xl" style={{ padding: '14px 16px' }}>
                       <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '8px' }}>
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE[e.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                        <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE[e.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                           {ESTADO_LABEL[e.estado] ?? e.estado}
                         </span>
                         {e.dataEmissao && <span className="text-xs text-slate-500">{fmtData(e.dataEmissao)}</span>}
@@ -3441,7 +3441,7 @@ export default function DoenteDetalhe() {
               <div className="flex flex-wrap gap-2" style={{ marginBottom: '24px' }}>
                 {escalasDisponiveis.map(tipo => (
                   <button key={tipo} onClick={() => { setTipoEscalaClinica(tipo); setValoresEscalaClinica({}); }}
-                    className={`text-sm font-bold px-4 py-2 rounded-lg border transition-colors ${tipoEscalaClinica === tipo ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
+                    className={`text-sm font-bold filter-pad py-2 rounded-lg border transition-colors ${tipoEscalaClinica === tipo ? 'bg-violet-600 text-white border-violet-600' : 'border-slate-200 text-slate-600 hover:border-violet-300'}`}>
                     {tipo}
                   </button>
                 ))}

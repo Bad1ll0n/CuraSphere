@@ -171,11 +171,11 @@ export default function EquipamentosPage() {
 
   const manutencoesFiltradas = (manutencoes as Manutencao[]).filter(m => !filtroManEstado || m.estado === filtroManEstado);
 
-  const inputStyle = { width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '9px 12px', color: '#fff', fontSize: 14, boxSizing: 'border-box' as const };
+  const inputStyle = { width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '9px 12px', color: 'var(--text-main)', fontSize: 14, boxSizing: 'border-box' as const };
   const labelStyle = { display: 'block', color: '#94a3b8', fontSize: 11, marginBottom: 5, textTransform: 'uppercase' as const, letterSpacing: 1 };
 
   return (
-    <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: '#0f172a', color: '#fff' }}>
+    <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-main)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Equipamentos</h1>
@@ -190,14 +190,14 @@ export default function EquipamentosPage() {
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 24, background: '#1e293b', borderRadius: 10, padding: 4, width: 'fit-content' }}>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 24, background: 'var(--bg-tabs)', borderRadius: 10, padding: 4, width: 'fit-content' }}>
         {[
           { key: 'inventario',  label: '📦 Inventário' },
           { key: 'manutencoes', label: '🔧 Manutenções' },
           { key: 'alertas',     label: `⚠️ Alertas${(alertasManutencao as Equipamento[]).length > 0 ? ` (${(alertasManutencao as Equipamento[]).length})` : ''}` },
         ].map(t => (
           <button key={t.key} onClick={() => setAba(t.key as any)}
-            style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: aba === t.key ? '#334155' : 'transparent', color: aba === t.key ? '#fff' : '#64748b', fontSize: 14, fontWeight: aba === t.key ? 600 : 400, cursor: 'pointer' }}>
+            style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: aba === t.key ? 'var(--bg-tab-active)' : 'transparent', color: aba === t.key ? 'var(--text-main)' : '#64748b', fontSize: 14, fontWeight: aba === t.key ? 600 : 400, cursor: 'pointer', boxShadow: aba === t.key ? '0 1px 3px rgba(0,0,0,0.1)' : 'none' }}>
             {t.label}
           </button>
         ))}
@@ -210,13 +210,13 @@ export default function EquipamentosPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'operacional', 'em_manutencao', 'avariado', 'abatido'].map(e => (
               <button key={e} onClick={() => setFiltroEstado(e)}
-                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: filtroEstado === e ? '#3b82f6' : 'transparent', color: filtroEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
+                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid var(--border)', background: filtroEstado === e ? '#3b82f6' : 'transparent', color: filtroEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
                 {e === '' ? 'Todos' : ESTADO_INFO[e]?.dot + ' ' + (ESTADO_INFO[e]?.label ?? e)}
               </button>
             ))}
           </div>
           {equipamentos.length === 0 ? (
-            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: 'var(--text-muted)' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>🔧</div>
               <p>Sem equipamentos registados.</p>
             </div>
@@ -228,7 +228,7 @@ export default function EquipamentosPage() {
                 const manAtiva = eq.manutencoes?.[0];
                 const alerta = alertaBadge(eq);
                 return (
-                  <div key={eq.id} style={{ background: '#1e293b', border: `1px solid ${eq.estado === 'avariado' ? '#ef444440' : eq.estado === 'em_manutencao' ? '#f59e0b40' : '#334155'}`, borderRadius: 12, padding: '16px 20px' }}>
+                  <div key={eq.id} style={{ background: 'var(--bg-card)', border: `1px solid ${eq.estado === 'avariado' ? '#ef444440' : eq.estado === 'em_manutencao' ? '#f59e0b40' : 'var(--border)'}`, borderRadius: 12, padding: '16px 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         <span style={{ fontSize: 24 }}>{ti.icon}</span>
@@ -247,7 +247,7 @@ export default function EquipamentosPage() {
                       </div>
                     )}
                     {manAtiva && (
-                      <div style={{ background: '#0f172a', borderRadius: 8, padding: '6px 10px', marginTop: 8, fontSize: 12 }}>
+                      <div style={{ background: 'var(--bg-input)', borderRadius: 8, padding: '6px 10px', marginTop: 8, fontSize: 12 }}>
                         <span style={{ color: PRIORIDADE_COR[manAtiva.prioridade] ?? '#6b7280', fontWeight: 600 }}>{manAtiva.tipo === 'corretiva' ? '🔴 Corretiva' : '🟡 Preventiva'}</span>
                         <span style={{ color: '#64748b', marginLeft: 6 }}>{manAtiva.descricao}</span>
                       </div>
@@ -285,20 +285,20 @@ export default function EquipamentosPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
             {['', 'pendente', 'em_curso', 'concluida', 'cancelada'].map(e => (
               <button key={e} onClick={() => setFiltroManEstado(e)}
-                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid #334155', background: filtroManEstado === e ? '#3b82f6' : 'transparent', color: filtroManEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
+                style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid var(--border)', background: filtroManEstado === e ? '#3b82f6' : 'transparent', color: filtroManEstado === e ? '#fff' : '#94a3b8', fontSize: 14, cursor: 'pointer' }}>
                 {e === '' ? 'Todas' : e.charAt(0).toUpperCase() + e.slice(1).replace('_', ' ')}
               </button>
             ))}
           </div>
           {manutencoesFiltradas.length === 0 ? (
-            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>🔧</div>
               <p>Sem manutenções registadas.</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {manutencoesFiltradas.map(m => (
-                <div key={m.id} style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div key={m.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ width: 40, height: 40, borderRadius: 10, background: `${PRIORIDADE_COR[m.prioridade] ?? '#6b7280'}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
                     {m.tipo === 'corretiva' ? '🔴' : '🟡'}
                   </div>
@@ -342,7 +342,7 @@ export default function EquipamentosPage() {
             Equipamentos com manutenção preventiva a vencer nos próximos 30 dias ou já vencida.
           </div>
           {(alertasManutencao as Equipamento[]).length === 0 ? (
-            <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 48, textAlign: 'center', color: '#475569' }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
               <p>Sem manutenções preventivas a vencer nos próximos 30 dias.</p>
             </div>
@@ -352,7 +352,7 @@ export default function EquipamentosPage() {
                 const ti = TIPOS_EQUIP[eq.tipo] ?? { label: eq.tipo, icon: '🔧' };
                 const alerta = alertaBadge(eq)!;
                 return (
-                  <div key={eq.id} style={{ background: '#1e293b', border: `1px solid ${alerta.cor}40`, borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div key={eq.id} style={{ background: 'var(--bg-card)', border: `1px solid ${alerta.cor}40`, borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
                     <div style={{ width: 44, height: 44, borderRadius: 10, background: `${alerta.cor}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
                       {ti.icon}
                     </div>
@@ -383,7 +383,7 @@ export default function EquipamentosPage() {
       {/* Modal Novo Equipamento */}
       {modalEq && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Novo Equipamento</h2>
               <button onClick={() => setModalEq(false)} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 20, cursor: 'pointer' }}>✕</button>
@@ -415,7 +415,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEq(false)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutCriarEq.mutate(formEq)} disabled={mutCriarEq.isPending || !formEq.nome.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarEq.isPending || !formEq.nome.trim() ? 0.5 : 1 }}>
                   {mutCriarEq.isPending ? 'A criar...' : 'Criar Equipamento'}
@@ -429,7 +429,7 @@ export default function EquipamentosPage() {
       {/* Modal Editar Equipamento */}
       {modalEditarEq && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Editar Equipamento</h2>
@@ -472,7 +472,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalEditarEq(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutEditarEq.mutate({ id: modalEditarEq.id, body: formEditarEq })} disabled={mutEditarEq.isPending || !formEditarEq.nome.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutEditarEq.isPending || !formEditarEq.nome.trim() ? 0.5 : 1 }}>
                   {mutEditarEq.isPending ? 'A guardar...' : 'Guardar Alterações'}
@@ -486,7 +486,7 @@ export default function EquipamentosPage() {
       {/* Modal Atualizar Manutenção (com seleção de técnico) */}
       {modalAtualizarMan && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 400 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 400 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>
@@ -508,7 +508,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalAtualizarMan(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
                 <button
                   onClick={() => mutAtualizarMan.mutate({ id: modalAtualizarMan.id, estado: modalAtualizarMan.novoEstado, tecnicoIdVal: tecnicoId || undefined })}
                   disabled={mutAtualizarMan.isPending}
@@ -524,7 +524,7 @@ export default function EquipamentosPage() {
       {/* Modal Reportar Avaria */}
       {modalMan && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}>
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, padding: 28, width: '100%', maxWidth: 440 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 28, width: '100%', maxWidth: 440 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <div>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Reportar Ocorrência</h2>
@@ -564,7 +564,7 @@ export default function EquipamentosPage() {
               </div>
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
                 <button onClick={() => setModalMan(null)}
-                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
+                  style={{ flex: 1, padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', cursor: 'pointer' }}>Cancelar</button>
                 <button onClick={() => mutCriarMan.mutate(formMan)} disabled={mutCriarMan.isPending || !formMan.descricao.trim()}
                   style={{ flex: 2, padding: 10, borderRadius: 8, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 700, cursor: 'pointer', opacity: mutCriarMan.isPending || !formMan.descricao.trim() ? 0.5 : 1 }}>
                   {mutCriarMan.isPending ? 'A reportar...' : 'Reportar'}

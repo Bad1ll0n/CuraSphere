@@ -152,6 +152,7 @@ const navItems = [
     label: 'Atribuições',
     servicos: null,
     roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +164,8 @@ const navItems = [
     href: '/passagem-turno',
     label: 'Passagem de Turno',
     servicos: null,
-    roles: [...ROLES_CLINICO],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,7 +177,8 @@ const navItems = [
     href: '/trocas',
     label: 'Trocas de Turno',
     servicos: null,
-    roles: [...ROLES_CLINICO],
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
     grupo: 'C',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -817,7 +820,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <div className="flex-1 min-w-0">
                 <p className="text-white text-[13px] font-semibold truncate leading-snug">{utilizador.nome}</p>
                 <div className="flex items-center gap-2 mt-1.5">
-                  <span className={`shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full ${roleColor[utilizador.role] ?? 'bg-slate-500/15 text-slate-400'}`}>
+                  <span className={`shrink-0 text-[10px] font-semibold badge-pad py-0.5 rounded-full ${roleColor[utilizador.role] ?? 'bg-slate-500/15 text-slate-400'}`}>
                     {roleLabel[utilizador.role] ?? utilizador.role}
                   </span>
                   {utilizador.subRole && (

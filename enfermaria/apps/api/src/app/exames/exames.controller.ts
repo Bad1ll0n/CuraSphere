@@ -17,8 +17,8 @@ export class ExamesController {
 
   @Get('worklist')
   @Roles('tecnico_saude', 'farmaceutico', 'medico', 'enfermeiro')
-  worklist(@Query('tipo') tipo?: string) {
-    return this.service.worklist(tipo);
+  worklist(@Query('tipo') tipo?: string, @Query('estado') estado?: string) {
+    return this.service.worklist(tipo, estado);
   }
 
   @Get(':doenteId')

@@ -196,7 +196,7 @@ export default function AtribuicoesPage() {
                   >
                     <div className="flex items-center justify-between" style={{ marginBottom: '10px' }}>
                       <span className={`text-sm font-bold ${ativo ? cor.text : 'text-slate-700'}`}>{tipoLabel[tipo]}</span>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${ativo ? `${cor.bg} ${cor.text} border ${cor.border}` : 'bg-slate-100 text-slate-500'}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${ativo ? `${cor.bg} ${cor.text} border ${cor.border}` : 'bg-slate-100 text-slate-500'}`}>
                         {turno.atribuicoes.length} atrib.
                       </span>
                     </div>
@@ -225,7 +225,7 @@ export default function AtribuicoesPage() {
                       Turno da {tipoLabel[turnoSelecionado.tipo]}
                     </span>
                     {souChefe && (
-                      <span className="text-xs font-semibold bg-white/70 text-slate-600 px-2 py-0.5 rounded-md border border-white/80">
+                      <span className="text-xs font-semibold bg-white/70 text-slate-600 badge-pad py-0.5 rounded-md border border-white/80">
                         És o chefe deste turno
                       </span>
                     )}

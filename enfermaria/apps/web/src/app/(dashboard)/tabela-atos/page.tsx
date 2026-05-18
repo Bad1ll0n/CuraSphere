@@ -204,7 +204,7 @@ export default function TabelaAtosPage() {
                     <td className="font-mono text-xs text-slate-600 font-semibold" style={{ padding: '14px 20px 14px 32px' }}>{ato.codigo}</td>
                     <td className="text-slate-800 font-medium" style={{ padding: '14px 16px' }}>{ato.descricao}</td>
                     <td style={{ padding: '14px 16px' }}>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catStyle.bg} ${catStyle.text}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${catStyle.bg} ${catStyle.text}`}>
                         {CATEGORIAS.find(c => c.value === ato.categoria)?.label ?? ato.categoria}
                       </span>
                     </td>
@@ -215,7 +215,7 @@ export default function TabelaAtosPage() {
                       {ato.precoBase.toFixed(2)} €
                     </td>
                     <td className="text-center" style={{ padding: '14px 16px' }}>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ato.ativo ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${ato.ativo ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
                         {ato.ativo ? 'Ativo' : 'Inativo'}
                       </span>
                     </td>

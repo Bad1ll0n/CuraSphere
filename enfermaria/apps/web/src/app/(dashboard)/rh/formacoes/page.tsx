@@ -153,10 +153,10 @@ export default function FormacoesPage() {
                     <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '5px' }}>
                       <span className="text-sm font-bold text-slate-800">{f.nome}</span>
                       {f.obrigatoria && (
-                        <span className="text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">Obrigatória</span>
+                        <span className="text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 badge-pad py-0.5 rounded-full">Obrigatória</span>
                       )}
                       {exp && (
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${exp.cor}`}>{exp.label}</span>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${exp.cor}`}>{exp.label}</span>
                       )}
                     </div>
                     {f.utilizador && aba === 'todas' && (

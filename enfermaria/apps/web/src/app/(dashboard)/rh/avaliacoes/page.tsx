@@ -157,7 +157,7 @@ export default function AvaliacoesPage() {
                     <span className="text-xs text-slate-400">{ROLE_LABEL[a.utilizador.role] ?? a.utilizador.role}</span>
                     <span className="text-xs text-slate-400">·</span>
                     <span className="text-xs font-medium text-slate-600">{a.periodo}</span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
+                    <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
                       {ESTADO_LABEL[a.estado]}
                     </span>
                   </div>

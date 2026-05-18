@@ -115,10 +115,10 @@ export default function CatalogoPage() {
                     <td className="font-semibold text-slate-900" style={{ padding: '14px 20px 14px 32px' }}>{item.dci}</td>
                     <td className="text-slate-500" style={{ padding: '14px 20px' }}>{item.nomeMarca || '—'}</td>
                     <td style={{ padding: '14px 20px' }}>
-                      <span className="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">{item.formaFarmaceutica}</span>
+                      <span className="text-xs bg-indigo-50 text-indigo-700 badge-pad py-1 rounded-full font-medium">{item.formaFarmaceutica}</span>
                     </td>
                     <td style={{ padding: '14px 20px' }}>
-                      <span className="text-xs bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-medium">{item.classeTerap}</span>
+                      <span className="text-xs bg-emerald-50 text-emerald-700 badge-pad py-1 rounded-full font-medium">{item.classeTerap}</span>
                     </td>
                     <td className="text-slate-500" style={{ padding: '14px 20px' }}>{item.concentracao || '—'}</td>
                     <td className="text-slate-400 font-mono text-xs" style={{ padding: '14px 20px' }}>{item.codigoATC || '—'}</td>

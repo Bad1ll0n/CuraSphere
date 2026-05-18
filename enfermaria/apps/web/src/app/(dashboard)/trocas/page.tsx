@@ -31,7 +31,7 @@ const estadoConfig: Record<string, { label: string; cor: string }> = {
 
 function TurnoBadge({ turno }: { turno: HorarioTurno }) {
   return (
-    <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg border ${tipoCor[turno.tipo]}`}>
+    <span className={`inline-flex items-center gap-1 text-xs font-medium badge-pad py-1 rounded-lg border ${tipoCor[turno.tipo]}`}>
       {tipoLabel[turno.tipo]} · {new Date(turno.data).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' })}
     </span>
   );
@@ -310,7 +310,7 @@ function Section({ titulo, count, cor, children }: { titulo: string; count: numb
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '16px 24px' }}>
         <h2 className="font-semibold text-slate-800 text-sm">{titulo}</h2>
-        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${countCor}`}>{count}</span>
+        <span className={`text-xs font-semibold badge-pad py-0.5 rounded-full ${countCor}`}>{count}</span>
       </div>
       <div>{children}</div>
     </div>
@@ -339,7 +339,7 @@ function PedidoRow({ pedido, utilizadorId, children }: { pedido: Pedido; utiliza
             {new Date(pedido.criadoEm).toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' })}
           </p>
         </div>
-        <span className={`text-xs font-medium px-2.5 py-1 rounded-lg shrink-0 ${cfg.cor}`}>{cfg.label}</span>
+        <span className={`text-xs font-medium badge-pad py-1 rounded-lg shrink-0 ${cfg.cor}`}>{cfg.label}</span>
       </div>
       {children}
     </div>

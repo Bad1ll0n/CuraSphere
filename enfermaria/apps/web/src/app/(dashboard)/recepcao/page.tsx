@@ -28,7 +28,7 @@ const TIPO_COR: Record<string, string> = {
 const PRIORIDADE_BADGE: Record<string, { label: string; bg: string }> = {
   prioritario: { label: '🔴 Prioritário', bg: '#ef444420' },
   senior:      { label: '🟡 Sénior',      bg: '#f59e0b20' },
-  normal:      { label: 'Normal',          bg: '#1e293b' },
+  normal:      { label: 'Normal',          bg: 'var(--bg-card)' },
 };
 
 interface Ticket {
@@ -300,7 +300,7 @@ export default function RecepcaoPage() {
   const seniors = fila.filter((t) => t.prioridade === 'senior').length;
 
   return (
-    <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: '#0f172a', color: '#fff' }}>
+    <div style={{ padding: '32px', fontFamily: 'system-ui, sans-serif', minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-main)' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
         <div>
@@ -332,8 +332,8 @@ export default function RecepcaoPage() {
             target="_blank"
             rel="noreferrer"
             style={{
-              background: '#1e293b',
-              border: '1px solid #334155',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
               color: '#94a3b8',
               padding: '8px 16px',
               borderRadius: 8,
@@ -348,8 +348,8 @@ export default function RecepcaoPage() {
             target="_blank"
             rel="noreferrer"
             style={{
-              background: '#1e293b',
-              border: '1px solid #334155',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
               color: '#94a3b8',
               padding: '8px 16px',
               borderRadius: 8,
@@ -373,7 +373,7 @@ export default function RecepcaoPage() {
           <div
             key={k.label}
             style={{
-              background: '#1e293b',
+              background: 'var(--bg-card)',
               border: `1px solid ${k.cor}30`,
               borderRadius: 12,
               padding: '20px 24px',
@@ -391,8 +391,8 @@ export default function RecepcaoPage() {
           {/* Controlo de chamada */}
           <div
             style={{
-              background: flash ? '#1e3a5f' : '#1e293b',
-              border: `1px solid ${flash ? '#3b82f6' : '#334155'}`,
+              background: flash ? '#1e3a5f' : 'var(--bg-card)',
+              border: `1px solid ${flash ? '#3b82f6' : 'var(--border)'}`,
               borderRadius: 16,
               padding: '24px',
               marginBottom: 24,
@@ -417,7 +417,7 @@ export default function RecepcaoPage() {
                         onClick={() => rechamar(ultimoChamado.id)}
                         style={{
                           background: 'transparent',
-                          border: '1px solid #334155',
+                          border: '1px solid var(--border)',
                           color: '#94a3b8',
                           borderRadius: 8,
                           padding: '4px 12px',
@@ -457,8 +457,8 @@ export default function RecepcaoPage() {
                     onChange={(e) => setBalcao(e.target.value)}
                     style={{
                       width: 64,
-                      background: '#0f172a',
-                      border: '1px solid #334155',
+                      background: 'var(--bg-input)',
+                      border: '1px solid var(--border)',
                       borderRadius: 8,
                       padding: '8px 12px',
                       color: '#fff',
@@ -472,7 +472,7 @@ export default function RecepcaoPage() {
                   disabled={chamando || fila.length === 0}
                   style={{
                     marginTop: 20,
-                    background: chamando || fila.length === 0 ? '#1e293b' : '#3b82f6',
+                    background: chamando || fila.length === 0 ? 'var(--bg-card)' : '#3b82f6',
                     border: 'none',
                     color: chamando || fila.length === 0 ? '#475569' : '#fff',
                     borderRadius: 10,
@@ -489,8 +489,8 @@ export default function RecepcaoPage() {
           </div>
 
           {/* Fila em espera */}
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 16, overflow: 'hidden' }}>
-            <div style={{ padding: '16px 24px', borderBottom: '1px solid #334155' }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+            <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
               <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>
                 Fila em Espera ({totalEspera})
               </h2>
@@ -512,7 +512,7 @@ export default function RecepcaoPage() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         padding: '14px 24px',
-                        borderBottom: i < fila.length - 1 ? '1px solid #0f172a' : 'none',
+                        borderBottom: i < fila.length - 1 ? '1px solid var(--bg-page)' : 'none',
                         background: i === 0 ? '#172033' : 'transparent',
                       }}
                     >
@@ -551,7 +551,7 @@ export default function RecepcaoPage() {
                           </div>
                           <div style={{ display: 'flex', gap: 12, marginTop: 2 }}>
                             {t.nomeUtente && <span style={{ color: '#64748b', fontSize: 12 }}>{t.nomeUtente}</span>}
-                            <span style={{ color: '#334155', fontSize: 12 }}>
+                            <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>
                               {new Date(t.criadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           </div>
@@ -607,7 +607,7 @@ export default function RecepcaoPage() {
         {/* Painel lateral — histórico + stats por tipo */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Stats por tipo */}
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 20 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20 }}>
             <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 1 }}>
               Hoje por Serviço
             </h3>
@@ -634,21 +634,21 @@ export default function RecepcaoPage() {
                   ))}
               </div>
             ) : (
-              <p style={{ color: '#334155', fontSize: 13 }}>Sem dados</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Sem dados</p>
             )}
-            <div style={{ borderTop: '1px solid #334155', marginTop: 12, paddingTop: 12, display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ borderTop: '1px solid var(--border)', marginTop: 12, paddingTop: 12, display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#64748b', fontSize: 13 }}>Total Hoje</span>
               <span style={{ fontWeight: 800, fontSize: 18, color: '#fff' }}>{totalHoje}</span>
             </div>
           </div>
 
           {/* Histórico de chamadas */}
-          <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 12, padding: 20, flex: 1 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20, flex: 1 }}>
             <h3 style={{ margin: '0 0 16px 0', fontSize: 14, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 1 }}>
               Histórico
             </h3>
             {ultimos.length === 0 ? (
-              <p style={{ color: '#334155', fontSize: 13 }}>Sem chamadas</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>Sem chamadas</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {ultimos.map((t, i) => (
@@ -659,7 +659,7 @@ export default function RecepcaoPage() {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '6px 0',
-                      borderBottom: i < ultimos.length - 1 ? '1px solid #0f172a' : 'none',
+                      borderBottom: i < ultimos.length - 1 ? '1px solid var(--bg-page)' : 'none',
                       opacity: i === 0 ? 1 : 0.7,
                     }}
                   >
@@ -669,7 +669,7 @@ export default function RecepcaoPage() {
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       {t.balcao && <div style={{ color: '#475569', fontSize: 12 }}>B.{t.balcao}</div>}
-                      <div style={{ color: '#334155', fontSize: 11 }}>
+                      <div style={{ color: 'var(--text-muted)', fontSize: 11 }}>
                         {t.chamadoEm ? new Date(t.chamadoEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }) : '—'}
                       </div>
                     </div>
@@ -691,7 +691,7 @@ export default function RecepcaoPage() {
           onClick={(e) => { if (e.target === e.currentTarget) fecharModalNovoUtente(); }}
         >
           <div style={{
-            background: '#1e293b', border: '1px solid #334155', borderRadius: 16,
+            background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16,
             padding: '32px', width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto',
           }}>
             {novoUtenteSucesso ? (
@@ -713,7 +713,7 @@ export default function RecepcaoPage() {
                     outro: 'Registo concluído.',
                   };
                   return (
-                    <div style={{ background: '#0f172a', borderRadius: 10, padding: '12px 16px', marginBottom: 24 }}>
+                    <div style={{ background: 'var(--bg-input)', borderRadius: 10, padding: '12px 16px', marginBottom: 24 }}>
                       <p style={{ color: '#94a3b8', margin: 0, fontSize: 14 }}>
                         {tv?.icon} <strong>{tv?.label}</strong> — {msgs[novoUtenteSucesso.tipoVisita] ?? ''}
                       </p>
@@ -762,8 +762,8 @@ export default function RecepcaoPage() {
                           style={{
                             padding: '10px 8px',
                             borderRadius: 10,
-                            border: novoUtenteForm.tipoVisita === tv.value ? '2px solid #3b82f6' : `1px solid ${novoUtenteErros.tipoVisita ? '#ef4444' : '#334155'}`,
-                            background: novoUtenteForm.tipoVisita === tv.value ? '#1e3a5f' : '#0f172a',
+                            border: novoUtenteForm.tipoVisita === tv.value ? '2px solid #3b82f6' : `1px solid ${novoUtenteErros.tipoVisita ? '#ef4444' : 'var(--border)'}`,
+                            background: novoUtenteForm.tipoVisita === tv.value ? '#1e3a5f' : 'var(--bg-input)',
                             color: novoUtenteForm.tipoVisita === tv.value ? '#60a5fa' : '#94a3b8',
                             cursor: 'pointer',
                             textAlign: 'center',
@@ -790,7 +790,7 @@ export default function RecepcaoPage() {
                     <input
                       value={novoUtenteForm.nome}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, nome: e.target.value })); setNovoUtenteErros(p => ({ ...p, nome: '' })); }}
-                      style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.nome ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.nome ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="Nome completo do utente"
                     />
                     {novoUtenteErros.nome && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.nome}</p>}
@@ -805,7 +805,7 @@ export default function RecepcaoPage() {
                         type="date"
                         value={novoUtenteForm.dataNascimento}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, dataNascimento: e.target.value })); setNovoUtenteErros(p => ({ ...p, dataNascimento: '' })); }}
-                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.dataNascimento ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.dataNascimento ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                       />
                       {novoUtenteErros.dataNascimento && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.dataNascimento}</p>}
                     </div>
@@ -817,7 +817,7 @@ export default function RecepcaoPage() {
                         value={novoUtenteForm.nif}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, nif: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, nif: '' })); }}
                         maxLength={9}
-                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.nif ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.nif ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="000000000"
                       />
                       {novoUtenteErros.nif && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.nif}</p>}
@@ -832,7 +832,7 @@ export default function RecepcaoPage() {
                       value={novoUtenteForm.numeroSNS}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroSNS: e.target.value.replace(/\D/g, '') })); setNovoUtenteErros(p => ({ ...p, numeroSNS: '' })); }}
                       maxLength={9}
-                      style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.numeroSNS ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.numeroSNS ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="000000000"
                     />
                     {novoUtenteErros.numeroSNS && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.numeroSNS}</p>}
@@ -850,7 +850,7 @@ export default function RecepcaoPage() {
                         type="tel"
                         value={novoUtenteForm.telefone}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, telefone: e.target.value })); setNovoUtenteErros(p => ({ ...p, telefone: '' })); }}
-                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.telefone ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.telefone ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="9XX XXX XXX"
                       />
                       {novoUtenteErros.telefone && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.telefone}</p>}
@@ -861,7 +861,7 @@ export default function RecepcaoPage() {
                         type="email"
                         value={novoUtenteForm.email}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, email: e.target.value })); setNovoUtenteErros(p => ({ ...p, email: '' })); }}
-                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.email ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.email ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="email@exemplo.pt"
                       />
                       {novoUtenteErros.email && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.email}</p>}
@@ -873,7 +873,7 @@ export default function RecepcaoPage() {
                     <input
                       value={novoUtenteForm.morada}
                       onChange={e => setNovoUtenteForm(f => ({ ...f, morada: e.target.value }))}
-                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      style={{ width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                       placeholder="Rua, nº, andar"
                     />
                   </div>
@@ -884,7 +884,7 @@ export default function RecepcaoPage() {
                       <input
                         value={novoUtenteForm.codigoPostal}
                         onChange={e => { setNovoUtenteForm(f => ({ ...f, codigoPostal: e.target.value })); setNovoUtenteErros(p => ({ ...p, codigoPostal: '' })); }}
-                        style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.codigoPostal ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.codigoPostal ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="0000-000"
                       />
                       {novoUtenteErros.codigoPostal && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.codigoPostal}</p>}
@@ -894,7 +894,7 @@ export default function RecepcaoPage() {
                       <input
                         value={novoUtenteForm.localidade}
                         onChange={e => setNovoUtenteForm(f => ({ ...f, localidade: e.target.value }))}
-                        style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                        style={{ width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                         placeholder="Cidade"
                       />
                     </div>
@@ -910,7 +910,7 @@ export default function RecepcaoPage() {
                     <select
                       value={novoUtenteForm.tipoCobertura}
                       onChange={e => { setNovoUtenteForm(f => ({ ...f, tipoCobertura: e.target.value, entidadeSeguradora: '', numeroApolice: '' })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '', numeroApolice: '' })); }}
-                      style={{ width: '100%', background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
+                      style={{ width: '100%', background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 15, boxSizing: 'border-box' }}
                     >
                       <option value="sns">SNS</option>
                       <option value="seguro">Seguro de Saúde</option>
@@ -927,7 +927,7 @@ export default function RecepcaoPage() {
                         <input
                           value={novoUtenteForm.entidadeSeguradora}
                           onChange={e => { setNovoUtenteForm(f => ({ ...f, entidadeSeguradora: e.target.value })); setNovoUtenteErros(p => ({ ...p, entidadeSeguradora: '' })); }}
-                          style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.entidadeSeguradora ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.entidadeSeguradora ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 14, boxSizing: 'border-box' }}
                           placeholder="Nome da seguradora"
                         />
                         {novoUtenteErros.entidadeSeguradora && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.entidadeSeguradora}</p>}
@@ -939,7 +939,7 @@ export default function RecepcaoPage() {
                         <input
                           value={novoUtenteForm.numeroApolice}
                           onChange={e => { setNovoUtenteForm(f => ({ ...f, numeroApolice: e.target.value })); setNovoUtenteErros(p => ({ ...p, numeroApolice: '' })); }}
-                          style={{ width: '100%', background: '#0f172a', border: `1px solid ${novoUtenteErros.numeroApolice ? '#ef4444' : '#334155'}`, borderRadius: 8, padding: '10px 14px', color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+                          style={{ width: '100%', background: 'var(--bg-input)', border: `1px solid ${novoUtenteErros.numeroApolice ? '#ef4444' : 'var(--border)'}`, borderRadius: 8, padding: '10px 14px', color: 'var(--text-main)', fontSize: 14, boxSizing: 'border-box' }}
                           placeholder="Nº da apólice"
                         />
                         {novoUtenteErros.numeroApolice && <p style={{ color: '#f87171', fontSize: 12, marginTop: 4 }}>{novoUtenteErros.numeroApolice}</p>}
@@ -949,7 +949,7 @@ export default function RecepcaoPage() {
 
                   <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
                     <button type="button" onClick={fecharModalNovoUtente}
-                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #334155', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
+                      style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid var(--border)', background: 'transparent', color: '#94a3b8', fontSize: 15, cursor: 'pointer' }}>
                       Cancelar
                     </button>
                     <button type="submit" disabled={criandoUtente}

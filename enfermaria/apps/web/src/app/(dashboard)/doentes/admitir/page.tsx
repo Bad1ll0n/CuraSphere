@@ -161,7 +161,7 @@ export default function AdmitirDoentesPagina() {
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>
                 Cama
                 {camas.length > 0 && (
-                  <span style={{ marginLeft: '12px', fontSize: '12px' }} className="font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full normal-case tracking-normal">
+                  <span style={{ marginLeft: '12px', fontSize: '12px' }} className="font-medium text-teal-600 bg-teal-50 badge-pad py-0.5 rounded-full normal-case tracking-normal">
                     {camas.length} disponíveis
                   </span>
                 )}

@@ -12,7 +12,7 @@ export class HorariosService {
         turnos: {
           include: {
             profissionais: {
-              include: { utilizador: { select: { id: true, nome: true, role: true } } },
+              include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true } } },
             },
           },
           orderBy: { data: 'asc' },
@@ -32,7 +32,7 @@ export class HorariosService {
         turnos: {
           include: {
             profissionais: {
-              include: { utilizador: { select: { id: true, nome: true, role: true, ordemExperiencia: true } } },
+              include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true, ordemExperiencia: true } } },
             },
           },
           orderBy: { data: 'asc' },
@@ -119,7 +119,7 @@ export class HorariosService {
       },
       include: {
         profissionais: {
-          include: { utilizador: { select: { id: true, nome: true, role: true, ordemExperiencia: true } } },
+          include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true, ordemExperiencia: true } } },
         },
       },
     });
@@ -188,7 +188,7 @@ export class HorariosService {
       data: { ...(data.tipo ? { tipo: data.tipo } : {}) },
       include: {
         profissionais: {
-          include: { utilizador: { select: { id: true, nome: true, role: true } } },
+          include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true } } },
         },
       },
     });

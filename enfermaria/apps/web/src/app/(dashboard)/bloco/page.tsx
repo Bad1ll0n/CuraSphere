@@ -239,11 +239,11 @@ export default function BlocoPage() {
                             <p className="font-semibold text-slate-900 text-sm">{c.designacao}</p>
                             <p className="text-slate-500 text-sm" style={{ marginTop: '2px' }}>{c.doente?.nome}</p>
                             <div className="flex items-center gap-2 flex-wrap" style={{ marginTop: '8px' }}>
-                              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                              <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                               <span className="text-xs text-slate-400">Cirurgião: {c.cirurgiao?.nome}</span>
                               {c.anestesista && <span className="text-xs text-slate-400">Anestesista: {c.anestesista.nome}</span>}
                               {cl && (
-                                <span className={`text-xs font-medium px-2 py-0.5 rounded-md ${fasesDone === 3 ? 'bg-green-50 text-green-700' : fasesDone > 0 ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
+                                <span className={`text-xs font-medium badge-pad py-0.5 rounded-md ${fasesDone === 3 ? 'bg-green-50 text-green-700' : fasesDone > 0 ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
                                   WHO {fasesDone}/3
                                 </span>
                               )}

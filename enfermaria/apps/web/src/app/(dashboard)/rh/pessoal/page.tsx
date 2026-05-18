@@ -147,7 +147,7 @@ export default function PessoalPage() {
                     </td>
                     <td style={{ padding: '14px 16px' }}>
                       {p.dadosContratuais ? (
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${VINCULO_COR[p.dadosContratuais.tipoVinculo] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                        <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${VINCULO_COR[p.dadosContratuais.tipoVinculo] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
                           {VINCULO_LABEL[p.dadosContratuais.tipoVinculo] ?? p.dadosContratuais.tipoVinculo}
                         </span>
                       ) : <span className="text-xs text-slate-400">—</span>}

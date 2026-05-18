@@ -272,7 +272,7 @@ export default function DashboardQualidade() {
               <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Ordenados por mais recentes</p>
             </div>
             {dados.alertas.naoLidos > 0 && (
-              <span className="text-xs font-bold text-white bg-red-500 rounded-full px-2 py-0.5">{dados.alertas.naoLidos}</span>
+              <span className="text-xs font-bold text-white bg-red-500 rounded-full badge-pad py-0.5">{dados.alertas.naoLidos}</span>
             )}
           </div>
           {dados.alertas.recentes.length === 0 ? (

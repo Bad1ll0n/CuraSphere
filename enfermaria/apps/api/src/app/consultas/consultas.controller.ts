@@ -12,19 +12,19 @@ export class ConsultasController {
   // ─── Agenda semanal ───────────────────────────────────────────────────────
 
   @Post('agenda')
-  @Roles('medico', 'administrativo', 'direcao')
+  @Roles('medico', 'administrativo', 'direcao', 'ti')
   criarAgenda(@Body() dto: any) {
     return this.service.criarAgenda(dto);
   }
 
   @Patch('agenda/:id')
-  @Roles('medico', 'administrativo', 'direcao')
+  @Roles('medico', 'administrativo', 'direcao', 'ti')
   atualizarAgenda(@Param('id') id: string, @Body() dto: any) {
     return this.service.atualizarAgenda(id, dto);
   }
 
   @Delete('agenda/:id')
-  @Roles('medico', 'administrativo', 'direcao')
+  @Roles('medico', 'administrativo', 'direcao', 'ti')
   removerAgenda(@Param('id') id: string) {
     return this.service.removerAgenda(id);
   }

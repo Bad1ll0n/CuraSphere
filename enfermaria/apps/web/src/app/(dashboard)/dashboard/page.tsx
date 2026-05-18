@@ -96,7 +96,7 @@ function EmBreve({ titulo, descricao }: { titulo: string; descricao?: string }) 
       </svg>
       <p className="font-semibold text-slate-500 text-sm">{titulo}</p>
       {descricao && <p className="text-slate-400 text-xs" style={{ marginTop: '6px' }}>{descricao}</p>}
-      <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>Em breve</span>
+      <span className="inline-block text-[10px] font-semibold badge-pad py-0.5 rounded-full bg-slate-200 text-slate-500" style={{ marginTop: '12px' }}>Em breve</span>
     </div>
   );
 }
@@ -114,7 +114,7 @@ function CardHeader({ title, count, countColor = 'bg-slate-100 text-slate-500' }
     <div className="flex items-center justify-between" style={{ padding: '18px 24px', borderBottom: '1px solid #f8fafc' }}>
       <h3 className="font-semibold text-slate-800 text-sm">{title}</h3>
       {count !== undefined && (
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${countColor}`}>{count}</span>
+        <span className={`text-xs font-semibold badge-pad py-1 rounded-full ${countColor}`}>{count}</span>
       )}
     </div>
   );
@@ -138,8 +138,8 @@ function DashboardHeader({ utilizador }: { utilizador: { nome: string; role: str
         <p className="text-sm text-slate-400 capitalize" style={{ marginBottom: '4px' }}>{hoje}</p>
         <h1 className="text-3xl font-bold text-slate-900">{saudacao()}, {primeiro} 👋</h1>
         <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-          <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{rl}</span>
-          {sr && <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-purple-100 text-purple-700">{sr}</span>}
+          <span className="text-xs font-medium badge-pad py-1 rounded-full bg-blue-100 text-blue-700">{rl}</span>
+          {sr && <span className="text-xs font-medium badge-pad py-1 rounded-full bg-purple-100 text-purple-700">{sr}</span>}
         </div>
       </div>
       <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl" style={{ padding: '8px 16px' }}>
@@ -225,13 +225,17 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-medico'],
     queryFn: async () => {
-      const [d, t] = await Promise.all([
+      const [d, t, ic, ex] = await Promise.all([
         api.get('/doentes?todos=true').catch(() => ({ data: [] })),
         api.get('/tarefas/minhas').catch(() => ({ data: [] })),
+        api.get(`/interconsultas/pendentes?especialidade=${utilizador.subRole ?? ''}`).catch(() => ({ data: [] })),
+        api.get('/exames/worklist?estado=resultado_disponivel').catch(() => ({ data: [] })),
       ]);
       return {
         doentes: d.data?.data ?? [],
         tarefas: (t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'),
+        interconsultas: ic.data ?? [],
+        exames: ex.data ?? [],
       };
     },
     staleTime: 60_000,
@@ -239,6 +243,8 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
 
   const doentes: any[] = (data as any).doentes ?? [];
   const tarefas: any[] = (data as any).tarefas ?? [];
+  const interconsultas: any[] = (data as any).interconsultas ?? [];
+  const exames: any[] = (data as any).exames ?? [];
   const criticos = doentes.filter((d: any) => d.estado === 'critico' || d.estado === 'grave');
   const urgentes = tarefas.filter((t: any) => t.prioridade === 'urgente' || t.prioridade === 'alta');
 
@@ -272,7 +278,7 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-xs text-slate-400">Cama {d.cama?.numero}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
+                      <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
                     </div>
                   </div>
                 </Link>
@@ -289,14 +295,54 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
                 {urgentes.slice(0, 5).map((t: any, i: number) => (
                   <div key={t.id} className="flex items-center justify-between" style={{ padding: '10px 24px', borderBottom: i < urgentes.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                     <p className="text-sm text-slate-700 truncate">{t.descricao}</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[t.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{t.prioridade}</span>
+                    <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[t.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{t.prioridade}</span>
                   </div>
                 ))}
               </div>
             )}
           </CardContainer>
-          <EmBreve titulo="Interconsultas Pendentes" descricao="Fase 7.2 — Referenciação entre Especialidades" />
-          <EmBreve titulo="Exames com Resultado" descricao="Fase 7.3 — Worklist de Imagiologia" />
+          <CardContainer>
+            <CardHeader title="Interconsultas Pendentes" count={interconsultas.length} countColor={interconsultas.length > 0 ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-500'} />
+            {interconsultas.length === 0 ? <Vazio msg="Sem interconsultas pendentes" /> : (
+              <div>
+                {interconsultas.slice(0, 4).map((ic: any, i: number) => (
+                  <Link key={ic.id} href={`/interconsultas`}>
+                    <div className="flex items-center justify-between hover:bg-slate-50 transition-colors" style={{ padding: '10px 24px', borderBottom: i < Math.min(interconsultas.length, 4) - 1 ? '1px solid #f8fafc' : 'none' }}>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-slate-800 truncate">{ic.doente?.nome}</p>
+                        <p className="text-xs text-slate-400 truncate">{ic.motivo}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-2">
+                        {ic.urgente && <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700">Urgente</span>}
+                        <span className="text-xs text-slate-400">Cama {ic.doente?.cama?.numero}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContainer>
+          <CardContainer>
+            <CardHeader title="Exames com Resultado" count={exames.length} countColor={exames.length > 0 ? 'bg-sky-100 text-sky-700' : 'bg-slate-100 text-slate-500'} />
+            {exames.length === 0 ? <Vazio msg="Sem resultados pendentes de revisão" /> : (
+              <div>
+                {exames.slice(0, 4).map((ex: any, i: number) => (
+                  <Link key={ex.id} href={`/doentes/${ex.doente?.id}`}>
+                    <div className="flex items-center justify-between hover:bg-slate-50 transition-colors" style={{ padding: '10px 24px', borderBottom: i < Math.min(exames.length, 4) - 1 ? '1px solid #f8fafc' : 'none' }}>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-slate-800 truncate">{ex.doente?.nome}</p>
+                        <p className="text-xs text-slate-400 truncate">{ex.tipo}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-2">
+                        {ex.urgente && <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700">Urgente</span>}
+                        <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-sky-100 text-sky-700">Resultado</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContainer>
         </div>
       </div>
     </>
@@ -347,7 +393,7 @@ function DashboardBloco({ utilizador }: { utilizador: any }) {
                     {new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {c.duracaoPrevista}min previstos
                   </p>
                 </div>
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${estadosCirurgia[c.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
+                <span className={`text-xs font-medium badge-pad py-1 rounded-full ${estadosCirurgia[c.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
                   {estadosCirurgia[c.estado]?.label ?? c.estado}
                 </span>
               </div>
@@ -421,11 +467,11 @@ function DashboardImagiologia({ utilizador }: { utilizador: any }) {
               <div key={e.id} className={`rounded-xl border flex items-start justify-between gap-3 ${e.urgente ? 'border-red-200 bg-red-50' : 'border-slate-100 bg-slate-50'}`} style={{ padding: '14px 16px' }}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center flex-wrap gap-2" style={{ marginBottom: '4px' }}>
-                    <span className="text-xs font-bold text-slate-700 bg-white border border-slate-200 px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-bold text-slate-700 bg-white border border-slate-200 badge-pad py-0.5 rounded-full">
                       {TIPO_EXAME_LABELS[e.tipo] ?? e.tipo}
                     </span>
-                    {e.urgente && <span className="text-xs font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">URGENTE</span>}
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${e.estado === 'em_progresso' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
+                    {e.urgente && <span className="text-xs font-bold text-red-600 bg-red-100 badge-pad py-0.5 rounded-full">URGENTE</span>}
+                    <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${e.estado === 'em_progresso' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
                       {e.estado === 'em_progresso' ? 'Em progresso' : 'Aguarda'}
                     </span>
                   </div>
@@ -572,7 +618,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                         <p className="text-xs text-slate-400">Cama {d.cama?.numero} · Quarto {d.cama?.quarto}</p>
                       </div>
                     </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
+                    <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
                   </div>
                 </Link>
               ))}
@@ -591,7 +637,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                       <p className="text-sm text-slate-700 truncate">{t.descricao}</p>
                       <p className="text-xs text-slate-400">{t.doente?.nome ?? ''}</p>
                     </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[t.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{t.prioridade}</span>
+                    <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[t.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{t.prioridade}</span>
                   </div>
                 ))}
               </div>
@@ -613,10 +659,10 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
                           <p className="text-xs text-slate-400">Cama {w.doente.cama ?? '—'} · {w.doente.quarto ?? '—'}</p>
                         </div>
                         <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                          {w.medicacoesPendentes > 0 && <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">💊 {w.medicacoesPendentes}</span>}
-                          {w.tarefasAtrasadas > 0 && <span className="text-xs bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-full font-medium">⚠️ {w.tarefasAtrasadas}</span>}
-                          {w.alertasNaoLidos > 0 && <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">🔔 {w.alertasNaoLidos}</span>}
-                          {horasSD !== null && <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${horasSD > 8 ? 'bg-red-100 text-red-700' : horasSD > 4 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>🕐 {horasSD}h</span>}
+                          {w.medicacoesPendentes > 0 && <span className="text-xs bg-red-100 text-red-700 badge-pad py-0.5 rounded-full font-medium">💊 {w.medicacoesPendentes}</span>}
+                          {w.tarefasAtrasadas > 0 && <span className="text-xs bg-orange-100 text-orange-700 badge-pad py-0.5 rounded-full font-medium">⚠️ {w.tarefasAtrasadas}</span>}
+                          {w.alertasNaoLidos > 0 && <span className="text-xs bg-red-100 text-red-700 badge-pad py-0.5 rounded-full font-medium">🔔 {w.alertasNaoLidos}</span>}
+                          {horasSD !== null && <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${horasSD > 8 ? 'bg-red-100 text-red-700' : horasSD > 4 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>🕐 {horasSD}h</span>}
                         </div>
                       </div>
                     </Link>
@@ -717,7 +763,7 @@ function DashboardChefeEnfermagem({ utilizador }: { utilizador: any }) {
                 {altasHoje.map((d: any, i: number) => (
                   <div key={d.id} className="flex items-center justify-between" style={{ padding: '10px 24px', borderBottom: i < altasHoje.length - 1 ? '1px solid #f8fafc' : 'none' }}>
                     <p className="text-sm font-medium text-slate-800 truncate">{d.nome}</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
+                    <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ${estadoCor[d.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>{estadoLabel[d.estado] ?? d.estado}</span>
                   </div>
                 ))}
               </div>
@@ -768,7 +814,7 @@ function DashboardReabilitacao({ utilizador }: { utilizador: any }) {
                     <p className="text-sm font-medium text-slate-800">{s.doente?.nome ?? '—'}</p>
                     <p className="text-xs text-slate-400">{new Date(s.data).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {s.duracao}min · {s.descricao}</p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${s.estado === 'realizada' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
+                  <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${s.estado === 'realizada' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
                     {s.estado === 'realizada' ? 'Realizada' : 'Agendada'}
                   </span>
                 </div>
@@ -828,7 +874,7 @@ function DashboardFarmacia({ utilizador }: { utilizador: any }) {
                     <p className="text-sm font-medium text-slate-800">{a.nome}</p>
                     <p className="text-xs text-slate-400">{a.quantidade} {a.unidade} · mín: {a.quantidadeMinima}</p>
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-700 shrink-0">Baixo</span>
+                  <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-red-100 text-red-700 shrink-0">Baixo</span>
                 </div>
               ))}
             </div>
@@ -936,7 +982,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
                       {new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })} · {c.especialidade} · {c.medico?.nome?.split(' ')[0] ?? 'Médico'}
                     </p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${estadoConsulta[c.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
+                  <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ${estadoConsulta[c.estado]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
                     {estadoConsulta[c.estado]?.label ?? c.estado}
                   </span>
                 </div>
@@ -980,7 +1026,7 @@ function DashboardRececao({ utilizador }: { utilizador: any }) {
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '14px' }}>
               <p className="text-sm font-semibold text-slate-800">Confirmação Automática</p>
-              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">{consultasAmanha} amanhã</span>
+              <span className="text-xs font-medium badge-pad py-0.5 rounded-full bg-blue-50 text-blue-600">{consultasAmanha} amanhã</span>
             </div>
             <p className="text-xs text-slate-400" style={{ marginBottom: '14px' }}>
               Envia um lembrete interno a todos os médicos com consultas marcadas para amanhã.
@@ -1044,7 +1090,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
                     <p className="text-sm font-medium text-slate-800 truncate">{p.descricao}</p>
                     <p className="text-xs text-slate-400">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[p.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{p.prioridade}</span>
+                  <span className={`text-xs badge-pad py-0.5 rounded-full font-medium shrink-0 ml-2 ${prioridadeCor[p.prioridade] ?? 'bg-slate-100 text-slate-600'}`}>{p.prioridade}</span>
                 </div>
               ))}
             </div>
@@ -1061,7 +1107,7 @@ function DashboardTransporte({ utilizador }: { utilizador: any }) {
                     <p className="text-sm font-medium text-slate-800">{p.descricao}</p>
                     <p className="text-xs text-slate-400">{p.localOrigem ?? '—'} → {p.localDestino ?? '—'}</p>
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Em curso</span>
+                  <span className="text-xs badge-pad py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Em curso</span>
                 </div>
               ))}
             </div>
@@ -1377,7 +1423,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
                 <p className="font-medium text-slate-800 text-sm truncate">{d.nome}</p>
                 <p className="text-slate-400 text-xs">Cama {d.cama?.numero}</p>
               </div>
-              <span className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
+              <span className={`shrink-0 text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
             </div>
           ))}
         </CardContainer>
@@ -1390,7 +1436,7 @@ function DashboardGenerico({ utilizador }: { utilizador: any }) {
                 <p className="font-medium text-slate-800 text-sm truncate">{d.nome}</p>
                 <p className="text-slate-400 text-xs truncate">{d.diagnosticoPrincipal}</p>
               </div>
-              <span className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
+              <span className={`shrink-0 text-xs badge-pad py-0.5 rounded-full font-medium ${estadoCor[d.estado]?.badge}`}>{estadoLabel[d.estado]}</span>
             </div>
           ))}
         </CardContainer>

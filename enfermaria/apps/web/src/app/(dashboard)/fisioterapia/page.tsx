@@ -117,7 +117,7 @@ export default function FisioterapiaPage() {
                     <p className="font-semibold text-slate-900 text-sm">{s.doente?.nome}</p>
                     <p className="text-slate-500 text-sm" style={{ marginTop: '2px' }}>{s.descricao}</p>
                     <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                      <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                     </div>
                     {s.evolucao && <p className="text-slate-600 text-xs" style={{ marginTop: '6px' }}>Evolução: {s.evolucao}</p>}
                   </div>

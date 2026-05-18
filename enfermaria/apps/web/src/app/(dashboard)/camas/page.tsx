@@ -149,7 +149,7 @@ export default function CamasPagina() {
                         <div className={`w-2 h-2 rounded-full ${estadoCor[cama.estado].dot}`} />
                         <span className="font-bold text-slate-700 text-sm">Cama {cama.numero}</span>
                       </div>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${estadoBadge[cama.estado]}`}>
+                      <span className={`text-xs badge-pad py-0.5 rounded-full font-medium ${estadoBadge[cama.estado]}`}>
                         {estadoLabel[cama.estado]}
                       </span>
                     </div>

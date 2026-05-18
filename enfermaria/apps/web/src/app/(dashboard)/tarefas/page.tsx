@@ -196,7 +196,7 @@ export default function TarefasPage() {
           <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
             <h1 className="text-3xl font-bold text-slate-900">As Minhas Tarefas</h1>
             {totalUrgentes > 0 && (
-              <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-red-50 text-red-700 border border-red-200">
+              <span className="inline-flex items-center gap-1 text-xs font-semibold badge-pad py-1 rounded-lg bg-red-50 text-red-700 border border-red-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                 {totalUrgentes} urgente{totalUrgentes > 1 ? 's' : ''}
               </span>
@@ -513,7 +513,7 @@ function TarefaCard({ tarefa, atualizando, podeCriar, onVerDoente, onToggleProgr
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               {tarefa.doente.nome}
-              <span className={`text-xs px-1.5 py-0.5 rounded-md ${estadoDoenteCor[tarefa.doente.estado]}`}>
+              <span className={`text-xs badge-pad py-0.5 rounded-md ${estadoDoenteCor[tarefa.doente.estado]}`}>
                 {estadoDoenteLabel[tarefa.doente.estado]}
               </span>
             </button>

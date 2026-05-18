@@ -10,6 +10,32 @@
   padding: 0;
 }
 
+/* ── Theme CSS variables ────────────────────────────────── */
+:root {
+  --bg-page:       #f8fafc;
+  --bg-card:       #ffffff;
+  --bg-input:      #f1f5f9;
+  --bg-tabs:       #f1f5f9;
+  --bg-tab-active: #ffffff;
+  --text-main:     #0f172a;
+  --text-muted:    #475569;
+  --border:        #e2e8f0;
+}
+html.dark {
+  --bg-page:       #0f172a;
+  --bg-card:       #1e293b;
+  --bg-input:      #0f172a;
+  --bg-tabs:       #1e293b;
+  --bg-tab-active: #334155;
+  --text-main:     #f8fafc;
+  --text-muted:    #94a3b8;
+  --border:        #334155;
+}
+
+/* ── Badge padding ──────────────────────────────────────── */
+.badge-pad  { padding-left: 10px; padding-right: 10px; }
+.filter-pad { padding-left: 20px; padding-right: 20px; }
+
 /* ── Dark Mode ──────────────────────────────────────────── */
 html.dark { color-scheme: dark; }
 html.dark body { background-color: #0f172a !important; color: #e2e8f0 !important; }

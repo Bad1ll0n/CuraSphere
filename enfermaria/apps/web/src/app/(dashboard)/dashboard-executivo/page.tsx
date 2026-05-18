@@ -126,7 +126,7 @@ export default function DashboardExecutivo() {
             <div>
               <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>
                 <span className="text-sm font-semibold text-slate-700">Camas ({dados.camas.total} total)</span>
-                <span className={`text-sm font-bold px-3 py-1 rounded-full ${
+                <span className={`text-sm font-bold badge-pad py-1 rounded-full ${
                   dados.camas.taxaOcupacao >= 90 ? 'bg-red-50 text-red-600' :
                   dados.camas.taxaOcupacao >= 75 ? 'bg-amber-50 text-amber-700' : 'bg-green-50 text-green-700'
                 }`}>

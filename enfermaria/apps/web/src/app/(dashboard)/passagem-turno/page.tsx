@@ -259,7 +259,7 @@ export default function PassagemTurnoPage() {
           {dados.length > 0 && (
             <button
               onClick={() => setModalFechar(true)}
-              style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#1e293b', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', color: 'var(--text-main)', border: 'none', borderRadius: 10, padding: '9px 18px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
             >
               <svg width={15} height={15} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -664,7 +664,7 @@ export default function PassagemTurnoPage() {
               </button>
               <button
                 onClick={() => setModalFechar(false)}
-                style={{ flex: 1, background: '#1e293b', color: '#fff', border: 'none', borderRadius: 10, padding: '10px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
+                style={{ flex: 1, background: 'var(--bg-card)', color: 'var(--text-main)', border: 'none', borderRadius: 10, padding: '10px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
               >
                 Fechar Turno
               </button>

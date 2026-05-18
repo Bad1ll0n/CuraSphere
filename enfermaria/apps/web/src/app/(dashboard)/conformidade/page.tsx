@@ -225,7 +225,7 @@ export default function ConformidadePage() {
                 <div className="divide-y divide-red-50">
                   {data.acoesAltoRisco.map(a => (
                     <div key={a.id} className="flex items-center gap-4" style={{ padding: '12px 20px' }}>
-                      <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">{a.acao}</span>
+                      <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 border border-red-200 badge-pad py-0.5 rounded-md">{a.acao}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-800">{a.utilizador?.nome ?? 'Sistema'}</p>
                         <p className="text-xs text-slate-400">{ROLE_LABEL[a.utilizador?.role ?? ''] ?? a.utilizador?.role}</p>
@@ -254,7 +254,7 @@ export default function ConformidadePage() {
                         <div key={c.id} className="flex items-center justify-between gap-3">
                           <p className="text-sm text-slate-700">{c.label}</p>
                           <button onClick={() => toggleCheck(c.id)}
-                            className={`shrink-0 text-xs font-semibold px-3 py-1 rounded-full border transition-colors ${CHECK_COR[estado]}`}>
+                            className={`shrink-0 text-xs font-semibold badge-pad py-1 rounded-full border transition-colors ${CHECK_COR[estado]}`}>
                             {CHECK_LABEL[estado]}
                           </button>
                         </div>

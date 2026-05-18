@@ -174,7 +174,7 @@ export default function ComunicacaoPage() {
               <div className="flex items-start justify-between gap-4" style={{ marginBottom: '12px' }}>
                 <h3 className="font-bold text-slate-900">{a.titulo}</h3>
                 <div className="flex items-center gap-2 shrink-0">
-                  {a.servico && <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{a.servico}</span>}
+                  {a.servico && <span className="text-xs text-slate-400 bg-slate-100 badge-pad py-0.5 rounded-full">{a.servico}</span>}
                   <span className="text-xs text-slate-400">{new Date(a.criadoEm).toLocaleDateString('pt-PT')}</span>
                 </div>
               </div>

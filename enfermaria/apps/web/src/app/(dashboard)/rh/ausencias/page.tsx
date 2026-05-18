@@ -136,7 +136,7 @@ export default function AusenciasPage() {
                 className={`flex items-center gap-2 text-sm font-medium rounded-lg transition-all ${aba === t.key ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 style={{ padding: '8px 18px' }}>
                 {t.label}
-                {t.badge > 0 && <span className="text-xs font-bold bg-amber-500 text-white rounded-full px-1.5 py-0.5 leading-none">{t.badge}</span>}
+                {t.badge > 0 && <span className="text-xs font-bold bg-amber-500 text-white rounded-full badge-pad py-0.5 leading-none">{t.badge}</span>}
               </button>
             ))}
           </div>
@@ -174,7 +174,7 @@ export default function AusenciasPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '6px' }}>
                     <span className="text-sm font-bold text-slate-800">{TIPO_LABEL[a.tipo] ?? a.tipo}</span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
+                    <span className={`text-xs font-medium badge-pad py-0.5 rounded-full border ${ESTADO_COR[a.estado]}`}>
                       {ESTADO_LABEL[a.estado]}
                     </span>
                   </div>

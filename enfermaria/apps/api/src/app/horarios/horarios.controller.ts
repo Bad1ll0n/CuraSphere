@@ -39,13 +39,13 @@ export class HorariosController {
     );
   }
 
-  @Roles('enfermeiro', 'medico')
+  @Roles('enfermeiro', 'administrativo')
   @Post()
   criar(@Body() body: { mes: number; ano: number }, @Request() req: any) {
     return this.horariosService.criar({ ...body, criadaPorId: req.user.sub });
   }
 
-  @Roles('enfermeiro', 'medico')
+  @Roles('enfermeiro', 'administrativo')
   @Post(':escalId/turno')
   adicionarTurno(
     @Param('escalId') escalId: string,
@@ -54,7 +54,7 @@ export class HorariosController {
     return this.horariosService.adicionarTurno({ ...body, escalId });
   }
 
-  @Roles('enfermeiro', 'medico')
+  @Roles('enfermeiro', 'administrativo')
   @Patch('turno/:turnoId')
   editarTurno(
     @Param('turnoId') turnoId: string,
@@ -63,13 +63,13 @@ export class HorariosController {
     return this.horariosService.editarTurno(turnoId, body);
   }
 
-  @Roles('enfermeiro', 'medico')
+  @Roles('enfermeiro', 'administrativo')
   @Delete('turno/:turnoId')
   apagarTurno(@Param('turnoId') turnoId: string) {
     return this.horariosService.apagarTurno(turnoId);
   }
 
-  @Roles('enfermeiro', 'medico', 'administrativo')
+  @Roles('enfermeiro', 'administrativo')
   @Post('gerar-automatico')
   gerarAutomatico(
     @Body() body: { mes: number; ano: number; servico?: string },

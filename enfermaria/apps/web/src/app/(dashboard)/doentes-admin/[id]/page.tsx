@@ -293,7 +293,7 @@ export default function DoenteAdminDetalhePage() {
             <p className="text-slate-400 text-sm" style={{ marginTop: '6px' }}>Processo n.º {doente.numeroProcesso}</p>
           </div>
           <div className="flex items-center gap-3">
-            <span className={`text-sm font-semibold px-3 py-1 rounded-full ${ESTADO_COR[doente.estadoRegisto] ?? 'bg-slate-100 text-slate-500'}`}>
+            <span className={`text-sm font-semibold badge-pad py-1 rounded-full ${ESTADO_COR[doente.estadoRegisto] ?? 'bg-slate-100 text-slate-500'}`}>
               {ESTADO_LABEL[doente.estadoRegisto] ?? doente.estadoRegisto}
             </span>
             {!editando ? (
@@ -452,7 +452,7 @@ export default function DoenteAdminDetalhePage() {
             <div className="flex flex-col gap-1 flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm font-medium text-slate-800">{fmtDataHora(c.dataHora)}</span>
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE[c.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                   {ESTADO_LABEL_C[c.estado] ?? c.estado}
                 </span>
                 <span className="text-xs text-slate-400 font-mono">{c.codigo}</span>
@@ -542,7 +542,7 @@ export default function DoenteAdminDetalhePage() {
                   return (
                     <div key={e.id} className="border border-slate-100 rounded-xl" style={{ padding: '14px 16px' }}>
                       <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '8px' }}>
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ${ESTADO_BADGE_F[e.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                        <span className={`text-xs font-semibold badge-pad py-0.5 rounded-md ${ESTADO_BADGE_F[e.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                           {ESTADO_LABEL_F[e.estado] ?? e.estado}
                         </span>
                         {e.dataEmissao && <span className="text-xs text-slate-500">{fmtData(e.dataEmissao)}</span>}

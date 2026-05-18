@@ -162,7 +162,7 @@ export default function PedidosTIPage() {
           <button
             key={f.key}
             onClick={() => setFiltro(f.key)}
-            className={`text-sm font-medium rounded-xl px-4 py-2 transition-colors ${
+            className={`text-sm font-medium rounded-xl filter-pad py-2 transition-colors ${
               filtro === f.key
                 ? 'bg-blue-600 text-white'
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
@@ -210,7 +210,7 @@ export default function PedidosTIPage() {
                     <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                       <span className="text-sm font-semibold text-slate-800">{p.titulo}</span>
                       {p.urgente && (
-                        <span className="text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-600 px-2 py-0.5 rounded-full">Urgente</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-600 badge-pad py-0.5 rounded-full">Urgente</span>
                       )}
                     </div>
                     <div className="flex items-center gap-3 flex-wrap">
@@ -223,7 +223,7 @@ export default function PedidosTIPage() {
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-lg ${cfg.pill}`}>{cfg.label}</span>
+                    <span className={`text-xs font-medium badge-pad py-1 rounded-lg ${cfg.pill}`}>{cfg.label}</span>
                     <svg className={`w-4 h-4 text-slate-400 transition-transform ${aberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>

@@ -160,8 +160,8 @@ export default function ConfiguracoesPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-slate-900">{role.label}</span>
-                  <span className="font-mono text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">{role.chave}</span>
-                  <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${categoriaColor[role.categoria] ?? 'bg-slate-100 text-slate-500'}`}>
+                  <span className="font-mono text-xs text-slate-400 bg-slate-100 rounded-md" style={{ padding: '2px 10px' }}>{role.chave}</span>
+                  <span className={`text-[11px] font-semibold rounded-full ${categoriaColor[role.categoria] ?? 'bg-slate-100 text-slate-500'}`} style={{ padding: '2px 10px' }}>
                     {categoriaLabel[role.categoria] ?? role.categoria}
                   </span>
                 </div>
@@ -210,7 +210,7 @@ export default function ConfiguracoesPage() {
                       <div key={sr.id} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '12px 16px' }}>
                         <div className="flex items-center gap-3">
                           <span className="text-slate-800 font-medium text-sm">{sr.label}</span>
-                          <span className="font-mono text-xs text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded">{sr.chave}</span>
+                          <span className="font-mono text-xs text-slate-400 bg-white border border-slate-100 rounded" style={{ padding: '2px 10px' }}>{sr.chave}</span>
                           <span className="text-slate-400 text-xs">ordem {sr.ordem}</span>
                         </div>
                         <div className="flex items-center gap-1.5">

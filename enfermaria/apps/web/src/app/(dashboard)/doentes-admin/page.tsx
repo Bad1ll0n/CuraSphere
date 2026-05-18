@@ -129,7 +129,7 @@ export default function DoentesAdminPage() {
                   </td>
                   <td style={{ padding: '16px 12px' }}>
                     <div className="flex flex-col gap-1">
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full w-fit ${ESTADO_REGISTO_COR[d.estadoRegisto] ?? 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`text-xs font-semibold badge-pad py-0.5 rounded-full w-fit ${ESTADO_REGISTO_COR[d.estadoRegisto] ?? 'bg-slate-100 text-slate-600'}`}>
                         {ESTADO_REGISTO_LABEL[d.estadoRegisto] ?? d.estadoRegisto}
                       </span>
                       {d.tipoVisita && (

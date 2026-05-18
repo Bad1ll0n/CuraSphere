@@ -110,12 +110,12 @@ export default function WorklistPage() {
       <div className="flex flex-wrap items-center gap-3" style={{ marginBottom: '20px' }}>
         <div className="flex gap-2 flex-wrap">
           <button onClick={() => setFiltroEstado('')}
-            className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroEstado === '' ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+            className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${filtroEstado === '' ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
             Todos
           </button>
           {['solicitado', 'em_progresso'].map(e => (
             <button key={e} onClick={() => setFiltroEstado(e)}
-              className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroEstado === e ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+              className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${filtroEstado === e ? 'bg-slate-800 text-white border-slate-800' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}>
               {ESTADO_CFG[e]?.label}
             </button>
           ))}
@@ -123,12 +123,12 @@ export default function WorklistPage() {
         <div className="w-px h-5 bg-slate-200" />
         <div className="flex gap-2 flex-wrap">
           <button onClick={() => setFiltroTipo('')}
-            className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroTipo === '' ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+            className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${filtroTipo === '' ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
             Todos os tipos
           </button>
           {Object.entries(TIPO_LABELS).map(([v, l]) => (
             <button key={v} onClick={() => setFiltroTipo(v)}
-              className={`text-sm font-semibold px-4 py-2 rounded-lg border transition-colors ${filtroTipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
+              className={`text-sm font-semibold filter-pad py-2 rounded-lg border transition-colors ${filtroTipo === v ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-300'}`}>
               {TIPO_ICONS[v]} {l}
             </button>
           ))}
@@ -171,9 +171,9 @@ export default function WorklistPage() {
                       <div className="flex items-center flex-wrap gap-2" style={{ marginBottom: '4px' }}>
                         <span className="text-sm font-bold text-slate-800">{TIPO_LABELS[e.tipo] ?? e.tipo}</span>
                         {e.urgente && (
-                          <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">URGENTE</span>
+                          <span className="text-xs font-bold text-red-600 bg-red-50 border border-red-200 badge-pad py-0.5 rounded-full">URGENTE</span>
                         )}
-                        <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.text}`}>
+                        <span className={`inline-flex items-center gap-1.5 text-xs font-medium badge-pad py-0.5 rounded-full ${cfg.bg} ${cfg.text}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
                           {cfg.label}
                         </span>

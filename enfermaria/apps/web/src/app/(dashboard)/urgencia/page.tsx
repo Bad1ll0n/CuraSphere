@@ -317,7 +317,7 @@ export default function UrgenciaPage() {
                         </div>
                         <p className="text-slate-600 text-sm" style={{ marginBottom: '8px' }}>{ep.queixaPrincipal}</p>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
+                          <span className="inline-flex items-center gap-1 text-xs font-medium badge-pad py-1 rounded-full bg-slate-100 text-slate-600">
                             {ESTADO_LABELS[ep.estadoEpisodio] ?? ep.estadoEpisodio}
                           </span>
                           {ep.triadoPor && (

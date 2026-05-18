@@ -261,7 +261,7 @@ export default function UtilizadoresPagina() {
                   <div className={`w-2.5 h-2.5 rounded-full ${roleCor[roleObj.chave]?.dot ?? 'bg-slate-400'}`} />
                   <h2 className="font-semibold text-slate-800">{roleObj.label}</h2>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">
+                <span className="text-xs font-semibold badge-pad py-1 rounded-full bg-slate-100 text-slate-500">
                   {porRole[roleObj.chave]?.length ?? 0}
                 </span>
               </div>
@@ -278,18 +278,18 @@ export default function UtilizadoresPagina() {
                         <p className="text-sm font-semibold text-slate-800">{u.nome}</p>
                         <div className="flex items-center gap-2 flex-wrap" style={{ marginTop: '3px' }}>
                           <span className="text-xs text-slate-400">Nº {u.numeroFuncionario}</span>
-                          {u.equipa && <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Equipa {u.equipa}</span>}
+                          {u.equipa && <span className="text-xs font-semibold badge-pad py-0.5 rounded-full bg-slate-100 text-slate-600">Equipa {u.equipa}</span>}
                           {u.ordemExperiencia && <span className="text-xs text-slate-400">#{u.ordemExperiencia} experiência</span>}
-                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${roleCor[roleObj.chave]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
+                          <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${roleCor[roleObj.chave]?.badge ?? 'bg-slate-100 text-slate-600'}`}>
                             {roleObj.label}
                           </span>
                           {u.subRole && (
-                            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">
+                            <span className="text-xs font-medium badge-pad py-0.5 rounded-full bg-purple-50 text-purple-700">
                               {roleObj.subRoles.find((sr) => sr.chave === u.subRole)?.label ?? u.subRole}
                             </span>
                           )}
                           {u.servico && u.servico !== 'internamento' && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 font-medium">
+                            <span className="text-xs badge-pad py-0.5 rounded-full bg-blue-50 text-blue-600 font-medium">
                               {servicoLabel[u.servico] ?? u.servico}
                             </span>
                           )}

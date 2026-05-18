@@ -292,8 +292,8 @@ export default function FarmaciaPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
                     <p className="font-semibold text-slate-900 text-sm">{item.nome}</p>
-                    <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{TIPO_LABELS[item.tipo] ?? item.tipo}</span>
-                    {item.catalogo && <span className="text-xs text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">{item.catalogo.classeTerap}</span>}
+                    <span className="text-xs text-slate-400 bg-slate-100 badge-pad py-0.5 rounded-full">{TIPO_LABELS[item.tipo] ?? item.tipo}</span>
+                    {item.catalogo && <span className="text-xs text-indigo-600 bg-indigo-50 badge-pad py-0.5 rounded-full">{item.catalogo.classeTerap}</span>}
                   </div>
                   <div className="flex items-center gap-3 flex-wrap">
                     <span className={`text-sm font-bold ${baixo ? 'text-red-600' : 'text-slate-700'}`}>{item.quantidade} {item.unidade}</span>
@@ -303,7 +303,7 @@ export default function FarmaciaPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap justify-end">
-                  {baixo && <span className="text-xs font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Stock baixo</span>}
+                  {baixo && <span className="text-xs font-semibold text-red-600 bg-red-50 badge-pad py-1 rounded-full">Stock baixo</span>}
                   <button onClick={() => { setHistoricoModal(item); }}
                     className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
                     style={{ padding: '7px 12px' }}>Histórico</button>
@@ -337,7 +337,7 @@ export default function FarmaciaPage() {
                   <p className="font-semibold text-slate-900 text-sm">{p.stockItem?.nome}</p>
                   <p className="text-slate-500 text-xs" style={{ marginTop: '2px' }}>{p.quantidade} {p.stockItem?.unidade} — Pedido por {p.solicitadoPor?.nome}</p>
                   <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                    <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                     <span className="text-xs text-slate-400">{new Date(p.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </div>
                 </div>
@@ -394,7 +394,7 @@ export default function FarmaciaPage() {
                   <p className="text-slate-500 text-xs">{t.servicoOrigem} → {t.servicoDestino}</p>
                   {t.motivo && <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>{t.motivo}</p>}
                   <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
+                    <span className={`text-xs font-medium badge-pad py-1 rounded-full ${cfg.bg} ${cfg.text}`}>{cfg.label}</span>
                     <span className="text-xs text-slate-400">por {t.solicitadoPor?.nome} · {new Date(t.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </div>
                 </div>
@@ -501,7 +501,7 @@ export default function FarmaciaPage() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-semibold text-slate-900 text-sm">{p.nome}</p>
                   <span className="text-xs text-slate-500">{p.dose}</span>
-                  <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">{p.via} · {p.frequencia}</span>
+                  <span className="text-xs bg-slate-100 text-slate-600 badge-pad py-0.5 rounded-md">{p.via} · {p.frequencia}</span>
                 </div>
                 <p className="text-slate-500 text-xs" style={{ marginTop: '4px' }}>Prescrição de {p.prescritoPor?.nome} — {p.doente?.nome}</p>
                 <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Quarto {p.doente?.cama?.quarto} · Cama {p.doente?.cama?.numero} · {new Date(p.iniciadoEm).toLocaleDateString('pt-PT')}</p>
@@ -654,7 +654,7 @@ export default function FarmaciaPage() {
                     </div>
                     <p className="text-xs text-slate-500">{a.motivo}</p>
                     <div className="flex items-center gap-2" style={{ marginTop: '6px' }}>
-                      <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">{a.tipo}</span>
+                      <span className="text-xs bg-slate-100 text-slate-600 badge-pad py-0.5 rounded-md">{a.tipo}</span>
                       <span className="text-xs text-slate-400">por {a.utilizador?.nome}</span>
                     </div>
                   </div>

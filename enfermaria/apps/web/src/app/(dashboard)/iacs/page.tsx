@@ -138,10 +138,10 @@ export default function IacsPage() {
                       <Link href={`/doentes/${d.id}`} className="font-semibold text-slate-900 hover:text-blue-600 transition-colors text-sm">
                         {d.nome}
                       </Link>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${estadoCor[d.estado] ?? 'bg-slate-100 text-slate-600'}`}>
+                      <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${estadoCor[d.estado] ?? 'bg-slate-100 text-slate-600'}`}>
                         {d.estado.replace('_', ' ')}
                       </span>
-                      <span className="text-xs bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full">ISOLAMENTO</span>
+                      <span className="text-xs bg-orange-100 text-orange-700 font-semibold badge-pad py-0.5 rounded-full">ISOLAMENTO</span>
                     </div>
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>
                       Quarto {d.cama.quarto} · Cama {d.cama.numero} · {d.diagnosticoPrincipal}

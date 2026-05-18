@@ -413,8 +413,8 @@ function CheckinCard({ c, podeChamar, onChamar, onConcluir }: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <p className="font-semibold text-slate-900 text-sm">{c.nomeDoente}</p>
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${pCfg.bg} ${pCfg.text}`}>{pCfg.label}</span>
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${eCfg.bg} ${eCfg.text}`}>{eCfg.label}</span>
+            <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${pCfg.bg} ${pCfg.text}`}>{pCfg.label}</span>
+            <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${eCfg.bg} ${eCfg.text}`}>{eCfg.label}</span>
           </div>
           <p className="text-xs text-slate-500" style={{ marginTop: '2px' }}>{c.motivo}</p>
           <div className="flex items-center gap-3 flex-wrap" style={{ marginTop: '4px' }}>

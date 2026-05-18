@@ -208,7 +208,7 @@ export default function IncidentesTIPage() {
             <button
               key={e.value}
               onClick={() => setFiltroEstado(e.value)}
-              className={`text-sm font-semibold rounded-lg px-4 py-2 transition-all ${filtroEstado === e.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`text-sm font-semibold rounded-lg filter-pad py-2 transition-all ${filtroEstado === e.value ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             >
               {'label' in e ? e.label : e.value}
             </button>
@@ -271,7 +271,7 @@ export default function IncidentesTIPage() {
                     <div className="flex items-center gap-2" style={{ marginBottom: '4px' }}>
                       <p className="font-semibold text-slate-900 text-sm truncate">{inc.titulo}</p>
                       {inc.prioridade === 'critica' && (
-                        <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 rounded px-1.5 py-0.5">⚠ Crítico</span>
+                        <span className="shrink-0 text-xs font-bold text-red-600 bg-red-50 rounded badge-pad py-0.5">⚠ Crítico</span>
                       )}
                     </div>
                     <p className="text-xs text-slate-400 truncate">{inc.descricao}</p>
@@ -280,10 +280,10 @@ export default function IncidentesTIPage() {
                   {/* Badges */}
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="text-xs text-slate-500 bg-slate-100 rounded-lg px-2 py-1">{getTipoLabel(inc.tipo)}</span>
-                    <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${getPrioridadeCor(inc.prioridade)}`}>
+                    <span className={`text-xs font-semibold rounded-full badge-pad py-1 ${getPrioridadeCor(inc.prioridade)}`}>
                       {getPrioridadeLabel(inc.prioridade)}
                     </span>
-                    <span className={`text-xs font-semibold rounded-full px-2.5 py-1 ${getEstadoCor(inc.estado)}`}>
+                    <span className={`text-xs font-semibold rounded-full badge-pad py-1 ${getEstadoCor(inc.estado)}`}>
                       {getEstadoLabel(inc.estado)}
                     </span>
                   </div>
@@ -347,11 +347,11 @@ export default function IncidentesTIPage() {
                           </div>
                           <div className="flex justify-between text-xs">
                             <span className="text-slate-500">Prioridade</span>
-                            <span className={`font-semibold rounded-full px-2 py-0.5 ${getPrioridadeCor(inc.prioridade)}`}>{getPrioridadeLabel(inc.prioridade)}</span>
+                            <span className={`font-semibold rounded-full badge-pad py-0.5 ${getPrioridadeCor(inc.prioridade)}`}>{getPrioridadeLabel(inc.prioridade)}</span>
                           </div>
                           <div className="flex justify-between text-xs">
                             <span className="text-slate-500">Estado</span>
-                            <span className={`font-semibold rounded-full px-2 py-0.5 ${getEstadoCor(inc.estado)}`}>{getEstadoLabel(inc.estado)}</span>
+                            <span className={`font-semibold rounded-full badge-pad py-0.5 ${getEstadoCor(inc.estado)}`}>{getEstadoLabel(inc.estado)}</span>
                           </div>
                           <div className="flex justify-between text-xs">
                             <span className="text-slate-500">Criado por</span>

@@ -201,10 +201,10 @@ export default function EventosAdversosPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '6px' }}>
                     <span className="text-sm font-bold text-slate-800">{TIPO_LABEL[ev.tipo] ?? ev.tipo}</span>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${GRAVIDADE_COR[ev.gravidade] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                    <span className={`text-xs font-semibold badge-pad py-0.5 rounded-full border ${GRAVIDADE_COR[ev.gravidade] ?? 'bg-slate-50 text-slate-600 border-slate-200'}`}>
                       {GRAVIDADE_LABEL[ev.gravidade] ?? ev.gravidade}
                     </span>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ESTADO_COR[ev.estado] ?? 'bg-slate-100 text-slate-500'}`}>
+                    <span className={`text-xs font-medium badge-pad py-0.5 rounded-full ${ESTADO_COR[ev.estado] ?? 'bg-slate-100 text-slate-500'}`}>
                       {ESTADO_LABEL[ev.estado] ?? ev.estado}
                     </span>
                     {ev.servicoId && (

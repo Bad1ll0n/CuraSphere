@@ -69,7 +69,7 @@ function BadgeAcao({ acao }: { acao: string }) {
   else if (lower.includes('editar') || lower.includes('patch') || lower.includes('atualiz') || lower.includes('alter')) cor = 'bg-amber-100 text-amber-700';
 
   return (
-    <span className={`inline-flex items-center text-xs font-semibold rounded-lg px-2.5 py-1 ${cor}`}>
+    <span className={`inline-flex items-center text-xs font-semibold rounded-lg badge-pad py-1 ${cor}`}>
       {acao}
     </span>
   );
