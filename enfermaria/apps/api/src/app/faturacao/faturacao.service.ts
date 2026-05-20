@@ -51,7 +51,7 @@ export class FaturacaoService {
       where: { id: data.doenteId },
       select: { id: true, nome: true },
     });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
     return this.prisma.episodioFaturacao.create({
       data: {
@@ -80,7 +80,7 @@ export class FaturacaoService {
         criadoPor: { select: { id: true, nome: true } },
       },
     });
-    if (!ep) throw new NotFoundException('Episódio de faturação não encontrado');
+    if (!ep) throw new NotFoundException(`Episódio de faturação (ID ${id}) não encontrado`);
     return ep;
   }
 
@@ -90,32 +90,32 @@ export class FaturacaoService {
     quantidade?: number;
     precoUnitario: number;
   }) {
-    const ep = await this.prisma.episodioFaturacao.findUnique({ where: { id: episodioId } });
-    if (!ep) throw new NotFoundException('Episódio não encontrado');
-    if (ep.estado === 'paga' || ep.estado === 'anulada') {
-      throw new BadRequestException('Não é possível alterar um episódio pago ou anulado');
-    }
-
-    const quantidade = data.quantidade ?? 1;
-    const total = quantidade * data.precoUnitario;
-
-    const item = await this.prisma.itemFatura.create({
-      data: { episodioFaturacaoId: episodioId, ...data, quantidade, total },
+    return this.prisma.$transaction(async (tx) => {
+      const ep = await tx.episodioFaturacao.findUnique({ where: { id: episodioId } });
+      if (!ep) throw new NotFoundException(`Episódio de faturação (ID ${episodioId}) não encontrado`);
+      if (ep.estado === 'paga' || ep.estado === 'anulada') {
+        throw new BadRequestException('Não é possível alterar um episódio pago ou anulado');
+      }
+      const quantidade = data.quantidade ?? 1;
+      const total = quantidade * data.precoUnitario;
+      const item = await tx.itemFatura.create({
+        data: { episodioFaturacaoId: episodioId, ...data, quantidade, total },
+      });
+      await this.recalcularTotal(episodioId, tx);
+      return item;
     });
-
-    await this.recalcularTotal(episodioId);
-    return item;
   }
 
   async removerItem(episodioId: string, itemId: string) {
-    const item = await this.prisma.itemFatura.findFirst({
-      where: { id: itemId, episodioFaturacaoId: episodioId },
+    return this.prisma.$transaction(async (tx) => {
+      const item = await tx.itemFatura.findFirst({
+        where: { id: itemId, episodioFaturacaoId: episodioId },
+      });
+      if (!item) throw new NotFoundException(`Item de fatura (ID ${itemId}) não encontrado no episódio ${episodioId}`);
+      await tx.itemFatura.delete({ where: { id: itemId } });
+      await this.recalcularTotal(episodioId, tx);
+      return { ok: true };
     });
-    if (!item) throw new NotFoundException('Item não encontrado');
-
-    await this.prisma.itemFatura.delete({ where: { id: itemId } });
-    await this.recalcularTotal(episodioId);
-    return { ok: true };
   }
 
   async registarPagamento(episodioId: string, data: {
@@ -124,23 +124,25 @@ export class FaturacaoService {
     referencia?: string;
     registadoPorId: string;
   }) {
-    const ep = await this.prisma.episodioFaturacao.findUnique({ where: { id: episodioId } });
-    if (!ep) throw new NotFoundException('Episódio não encontrado');
-    if (ep.estado === 'anulada') throw new BadRequestException('Episódio anulado');
+    return this.prisma.$transaction(async (tx) => {
+      const ep = await tx.episodioFaturacao.findUnique({ where: { id: episodioId } });
+      if (!ep) throw new NotFoundException(`Episódio de faturação (ID ${episodioId}) não encontrado`);
+      if (ep.estado === 'anulada') throw new BadRequestException(`Episódio de faturação (ID ${episodioId}) está anulado`);
+      if (ep.estado === 'paga') throw new BadRequestException(`Episódio de faturação (ID ${episodioId}) já está pago`);
 
-    const pagamento = await this.prisma.pagamento.create({
-      data: { episodioFaturacaoId: episodioId, ...data },
-      include: { registadoPor: { select: { id: true, nome: true } } },
-    });
+      const pagamento = await tx.pagamento.create({
+        data: { episodioFaturacaoId: episodioId, ...data },
+        include: { registadoPor: { select: { id: true, nome: true } } },
+      });
 
-    // Verificar se total pago cobre totalCobrado
-    const pagamentos = await this.prisma.pagamento.findMany({ where: { episodioFaturacaoId: episodioId } });
-    const totalPago = pagamentos.reduce((s, p) => s + p.valor, 0);
-    if (totalPago >= ep.totalCobrado && ep.totalCobrado > 0) {
-      await this.prisma.episodioFaturacao.update({ where: { id: episodioId }, data: { estado: 'paga' } });
-    }
+      const pagamentos = await tx.pagamento.findMany({ where: { episodioFaturacaoId: episodioId } });
+      const totalPago = pagamentos.reduce((s, p) => s + p.valor, 0);
+      if (totalPago >= ep.totalCobrado && ep.totalCobrado > 0) {
+        await tx.episodioFaturacao.update({ where: { id: episodioId }, data: { estado: 'paga' } });
+      }
 
-    return pagamento;
+      return pagamento;
+    }, { isolationLevel: 'Serializable' });
   }
 
   async mudarEstado(episodioId: string, estado: string) {
@@ -148,7 +150,7 @@ export class FaturacaoService {
       where: { id: episodioId },
       include: { doente: { select: { id: true, nome: true } }, criadoPor: { select: { id: true } } },
     });
-    if (!ep) throw new NotFoundException('Episódio não encontrado');
+    if (!ep) throw new NotFoundException(`Episódio de faturação (ID ${episodioId}) não encontrado`);
 
     const dataEmissao = estado === 'emitida' ? new Date() : undefined;
     const updated = await this.prisma.episodioFaturacao.update({
@@ -195,10 +197,10 @@ export class FaturacaoService {
     return { stats, episodios };
   }
 
-  private async recalcularTotal(episodioId: string) {
-    const itens = await this.prisma.itemFatura.findMany({ where: { episodioFaturacaoId: episodioId } });
-    const totalBase = itens.reduce((s, i) => s + i.total, 0);
-    await this.prisma.episodioFaturacao.update({
+  private async recalcularTotal(episodioId: string, db: any = this.prisma) {
+    const itens = await db.itemFatura.findMany({ where: { episodioFaturacaoId: episodioId } });
+    const totalBase = itens.reduce((s: number, i: any) => s + i.total, 0);
+    await db.episodioFaturacao.update({
       where: { id: episodioId },
       data: { totalBase, totalCobrado: totalBase },
     });

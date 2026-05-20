@@ -11,7 +11,7 @@ export class InterconsultasService {
     urgente?: boolean;
   }) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     return this.prisma.interconsulta.create({
       data: {
@@ -63,7 +63,7 @@ export class InterconsultasService {
 
   async responder(id: string, medicoRespostaId: string, resposta: string) {
     const interconsulta = await this.prisma.interconsulta.findUnique({ where: { id } });
-    if (!interconsulta) throw new NotFoundException('Interconsulta não encontrada');
+    if (!interconsulta) throw new NotFoundException(`Interconsulta (ID ${id}) não encontrada`);
     if (interconsulta.estado === 'respondida') throw new ForbiddenException('Interconsulta já respondida');
 
     return this.prisma.interconsulta.update({
@@ -82,7 +82,7 @@ export class InterconsultasService {
 
   async aceitar(id: string, medicoRespostaId: string) {
     const interconsulta = await this.prisma.interconsulta.findUnique({ where: { id } });
-    if (!interconsulta) throw new NotFoundException('Interconsulta não encontrada');
+    if (!interconsulta) throw new NotFoundException(`Interconsulta (ID ${id}) não encontrada`);
 
     return this.prisma.interconsulta.update({
       where: { id },
@@ -92,8 +92,8 @@ export class InterconsultasService {
 
   async cancelar(id: string, utilizadorId: string) {
     const interconsulta = await this.prisma.interconsulta.findUnique({ where: { id } });
-    if (!interconsulta) throw new NotFoundException('Interconsulta não encontrada');
-    if (interconsulta.requisitanteId !== utilizadorId) throw new ForbiddenException('Sem permissão');
+    if (!interconsulta) throw new NotFoundException(`Interconsulta (ID ${id}) não encontrada`);
+    if (interconsulta.requisitanteId !== utilizadorId) throw new ForbiddenException('Sem permissão para cancelar esta interconsulta');
 
     return this.prisma.interconsulta.update({
       where: { id },

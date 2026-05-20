@@ -14,7 +14,7 @@ export class ContactosService {
 
   async criar(doenteId: string, body: Record<string, any>) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente || !doente.ativo) throw new NotFoundException('Doente não encontrado');
+    if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     if (body.principal) {
       await this.prisma.contactoEmergencia.updateMany({
@@ -36,7 +36,7 @@ export class ContactosService {
 
   async remover(id: string) {
     const contacto = await this.prisma.contactoEmergencia.findUnique({ where: { id } });
-    if (!contacto) throw new NotFoundException('Contacto não encontrado');
+    if (!contacto) throw new NotFoundException(`Contacto (ID ${id}) não encontrado`);
     return this.prisma.contactoEmergencia.delete({ where: { id } });
   }
 }

@@ -17,9 +17,9 @@ export class AlergiasService {
   }
 
   async criar(doenteId: string, role: string, body: Record<string, any>) {
-    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão');
+    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão para registar alergias');
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente || !doente.ativo) throw new NotFoundException('Doente não encontrado');
+    if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
     return this.prisma.alergia.create({
       data: {
         doenteId,
@@ -32,7 +32,7 @@ export class AlergiasService {
   }
 
   async remover(id: string, role: string) {
-    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão');
+    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão para remover alergias');
     const alergia = await this.prisma.alergia.findUnique({ where: { id } });
     if (!alergia) throw new NotFoundException('Alergia não encontrada');
     return this.prisma.alergia.delete({ where: { id } });

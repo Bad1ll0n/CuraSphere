@@ -35,7 +35,7 @@ export class PedidosInternosService {
 
   private async buscar(id: string) {
     const p = await this.prisma.pedidoInterno.findUnique({ where: { id } });
-    if (!p) throw new NotFoundException('Pedido não encontrado');
+    if (!p) throw new NotFoundException(`Pedido interno (ID ${id}) não encontrado`);
     return p;
   }
 

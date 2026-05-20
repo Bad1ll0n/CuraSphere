@@ -147,7 +147,7 @@ export class RhService {
 
   async apagarFormacao(id: string) {
     const f = await this.prisma.formacaoUtilizador.findUnique({ where: { id } });
-    if (!f) throw new NotFoundException('Formação não encontrada');
+    if (!f) throw new NotFoundException(`Formação (ID ${id}) não encontrada`);
     return this.prisma.formacaoUtilizador.delete({ where: { id } });
   }
 
@@ -196,7 +196,7 @@ export class RhService {
     observacoes?: string; estado?: string;
   }) {
     const aval = await this.prisma.avaliacaoDesempenho.findUnique({ where: { id } });
-    if (!aval) throw new NotFoundException('Avaliação não encontrada');
+    if (!aval) throw new NotFoundException(`Avaliação de desempenho (ID ${id}) não encontrada`);
     return this.prisma.avaliacaoDesempenho.update({
       where: { id },
       data: { ...dto },
@@ -293,7 +293,7 @@ export class RhService {
 
   private async buscarAusencia(id: string) {
     const a = await this.prisma.ausencia.findUnique({ where: { id } });
-    if (!a) throw new NotFoundException('Ausência não encontrada');
+    if (!a) throw new NotFoundException(`Ausência (ID ${id}) não encontrada`);
     return a;
   }
 }

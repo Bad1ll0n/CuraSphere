@@ -39,7 +39,7 @@ export class ComunicacaoService {
 
   async enviarMensagem(dto: { destinatarioId: string; assunto?: string; texto: string }, remetenteId: string) {
     const dest = await this.prisma.utilizador.findUnique({ where: { id: dto.destinatarioId } });
-    if (!dest) throw new NotFoundException('Destinatário não encontrado');
+    if (!dest) throw new NotFoundException(`Destinatário (ID ${dto.destinatarioId}) não encontrado`);
     return this.prisma.mensagemInterna.create({
       data: { remetenteId, destinatarioId: dto.destinatarioId, assunto: dto.assunto ?? null, texto: dto.texto },
       include: { remetente: { select: { id: true, nome: true } }, destinatario: { select: { id: true, nome: true } } },

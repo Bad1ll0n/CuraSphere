@@ -75,10 +75,10 @@ export class EscalasService {
   }
 
   async criar(doenteId: string, registadoPorId: string, role: string, tipo: string, itens: Record<string, number>) {
-    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão');
+    if (!ROLES_PODEM.includes(role)) throw new ForbiddenException('Sem permissão para registar avaliações de risco');
 
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId } });
-    if (!doente || !doente.ativo) throw new NotFoundException('Doente não encontrado');
+    if (!doente || !doente.ativo) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     const { pontuacao, risco } = tipo === 'braden' ? calcularBraden(itens) : calcularMorse(itens);
 

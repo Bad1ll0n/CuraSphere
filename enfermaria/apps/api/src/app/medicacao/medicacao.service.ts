@@ -57,7 +57,7 @@ export class MedicacaoService {
     justificativaOverride?: string;
   }) {
     const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
     if (!data.forcarApesarDeAlergia) {
       const alergias = await this.prisma.alergia.findMany({ where: { doenteId: data.doenteId } });
@@ -110,8 +110,8 @@ export class MedicacaoService {
     verificacao5Certas?: boolean;
   }) {
     const medicacao = await this.prisma.medicacao.findUnique({ where: { id: data.medicacaoId } });
-    if (!medicacao) throw new NotFoundException('Medicação não encontrada');
-    if (!medicacao.ativo) throw new NotFoundException('Medicação já foi descontinuada');
+    if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
+    if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
 
     return this.prisma.registoMedicacao.create({
       data: {
@@ -134,7 +134,7 @@ export class MedicacaoService {
     motivo: string;
   }) {
     const medicacao = await this.prisma.medicacao.findUnique({ where: { id: data.medicacaoId } });
-    if (!medicacao) throw new NotFoundException('Medicação não encontrada');
+    if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
 
     return this.prisma.registoMedicacao.create({
       data: {
@@ -154,7 +154,7 @@ export class MedicacaoService {
 
   async descontinuar(id: string) {
     const medicacao = await this.prisma.medicacao.findUnique({ where: { id } });
-    if (!medicacao) throw new NotFoundException('Medicação não encontrada');
+    if (!medicacao) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
 
     return this.prisma.medicacao.update({
       where: { id },
@@ -227,7 +227,7 @@ export class MedicacaoService {
 
   async validarPrescricao(id: string, validadoPorId: string) {
     const med = await this.prisma.medicacao.findUnique({ where: { id } });
-    if (!med) throw new NotFoundException('Medicação não encontrada');
+    if (!med) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
     return this.prisma.medicacao.update({
       where: { id },
       data: { estadoValidacao: 'aprovada', validadoPorId, validadaEm: new Date() },
@@ -237,7 +237,7 @@ export class MedicacaoService {
 
   async rejeitarPrescricao(id: string, validadoPorId: string, motivoRejeicao: string) {
     const med = await this.prisma.medicacao.findUnique({ where: { id } });
-    if (!med) throw new NotFoundException('Medicação não encontrada');
+    if (!med) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
     return this.prisma.medicacao.update({
       where: { id },
       data: { estadoValidacao: 'rejeitada', validadoPorId, validadaEm: new Date(), motivoRejeicao },

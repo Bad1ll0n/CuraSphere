@@ -57,7 +57,7 @@ export class IncidentesTIService {
         responsavel: { select: { id: true, nome: true, role: true } },
       },
     });
-    if (!inc) throw new NotFoundException('Incidente não encontrado');
+    if (!inc) throw new NotFoundException(`Incidente TI (ID ${id}) não encontrado`);
     return inc;
   }
 

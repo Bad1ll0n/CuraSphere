@@ -45,15 +45,16 @@ export class HorariosService {
   }
 
   async criar(data: { mes: number; ano: number; criadaPorId: string }) {
-    const existe = await this.prisma.escala.findUnique({
-      where: { mes_ano: { mes: data.mes, ano: data.ano } },
-    });
-    if (existe) throw new ConflictException(`Já existe escala para ${data.mes}/${data.ano}`);
-
-    return this.prisma.escala.create({
-      data,
-      include: { criadaPor: { select: { id: true, nome: true } } },
-    });
+    return this.prisma.$transaction(async (tx) => {
+      const existe = await tx.escala.findUnique({
+        where: { mes_ano: { mes: data.mes, ano: data.ano } },
+      });
+      if (existe) throw new ConflictException(`Já existe escala para ${data.mes}/${data.ano}`);
+      return tx.escala.create({
+        data,
+        include: { criadaPor: { select: { id: true, nome: true } } },
+      });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async adicionarTurno(data: {
@@ -95,34 +96,36 @@ export class HorariosService {
     const isGrupoMedico = profRoles.some((p) => grupoMedico.includes(p.role));
     const rolesDoGrupo = isGrupoMedico ? grupoMedico : grupoEnfermagem;
 
-    // Só bloqueia se já existir turno do mesmo tipo neste dia com profissionais do mesmo grupo
-    const jaExiste = await this.prisma.horarioTurno.findFirst({
-      where: {
-        escalId: data.escalId,
-        tipo: data.tipo,
-        data: { gte: dataInicio, lte: dataFim },
-        profissionais: {
-          some: { utilizador: { role: { in: rolesDoGrupo as any } } },
+    // Check-then-create atómico para evitar race conditions
+    const turno = await this.prisma.$transaction(async (tx) => {
+      const jaExiste = await tx.horarioTurno.findFirst({
+        where: {
+          escalId: data.escalId,
+          tipo: data.tipo,
+          data: { gte: dataInicio, lte: dataFim },
+          profissionais: {
+            some: { utilizador: { role: { in: rolesDoGrupo as any } } },
+          },
         },
-      },
-    });
-    if (jaExiste) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia para este grupo`);
+      });
+      if (jaExiste) throw new BadRequestException(`Já existe um turno de ${data.tipo} neste dia para este grupo`);
 
-    const turno = await this.prisma.horarioTurno.create({
-      data: {
-        escalId: data.escalId,
-        tipo: data.tipo,
-        data: dataNormalizada,
-        profissionais: {
-          create: data.profissionaisIds.map((id) => ({ utilizadorId: id })),
+      return tx.horarioTurno.create({
+        data: {
+          escalId: data.escalId,
+          tipo: data.tipo,
+          data: dataNormalizada,
+          profissionais: {
+            create: data.profissionaisIds.map((id) => ({ utilizadorId: id })),
+          },
         },
-      },
-      include: {
-        profissionais: {
-          include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true, ordemExperiencia: true } } },
+        include: {
+          profissionais: {
+            include: { utilizador: { select: { id: true, nome: true, role: true, subRole: true, servico: true, ordemExperiencia: true } } },
+          },
         },
-      },
-    });
+      });
+    }, { isolationLevel: 'Serializable' });
 
     return turno;
   }
@@ -177,10 +180,12 @@ export class HorariosService {
         const nomes = emAusenciaE.map((a) => a.utilizador.nome).join(', ');
         throw new BadRequestException(`Profissional(is) em ausência aprovada nesta data: ${nomes}`);
       }
-      await this.prisma.horarioTurnoProfissional.deleteMany({ where: { horarioTurnoId: turnoId } });
-      await this.prisma.horarioTurnoProfissional.createMany({
-        data: data.profissionaisIds.map((id) => ({ horarioTurnoId: turnoId, utilizadorId: id })),
-      });
+      await this.prisma.$transaction([
+        this.prisma.horarioTurnoProfissional.deleteMany({ where: { horarioTurnoId: turnoId } }),
+        this.prisma.horarioTurnoProfissional.createMany({
+          data: data.profissionaisIds.map((id) => ({ horarioTurnoId: turnoId, utilizadorId: id })),
+        }),
+      ]);
     }
 
     return this.prisma.horarioTurno.update({
@@ -197,8 +202,10 @@ export class HorariosService {
   async apagarTurno(turnoId: string) {
     const turno = await this.prisma.horarioTurno.findUnique({ where: { id: turnoId } });
     if (!turno) throw new NotFoundException('Turno não encontrado');
-    await this.prisma.horarioTurnoProfissional.deleteMany({ where: { horarioTurnoId: turnoId } });
-    return this.prisma.horarioTurno.delete({ where: { id: turnoId } });
+    return this.prisma.$transaction([
+      this.prisma.horarioTurnoProfissional.deleteMany({ where: { horarioTurnoId: turnoId } }),
+      this.prisma.horarioTurno.delete({ where: { id: turnoId } }),
+    ]);
   }
 
   async gerarEscalaAutomatica(mes: number, ano: number, criadaPorId: string, servico?: string) {

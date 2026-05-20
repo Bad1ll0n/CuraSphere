@@ -16,41 +16,38 @@ export class UtilizadoresService {
     servico?: Servico;
     ordemExperiencia?: number;
   }) {
-    const existe = await this.prisma.utilizador.findUnique({
-      where: { numeroFuncionario: data.numeroFuncionario },
-    });
-
-    if (existe) {
-      throw new ConflictException('Número de funcionário já existe');
-    }
-
     const passwordHash = await bcrypt.hash(data.password, 10);
 
-    const utilizador = await this.prisma.utilizador.create({
-      data: {
-        numeroFuncionario: data.numeroFuncionario,
-        nome: data.nome,
-        passwordHash,
-        role: data.role,
-        subRole: data.subRole,
-        servico: data.servico ?? Servico.internamento,
-        ordemExperiencia: data.ordemExperiencia,
-      },
-      select: {
-        id: true,
-        numeroFuncionario: true,
-        nome: true,
-        role: true,
-        subRole: true,
-        servico: true,
-        ordemExperiencia: true,
-        equipa: true,
-        ativo: true,
-        criadoEm: true,
-      },
-    });
+    return this.prisma.$transaction(async (tx) => {
+      const existe = await tx.utilizador.findUnique({
+        where: { numeroFuncionario: data.numeroFuncionario },
+      });
+      if (existe) throw new ConflictException('Número de funcionário já existe');
 
-    return utilizador;
+      return tx.utilizador.create({
+        data: {
+          numeroFuncionario: data.numeroFuncionario,
+          nome: data.nome,
+          passwordHash,
+          role: data.role,
+          subRole: data.subRole,
+          servico: data.servico ?? Servico.internamento,
+          ordemExperiencia: data.ordemExperiencia,
+        },
+        select: {
+          id: true,
+          numeroFuncionario: true,
+          nome: true,
+          role: true,
+          subRole: true,
+          servico: true,
+          ordemExperiencia: true,
+          equipa: true,
+          ativo: true,
+          criadoEm: true,
+        },
+      });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async listar(role?: string, roles?: string[], page = 1, limit = 50) {
@@ -103,7 +100,7 @@ export class UtilizadoresService {
       },
     });
 
-    if (!utilizador) throw new NotFoundException('Utilizador não encontrado');
+    if (!utilizador) throw new NotFoundException(`Utilizador (ID ${id}) não encontrado`);
     return utilizador;
   }
 

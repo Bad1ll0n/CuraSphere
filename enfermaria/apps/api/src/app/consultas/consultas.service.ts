@@ -103,42 +103,44 @@ export class ConsultasService {
     doenteId?: string; nomeDoente?: string; medicoId: string; especialidade: string;
     dataHora: string; duracao?: number; notas?: string;
   }) {
-    const duracao = dto.duracao ?? 30;
-    const dataHora = new Date(dto.dataHora);
-    const dataFim  = new Date(dataHora.getTime() + duracao * 60_000);
+    return this.prisma.$transaction(async (tx) => {
+      const duracao = dto.duracao ?? 30;
+      const dataHora = new Date(dto.dataHora);
+      const dataFim  = new Date(dataHora.getTime() + duracao * 60_000);
 
-    // Anti-dupla-marcação
-    const conflito = await this.prisma.consulta.findFirst({
-      where: {
-        medicoId: dto.medicoId,
-        estado: 'agendada',
-        dataHora: { gte: dataHora, lt: dataFim },
-      },
-    });
-    if (conflito) throw new ConflictException('Médico já tem consulta agendada nesse horário');
+      // Anti-dupla-marcação atómica
+      const conflito = await tx.consulta.findFirst({
+        where: {
+          medicoId: dto.medicoId,
+          estado: 'agendada',
+          dataHora: { gte: dataHora, lt: dataFim },
+        },
+      });
+      if (conflito) throw new ConflictException('Médico já tem consulta agendada nesse horário');
 
-    // Gerar código único
-    let codigo: string;
-    let tentativas = 0;
-    do {
-      codigo = gerarCodigo();
-      tentativas++;
-      if (tentativas > 20) throw new Error('Não foi possível gerar código único');
-    } while (await this.prisma.consulta.findUnique({ where: { codigo } }));
+      // Gerar código único dentro da transação
+      let codigo: string;
+      let tentativas = 0;
+      do {
+        codigo = gerarCodigo();
+        tentativas++;
+        if (tentativas > 20) throw new Error('Não foi possível gerar código único');
+      } while (await tx.consulta.findUnique({ where: { codigo } }));
 
-    return this.prisma.consulta.create({
-      data: {
-        doenteId: dto.doenteId ?? null,
-        nomeDoente: dto.nomeDoente ?? null,
-        medicoId: dto.medicoId,
-        especialidade: dto.especialidade,
-        dataHora,
-        duracao,
-        notas: dto.notas ?? null,
-        codigo,
-      },
-      include: this.includeRelations(),
-    });
+      return tx.consulta.create({
+        data: {
+          doenteId: dto.doenteId ?? null,
+          nomeDoente: dto.nomeDoente ?? null,
+          medicoId: dto.medicoId,
+          especialidade: dto.especialidade,
+          dataHora,
+          duracao,
+          notas: dto.notas ?? null,
+          codigo,
+        },
+        include: this.includeRelations(),
+      });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async listar(medicoId?: string, especialidade?: string, data?: string, doenteId?: string) {
@@ -171,68 +173,67 @@ export class ConsultasService {
   }
 
   async realizar(id: string, dto: { notas?: string; diagnostico?: string; proximaConsulta?: string }, userId: string) {
-    await this.buscar(id);
-    const consulta = await this.prisma.consulta.update({
-      where: { id },
-      data: {
-        estado: 'realizada',
-        notas: dto.notas ?? null,
-        diagnostico: dto.diagnostico ?? null,
-        proximaConsulta: dto.proximaConsulta ? new Date(dto.proximaConsulta) : null,
-      },
-      include: {
-        ...this.includeRelations(),
-        atosConsulta: { include: { ato: true } },
-      },
-    });
-
-    // Auto-faturação (só para doentes registados)
-    if (consulta.doenteId) {
-      let episodio = await this.prisma.episodioFaturacao.findUnique({ where: { consultaId: id } });
-      if (!episodio) {
-        episodio = await this.prisma.episodioFaturacao.create({
-          data: {
-            doenteId: consulta.doenteId,
-            estado: 'pendente',
-            consultaId: id,
-            totalBase: 0,
-            totalCobrado: 0,
-            criadoPorId: userId,
-          },
-        });
-      }
-
-      const itens: { descricao: string; categoria: string; quantidade: number; precoUnitario: number; total: number }[] = [];
-
-      // Ato-base da especialidade
-      const atoBase = await this.prisma.atoClinico.findFirst({
-        where: { especialidade: consulta.especialidade, ativo: true },
+    return this.prisma.$transaction(async (tx) => {
+      const consulta = await tx.consulta.update({
+        where: { id },
+        data: {
+          estado: 'realizada',
+          notas: dto.notas ?? null,
+          diagnostico: dto.diagnostico ?? null,
+          proximaConsulta: dto.proximaConsulta ? new Date(dto.proximaConsulta) : null,
+        },
+        include: {
+          ...this.includeRelations(),
+          atosConsulta: { include: { ato: true } },
+        },
       });
-      if (atoBase) {
-        itens.push({ descricao: atoBase.descricao, categoria: atoBase.categoria,
-          quantidade: 1, precoUnitario: atoBase.precoBase, total: atoBase.precoBase });
-      }
 
-      // Atos adicionados pelo médico
-      for (const ac of (consulta as any).atosConsulta ?? []) {
-        itens.push({ descricao: ac.ato.descricao, categoria: ac.ato.categoria,
-          quantidade: ac.quantidade, precoUnitario: ac.precoUnitario,
-          total: ac.quantidade * ac.precoUnitario });
-      }
+      // Auto-faturação (só para doentes registados) — atómica com a consulta
+      if (consulta.doenteId) {
+        let episodio = await tx.episodioFaturacao.findUnique({ where: { consultaId: id } });
+        if (!episodio) {
+          episodio = await tx.episodioFaturacao.create({
+            data: {
+              doenteId: consulta.doenteId,
+              estado: 'pendente',
+              consultaId: id,
+              totalBase: 0,
+              totalCobrado: 0,
+              criadoPorId: userId,
+            },
+          });
+        }
 
-      if (itens.length > 0) {
-        await this.prisma.itemFatura.createMany({
-          data: itens.map((i) => ({ ...i, episodioFaturacaoId: episodio.id })),
+        const itens: { descricao: string; categoria: string; quantidade: number; precoUnitario: number; total: number }[] = [];
+
+        const atoBase = await tx.atoClinico.findFirst({
+          where: { especialidade: consulta.especialidade, ativo: true },
         });
-        const soma = itens.reduce((s, i) => s + i.total, 0);
-        await this.prisma.episodioFaturacao.update({
-          where: { id: episodio.id },
-          data: { totalBase: soma, totalCobrado: soma },
-        });
-      }
-    }
+        if (atoBase) {
+          itens.push({ descricao: atoBase.descricao, categoria: atoBase.categoria,
+            quantidade: 1, precoUnitario: atoBase.precoBase, total: atoBase.precoBase });
+        }
 
-    return consulta;
+        for (const ac of (consulta as any).atosConsulta ?? []) {
+          itens.push({ descricao: ac.ato.descricao, categoria: ac.ato.categoria,
+            quantidade: ac.quantidade, precoUnitario: ac.precoUnitario,
+            total: ac.quantidade * ac.precoUnitario });
+        }
+
+        if (itens.length > 0) {
+          await tx.itemFatura.createMany({
+            data: itens.map((i) => ({ ...i, episodioFaturacaoId: episodio.id })),
+          });
+          const soma = itens.reduce((s, i) => s + i.total, 0);
+          await tx.episodioFaturacao.update({
+            where: { id: episodio.id },
+            data: { totalBase: soma, totalCobrado: soma },
+          });
+        }
+      }
+
+      return consulta;
+    });
   }
 
   async adicionarAto(consultaId: string, dto: { atoId: string; quantidade?: number }) {

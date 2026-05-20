@@ -101,7 +101,7 @@ export class DoenteService {
       },
     });
 
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${id}) não encontrado`);
     return doente;
   }
 
@@ -115,7 +115,7 @@ export class DoenteService {
   }) {
     return this.prisma.$transaction(async (tx) => {
       const cama = await tx.cama.findUnique({ where: { id: data.camaId } });
-      if (!cama) throw new NotFoundException('Cama não encontrada');
+      if (!cama) throw new NotFoundException(`Cama (ID ${data.camaId}) não encontrada`);
       if (cama.estado !== 'livre' && cama.estado !== 'reservada') {
         throw new BadRequestException('Cama não está disponível');
       }
@@ -345,7 +345,7 @@ export class DoenteService {
   async editarNota(notaId: string, autorId: string, texto: string) {
     await this.verificarTurnoAtivo(autorId);
     const nota = await this.prisma.notaTurno.findUnique({ where: { id: notaId } });
-    if (!nota) throw new NotFoundException('Nota não encontrada');
+    if (!nota) throw new NotFoundException(`Nota (ID ${notaId}) não encontrada`);
     if (nota.autorId !== autorId) throw new ForbiddenException('Sem permissão para editar esta nota');
     if (!this.notaDentroDoTurno(nota.criadaEm))
       throw new ForbiddenException('Nota bloqueada — turno já passou');
@@ -360,7 +360,7 @@ export class DoenteService {
   async apagarNota(notaId: string, autorId: string) {
     await this.verificarTurnoAtivo(autorId);
     const nota = await this.prisma.notaTurno.findUnique({ where: { id: notaId } });
-    if (!nota) throw new NotFoundException('Nota não encontrada');
+    if (!nota) throw new NotFoundException(`Nota (ID ${notaId}) não encontrada`);
     if (nota.autorId !== autorId) throw new ForbiddenException('Sem permissão para apagar esta nota');
     if (!this.notaDentroDoTurno(nota.criadaEm))
       throw new ForbiddenException('Nota bloqueada — turno já passou');
@@ -458,13 +458,13 @@ export class DoenteService {
       },
     });
 
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${id}) não encontrado`);
     return doente;
   }
 
   async buscarFicheiroPessoal(doenteId: string) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     const ficha = await this.prisma.ficheiroPessoalDoente.findUnique({
       where: { doenteId },
@@ -484,7 +484,7 @@ export class DoenteService {
     atualizadoPorId: string,
   ) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
 
     return this.prisma.ficheiroPessoalDoente.upsert({
       where: { doenteId },
@@ -516,7 +516,7 @@ export class DoenteService {
 
   async criarProblema(doenteId: string, dto: { descricao: string; tipo?: string; estado?: string; dataInicio?: string }, registadoPorId: string) {
     const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
-    if (!doente) throw new NotFoundException('Doente não encontrado');
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
     return this.prisma.problemaClinico.create({
       data: {
         doenteId,
@@ -621,7 +621,7 @@ export class DoenteService {
       where: { id: doenteId },
       select: { id: true, nome: true, dataAdmissao: true, dataAlta: true },
     });
-    if (!doente) throw new Error('Doente não encontrado');
+    if (!doente) throw new Error(`Doente (ID ${doenteId}) não encontrado`);
 
     const [sinaisVitais, medicacoes, registosMed, notasClinicas, tarefas, alertas, exames] = await Promise.all([
       this.prisma.sinalVital.findMany({

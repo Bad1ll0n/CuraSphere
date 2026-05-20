@@ -166,7 +166,7 @@ export class UrgenciaService {
 
   private async buscar(id: string) {
     const e = await this.prisma.episodioUrgencia.findUnique({ where: { id } });
-    if (!e) throw new NotFoundException('Episódio não encontrado');
+    if (!e) throw new NotFoundException(`Episódio de urgência (ID ${id}) não encontrado`);
     return e;
   }
 

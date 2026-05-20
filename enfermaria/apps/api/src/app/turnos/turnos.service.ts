@@ -149,12 +149,12 @@ export class TurnosService {
   }
 
   async atribuirDoentes(turnoId: string, atribuicoes: { doenteId: string; enfermeiroId: string }[]) {
-    // Remover atribuições anteriores do turno
-    await this.prisma.atribuicaoDoente.deleteMany({ where: { turnoId } });
-
-    return this.prisma.atribuicaoDoente.createMany({
-      data: atribuicoes.map((a) => ({ ...a, turnoId })),
-    });
+    return this.prisma.$transaction([
+      this.prisma.atribuicaoDoente.deleteMany({ where: { turnoId } }),
+      this.prisma.atribuicaoDoente.createMany({
+        data: atribuicoes.map((a) => ({ ...a, turnoId })),
+      }),
+    ]);
   }
 
   async adicionarNota(data: { turnoId: string; doenteId: string; autorId: string; texto: string }) {

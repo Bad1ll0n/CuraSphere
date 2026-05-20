@@ -46,7 +46,7 @@ export class EventosAdversosService {
 
   async atualizar(id: string, dto: { acaoCorretiva?: string; estado?: string }) {
     const ev = await this.prisma.eventoAdverso.findUnique({ where: { id } });
-    if (!ev) throw new NotFoundException('Evento adverso não encontrado');
+    if (!ev) throw new NotFoundException(`Evento adverso (ID ${id}) não encontrado`);
     return this.prisma.eventoAdverso.update({
       where: { id },
       data: {

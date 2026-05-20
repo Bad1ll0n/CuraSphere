@@ -49,7 +49,7 @@ export class FornecedoresService {
   }) {
     await this.findFornecedorOrFail(dto.fornecedorId);
     const item = await this.prisma.stockItem.findUnique({ where: { id: dto.stockItemId } });
-    if (!item) throw new NotFoundException('Item de stock não encontrado');
+    if (!item) throw new NotFoundException(`Item de stock (ID ${dto.stockItemId}) não encontrado`);
 
     return this.prisma.encomendaFornecedor.create({
       data: {
@@ -72,7 +72,7 @@ export class FornecedoresService {
       where: { id: encId },
       include: { stockItem: true },
     });
-    if (!enc) throw new NotFoundException('Encomenda não encontrada');
+    if (!enc) throw new NotFoundException(`Encomenda (ID ${encId}) não encontrada`);
     if (enc.estado === 'cancelada') throw new BadRequestException('Encomenda cancelada não pode ser recebida');
 
     const novaQuantidade = enc.stockItem.quantidade + quantidadeRecebida;

@@ -43,7 +43,7 @@ export class FarmaciaService {
 
   async atualizarQuantidade(id: string, novaQuantidade: number, motivo: string, tipo: string, utilizadorId: string) {
     const item = await this.prisma.stockItem.findUnique({ where: { id } });
-    if (!item) throw new NotFoundException('Item não encontrado');
+    if (!item) throw new NotFoundException(`Item de stock (ID ${id}) não encontrado`);
 
     const delta = novaQuantidade - item.quantidade;
 
@@ -59,7 +59,7 @@ export class FarmaciaService {
 
   async historicoAjustes(stockItemId: string) {
     const item = await this.prisma.stockItem.findUnique({ where: { id: stockItemId } });
-    if (!item) throw new NotFoundException('Item não encontrado');
+    if (!item) throw new NotFoundException(`Item de stock (ID ${stockItemId}) não encontrado`);
     return this.prisma.ajusteStock.findMany({
       where: { stockItemId },
       orderBy: { criadoEm: 'desc' },
@@ -85,10 +85,21 @@ export class FarmaciaService {
   }
 
   async dispensar(id: string, processadoPorId: string) {
-    const pedido = await this.prisma.pedidoFarmacia.findUnique({ where: { id } });
-    if (!pedido) throw new NotFoundException('Pedido não encontrado');
-    await this.prisma.stockItem.update({ where: { id: pedido.stockItemId }, data: { quantidade: { decrement: pedido.quantidade } } });
-    return this.prisma.pedidoFarmacia.update({ where: { id }, data: { estado: 'dispensado', processadoPorId } });
+    return this.prisma.$transaction(async (tx) => {
+      const pedido = await tx.pedidoFarmacia.findUnique({ where: { id } });
+      if (!pedido) throw new NotFoundException('Pedido não encontrado');
+      if (pedido.estado !== 'pendente') throw new BadRequestException('Pedido já foi processado');
+
+      const item = await tx.stockItem.findUnique({ where: { id: pedido.stockItemId } });
+      if (!item) throw new NotFoundException('Item de stock não encontrado');
+      if (item.quantidade < pedido.quantidade) throw new BadRequestException('Stock insuficiente para dispensar');
+
+      await tx.stockItem.update({
+        where: { id: pedido.stockItemId },
+        data: { quantidade: { decrement: pedido.quantidade } },
+      });
+      return tx.pedidoFarmacia.update({ where: { id }, data: { estado: 'dispensado', processadoPorId } });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async alertas() {
@@ -103,21 +114,23 @@ export class FarmaciaService {
   // ── Transferências entre serviços ────────────────────────────────────────────
 
   async criarTransferencia(stockItemId: string, servicoDestino: string, quantidade: number, motivo: string | undefined, userId: string) {
-    const item = await this.prisma.stockItem.findUnique({ where: { id: stockItemId } });
-    if (!item) throw new NotFoundException('Item não encontrado');
-    if (item.quantidade < quantidade) throw new BadRequestException('Quantidade insuficiente em stock');
+    return this.prisma.$transaction(async (tx) => {
+      const item = await tx.stockItem.findUnique({ where: { id: stockItemId } });
+      if (!item) throw new NotFoundException('Item não encontrado');
+      if (item.quantidade < quantidade) throw new BadRequestException('Quantidade insuficiente em stock');
 
-    return this.prisma.transferenciaStock.create({
-      data: {
-        stockItemId,
-        quantidade,
-        servicoOrigem: item.servico,
-        servicoDestino,
-        motivo,
-        solicitadoPorId: userId,
-      },
-      include: { stockItem: { select: { nome: true, unidade: true } } },
-    });
+      return tx.transferenciaStock.create({
+        data: {
+          stockItemId,
+          quantidade,
+          servicoOrigem: item.servico,
+          servicoDestino,
+          motivo,
+          solicitadoPorId: userId,
+        },
+        include: { stockItem: { select: { nome: true, unidade: true } } },
+      });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async confirmarTransferencia(transferenciaId: string, userId: string) {
