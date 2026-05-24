@@ -29,6 +29,7 @@ export class UtilizadoresService {
           numeroFuncionario: data.numeroFuncionario,
           nome: data.nome,
           passwordHash,
+          passwordExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
           role: data.role,
           subRole: data.subRole,
           servico: data.servico ?? Servico.internamento,

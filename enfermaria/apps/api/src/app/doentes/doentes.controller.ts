@@ -43,8 +43,12 @@ export class DoenteController {
 
   @Roles('administrativo')
   @Get('registos-administrativos')
-  listarRegistosAdministrativos(@Query('search') search?: string) {
-    return this.doenteService.listarRegistosAdministrativos(search);
+  listarRegistosAdministrativos(
+    @Query('search') search?: string,
+    @Query('page') page = '1',
+    @Query('limit') limit = '25',
+  ) {
+    return this.doenteService.listarRegistosAdministrativos(search, parseInt(page), parseInt(limit));
   }
 
   @Roles('administrativo')

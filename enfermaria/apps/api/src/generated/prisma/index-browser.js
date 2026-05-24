@@ -144,6 +144,9 @@ exports.Prisma.UtilizadorScalarFieldEnum = {
   numeroFuncionario: 'numeroFuncionario',
   nome: 'nome',
   passwordHash: 'passwordHash',
+  mfaSecret: 'mfaSecret',
+  mfaAtivo: 'mfaAtivo',
+  passwordExpiresAt: 'passwordExpiresAt',
   role: 'role',
   subRole: 'subRole',
   servico: 'servico',
@@ -177,6 +180,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   ativo: 'ativo',
   emIsolamento: 'emIsolamento',
   motivoIsolamento: 'motivoIsolamento',
+  deletedAt: 'deletedAt',
   camaId: 'camaId',
   administrativoAdmissaoId: 'administrativoAdmissaoId'
 };
@@ -220,7 +224,8 @@ exports.Prisma.NotaClinicaScalarFieldEnum = {
   avaliacao: 'avaliacao',
   plano: 'plano',
   criadaEm: 'criadaEm',
-  editadaEm: 'editadaEm'
+  editadaEm: 'editadaEm',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.EscalaClinicaScalarFieldEnum = {
@@ -270,6 +275,7 @@ exports.Prisma.MedicacaoScalarFieldEnum = {
   ativo: 'ativo',
   iniciadoEm: 'iniciadoEm',
   terminadoEm: 'terminadoEm',
+  deletedAt: 'deletedAt',
   doenteId: 'doenteId',
   prescritoPorId: 'prescritoPorId',
   estadoValidacao: 'estadoValidacao',
@@ -285,6 +291,7 @@ exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
   verificacao5Certas: 'verificacao5Certas',
   naoAdministrada: 'naoAdministrada',
   motivoNaoAdmin: 'motivoNaoAdmin',
+  deletedAt: 'deletedAt',
   medicacaoId: 'medicacaoId',
   doenteId: 'doenteId',
   administradoPorId: 'administradoPorId'
@@ -419,6 +426,17 @@ exports.Prisma.DispositivoTokenScalarFieldEnum = {
   token: 'token',
   plataforma: 'plataforma',
   criadoEm: 'criadoEm'
+};
+
+exports.Prisma.NotificacaoInAppScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  titulo: 'titulo',
+  corpo: 'corpo',
+  lida: 'lida',
+  dadosExtra: 'dadosExtra',
+  criadaEm: 'criadaEm',
+  lidaEm: 'lidaEm'
 };
 
 exports.Prisma.ExameScalarFieldEnum = {
@@ -558,6 +576,9 @@ exports.Prisma.PedidoFarmaciaScalarFieldEnum = {
   estado: 'estado',
   solicitadoPorId: 'solicitadoPorId',
   processadoPorId: 'processadoPorId',
+  aprovadoPorId: 'aprovadoPorId',
+  aprovadoEm: 'aprovadoEm',
+  motivoRejeicao: 'motivoRejeicao',
   observacoes: 'observacoes',
   criadoEm: 'criadoEm'
 };
@@ -1119,6 +1140,7 @@ exports.TipoStock = exports.$Enums.TipoStock = {
 exports.EstadoPedidoFarmacia = exports.$Enums.EstadoPedidoFarmacia = {
   pendente: 'pendente',
   aprovado: 'aprovado',
+  rejeitado: 'rejeitado',
   dispensado: 'dispensado',
   cancelado: 'cancelado'
 };
@@ -1241,6 +1263,7 @@ exports.Prisma.ModelName = {
   AvaliacaoRisco: 'AvaliacaoRisco',
   SumarioAlta: 'SumarioAlta',
   DispositivoToken: 'DispositivoToken',
+  NotificacaoInApp: 'NotificacaoInApp',
   Exame: 'Exame',
   FicheiroExame: 'FicheiroExame',
   EpisodioUrgencia: 'EpisodioUrgencia',

@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import * as interacoesJson from './interacoes.json';
 
 interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
@@ -29,7 +30,10 @@ function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Intera
 
 @Injectable()
 export class MedicacaoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   async listarPorDoente(doenteId: string) {
     return this.prisma.medicacao.findMany({
@@ -243,5 +247,120 @@ export class MedicacaoService {
       data: { estadoValidacao: 'rejeitada', validadoPorId, validadaEm: new Date(), motivoRejeicao },
       select: { id: true, nome: true, estadoValidacao: true, motivoRejeicao: true },
     });
+  }
+
+  // ── Propostas de prescrição por enfermeiro ───────────────────────────────────
+
+  async proporPrescricao(data: {
+    doenteId: string;
+    nome: string;
+    dose: string;
+    via: string;
+    frequencia: string;
+    prescritoPorId: string;
+    observacoes?: string;
+  }) {
+    const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
+    if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
+
+    const medicacao = await this.prisma.medicacao.create({
+      data: {
+        doenteId: data.doenteId,
+        nome: data.nome,
+        dose: data.dose,
+        via: data.via,
+        frequencia: data.frequencia,
+        prescritoPorId: data.prescritoPorId,
+        ativo: false,
+        estadoValidacao: 'pendente_medico',
+      },
+      include: {
+        prescritoPor: { select: { id: true, nome: true, role: true } },
+        doente: { select: { id: true, nome: true } },
+      },
+    });
+
+    // Notificar os médicos do serviço do doente
+    const medicos = await this.prisma.utilizador.findMany({
+      where: { role: 'medico', servico: doente.servico ?? undefined },
+      select: { id: true },
+    });
+    for (const medico of medicos) {
+      this.notificacoes.enviarParaUtilizador(
+        medico.id,
+        'Proposta de prescrição aguarda aprovação',
+        `Enfermeiro propôs ${data.nome} (${data.dose}) para ${doente.nome}. Aguarda a tua aprovação.`,
+        { medicacaoId: medicacao.id, doenteId: data.doenteId },
+      ).catch(() => {});
+    }
+
+    return medicacao;
+  }
+
+  async pendentesAprovacaoMedico(servico?: string) {
+    return this.prisma.medicacao.findMany({
+      where: {
+        estadoValidacao: 'pendente_medico',
+        ativo: false,
+        ...(servico ? { doente: { servico } } : {}),
+      },
+      include: {
+        doente: { select: { id: true, nome: true, servico: true, cama: { select: { numero: true, quarto: true } } } },
+        prescritoPor: { select: { id: true, nome: true, role: true } },
+      },
+      orderBy: { iniciadoEm: 'asc' },
+    });
+  }
+
+  async aprovarPrescricaoMedico(id: string, aprovadoPorId: string) {
+    const med = await this.prisma.medicacao.findUnique({
+      where: { id },
+      include: { prescritoPor: { select: { id: true, nome: true } }, doente: { select: { nome: true } } },
+    });
+    if (!med) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
+    if (med.estadoValidacao !== 'pendente_medico') {
+      throw new BadRequestException(`Prescrição não está pendente de aprovação médica (estado: ${med.estadoValidacao})`);
+    }
+
+    const resultado = await this.prisma.medicacao.update({
+      where: { id },
+      data: { ativo: true, estadoValidacao: 'aprovada', validadoPorId: aprovadoPorId, validadaEm: new Date() },
+      include: { prescritoPor: { select: { id: true, nome: true } } },
+    });
+
+    this.notificacoes.enviarParaUtilizador(
+      med.prescritoPorId,
+      'Proposta de prescrição aprovada',
+      `A tua proposta de ${med.nome} (${med.dose}) para ${med.doente.nome} foi aprovada pelo médico.`,
+      { medicacaoId: id, doenteId: med.doenteId },
+    ).catch(() => {});
+
+    return resultado;
+  }
+
+  async rejeitarPrescricaoMedico(id: string, aprovadoPorId: string, motivoRejeicao: string) {
+    const med = await this.prisma.medicacao.findUnique({
+      where: { id },
+      include: { prescritoPor: { select: { id: true } }, doente: { select: { nome: true } } },
+    });
+    if (!med) throw new NotFoundException(`Medicação (ID ${id}) não encontrada`);
+    if (med.estadoValidacao !== 'pendente_medico') {
+      throw new BadRequestException(`Prescrição não está pendente de aprovação médica (estado: ${med.estadoValidacao})`);
+    }
+
+    const resultado = await this.prisma.medicacao.update({
+      where: { id },
+      data: { estadoValidacao: 'rejeitada', validadoPorId: aprovadoPorId, validadaEm: new Date(), motivoRejeicao },
+      select: { id: true, nome: true, estadoValidacao: true, motivoRejeicao: true },
+    });
+
+    this.notificacoes.enviarParaUtilizador(
+      med.prescritoPorId,
+      'Proposta de prescrição rejeitada',
+      `A tua proposta de ${med.nome} para ${med.doente.nome} foi rejeitada: ${motivoRejeicao}`,
+      { medicacaoId: id, doenteId: med.doenteId },
+    ).catch(() => {});
+
+    return resultado;
   }
 }

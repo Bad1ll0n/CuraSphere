@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 export interface ItemReconciliacao {
   tipo: 'prescricao_sem_validacao' | 'medicacao_sem_mar' | 'pedido_pendente_longa';
@@ -20,6 +21,7 @@ export class ReconciliacaoService implements OnApplicationBootstrap, OnApplicati
   constructor(
     private readonly prisma: PrismaService,
     private readonly alertasService: AlertasService,
+    private readonly notificacoes: NotificacoesService,
   ) {}
 
   onApplicationBootstrap() {
@@ -41,6 +43,19 @@ export class ReconciliacaoService implements OnApplicationBootstrap, OnApplicati
       }
       if (problemas.length > 0) {
         this.logger.warn(`Reconciliação: ${problemas.length} problemas detectados`);
+
+        // Notificar farmacêuticos e médicos sobre problemas de reconciliação
+        const farmaceuticos = await this.prisma.utilizador.findMany({
+          where: { role: 'farmaceutico', ativo: true },
+          select: { id: true },
+        });
+        const mensagem = problemas.length === 1
+          ? `Reconciliação MAR: ${problemas[0].descricao}`
+          : `Reconciliação MAR: ${problemas.length} problemas detectados (ex: ${problemas[0].descricao})`;
+
+        for (const f of farmaceuticos) {
+          this.notificacoes.enviarParaUtilizador(f.id, 'Alerta de Reconciliação', mensagem, { tipo: 'reconciliacao' }).catch(() => {});
+        }
       }
     } catch (e) {
       this.logger.error('Erro na reconciliação automática', e);

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CuraSphere — Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F172A;--bg2:#1E293B;--bg3:#334155;
+  --blue:#0EA5E9;--blue2:#38BDF8;--blue3:#0369A1;
+  --green:#10B981;--green2:#34D399;
+  --purple:#8B5CF6;--orange:#F59E0B;--red:#EF4444;
+  --white:#F8FAFC;--gray:#94A3B8;--gray2:#64748B;
+  --font:'Inter',system-ui,sans-serif;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:var(--font)}
+
+/* ── PRESENTATION WRAPPER ── */
+#pres{position:fixed;inset:0;overflow:hidden}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 80px;
+  opacity:0;transform:translateX(100%);
+  transition:transform .55s cubic-bezier(.77,0,.175,1),opacity .55s ease;
+  pointer-events:none;
+  overflow:hidden;
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.prev{opacity:0;transform:translateX(-100%)}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;z-index:100;
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gray2);border:none;cursor:pointer;padding:0;
+  transition:all .3s;
+}
+.dot.active{background:var(--blue);width:24px;border-radius:4px}
+#btn-prev,#btn-next{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  color:var(--white);padding:8px 16px;border-radius:8px;cursor:pointer;
+  font-size:14px;font-family:var(--font);transition:all .2s;
+}
+#btn-prev:hover,#btn-next:hover{background:rgba(255,255,255,.15)}
+
+/* ── TOP BAR ── */
+#topbar{
+  position:fixed;top:0;left:0;right:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;z-index:100;
+  background:linear-gradient(to bottom,rgba(15,23,42,.9),transparent);
+}
+#slide-counter{font-size:13px;color:var(--gray);font-weight:500}
+#topbar-right{display:flex;gap:10px;align-items:center}
+#btn-lang{
+  background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.4);
+  color:var(--blue2);padding:6px 14px;border-radius:6px;cursor:pointer;
+  font-size:12px;font-weight:700;font-family:var(--font);letter-spacing:.05em;
+  transition:all .2s;
+}
+#btn-lang:hover{background:rgba(14,165,233,.25)}
+#btn-fs{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  color:var(--white);padding:6px 10px;border-radius:6px;cursor:pointer;
+  font-size:14px;
+}
+
+/* ── TYPOGRAPHY ── */
+.tag{
+  display:inline-block;
+  background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3);
+  color:var(--blue2);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 12px;border-radius:20px;margin-bottom:20px;
+}
+.tag.green{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.3);color:var(--green2)}
+.tag.purple{background:rgba(139,92,246,.15);border-color:rgba(139,92,246,.3);color:#A78BFA}
+h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:900;line-height:1.1;text-align:center}
+h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;text-align:center}
+h3{font-size:1.1rem;font-weight:700}
+.sub{font-size:clamp(1rem,2vw,1.25rem);color:var(--gray);text-align:center;max-width:680px;line-height:1.6;margin-top:16px}
+.grad{background:linear-gradient(135deg,var(--blue2),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── CARDS ── */
+.card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:24px;transition:all .3s;
+}
+.card:hover{background:rgba(255,255,255,.08);border-color:rgba(14,165,233,.3);transform:translateY(-2px)}
+
+/* ── GRID ── */
+.grid{display:grid;gap:16px;width:100%}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+
+/* ── ICON ── */
+.ico{font-size:2rem;margin-bottom:10px;display:block}
+
+/* ── GLOW SHAPES ── */
+.glow{
+  position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:.35;
+}
+
+/* ── PROGRESS BAR ── */
+#progress{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--green));
+  transition:width .4s ease;z-index:200;
+}
+
+/* ─────────────────────────────────
+   SLIDE-SPECIFIC STYLES
+───────────────────────────────── */
+
+/* S1 Hero */
+#s1{background:radial-gradient(ellipse at 60% 40%,#0c2a4a 0%,var(--bg) 70%)}
+.ecg-wrap{position:absolute;bottom:80px;left:0;right:0;opacity:.25;pointer-events:none}
+.ecg-line{stroke:var(--blue2);stroke-width:2;fill:none;stroke-dasharray:1200;stroke-dashoffset:1200;animation:ecgDraw 3s ease forwards .8s}
+@keyframes ecgDraw{to{stroke-dashoffset:0}}
+.logo-hero{width:100px;height:100px;margin-bottom:28px;animation:logoIn .8s ease both}
+@keyframes logoIn{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
+.hero-title{animation:fadeUp .8s ease .3s both}
+.hero-sub{animation:fadeUp .8s ease .5s both}
+.hero-cta{
+  margin-top:36px;
+  display:flex;gap:16px;animation:fadeUp .8s ease .7s both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue),var(--blue3));
+  color:#fff;border:none;padding:14px 32px;border-radius:10px;
+  font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;
+  box-shadow:0 0 30px rgba(14,165,233,.4);transition:all .2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(14,165,233,.6)}
+.btn-outline{
+  background:transparent;color:var(--white);
+  border:1px solid rgba(255,255,255,.25);
+  padding:14px 32px;border-radius:10px;
+  font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s;
+}
+.btn-outline:hover{background:rgba(255,255,255,.08)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* S2 Problem */
+#s2 .prob-card{
+  display:flex;align-items:flex-start;gap:16px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:20px;
+  opacity:0;transform:translateY(20px);
+  transition:all .5s ease;
+}
+#s2 .prob-card.show{opacity:1;transform:none}
+.prob-icon{
+  width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  background:rgba(239,68,68,.15);
+}
+
+/* S3 Solution */
+#s3 .orbit-wrap{position:relative;width:340px;height:340px;flex-shrink:0}
+.orbit-center{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:90px;height:90px;background:linear-gradient(135deg,var(--blue),var(--green));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:13px;text-align:center;line-height:1.2;
+  box-shadow:0 0 40px rgba(14,165,233,.5);
+}
+.orbit-item{
+  position:absolute;width:68px;height:68px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:10px;font-weight:600;text-align:center;gap:4px;
+  opacity:0;transform:scale(.5);
+  transition:all .4s ease;cursor:default;
+}
+.orbit-item.show{opacity:1;transform:scale(1)}
+.orbit-item:hover{background:rgba(14,165,233,.15);border-color:var(--blue)}
+
+/* S4 Numbers */
+.num-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:28px 16px;text-align:center;
+  opacity:0;transform:translateY(20px);
+  transition:all .4s ease;
+}
+.num-card.show{opacity:1;transform:none}
+.num-val{font-size:2.8rem;font-weight:900;line-height:1;margin-bottom:6px}
+.num-lbl{font-size:12px;color:var(--gray);font-weight:500;line-height:1.3}
+
+/* S5 Modules */
+.mod-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:18px 14px;text-align:center;
+  opacity:0;transform:scale(.9);
+  transition:all .35s ease;
+}
+.mod-card.show{opacity:1;transform:none}
+.mod-card:hover{border-color:rgba(14,165,233,.4);background:rgba(14,165,233,.06)}
+.mod-ico{font-size:1.6rem;margin-bottom:8px}
+.mod-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.mod-desc{font-size:11px;color:var(--gray);line-height:1.4}
+
+/* S6 AI */
+.ai-card{
+  display:flex;gap:16px;align-items:flex-start;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:18px;
+  opacity:0;transform:translateX(-20px);
+  transition:all .4s ease;
+}
+.ai-card.show{opacity:1;transform:none}
+.ai-ico{
+  width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;background:rgba(16,185,129,.15);
+}
+
+/* S7 Security */
+.shield-wrap{position:relative;width:200px;height:220px;flex-shrink:0}
+.shield-svg{width:100%;height:100%}
+.sec-list{display:flex;flex-direction:column;gap:14px;flex:1}
+.sec-item{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:14px 18px;
+  opacity:0;transform:translateX(20px);
+  transition:all .35s ease;
+}
+.sec-item.show{opacity:1;transform:none}
+.sec-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* S8 Mobile */
+.phone-mock{
+  width:220px;height:420px;flex-shrink:0;
+  background:var(--bg2);border:2px solid rgba(255,255,255,.15);
+  border-radius:36px;padding:12px;position:relative;overflow:hidden;
+  box-shadow:0 0 60px rgba(14,165,233,.2);
+}
+.phone-screen{
+  background:var(--bg);border-radius:28px;height:100%;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.phone-bar{height:24px;background:var(--bg2);display:flex;align-items:center;justify-content:center}
+.phone-bar span{font-size:9px;color:var(--gray);font-weight:600}
+.phone-content{flex:1;padding:8px;display:flex;flex-direction:column;gap:6px}
+.phone-row{height:28px;background:rgba(255,255,255,.06);border-radius:6px;display:flex;align-items:center;padding:0 8px;gap:6px}
+.phone-row .dot2{width:6px;height:6px;border-radius:50%}
+.phone-row span{font-size:9px;color:var(--gray)}
+.phone-bottom{
+  height:44px;background:var(--bg2);display:flex;align-items:center;justify-content:space-around;
+  padding:0 16px;
+}
+.phone-tab{font-size:8px;color:var(--gray);text-align:center;display:flex;flex-direction:column;gap:2px;align-items:center}
+.phone-tab.act{color:var(--blue2)}
+.mob-list{flex:1;display:flex;flex-direction:column;gap:10px}
+.mob-item{
+  display:flex;align-items:center;gap:12px;
+  opacity:0;transform:translateX(-16px);
+  transition:all .3s ease;
+}
+.mob-item.show{opacity:1;transform:none}
+.mob-ico2{
+  width:36px;height:36px;background:rgba(14,165,233,.15);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+
+/* S9 Roles */
+.role-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:16px 12px;text-align:center;
+  opacity:0;transform:translateY(16px);
+  transition:all .35s ease;
+}
+.role-card.show{opacity:1;transform:none}
+.role-card:hover{border-color:rgba(14,165,233,.3);background:rgba(14,165,233,.06)}
+.role-ico{font-size:2rem;margin-bottom:6px}
+.role-name{font-size:13px;font-weight:700;margin-bottom:6px}
+.role-sub{font-size:10px;color:var(--gray);line-height:1.4}
+
+/* S10 Pharmacy flow */
+.flow-wrap{display:flex;align-items:center;gap:0;width:100%;max-width:900px;margin-top:20px}
+.flow-step{
+  flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;
+  opacity:0;transform:translateY(20px);transition:all .4s ease;
+}
+.flow-step.show{opacity:1;transform:none}
+.flow-circle{
+  width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;margin-bottom:10px;border:2px solid;
+}
+.flow-arrow{font-size:1.5rem;color:var(--gray2);flex-shrink:0;padding:0 4px;align-self:center;padding-bottom:32px}
+.flow-label{font-size:12px;font-weight:700;margin-bottom:4px}
+.flow-sub2{font-size:10px;color:var(--gray);line-height:1.3}
+
+/* S11 Infra */
+.infra-layer{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:16px 24px;border-radius:14px;
+  opacity:0;transform:translateX(-24px);
+  transition:all .4s ease;width:100%;
+}
+.infra-layer.show{opacity:1;transform:none}
+.infra-icon{font-size:1.4rem;flex-shrink:0}
+.infra-label{font-weight:700;font-size:14px;flex:1}
+.infra-desc{font-size:12px;color:var(--gray);text-align:right}
+
+/* S12 Dashboard */
+.dash-wrap{
+  background:var(--bg2);border:1px solid rgba(255,255,255,.1);border-radius:20px;
+  padding:24px;width:100%;max-width:820px;
+}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.dash-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi-box{
+  background:var(--bg);border:1px solid rgba(255,255,255,.08);border-radius:12px;
+  padding:16px;text-align:center;
+}
+.kpi-num{font-size:1.8rem;font-weight:800;line-height:1}
+.kpi-lbl{font-size:11px;color:var(--gray);margin-top:4px}
+.dash-charts{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.chart-box{background:var(--bg);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;height:110px;position:relative;overflow:hidden}
+.chart-title{font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 1s ease .5s}
+.bar-val{font-size:10px;color:var(--gray);width:30px;text-align:right}
+
+/* S13 Benefits */
+.ben-col{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;
+  opacity:0;transform:translateY(20px);transition:all .4s ease;
+}
+.ben-col.show{opacity:1;transform:none}
+.ben-title{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ben-ico3{font-size:1.4rem}
+.ben-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;color:var(--gray)}
+.ben-item::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* S14 Deploy */
+.timeline{display:flex;flex-direction:column;gap:0;width:100%;max-width:700px}
+.t-item{
+  display:flex;gap:20px;align-items:flex-start;
+  opacity:0;transform:translateX(-20px);transition:all .4s ease;
+}
+.t-item.show{opacity:1;transform:none}
+.t-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.t-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.t-connector{width:2px;flex:1;min-height:20px;background:rgba(255,255,255,.1);margin:4px 0}
+.t-content{padding-bottom:24px;flex:1}
+.t-phase{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.t-desc{font-size:13px;color:var(--gray);line-height:1.4}
+
+/* S15 CTA */
+#s15{background:radial-gradient(ellipse at 40% 60%,#0c2a4a 0%,var(--bg) 70%)}
+.contact-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:40px 60px;text-align:center;max-width:580px;
+  backdrop-filter:blur(10px);
+}
+
+/* Responsive micro-adjustments */
+@media(max-width:1100px){
+  .slide{padding:60px 40px}
+  .g5{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div id="slide-counter">1 / 15</div>
+  <div id="topbar-right">
+    <button id="btn-lang" onclick="toggleLang()">EN</button>
+    <button id="btn-fs" onclick="toggleFS()" title="Fullscreen">⛶</button>
+  </div>
+</div>
+
+<div id="pres">
+
+<!-- ═══════════════════════════════════════
+     SLIDE 1 — HERO
+═══════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div class="glow" style="width:500px;height:500px;background:var(--blue);top:-100px;right:-100px;opacity:.12"></div>
+  <div class="glow" style="width:400px;height:400px;background:var(--green);bottom:-50px;left:-80px;opacity:.1"></div>
+
+  <svg class="logo-hero" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+    <defs>
+      <radialGradient id="sg" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#60c8f5"/><stop offset="50%" stop-color="#2196f3"/><stop offset="100%" stop-color="#1565c0"/></radialGradient>
+      <radialGradient id="rg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#26d9c8"/><stop offset="100%" stop-color="#00acc1"/></radialGradient>
+      <filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1565c0" flood-opacity="0.3"/></filter>
+    </defs>
+    <circle cx="60" cy="60" r="44" fill="url(#sg)" filter="url(#sh)"/>
+    <ellipse cx="60" cy="60" rx="58" ry="18" fill="none" stroke="url(#rg)" stroke-width="7" stroke-linecap="round" transform="rotate(-30 60 60)" opacity="0.9"/>
+    <clipPath id="fc"><rect x="0" y="50" width="120" height="70"/></clipPath>
+    <ellipse cx="60" cy="60" rx="58" ry="18" fill="none" stroke="#26d9c8" stroke-width="7" stroke-linecap="round" transform="rotate(-30 60 60)" clip-path="url(#fc)" opacity="0.95"/>
+    <rect x="53" y="38" width="14" height="44" rx="4" fill="white" opacity="0.95"/>
+    <rect x="38" y="53" width="44" height="14" rx="4" fill="white" opacity="0.95"/>
+    <circle cx="48" cy="46" r="8" fill="white" opacity="0.25"/>
+  </svg>
+
+  <h1 class="hero-title" style="margin-bottom:8px">
+    <span class="grad">CuraSphere</span>
+  </h1>
+  <h1 class="hero-title" style="font-size:clamp(1.4rem,3vw,2.2rem);font-weight:600;color:var(--white);margin-bottom:0">
+    <span data-pt="Gestão Hospitalar Inteligente" data-en="Intelligent Hospital Management">Gestão Hospitalar Inteligente</span>
+  </h1>
+  <p class="sub hero-sub">
+    <span data-pt="A plataforma digital completa para hospitais modernos — clínica, operacional, farmácia, RH e muito mais, numa única solução integrada." data-en="The complete digital platform for modern hospitals — clinical, operational, pharmacy, HR and more, in one integrated solution.">A plataforma digital completa para hospitais modernos — clínica, operacional, farmácia, RH e muito mais, numa única solução integrada.</span>
+  </p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="goTo(1)">
+      <span data-pt="Ver Apresentação →" data-en="View Presentation →">Ver Apresentação →</span>
+    </button>
+    <button class="btn-outline" onclick="goTo(14)">
+      <span data-pt="Contacto" data-en="Contact">Contacto</span>
+    </button>
+  </div>
+
+  <div class="ecg-wrap">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="width:100%;height:60px">
+      <polyline class="ecg-line" points="0,40 100,40 130,40 145,10 155,70 165,20 180,40 300,40 330,40 345,10 355,70 365,20 380,40 500,40 530,40 545,10 555,70 565,20 580,40 700,40 730,40 745,10 755,70 765,20 780,40 900,40 930,40 945,10 955,70 965,20 980,40 1100,40 1130,40 1145,10 1155,70 1165,20 1180,40 1200,40"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 2 — PROBLEMA
+═══════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="glow" style="width:400px;height:400px;background:var(--red);top:-80px;right:-60px;opacity:.08"></div>
+  <div class="tag"><span data-pt="O Desafio" data-en="The Challenge">O Desafio</span></div>
+  <h2 style="margin-bottom:32px">
+    <span data-pt="Os hospitais enfrentam problemas reais" data-en="Hospitals face real problems">Os hospitais enfrentam problemas reais</span>
+  </h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr;max-width:860px;gap:14px">
+    <div class="prob-card" data-delay="0">
+      <div class="prob-icon">🔀</div>
+      <div>
+        <h3 style="margin-bottom:4px"><span data-pt="Processos Fragmentados" data-en="Fragmented Processes">Processos Fragmentados</span></h3>
+        <p style="font-size:13px;color:var(--gray);line-height:1.5"><span data-pt="Dados clínicos dispersos em sistemas diferentes, sem comunicação entre departamentos." data-en="Clinical data scattered across different systems, no communication between departments.">Dados clínicos dispersos em sistemas diferentes, sem comunicação entre departamentos.</span></p>
+      </div>
+    </div>
+    <div class="prob-card" data-delay="100">
+      <div class="prob-icon">💊</div>
+      <div>
+        <h3 style="margin-bottom:4px"><span data-pt="Erros de Medicação" data-en="Medication Errors">Erros de Medicação</span></h3>
+        <p style="font-size:13px;color:var(--gray);line-height:1.5"><span data-pt="Prescrições sem verificação automática de alergias ou interações medicamentosas perigosas." data-en="Prescriptions without automatic allergy or dangerous drug interaction checks.">Prescrições sem verificação automática de alergias ou interações medicamentosas perigosas.</span></p>
+      </div>
+    </div>
+    <div class="prob-card" data-delay="200">
+      <div class="prob-icon">📊</div>
+      <div>
+        <h3 style="margin-bottom:4px"><span data-pt="Sem Visibilidade em Tempo Real" data-en="No Real-Time Visibility">Sem Visibilidade em Tempo Real</span></h3>
+        <p style="font-size:13px;color:var(--gray);line-height:1.5"><span data-pt="Gestores sem acesso a KPIs de ocupação, faturação e pessoal em tempo real." data-en="Managers without real-time access to occupancy, billing and staffing KPIs.">Gestores sem acesso a KPIs de ocupação, faturação e pessoal em tempo real.</span></p>
+      </div>
+    </div>
+    <div class="prob-card" data-delay="300">
+      <div class="prob-icon">📋</div>
+      <div>
+        <h3 style="margin-bottom:4px"><span data-pt="Dados em Papel" data-en="Paper-Based Data">Dados em Papel</span></h3>
+        <p style="font-size:13px;color:var(--gray);line-height:1.5"><span data-pt="Registos clínicos manuais, propensos a erros, impossíveis de auditar ou pesquisar rapidamente." data-en="Manual clinical records, error-prone, impossible to audit or search quickly.">Registos clínicos manuais, propensos a erros, impossíveis de auditar ou pesquisar rapidamente.</span></p>
+      </div>
+    </div>
+    <div class="prob-card" data-delay="400" style="grid-column:1/-1">
+      <div class="prob-icon">🚨</div>
+      <div>
+        <h3 style="margin-bottom:4px"><span data-pt="Deterioração Clínica Detetada Tarde" data-en="Clinical Deterioration Detected Late">Deterioração Clínica Detetada Tarde</span></h3>
+        <p style="font-size:13px;color:var(--gray);line-height:1.5"><span data-pt="Sem alertas automáticos de sinais vitais, o estado crítico do doente é reconhecido demasiado tarde para intervenção eficaz." data-en="Without automatic vital sign alerts, a patient's critical state is recognized too late for effective intervention.">Sem alertas automáticos de sinais vitais, o estado crítico do doente é reconhecido demasiado tarde para intervenção eficaz.</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 3 — SOLUÇÃO
+═══════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="glow" style="width:500px;height:500px;background:var(--blue);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.08"></div>
+  <div style="display:flex;align-items:center;gap:60px;width:100%;max-width:1000px">
+    <div style="flex:1">
+      <div class="tag green"><span data-pt="A Solução" data-en="The Solution">A Solução</span></div>
+      <h2 style="text-align:left;margin-bottom:16px">
+        <span data-pt="Uma plataforma." data-en="One platform.">Uma plataforma.</span><br>
+        <span class="grad" data-pt="Todo o hospital." data-en="The entire hospital.">Todo o hospital.</span>
+      </h2>
+      <p style="color:var(--gray);font-size:15px;line-height:1.7;max-width:420px">
+        <span data-pt="CuraSphere centraliza toda a gestão hospitalar numa plataforma web + mobile, com comunicação em tempo real entre todos os serviços e profissionais." data-en="CuraSphere centralizes all hospital management in a web + mobile platform, with real-time communication between all services and professionals.">CuraSphere centraliza toda a gestão hospitalar numa plataforma web + mobile, com comunicação em tempo real entre todos os serviços e profissionais.</span>
+      </p>
+      <div style="display:flex;gap:24px;margin-top:28px">
+        <div style="text-align:center">
+          <div style="font-size:2rem;font-weight:900;color:var(--blue2)">Web</div>
+          <div style="font-size:12px;color:var(--gray)">Next.js 14</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:2rem;font-weight:900;color:var(--green2)">Mobile</div>
+          <div style="font-size:12px;color:var(--gray)">React Native</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:2rem;font-weight:900;color:var(--purple)">API</div>
+          <div style="font-size:12px;color:var(--gray)">NestJS</div>
+        </div>
+      </div>
+    </div>
+    <div class="orbit-wrap">
+      <div class="orbit-center">CuraSphere</div>
+      <!-- 8 orbit items positioned around center -->
+      <div class="orbit-item" data-delay="0" style="top:0;left:50%;transform:translateX(-50%) scale(.5)">
+        <span style="font-size:1.2rem">🏥</span>
+        <span data-pt="Clínico" data-en="Clinical">Clínico</span>
+      </div>
+      <div class="orbit-item" data-delay="100" style="top:15%;right:0;transform:scale(.5)">
+        <span style="font-size:1.2rem">💊</span>
+        <span data-pt="Farmácia" data-en="Pharmacy">Farmácia</span>
+      </div>
+      <div class="orbit-item" data-delay="200" style="top:50%;right:-10px;transform:translateY(-50%) scale(.5)">
+        <span style="font-size:1.2rem">🚑</span>
+        <span data-pt="Urgência" data-en="Emergency">Urgência</span>
+      </div>
+      <div class="orbit-item" data-delay="300" style="bottom:15%;right:0;transform:scale(.5)">
+        <span style="font-size:1.2rem">👥</span>
+        <span data-pt="RH" data-en="HR">RH</span>
+      </div>
+      <div class="orbit-item" data-delay="400" style="bottom:0;left:50%;transform:translateX(-50%) scale(.5)">
+        <span style="font-size:1.2rem">📊</span>
+        <span data-pt="Dashboard" data-en="Dashboard">Dashboard</span>
+      </div>
+      <div class="orbit-item" data-delay="500" style="bottom:15%;left:0;transform:scale(.5)">
+        <span style="font-size:1.2rem">🔒</span>
+        <span data-pt="Segurança" data-en="Security">Segurança</span>
+      </div>
+      <div class="orbit-item" data-delay="600" style="top:50%;left:-10px;transform:translateY(-50%) scale(.5)">
+        <span style="font-size:1.2rem">🔬</span>
+        <span data-pt="Qualidade" data-en="Quality">Qualidade</span>
+      </div>
+      <div class="orbit-item" data-delay="700" style="top:15%;left:0;transform:scale(.5)">
+        <span style="font-size:1.2rem">💻</span>
+        <span data-pt="TI" data-en="IT">TI</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 4 — NÚMEROS
+═══════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="glow" style="width:600px;height:300px;background:var(--blue);bottom:-100px;left:50%;transform:translateX(-50%);opacity:.1"></div>
+  <div class="tag"><span data-pt="Em Números" data-en="By the Numbers">Em Números</span></div>
+  <h2 style="margin-bottom:36px">
+    <span data-pt="Escala e profundidade de uma plataforma enterprise" data-en="Enterprise-scale depth and breadth">Escala e profundidade de uma plataforma enterprise</span>
+  </h2>
+  <div class="grid g4" style="max-width:900px;gap:14px">
+    <div class="num-card" data-val="10" data-delay="0"><div class="num-val grad" data-counter="10">0</div><div class="num-lbl"><span data-pt="Perfis de utilizador" data-en="User profiles">Perfis de utilizador</span></div></div>
+    <div class="num-card" data-val="81" data-delay="80"><div class="num-val grad" data-counter="81">0</div><div class="num-lbl"><span data-pt="Sub-perfis dinâmicos" data-en="Dynamic sub-profiles">Sub-perfis dinâmicos</span></div></div>
+    <div class="num-card" data-val="14" data-delay="160"><div class="num-val" style="color:var(--green2)" data-counter="14">0</div><div class="num-lbl"><span data-pt="Escalas clínicas" data-en="Clinical scales">Escalas clínicas</span></div></div>
+    <div class="num-card" data-val="50" data-delay="240"><div class="num-val" style="color:var(--green2)" data-counter="50">0+</div><div class="num-lbl"><span data-pt="Interações medicamentosas" data-en="Drug interactions">Interações medicamentosas</span></div></div>
+    <div class="num-card" data-val="37" data-delay="320"><div class="num-val" style="color:var(--purple)" data-counter="37">0+</div><div class="num-lbl"><span data-pt="Módulos de API" data-en="API modules">Módulos de API</span></div></div>
+    <div class="num-card" data-val="100" data-delay="400"><div class="num-val" style="color:var(--purple)" data-counter="100">0+</div><div class="num-lbl"><span data-pt="Endpoints REST" data-en="REST Endpoints">Endpoints REST</span></div></div>
+    <div class="num-card" data-val="35" data-delay="480"><div class="num-val" style="color:var(--orange)" data-counter="35">0+</div><div class="num-lbl"><span data-pt="Páginas web" data-en="Web pages">Páginas web</span></div></div>
+    <div class="num-card" data-val="20" data-delay="560"><div class="num-val" style="color:var(--orange)" data-counter="20">0+</div><div class="num-lbl"><span data-pt="Ecrãs mobile" data-en="Mobile screens">Ecrãs mobile</span></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 5 — MÓDULOS
+═══════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="tag"><span data-pt="Módulos" data-en="Modules">Módulos</span></div>
+  <h2 style="margin-bottom:28px">
+    <span data-pt="Cobertura total do hospital" data-en="Total hospital coverage">Cobertura total do hospital</span>
+  </h2>
+  <div class="grid g4" style="max-width:960px;gap:12px">
+    <div class="mod-card" data-delay="0"><div class="mod-ico">🏨</div><div class="mod-title"><span data-pt="Internamento" data-en="Inpatient">Internamento</span></div><div class="mod-desc"><span data-pt="Admissão, alta, transferência, timeline clínica unificada" data-en="Admission, discharge, transfer, unified clinical timeline">Admissão, alta, transferência, timeline clínica unificada</span></div></div>
+    <div class="mod-card" data-delay="50"><div class="mod-ico">🚑</div><div class="mod-title"><span data-pt="Urgência" data-en="Emergency">Urgência</span></div><div class="mod-desc"><span data-pt="Triagem Manchester, episódios, sala de espera com chamada" data-en="Manchester triage, episodes, waiting room with call system">Triagem Manchester, episódios, sala de espera com chamada</span></div></div>
+    <div class="mod-card" data-delay="100"><div class="mod-ico">🔬</div><div class="mod-title"><span data-pt="Bloco Operatório" data-en="Operating Room">Bloco Operatório</span></div><div class="mod-desc"><span data-pt="Checklist OMS, equipa cirúrgica, agendamento" data-en="WHO checklist, surgical team, scheduling">Checklist OMS, equipa cirúrgica, agendamento</span></div></div>
+    <div class="mod-card" data-delay="150"><div class="mod-ico">👨‍⚕️</div><div class="mod-title"><span data-pt="Consultas" data-en="Outpatient">Consultas</span></div><div class="mod-desc"><span data-pt="Agendamento, lista de espera, interconsultas" data-en="Scheduling, waiting list, interconsultations">Agendamento, lista de espera, interconsultas</span></div></div>
+    <div class="mod-card" data-delay="200"><div class="mod-ico">💊</div><div class="mod-title"><span data-pt="Farmácia" data-en="Pharmacy">Farmácia</span></div><div class="mod-desc"><span data-pt="Stock, pedidos, fornecedores, rastreabilidade de custos" data-en="Stock, orders, suppliers, cost traceability">Stock, pedidos, fornecedores, rastreabilidade de custos</span></div></div>
+    <div class="mod-card" data-delay="250"><div class="mod-ico">📋</div><div class="mod-title"><span data-pt="Medicação / MAR" data-en="Medication / MAR">Medicação / MAR</span></div><div class="mod-desc"><span data-pt="Prescrição, administração, registo de não administração" data-en="Prescription, administration, non-administration record">Prescrição, administração, registo de não administração</span></div></div>
+    <div class="mod-card" data-delay="300"><div class="mod-ico">❤️</div><div class="mod-title"><span data-pt="Sinais Vitais" data-en="Vital Signs">Sinais Vitais</span></div><div class="mod-desc"><span data-pt="NEWS2 automático, alertas, análise de tendências" data-en="Automatic NEWS2, alerts, trend analysis">NEWS2 automático, alertas, análise de tendências</span></div></div>
+    <div class="mod-card" data-delay="350"><div class="mod-ico">📝</div><div class="mod-title"><span data-pt="Notas Clínicas" data-en="Clinical Notes">Notas Clínicas</span></div><div class="mod-desc"><span data-pt="Formato SOAP, audit trail, soft delete legal" data-en="SOAP format, audit trail, legal soft delete">Formato SOAP, audit trail, soft delete legal</span></div></div>
+    <div class="mod-card" data-delay="400"><div class="mod-ico">👥</div><div class="mod-title"><span data-pt="RH & Escalas" data-en="HR & Shifts">RH & Escalas</span></div><div class="mod-desc"><span data-pt="Escalas auto-geradas, permutas, avaliações, ausências" data-en="Auto-generated rosters, swaps, evaluations, absences">Escalas auto-geradas, permutas, avaliações, ausências</span></div></div>
+    <div class="mod-card" data-delay="450"><div class="mod-ico">💻</div><div class="mod-title"><span data-pt="TI & Incidentes" data-en="IT & Incidents">TI & Incidentes</span></div><div class="mod-desc"><span data-pt="Tickets, gestão de utilizadores, sub-roles, audit log" data-en="Tickets, user management, sub-roles, audit log">Tickets, gestão de utilizadores, sub-roles, audit log</span></div></div>
+    <div class="mod-card" data-delay="500"><div class="mod-ico">✅</div><div class="mod-title"><span data-pt="Qualidade / IACS" data-en="Quality / IACS">Qualidade / IACS</span></div><div class="mod-desc"><span data-pt="Isolamento, controlo de infeções, checklist RGPD/DGS" data-en="Isolation, infection control, GDPR/DGS checklist">Isolamento, controlo de infeções, checklist RGPD/DGS</span></div></div>
+    <div class="mod-card" data-delay="550"><div class="mod-ico">📊</div><div class="mod-title"><span data-pt="Dashboard Executivo" data-en="Executive Dashboard">Dashboard Executivo</span></div><div class="mod-desc"><span data-pt="KPIs de internamento, faturação, consultas, pessoal" data-en="Inpatient, billing, outpatient, staffing KPIs">KPIs de internamento, faturação, consultas, pessoal</span></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 6 — INTELIGÊNCIA CLÍNICA
+═══════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="glow" style="width:400px;height:400px;background:var(--green);top:-60px;right:-60px;opacity:.1"></div>
+  <div class="tag green"><span data-pt="Inteligência Clínica" data-en="Clinical Intelligence">Inteligência Clínica</span></div>
+  <h2 style="margin-bottom:28px">
+    <span data-pt="A plataforma que pensa com os profissionais de saúde" data-en="The platform that thinks alongside healthcare professionals">A plataforma que pensa com os profissionais de saúde</span>
+  </h2>
+  <div class="grid g2" style="max-width:900px;gap:12px">
+    <div class="ai-card" data-delay="0">
+      <div class="ai-ico">📈</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="NEWS2 Automático" data-en="Automatic NEWS2">NEWS2 Automático</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="Score calculado a cada registo de vitais. Alerta push ao enfermeiro supervisor quando score ≥5 ou ≥7." data-en="Score calculated at every vital sign entry. Push alert to supervising nurse at score ≥5 or ≥7.">Score calculado a cada registo de vitais. Alerta push ao enfermeiro supervisor quando score ≥5 ou ≥7.</span></p></div>
+    </div>
+    <div class="ai-card" data-delay="100">
+      <div class="ai-ico" style="background:rgba(14,165,233,.15)">📉</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="Análise de Tendências" data-en="Trend Analysis">Análise de Tendências</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="Regressão linear nos últimos 6 registos de SpO₂, FC, FR e PA. Deteta deterioração antes dos alertas clássicos." data-en="Linear regression on last 6 SpO₂, HR, RR and BP records. Detects deterioration before classic alerts.">Regressão linear nos últimos 6 registos de SpO₂, FC, FR e PA. Deteta deterioração antes dos alertas clássicos.</span></p></div>
+    </div>
+    <div class="ai-card" data-delay="200">
+      <div class="ai-ico" style="background:rgba(239,68,68,.15)">⚠️</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="Interações Medicamentosas" data-en="Drug Interactions">Interações Medicamentosas</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="50+ pares de medicamentos verificados automaticamente ao prescrever. Aviso imediato sem bloquear o fluxo." data-en="50+ drug pairs automatically checked at prescription. Immediate warning without blocking the workflow.">50+ pares de medicamentos verificados automaticamente ao prescrever. Aviso imediato sem bloquear o fluxo.</span></p></div>
+    </div>
+    <div class="ai-card" data-delay="300">
+      <div class="ai-ico" style="background:rgba(245,158,11,.15)">🚫</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="Conflito de Alergias" data-en="Allergy Conflict">Conflito de Alergias</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="Prescrições bloqueadas automaticamente se houver alergia documentada ao princípio ativo." data-en="Prescriptions automatically blocked if there is a documented allergy to the active ingredient.">Prescrições bloqueadas automaticamente se houver alergia documentada ao princípio ativo.</span></p></div>
+    </div>
+    <div class="ai-card" data-delay="400">
+      <div class="ai-ico" style="background:rgba(139,92,246,.15)">🔄</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="Reconciliação MAR↔Farmácia" data-en="MAR↔Pharmacy Reconciliation">Reconciliação MAR↔Farmácia</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="Verificação automática a cada 30 minutos. Alerta os farmacêuticos sobre divergências entre o que foi prescrito e administrado." data-en="Automatic check every 30 minutes. Alerts pharmacists about divergences between prescribed and administered.">Verificação automática a cada 30 minutos. Alerta os farmacêuticos sobre divergências entre o que foi prescrito e administrado.</span></p></div>
+    </div>
+    <div class="ai-card" data-delay="500">
+      <div class="ai-ico" style="background:rgba(239,68,68,.15)">🆘</div>
+      <div><h3 style="margin-bottom:4px"><span data-pt="SOS com Contexto Clínico" data-en="SOS with Clinical Context">SOS com Contexto Clínico</span></h3><p style="font-size:12px;color:var(--gray);line-height:1.5"><span data-pt="Botão SOS envia os últimos vitais, medicação ativa e alergias ao supervisor em 3 segundos — com contagem regressiva anti-acidental." data-en="SOS button sends last vitals, active medications and allergies to supervisor in 3 seconds — with anti-accidental countdown.">Botão SOS envia os últimos vitais, medicação ativa e alergias ao supervisor em 3 segundos.</span></p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 7 — SEGURANÇA
+═══════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="glow" style="width:350px;height:350px;background:var(--green);top:50%;left:10%;transform:translateY(-50%);opacity:.08"></div>
+  <div class="tag green"><span data-pt="Segurança" data-en="Security">Segurança</span></div>
+  <h2 style="margin-bottom:32px">
+    <span data-pt="Construído para proteger dados de saúde" data-en="Built to protect health data">Construído para proteger dados de saúde</span>
+  </h2>
+  <div style="display:flex;align-items:center;gap:60px;width:100%;max-width:920px">
+    <div class="shield-wrap">
+      <svg viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs>
+          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0EA5E9"/>
+            <stop offset="100%" stop-color="#10B981"/>
+          </linearGradient>
+        </defs>
+        <path d="M100 10 L180 45 L180 110 C180 160 100 210 100 210 C100 210 20 160 20 110 L20 45 Z" fill="rgba(14,165,233,0.1)" stroke="url(#shieldGrad)" stroke-width="3"/>
+        <path d="M100 30 L165 58 L165 112 C165 150 100 192 100 192 C100 192 35 150 35 112 L35 58 Z" fill="rgba(14,165,233,0.05)"/>
+        <rect x="86" y="85" width="12" height="38" rx="3" fill="white" opacity="0.9"/>
+        <rect x="71" y="100" width="58" height="12" rx="3" fill="white" opacity="0.9"/>
+        <circle cx="100" cy="106" r="32" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+        <circle cx="100" cy="106" r="48" fill="none" stroke="rgba(14,165,233,0.15)" stroke-width="1" stroke-dasharray="6 6"/>
+      </svg>
+    </div>
+    <div class="sec-list" style="flex:1">
+      <div class="sec-item" data-delay="0"><div class="sec-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="JWT em Cookies httpOnly" data-en="JWT in httpOnly Cookies">JWT em Cookies httpOnly</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Token nunca exposto a JavaScript — imune a XSS" data-en="Token never exposed to JavaScript — immune to XSS">Token nunca exposto a JavaScript — imune a XSS</span></div></div></div>
+      <div class="sec-item" data-delay="100"><div class="sec-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="MFA TOTP (2 Fatores)" data-en="MFA TOTP (2-Factor Auth)">MFA TOTP (2 Fatores)</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Google / Microsoft Authenticator — obrigatório para médicos e enfermeiros" data-en="Google / Microsoft Authenticator — mandatory for doctors and nurses">Google / Microsoft Authenticator — obrigatório para médicos e enfermeiros</span></div></div></div>
+      <div class="sec-item" data-delay="200"><div class="sec-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="RBAC — 10 roles + 81 sub-roles" data-en="RBAC — 10 roles + 81 sub-roles">RBAC — 10 roles + 81 sub-roles</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Cada ação validada por permissão granular. Sem acesso não autorizado." data-en="Every action validated by granular permission. No unauthorized access.">Cada ação validada por permissão granular. Sem acesso não autorizado.</span></div></div></div>
+      <div class="sec-item" data-delay="300"><div class="sec-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="Rate Limiting Diferenciado" data-en="Differentiated Rate Limiting">Rate Limiting Diferenciado</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Login: 5 tentativas / 10 min · MFA: 10 / 10 min · Nginx: 5 req/min" data-en="Login: 5 attempts / 10 min · MFA: 10 / 10 min · Nginx: 5 req/min">Login: 5 tentativas / 10 min · MFA: 10 / 10 min · Nginx: 5 req/min</span></div></div></div>
+      <div class="sec-item" data-delay="400"><div class="sec-dot"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="Audit Log Completo" data-en="Complete Audit Log">Audit Log Completo</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Registo de todas as mutações com utilizador, entidade, IP e timestamp" data-en="All mutations logged with user, entity, IP and timestamp">Registo de todas as mutações com utilizador, entidade, IP e timestamp</span></div></div></div>
+      <div class="sec-item" data-delay="500"><div class="sec-dot" style="background:var(--blue)"></div><div><div style="font-size:13px;font-weight:700;margin-bottom:2px"><span data-pt="TLS 1.3 + HSTS + RGPD" data-en="TLS 1.3 + HSTS + GDPR">TLS 1.3 + HSTS + RGPD</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Nginx com SSL/TLS moderno, headers de segurança e conformidade com regulamentação de dados de saúde" data-en="Nginx with modern SSL/TLS, security headers and health data regulation compliance">Nginx com SSL/TLS moderno, headers de segurança e conformidade com RGPD</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 8 — MOBILE
+═══════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="tag purple"><span data-pt="App Mobile" data-en="Mobile App">App Mobile</span></div>
+  <h2 style="margin-bottom:32px">
+    <span data-pt="O hospital na palma da mão" data-en="The hospital in the palm of your hand">O hospital na palma da mão</span>
+  </h2>
+  <div style="display:flex;align-items:center;gap:60px;width:100%;max-width:900px">
+    <div class="mob-list">
+      <div class="mob-item" data-delay="0"><div class="mob-ico2">📱</div><div><div style="font-size:14px;font-weight:700"><span data-pt="QR Scanner de Doentes" data-en="Patient QR Scanner">QR Scanner de Doentes</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Acesso instantâneo ao processo clínico por QR code" data-en="Instant access to clinical record via QR code">Acesso instantâneo ao processo clínico por QR code</span></div></div></div>
+      <div class="mob-item" data-delay="80"><div class="mob-ico2">❤️</div><div><div style="font-size:14px;font-weight:700"><span data-pt="Sinais Vitais & MAR" data-en="Vital Signs & MAR">Sinais Vitais & MAR</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Registo de vitais e administração de medicação em mobilidade" data-en="Vital sign registration and medication administration on the go">Registo de vitais e administração de medicação em mobilidade</span></div></div></div>
+      <div class="mob-item" data-delay="160"><div class="mob-ico2">📊</div><div><div style="font-size:14px;font-weight:700"><span data-pt="14 Escalas Clínicas" data-en="14 Clinical Scales">14 Escalas Clínicas</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Braden, Glasgow, Morse, NIHSS e mais — calculadas no dispositivo" data-en="Braden, Glasgow, Morse, NIHSS and more — calculated on device">Braden, Glasgow, Morse, NIHSS e mais — calculadas no dispositivo</span></div></div></div>
+      <div class="mob-item" data-delay="240"><div class="mob-ico2">🗓️</div><div><div style="font-size:14px;font-weight:700"><span data-pt="Gestão de Turnos" data-en="Shift Management">Gestão de Turnos</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Ver equipa, pedir permuta, aprovar ausências" data-en="View team, request swap, approve absences">Ver equipa, pedir permuta, aprovar ausências</span></div></div></div>
+      <div class="mob-item" data-delay="320"><div class="mob-ico2">🔔</div><div><div style="font-size:14px;font-weight:700"><span data-pt="Notificações Push" data-en="Push Notifications">Notificações Push</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Alertas clínicos, SOS, tarefas e permutas em tempo real" data-en="Clinical alerts, SOS, tasks and swaps in real time">Alertas clínicos, SOS, tarefas e permutas em tempo real</span></div></div></div>
+      <div class="mob-item" data-delay="400"><div class="mob-ico2">🚑</div><div><div style="font-size:14px;font-weight:700"><span data-pt="Triagem Manchester" data-en="Manchester Triage">Triagem Manchester</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Triagem digital diretamente na urgência, sem papel" data-en="Digital triage directly in emergency, paperless">Triagem digital diretamente na urgência, sem papel</span></div></div></div>
+      <div class="mob-item" data-delay="480"><div class="mob-ico2">🆘</div><div><div style="font-size:14px;font-weight:700"><span data-pt="Botão SOS" data-en="SOS Button">Botão SOS</span></div><div style="font-size:12px;color:var(--gray)"><span data-pt="Alerta imediato com contexto clínico completo do doente" data-en="Immediate alert with full patient clinical context">Alerta imediato com contexto clínico completo do doente</span></div></div></div>
+    </div>
+    <div class="phone-mock">
+      <div class="phone-screen">
+        <div class="phone-bar"><span>9:41 AM</span></div>
+        <div class="phone-content">
+          <div style="font-size:9px;font-weight:700;color:var(--blue2);padding:4px 0">CURASPHERE</div>
+          <div class="phone-row"><div class="dot2" style="background:var(--red)"></div><span>SOS Alert — Cama 12</span></div>
+          <div style="height:1px;background:rgba(255,255,255,.06);margin:2px 0"></div>
+          <div style="font-size:8px;color:var(--gray);font-weight:600;margin:4px 0 2px">DOENTE: João Silva</div>
+          <div class="phone-row"><div class="dot2" style="background:var(--green)"></div><span>SpO₂: 94% ↓</span></div>
+          <div class="phone-row"><div class="dot2" style="background:var(--orange)"></div><span>FC: 118 bpm ↑</span></div>
+          <div class="phone-row"><div class="dot2" style="background:var(--blue)"></div><span>NEWS2: 6 ⚠</span></div>
+          <div style="height:1px;background:rgba(255,255,255,.06);margin:4px 0"></div>
+          <div style="font-size:8px;color:var(--gray);font-weight:600;margin:2px 0">MEDICAÇÃO ATIVA</div>
+          <div class="phone-row"><span>💊 Metoprolol 50mg</span></div>
+          <div class="phone-row"><span>💊 Varfarina 5mg</span></div>
+          <div style="margin-top:6px;background:rgba(239,68,68,.2);border-radius:6px;padding:6px;text-align:center">
+            <span style="font-size:9px;font-weight:700;color:var(--red)">⚠ ALERGIA: Penicilina</span>
+          </div>
+        </div>
+        <div class="phone-bottom">
+          <div class="phone-tab act"><span style="font-size:14px">🏥</span><span>Doentes</span></div>
+          <div class="phone-tab"><span style="font-size:14px">📋</span><span>Tarefas</span></div>
+          <div class="phone-tab"><span style="font-size:14px">🗓️</span><span>Turno</span></div>
+          <div class="phone-tab"><span style="font-size:14px">🔔</span><span>Alertas</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 9 — PERFIS
+═══════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="tag"><span data-pt="Perfis de Utilizador" data-en="User Profiles">Perfis de Utilizador</span></div>
+  <h2 style="margin-bottom:28px">
+    <span data-pt="10 perfis, cada um com acesso cirúrgico aos seus dados" data-en="10 profiles, each with surgical access to their data">10 perfis, cada um com acesso cirúrgico aos seus dados</span>
+  </h2>
+  <div class="grid g5" style="max-width:940px;gap:12px">
+    <div class="role-card" data-delay="0"><div class="role-ico">👨‍⚕️</div><div class="role-name"><span data-pt="Médico" data-en="Doctor">Médico</span></div><div class="role-sub"><span data-pt="Prescrições, diagnóstico, interconsultas, bloco" data-en="Prescriptions, diagnosis, interconsultations, OR">Prescrições, diagnóstico, interconsultas, bloco</span></div></div>
+    <div class="role-card" data-delay="60"><div class="role-ico">👩‍⚕️</div><div class="role-name"><span data-pt="Enfermeiro" data-en="Nurse">Enfermeiro</span></div><div class="role-sub"><span data-pt="MAR, vitais, escalas, IACS, alertas" data-en="MAR, vitals, scales, IACS, alerts">MAR, vitais, escalas, IACS, alertas</span></div></div>
+    <div class="role-card" data-delay="120"><div class="role-ico">🩺</div><div class="role-name"><span data-pt="Auxiliar" data-en="Auxiliary">Auxiliar</span></div><div class="role-sub"><span data-pt="Cuidados diretos, vitais, tarefas básicas" data-en="Direct care, vitals, basic tasks">Cuidados diretos, vitais, tarefas básicas</span></div></div>
+    <div class="role-card" data-delay="180"><div class="role-ico">🔬</div><div class="role-name"><span data-pt="Téc. Saúde" data-en="Health Tech">Téc. Saúde</span></div><div class="role-sub"><span data-pt="Fisioterapia, nutrição, psicologia, worklist" data-en="Physiotherapy, nutrition, psychology, worklist">Fisioterapia, nutrição, psicologia, worklist</span></div></div>
+    <div class="role-card" data-delay="240"><div class="role-ico">💊</div><div class="role-name"><span data-pt="Farmacêutico" data-en="Pharmacist">Farmacêutico</span></div><div class="role-sub"><span data-pt="Stock, catálogo, pedidos, fornecedores" data-en="Stock, catalog, orders, suppliers">Stock, catálogo, pedidos, fornecedores</span></div></div>
+    <div class="role-card" data-delay="300"><div class="role-ico">🗂️</div><div class="role-name"><span data-pt="Administrativo" data-en="Administrative">Administrativo</span></div><div class="role-sub"><span data-pt="Faturação, agendamento, utilizadores" data-en="Billing, scheduling, users">Faturação, agendamento, utilizadores</span></div></div>
+    <div class="role-card" data-delay="360"><div class="role-ico">🔧</div><div class="role-name"><span data-pt="Operacional" data-en="Operational">Operacional</span></div><div class="role-sub"><span data-pt="Equipamentos, manutenção, pedidos internos" data-en="Equipment, maintenance, internal requests">Equipamentos, manutenção, pedidos internos</span></div></div>
+    <div class="role-card" data-delay="420"><div class="role-ico">💻</div><div class="role-name">TI / IT</div><div class="role-sub"><span data-pt="Sistema, incidentes, utilizadores, logs" data-en="System, incidents, users, logs">Sistema, incidentes, utilizadores, logs</span></div></div>
+    <div class="role-card" data-delay="480"><div class="role-ico">✅</div><div class="role-name"><span data-pt="Qualidade" data-en="Quality">Qualidade</span></div><div class="role-sub"><span data-pt="IACS, conformidade, audit, dashboard qualidade" data-en="IACS, compliance, audit, quality dashboard">IACS, conformidade, audit, dashboard qualidade</span></div></div>
+    <div class="role-card" data-delay="540"><div class="role-ico">👔</div><div class="role-name"><span data-pt="Direção" data-en="Management">Direção</span></div><div class="role-sub"><span data-pt="KPIs, faturação, ocupação, pessoal" data-en="KPIs, billing, occupancy, staffing">KPIs, faturação, ocupação, pessoal</span></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 10 — FARMÁCIA
+═══════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="tag"><span data-pt="Farmácia & Medicação" data-en="Pharmacy & Medication">Farmácia & Medicação</span></div>
+  <h2 style="margin-bottom:12px">
+    <span data-pt="Rastreabilidade total do ciclo do medicamento" data-en="Total traceability of the medication cycle">Rastreabilidade total do ciclo do medicamento</span>
+  </h2>
+  <p class="sub" style="margin-bottom:36px;font-size:14px">
+    <span data-pt="Do fornecedor à cama do doente, com validação em cada etapa" data-en="From supplier to patient bed, with validation at every step">Do fornecedor à cama do doente, com validação em cada etapa</span>
+  </p>
+  <div class="flow-wrap">
+    <div class="flow-step" data-delay="0">
+      <div class="flow-circle" style="background:rgba(139,92,246,.15);border-color:var(--purple)">📝</div>
+      <div class="flow-label" style="color:var(--purple)"><span data-pt="Proposta" data-en="Proposal">Proposta</span></div>
+      <div class="flow-sub2"><span data-pt="Enfermeiro propõe prescrição ao médico" data-en="Nurse proposes prescription to doctor">Enfermeiro propõe prescrição ao médico</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" data-delay="120">
+      <div class="flow-circle" style="background:rgba(14,165,233,.15);border-color:var(--blue)">👨‍⚕️</div>
+      <div class="flow-label" style="color:var(--blue2)"><span data-pt="Aprovação Médica" data-en="Medical Approval">Aprovação Médica</span></div>
+      <div class="flow-sub2"><span data-pt="Médico valida ou rejeita com motivo" data-en="Doctor validates or rejects with reason">Médico valida ou rejeita com motivo</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" data-delay="240">
+      <div class="flow-circle" style="background:rgba(245,158,11,.15);border-color:var(--orange)">💊</div>
+      <div class="flow-label" style="color:var(--orange)"><span data-pt="Validação Farmácia" data-en="Pharmacy Validation">Validação Farmácia</span></div>
+      <div class="flow-sub2"><span data-pt="Farmacêutico verifica stock e aprova pedido" data-en="Pharmacist checks stock and approves order">Farmacêutico verifica stock e aprova pedido</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" data-delay="360">
+      <div class="flow-circle" style="background:rgba(16,185,129,.15);border-color:var(--green)">📦</div>
+      <div class="flow-label" style="color:var(--green2)"><span data-pt="Dispensação" data-en="Dispensing">Dispensação</span></div>
+      <div class="flow-sub2"><span data-pt="Medicamento dispensado, stock atualizado" data-en="Medication dispensed, stock updated">Medicamento dispensado, stock atualizado</span></div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" data-delay="480">
+      <div class="flow-circle" style="background:rgba(14,165,233,.15);border-color:var(--blue2)">✅</div>
+      <div class="flow-label" style="color:var(--blue2)">MAR</div>
+      <div class="flow-sub2"><span data-pt="Administração registada com hora e profissional" data-en="Administration recorded with time and professional">Administração registada com hora e profissional</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:24px;margin-top:36px">
+    <div style="text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 24px">
+      <div style="font-size:1.4rem;font-weight:800;color:var(--green2)">50+</div>
+      <div style="font-size:11px;color:var(--gray)"><span data-pt="Interações verificadas" data-en="Interactions checked">Interações verificadas</span></div>
+    </div>
+    <div style="text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 24px">
+      <div style="font-size:1.4rem;font-weight:800;color:var(--blue2)">30min</div>
+      <div style="font-size:11px;color:var(--gray)"><span data-pt="Ciclo de reconciliação" data-en="Reconciliation cycle">Ciclo de reconciliação</span></div>
+    </div>
+    <div style="text-align:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 24px">
+      <div style="font-size:1.4rem;font-weight:800;color:var(--orange)">100%</div>
+      <div style="font-size:11px;color:var(--gray)"><span data-pt="Rastreabilidade auditável" data-en="Auditable traceability">Rastreabilidade auditável</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 11 — INFRAESTRUTURA
+═══════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="tag green"><span data-pt="Infraestrutura" data-en="Infrastructure">Infraestrutura</span></div>
+  <h2 style="margin-bottom:32px">
+    <span data-pt="Pronto para produção hospitalar" data-en="Ready for hospital production">Pronto para produção hospitalar</span>
+  </h2>
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:800px">
+    <div class="infra-layer" data-delay="0" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2)">
+      <div class="infra-icon">🌐</div>
+      <div style="flex:1"><div class="infra-label">Nginx 1.27</div><div style="font-size:12px;color:var(--gray)"><span data-pt="Reverse proxy · SSL/TLS 1.3 · HSTS · Rate limiting · Compressão gzip" data-en="Reverse proxy · SSL/TLS 1.3 · HSTS · Rate limiting · gzip compression">Reverse proxy · SSL/TLS 1.3 · HSTS · Rate limiting · Compressão gzip</span></div></div>
+      <div class="infra-desc"><span data-pt="Camada de exposição pública" data-en="Public exposure layer">Camada de exposição pública</span></div>
+    </div>
+    <div style="text-align:center;color:var(--gray2);font-size:18px">↕</div>
+    <div style="display:flex;gap:10px">
+      <div class="infra-layer" data-delay="100" style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);flex:1">
+        <div class="infra-icon">⚛️</div>
+        <div><div class="infra-label">Next.js 14</div><div style="font-size:12px;color:var(--gray)">App Router · SSR · PWA</div></div>
+      </div>
+      <div class="infra-layer" data-delay="150" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);flex:1">
+        <div class="infra-icon">📱</div>
+        <div><div class="infra-label">React Native / Expo</div><div style="font-size:12px;color:var(--gray)">iOS · Android · Push</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;color:var(--gray2);font-size:18px">↕</div>
+    <div class="infra-layer" data-delay="200" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2)">
+      <div class="infra-icon">🚀</div>
+      <div style="flex:1"><div class="infra-label">NestJS API</div><div style="font-size:12px;color:var(--gray)">37+ módulos · REST · WebSockets · Health /health · Terminus</div></div>
+      <div class="infra-desc"><span data-pt="Backend principal" data-en="Main backend">Backend principal</span></div>
+    </div>
+    <div style="text-align:center;color:var(--gray2);font-size:18px">↕</div>
+    <div style="display:flex;gap:10px">
+      <div class="infra-layer" data-delay="300" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);flex:1">
+        <div class="infra-icon">⚡</div>
+        <div><div class="infra-label">Redis 7</div><div style="font-size:12px;color:var(--gray)"><span data-pt="Cache · TTL 30s–1h · Degradação silenciosa" data-en="Cache · TTL 30s–1h · Silent degradation">Cache · TTL 30s–1h · Degradação silenciosa</span></div></div>
+      </div>
+      <div class="infra-layer" data-delay="350" style="background:rgba(14,165,233,.08);border:1px solid rgba(14,165,233,.2);flex:1">
+        <div class="infra-icon">🗄️</div>
+        <div><div class="infra-label">PostgreSQL 16</div><div style="font-size:12px;color:var(--gray)">pg_trgm · Full-text · Volumes persistentes</div></div>
+      </div>
+      <div class="infra-layer" data-delay="400" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);flex:1">
+        <div class="infra-icon">💾</div>
+        <div><div class="infra-label"><span data-pt="Backup Diário" data-en="Daily Backup">Backup Diário</span></div><div style="font-size:12px;color:var(--gray)">pg_dump · 2h · <span data-pt="Retenção 30 dias" data-en="30-day retention">Retenção 30 dias</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 12 — DASHBOARD EXECUTIVO
+═══════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="tag"><span data-pt="Dashboard Executivo" data-en="Executive Dashboard">Dashboard Executivo</span></div>
+  <h2 style="margin-bottom:24px">
+    <span data-pt="Visão 360° da instituição em tempo real" data-en="360° real-time view of the institution">Visão 360° da instituição em tempo real</span>
+  </h2>
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg width="28" height="28" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="44" fill="url(#sg)"/>
+          <rect x="53" y="38" width="14" height="44" rx="4" fill="white" opacity="0.95"/>
+          <rect x="38" y="53" width="44" height="14" rx="4" fill="white" opacity="0.95"/>
+        </svg>
+        <span style="font-weight:700;font-size:14px">CuraSphere — <span data-pt="Dashboard Executivo" data-en="Executive Dashboard">Dashboard Executivo</span></span>
+      </div>
+      <div style="font-size:12px;color:var(--gray)"><span data-pt="Atualizado em tempo real" data-en="Updated in real time">Atualizado em tempo real</span> · <span style="color:var(--green)">● Live</span></div>
+    </div>
+    <div class="dash-kpi-grid">
+      <div class="kpi-box"><div class="kpi-num" style="color:var(--blue2)">87%</div><div class="kpi-lbl"><span data-pt="Taxa de Ocupação" data-en="Occupancy Rate">Taxa de Ocupação</span></div></div>
+      <div class="kpi-box"><div class="kpi-num" style="color:var(--green2)">143</div><div class="kpi-lbl"><span data-pt="Doentes Internados" data-en="Inpatients">Doentes Internados</span></div></div>
+      <div class="kpi-box"><div class="kpi-num" style="color:var(--orange)">€284k</div><div class="kpi-lbl"><span data-pt="Faturação do Mês" data-en="Monthly Billing">Faturação do Mês</span></div></div>
+      <div class="kpi-box"><div class="kpi-num" style="color:var(--purple)">312</div><div class="kpi-lbl"><span data-pt="Consultas Realizadas" data-en="Consultations">Consultas Realizadas</span></div></div>
+    </div>
+    <div class="dash-charts">
+      <div class="chart-box">
+        <div class="chart-title"><span data-pt="Ocupação por Serviço" data-en="Occupancy by Service">Ocupação por Serviço</span></div>
+        <div class="bar-row"><span style="font-size:9px;color:var(--gray);width:60px">Internamento</span><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--blue)"></div></div><span class="bar-val">87%</span></div>
+        <div class="bar-row"><span style="font-size:9px;color:var(--gray);width:60px">UCI</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--red)"></div></div><span class="bar-val">95%</span></div>
+        <div class="bar-row"><span style="font-size:9px;color:var(--gray);width:60px">Cirurgia</span><div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--green)"></div></div><span class="bar-val">72%</span></div>
+        <div class="bar-row"><span style="font-size:9px;color:var(--gray);width:60px">Pediatria</span><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--purple)"></div></div><span class="bar-val">58%</span></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title"><span data-pt="Pessoal em Serviço" data-en="Staff on Duty">Pessoal em Serviço</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--gray)"><span data-pt="Médicos" data-en="Doctors">Médicos</span></span><span style="font-weight:700;color:var(--blue2)">24</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--gray)"><span data-pt="Enfermeiros" data-en="Nurses">Enfermeiros</span></span><span style="font-weight:700;color:var(--green2)">67</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--gray)"><span data-pt="Auxiliares" data-en="Auxiliaries">Auxiliares</span></span><span style="font-weight:700;color:var(--orange)">31</span></div>
+          <div style="height:1px;background:rgba(255,255,255,.06)"></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--gray)">Total</span><span style="font-weight:800;color:var(--white)">122</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 13 — BENEFÍCIOS
+═══════════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="tag green"><span data-pt="Impacto Operacional" data-en="Operational Impact">Impacto Operacional</span></div>
+  <h2 style="margin-bottom:32px">
+    <span data-pt="O que muda para o hospital" data-en="What changes for the hospital">O que muda para o hospital</span>
+  </h2>
+  <div class="grid g3" style="max-width:960px;gap:20px">
+    <div class="ben-col" data-delay="0" style="border-color:rgba(14,165,233,.2)">
+      <div class="ben-title"><div class="ben-ico3">🏥</div><h3 style="color:var(--blue2)"><span data-pt="Clínico" data-en="Clinical">Clínico</span></h3></div>
+      <div class="ben-item"><span data-pt="Alertas NEWS2 automáticos previnem deterioração tardia" data-en="Automatic NEWS2 alerts prevent late deterioration">Alertas NEWS2 automáticos previnem deterioração tardia</span></div>
+      <div class="ben-item"><span data-pt="MAR digital elimina erros de registo em papel" data-en="Digital MAR eliminates paper recording errors">MAR digital elimina erros de registo em papel</span></div>
+      <div class="ben-item"><span data-pt="Verificação automática de interações e alergias" data-en="Automatic interaction and allergy verification">Verificação automática de interações e alergias</span></div>
+      <div class="ben-item"><span data-pt="Timeline unificada — processo clínico completo" data-en="Unified timeline — complete clinical record">Timeline unificada — processo clínico completo</span></div>
+      <div class="ben-item"><span data-pt="14 escalas clínicas calculadas automaticamente" data-en="14 clinical scales calculated automatically">14 escalas clínicas calculadas automaticamente</span></div>
+    </div>
+    <div class="ben-col" data-delay="150" style="border-color:rgba(16,185,129,.2)">
+      <div class="ben-title"><div class="ben-ico3">⚙️</div><h3 style="color:var(--green2)"><span data-pt="Operacional" data-en="Operational">Operacional</span></h3></div>
+      <div class="ben-item"><span data-pt="Escalas mensais geradas automaticamente" data-en="Monthly rosters generated automatically">Escalas mensais geradas automaticamente</span></div>
+      <div class="ben-item"><span data-pt="Workflow de permutas e ausências sem papel" data-en="Paperless swap and absence workflow">Workflow de permutas e ausências sem papel</span></div>
+      <div class="ben-item"><span data-pt="Notificações push em tempo real para toda a equipa" data-en="Real-time push notifications for the entire team">Notificações push em tempo real para toda a equipa</span></div>
+      <div class="ben-item"><span data-pt="Gestão de manutenção preventiva de equipamentos" data-en="Preventive equipment maintenance management">Gestão de manutenção preventiva de equipamentos</span></div>
+      <div class="ben-item"><span data-pt="Pedidos internos digitais com rastreabilidade total" data-en="Digital internal requests with full traceability">Pedidos internos digitais com rastreabilidade total</span></div>
+    </div>
+    <div class="ben-col" data-delay="300" style="border-color:rgba(245,158,11,.2)">
+      <div class="ben-title"><div class="ben-ico3">💰</div><h3 style="color:var(--orange)"><span data-pt="Financeiro" data-en="Financial">Financeiro</span></h3></div>
+      <div class="ben-item"><span data-pt="Rastreabilidade de custos de medicação por serviço" data-en="Medication cost tracking by department">Rastreabilidade de custos de medicação por serviço</span></div>
+      <div class="ben-item"><span data-pt="Faturação integrada com atos clínicos" data-en="Billing integrated with clinical procedures">Faturação integrada com atos clínicos</span></div>
+      <div class="ben-item"><span data-pt="Redução de desperdício por gestão inteligente de stock" data-en="Waste reduction through smart stock management">Redução de desperdício por gestão inteligente de stock</span></div>
+      <div class="ben-item"><span data-pt="KPIs financeiros em tempo real para a Direção" data-en="Real-time financial KPIs for Management">KPIs financeiros em tempo real para a Direção</span></div>
+      <div class="ben-item"><span data-pt="Audit trail completo para conformidade e auditoria" data-en="Complete audit trail for compliance and auditing">Audit trail completo para conformidade e auditoria</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 14 — DEPLOY / IMPLEMENTAÇÃO
+═══════════════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="glow" style="width:400px;height:400px;background:var(--blue);bottom:-100px;right:-80px;opacity:.08"></div>
+  <div class="tag"><span data-pt="Implementação" data-en="Implementation">Implementação</span></div>
+  <h2 style="margin-bottom:8px">
+    <span data-pt="A plataforma está pronta." data-en="The platform is ready.">A plataforma está pronta.</span><br>
+    <span class="grad" data-pt="O hospital decide quando começar." data-en="The hospital decides when to start.">O hospital decide quando começar.</span>
+  </h2>
+  <p class="sub" style="font-size:13px;margin-bottom:32px">
+    <span data-pt="Go-live por fases — 1 serviço piloto, depois expansão gradual para toda a instituição." data-en="Phased go-live — 1 pilot service, then gradual expansion to the entire institution.">Go-live por fases — 1 serviço piloto, depois expansão gradual para toda a instituição.</span>
+  </p>
+  <div class="timeline">
+    <div class="t-item" data-delay="0">
+      <div class="t-line"><div class="t-dot" style="background:rgba(14,165,233,.2);color:var(--blue2);border:2px solid var(--blue)">A</div><div class="t-connector"></div></div>
+      <div class="t-content"><div class="t-phase" style="color:var(--blue2)"><span data-pt="Fase A — Infraestrutura (4–6 semanas)" data-en="Phase A — Infrastructure (4–6 weeks)">Fase A — Infraestrutura (4–6 semanas)</span></div><div class="t-desc"><span data-pt="Servidor, Docker, SSL/TLS, Nginx, backup automático, VPN hospitalar" data-en="Server, Docker, SSL/TLS, Nginx, automatic backup, hospital VPN">Servidor, Docker, SSL/TLS, Nginx, backup automático, VPN hospitalar</span></div></div>
+    </div>
+    <div class="t-item" data-delay="100">
+      <div class="t-line"><div class="t-dot" style="background:rgba(139,92,246,.2);color:var(--purple);border:2px solid var(--purple)">B</div><div class="t-connector"></div></div>
+      <div class="t-content"><div class="t-phase" style="color:var(--purple)"><span data-pt="Fase B — Dados (2–3 semanas)" data-en="Phase B — Data (2–3 weeks)">Fase B — Dados (2–3 semanas)</span></div><div class="t-desc"><span data-pt="Catálogo de medicamentos, camas, utilizadores, atos clínicos" data-en="Medication catalog, beds, users, clinical procedures">Catálogo de medicamentos, camas, utilizadores, atos clínicos</span></div></div>
+    </div>
+    <div class="t-item" data-delay="200">
+      <div class="t-line"><div class="t-dot" style="background:rgba(16,185,129,.2);color:var(--green2);border:2px solid var(--green)">C</div><div class="t-connector"></div></div>
+      <div class="t-content"><div class="t-phase" style="color:var(--green2)"><span data-pt="Fase C — Segurança (2–3 semanas)" data-en="Phase C — Security (2–3 weeks)">Fase C — Segurança (2–3 semanas)</span></div><div class="t-desc"><span data-pt="MFA ativo, políticas de password, conformidade RGPD" data-en="MFA active, password policies, GDPR compliance">MFA ativo, políticas de password, conformidade RGPD</span></div></div>
+    </div>
+    <div class="t-item" data-delay="300">
+      <div class="t-line"><div class="t-dot" style="background:rgba(245,158,11,.2);color:var(--orange);border:2px solid var(--orange)">D</div><div class="t-connector"></div></div>
+      <div class="t-content"><div class="t-phase" style="color:var(--orange)"><span data-pt="Fase D — Formação (2–4 semanas)" data-en="Phase D — Training (2–4 weeks)">Fase D — Formação (2–4 semanas)</span></div><div class="t-desc"><span data-pt="Manuais por perfil, sessões práticas em staging, super-utilizadores por serviço" data-en="Manuals by profile, practical sessions in staging, super-users by department">Manuais por perfil, sessões práticas em staging, super-utilizadores por serviço</span></div></div>
+    </div>
+    <div class="t-item" data-delay="400">
+      <div class="t-line"><div class="t-dot" style="background:linear-gradient(135deg,var(--blue),var(--green));color:white;border:none;font-size:16px">🚀</div></div>
+      <div class="t-content"><div class="t-phase" style="color:var(--white)"><span data-pt="Go-Live — Serviço piloto → expansão gradual" data-en="Go-Live — Pilot service → gradual expansion">Go-Live — Serviço piloto → expansão gradual</span></div><div class="t-desc"><span data-pt="Semana 1: internamento · Semana 3: urgência · Semana 5: bloco · Semana 7: restantes serviços" data-en="Week 1: inpatient · Week 3: emergency · Week 5: OR · Week 7: remaining services">Semana 1: internamento · Semana 3: urgência · Semana 5: bloco · Semana 7: restantes serviços</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SLIDE 15 — CTA / CONTACTO
+═══════════════════════════════════════ -->
+<div class="slide" id="s15">
+  <div class="glow" style="width:600px;height:600px;background:var(--blue);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.1"></div>
+  <div class="glow" style="width:300px;height:300px;background:var(--green);bottom:-50px;right:-50px;opacity:.15"></div>
+
+  <svg width="80" height="80" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:20px;animation:logoIn .8s ease both">
+    <defs>
+      <radialGradient id="sg2" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#60c8f5"/><stop offset="50%" stop-color="#2196f3"/><stop offset="100%" stop-color="#1565c0"/></radialGradient>
+    </defs>
+    <circle cx="60" cy="60" r="44" fill="url(#sg2)"/>
+    <ellipse cx="60" cy="60" rx="58" ry="18" fill="none" stroke="#26d9c8" stroke-width="7" stroke-linecap="round" transform="rotate(-30 60 60)" opacity="0.9"/>
+    <rect x="53" y="38" width="14" height="44" rx="4" fill="white" opacity="0.95"/>
+    <rect x="38" y="53" width="44" height="14" rx="4" fill="white" opacity="0.95"/>
+    <circle cx="48" cy="46" r="8" fill="white" opacity="0.25"/>
+  </svg>
+
+  <h1 style="margin-bottom:8px"><span class="grad">CuraSphere</span></h1>
+  <p class="sub" style="margin-bottom:40px">
+    <span data-pt="Estamos prontos para transformar a gestão do seu hospital." data-en="We are ready to transform your hospital's management.">Estamos prontos para transformar a gestão do seu hospital.</span>
+  </p>
+
+  <div class="contact-card">
+    <div style="font-size:2rem;margin-bottom:16px">📩</div>
+    <h3 style="margin-bottom:8px;font-size:1.1rem"><span data-pt="Solicite uma demonstração" data-en="Request a demonstration">Solicite uma demonstração</span></h3>
+    <p style="color:var(--gray);font-size:14px;margin-bottom:24px">
+      <span data-pt="Mostramos a plataforma em funcionamento, com dados reais e adaptada ao seu serviço." data-en="We show the platform in action, with real data and adapted to your service.">Mostramos a plataforma em funcionamento, com dados reais e adaptada ao seu serviço.</span>
+    </p>
+    <a href="mailto:xfilipe7@gmail.com" style="
+      display:inline-block;
+      background:linear-gradient(135deg,var(--blue),var(--blue3));
+      color:white;text-decoration:none;
+      padding:14px 36px;border-radius:10px;
+      font-size:15px;font-weight:700;
+      box-shadow:0 0 30px rgba(14,165,233,.4);
+      transition:all .2s;
+    ">xfilipe7@gmail.com</a>
+    <div style="margin-top:20px;display:flex;justify-content:center;gap:20px">
+      <div style="text-align:center">
+        <div style="font-size:1.4rem;font-weight:800;color:var(--blue2)">47+</div>
+        <div style="font-size:11px;color:var(--gray)"><span data-pt="Módulos" data-en="Modules">Módulos</span></div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+      <div style="text-align:center">
+        <div style="font-size:1.4rem;font-weight:800;color:var(--green2)">10</div>
+        <div style="font-size:11px;color:var(--gray)"><span data-pt="Perfis" data-en="Profiles">Perfis</span></div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+      <div style="text-align:center">
+        <div style="font-size:1.4rem;font-weight:800;color:var(--orange)">100%</div>
+        <div style="font-size:11px;color:var(--gray)">Web + Mobile</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /pres -->
+
+<!-- NAVIGATION -->
+<div id="nav">
+  <button id="btn-prev" onclick="prevSlide()">←</button>
+  <div id="dots"></div>
+  <button id="btn-next" onclick="nextSlide()">→</button>
+</div>
+
+<script>
+const TOTAL = 15;
+let cur = 0;
+let lang = 'pt';
+
+/* ── Build dots ── */
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d = document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n){
+  const slides = document.querySelectorAll('.slide');
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('prev');
+  setTimeout(()=>slides[cur].classList.remove('prev'),600);
+  cur = Math.max(0,Math.min(TOTAL-1,n));
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+  document.getElementById('slide-counter').textContent=(cur+1)+' / '+TOTAL;
+  document.getElementById('progress').style.width=((cur+1)/TOTAL*100)+'%';
+  triggerSlideAnimations(cur);
+}
+function nextSlide(){goTo(cur+1)}
+function prevSlide(){goTo(cur-1)}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevSlide();
+});
+
+/* ── Slide animations ── */
+function triggerSlideAnimations(idx){
+  const slide = document.querySelectorAll('.slide')[idx];
+  const animated = slide.querySelectorAll('[data-delay]');
+  animated.forEach(el=>{
+    el.classList.remove('show');
+    const delay = parseInt(el.dataset.delay||0);
+    setTimeout(()=>el.classList.add('show'), delay+80);
+  });
+  if(idx===3) startCounters();
+}
+
+/* ── Count-up ── */
+function startCounters(){
+  document.querySelectorAll('[data-counter]').forEach(el=>{
+    const target = parseInt(el.dataset.counter);
+    const suffix = el.textContent.includes('+') ? '+' : '';
+    let current = 0;
+    const step = Math.ceil(target/40);
+    const timer = setInterval(()=>{
+      current = Math.min(current+step, target);
+      el.textContent = current + suffix;
+      if(current>=target) clearInterval(timer);
+    },30);
+  });
+}
+
+/* ── Language toggle ── */
+function toggleLang(){
+  lang = lang==='pt' ? 'en' : 'pt';
+  document.getElementById('btn-lang').textContent = lang==='pt' ? 'EN' : 'PT';
+  document.querySelectorAll('[data-pt],[data-en]').forEach(el=>{
+    if(lang==='en' && el.dataset.en) el.textContent=el.dataset.en;
+    else if(lang==='pt' && el.dataset.pt) el.textContent=el.dataset.pt;
+  });
+}
+
+/* ── Fullscreen ── */
+function toggleFS(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen();
+}
+
+/* ── Init ── */
+document.getElementById('progress').style.width=(1/TOTAL*100)+'%';
+triggerSlideAnimations(0);
+</script>
+</body>
+</html>

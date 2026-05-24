@@ -1,16 +1,34 @@
 export const dynamic = 'force-dynamic';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '../lib/auth-context';
 import { QueryProvider } from '../lib/query-provider';
+import { PwaRegister } from '../components/pwa-register';
 import './global.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Enfermaria — Gestão Hospitalar',
-  description: 'Sistema de gestão de doentes hospitalares',
+  title: 'CuraSphere — Gestão Hospitalar',
+  description: 'Sistema integrado de gestão hospitalar',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'CuraSphere',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#1e40af',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryProvider>
+        <PwaRegister />
       </body>
     </html>
   );

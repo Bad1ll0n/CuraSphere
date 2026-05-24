@@ -8,6 +8,7 @@ const { composePlugins, withNx } = require('@nx/next');
  **/
 const nextConfig = {
   nx: {},
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 };
 
 const plugins = [withNx];

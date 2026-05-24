@@ -47,6 +47,28 @@ export class FarmaciaController {
     return this.service.listarPedidos(s);
   }
 
+  @Roles('medico', 'direcao')
+  @Get('pedidos/pendentes-aprovacao')
+  pedidosPendentesAprovacao(@Query('servico') servico?: string) {
+    return this.service.pedidosPendentesAprovacao(servico);
+  }
+
+  @Roles('medico', 'direcao')
+  @Patch('pedido/:id/aprovar')
+  aprovarPedido(@Param('id') id: string, @Request() req: any) {
+    return this.service.aprovarPedido(id, req.user.sub);
+  }
+
+  @Roles('medico', 'direcao')
+  @Patch('pedido/:id/rejeitar')
+  rejeitarPedido(
+    @Param('id') id: string,
+    @Body() body: { motivoRejeicao: string },
+    @Request() req: any,
+  ) {
+    return this.service.rejeitarPedido(id, req.user.sub, body.motivoRejeicao);
+  }
+
   @Roles('farmaceutico')
   @Patch('pedido/:id/dispensar')
   dispensar(@Param('id') id: string, @Request() req: any) {

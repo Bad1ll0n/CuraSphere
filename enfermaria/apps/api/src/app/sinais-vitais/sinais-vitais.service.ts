@@ -160,4 +160,96 @@ export class SinaisVitaisService {
       include: { registadoPor: { select: { id: true, nome: true } } },
     });
   }
+
+  async analisarTendencia(doenteId: string) {
+    const registos = await this.prisma.sinalVital.findMany({
+      where: { doenteId },
+      orderBy: { data: 'asc' },
+      take: 6,
+      select: {
+        data: true, pressaoSistolica: true, pulso: true,
+        saturacaoO2: true, frequenciaRespiratoria: true, temperatura: true, news2: true,
+      },
+    });
+
+    if (registos.length < 2) {
+      return { risco: 'indeterminado', motivo: 'Registos insuficientes para análise de tendência', tendencias: [] };
+    }
+
+    type Campo = 'pressaoSistolica' | 'pulso' | 'saturacaoO2' | 'frequenciaRespiratoria' | 'temperatura';
+    type Direcao = 'estavel' | 'melhoria' | 'deterioracao';
+
+    function calcularTendencia(valores: (number | null)[]): { slope: number; direcao: Direcao } {
+      const validos = valores.filter((v): v is number => v != null);
+      if (validos.length < 2) return { slope: 0, direcao: 'estavel' };
+      const n = validos.length;
+      const xs = validos.map((_, i) => i);
+      const meanX = xs.reduce((a, b) => a + b, 0) / n;
+      const meanY = validos.reduce((a, b) => a + b, 0) / n;
+      const num = xs.reduce((s, x, i) => s + (x - meanX) * (validos[i] - meanY), 0);
+      const den = xs.reduce((s, x) => s + (x - meanX) ** 2, 0);
+      const slope = den === 0 ? 0 : num / den;
+      const direcao: Direcao = Math.abs(slope) < 0.1 ? 'estavel' : slope > 0 ? 'aumento' as Direcao : 'queda' as Direcao;
+      return { slope, direcao };
+    }
+
+    const parametros: { campo: Campo; label: string; alarmeQueda?: number; alarmeSubida?: number }[] = [
+      { campo: 'saturacaoO2',           label: 'SpO₂ (%)',         alarmeQueda: -1.5 },
+      { campo: 'pressaoSistolica',      label: 'TA Sistólica',     alarmeQueda: -8,  alarmeSubida: 12 },
+      { campo: 'pulso',                 label: 'Pulso (bpm)',      alarmeSubida: 8 },
+      { campo: 'frequenciaRespiratoria',label: 'FR (/min)',        alarmeSubida: 1.5 },
+      { campo: 'temperatura',           label: 'Temperatura (°C)', alarmeSubida: 0.3 },
+    ];
+
+    const tendencias: { parametro: string; slope: number; direcao: string; alerta: boolean; mensagem?: string }[] = [];
+    let alertasCount = 0;
+
+    for (const p of parametros) {
+      const valores = registos.map((r) => r[p.campo] as number | null);
+      const { slope, direcao } = calcularTendencia(valores);
+      let alerta = false;
+      let mensagem: string | undefined;
+
+      if (p.alarmeQueda != null && slope < p.alarmeQueda) {
+        alerta = true;
+        mensagem = `${p.label} em queda progressiva (${slope.toFixed(2)} por registo)`;
+        alertasCount++;
+      } else if (p.alarmeSubida != null && slope > p.alarmeSubida) {
+        alerta = true;
+        mensagem = `${p.label} em subida progressiva (${slope.toFixed(2)} por registo)`;
+        alertasCount++;
+      }
+
+      tendencias.push({ parametro: p.label, slope: parseFloat(slope.toFixed(3)), direcao, alerta, mensagem });
+    }
+
+    // Tendência do NEWS2 score
+    const scoresNews2 = registos.map((r) => r.news2);
+    const { slope: newsSlope } = calcularTendencia(scoresNews2);
+    if (newsSlope > 0.8) {
+      alertasCount++;
+      tendencias.push({
+        parametro: 'NEWS2', slope: parseFloat(newsSlope.toFixed(3)),
+        direcao: 'aumento', alerta: true,
+        mensagem: `Score NEWS2 em agravamento progressivo (+${newsSlope.toFixed(1)} por registo)`,
+      });
+    }
+
+    const ultimoScore = registos[registos.length - 1].news2 ?? 0;
+    const risco =
+      alertasCount >= 2 || ultimoScore >= 7 ? 'alto' :
+      alertasCount === 1 || ultimoScore >= 5 ? 'moderado' : 'baixo';
+
+    return {
+      risco,
+      news2Atual: ultimoScore,
+      totalRegistosAnalisados: registos.length,
+      alertas: alertasCount,
+      tendencias,
+      recomendacao:
+        risco === 'alto'    ? 'Reavaliação imediata. Considerar escalada de cuidados.' :
+        risco === 'moderado'? 'Monitorizar com maior frequência. Alertar médico responsável.' :
+                              'Parâmetros estáveis. Manter monitorização habitual.',
+    };
+  }
 }

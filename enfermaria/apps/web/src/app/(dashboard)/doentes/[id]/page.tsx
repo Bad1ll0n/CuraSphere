@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -317,6 +317,16 @@ export default function DoenteDetalhe() {
   const [modalNota, setModalNota] = useState(false);
   const [modalTarefa, setModalTarefa] = useState(false);
   const [modalMed, setModalMed] = useState(false);
+  const [modalPropor, setModalPropor] = useState(false);
+  const [propostaObs, setPropostaObs] = useState('');
+  const [propostaMedNome, setPropostaMedNome] = useState('');
+  const [propostaMedDose, setPropostaMedDose] = useState('');
+  const [propostaMedVia, setPropostaMedVia] = useState('');
+  const [propostaMedFreq, setPropostaMedFreq] = useState('');
+  const [salvandoProposta, setSalvandoProposta] = useState('');
+  const [modalRejeitarProposta, setModalRejeitarProposta] = useState<string | null>(null);
+  const [motivoRejProposta, setMotivoRejProposta] = useState('');
+  const [propostasPendentes, setPropostasPendentes] = useState<any[]>([]);
   const [modalHistorico, setModalHistorico] = useState(false);
   const [tarefasHistorico, setTarefasHistorico] = useState<Tarefa[]>([]);
   const [loadingHistorico, setLoadingHistorico] = useState(false);
@@ -471,6 +481,7 @@ export default function DoenteDetalhe() {
   const podeCriarTarefa = emTurno && ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
   const podeCriarNota = emTurno && ['enfermeiro', 'medico', 'auxiliar'].includes(utilizador?.role ?? '');
   const podePrescreveMed = utilizador?.role === 'medico';
+  const podeProporMed = utilizador?.role === 'enfermeiro';
   const podeAcionarSOS = ['enfermeiro', 'medico', 'auxiliar', 'tecnico_saude'].includes(utilizador?.role ?? '');
 
   // SOS
@@ -578,9 +589,17 @@ export default function DoenteDetalhe() {
   const carregar = () => {
     setLoading(true);
     api.get(`/doentes/${id}`)
-      .then((r) => setDoente(r.data))
+      .then((r) => { setDoente(r.data); })
       .finally(() => setLoading(false));
   };
+
+  const carregarPropostas = useCallback(async () => {
+    if (utilizador?.role !== 'medico' && utilizador?.role !== 'direcao') return;
+    try {
+      const { data } = await api.get(`/medicacao/pendentes-aprovacao-medico`);
+      setPropostasPendentes((data ?? []).filter((p: any) => p.doenteId === id));
+    } catch {}
+  }, [id, utilizador?.role]);
 
   const carregarFicheiroPessoal = () => {
     if (!eAdmin) return;
@@ -779,6 +798,7 @@ export default function DoenteDetalhe() {
       carregarInterconsultas(),
       carregarDispositivos(),
       carregarFicheiroPessoal(),
+      carregarPropostas(),
       api.get(`/doentes/${id}/problemas`).then(r => setProblemas(r.data ?? [])).catch(() => setProblemas([])),
       api.get(`/consultas?doenteId=${id}`).then(r => setConsultas(r.data ?? [])).catch(() => setConsultas([])),
       api.get(`/faturacao/doente/${id}`).then(r => setFaturacao(r.data ?? [])).catch(() => setFaturacao([])),
@@ -930,6 +950,43 @@ export default function DoenteDetalhe() {
     } catch (e: any) {
       setErroModal(e?.response?.data?.message ?? 'Erro ao prescrever medicação');
     } finally { setSalvando(false); }
+  };
+
+  const submeterProposta = async () => {
+    if (!propostaMedNome.trim() || !propostaMedDose.trim() || !propostaMedVia.trim() || !propostaMedFreq.trim()) return;
+    setSalvandoProposta('propor');
+    try {
+      await api.post('/medicacao/propor', { doenteId: id, nome: propostaMedNome, dose: propostaMedDose, via: propostaMedVia, frequencia: propostaMedFreq, observacoes: propostaObs || undefined });
+      toast.success('Proposta de prescrição enviada ao médico');
+      setModalPropor(false);
+      setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs('');
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao propor prescrição');
+    } finally { setSalvandoProposta(''); }
+  };
+
+  const aprovarProposta = async (medicacaoId: string) => {
+    setSalvandoProposta('aprovar');
+    try {
+      await api.patch(`/medicacao/${medicacaoId}/aprovar-medico`);
+      toast.success('Prescrição aprovada e activada');
+      carregar(); carregarPropostas();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao aprovar');
+    } finally { setSalvandoProposta(''); }
+  };
+
+  const rejeitarProposta = async () => {
+    if (!modalRejeitarProposta || !motivoRejProposta.trim()) return;
+    setSalvandoProposta('rejeitar');
+    try {
+      await api.patch(`/medicacao/${modalRejeitarProposta}/rejeitar-medico`, { motivoRejeicao: motivoRejProposta });
+      toast.success('Proposta rejeitada');
+      setModalRejeitarProposta(null); setMotivoRejProposta('');
+      carregarPropostas();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar');
+    } finally { setSalvandoProposta(''); }
   };
 
   const submeterNotaClinica = async () => {
@@ -1434,6 +1491,15 @@ export default function DoenteDetalhe() {
                 </svg>
               </button>
               {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
+              {podeProporMed && (
+                <button onClick={() => { setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs(''); setModalPropor(true); }}
+                  aria-label="Propor prescrição"
+                  className="w-7 h-7 rounded-lg bg-violet-100 hover:bg-violet-200 flex items-center justify-center transition-colors">
+                  <svg className="w-3.5 h-3.5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
           {doente.medicacoes.length === 0 ? (
@@ -1462,6 +1528,33 @@ export default function DoenteDetalhe() {
                   )}
                 </div>
               ))}
+            </div>
+          )}
+          {/* Propostas pendentes de aprovação médica */}
+          {podePrescreveMed && propostasPendentes.length > 0 && (
+            <div style={{ marginTop: '16px', borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
+              <p className="text-xs font-semibold text-violet-600 uppercase tracking-wide" style={{ marginBottom: '10px' }}>
+                Propostas de enfermagem aguardam aprovação ({propostasPendentes.length})
+              </p>
+              <div className="flex flex-col gap-2">
+                {propostasPendentes.map((p) => (
+                  <div key={p.id} className="flex items-start justify-between bg-violet-50 border border-violet-100 rounded-xl" style={{ padding: '10px 12px' }}>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{p.nome}</p>
+                      <p className="text-xs text-slate-400">{p.dose} · {p.via} · {p.frequencia}</p>
+                      {p.prescritoPor && <p className="text-xs text-violet-600" style={{ marginTop: '2px' }}>Proposto por {p.prescritoPor.nome}</p>}
+                    </div>
+                    <div className="flex gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
+                      <button onClick={() => { setModalRejeitarProposta(p.id); setMotivoRejProposta(''); }}
+                        className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        style={{ padding: '5px 10px' }}>Rejeitar</button>
+                      <button onClick={() => aprovarProposta(p.id)} disabled={salvandoProposta === 'aprovar'}
+                        className="text-xs font-semibold bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                        style={{ padding: '5px 10px' }}>Aprovar</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -2723,6 +2816,88 @@ export default function DoenteDetalhe() {
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
             loading={salvando} disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq} labelConfirm="Prescrever" />
         </Modal>
+      )}
+
+      {/* Modal Propor Prescrição (enfermeiro) */}
+      {modalPropor && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px', maxHeight: '90vh' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Propor Prescrição</h2>
+                <p className="text-xs text-violet-600 font-medium" style={{ marginTop: '2px' }}>Aguardará aprovação do médico responsável</p>
+              </div>
+              <button onClick={() => setModalPropor(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Medicamento *</label>
+              <input autoFocus type="text" value={propostaMedNome} onChange={e => setPropostaMedNome(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                style={{ padding: '10px 14px' }} placeholder="Ex: Paracetamol 500mg" />
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Dose *</label>
+              <input type="text" value={propostaMedDose} onChange={e => setPropostaMedDose(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                style={{ padding: '10px 14px' }} placeholder="Ex: 500mg" />
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Via *</label>
+              <select value={propostaMedVia} onChange={e => setPropostaMedVia(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                style={{ padding: '10px 14px' }}>
+                <option value="">Seleccionar...</option>
+                {['Oral','IV','IM','SC','Tópica','Inalatória','SL','Retal','Nasal'].map(v => <option key={v} value={v}>{v}</option>)}
+              </select>
+            </div>
+            <div style={{ marginBottom: '14px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Frequência *</label>
+              <select value={propostaMedFreq} onChange={e => setPropostaMedFreq(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                style={{ padding: '10px 14px' }}>
+                <option value="">Seleccionar...</option>
+                {['SOS','1x/dia','2x/dia','3x/dia','4x/dia','6/6h','8/8h','12/12h','Contínuo'].map(f => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </div>
+            <div style={{ marginBottom: '24px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Observações clínicas</label>
+              <textarea value={propostaObs} onChange={e => setPropostaObs(e.target.value)} rows={2}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
+                style={{ padding: '10px 14px' }} placeholder="Justificação clínica, alergias conhecidas..." />
+            </div>
+            {erroModal && <p className="text-sm text-red-600 bg-red-50 rounded-xl text-center" style={{ padding: '10px', marginBottom: '16px' }}>{erroModal}</p>}
+            <div className="flex gap-3">
+              <button onClick={() => setModalPropor(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={submeterProposta} disabled={salvandoProposta === 'propor' || !propostaMedNome.trim() || !propostaMedDose.trim() || !propostaMedVia || !propostaMedFreq}
+                className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                {salvandoProposta === 'propor' ? 'A enviar...' : 'Propor ao Médico'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Rejeitar Proposta (médico) */}
+      {modalRejeitarProposta && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Rejeitar Proposta</h2>
+              <button onClick={() => setModalRejeitarProposta(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea value={motivoRejProposta} onChange={e => setMotivoRejProposta(e.target.value)} rows={3}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+                style={{ padding: '10px 14px' }} placeholder="Ex: Contra-indicação com medicação atual..." />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalRejeitarProposta(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={rejeitarProposta} disabled={!motivoRejProposta.trim() || salvandoProposta === 'rejeitar'}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ── Modal Histórico de Medicação ── */}

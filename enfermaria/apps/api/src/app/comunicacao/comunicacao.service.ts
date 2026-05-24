@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
+const PAGE_SIZE = 20;
+
 @Injectable()
 export class ComunicacaoService {
   constructor(private readonly prisma: PrismaService) {}
@@ -21,20 +23,36 @@ export class ComunicacaoService {
     });
   }
 
-  async inbox(utilizadorId: string) {
-    return this.prisma.mensagemInterna.findMany({
-      where: { destinatarioId: utilizadorId },
-      orderBy: { criadaEm: 'desc' },
-      include: { remetente: { select: { id: true, nome: true, role: true, servico: true } } },
-    });
+  async inbox(utilizadorId: string, page = 1) {
+    const skip = (page - 1) * PAGE_SIZE;
+    const where = { destinatarioId: utilizadorId };
+    const [total, mensagens] = await Promise.all([
+      this.prisma.mensagemInterna.count({ where }),
+      this.prisma.mensagemInterna.findMany({
+        where,
+        orderBy: { criadaEm: 'desc' },
+        take: PAGE_SIZE,
+        skip,
+        include: { remetente: { select: { id: true, nome: true, role: true, servico: true } } },
+      }),
+    ]);
+    return { total, pagina: page, totalPaginas: Math.ceil(total / PAGE_SIZE), mensagens };
   }
 
-  async enviadas(utilizadorId: string) {
-    return this.prisma.mensagemInterna.findMany({
-      where: { remetenteId: utilizadorId },
-      orderBy: { criadaEm: 'desc' },
-      include: { destinatario: { select: { id: true, nome: true, role: true, servico: true } } },
-    });
+  async enviadas(utilizadorId: string, page = 1) {
+    const skip = (page - 1) * PAGE_SIZE;
+    const where = { remetenteId: utilizadorId };
+    const [total, mensagens] = await Promise.all([
+      this.prisma.mensagemInterna.count({ where }),
+      this.prisma.mensagemInterna.findMany({
+        where,
+        orderBy: { criadaEm: 'desc' },
+        take: PAGE_SIZE,
+        skip,
+        include: { destinatario: { select: { id: true, nome: true, role: true, servico: true } } },
+      }),
+    ]);
+    return { total, pagina: page, totalPaginas: Math.ceil(total / PAGE_SIZE), mensagens };
   }
 
   async enviarMensagem(dto: { destinatarioId: string; assunto?: string; texto: string }, remetenteId: string) {

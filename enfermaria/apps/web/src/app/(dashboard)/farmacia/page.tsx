@@ -65,6 +65,16 @@ interface PrescricaoPendente {
   prescritoPor: { nome: string; role: string };
 }
 
+interface PedidoPendente {
+  id: string;
+  quantidade: number;
+  servico: string;
+  observacoes?: string;
+  criadoEm: string;
+  stockItem: { id: string; nome: string; unidade: string; quantidade: number };
+  solicitadoPor: { id: string; nome: string; role: string; servico: string };
+}
+
 const ESTADO_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
   pendente:   { label: 'Pendente',   bg: 'bg-amber-50',  text: 'text-amber-700' },
   aprovado:   { label: 'Aprovado',   bg: 'bg-blue-50',   text: 'text-blue-700' },
@@ -107,6 +117,8 @@ export default function FarmaciaPage() {
   const [transferirForm, setTransferirForm] = useState({ servicoDestino: '', quantidade: 1, motivo: '' });
   const [modalRejeitar, setModalRejeitar] = useState<string | null>(null);
   const [motivoRejeicao, setMotivoRejeicao] = useState('');
+  const [modalRejeitarPedido, setModalRejeitarPedido] = useState<string | null>(null);
+  const [motivoRejPedido, setMotivoRejPedido] = useState('');
 
   // Filtros relatório
   const [relServico, setRelServico] = useState('');
@@ -115,6 +127,7 @@ export default function FarmaciaPage() {
 
   const isFarmaceutico = utilizador?.role === 'farmaceutico';
   const isFarmacia = ['farmaceutico', 'tecnico_farmacia'].includes(utilizador?.role ?? '');
+  const isMedico = utilizador?.role === 'medico' || utilizador?.role === 'direcao';
 
   const { data = {}, isLoading: loading } = useQuery({
     queryKey: ['farmacia', isFarmaceutico],
@@ -230,11 +243,31 @@ export default function FarmaciaPage() {
     onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar prescrição'),
   });
 
+  const { data: pendentesAprovacao = [], isLoading: loadingPendentes } = useQuery<PedidoPendente[]>({
+    queryKey: ['farmacia-pendentes-aprovacao'],
+    queryFn: () => api.get('/farmacia/pedidos/pendentes-aprovacao').then(r => r.data ?? []),
+    enabled: isMedico,
+    staleTime: 30_000,
+  });
+
+  const mutAprovarPedido = useMutation({
+    mutationFn: (id: string) => api.patch(`/farmacia/pedido/${id}/aprovar`),
+    onSuccess: () => { toast.success('Pedido aprovado'); qc.invalidateQueries({ queryKey: ['farmacia-pendentes-aprovacao'] }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao aprovar pedido'),
+  });
+
+  const mutRejeitarPedido = useMutation({
+    mutationFn: ({ id, motivo }: { id: string; motivo: string }) => api.patch(`/farmacia/pedido/${id}/rejeitar`, { motivoRejeicao: motivo }),
+    onSuccess: () => { toast.success('Pedido rejeitado'); setModalRejeitarPedido(null); setMotivoRejPedido(''); qc.invalidateQueries({ queryKey: ['farmacia-pendentes-aprovacao'] }); invalidar(); },
+    onError: (e: any) => toast.error(e?.response?.data?.message ?? 'Erro ao rejeitar pedido'),
+  });
+
   const TABS = [
     { id: 'stock',          label: 'Stock',           count: 0 },
     { id: 'pedidos',        label: 'Pedidos',         count: pedidos.filter(p => p.estado === 'pendente').length },
     { id: 'alertas',        label: 'Alertas',         count: alertasItems.length },
     { id: 'transferencias', label: 'Transferências',  count: (transferencias as Transferencia[]).filter(t => t.estado === 'pendente').length },
+    ...(isMedico ? [{ id: 'aprovacao_medico', label: 'Aprovação Médica', count: pendentesAprovacao.length }] : []),
     ...(isFarmaceutico || isFarmacia ? [{ id: 'relatorio', label: 'Relatório', count: 0 }] : []),
     ...(isFarmaceutico ? [{ id: 'validacao', label: 'Validação', count: prescricoes.length }] : []),
   ];
@@ -266,7 +299,7 @@ export default function FarmaciaPage() {
             style={{ padding: '8px 16px' }}>
             {t.label}
             {t.count > 0 && (
-              <span className={`text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${t.id === 'alertas' ? 'bg-red-500' : 'bg-amber-500'}`}>{t.count}</span>
+              <span className={`text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${t.id === 'alertas' ? 'bg-red-500' : t.id === 'aprovacao_medico' ? 'bg-blue-500' : 'bg-amber-500'}`}>{t.count}</span>
             )}
           </button>
         ))}
@@ -341,7 +374,7 @@ export default function FarmaciaPage() {
                     <span className="text-xs text-slate-400">{new Date(p.criadoEm).toLocaleDateString('pt-PT')}</span>
                   </div>
                 </div>
-                {p.estado === 'pendente' && isFarmacia && (
+                {p.estado === 'aprovado' && isFarmacia && (
                   <button onClick={() => mutDispensar.mutate(p.id)}
                     className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shrink-0"
                     style={{ padding: '7px 14px' }}>Dispensar</button>
@@ -522,6 +555,44 @@ export default function FarmaciaPage() {
         </div>
       )}
 
+      {!loading && tab === 'aprovacao_medico' && (
+        <div className="grid gap-3">
+          {loadingPendentes ? (
+            <div className="flex justify-center" style={{ padding: '40px 0' }}>
+              <svg className="animate-spin w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+            </div>
+          ) : pendentesAprovacao.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-slate-100 text-center" style={{ padding: '60px 40px' }}>
+              <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mx-auto" style={{ marginBottom: '12px' }}>
+                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              </div>
+              <p className="text-slate-700 font-semibold">Sem pedidos para aprovar</p>
+              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>Todos os pedidos de medicação estão tratados.</p>
+            </div>
+          ) : pendentesAprovacao.map((p) => (
+            <div key={p.id} className="bg-white rounded-2xl border border-blue-100 flex items-center justify-between gap-4" style={{ padding: '20px 24px' }}>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '4px' }}>
+                  <p className="font-semibold text-slate-900 text-sm">{p.stockItem?.nome}</p>
+                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 badge-pad py-0.5 rounded-full">Aguarda aprovação</span>
+                </div>
+                <p className="text-slate-500 text-xs">{p.quantidade} {p.stockItem?.unidade} — Solicitado por {p.solicitadoPor?.nome} ({p.solicitadoPor?.role})</p>
+                {p.observacoes && <p className="text-slate-400 text-xs" style={{ marginTop: '2px' }}>Obs: {p.observacoes}</p>}
+                <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>Serviço: {p.servico} · Stock disponível: {p.stockItem?.quantidade} {p.stockItem?.unidade} · {new Date(p.criadoEm).toLocaleDateString('pt-PT')}</p>
+              </div>
+              <div className="flex gap-2 shrink-0">
+                <button onClick={() => { setModalRejeitarPedido(p.id); setMotivoRejPedido(''); }}
+                  className="text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  style={{ padding: '7px 12px' }}>Rejeitar</button>
+                <button onClick={() => mutAprovarPedido.mutate(p.id)} disabled={mutAprovarPedido.isPending}
+                  className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                  style={{ padding: '7px 14px' }}>Aprovar</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* ── Modais ── */}
 
       {/* Rejeitar Prescrição */}
@@ -541,6 +612,30 @@ export default function FarmaciaPage() {
             <div className="flex gap-3">
               <button onClick={() => setModalRejeitar(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={() => mutRejeitar.mutate({ id: modalRejeitar, motivo: motivoRejeicao })} disabled={!motivoRejeicao.trim() || mutRejeitar.isPending}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rejeitar Pedido Médico */}
+      {modalRejeitarPedido && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '400px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <h2 className="text-lg font-bold text-slate-900">Rejeitar Pedido</h2>
+              <button onClick={() => setModalRejeitarPedido(null)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo clínico *</label>
+              <textarea value={motivoRejPedido} onChange={e => setMotivoRejPedido(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+                style={{ padding: '10px 14px' }} rows={3} placeholder="Ex: Contra-indicação com medicação atual..." />
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalRejeitarPedido(null)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={() => mutRejeitarPedido.mutate({ id: modalRejeitarPedido, motivo: motivoRejPedido })}
+                disabled={!motivoRejPedido.trim() || mutRejeitarPedido.isPending}
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>Rejeitar</button>
             </div>
           </div>

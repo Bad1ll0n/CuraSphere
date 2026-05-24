@@ -1,0 +1,23 @@
+# Docker Compose para DESENVOLVIMENTO LOCAL
+# Só sobe a base de dados — API e Web correm com pnpm nx serve
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: curasphere-db-dev
+    environment:
+      POSTGRES_DB:       enfermaria
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d enfermaria"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_dev_data:

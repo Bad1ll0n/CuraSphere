@@ -1,0 +1,16 @@
+**/node_modules
+**/.next
+**/dist
+**/.git
+**/.gitignore
+**/README.md
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
+**/coverage
+**/test-output
+**/.nyc_output
+**/backups
+nginx/ssl
+.claude

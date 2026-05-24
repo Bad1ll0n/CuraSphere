@@ -1,7 +1,7 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-15 (sessão 8)
-> **Estado geral:** Em desenvolvimento activo — backend completo, web e mobile funcionais
+> **Última actualização:** 2026-05-24 (sessão 9)
+> **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
 
@@ -86,12 +86,24 @@ cd apps/mobile && npx expo start
 
 ## 3. Autenticação e Segurança
 
-### Mecanismo
-- **JWT Access Token** (curta duração) + **Refresh Token** (longa duração, armazenado em BD)
-- Login via `POST /auth/login` → devolve `accessToken` + `refreshToken`
-- Renovação via `POST /auth/refresh`
-- Logout via `POST /auth/logout` (invalida refresh token em BD)
+### Mecanismo (sessão 9 — actualizado)
+- **JWT Access Token** em cookie `httpOnly; Secure; SameSite=Lax` (1h) + **Refresh Token** em cookie httpOnly (7d)
+- Tokens **nunca expostos a JavaScript** — elimina risco de XSS com roubo de token
+- Login: `POST /auth/login` → define cookies server-side via `@Res({ passthrough: true })` + `Set-Cookie`
+- Se MFA activo: devolve `{ mfaPendente: true, mfaChallengeToken }` — token JWT de 5 min sem acesso a dados
+- Renovação automática via `POST /auth/refresh` — lê cookie, emite novos cookies
+- Logout via `POST /auth/logout` — invalida refresh token em BD + `clearCookie`
 - Validação de sessão via `GET /auth/me`
+- Axios web com `withCredentials: true` — cookies enviados automaticamente; interceptor de 401 faz refresh e retry
+
+### MFA — Autenticação de 2 Fatores (sessão 9)
+- **TOTP** compatível com Google Authenticator / Microsoft Authenticator (`otplib`)
+- Activação: `GET /auth/mfa/setup` → devolve `secret` + QR code base64; `POST /auth/mfa/ativar` confirma com código 6 dígitos
+- Login com MFA: 2 steps — credenciais → `mfaChallengeToken` (5min) → `POST /auth/mfa/verificar` → cookies
+- Desactivação: `POST /auth/mfa/desativar` exige código TOTP válido
+- Campos no modelo `Utilizador`: `mfaSecret String?`, `mfaAtivo Boolean @default(false)`
+- Página `/perfil` com UI completa de setup/activação/desactivação + QR code
+- Rate limit MFA: 10 tentativas / 10 minutos
 
 ### Proteção de Endpoints
 ```ts
@@ -99,6 +111,14 @@ cd apps/mobile && npx expo start
 @Roles('medico', 'enfermeiro')         // role obrigatória
 @SubRoles('it_admin')                  // sub-role adicional (opcional)
 ```
+
+### Rate Limiting (sessão 9)
+| Endpoint | Limite |
+|---|---|
+| `POST /auth/login` | 5 tentativas / 10 min |
+| `POST /auth/mfa/verificar` | 10 tentativas / 10 min |
+| Todos os outros | 60 req / 60s |
+| Nginx (login) | 5 req/min (zona adicional) |
 
 ### Timeout de Sessão (Mobile)
 - 15 minutos de inactividade em background → logout automático
@@ -111,6 +131,56 @@ cd apps/mobile && npx expo start
 - Middleware `AuditLog` regista todas as mutações (POST/PATCH/DELETE)
 - Campos: `utilizadorId`, `acao`, `entidade`, `entidadeId`, `detalhes`, `ip`, `createdAt`
 - Consultável via `GET /audit` (apenas `ti` e `qualidade`)
+
+---
+
+## 3B. Infraestrutura de Produção (sessão 9)
+
+### Docker Compose (produção)
+Ficheiro: `docker-compose.prod.yml` — 5 serviços na rede interna `curasphere-internal`:
+
+| Serviço | Imagem | Função |
+|---|---|---|
+| `postgres` | postgres:16-alpine | Base de dados com volume persistente |
+| `backup` | postgres:16-alpine | pg_dump diário às 2h, retenção 30 dias |
+| `redis` | redis:7-alpine | Cache (256MB, `allkeys-lru`) |
+| `api` | Dockerfile multi-stage | NestJS API |
+| `web` | Dockerfile multi-stage | Next.js (standalone output) |
+| `nginx` | nginx:1.27-alpine | Reverse proxy + SSL termination |
+
+### Redis Cache
+- `catalogo:todos` — TTL 1h (sem pesquisa); invalidado em criar/atualizar/desativar
+- `camas:lista` — TTL 30s; invalidado em criar/atualizarEstado
+- `camas:ocupacao` — TTL 30s; invalidado em criar/atualizarEstado
+- Degradação silenciosa: se Redis cair, app continua a funcionar (queries diretas à BD)
+- `RedisService` global com `connected` flag e try/catch em todos os métodos
+
+### Nginx
+- Reverse proxy: `/api/` → NestJS:3333, `/` → Next.js:3000
+- Rate limiting: `login` (5r/m), `mfa/verificar` (10r/m), geral (60r/s)
+- WebSocket upgrade para `/api/socket.io/`
+- TLS 1.2/1.3 + HSTS + ssl_stapling
+- Cache estático `/_next/static/` 365 dias
+
+### Health Check
+- `GET /health` — `@nestjs/terminus` verifica BD (Prisma ping) + Redis
+- Docker healthcheck nos containers `api` e `web`
+- Usado pelo `deploy.sh` para confirmar que API ficou healthy
+
+### Deploy
+- Script: `scripts/deploy.sh` — git pull → build → down → up -d → pg_trgm → wait healthy → ps
+- `scripts/pg-trgm.sql` — `CREATE EXTENSION pg_trgm` + GIN indexes (idempotente)
+- `scripts/backup-db.sh` — manual pg_dump com retenção 30 dias
+
+### Soft Delete (sessão 9)
+Campos `deletedAt DateTime?` adicionados a modelos críticos para rastreabilidade legal:
+- `Doente`, `Medicacao`, `NotaClinica`, `RegistoMedicacao`
+- Índice `@@index([deletedAt])` em cada modelo para filtros eficientes
+
+### Pesquisa Full-Text (pg_trgm)
+- Extensão `pg_trgm` para pesquisa fuzzy em PostgreSQL
+- Índices GIN: `Doente.nome`, `CatalogoMedicamento.dci`, `CatalogoMedicamento.nomeMarca`
+- Query de pesquisa com `ILIKE '%termo%'` beneficia automaticamente dos índices trigram
 
 ---
 
@@ -730,6 +800,17 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Notificações push com trigger real — TrocasService (novo pedido, aceitação, aprovação chefe) + TarefasService (nova tarefa atribuída) + **Tarefas urgentes pendentes >30min** (verificação a cada 10 min via `OnApplicationBootstrap`, notifica atribuído + criador)
 - [x] **Verificação de alergias na prescrição** — `medicacao.service.ts:prescrever()` cruza com alergias activas antes de criar; lança `409 ConflictException` com detalhes; override via `forcarApesarDeAlergia=true`
 - [x] **Verificação de interacções medicamentosas** — `interacoes.json` com 50 pares; warning não-bloqueante em `prescrever()`; endpoint `GET /medicacao/interacoes?doenteId=&nome=`
+- [x] **JWT httpOnly cookies** (sessão 9) — tokens em cookies `httpOnly; Secure; SameSite=Lax`; axios com `withCredentials`; refresh automático por interceptor; JWT nunca exposto a JS
+- [x] **MFA TOTP** (sessão 9) — Google/Microsoft Authenticator; setup via QR code em `/perfil`; 2-step login com challenge token 5min; rate limit 10 tentativas/10min
+- [x] **Infraestrutura Docker de Produção** (sessão 9) — `docker-compose.prod.yml` com postgres, backup, redis, api, web, nginx; `scripts/deploy.sh` automatizado; `scripts/pg-trgm.sql` idempotente
+- [x] **Backup automático BD** (sessão 9) — pg_dump diário às 2h via cron no container `backup`; retenção 30 dias; `find /backups -mtime +30 -delete`
+- [x] **Redis Cache** (sessão 9) — catálogo medicamentos TTL 1h, camas TTL 30s; `RedisService` global com degradação silenciosa; invalidação em mutações
+- [x] **pg_trgm full-text search** (sessão 9) — extensão PostgreSQL + GIN indexes em `Doente.nome`, `CatalogoMedicamento.dci/nomeMarca`; aplicado automaticamente no deploy
+- [x] **Soft delete** (sessão 9) — `deletedAt DateTime?` + índice em `Doente`, `Medicacao`, `NotaClinica`, `RegistoMedicacao`
+- [x] **Health endpoint** (sessão 9) — `GET /health` com `@nestjs/terminus`; verifica BD (Prisma ping) + Redis; usado por Docker healthcheck
+- [x] **Análise de Tendência Clínica** (sessão 9) — `GET /sinais-vitais/:id/tendencia`; regressão linear nos últimos 6 registos; detecta queda de SpO₂, subida de FC/FR, queda de TA, score NEWS2 agravante; devolve `risco: baixo|moderado|alto` + recomendação
+- [x] **PWA (Progressive Web App)** (sessão 9) — `manifest.json`, service worker (`public/sw.js`): cache-first para assets `/_next/static/`, network-first para API, stale-while-revalidate para páginas; ícones 192/512/180px PNG gerados de logo.svg; instalável em Android/iOS; `PwaRegister` client component; `viewport.themeColor=#1e40af`
+- [x] **Paginação generalizada** (sessão 9) — `GET /comunicacao/mensagens?page=N` (inbox + enviadas, 20/pág); `GET /doentes/registos-administrativos?page=N&limit=N`; audit logs já tinham paginação
 - [x] **SOS contextual com dados clínicos** — `alertas.service.ts:acionarSOS()` carrega últimos sinais vitais, medicações activas, alergias e diagnóstico em paralelo; push notification body inclui NEWS2, TA, FC, SpO₂, lista de medicações e alergias; `pushData.contextoClinico` com pacote clínico completo
 - [x] **Reconciliação Clínica MAR↔Farmácia** — módulo `reconciliacao/`; verifica prescrições sem validação farmácia >2h, medicações sem registo MAR em 24h, pedidos pendentes >1h; executa automaticamente a cada 30 min; endpoint `GET /reconciliacao`
 - [x] **Geração de PDF** — `common/pdf.service.ts` com `pdfmake`; nota de alta (`GET /doentes/:id/alta/pdf`) e relatório de turno (`GET /turnos/:id/relatorio/pdf`)
@@ -848,7 +929,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 |---------|-----------|-------|
 | Relatórios e exportação PDF | ~~Média~~ | ✅ Implementado: nota de alta PDF (`GET /doentes/:id/alta/pdf`) e relatório de turno PDF (`GET /turnos/:id/relatorio/pdf`) via pdfmake; faltam relatórios de produtividade |
 | Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
-| Aprovação de pedidos farmácia pelo médico | Alta | O médico não valida o pedido antes da dispensa |
+| ~~Aprovação de pedidos farmácia pelo médico~~ | ~~Alta~~ | ✅ Backend + Frontend: fluxo pendente→aprovado→dispensado; tab "Aprovação Médica" na farmácia; proposta de prescrição por enfermeiro com aprovação/rejeição pelo médico na ficha do doente |
 | Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
 | Painel de BI / Analytics | Baixa | Dashboard executivo para Direção com gráficos históricos |
 | Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
@@ -868,9 +949,9 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Urgência | Episódios + triagem Manchester + mobile + **atribuir médico** (sessão 6) | Falta protocolo de triagem Manchester completo no mobile |
 | IACS | Lista isolados + activar/desactivar (web + mobile) | Falta registo de culturas microbiológicas, histórico de surtos |
 | Exames | Solicitar + resultado texto | Falta visualizador DICOM integrado para imagiologia |
-| Worklist mobile | Ausente | Falta screen de worklist para tecnico_saude no mobile |
+| Worklist mobile | ✅ WorklistScreen (filtros + executar) | — |
 | Pedidos Internos mobile | Ausente | Falta screen de pedidos internos no mobile |
-| Bloco Operatório mobile | Ausente | Falta screen de bloco para medico/enfermeiro no mobile |
+| Bloco Operatório mobile | ✅ BlocoScreen (filtros + equipa) | — |
 | MAR | Administrar + **Não Administrada com motivo** (sessão 6) | — |
 | Incidentes TI | Lista + workflow estados + **atribuir responsável** (sessão 6) | Notas/comentários por incidente |
 | Conformidade checklist | RGPD/DGS/ACSS/SNS + **persistido em localStorage** (sessão 6) | Sincronização com backend |
@@ -910,27 +991,44 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 
 ## 11. Prioridades de Desenvolvimento
 
-### Prioridade Alta — Próximas 2 semanas
-1. **Aprovação de pedidos farmácia pelo médico** — validação clínica antes da dispensa
-2. **Paginação nos restantes endpoints** — doentes, tarefas, trocas, comunicação
-3. ~~**Alertas críticos com push**~~ — ✅ Concluído (NEWS2 ≥5/≥7 + SOS contextual + tarefas urgentes)
-4. ~~**Relatórios PDF**~~ — ✅ Concluído (nota de alta + relatório de turno via pdfmake)
+### ✅ Completado na Sessão 9 (2026-05-24)
+- ~~JWT httpOnly cookies~~ — ✅ Migração completa (localStorage → httpOnly cookie)
+- ~~MFA TOTP~~ — ✅ Google/Microsoft Authenticator + UI no perfil
+- ~~Docker + SSL + Nginx~~ — ✅ docker-compose.prod.yml completo
+- ~~Backup automático BD~~ — ✅ pg_dump diário cron container
+- ~~Redis cache~~ — ✅ catálogo 1h + camas 30s + degradação silenciosa
+- ~~pg_trgm full-text search~~ — ✅ script + deploy automático
+- ~~Soft delete~~ — ✅ deletedAt nos 4 modelos críticos
+- ~~Health endpoint~~ — ✅ terminus + Docker healthcheck
+- ~~Rate limit diferenciado~~ — ✅ login 5/10min + MFA 10/10min
+- ~~Verificador interacções medicamentosas~~ — ✅ 50 pares + warning prescrição
+- ~~Análise tendência deterioração clínica~~ — ✅ regressão linear + risco baixo/moderado/alto
+- ~~Aprovação de pedidos farmácia pelo médico~~ — ✅ fluxo `pendente→aprovado→dispensado`; proposta de prescrição por enfermeiro (`pendente_medico`); notificações push ao solicitante/prescritor
 
-### Prioridade Média — Próximo mês
-5. **Bloco Operatório mobile** — médicos/enfermeiros de bloco sem módulo mobile
-6. **Worklist mobile** — técnicos de saúde sem módulo de exames no mobile
-7. **Dashboard executivo (Direção)** — KPIs financeiros, produtividade, ocupação histórica
-8. **Leitura confirmada de notificações push** — feedback de entrega/leitura
-9. **Reconciliação MAR↔Farmácia — notificações activas** — actualmente só endpoint GET; falta trigger de push/alerta quando divergência detectada
+### Prioridade Alta — Próximas 2 semanas
+1. ~~**Aprovação de pedidos farmácia pelo médico**~~ — ✅ Concluído: `PATCH /farmacia/pedido/:id/aprovar`, `PATCH /farmacia/pedido/:id/rejeitar`, `GET /farmacia/pedidos/pendentes-aprovacao` (para `medico`/`direcao`); `POST /medicacao/propor` (enfermeiro propõe), `GET /medicacao/pendentes-aprovacao-medico`, `PATCH /medicacao/:id/aprovar-medico`, `PATCH /medicacao/:id/rejeitar-medico`; notificações automáticas ao solicitante/prescritor
+2. ~~**Paginação nos restantes endpoints**~~ — ✅ Concluído (comunicação inbox/enviadas + registos administrativos)
+3. ~~**PWA**~~ — ✅ Concluído (manifest.json, service worker, ícones PNG, PwaRegister)
+
+### ✅ Completado na Sessão 10 (2026-05-24 — continuação)
+- ~~**Frontend farmácia — Aprovação médica**~~ — ✅ Tab "Aprovação Médica" para `medico`/`direcao`; lista pedidos `pendente`; botões Aprovar/Rejeitar (com motivo); "Dispensar" só aparece para `aprovado`
+- ~~**Frontend doentes — Proposta enfermeiro**~~ — ✅ Botão "Propor" (violeta) para enfermeiro; modal completo; secção de propostas pendentes para médico com Aprovar/Rejeitar inline
+- ~~**Expiração de password**~~ — ✅ `passwordExpiresAt` no schema; 90 dias na criação/alteração; `/auth/password-status`; banner de aviso no layout quando < 10 dias
+- ~~**Reconciliação MAR↔Farmácia push**~~ — ✅ `NotificacoesService` injectado; push para farmacêuticos quando problemas detectados
+- ~~**Notificações in-app com leitura confirmada**~~ — ✅ Modelo `NotificacaoInApp` (schema + `db push`); `enviarParaUtilizador` persiste em DB; `GET /notificacoes` com paginação; `PATCH /notificacoes/:id/ler`; `PATCH /notificacoes/marcar-todas-lidas`; página `/notificacoes`; sino no sidebar com badge de não lidas
+- ~~**Bloco Operatório mobile**~~ — ✅ `BlocoScreen.tsx` existia e está ligado em MaisScreen (medico/enfermeiro)
+- ~~**Worklist mobile**~~ — ✅ `WorklistScreen.tsx` existia e está ligado em MaisScreen (tecnico_saude/medico)
+- ~~**Dashboard executivo**~~ — ✅ Já completo (`/dashboard-executivo`) — KPIs internamento, camas, faturação, consultas, pessoal
 
 ### Prioridade Baixa — Backlog
-9. Módulo de faturação para administrativo/billing
+
+### Prioridade Baixa — Backlog
 10. Vista de sala do bloco (disponibilidade em tempo real)
 11. Culturas microbiológicas e histórico de surtos IACS
 12. Visualizador DICOM para imagiologia
 13. Testes automatizados (unitários + e2e)
 14. Swagger/OpenAPI
-15. Integrações externas (HL7, FHIR)
+15. Integrações externas (HL7, FHIR, SONHO/SClínico)
 
 ---
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Param, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -22,8 +22,8 @@ export class ComunicacaoController {
   }
 
   @Get('mensagens')
-  inbox(@Request() req: any) {
-    return this.service.inbox(req.user.sub);
+  inbox(@Request() req: any, @Query('page') page = '1') {
+    return this.service.inbox(req.user.sub, parseInt(page));
   }
 
   @Get('mensagens/nao-lidas')
@@ -32,8 +32,8 @@ export class ComunicacaoController {
   }
 
   @Get('mensagens/enviadas')
-  enviadas(@Request() req: any) {
-    return this.service.enviadas(req.user.sub);
+  enviadas(@Request() req: any, @Query('page') page = '1') {
+    return this.service.enviadas(req.user.sub, parseInt(page));
   }
 
   @Post('mensagens')

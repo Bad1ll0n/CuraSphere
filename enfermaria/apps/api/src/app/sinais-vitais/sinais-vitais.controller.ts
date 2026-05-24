@@ -21,4 +21,9 @@ export class SinaisVitaisController {
   ultimo(@Param('doenteId') doenteId: string) {
     return this.service.ultimo(doenteId);
   }
+
+  @Get(':doenteId/tendencia')
+  analisarTendencia(@Param('doenteId') doenteId: string) {
+    return this.service.analisarTendencia(doenteId);
+  }
 }

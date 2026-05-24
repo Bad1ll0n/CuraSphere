@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { TerminusModule } from '@nestjs/terminus';
 import { PrismaModule } from './prisma/prisma.module';
+import { RedisModule } from './redis/redis.module';
 import { AuthModule } from './auth/auth.module';
 import { UtilizadoresModule } from './utilizadores/utilizadores.module';
 import { DoenteModule } from './doentes/doentes.module';
@@ -20,6 +22,7 @@ import { AlertasModule } from './alertas/alertas.module';
 import { NotificacoesModule } from './notificacoes/notificacoes.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaHealthIndicator } from '@nestjs/terminus';
 import { AuditService } from './common/audit.service';
 import { AuditController } from './common/audit.controller';
 import { AuditInterceptor } from './common/audit.interceptor';
@@ -57,7 +60,9 @@ import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
+    TerminusModule,
     PrismaModule,
+    RedisModule,
     AuthModule,
     UtilizadoresModule,
     DoenteModule,
@@ -107,6 +112,7 @@ import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
   providers: [
     AppService,
     AuditService,
+    PrismaHealthIndicator,
     { provide: APP_INTERCEPTOR, useClass: AuditInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
 export class FarmaciaService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   async listarStock(servico?: string, page = 1, limit = 100) {
     return this.prisma.stockItem.findMany({
@@ -84,21 +88,89 @@ export class FarmaciaService {
     });
   }
 
+  async pedidosPendentesAprovacao(servico?: string) {
+    return this.prisma.pedidoFarmacia.findMany({
+      where: { estado: 'pendente', ...(servico ? { servico } : {}) },
+      orderBy: { criadoEm: 'asc' },
+      include: {
+        stockItem: { select: { id: true, nome: true, unidade: true, quantidade: true } },
+        solicitadoPor: { select: { id: true, nome: true, role: true, servico: true } },
+      },
+    });
+  }
+
+  async aprovarPedido(id: string, aprovadoPorId: string) {
+    const pedido = await this.prisma.pedidoFarmacia.findUnique({ where: { id } });
+    if (!pedido) throw new NotFoundException(`Pedido de farmácia (ID ${id}) não encontrado`);
+    if (pedido.estado !== 'pendente') throw new BadRequestException(`Pedido já está ${pedido.estado} — só pedidos pendentes podem ser aprovados`);
+
+    const resultado = await this.prisma.pedidoFarmacia.update({
+      where: { id },
+      data: { estado: 'aprovado', aprovadoPorId, aprovadoEm: new Date() },
+      include: {
+        stockItem: { select: { nome: true, unidade: true } },
+        aprovadoPor: { select: { id: true, nome: true } },
+        solicitadoPor: { select: { id: true, nome: true } },
+      },
+    });
+
+    this.notificacoes.enviarParaUtilizador(
+      pedido.solicitadoPorId,
+      'Pedido de farmácia aprovado',
+      `O teu pedido de ${resultado.stockItem.nome} (${pedido.quantidade} ${resultado.stockItem.unidade}) foi aprovado pelo médico.`,
+      { pedidoFarmaciaId: id },
+    ).catch(() => {});
+
+    return resultado;
+  }
+
+  async rejeitarPedido(id: string, aprovadoPorId: string, motivoRejeicao: string) {
+    const pedido = await this.prisma.pedidoFarmacia.findUnique({ where: { id } });
+    if (!pedido) throw new NotFoundException(`Pedido de farmácia (ID ${id}) não encontrado`);
+    if (pedido.estado !== 'pendente') throw new BadRequestException(`Pedido já está ${pedido.estado} — só pedidos pendentes podem ser rejeitados`);
+
+    const resultado = await this.prisma.pedidoFarmacia.update({
+      where: { id },
+      data: { estado: 'rejeitado', aprovadoPorId, aprovadoEm: new Date(), motivoRejeicao },
+      include: {
+        stockItem: { select: { nome: true } },
+        aprovadoPor: { select: { id: true, nome: true } },
+        solicitadoPor: { select: { id: true, nome: true } },
+      },
+    });
+
+    this.notificacoes.enviarParaUtilizador(
+      pedido.solicitadoPorId,
+      'Pedido de farmácia rejeitado',
+      `O teu pedido de ${resultado.stockItem.nome} foi rejeitado: ${motivoRejeicao}`,
+      { pedidoFarmaciaId: id },
+    ).catch(() => {});
+
+    return resultado;
+  }
+
   async dispensar(id: string, processadoPorId: string) {
     return this.prisma.$transaction(async (tx) => {
       const pedido = await tx.pedidoFarmacia.findUnique({ where: { id } });
       if (!pedido) throw new NotFoundException('Pedido não encontrado');
-      if (pedido.estado !== 'pendente') throw new BadRequestException('Pedido já foi processado');
+      if (pedido.estado !== 'aprovado') {
+        if (pedido.estado === 'pendente') throw new BadRequestException('Pedido ainda não foi aprovado pelo médico responsável');
+        throw new BadRequestException(`Pedido já foi processado (estado: ${pedido.estado})`);
+      }
 
       const item = await tx.stockItem.findUnique({ where: { id: pedido.stockItemId } });
       if (!item) throw new NotFoundException('Item de stock não encontrado');
-      if (item.quantidade < pedido.quantidade) throw new BadRequestException('Stock insuficiente para dispensar');
+      if (item.quantidade < pedido.quantidade) throw new BadRequestException(`Stock insuficiente: disponível ${item.quantidade} ${item.unidade}, solicitado ${pedido.quantidade}`);
 
       await tx.stockItem.update({
         where: { id: pedido.stockItemId },
         data: { quantidade: { decrement: pedido.quantidade } },
       });
-      return tx.pedidoFarmacia.update({ where: { id }, data: { estado: 'dispensado', processadoPorId } });
+      return tx.pedidoFarmacia.update({
+        where: { id },
+        data: { estado: 'dispensado', processadoPorId },
+        include: { stockItem: { select: { nome: true, unidade: true } } },
+      });
     }, { isolationLevel: 'Serializable' });
   }
 

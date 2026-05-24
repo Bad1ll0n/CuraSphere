@@ -32,6 +32,41 @@ export class MedicacaoController {
   }
 
   @Roles('enfermeiro')
+  @Post('propor')
+  proporPrescricao(@Body() body: {
+    doenteId: string;
+    nome: string;
+    dose: string;
+    via: string;
+    frequencia: string;
+    observacoes?: string;
+  }, @Request() req: any) {
+    return this.medicacaoService.proporPrescricao({ ...body, prescritoPorId: req.user.sub });
+  }
+
+  @Roles('medico', 'direcao')
+  @Get('pendentes-aprovacao-medico')
+  pendentesAprovacaoMedico(@Query('servico') servico?: string) {
+    return this.medicacaoService.pendentesAprovacaoMedico(servico);
+  }
+
+  @Roles('medico', 'direcao')
+  @Patch(':id/aprovar-medico')
+  aprovarPrescricaoMedico(@Param('id') id: string, @Request() req: any) {
+    return this.medicacaoService.aprovarPrescricaoMedico(id, req.user.sub);
+  }
+
+  @Roles('medico', 'direcao')
+  @Patch(':id/rejeitar-medico')
+  rejeitarPrescricaoMedico(
+    @Param('id') id: string,
+    @Body() body: { motivoRejeicao: string },
+    @Request() req: any,
+  ) {
+    return this.medicacaoService.rejeitarPrescricaoMedico(id, req.user.sub, body.motivoRejeicao);
+  }
+
+  @Roles('enfermeiro')
   @Post(':id/administrar')
   registarAdministracao(
     @Param('id') id: string,

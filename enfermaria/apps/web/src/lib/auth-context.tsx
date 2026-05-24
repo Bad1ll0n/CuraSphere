@@ -11,13 +11,21 @@ interface Utilizador {
   role: string;
   subRole?: string;
   servico: string;
+  mfaAtivo?: boolean;
+}
+
+interface LoginResult {
+  mfaPendente: boolean;
+  mfaChallengeToken?: string;
 }
 
 interface AuthContextType {
   utilizador: Utilizador | null;
   loading: boolean;
-  login: (numeroFuncionario: string, password: string) => Promise<void>;
+  login: (numeroFuncionario: string, password: string) => Promise<LoginResult>;
+  loginMfa: (mfaChallengeToken: string, code: string) => Promise<void>;
   logout: () => void;
+  passwordAviso: { ativo: boolean; diasRestantes: number | null };
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -25,36 +33,51 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [utilizador, setUtilizador] = useState<Utilizador | null>(null);
   const [loading, setLoading] = useState(true);
+  const [passwordAviso, setPasswordAviso] = useState<{ ativo: boolean; diasRestantes: number | null }>({ ativo: false, diasRestantes: null });
   const router = useRouter();
 
   useEffect(() => {
-    const stored = localStorage.getItem('utilizador');
-    const token = localStorage.getItem('token');
-    if (stored && token) setUtilizador(JSON.parse(stored));
-    setLoading(false);
+    api.get('/auth/me')
+      .then(({ data }) => setUtilizador(data))
+      .catch(() => setUtilizador(null))
+      .finally(() => setLoading(false));
   }, []);
 
-  const login = async (numeroFuncionario: string, password: string) => {
+  useEffect(() => {
+    if (!utilizador) return;
+    api.get('/auth/password-status')
+      .then(({ data }) => { if (data.aviso) setPasswordAviso({ ativo: true, diasRestantes: data.diasRestantes }); })
+      .catch(() => {});
+  }, [utilizador?.id]);
+
+  const login = async (numeroFuncionario: string, password: string): Promise<LoginResult> => {
     const { data } = await api.post('/auth/login', { numeroFuncionario, password });
-    localStorage.setItem('token', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('utilizador', JSON.stringify(data.utilizador));
+    if (data.mfaPendente) {
+      return { mfaPendente: true, mfaChallengeToken: data.mfaChallengeToken };
+    }
+    setUtilizador(data.utilizador);
+    if (data.passwordExpiradoAviso) {
+      setPasswordAviso({ ativo: true, diasRestantes: data.diasRestantesSenha });
+    }
+    router.push('/');
+    return { mfaPendente: false };
+  };
+
+  const loginMfa = async (mfaChallengeToken: string, code: string) => {
+    const { data } = await api.post('/auth/mfa/verificar', { mfaChallengeToken, code });
     setUtilizador(data.utilizador);
     router.push('/');
   };
 
   const logout = () => {
-    const rt = localStorage.getItem('refreshToken');
-    if (rt) api.post('/auth/logout', { refreshToken: rt }).catch(() => {});
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('utilizador');
+    api.post('/auth/logout').catch(() => {});
     setUtilizador(null);
+    setPasswordAviso({ ativo: false, diasRestantes: null });
     router.push('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ utilizador, loading, login, logout }}>
+    <AuthContext.Provider value={{ utilizador, loading, login, loginMfa, logout, passwordAviso }}>
       {children}
     </AuthContext.Provider>
   );

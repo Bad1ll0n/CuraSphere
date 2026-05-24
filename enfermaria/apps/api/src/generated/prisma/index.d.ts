@@ -154,6 +154,11 @@ export type SumarioAlta = $Result.DefaultSelection<Prisma.$SumarioAltaPayload>
  */
 export type DispositivoToken = $Result.DefaultSelection<Prisma.$DispositivoTokenPayload>
 /**
+ * Model NotificacaoInApp
+ * 
+ */
+export type NotificacaoInApp = $Result.DefaultSelection<Prisma.$NotificacaoInAppPayload>
+/**
  * Model Exame
  * 
  */
@@ -554,6 +559,7 @@ export type TipoStock = (typeof TipoStock)[keyof typeof TipoStock]
 export const EstadoPedidoFarmacia: {
   pendente: 'pendente',
   aprovado: 'aprovado',
+  rejeitado: 'rejeitado',
   dispensado: 'dispensado',
   cancelado: 'cancelado'
 };
@@ -1197,6 +1203,16 @@ export class PrismaClient<
     * ```
     */
   get dispositivoToken(): Prisma.DispositivoTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notificacaoInApp`: Exposes CRUD operations for the **NotificacaoInApp** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificacaoInApps
+    * const notificacaoInApps = await prisma.notificacaoInApp.findMany()
+    * ```
+    */
+  get notificacaoInApp(): Prisma.NotificacaoInAppDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.exame`: Exposes CRUD operations for the **Exame** model.
@@ -2076,6 +2092,7 @@ export namespace Prisma {
     AvaliacaoRisco: 'AvaliacaoRisco',
     SumarioAlta: 'SumarioAlta',
     DispositivoToken: 'DispositivoToken',
+    NotificacaoInApp: 'NotificacaoInApp',
     Exame: 'Exame',
     FicheiroExame: 'FicheiroExame',
     EpisodioUrgencia: 'EpisodioUrgencia',
@@ -2135,7 +2152,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4208,6 +4225,80 @@ export namespace Prisma {
           count: {
             args: Prisma.DispositivoTokenCountArgs<ExtArgs>
             result: $Utils.Optional<DispositivoTokenCountAggregateOutputType> | number
+          }
+        }
+      }
+      NotificacaoInApp: {
+        payload: Prisma.$NotificacaoInAppPayload<ExtArgs>
+        fields: Prisma.NotificacaoInAppFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificacaoInAppFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificacaoInAppFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificacaoInAppFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificacaoInAppFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          findMany: {
+            args: Prisma.NotificacaoInAppFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>[]
+          }
+          create: {
+            args: Prisma.NotificacaoInAppCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          createMany: {
+            args: Prisma.NotificacaoInAppCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificacaoInAppCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificacaoInAppDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          update: {
+            args: Prisma.NotificacaoInAppUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificacaoInAppDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificacaoInAppUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificacaoInAppUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificacaoInAppUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificacaoInAppPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificacaoInAppAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotificacaoInApp>
+          }
+          groupBy: {
+            args: Prisma.NotificacaoInAppGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificacaoInAppGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificacaoInAppCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificacaoInAppCountAggregateOutputType> | number
           }
         }
       }
@@ -7369,6 +7460,7 @@ export namespace Prisma {
     avaliacaoRisco?: AvaliacaoRiscoOmit
     sumarioAlta?: SumarioAltaOmit
     dispositivoToken?: DispositivoTokenOmit
+    notificacaoInApp?: NotificacaoInAppOmit
     exame?: ExameOmit
     ficheiroExame?: FicheiroExameOmit
     episodioUrgencia?: EpisodioUrgenciaOmit
@@ -7540,6 +7632,7 @@ export namespace Prisma {
     auditLogs: number
     sinaisVitaisRegistados: number
     dispositivosTokens: number
+    notificacoesInApp: number
     avaliacoesRisco: number
     sumariosAlta: number
     notasClinciasAutor: number
@@ -7552,6 +7645,7 @@ export namespace Prisma {
     consultas: number
     stockPedidosSolicitados: number
     stockPedidosProcessados: number
+    stockPedidosAprovados: number
     planosReabilitacao: number
     sessoesFisioterapia: number
     pedidosInternosSolicitados: number
@@ -7615,6 +7709,7 @@ export namespace Prisma {
     auditLogs?: boolean | UtilizadorCountOutputTypeCountAuditLogsArgs
     sinaisVitaisRegistados?: boolean | UtilizadorCountOutputTypeCountSinaisVitaisRegistadosArgs
     dispositivosTokens?: boolean | UtilizadorCountOutputTypeCountDispositivosTokensArgs
+    notificacoesInApp?: boolean | UtilizadorCountOutputTypeCountNotificacoesInAppArgs
     avaliacoesRisco?: boolean | UtilizadorCountOutputTypeCountAvaliacoesRiscoArgs
     sumariosAlta?: boolean | UtilizadorCountOutputTypeCountSumariosAltaArgs
     notasClinciasAutor?: boolean | UtilizadorCountOutputTypeCountNotasClinciasAutorArgs
@@ -7627,6 +7722,7 @@ export namespace Prisma {
     consultas?: boolean | UtilizadorCountOutputTypeCountConsultasArgs
     stockPedidosSolicitados?: boolean | UtilizadorCountOutputTypeCountStockPedidosSolicitadosArgs
     stockPedidosProcessados?: boolean | UtilizadorCountOutputTypeCountStockPedidosProcessadosArgs
+    stockPedidosAprovados?: boolean | UtilizadorCountOutputTypeCountStockPedidosAprovadosArgs
     planosReabilitacao?: boolean | UtilizadorCountOutputTypeCountPlanosReabilitacaoArgs
     sessoesFisioterapia?: boolean | UtilizadorCountOutputTypeCountSessoesFisioterapiaArgs
     pedidosInternosSolicitados?: boolean | UtilizadorCountOutputTypeCountPedidosInternosSolicitadosArgs
@@ -7817,6 +7913,13 @@ export namespace Prisma {
   /**
    * UtilizadorCountOutputType without action
    */
+  export type UtilizadorCountOutputTypeCountNotificacoesInAppArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificacaoInAppWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
   export type UtilizadorCountOutputTypeCountAvaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AvaliacaoRiscoWhereInput
   }
@@ -7895,6 +7998,13 @@ export namespace Prisma {
    * UtilizadorCountOutputType without action
    */
   export type UtilizadorCountOutputTypeCountStockPedidosProcessadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PedidoFarmaciaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountStockPedidosAprovadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PedidoFarmaciaWhereInput
   }
 
@@ -11204,6 +11314,9 @@ export namespace Prisma {
     numeroFuncionario: string | null
     nome: string | null
     passwordHash: string | null
+    mfaSecret: string | null
+    mfaAtivo: boolean | null
+    passwordExpiresAt: Date | null
     role: string | null
     subRole: string | null
     servico: $Enums.Servico | null
@@ -11220,6 +11333,9 @@ export namespace Prisma {
     numeroFuncionario: string | null
     nome: string | null
     passwordHash: string | null
+    mfaSecret: string | null
+    mfaAtivo: boolean | null
+    passwordExpiresAt: Date | null
     role: string | null
     subRole: string | null
     servico: $Enums.Servico | null
@@ -11236,6 +11352,9 @@ export namespace Prisma {
     numeroFuncionario: number
     nome: number
     passwordHash: number
+    mfaSecret: number
+    mfaAtivo: number
+    passwordExpiresAt: number
     role: number
     subRole: number
     servico: number
@@ -11262,6 +11381,9 @@ export namespace Prisma {
     numeroFuncionario?: true
     nome?: true
     passwordHash?: true
+    mfaSecret?: true
+    mfaAtivo?: true
+    passwordExpiresAt?: true
     role?: true
     subRole?: true
     servico?: true
@@ -11278,6 +11400,9 @@ export namespace Prisma {
     numeroFuncionario?: true
     nome?: true
     passwordHash?: true
+    mfaSecret?: true
+    mfaAtivo?: true
+    passwordExpiresAt?: true
     role?: true
     subRole?: true
     servico?: true
@@ -11294,6 +11419,9 @@ export namespace Prisma {
     numeroFuncionario?: true
     nome?: true
     passwordHash?: true
+    mfaSecret?: true
+    mfaAtivo?: true
+    passwordExpiresAt?: true
     role?: true
     subRole?: true
     servico?: true
@@ -11397,6 +11525,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret: string | null
+    mfaAtivo: boolean
+    passwordExpiresAt: Date | null
     role: string
     subRole: string | null
     servico: $Enums.Servico
@@ -11432,6 +11563,9 @@ export namespace Prisma {
     numeroFuncionario?: boolean
     nome?: boolean
     passwordHash?: boolean
+    mfaSecret?: boolean
+    mfaAtivo?: boolean
+    passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -11460,6 +11594,7 @@ export namespace Prisma {
     auditLogs?: boolean | Utilizador$auditLogsArgs<ExtArgs>
     sinaisVitaisRegistados?: boolean | Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>
     dispositivosTokens?: boolean | Utilizador$dispositivosTokensArgs<ExtArgs>
+    notificacoesInApp?: boolean | Utilizador$notificacoesInAppArgs<ExtArgs>
     avaliacoesRisco?: boolean | Utilizador$avaliacoesRiscoArgs<ExtArgs>
     sumariosAlta?: boolean | Utilizador$sumariosAltaArgs<ExtArgs>
     notasClinciasAutor?: boolean | Utilizador$notasClinciasAutorArgs<ExtArgs>
@@ -11472,6 +11607,7 @@ export namespace Prisma {
     consultas?: boolean | Utilizador$consultasArgs<ExtArgs>
     stockPedidosSolicitados?: boolean | Utilizador$stockPedidosSolicitadosArgs<ExtArgs>
     stockPedidosProcessados?: boolean | Utilizador$stockPedidosProcessadosArgs<ExtArgs>
+    stockPedidosAprovados?: boolean | Utilizador$stockPedidosAprovadosArgs<ExtArgs>
     planosReabilitacao?: boolean | Utilizador$planosReabilitacaoArgs<ExtArgs>
     sessoesFisioterapia?: boolean | Utilizador$sessoesFisioterapiaArgs<ExtArgs>
     pedidosInternosSolicitados?: boolean | Utilizador$pedidosInternosSolicitadosArgs<ExtArgs>
@@ -11523,6 +11659,9 @@ export namespace Prisma {
     numeroFuncionario?: boolean
     nome?: boolean
     passwordHash?: boolean
+    mfaSecret?: boolean
+    mfaAtivo?: boolean
+    passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -11540,6 +11679,9 @@ export namespace Prisma {
     numeroFuncionario?: boolean
     nome?: boolean
     passwordHash?: boolean
+    mfaSecret?: boolean
+    mfaAtivo?: boolean
+    passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -11557,6 +11699,9 @@ export namespace Prisma {
     numeroFuncionario?: boolean
     nome?: boolean
     passwordHash?: boolean
+    mfaSecret?: boolean
+    mfaAtivo?: boolean
+    passwordExpiresAt?: boolean
     role?: boolean
     subRole?: boolean
     servico?: boolean
@@ -11568,7 +11713,7 @@ export namespace Prisma {
     chefeId?: boolean
   }
 
-  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "numeroFuncionario" | "nome" | "passwordHash" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
+  export type UtilizadorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "numeroFuncionario" | "nome" | "passwordHash" | "mfaSecret" | "mfaAtivo" | "passwordExpiresAt" | "role" | "subRole" | "servico" | "ordemExperiencia" | "equipa" | "ativo" | "criadoEm" | "atualizadoEm" | "chefeId", ExtArgs["result"]["utilizador"]>
   export type UtilizadorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     turnosComoChefe?: boolean | Utilizador$turnosComoChefeArgs<ExtArgs>
     horariosEntrada?: boolean | Utilizador$horariosEntradaArgs<ExtArgs>
@@ -11589,6 +11734,7 @@ export namespace Prisma {
     auditLogs?: boolean | Utilizador$auditLogsArgs<ExtArgs>
     sinaisVitaisRegistados?: boolean | Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>
     dispositivosTokens?: boolean | Utilizador$dispositivosTokensArgs<ExtArgs>
+    notificacoesInApp?: boolean | Utilizador$notificacoesInAppArgs<ExtArgs>
     avaliacoesRisco?: boolean | Utilizador$avaliacoesRiscoArgs<ExtArgs>
     sumariosAlta?: boolean | Utilizador$sumariosAltaArgs<ExtArgs>
     notasClinciasAutor?: boolean | Utilizador$notasClinciasAutorArgs<ExtArgs>
@@ -11601,6 +11747,7 @@ export namespace Prisma {
     consultas?: boolean | Utilizador$consultasArgs<ExtArgs>
     stockPedidosSolicitados?: boolean | Utilizador$stockPedidosSolicitadosArgs<ExtArgs>
     stockPedidosProcessados?: boolean | Utilizador$stockPedidosProcessadosArgs<ExtArgs>
+    stockPedidosAprovados?: boolean | Utilizador$stockPedidosAprovadosArgs<ExtArgs>
     planosReabilitacao?: boolean | Utilizador$planosReabilitacaoArgs<ExtArgs>
     sessoesFisioterapia?: boolean | Utilizador$sessoesFisioterapiaArgs<ExtArgs>
     pedidosInternosSolicitados?: boolean | Utilizador$pedidosInternosSolicitadosArgs<ExtArgs>
@@ -11675,6 +11822,7 @@ export namespace Prisma {
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       sinaisVitaisRegistados: Prisma.$SinalVitalPayload<ExtArgs>[]
       dispositivosTokens: Prisma.$DispositivoTokenPayload<ExtArgs>[]
+      notificacoesInApp: Prisma.$NotificacaoInAppPayload<ExtArgs>[]
       avaliacoesRisco: Prisma.$AvaliacaoRiscoPayload<ExtArgs>[]
       sumariosAlta: Prisma.$SumarioAltaPayload<ExtArgs>[]
       notasClinciasAutor: Prisma.$NotaClinicaPayload<ExtArgs>[]
@@ -11687,6 +11835,7 @@ export namespace Prisma {
       consultas: Prisma.$ConsultaPayload<ExtArgs>[]
       stockPedidosSolicitados: Prisma.$PedidoFarmaciaPayload<ExtArgs>[]
       stockPedidosProcessados: Prisma.$PedidoFarmaciaPayload<ExtArgs>[]
+      stockPedidosAprovados: Prisma.$PedidoFarmaciaPayload<ExtArgs>[]
       planosReabilitacao: Prisma.$PlanoReabilitacaoPayload<ExtArgs>[]
       sessoesFisioterapia: Prisma.$SessaoFisioterapiaPayload<ExtArgs>[]
       pedidosInternosSolicitados: Prisma.$PedidoInternoPayload<ExtArgs>[]
@@ -11736,6 +11885,9 @@ export namespace Prisma {
       numeroFuncionario: string
       nome: string
       passwordHash: string
+      mfaSecret: string | null
+      mfaAtivo: boolean
+      passwordExpiresAt: Date | null
       role: string
       subRole: string | null
       servico: $Enums.Servico
@@ -12158,6 +12310,7 @@ export namespace Prisma {
     auditLogs<T extends Utilizador$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sinaisVitaisRegistados<T extends Utilizador$sinaisVitaisRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$sinaisVitaisRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SinalVitalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dispositivosTokens<T extends Utilizador$dispositivosTokensArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$dispositivosTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DispositivoTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notificacoesInApp<T extends Utilizador$notificacoesInAppArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notificacoesInAppArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     avaliacoesRisco<T extends Utilizador$avaliacoesRiscoArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$avaliacoesRiscoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvaliacaoRiscoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sumariosAlta<T extends Utilizador$sumariosAltaArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$sumariosAltaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SumarioAltaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasClinciasAutor<T extends Utilizador$notasClinciasAutorArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasClinciasAutorArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12170,6 +12323,7 @@ export namespace Prisma {
     consultas<T extends Utilizador$consultasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$consultasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockPedidosSolicitados<T extends Utilizador$stockPedidosSolicitadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$stockPedidosSolicitadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoFarmaciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     stockPedidosProcessados<T extends Utilizador$stockPedidosProcessadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$stockPedidosProcessadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoFarmaciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    stockPedidosAprovados<T extends Utilizador$stockPedidosAprovadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$stockPedidosAprovadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoFarmaciaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     planosReabilitacao<T extends Utilizador$planosReabilitacaoArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$planosReabilitacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlanoReabilitacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessoesFisioterapia<T extends Utilizador$sessoesFisioterapiaArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$sessoesFisioterapiaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessaoFisioterapiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pedidosInternosSolicitados<T extends Utilizador$pedidosInternosSolicitadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$pedidosInternosSolicitadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PedidoInternoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12246,6 +12400,9 @@ export namespace Prisma {
     readonly numeroFuncionario: FieldRef<"Utilizador", 'String'>
     readonly nome: FieldRef<"Utilizador", 'String'>
     readonly passwordHash: FieldRef<"Utilizador", 'String'>
+    readonly mfaSecret: FieldRef<"Utilizador", 'String'>
+    readonly mfaAtivo: FieldRef<"Utilizador", 'Boolean'>
+    readonly passwordExpiresAt: FieldRef<"Utilizador", 'DateTime'>
     readonly role: FieldRef<"Utilizador", 'String'>
     readonly subRole: FieldRef<"Utilizador", 'String'>
     readonly servico: FieldRef<"Utilizador", 'Servico'>
@@ -13107,6 +13264,30 @@ export namespace Prisma {
   }
 
   /**
+   * Utilizador.notificacoesInApp
+   */
+  export type Utilizador$notificacoesInAppArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    where?: NotificacaoInAppWhereInput
+    orderBy?: NotificacaoInAppOrderByWithRelationInput | NotificacaoInAppOrderByWithRelationInput[]
+    cursor?: NotificacaoInAppWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificacaoInAppScalarFieldEnum | NotificacaoInAppScalarFieldEnum[]
+  }
+
+  /**
    * Utilizador.avaliacoesRisco
    */
   export type Utilizador$avaliacoesRiscoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13374,6 +13555,30 @@ export namespace Prisma {
    * Utilizador.stockPedidosProcessados
    */
   export type Utilizador$stockPedidosProcessadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PedidoFarmacia
+     */
+    select?: PedidoFarmaciaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PedidoFarmacia
+     */
+    omit?: PedidoFarmaciaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PedidoFarmaciaInclude<ExtArgs> | null
+    where?: PedidoFarmaciaWhereInput
+    orderBy?: PedidoFarmaciaOrderByWithRelationInput | PedidoFarmaciaOrderByWithRelationInput[]
+    cursor?: PedidoFarmaciaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PedidoFarmaciaScalarFieldEnum | PedidoFarmaciaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.stockPedidosAprovados
+   */
+  export type Utilizador$stockPedidosAprovadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the PedidoFarmacia
      */
@@ -15510,6 +15715,7 @@ export namespace Prisma {
     ativo: boolean | null
     emIsolamento: boolean | null
     motivoIsolamento: string | null
+    deletedAt: Date | null
     camaId: string | null
     administrativoAdmissaoId: string | null
   }
@@ -15529,6 +15735,7 @@ export namespace Prisma {
     ativo: boolean | null
     emIsolamento: boolean | null
     motivoIsolamento: string | null
+    deletedAt: Date | null
     camaId: string | null
     administrativoAdmissaoId: string | null
   }
@@ -15548,6 +15755,7 @@ export namespace Prisma {
     ativo: number
     emIsolamento: number
     motivoIsolamento: number
+    deletedAt: number
     camaId: number
     administrativoAdmissaoId: number
     _all: number
@@ -15569,6 +15777,7 @@ export namespace Prisma {
     ativo?: true
     emIsolamento?: true
     motivoIsolamento?: true
+    deletedAt?: true
     camaId?: true
     administrativoAdmissaoId?: true
   }
@@ -15588,6 +15797,7 @@ export namespace Prisma {
     ativo?: true
     emIsolamento?: true
     motivoIsolamento?: true
+    deletedAt?: true
     camaId?: true
     administrativoAdmissaoId?: true
   }
@@ -15607,6 +15817,7 @@ export namespace Prisma {
     ativo?: true
     emIsolamento?: true
     motivoIsolamento?: true
+    deletedAt?: true
     camaId?: true
     administrativoAdmissaoId?: true
     _all?: true
@@ -15699,6 +15910,7 @@ export namespace Prisma {
     ativo: boolean
     emIsolamento: boolean
     motivoIsolamento: string | null
+    deletedAt: Date | null
     camaId: string | null
     administrativoAdmissaoId: string | null
     _count: DoenteCountAggregateOutputType | null
@@ -15735,6 +15947,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: boolean
+    deletedAt?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
     cama?: boolean | Doente$camaArgs<ExtArgs>
@@ -15786,6 +15999,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: boolean
+    deletedAt?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
     cama?: boolean | Doente$camaArgs<ExtArgs>
@@ -15807,6 +16021,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: boolean
+    deletedAt?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
     cama?: boolean | Doente$camaArgs<ExtArgs>
@@ -15828,11 +16043,12 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: boolean
+    deletedAt?: boolean
     camaId?: boolean
     administrativoAdmissaoId?: boolean
   }
 
-  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "estadoRegisto" | "tipoVisita" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
+  export type DoenteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dataNascimento" | "numeroProcesso" | "estado" | "diagnosticoPrincipal" | "estadoRegisto" | "tipoVisita" | "dataAdmissao" | "dataAltaPrevista" | "dataAlta" | "ativo" | "emIsolamento" | "motivoIsolamento" | "deletedAt" | "camaId" | "administrativoAdmissaoId", ExtArgs["result"]["doente"]>
   export type DoenteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cama?: boolean | Doente$camaArgs<ExtArgs>
     administrativo?: boolean | Doente$administrativoArgs<ExtArgs>
@@ -15926,6 +16142,7 @@ export namespace Prisma {
       ativo: boolean
       emIsolamento: boolean
       motivoIsolamento: string | null
+      deletedAt: Date | null
       camaId: string | null
       administrativoAdmissaoId: string | null
     }, ExtArgs["result"]["doente"]>
@@ -16396,6 +16613,7 @@ export namespace Prisma {
     readonly ativo: FieldRef<"Doente", 'Boolean'>
     readonly emIsolamento: FieldRef<"Doente", 'Boolean'>
     readonly motivoIsolamento: FieldRef<"Doente", 'String'>
+    readonly deletedAt: FieldRef<"Doente", 'DateTime'>
     readonly camaId: FieldRef<"Doente", 'String'>
     readonly administrativoAdmissaoId: FieldRef<"Doente", 'String'>
   }
@@ -21972,6 +22190,7 @@ export namespace Prisma {
     plano: string | null
     criadaEm: Date | null
     editadaEm: Date | null
+    deletedAt: Date | null
   }
 
   export type NotaClinicaMaxAggregateOutputType = {
@@ -21984,6 +22203,7 @@ export namespace Prisma {
     plano: string | null
     criadaEm: Date | null
     editadaEm: Date | null
+    deletedAt: Date | null
   }
 
   export type NotaClinicaCountAggregateOutputType = {
@@ -21996,6 +22216,7 @@ export namespace Prisma {
     plano: number
     criadaEm: number
     editadaEm: number
+    deletedAt: number
     _all: number
   }
 
@@ -22010,6 +22231,7 @@ export namespace Prisma {
     plano?: true
     criadaEm?: true
     editadaEm?: true
+    deletedAt?: true
   }
 
   export type NotaClinicaMaxAggregateInputType = {
@@ -22022,6 +22244,7 @@ export namespace Prisma {
     plano?: true
     criadaEm?: true
     editadaEm?: true
+    deletedAt?: true
   }
 
   export type NotaClinicaCountAggregateInputType = {
@@ -22034,6 +22257,7 @@ export namespace Prisma {
     plano?: true
     criadaEm?: true
     editadaEm?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -22119,6 +22343,7 @@ export namespace Prisma {
     plano: string
     criadaEm: Date
     editadaEm: Date | null
+    deletedAt: Date | null
     _count: NotaClinicaCountAggregateOutputType | null
     _min: NotaClinicaMinAggregateOutputType | null
     _max: NotaClinicaMaxAggregateOutputType | null
@@ -22148,6 +22373,7 @@ export namespace Prisma {
     plano?: boolean
     criadaEm?: boolean
     editadaEm?: boolean
+    deletedAt?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaClinica"]>
@@ -22162,6 +22388,7 @@ export namespace Prisma {
     plano?: boolean
     criadaEm?: boolean
     editadaEm?: boolean
+    deletedAt?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaClinica"]>
@@ -22176,6 +22403,7 @@ export namespace Prisma {
     plano?: boolean
     criadaEm?: boolean
     editadaEm?: boolean
+    deletedAt?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["notaClinica"]>
@@ -22190,9 +22418,10 @@ export namespace Prisma {
     plano?: boolean
     criadaEm?: boolean
     editadaEm?: boolean
+    deletedAt?: boolean
   }
 
-  export type NotaClinicaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "autorId" | "subjetivo" | "objetivo" | "avaliacao" | "plano" | "criadaEm" | "editadaEm", ExtArgs["result"]["notaClinica"]>
+  export type NotaClinicaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "autorId" | "subjetivo" | "objetivo" | "avaliacao" | "plano" | "criadaEm" | "editadaEm" | "deletedAt", ExtArgs["result"]["notaClinica"]>
   export type NotaClinicaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -22222,6 +22451,7 @@ export namespace Prisma {
       plano: string
       criadaEm: Date
       editadaEm: Date | null
+      deletedAt: Date | null
     }, ExtArgs["result"]["notaClinica"]>
     composites: {}
   }
@@ -22656,6 +22886,7 @@ export namespace Prisma {
     readonly plano: FieldRef<"NotaClinica", 'String'>
     readonly criadaEm: FieldRef<"NotaClinica", 'DateTime'>
     readonly editadaEm: FieldRef<"NotaClinica", 'DateTime'>
+    readonly deletedAt: FieldRef<"NotaClinica", 'DateTime'>
   }
     
 
@@ -26580,6 +26811,7 @@ export namespace Prisma {
     ativo: boolean | null
     iniciadoEm: Date | null
     terminadoEm: Date | null
+    deletedAt: Date | null
     doenteId: string | null
     prescritoPorId: string | null
     estadoValidacao: string | null
@@ -26597,6 +26829,7 @@ export namespace Prisma {
     ativo: boolean | null
     iniciadoEm: Date | null
     terminadoEm: Date | null
+    deletedAt: Date | null
     doenteId: string | null
     prescritoPorId: string | null
     estadoValidacao: string | null
@@ -26614,6 +26847,7 @@ export namespace Prisma {
     ativo: number
     iniciadoEm: number
     terminadoEm: number
+    deletedAt: number
     doenteId: number
     prescritoPorId: number
     estadoValidacao: number
@@ -26633,6 +26867,7 @@ export namespace Prisma {
     ativo?: true
     iniciadoEm?: true
     terminadoEm?: true
+    deletedAt?: true
     doenteId?: true
     prescritoPorId?: true
     estadoValidacao?: true
@@ -26650,6 +26885,7 @@ export namespace Prisma {
     ativo?: true
     iniciadoEm?: true
     terminadoEm?: true
+    deletedAt?: true
     doenteId?: true
     prescritoPorId?: true
     estadoValidacao?: true
@@ -26667,6 +26903,7 @@ export namespace Prisma {
     ativo?: true
     iniciadoEm?: true
     terminadoEm?: true
+    deletedAt?: true
     doenteId?: true
     prescritoPorId?: true
     estadoValidacao?: true
@@ -26757,6 +26994,7 @@ export namespace Prisma {
     ativo: boolean
     iniciadoEm: Date
     terminadoEm: Date | null
+    deletedAt: Date | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao: string | null
@@ -26791,6 +27029,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: boolean
     terminadoEm?: boolean
+    deletedAt?: boolean
     doenteId?: boolean
     prescritoPorId?: boolean
     estadoValidacao?: boolean
@@ -26813,6 +27052,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: boolean
     terminadoEm?: boolean
+    deletedAt?: boolean
     doenteId?: boolean
     prescritoPorId?: boolean
     estadoValidacao?: boolean
@@ -26833,6 +27073,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: boolean
     terminadoEm?: boolean
+    deletedAt?: boolean
     doenteId?: boolean
     prescritoPorId?: boolean
     estadoValidacao?: boolean
@@ -26853,6 +27094,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: boolean
     terminadoEm?: boolean
+    deletedAt?: boolean
     doenteId?: boolean
     prescritoPorId?: boolean
     estadoValidacao?: boolean
@@ -26861,7 +27103,7 @@ export namespace Prisma {
     motivoRejeicao?: boolean
   }
 
-  export type MedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dose" | "via" | "frequencia" | "ativo" | "iniciadoEm" | "terminadoEm" | "doenteId" | "prescritoPorId" | "estadoValidacao" | "validadoPorId" | "validadaEm" | "motivoRejeicao", ExtArgs["result"]["medicacao"]>
+  export type MedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "dose" | "via" | "frequencia" | "ativo" | "iniciadoEm" | "terminadoEm" | "deletedAt" | "doenteId" | "prescritoPorId" | "estadoValidacao" | "validadoPorId" | "validadaEm" | "motivoRejeicao", ExtArgs["result"]["medicacao"]>
   export type MedicacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     prescritoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -26897,6 +27139,7 @@ export namespace Prisma {
       ativo: boolean
       iniciadoEm: Date
       terminadoEm: Date | null
+      deletedAt: Date | null
       doenteId: string
       prescritoPorId: string
       estadoValidacao: string | null
@@ -27338,6 +27581,7 @@ export namespace Prisma {
     readonly ativo: FieldRef<"Medicacao", 'Boolean'>
     readonly iniciadoEm: FieldRef<"Medicacao", 'DateTime'>
     readonly terminadoEm: FieldRef<"Medicacao", 'DateTime'>
+    readonly deletedAt: FieldRef<"Medicacao", 'DateTime'>
     readonly doenteId: FieldRef<"Medicacao", 'String'>
     readonly prescritoPorId: FieldRef<"Medicacao", 'String'>
     readonly estadoValidacao: FieldRef<"Medicacao", 'String'>
@@ -27818,6 +28062,7 @@ export namespace Prisma {
     verificacao5Certas: boolean | null
     naoAdministrada: boolean | null
     motivoNaoAdmin: string | null
+    deletedAt: Date | null
     medicacaoId: string | null
     doenteId: string | null
     administradoPorId: string | null
@@ -27830,6 +28075,7 @@ export namespace Prisma {
     verificacao5Certas: boolean | null
     naoAdministrada: boolean | null
     motivoNaoAdmin: string | null
+    deletedAt: Date | null
     medicacaoId: string | null
     doenteId: string | null
     administradoPorId: string | null
@@ -27842,6 +28088,7 @@ export namespace Prisma {
     verificacao5Certas: number
     naoAdministrada: number
     motivoNaoAdmin: number
+    deletedAt: number
     medicacaoId: number
     doenteId: number
     administradoPorId: number
@@ -27856,6 +28103,7 @@ export namespace Prisma {
     verificacao5Certas?: true
     naoAdministrada?: true
     motivoNaoAdmin?: true
+    deletedAt?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27868,6 +28116,7 @@ export namespace Prisma {
     verificacao5Certas?: true
     naoAdministrada?: true
     motivoNaoAdmin?: true
+    deletedAt?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27880,6 +28129,7 @@ export namespace Prisma {
     verificacao5Certas?: true
     naoAdministrada?: true
     motivoNaoAdmin?: true
+    deletedAt?: true
     medicacaoId?: true
     doenteId?: true
     administradoPorId?: true
@@ -27965,6 +28215,7 @@ export namespace Prisma {
     verificacao5Certas: boolean
     naoAdministrada: boolean
     motivoNaoAdmin: string | null
+    deletedAt: Date | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -27994,6 +28245,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
+    deletedAt?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -28009,6 +28261,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
+    deletedAt?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -28024,6 +28277,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
+    deletedAt?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
@@ -28039,12 +28293,13 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: boolean
+    deletedAt?: boolean
     medicacaoId?: boolean
     doenteId?: boolean
     administradoPorId?: boolean
   }
 
-  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "verificacao5Certas" | "naoAdministrada" | "motivoNaoAdmin" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
+  export type RegistoMedicacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "administradoEm" | "observacoes" | "verificacao5Certas" | "naoAdministrada" | "motivoNaoAdmin" | "deletedAt" | "medicacaoId" | "doenteId" | "administradoPorId", ExtArgs["result"]["registoMedicacao"]>
   export type RegistoMedicacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     medicacao?: boolean | MedicacaoDefaultArgs<ExtArgs>
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
@@ -28075,6 +28330,7 @@ export namespace Prisma {
       verificacao5Certas: boolean
       naoAdministrada: boolean
       motivoNaoAdmin: string | null
+      deletedAt: Date | null
       medicacaoId: string
       doenteId: string
       administradoPorId: string
@@ -28510,6 +28766,7 @@ export namespace Prisma {
     readonly verificacao5Certas: FieldRef<"RegistoMedicacao", 'Boolean'>
     readonly naoAdministrada: FieldRef<"RegistoMedicacao", 'Boolean'>
     readonly motivoNaoAdmin: FieldRef<"RegistoMedicacao", 'String'>
+    readonly deletedAt: FieldRef<"RegistoMedicacao", 'DateTime'>
     readonly medicacaoId: FieldRef<"RegistoMedicacao", 'String'>
     readonly doenteId: FieldRef<"RegistoMedicacao", 'String'>
     readonly administradoPorId: FieldRef<"RegistoMedicacao", 'String'>
@@ -43405,6 +43662,1099 @@ export namespace Prisma {
 
 
   /**
+   * Model NotificacaoInApp
+   */
+
+  export type AggregateNotificacaoInApp = {
+    _count: NotificacaoInAppCountAggregateOutputType | null
+    _min: NotificacaoInAppMinAggregateOutputType | null
+    _max: NotificacaoInAppMaxAggregateOutputType | null
+  }
+
+  export type NotificacaoInAppMinAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    titulo: string | null
+    corpo: string | null
+    lida: boolean | null
+    criadaEm: Date | null
+    lidaEm: Date | null
+  }
+
+  export type NotificacaoInAppMaxAggregateOutputType = {
+    id: string | null
+    utilizadorId: string | null
+    titulo: string | null
+    corpo: string | null
+    lida: boolean | null
+    criadaEm: Date | null
+    lidaEm: Date | null
+  }
+
+  export type NotificacaoInAppCountAggregateOutputType = {
+    id: number
+    utilizadorId: number
+    titulo: number
+    corpo: number
+    lida: number
+    dadosExtra: number
+    criadaEm: number
+    lidaEm: number
+    _all: number
+  }
+
+
+  export type NotificacaoInAppMinAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    titulo?: true
+    corpo?: true
+    lida?: true
+    criadaEm?: true
+    lidaEm?: true
+  }
+
+  export type NotificacaoInAppMaxAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    titulo?: true
+    corpo?: true
+    lida?: true
+    criadaEm?: true
+    lidaEm?: true
+  }
+
+  export type NotificacaoInAppCountAggregateInputType = {
+    id?: true
+    utilizadorId?: true
+    titulo?: true
+    corpo?: true
+    lida?: true
+    dadosExtra?: true
+    criadaEm?: true
+    lidaEm?: true
+    _all?: true
+  }
+
+  export type NotificacaoInAppAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificacaoInApp to aggregate.
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificacaoInApps to fetch.
+     */
+    orderBy?: NotificacaoInAppOrderByWithRelationInput | NotificacaoInAppOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificacaoInAppWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificacaoInApps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificacaoInApps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotificacaoInApps
+    **/
+    _count?: true | NotificacaoInAppCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificacaoInAppMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificacaoInAppMaxAggregateInputType
+  }
+
+  export type GetNotificacaoInAppAggregateType<T extends NotificacaoInAppAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotificacaoInApp]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotificacaoInApp[P]>
+      : GetScalarType<T[P], AggregateNotificacaoInApp[P]>
+  }
+
+
+
+
+  export type NotificacaoInAppGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificacaoInAppWhereInput
+    orderBy?: NotificacaoInAppOrderByWithAggregationInput | NotificacaoInAppOrderByWithAggregationInput[]
+    by: NotificacaoInAppScalarFieldEnum[] | NotificacaoInAppScalarFieldEnum
+    having?: NotificacaoInAppScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificacaoInAppCountAggregateInputType | true
+    _min?: NotificacaoInAppMinAggregateInputType
+    _max?: NotificacaoInAppMaxAggregateInputType
+  }
+
+  export type NotificacaoInAppGroupByOutputType = {
+    id: string
+    utilizadorId: string
+    titulo: string
+    corpo: string
+    lida: boolean
+    dadosExtra: JsonValue | null
+    criadaEm: Date
+    lidaEm: Date | null
+    _count: NotificacaoInAppCountAggregateOutputType | null
+    _min: NotificacaoInAppMinAggregateOutputType | null
+    _max: NotificacaoInAppMaxAggregateOutputType | null
+  }
+
+  type GetNotificacaoInAppGroupByPayload<T extends NotificacaoInAppGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificacaoInAppGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificacaoInAppGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificacaoInAppGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificacaoInAppGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificacaoInAppSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    titulo?: boolean
+    corpo?: boolean
+    lida?: boolean
+    dadosExtra?: boolean
+    criadaEm?: boolean
+    lidaEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificacaoInApp"]>
+
+  export type NotificacaoInAppSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    titulo?: boolean
+    corpo?: boolean
+    lida?: boolean
+    dadosExtra?: boolean
+    criadaEm?: boolean
+    lidaEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificacaoInApp"]>
+
+  export type NotificacaoInAppSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    utilizadorId?: boolean
+    titulo?: boolean
+    corpo?: boolean
+    lida?: boolean
+    dadosExtra?: boolean
+    criadaEm?: boolean
+    lidaEm?: boolean
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificacaoInApp"]>
+
+  export type NotificacaoInAppSelectScalar = {
+    id?: boolean
+    utilizadorId?: boolean
+    titulo?: boolean
+    corpo?: boolean
+    lida?: boolean
+    dadosExtra?: boolean
+    criadaEm?: boolean
+    lidaEm?: boolean
+  }
+
+  export type NotificacaoInAppOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "utilizadorId" | "titulo" | "corpo" | "lida" | "dadosExtra" | "criadaEm" | "lidaEm", ExtArgs["result"]["notificacaoInApp"]>
+  export type NotificacaoInAppInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotificacaoInAppIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotificacaoInAppIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    utilizador?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificacaoInAppPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotificacaoInApp"
+    objects: {
+      utilizador: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      utilizadorId: string
+      titulo: string
+      corpo: string
+      lida: boolean
+      dadosExtra: Prisma.JsonValue | null
+      criadaEm: Date
+      lidaEm: Date | null
+    }, ExtArgs["result"]["notificacaoInApp"]>
+    composites: {}
+  }
+
+  type NotificacaoInAppGetPayload<S extends boolean | null | undefined | NotificacaoInAppDefaultArgs> = $Result.GetResult<Prisma.$NotificacaoInAppPayload, S>
+
+  type NotificacaoInAppCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificacaoInAppFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificacaoInAppCountAggregateInputType | true
+    }
+
+  export interface NotificacaoInAppDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotificacaoInApp'], meta: { name: 'NotificacaoInApp' } }
+    /**
+     * Find zero or one NotificacaoInApp that matches the filter.
+     * @param {NotificacaoInAppFindUniqueArgs} args - Arguments to find a NotificacaoInApp
+     * @example
+     * // Get one NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificacaoInAppFindUniqueArgs>(args: SelectSubset<T, NotificacaoInAppFindUniqueArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NotificacaoInApp that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificacaoInAppFindUniqueOrThrowArgs} args - Arguments to find a NotificacaoInApp
+     * @example
+     * // Get one NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificacaoInAppFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificacaoInAppFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificacaoInApp that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppFindFirstArgs} args - Arguments to find a NotificacaoInApp
+     * @example
+     * // Get one NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificacaoInAppFindFirstArgs>(args?: SelectSubset<T, NotificacaoInAppFindFirstArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotificacaoInApp that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppFindFirstOrThrowArgs} args - Arguments to find a NotificacaoInApp
+     * @example
+     * // Get one NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificacaoInAppFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificacaoInAppFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NotificacaoInApps that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotificacaoInApps
+     * const notificacaoInApps = await prisma.notificacaoInApp.findMany()
+     * 
+     * // Get first 10 NotificacaoInApps
+     * const notificacaoInApps = await prisma.notificacaoInApp.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificacaoInAppWithIdOnly = await prisma.notificacaoInApp.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificacaoInAppFindManyArgs>(args?: SelectSubset<T, NotificacaoInAppFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NotificacaoInApp.
+     * @param {NotificacaoInAppCreateArgs} args - Arguments to create a NotificacaoInApp.
+     * @example
+     * // Create one NotificacaoInApp
+     * const NotificacaoInApp = await prisma.notificacaoInApp.create({
+     *   data: {
+     *     // ... data to create a NotificacaoInApp
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificacaoInAppCreateArgs>(args: SelectSubset<T, NotificacaoInAppCreateArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NotificacaoInApps.
+     * @param {NotificacaoInAppCreateManyArgs} args - Arguments to create many NotificacaoInApps.
+     * @example
+     * // Create many NotificacaoInApps
+     * const notificacaoInApp = await prisma.notificacaoInApp.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificacaoInAppCreateManyArgs>(args?: SelectSubset<T, NotificacaoInAppCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotificacaoInApps and returns the data saved in the database.
+     * @param {NotificacaoInAppCreateManyAndReturnArgs} args - Arguments to create many NotificacaoInApps.
+     * @example
+     * // Create many NotificacaoInApps
+     * const notificacaoInApp = await prisma.notificacaoInApp.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotificacaoInApps and only return the `id`
+     * const notificacaoInAppWithIdOnly = await prisma.notificacaoInApp.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificacaoInAppCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificacaoInAppCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NotificacaoInApp.
+     * @param {NotificacaoInAppDeleteArgs} args - Arguments to delete one NotificacaoInApp.
+     * @example
+     * // Delete one NotificacaoInApp
+     * const NotificacaoInApp = await prisma.notificacaoInApp.delete({
+     *   where: {
+     *     // ... filter to delete one NotificacaoInApp
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificacaoInAppDeleteArgs>(args: SelectSubset<T, NotificacaoInAppDeleteArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NotificacaoInApp.
+     * @param {NotificacaoInAppUpdateArgs} args - Arguments to update one NotificacaoInApp.
+     * @example
+     * // Update one NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificacaoInAppUpdateArgs>(args: SelectSubset<T, NotificacaoInAppUpdateArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NotificacaoInApps.
+     * @param {NotificacaoInAppDeleteManyArgs} args - Arguments to filter NotificacaoInApps to delete.
+     * @example
+     * // Delete a few NotificacaoInApps
+     * const { count } = await prisma.notificacaoInApp.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificacaoInAppDeleteManyArgs>(args?: SelectSubset<T, NotificacaoInAppDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificacaoInApps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotificacaoInApps
+     * const notificacaoInApp = await prisma.notificacaoInApp.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificacaoInAppUpdateManyArgs>(args: SelectSubset<T, NotificacaoInAppUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificacaoInApps and returns the data updated in the database.
+     * @param {NotificacaoInAppUpdateManyAndReturnArgs} args - Arguments to update many NotificacaoInApps.
+     * @example
+     * // Update many NotificacaoInApps
+     * const notificacaoInApp = await prisma.notificacaoInApp.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NotificacaoInApps and only return the `id`
+     * const notificacaoInAppWithIdOnly = await prisma.notificacaoInApp.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificacaoInAppUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificacaoInAppUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NotificacaoInApp.
+     * @param {NotificacaoInAppUpsertArgs} args - Arguments to update or create a NotificacaoInApp.
+     * @example
+     * // Update or create a NotificacaoInApp
+     * const notificacaoInApp = await prisma.notificacaoInApp.upsert({
+     *   create: {
+     *     // ... data to create a NotificacaoInApp
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotificacaoInApp we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificacaoInAppUpsertArgs>(args: SelectSubset<T, NotificacaoInAppUpsertArgs<ExtArgs>>): Prisma__NotificacaoInAppClient<$Result.GetResult<Prisma.$NotificacaoInAppPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NotificacaoInApps.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppCountArgs} args - Arguments to filter NotificacaoInApps to count.
+     * @example
+     * // Count the number of NotificacaoInApps
+     * const count = await prisma.notificacaoInApp.count({
+     *   where: {
+     *     // ... the filter for the NotificacaoInApps we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificacaoInAppCountArgs>(
+      args?: Subset<T, NotificacaoInAppCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificacaoInAppCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotificacaoInApp.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificacaoInAppAggregateArgs>(args: Subset<T, NotificacaoInAppAggregateArgs>): Prisma.PrismaPromise<GetNotificacaoInAppAggregateType<T>>
+
+    /**
+     * Group by NotificacaoInApp.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificacaoInAppGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificacaoInAppGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificacaoInAppGroupByArgs['orderBy'] }
+        : { orderBy?: NotificacaoInAppGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificacaoInAppGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificacaoInAppGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotificacaoInApp model
+   */
+  readonly fields: NotificacaoInAppFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotificacaoInApp.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificacaoInAppClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    utilizador<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotificacaoInApp model
+   */
+  interface NotificacaoInAppFieldRefs {
+    readonly id: FieldRef<"NotificacaoInApp", 'String'>
+    readonly utilizadorId: FieldRef<"NotificacaoInApp", 'String'>
+    readonly titulo: FieldRef<"NotificacaoInApp", 'String'>
+    readonly corpo: FieldRef<"NotificacaoInApp", 'String'>
+    readonly lida: FieldRef<"NotificacaoInApp", 'Boolean'>
+    readonly dadosExtra: FieldRef<"NotificacaoInApp", 'Json'>
+    readonly criadaEm: FieldRef<"NotificacaoInApp", 'DateTime'>
+    readonly lidaEm: FieldRef<"NotificacaoInApp", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotificacaoInApp findUnique
+   */
+  export type NotificacaoInAppFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificacaoInApp to fetch.
+     */
+    where: NotificacaoInAppWhereUniqueInput
+  }
+
+  /**
+   * NotificacaoInApp findUniqueOrThrow
+   */
+  export type NotificacaoInAppFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificacaoInApp to fetch.
+     */
+    where: NotificacaoInAppWhereUniqueInput
+  }
+
+  /**
+   * NotificacaoInApp findFirst
+   */
+  export type NotificacaoInAppFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificacaoInApp to fetch.
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificacaoInApps to fetch.
+     */
+    orderBy?: NotificacaoInAppOrderByWithRelationInput | NotificacaoInAppOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificacaoInApps.
+     */
+    cursor?: NotificacaoInAppWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificacaoInApps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificacaoInApps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificacaoInApps.
+     */
+    distinct?: NotificacaoInAppScalarFieldEnum | NotificacaoInAppScalarFieldEnum[]
+  }
+
+  /**
+   * NotificacaoInApp findFirstOrThrow
+   */
+  export type NotificacaoInAppFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificacaoInApp to fetch.
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificacaoInApps to fetch.
+     */
+    orderBy?: NotificacaoInAppOrderByWithRelationInput | NotificacaoInAppOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificacaoInApps.
+     */
+    cursor?: NotificacaoInAppWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificacaoInApps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificacaoInApps.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificacaoInApps.
+     */
+    distinct?: NotificacaoInAppScalarFieldEnum | NotificacaoInAppScalarFieldEnum[]
+  }
+
+  /**
+   * NotificacaoInApp findMany
+   */
+  export type NotificacaoInAppFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificacaoInApps to fetch.
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificacaoInApps to fetch.
+     */
+    orderBy?: NotificacaoInAppOrderByWithRelationInput | NotificacaoInAppOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotificacaoInApps.
+     */
+    cursor?: NotificacaoInAppWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificacaoInApps from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificacaoInApps.
+     */
+    skip?: number
+    distinct?: NotificacaoInAppScalarFieldEnum | NotificacaoInAppScalarFieldEnum[]
+  }
+
+  /**
+   * NotificacaoInApp create
+   */
+  export type NotificacaoInAppCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotificacaoInApp.
+     */
+    data: XOR<NotificacaoInAppCreateInput, NotificacaoInAppUncheckedCreateInput>
+  }
+
+  /**
+   * NotificacaoInApp createMany
+   */
+  export type NotificacaoInAppCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotificacaoInApps.
+     */
+    data: NotificacaoInAppCreateManyInput | NotificacaoInAppCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotificacaoInApp createManyAndReturn
+   */
+  export type NotificacaoInAppCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * The data used to create many NotificacaoInApps.
+     */
+    data: NotificacaoInAppCreateManyInput | NotificacaoInAppCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificacaoInApp update
+   */
+  export type NotificacaoInAppUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotificacaoInApp.
+     */
+    data: XOR<NotificacaoInAppUpdateInput, NotificacaoInAppUncheckedUpdateInput>
+    /**
+     * Choose, which NotificacaoInApp to update.
+     */
+    where: NotificacaoInAppWhereUniqueInput
+  }
+
+  /**
+   * NotificacaoInApp updateMany
+   */
+  export type NotificacaoInAppUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotificacaoInApps.
+     */
+    data: XOR<NotificacaoInAppUpdateManyMutationInput, NotificacaoInAppUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificacaoInApps to update
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * Limit how many NotificacaoInApps to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificacaoInApp updateManyAndReturn
+   */
+  export type NotificacaoInAppUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * The data used to update NotificacaoInApps.
+     */
+    data: XOR<NotificacaoInAppUpdateManyMutationInput, NotificacaoInAppUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificacaoInApps to update
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * Limit how many NotificacaoInApps to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificacaoInApp upsert
+   */
+  export type NotificacaoInAppUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotificacaoInApp to update in case it exists.
+     */
+    where: NotificacaoInAppWhereUniqueInput
+    /**
+     * In case the NotificacaoInApp found by the `where` argument doesn't exist, create a new NotificacaoInApp with this data.
+     */
+    create: XOR<NotificacaoInAppCreateInput, NotificacaoInAppUncheckedCreateInput>
+    /**
+     * In case the NotificacaoInApp was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificacaoInAppUpdateInput, NotificacaoInAppUncheckedUpdateInput>
+  }
+
+  /**
+   * NotificacaoInApp delete
+   */
+  export type NotificacaoInAppDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+    /**
+     * Filter which NotificacaoInApp to delete.
+     */
+    where: NotificacaoInAppWhereUniqueInput
+  }
+
+  /**
+   * NotificacaoInApp deleteMany
+   */
+  export type NotificacaoInAppDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificacaoInApps to delete
+     */
+    where?: NotificacaoInAppWhereInput
+    /**
+     * Limit how many NotificacaoInApps to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotificacaoInApp without action
+   */
+  export type NotificacaoInAppDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificacaoInApp
+     */
+    select?: NotificacaoInAppSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotificacaoInApp
+     */
+    omit?: NotificacaoInAppOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificacaoInAppInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Exame
    */
 
@@ -54381,6 +55731,9 @@ export namespace Prisma {
     estado: $Enums.EstadoPedidoFarmacia | null
     solicitadoPorId: string | null
     processadoPorId: string | null
+    aprovadoPorId: string | null
+    aprovadoEm: Date | null
+    motivoRejeicao: string | null
     observacoes: string | null
     criadoEm: Date | null
   }
@@ -54393,6 +55746,9 @@ export namespace Prisma {
     estado: $Enums.EstadoPedidoFarmacia | null
     solicitadoPorId: string | null
     processadoPorId: string | null
+    aprovadoPorId: string | null
+    aprovadoEm: Date | null
+    motivoRejeicao: string | null
     observacoes: string | null
     criadoEm: Date | null
   }
@@ -54405,6 +55761,9 @@ export namespace Prisma {
     estado: number
     solicitadoPorId: number
     processadoPorId: number
+    aprovadoPorId: number
+    aprovadoEm: number
+    motivoRejeicao: number
     observacoes: number
     criadoEm: number
     _all: number
@@ -54427,6 +55786,9 @@ export namespace Prisma {
     estado?: true
     solicitadoPorId?: true
     processadoPorId?: true
+    aprovadoPorId?: true
+    aprovadoEm?: true
+    motivoRejeicao?: true
     observacoes?: true
     criadoEm?: true
   }
@@ -54439,6 +55801,9 @@ export namespace Prisma {
     estado?: true
     solicitadoPorId?: true
     processadoPorId?: true
+    aprovadoPorId?: true
+    aprovadoEm?: true
+    motivoRejeicao?: true
     observacoes?: true
     criadoEm?: true
   }
@@ -54451,6 +55816,9 @@ export namespace Prisma {
     estado?: true
     solicitadoPorId?: true
     processadoPorId?: true
+    aprovadoPorId?: true
+    aprovadoEm?: true
+    motivoRejeicao?: true
     observacoes?: true
     criadoEm?: true
     _all?: true
@@ -54550,6 +55918,9 @@ export namespace Prisma {
     estado: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
     processadoPorId: string | null
+    aprovadoPorId: string | null
+    aprovadoEm: Date | null
+    motivoRejeicao: string | null
     observacoes: string | null
     criadoEm: Date
     _count: PedidoFarmaciaCountAggregateOutputType | null
@@ -54581,11 +55952,15 @@ export namespace Prisma {
     estado?: boolean
     solicitadoPorId?: boolean
     processadoPorId?: boolean
+    aprovadoPorId?: boolean
+    aprovadoEm?: boolean
+    motivoRejeicao?: boolean
     observacoes?: boolean
     criadoEm?: boolean
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["pedidoFarmacia"]>
 
   export type PedidoFarmaciaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -54596,11 +55971,15 @@ export namespace Prisma {
     estado?: boolean
     solicitadoPorId?: boolean
     processadoPorId?: boolean
+    aprovadoPorId?: boolean
+    aprovadoEm?: boolean
+    motivoRejeicao?: boolean
     observacoes?: boolean
     criadoEm?: boolean
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["pedidoFarmacia"]>
 
   export type PedidoFarmaciaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -54611,11 +55990,15 @@ export namespace Prisma {
     estado?: boolean
     solicitadoPorId?: boolean
     processadoPorId?: boolean
+    aprovadoPorId?: boolean
+    aprovadoEm?: boolean
+    motivoRejeicao?: boolean
     observacoes?: boolean
     criadoEm?: boolean
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["pedidoFarmacia"]>
 
   export type PedidoFarmaciaSelectScalar = {
@@ -54626,25 +56009,31 @@ export namespace Prisma {
     estado?: boolean
     solicitadoPorId?: boolean
     processadoPorId?: boolean
+    aprovadoPorId?: boolean
+    aprovadoEm?: boolean
+    motivoRejeicao?: boolean
     observacoes?: boolean
     criadoEm?: boolean
   }
 
-  export type PedidoFarmaciaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stockItemId" | "quantidade" | "servico" | "estado" | "solicitadoPorId" | "processadoPorId" | "observacoes" | "criadoEm", ExtArgs["result"]["pedidoFarmacia"]>
+  export type PedidoFarmaciaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "stockItemId" | "quantidade" | "servico" | "estado" | "solicitadoPorId" | "processadoPorId" | "aprovadoPorId" | "aprovadoEm" | "motivoRejeicao" | "observacoes" | "criadoEm", ExtArgs["result"]["pedidoFarmacia"]>
   export type PedidoFarmaciaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }
   export type PedidoFarmaciaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }
   export type PedidoFarmaciaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     stockItem?: boolean | StockItemDefaultArgs<ExtArgs>
     solicitadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     processadoPor?: boolean | PedidoFarmacia$processadoPorArgs<ExtArgs>
+    aprovadoPor?: boolean | PedidoFarmacia$aprovadoPorArgs<ExtArgs>
   }
 
   export type $PedidoFarmaciaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -54653,6 +56042,7 @@ export namespace Prisma {
       stockItem: Prisma.$StockItemPayload<ExtArgs>
       solicitadoPor: Prisma.$UtilizadorPayload<ExtArgs>
       processadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+      aprovadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -54662,6 +56052,9 @@ export namespace Prisma {
       estado: $Enums.EstadoPedidoFarmacia
       solicitadoPorId: string
       processadoPorId: string | null
+      aprovadoPorId: string | null
+      aprovadoEm: Date | null
+      motivoRejeicao: string | null
       observacoes: string | null
       criadoEm: Date
     }, ExtArgs["result"]["pedidoFarmacia"]>
@@ -55061,6 +56454,7 @@ export namespace Prisma {
     stockItem<T extends StockItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StockItemDefaultArgs<ExtArgs>>): Prisma__StockItemClient<$Result.GetResult<Prisma.$StockItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     solicitadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     processadoPor<T extends PedidoFarmacia$processadoPorArgs<ExtArgs> = {}>(args?: Subset<T, PedidoFarmacia$processadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    aprovadoPor<T extends PedidoFarmacia$aprovadoPorArgs<ExtArgs> = {}>(args?: Subset<T, PedidoFarmacia$aprovadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -55097,6 +56491,9 @@ export namespace Prisma {
     readonly estado: FieldRef<"PedidoFarmacia", 'EstadoPedidoFarmacia'>
     readonly solicitadoPorId: FieldRef<"PedidoFarmacia", 'String'>
     readonly processadoPorId: FieldRef<"PedidoFarmacia", 'String'>
+    readonly aprovadoPorId: FieldRef<"PedidoFarmacia", 'String'>
+    readonly aprovadoEm: FieldRef<"PedidoFarmacia", 'DateTime'>
+    readonly motivoRejeicao: FieldRef<"PedidoFarmacia", 'String'>
     readonly observacoes: FieldRef<"PedidoFarmacia", 'String'>
     readonly criadoEm: FieldRef<"PedidoFarmacia", 'DateTime'>
   }
@@ -55498,6 +56895,25 @@ export namespace Prisma {
    * PedidoFarmacia.processadoPor
    */
   export type PedidoFarmacia$processadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * PedidoFarmacia.aprovadoPor
+   */
+  export type PedidoFarmacia$aprovadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Utilizador
      */
@@ -91218,6 +92634,9 @@ export namespace Prisma {
     numeroFuncionario: 'numeroFuncionario',
     nome: 'nome',
     passwordHash: 'passwordHash',
+    mfaSecret: 'mfaSecret',
+    mfaAtivo: 'mfaAtivo',
+    passwordExpiresAt: 'passwordExpiresAt',
     role: 'role',
     subRole: 'subRole',
     servico: 'servico',
@@ -91257,6 +92676,7 @@ export namespace Prisma {
     ativo: 'ativo',
     emIsolamento: 'emIsolamento',
     motivoIsolamento: 'motivoIsolamento',
+    deletedAt: 'deletedAt',
     camaId: 'camaId',
     administrativoAdmissaoId: 'administrativoAdmissaoId'
   };
@@ -91315,7 +92735,8 @@ export namespace Prisma {
     avaliacao: 'avaliacao',
     plano: 'plano',
     criadaEm: 'criadaEm',
-    editadaEm: 'editadaEm'
+    editadaEm: 'editadaEm',
+    deletedAt: 'deletedAt'
   };
 
   export type NotaClinicaScalarFieldEnum = (typeof NotaClinicaScalarFieldEnum)[keyof typeof NotaClinicaScalarFieldEnum]
@@ -91377,6 +92798,7 @@ export namespace Prisma {
     ativo: 'ativo',
     iniciadoEm: 'iniciadoEm',
     terminadoEm: 'terminadoEm',
+    deletedAt: 'deletedAt',
     doenteId: 'doenteId',
     prescritoPorId: 'prescritoPorId',
     estadoValidacao: 'estadoValidacao',
@@ -91395,6 +92817,7 @@ export namespace Prisma {
     verificacao5Certas: 'verificacao5Certas',
     naoAdministrada: 'naoAdministrada',
     motivoNaoAdmin: 'motivoNaoAdmin',
+    deletedAt: 'deletedAt',
     medicacaoId: 'medicacaoId',
     doenteId: 'doenteId',
     administradoPorId: 'administradoPorId'
@@ -91573,6 +92996,20 @@ export namespace Prisma {
   export type DispositivoTokenScalarFieldEnum = (typeof DispositivoTokenScalarFieldEnum)[keyof typeof DispositivoTokenScalarFieldEnum]
 
 
+  export const NotificacaoInAppScalarFieldEnum: {
+    id: 'id',
+    utilizadorId: 'utilizadorId',
+    titulo: 'titulo',
+    corpo: 'corpo',
+    lida: 'lida',
+    dadosExtra: 'dadosExtra',
+    criadaEm: 'criadaEm',
+    lidaEm: 'lidaEm'
+  };
+
+  export type NotificacaoInAppScalarFieldEnum = (typeof NotificacaoInAppScalarFieldEnum)[keyof typeof NotificacaoInAppScalarFieldEnum]
+
+
   export const ExameScalarFieldEnum: {
     id: 'id',
     doenteId: 'doenteId',
@@ -91737,6 +93174,9 @@ export namespace Prisma {
     estado: 'estado',
     solicitadoPorId: 'solicitadoPorId',
     processadoPorId: 'processadoPorId',
+    aprovadoPorId: 'aprovadoPorId',
+    aprovadoEm: 'aprovadoEm',
+    motivoRejeicao: 'motivoRejeicao',
     observacoes: 'observacoes',
     criadoEm: 'criadoEm'
   };
@@ -92314,20 +93754,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Servico'
-   */
-  export type EnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico'>
-    
-
-
-  /**
-   * Reference to a field of type 'Servico[]'
-   */
-  export type ListEnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -92338,6 +93764,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Servico'
+   */
+  export type EnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico'>
+    
+
+
+  /**
+   * Reference to a field of type 'Servico[]'
+   */
+  export type ListEnumServicoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Servico[]'>
     
 
 
@@ -92896,6 +94336,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFilter<"Utilizador"> | string
     nome?: StringFilter<"Utilizador"> | string
     passwordHash?: StringFilter<"Utilizador"> | string
+    mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
+    mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -92924,6 +94367,7 @@ export namespace Prisma {
     auditLogs?: AuditLogListRelationFilter
     sinaisVitaisRegistados?: SinalVitalListRelationFilter
     dispositivosTokens?: DispositivoTokenListRelationFilter
+    notificacoesInApp?: NotificacaoInAppListRelationFilter
     avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
     sumariosAlta?: SumarioAltaListRelationFilter
     notasClinciasAutor?: NotaClinicaListRelationFilter
@@ -92936,6 +94380,7 @@ export namespace Prisma {
     consultas?: ConsultaListRelationFilter
     stockPedidosSolicitados?: PedidoFarmaciaListRelationFilter
     stockPedidosProcessados?: PedidoFarmaciaListRelationFilter
+    stockPedidosAprovados?: PedidoFarmaciaListRelationFilter
     planosReabilitacao?: PlanoReabilitacaoListRelationFilter
     sessoesFisioterapia?: SessaoFisioterapiaListRelationFilter
     pedidosInternosSolicitados?: PedidoInternoListRelationFilter
@@ -92986,6 +94431,9 @@ export namespace Prisma {
     numeroFuncionario?: SortOrder
     nome?: SortOrder
     passwordHash?: SortOrder
+    mfaSecret?: SortOrderInput | SortOrder
+    mfaAtivo?: SortOrder
+    passwordExpiresAt?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
     servico?: SortOrder
@@ -93014,6 +94462,7 @@ export namespace Prisma {
     auditLogs?: AuditLogOrderByRelationAggregateInput
     sinaisVitaisRegistados?: SinalVitalOrderByRelationAggregateInput
     dispositivosTokens?: DispositivoTokenOrderByRelationAggregateInput
+    notificacoesInApp?: NotificacaoInAppOrderByRelationAggregateInput
     avaliacoesRisco?: AvaliacaoRiscoOrderByRelationAggregateInput
     sumariosAlta?: SumarioAltaOrderByRelationAggregateInput
     notasClinciasAutor?: NotaClinicaOrderByRelationAggregateInput
@@ -93026,6 +94475,7 @@ export namespace Prisma {
     consultas?: ConsultaOrderByRelationAggregateInput
     stockPedidosSolicitados?: PedidoFarmaciaOrderByRelationAggregateInput
     stockPedidosProcessados?: PedidoFarmaciaOrderByRelationAggregateInput
+    stockPedidosAprovados?: PedidoFarmaciaOrderByRelationAggregateInput
     planosReabilitacao?: PlanoReabilitacaoOrderByRelationAggregateInput
     sessoesFisioterapia?: SessaoFisioterapiaOrderByRelationAggregateInput
     pedidosInternosSolicitados?: PedidoInternoOrderByRelationAggregateInput
@@ -93079,6 +94529,9 @@ export namespace Prisma {
     NOT?: UtilizadorWhereInput | UtilizadorWhereInput[]
     nome?: StringFilter<"Utilizador"> | string
     passwordHash?: StringFilter<"Utilizador"> | string
+    mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
+    mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -93107,6 +94560,7 @@ export namespace Prisma {
     auditLogs?: AuditLogListRelationFilter
     sinaisVitaisRegistados?: SinalVitalListRelationFilter
     dispositivosTokens?: DispositivoTokenListRelationFilter
+    notificacoesInApp?: NotificacaoInAppListRelationFilter
     avaliacoesRisco?: AvaliacaoRiscoListRelationFilter
     sumariosAlta?: SumarioAltaListRelationFilter
     notasClinciasAutor?: NotaClinicaListRelationFilter
@@ -93119,6 +94573,7 @@ export namespace Prisma {
     consultas?: ConsultaListRelationFilter
     stockPedidosSolicitados?: PedidoFarmaciaListRelationFilter
     stockPedidosProcessados?: PedidoFarmaciaListRelationFilter
+    stockPedidosAprovados?: PedidoFarmaciaListRelationFilter
     planosReabilitacao?: PlanoReabilitacaoListRelationFilter
     sessoesFisioterapia?: SessaoFisioterapiaListRelationFilter
     pedidosInternosSolicitados?: PedidoInternoListRelationFilter
@@ -93169,6 +94624,9 @@ export namespace Prisma {
     numeroFuncionario?: SortOrder
     nome?: SortOrder
     passwordHash?: SortOrder
+    mfaSecret?: SortOrderInput | SortOrder
+    mfaAtivo?: SortOrder
+    passwordExpiresAt?: SortOrderInput | SortOrder
     role?: SortOrder
     subRole?: SortOrderInput | SortOrder
     servico?: SortOrder
@@ -93193,6 +94651,9 @@ export namespace Prisma {
     numeroFuncionario?: StringWithAggregatesFilter<"Utilizador"> | string
     nome?: StringWithAggregatesFilter<"Utilizador"> | string
     passwordHash?: StringWithAggregatesFilter<"Utilizador"> | string
+    mfaSecret?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
+    mfaAtivo?: BoolWithAggregatesFilter<"Utilizador"> | boolean
+    passwordExpiresAt?: DateTimeNullableWithAggregatesFilter<"Utilizador"> | Date | string | null
     role?: StringWithAggregatesFilter<"Utilizador"> | string
     subRole?: StringNullableWithAggregatesFilter<"Utilizador"> | string | null
     servico?: EnumServicoWithAggregatesFilter<"Utilizador"> | $Enums.Servico
@@ -93272,6 +94733,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Doente"> | Date | string | null
     camaId?: StringNullableFilter<"Doente"> | string | null
     administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
     cama?: XOR<CamaNullableScalarRelationFilter, CamaWhereInput> | null
@@ -93322,6 +94784,7 @@ export namespace Prisma {
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     camaId?: SortOrderInput | SortOrder
     administrativoAdmissaoId?: SortOrderInput | SortOrder
     cama?: CamaOrderByWithRelationInput
@@ -93376,6 +94839,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Doente"> | Date | string | null
     administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
     cama?: XOR<CamaNullableScalarRelationFilter, CamaWhereInput> | null
     administrativo?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
@@ -93425,6 +94889,7 @@ export namespace Prisma {
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     camaId?: SortOrderInput | SortOrder
     administrativoAdmissaoId?: SortOrderInput | SortOrder
     _count?: DoenteCountOrderByAggregateInput
@@ -93450,6 +94915,7 @@ export namespace Prisma {
     ativo?: BoolWithAggregatesFilter<"Doente"> | boolean
     emIsolamento?: BoolWithAggregatesFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableWithAggregatesFilter<"Doente"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Doente"> | Date | string | null
     camaId?: StringNullableWithAggregatesFilter<"Doente"> | string | null
     administrativoAdmissaoId?: StringNullableWithAggregatesFilter<"Doente"> | string | null
   }
@@ -93712,6 +95178,7 @@ export namespace Prisma {
     plano?: StringFilter<"NotaClinica"> | string
     criadaEm?: DateTimeFilter<"NotaClinica"> | Date | string
     editadaEm?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }
@@ -93726,6 +95193,7 @@ export namespace Prisma {
     plano?: SortOrder
     criadaEm?: SortOrder
     editadaEm?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     doente?: DoenteOrderByWithRelationInput
     autor?: UtilizadorOrderByWithRelationInput
   }
@@ -93743,6 +95211,7 @@ export namespace Prisma {
     plano?: StringFilter<"NotaClinica"> | string
     criadaEm?: DateTimeFilter<"NotaClinica"> | Date | string
     editadaEm?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
   }, "id">
@@ -93757,6 +95226,7 @@ export namespace Prisma {
     plano?: SortOrder
     criadaEm?: SortOrder
     editadaEm?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: NotaClinicaCountOrderByAggregateInput
     _max?: NotaClinicaMaxOrderByAggregateInput
     _min?: NotaClinicaMinOrderByAggregateInput
@@ -93775,6 +95245,7 @@ export namespace Prisma {
     plano?: StringWithAggregatesFilter<"NotaClinica"> | string
     criadaEm?: DateTimeWithAggregatesFilter<"NotaClinica"> | Date | string
     editadaEm?: DateTimeNullableWithAggregatesFilter<"NotaClinica"> | Date | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"NotaClinica"> | Date | string | null
   }
 
   export type EscalaClinicaWhereInput = {
@@ -94044,6 +95515,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Medicacao"> | boolean
     iniciadoEm?: DateTimeFilter<"Medicacao"> | Date | string
     terminadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     doenteId?: StringFilter<"Medicacao"> | string
     prescritoPorId?: StringFilter<"Medicacao"> | string
     estadoValidacao?: StringNullableFilter<"Medicacao"> | string | null
@@ -94065,6 +95537,7 @@ export namespace Prisma {
     ativo?: SortOrder
     iniciadoEm?: SortOrder
     terminadoEm?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     doenteId?: SortOrder
     prescritoPorId?: SortOrder
     estadoValidacao?: SortOrderInput | SortOrder
@@ -94089,6 +95562,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Medicacao"> | boolean
     iniciadoEm?: DateTimeFilter<"Medicacao"> | Date | string
     terminadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     doenteId?: StringFilter<"Medicacao"> | string
     prescritoPorId?: StringFilter<"Medicacao"> | string
     estadoValidacao?: StringNullableFilter<"Medicacao"> | string | null
@@ -94110,6 +95584,7 @@ export namespace Prisma {
     ativo?: SortOrder
     iniciadoEm?: SortOrder
     terminadoEm?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     doenteId?: SortOrder
     prescritoPorId?: SortOrder
     estadoValidacao?: SortOrderInput | SortOrder
@@ -94133,6 +95608,7 @@ export namespace Prisma {
     ativo?: BoolWithAggregatesFilter<"Medicacao"> | boolean
     iniciadoEm?: DateTimeWithAggregatesFilter<"Medicacao"> | Date | string
     terminadoEm?: DateTimeNullableWithAggregatesFilter<"Medicacao"> | Date | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Medicacao"> | Date | string | null
     doenteId?: StringWithAggregatesFilter<"Medicacao"> | string
     prescritoPorId?: StringWithAggregatesFilter<"Medicacao"> | string
     estadoValidacao?: StringNullableWithAggregatesFilter<"Medicacao"> | string | null
@@ -94151,6 +95627,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -94166,6 +95643,7 @@ export namespace Prisma {
     verificacao5Certas?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -94184,6 +95662,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -94199,6 +95678,7 @@ export namespace Prisma {
     verificacao5Certas?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrderInput | SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -94217,6 +95697,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
     naoAdministrada?: BoolWithAggregatesFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableWithAggregatesFilter<"RegistoMedicacao"> | string | null
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"RegistoMedicacao"> | Date | string | null
     medicacaoId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
     doenteId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringWithAggregatesFilter<"RegistoMedicacao"> | string
@@ -95126,6 +96607,76 @@ export namespace Prisma {
     criadoEm?: DateTimeWithAggregatesFilter<"DispositivoToken"> | Date | string
   }
 
+  export type NotificacaoInAppWhereInput = {
+    AND?: NotificacaoInAppWhereInput | NotificacaoInAppWhereInput[]
+    OR?: NotificacaoInAppWhereInput[]
+    NOT?: NotificacaoInAppWhereInput | NotificacaoInAppWhereInput[]
+    id?: StringFilter<"NotificacaoInApp"> | string
+    utilizadorId?: StringFilter<"NotificacaoInApp"> | string
+    titulo?: StringFilter<"NotificacaoInApp"> | string
+    corpo?: StringFilter<"NotificacaoInApp"> | string
+    lida?: BoolFilter<"NotificacaoInApp"> | boolean
+    dadosExtra?: JsonNullableFilter<"NotificacaoInApp">
+    criadaEm?: DateTimeFilter<"NotificacaoInApp"> | Date | string
+    lidaEm?: DateTimeNullableFilter<"NotificacaoInApp"> | Date | string | null
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type NotificacaoInAppOrderByWithRelationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    titulo?: SortOrder
+    corpo?: SortOrder
+    lida?: SortOrder
+    dadosExtra?: SortOrderInput | SortOrder
+    criadaEm?: SortOrder
+    lidaEm?: SortOrderInput | SortOrder
+    utilizador?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type NotificacaoInAppWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificacaoInAppWhereInput | NotificacaoInAppWhereInput[]
+    OR?: NotificacaoInAppWhereInput[]
+    NOT?: NotificacaoInAppWhereInput | NotificacaoInAppWhereInput[]
+    utilizadorId?: StringFilter<"NotificacaoInApp"> | string
+    titulo?: StringFilter<"NotificacaoInApp"> | string
+    corpo?: StringFilter<"NotificacaoInApp"> | string
+    lida?: BoolFilter<"NotificacaoInApp"> | boolean
+    dadosExtra?: JsonNullableFilter<"NotificacaoInApp">
+    criadaEm?: DateTimeFilter<"NotificacaoInApp"> | Date | string
+    lidaEm?: DateTimeNullableFilter<"NotificacaoInApp"> | Date | string | null
+    utilizador?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type NotificacaoInAppOrderByWithAggregationInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    titulo?: SortOrder
+    corpo?: SortOrder
+    lida?: SortOrder
+    dadosExtra?: SortOrderInput | SortOrder
+    criadaEm?: SortOrder
+    lidaEm?: SortOrderInput | SortOrder
+    _count?: NotificacaoInAppCountOrderByAggregateInput
+    _max?: NotificacaoInAppMaxOrderByAggregateInput
+    _min?: NotificacaoInAppMinOrderByAggregateInput
+  }
+
+  export type NotificacaoInAppScalarWhereWithAggregatesInput = {
+    AND?: NotificacaoInAppScalarWhereWithAggregatesInput | NotificacaoInAppScalarWhereWithAggregatesInput[]
+    OR?: NotificacaoInAppScalarWhereWithAggregatesInput[]
+    NOT?: NotificacaoInAppScalarWhereWithAggregatesInput | NotificacaoInAppScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotificacaoInApp"> | string
+    utilizadorId?: StringWithAggregatesFilter<"NotificacaoInApp"> | string
+    titulo?: StringWithAggregatesFilter<"NotificacaoInApp"> | string
+    corpo?: StringWithAggregatesFilter<"NotificacaoInApp"> | string
+    lida?: BoolWithAggregatesFilter<"NotificacaoInApp"> | boolean
+    dadosExtra?: JsonNullableWithAggregatesFilter<"NotificacaoInApp">
+    criadaEm?: DateTimeWithAggregatesFilter<"NotificacaoInApp"> | Date | string
+    lidaEm?: DateTimeNullableWithAggregatesFilter<"NotificacaoInApp"> | Date | string | null
+  }
+
   export type ExameWhereInput = {
     AND?: ExameWhereInput | ExameWhereInput[]
     OR?: ExameWhereInput[]
@@ -95984,11 +97535,15 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFilter<"PedidoFarmacia"> | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFilter<"PedidoFarmacia"> | string
     processadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoEm?: DateTimeNullableFilter<"PedidoFarmacia"> | Date | string | null
+    motivoRejeicao?: StringNullableFilter<"PedidoFarmacia"> | string | null
     observacoes?: StringNullableFilter<"PedidoFarmacia"> | string | null
     criadoEm?: DateTimeFilter<"PedidoFarmacia"> | Date | string
     stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
     solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     processadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }
 
   export type PedidoFarmaciaOrderByWithRelationInput = {
@@ -95999,11 +97554,15 @@ export namespace Prisma {
     estado?: SortOrder
     solicitadoPorId?: SortOrder
     processadoPorId?: SortOrderInput | SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    aprovadoEm?: SortOrderInput | SortOrder
+    motivoRejeicao?: SortOrderInput | SortOrder
     observacoes?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     stockItem?: StockItemOrderByWithRelationInput
     solicitadoPor?: UtilizadorOrderByWithRelationInput
     processadoPor?: UtilizadorOrderByWithRelationInput
+    aprovadoPor?: UtilizadorOrderByWithRelationInput
   }
 
   export type PedidoFarmaciaWhereUniqueInput = Prisma.AtLeast<{
@@ -96017,11 +97576,15 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFilter<"PedidoFarmacia"> | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFilter<"PedidoFarmacia"> | string
     processadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoEm?: DateTimeNullableFilter<"PedidoFarmacia"> | Date | string | null
+    motivoRejeicao?: StringNullableFilter<"PedidoFarmacia"> | string | null
     observacoes?: StringNullableFilter<"PedidoFarmacia"> | string | null
     criadoEm?: DateTimeFilter<"PedidoFarmacia"> | Date | string
     stockItem?: XOR<StockItemScalarRelationFilter, StockItemWhereInput>
     solicitadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     processadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }, "id">
 
   export type PedidoFarmaciaOrderByWithAggregationInput = {
@@ -96032,6 +97595,9 @@ export namespace Prisma {
     estado?: SortOrder
     solicitadoPorId?: SortOrder
     processadoPorId?: SortOrderInput | SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    aprovadoEm?: SortOrderInput | SortOrder
+    motivoRejeicao?: SortOrderInput | SortOrder
     observacoes?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: PedidoFarmaciaCountOrderByAggregateInput
@@ -96052,6 +97618,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaWithAggregatesFilter<"PedidoFarmacia"> | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringWithAggregatesFilter<"PedidoFarmacia"> | string
     processadoPorId?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
+    aprovadoPorId?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
+    aprovadoEm?: DateTimeNullableWithAggregatesFilter<"PedidoFarmacia"> | Date | string | null
+    motivoRejeicao?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
     observacoes?: StringNullableWithAggregatesFilter<"PedidoFarmacia"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"PedidoFarmacia"> | Date | string
   }
@@ -98711,6 +100280,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -98738,6 +100310,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -98750,6 +100323,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -98800,6 +100374,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -98828,6 +100405,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -98840,6 +100418,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -98889,6 +100468,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -98916,6 +100498,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -98928,6 +100511,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -98978,6 +100562,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -99006,6 +100593,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -99018,6 +100606,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -99067,6 +100656,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -99083,6 +100675,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -99098,6 +100693,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -99177,6 +100775,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -99225,6 +100824,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -99273,6 +100873,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -99321,6 +100922,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -99369,6 +100971,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
   }
@@ -99388,6 +100991,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DoenteUncheckedUpdateManyInput = {
@@ -99405,6 +101009,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -99642,6 +101247,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
     doente: DoenteCreateNestedOneWithoutNotasClinciasInput
     autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
   }
@@ -99656,6 +101262,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type NotaClinicaUpdateInput = {
@@ -99666,6 +101273,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
     autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
   }
@@ -99680,6 +101288,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type NotaClinicaCreateManyInput = {
@@ -99692,6 +101301,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type NotaClinicaUpdateManyMutationInput = {
@@ -99702,6 +101312,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type NotaClinicaUncheckedUpdateManyInput = {
@@ -99714,6 +101325,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type EscalaClinicaCreateInput = {
@@ -99982,6 +101594,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     estadoValidacao?: string | null
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
@@ -100000,6 +101613,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao?: string | null
@@ -100018,6 +101632,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100036,6 +101651,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100054,6 +101670,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao?: string | null
@@ -100071,6 +101688,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100085,6 +101703,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -100100,6 +101719,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
@@ -100112,6 +101732,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -100124,6 +101745,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
@@ -100136,6 +101758,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
@@ -100148,6 +101771,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     doenteId: string
     administradoPorId: string
@@ -100160,6 +101784,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type RegistoMedicacaoUncheckedUpdateManyInput = {
@@ -100169,6 +101794,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
@@ -101082,6 +102708,82 @@ export namespace Prisma {
     token?: StringFieldUpdateOperationsInput | string
     plataforma?: StringFieldUpdateOperationsInput | string
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificacaoInAppCreateInput = {
+    id?: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+    utilizador: UtilizadorCreateNestedOneWithoutNotificacoesInAppInput
+  }
+
+  export type NotificacaoInAppUncheckedCreateInput = {
+    id?: string
+    utilizadorId: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+  }
+
+  export type NotificacaoInAppUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    utilizador?: UtilizadorUpdateOneRequiredWithoutNotificacoesInAppNestedInput
+  }
+
+  export type NotificacaoInAppUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificacaoInAppCreateManyInput = {
+    id?: string
+    utilizadorId: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+  }
+
+  export type NotificacaoInAppUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificacaoInAppUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    utilizadorId?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ExameCreateInput = {
@@ -102005,11 +103707,14 @@ export namespace Prisma {
     quantidade: number
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
     stockItem: StockItemCreateNestedOneWithoutPedidosInput
     solicitadoPor: UtilizadorCreateNestedOneWithoutStockPedidosSolicitadosInput
     processadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosProcessadosInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosAprovadosInput
   }
 
   export type PedidoFarmaciaUncheckedCreateInput = {
@@ -102020,6 +103725,9 @@ export namespace Prisma {
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -102029,11 +103737,14 @@ export namespace Prisma {
     quantidade?: FloatFieldUpdateOperationsInput | number
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     stockItem?: StockItemUpdateOneRequiredWithoutPedidosNestedInput
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutStockPedidosSolicitadosNestedInput
     processadoPor?: UtilizadorUpdateOneWithoutStockPedidosProcessadosNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutStockPedidosAprovadosNestedInput
   }
 
   export type PedidoFarmaciaUncheckedUpdateInput = {
@@ -102044,6 +103755,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -102056,6 +103770,9 @@ export namespace Prisma {
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -102065,6 +103782,8 @@ export namespace Prisma {
     quantidade?: FloatFieldUpdateOperationsInput | number
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -102077,6 +103796,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -104944,6 +106666,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type EnumServicoFilter<$PrismaModel = never> = {
     equals?: $Enums.Servico | EnumServicoFieldRefInput<$PrismaModel>
     in?: $Enums.Servico[] | ListEnumServicoFieldRefInput<$PrismaModel>
@@ -105061,6 +106794,12 @@ export namespace Prisma {
     every?: DispositivoTokenWhereInput
     some?: DispositivoTokenWhereInput
     none?: DispositivoTokenWhereInput
+  }
+
+  export type NotificacaoInAppListRelationFilter = {
+    every?: NotificacaoInAppWhereInput
+    some?: NotificacaoInAppWhereInput
+    none?: NotificacaoInAppWhereInput
   }
 
   export type AvaliacaoRiscoListRelationFilter = {
@@ -105360,6 +107099,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type NotificacaoInAppOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type AvaliacaoRiscoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -105513,6 +107256,9 @@ export namespace Prisma {
     numeroFuncionario?: SortOrder
     nome?: SortOrder
     passwordHash?: SortOrder
+    mfaSecret?: SortOrder
+    mfaAtivo?: SortOrder
+    passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -105533,6 +107279,9 @@ export namespace Prisma {
     numeroFuncionario?: SortOrder
     nome?: SortOrder
     passwordHash?: SortOrder
+    mfaSecret?: SortOrder
+    mfaAtivo?: SortOrder
+    passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -105549,6 +107298,9 @@ export namespace Prisma {
     numeroFuncionario?: SortOrder
     nome?: SortOrder
     passwordHash?: SortOrder
+    mfaSecret?: SortOrder
+    mfaAtivo?: SortOrder
+    passwordExpiresAt?: SortOrder
     role?: SortOrder
     subRole?: SortOrder
     servico?: SortOrder
@@ -105580,6 +107332,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumServicoWithAggregatesFilter<$PrismaModel = never> = {
@@ -105665,17 +107431,6 @@ export namespace Prisma {
     _max?: NestedEnumEstadoCamaFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type EnumEstadoDoenteFilter<$PrismaModel = never> = {
     equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
     in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
@@ -105743,6 +107498,7 @@ export namespace Prisma {
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrder
+    deletedAt?: SortOrder
     camaId?: SortOrder
     administrativoAdmissaoId?: SortOrder
   }
@@ -105762,6 +107518,7 @@ export namespace Prisma {
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrder
+    deletedAt?: SortOrder
     camaId?: SortOrder
     administrativoAdmissaoId?: SortOrder
   }
@@ -105781,22 +107538,9 @@ export namespace Prisma {
     ativo?: SortOrder
     emIsolamento?: SortOrder
     motivoIsolamento?: SortOrder
+    deletedAt?: SortOrder
     camaId?: SortOrder
     administrativoAdmissaoId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
@@ -105952,6 +107696,7 @@ export namespace Prisma {
     plano?: SortOrder
     criadaEm?: SortOrder
     editadaEm?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type NotaClinicaMaxOrderByAggregateInput = {
@@ -105964,6 +107709,7 @@ export namespace Prisma {
     plano?: SortOrder
     criadaEm?: SortOrder
     editadaEm?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type NotaClinicaMinOrderByAggregateInput = {
@@ -105976,6 +107722,7 @@ export namespace Prisma {
     plano?: SortOrder
     criadaEm?: SortOrder
     editadaEm?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type EnumTipoEscalaClinicaFilter<$PrismaModel = never> = {
@@ -106229,6 +107976,7 @@ export namespace Prisma {
     ativo?: SortOrder
     iniciadoEm?: SortOrder
     terminadoEm?: SortOrder
+    deletedAt?: SortOrder
     doenteId?: SortOrder
     prescritoPorId?: SortOrder
     estadoValidacao?: SortOrder
@@ -106246,6 +107994,7 @@ export namespace Prisma {
     ativo?: SortOrder
     iniciadoEm?: SortOrder
     terminadoEm?: SortOrder
+    deletedAt?: SortOrder
     doenteId?: SortOrder
     prescritoPorId?: SortOrder
     estadoValidacao?: SortOrder
@@ -106263,6 +108012,7 @@ export namespace Prisma {
     ativo?: SortOrder
     iniciadoEm?: SortOrder
     terminadoEm?: SortOrder
+    deletedAt?: SortOrder
     doenteId?: SortOrder
     prescritoPorId?: SortOrder
     estadoValidacao?: SortOrder
@@ -106283,6 +108033,7 @@ export namespace Prisma {
     verificacao5Certas?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrder
+    deletedAt?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -106295,6 +108046,7 @@ export namespace Prisma {
     verificacao5Certas?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrder
+    deletedAt?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -106307,6 +108059,7 @@ export namespace Prisma {
     verificacao5Certas?: SortOrder
     naoAdministrada?: SortOrder
     motivoNaoAdmin?: SortOrder
+    deletedAt?: SortOrder
     medicacaoId?: SortOrder
     doenteId?: SortOrder
     administradoPorId?: SortOrder
@@ -106822,6 +108575,86 @@ export namespace Prisma {
     plataforma?: SortOrder
     criadoEm?: SortOrder
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NotificacaoInAppCountOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    titulo?: SortOrder
+    corpo?: SortOrder
+    lida?: SortOrder
+    dadosExtra?: SortOrder
+    criadaEm?: SortOrder
+    lidaEm?: SortOrder
+  }
+
+  export type NotificacaoInAppMaxOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    titulo?: SortOrder
+    corpo?: SortOrder
+    lida?: SortOrder
+    criadaEm?: SortOrder
+    lidaEm?: SortOrder
+  }
+
+  export type NotificacaoInAppMinOrderByAggregateInput = {
+    id?: SortOrder
+    utilizadorId?: SortOrder
+    titulo?: SortOrder
+    corpo?: SortOrder
+    lida?: SortOrder
+    criadaEm?: SortOrder
+    lidaEm?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
 
   export type EnumTipoExameFilter<$PrismaModel = never> = {
     equals?: $Enums.TipoExame | EnumTipoExameFieldRefInput<$PrismaModel>
@@ -106951,29 +108784,6 @@ export namespace Prisma {
     notIn?: $Enums.EstadoEpisodio[] | ListEnumEstadoEpisodioFieldRefInput<$PrismaModel>
     not?: NestedEnumEstadoEpisodioFilter<$PrismaModel> | $Enums.EstadoEpisodio
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type EpisodioUrgenciaCountOrderByAggregateInput = {
     id?: SortOrder
@@ -107053,32 +108863,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoEpisodioFilter<$PrismaModel>
     _max?: NestedEnumEstadoEpisodioFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumEstadoCirurgiaFilter<$PrismaModel = never> = {
@@ -107536,6 +109320,9 @@ export namespace Prisma {
     estado?: SortOrder
     solicitadoPorId?: SortOrder
     processadoPorId?: SortOrder
+    aprovadoPorId?: SortOrder
+    aprovadoEm?: SortOrder
+    motivoRejeicao?: SortOrder
     observacoes?: SortOrder
     criadoEm?: SortOrder
   }
@@ -107552,6 +109339,9 @@ export namespace Prisma {
     estado?: SortOrder
     solicitadoPorId?: SortOrder
     processadoPorId?: SortOrder
+    aprovadoPorId?: SortOrder
+    aprovadoEm?: SortOrder
+    motivoRejeicao?: SortOrder
     observacoes?: SortOrder
     criadoEm?: SortOrder
   }
@@ -107564,6 +109354,9 @@ export namespace Prisma {
     estado?: SortOrder
     solicitadoPorId?: SortOrder
     processadoPorId?: SortOrder
+    aprovadoPorId?: SortOrder
+    aprovadoEm?: SortOrder
+    motivoRejeicao?: SortOrder
     observacoes?: SortOrder
     criadoEm?: SortOrder
   }
@@ -109307,6 +111100,13 @@ export namespace Prisma {
     connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
   }
 
+  export type NotificacaoInAppCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput> | NotificacaoInAppCreateWithoutUtilizadorInput[] | NotificacaoInAppUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: NotificacaoInAppCreateOrConnectWithoutUtilizadorInput | NotificacaoInAppCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: NotificacaoInAppCreateManyUtilizadorInputEnvelope
+    connect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+  }
+
   export type AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput = {
     create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
@@ -109388,6 +111188,13 @@ export namespace Prisma {
     create?: XOR<PedidoFarmaciaCreateWithoutProcessadoPorInput, PedidoFarmaciaUncheckedCreateWithoutProcessadoPorInput> | PedidoFarmaciaCreateWithoutProcessadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutProcessadoPorInput[]
     connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutProcessadoPorInput | PedidoFarmaciaCreateOrConnectWithoutProcessadoPorInput[]
     createMany?: PedidoFarmaciaCreateManyProcessadoPorInputEnvelope
+    connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+  }
+
+  export type PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput> | PedidoFarmaciaCreateWithoutAprovadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput | PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: PedidoFarmaciaCreateManyAprovadoPorInputEnvelope
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
   }
 
@@ -109823,6 +111630,13 @@ export namespace Prisma {
     connect?: DispositivoTokenWhereUniqueInput | DispositivoTokenWhereUniqueInput[]
   }
 
+  export type NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput = {
+    create?: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput> | NotificacaoInAppCreateWithoutUtilizadorInput[] | NotificacaoInAppUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: NotificacaoInAppCreateOrConnectWithoutUtilizadorInput | NotificacaoInAppCreateOrConnectWithoutUtilizadorInput[]
+    createMany?: NotificacaoInAppCreateManyUtilizadorInputEnvelope
+    connect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+  }
+
   export type AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput = {
     create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
@@ -109904,6 +111718,13 @@ export namespace Prisma {
     create?: XOR<PedidoFarmaciaCreateWithoutProcessadoPorInput, PedidoFarmaciaUncheckedCreateWithoutProcessadoPorInput> | PedidoFarmaciaCreateWithoutProcessadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutProcessadoPorInput[]
     connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutProcessadoPorInput | PedidoFarmaciaCreateOrConnectWithoutProcessadoPorInput[]
     createMany?: PedidoFarmaciaCreateManyProcessadoPorInputEnvelope
+    connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+  }
+
+  export type PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput> | PedidoFarmaciaCreateWithoutAprovadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput | PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: PedidoFarmaciaCreateManyAprovadoPorInputEnvelope
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
   }
 
@@ -110204,6 +112025,10 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type EnumServicoFieldUpdateOperationsInput = {
     set?: $Enums.Servico
   }
@@ -110486,6 +112311,20 @@ export namespace Prisma {
     deleteMany?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
   }
 
+  export type NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput> | NotificacaoInAppCreateWithoutUtilizadorInput[] | NotificacaoInAppUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: NotificacaoInAppCreateOrConnectWithoutUtilizadorInput | NotificacaoInAppCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: NotificacaoInAppUpsertWithWhereUniqueWithoutUtilizadorInput | NotificacaoInAppUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: NotificacaoInAppCreateManyUtilizadorInputEnvelope
+    set?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    disconnect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    delete?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    connect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    update?: NotificacaoInAppUpdateWithWhereUniqueWithoutUtilizadorInput | NotificacaoInAppUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: NotificacaoInAppUpdateManyWithWhereWithoutUtilizadorInput | NotificacaoInAppUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: NotificacaoInAppScalarWhereInput | NotificacaoInAppScalarWhereInput[]
+  }
+
   export type AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput = {
     create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
@@ -110651,6 +112490,20 @@ export namespace Prisma {
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
     update?: PedidoFarmaciaUpdateWithWhereUniqueWithoutProcessadoPorInput | PedidoFarmaciaUpdateWithWhereUniqueWithoutProcessadoPorInput[]
     updateMany?: PedidoFarmaciaUpdateManyWithWhereWithoutProcessadoPorInput | PedidoFarmaciaUpdateManyWithWhereWithoutProcessadoPorInput[]
+    deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
+  }
+
+  export type PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput> | PedidoFarmaciaCreateWithoutAprovadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput | PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: PedidoFarmaciaUpsertWithWhereUniqueWithoutAprovadoPorInput | PedidoFarmaciaUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: PedidoFarmaciaCreateManyAprovadoPorInputEnvelope
+    set?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    disconnect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    delete?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    update?: PedidoFarmaciaUpdateWithWhereUniqueWithoutAprovadoPorInput | PedidoFarmaciaUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: PedidoFarmaciaUpdateManyWithWhereWithoutAprovadoPorInput | PedidoFarmaciaUpdateManyWithWhereWithoutAprovadoPorInput[]
     deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
   }
 
@@ -111514,6 +113367,20 @@ export namespace Prisma {
     deleteMany?: DispositivoTokenScalarWhereInput | DispositivoTokenScalarWhereInput[]
   }
 
+  export type NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput = {
+    create?: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput> | NotificacaoInAppCreateWithoutUtilizadorInput[] | NotificacaoInAppUncheckedCreateWithoutUtilizadorInput[]
+    connectOrCreate?: NotificacaoInAppCreateOrConnectWithoutUtilizadorInput | NotificacaoInAppCreateOrConnectWithoutUtilizadorInput[]
+    upsert?: NotificacaoInAppUpsertWithWhereUniqueWithoutUtilizadorInput | NotificacaoInAppUpsertWithWhereUniqueWithoutUtilizadorInput[]
+    createMany?: NotificacaoInAppCreateManyUtilizadorInputEnvelope
+    set?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    disconnect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    delete?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    connect?: NotificacaoInAppWhereUniqueInput | NotificacaoInAppWhereUniqueInput[]
+    update?: NotificacaoInAppUpdateWithWhereUniqueWithoutUtilizadorInput | NotificacaoInAppUpdateWithWhereUniqueWithoutUtilizadorInput[]
+    updateMany?: NotificacaoInAppUpdateManyWithWhereWithoutUtilizadorInput | NotificacaoInAppUpdateManyWithWhereWithoutUtilizadorInput[]
+    deleteMany?: NotificacaoInAppScalarWhereInput | NotificacaoInAppScalarWhereInput[]
+  }
+
   export type AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
     create?: XOR<AvaliacaoRiscoCreateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput> | AvaliacaoRiscoCreateWithoutRegistadoPorInput[] | AvaliacaoRiscoUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput | AvaliacaoRiscoCreateOrConnectWithoutRegistadoPorInput[]
@@ -111679,6 +113546,20 @@ export namespace Prisma {
     connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
     update?: PedidoFarmaciaUpdateWithWhereUniqueWithoutProcessadoPorInput | PedidoFarmaciaUpdateWithWhereUniqueWithoutProcessadoPorInput[]
     updateMany?: PedidoFarmaciaUpdateManyWithWhereWithoutProcessadoPorInput | PedidoFarmaciaUpdateManyWithWhereWithoutProcessadoPorInput[]
+    deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
+  }
+
+  export type PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput> | PedidoFarmaciaCreateWithoutAprovadoPorInput[] | PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput | PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: PedidoFarmaciaUpsertWithWhereUniqueWithoutAprovadoPorInput | PedidoFarmaciaUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: PedidoFarmaciaCreateManyAprovadoPorInputEnvelope
+    set?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    disconnect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    delete?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    connect?: PedidoFarmaciaWhereUniqueInput | PedidoFarmaciaWhereUniqueInput[]
+    update?: PedidoFarmaciaUpdateWithWhereUniqueWithoutAprovadoPorInput | PedidoFarmaciaUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: PedidoFarmaciaUpdateManyWithWhereWithoutAprovadoPorInput | PedidoFarmaciaUpdateManyWithWhereWithoutAprovadoPorInput[]
     deleteMany?: PedidoFarmaciaScalarWhereInput | PedidoFarmaciaScalarWhereInput[]
   }
 
@@ -112714,10 +114595,6 @@ export namespace Prisma {
     connectOrCreate?: EventoAdversoCreateOrConnectWithoutDoenteInput | EventoAdversoCreateOrConnectWithoutDoenteInput[]
     createMany?: EventoAdversoCreateManyDoenteInputEnvelope
     connect?: EventoAdversoWhereUniqueInput | EventoAdversoWhereUniqueInput[]
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -114746,6 +116623,20 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDispositivosTokensInput, UtilizadorUpdateWithoutDispositivosTokensInput>, UtilizadorUncheckedUpdateWithoutDispositivosTokensInput>
   }
 
+  export type UtilizadorCreateNestedOneWithoutNotificacoesInAppInput = {
+    create?: XOR<UtilizadorCreateWithoutNotificacoesInAppInput, UtilizadorUncheckedCreateWithoutNotificacoesInAppInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutNotificacoesInAppInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutNotificacoesInAppNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutNotificacoesInAppInput, UtilizadorUncheckedCreateWithoutNotificacoesInAppInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutNotificacoesInAppInput
+    upsert?: UtilizadorUpsertWithoutNotificacoesInAppInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutNotificacoesInAppInput, UtilizadorUpdateWithoutNotificacoesInAppInput>, UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput>
+  }
+
   export type DoenteCreateNestedOneWithoutExamesInput = {
     create?: XOR<DoenteCreateWithoutExamesInput, DoenteUncheckedCreateWithoutExamesInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutExamesInput
@@ -115406,6 +117297,12 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type UtilizadorCreateNestedOneWithoutStockPedidosAprovadosInput = {
+    create?: XOR<UtilizadorCreateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutStockPedidosAprovadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
   export type EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput = {
     set?: $Enums.EstadoPedidoFarmacia
   }
@@ -115434,6 +117331,16 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutStockPedidosProcessadosInput, UtilizadorUpdateWithoutStockPedidosProcessadosInput>, UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutStockPedidosAprovadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutStockPedidosAprovadosInput
+    upsert?: UtilizadorUpsertWithoutStockPedidosAprovadosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutStockPedidosAprovadosInput, UtilizadorUpdateWithoutStockPedidosAprovadosInput>, UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput>
   }
 
   export type StockItemCreateNestedManyWithoutCatalogoInput = {
@@ -116654,6 +118561,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumServicoFilter<$PrismaModel = never> = {
     equals?: $Enums.Servico | EnumServicoFieldRefInput<$PrismaModel>
     in?: $Enums.Servico[] | ListEnumServicoFieldRefInput<$PrismaModel>
@@ -116698,6 +118616,20 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumServicoWithAggregatesFilter<$PrismaModel = never> = {
@@ -116768,36 +118700,11 @@ export namespace Prisma {
     _max?: NestedEnumEstadoCamaFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumEstadoDoenteFilter<$PrismaModel = never> = {
     equals?: $Enums.EstadoDoente | EnumEstadoDoenteFieldRefInput<$PrismaModel>
     in?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
     notIn?: $Enums.EstadoDoente[] | ListEnumEstadoDoenteFieldRefInput<$PrismaModel>
     not?: NestedEnumEstadoDoenteFilter<$PrismaModel> | $Enums.EstadoDoente
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumEstadoDoenteWithAggregatesFilter<$PrismaModel = never> = {
@@ -116950,6 +118857,29 @@ export namespace Prisma {
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumTipoExameFilter<$PrismaModel = never> = {
     equals?: $Enums.TipoExame | EnumTipoExameFieldRefInput<$PrismaModel>
@@ -117017,29 +118947,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEstadoEpisodioFilter<$PrismaModel>
     _max?: NestedEnumEstadoEpisodioFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumEstadoCirurgiaFilter<$PrismaModel = never> = {
@@ -117615,6 +119522,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     estadoValidacao?: string | null
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
@@ -117632,6 +119540,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     estadoValidacao?: string | null
     validadoPorId?: string | null
@@ -117657,6 +119566,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -117668,6 +119578,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     doenteId: string
   }
@@ -117697,6 +119608,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
@@ -117744,6 +119656,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -118088,6 +120001,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificacaoInAppCreateWithoutUtilizadorInput = {
+    id?: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+  }
+
+  export type NotificacaoInAppUncheckedCreateWithoutUtilizadorInput = {
+    id?: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+  }
+
+  export type NotificacaoInAppCreateOrConnectWithoutUtilizadorInput = {
+    where: NotificacaoInAppWhereUniqueInput
+    create: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type NotificacaoInAppCreateManyUtilizadorInputEnvelope = {
+    data: NotificacaoInAppCreateManyUtilizadorInput | NotificacaoInAppCreateManyUtilizadorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AvaliacaoRiscoCreateWithoutRegistadoPorInput = {
     id?: string
     tipo: string
@@ -118158,6 +120101,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
     doente: DoenteCreateNestedOneWithoutNotasClinciasInput
   }
 
@@ -118170,6 +120114,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type NotaClinicaCreateOrConnectWithoutAutorInput = {
@@ -118479,10 +120424,13 @@ export namespace Prisma {
     quantidade: number
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
     stockItem: StockItemCreateNestedOneWithoutPedidosInput
     processadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosProcessadosInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosAprovadosInput
   }
 
   export type PedidoFarmaciaUncheckedCreateWithoutSolicitadoPorInput = {
@@ -118492,6 +120440,9 @@ export namespace Prisma {
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -118511,10 +120462,13 @@ export namespace Prisma {
     quantidade: number
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
     stockItem: StockItemCreateNestedOneWithoutPedidosInput
     solicitadoPor: UtilizadorCreateNestedOneWithoutStockPedidosSolicitadosInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosAprovadosInput
   }
 
   export type PedidoFarmaciaUncheckedCreateWithoutProcessadoPorInput = {
@@ -118524,6 +120478,9 @@ export namespace Prisma {
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -118535,6 +120492,44 @@ export namespace Prisma {
 
   export type PedidoFarmaciaCreateManyProcessadoPorInputEnvelope = {
     data: PedidoFarmaciaCreateManyProcessadoPorInput | PedidoFarmaciaCreateManyProcessadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PedidoFarmaciaCreateWithoutAprovadoPorInput = {
+    id?: string
+    quantidade: number
+    servico: string
+    estado?: $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    stockItem: StockItemCreateNestedOneWithoutPedidosInput
+    solicitadoPor: UtilizadorCreateNestedOneWithoutStockPedidosSolicitadosInput
+    processadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosProcessadosInput
+  }
+
+  export type PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servico: string
+    estado?: $Enums.EstadoPedidoFarmacia
+    solicitadoPorId: string
+    processadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type PedidoFarmaciaCreateOrConnectWithoutAprovadoPorInput = {
+    where: PedidoFarmaciaWhereUniqueInput
+    create: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoFarmaciaCreateManyAprovadoPorInputEnvelope = {
+    data: PedidoFarmaciaCreateManyAprovadoPorInput | PedidoFarmaciaCreateManyAprovadoPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -118881,6 +120876,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     estadoValidacao?: string | null
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
@@ -118898,6 +120894,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao?: string | null
@@ -119820,6 +121817,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -119847,6 +121847,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -119859,6 +121860,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -119908,6 +121910,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -119936,6 +121941,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -119948,6 +121954,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -120001,6 +122008,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -120028,6 +122038,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -120040,6 +122051,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -120089,6 +122101,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -120116,6 +122131,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -120128,6 +122144,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -120482,6 +122499,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Medicacao"> | boolean
     iniciadoEm?: DateTimeFilter<"Medicacao"> | Date | string
     terminadoEm?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"Medicacao"> | Date | string | null
     doenteId?: StringFilter<"Medicacao"> | string
     prescritoPorId?: StringFilter<"Medicacao"> | string
     estadoValidacao?: StringNullableFilter<"Medicacao"> | string | null
@@ -120516,6 +122534,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFilter<"RegistoMedicacao"> | boolean
     naoAdministrada?: BoolFilter<"RegistoMedicacao"> | boolean
     motivoNaoAdmin?: StringNullableFilter<"RegistoMedicacao"> | string | null
+    deletedAt?: DateTimeNullableFilter<"RegistoMedicacao"> | Date | string | null
     medicacaoId?: StringFilter<"RegistoMedicacao"> | string
     doenteId?: StringFilter<"RegistoMedicacao"> | string
     administradoPorId?: StringFilter<"RegistoMedicacao"> | string
@@ -120555,6 +122574,7 @@ export namespace Prisma {
     ativo?: BoolFilter<"Doente"> | boolean
     emIsolamento?: BoolFilter<"Doente"> | boolean
     motivoIsolamento?: StringNullableFilter<"Doente"> | string | null
+    deletedAt?: DateTimeNullableFilter<"Doente"> | Date | string | null
     camaId?: StringNullableFilter<"Doente"> | string | null
     administrativoAdmissaoId?: StringNullableFilter<"Doente"> | string | null
   }
@@ -120835,6 +122855,36 @@ export namespace Prisma {
     criadoEm?: DateTimeFilter<"DispositivoToken"> | Date | string
   }
 
+  export type NotificacaoInAppUpsertWithWhereUniqueWithoutUtilizadorInput = {
+    where: NotificacaoInAppWhereUniqueInput
+    update: XOR<NotificacaoInAppUpdateWithoutUtilizadorInput, NotificacaoInAppUncheckedUpdateWithoutUtilizadorInput>
+    create: XOR<NotificacaoInAppCreateWithoutUtilizadorInput, NotificacaoInAppUncheckedCreateWithoutUtilizadorInput>
+  }
+
+  export type NotificacaoInAppUpdateWithWhereUniqueWithoutUtilizadorInput = {
+    where: NotificacaoInAppWhereUniqueInput
+    data: XOR<NotificacaoInAppUpdateWithoutUtilizadorInput, NotificacaoInAppUncheckedUpdateWithoutUtilizadorInput>
+  }
+
+  export type NotificacaoInAppUpdateManyWithWhereWithoutUtilizadorInput = {
+    where: NotificacaoInAppScalarWhereInput
+    data: XOR<NotificacaoInAppUpdateManyMutationInput, NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorInput>
+  }
+
+  export type NotificacaoInAppScalarWhereInput = {
+    AND?: NotificacaoInAppScalarWhereInput | NotificacaoInAppScalarWhereInput[]
+    OR?: NotificacaoInAppScalarWhereInput[]
+    NOT?: NotificacaoInAppScalarWhereInput | NotificacaoInAppScalarWhereInput[]
+    id?: StringFilter<"NotificacaoInApp"> | string
+    utilizadorId?: StringFilter<"NotificacaoInApp"> | string
+    titulo?: StringFilter<"NotificacaoInApp"> | string
+    corpo?: StringFilter<"NotificacaoInApp"> | string
+    lida?: BoolFilter<"NotificacaoInApp"> | boolean
+    dadosExtra?: JsonNullableFilter<"NotificacaoInApp">
+    criadaEm?: DateTimeFilter<"NotificacaoInApp"> | Date | string
+    lidaEm?: DateTimeNullableFilter<"NotificacaoInApp"> | Date | string | null
+  }
+
   export type AvaliacaoRiscoUpsertWithWhereUniqueWithoutRegistadoPorInput = {
     where: AvaliacaoRiscoWhereUniqueInput
     update: XOR<AvaliacaoRiscoUpdateWithoutRegistadoPorInput, AvaliacaoRiscoUncheckedUpdateWithoutRegistadoPorInput>
@@ -120925,6 +122975,7 @@ export namespace Prisma {
     plano?: StringFilter<"NotaClinica"> | string
     criadaEm?: DateTimeFilter<"NotaClinica"> | Date | string
     editadaEm?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"NotaClinica"> | Date | string | null
   }
 
   export type EscalaClinicaUpsertWithWhereUniqueWithoutRegistadoPorInput = {
@@ -121159,6 +123210,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFilter<"PedidoFarmacia"> | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFilter<"PedidoFarmacia"> | string
     processadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoPorId?: StringNullableFilter<"PedidoFarmacia"> | string | null
+    aprovadoEm?: DateTimeNullableFilter<"PedidoFarmacia"> | Date | string | null
+    motivoRejeicao?: StringNullableFilter<"PedidoFarmacia"> | string | null
     observacoes?: StringNullableFilter<"PedidoFarmacia"> | string | null
     criadoEm?: DateTimeFilter<"PedidoFarmacia"> | Date | string
   }
@@ -121177,6 +123231,22 @@ export namespace Prisma {
   export type PedidoFarmaciaUpdateManyWithWhereWithoutProcessadoPorInput = {
     where: PedidoFarmaciaScalarWhereInput
     data: XOR<PedidoFarmaciaUpdateManyMutationInput, PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorInput>
+  }
+
+  export type PedidoFarmaciaUpsertWithWhereUniqueWithoutAprovadoPorInput = {
+    where: PedidoFarmaciaWhereUniqueInput
+    update: XOR<PedidoFarmaciaUpdateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedUpdateWithoutAprovadoPorInput>
+    create: XOR<PedidoFarmaciaCreateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoFarmaciaUpdateWithWhereUniqueWithoutAprovadoPorInput = {
+    where: PedidoFarmaciaWhereUniqueInput
+    data: XOR<PedidoFarmaciaUpdateWithoutAprovadoPorInput, PedidoFarmaciaUncheckedUpdateWithoutAprovadoPorInput>
+  }
+
+  export type PedidoFarmaciaUpdateManyWithWhereWithoutAprovadoPorInput = {
+    where: PedidoFarmaciaScalarWhereInput
+    data: XOR<PedidoFarmaciaUpdateManyMutationInput, PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorInput>
   }
 
   export type PlanoReabilitacaoUpsertWithWhereUniqueWithoutFisioterapeutaInput = {
@@ -122183,6 +124253,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -122210,6 +124283,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -122222,6 +124296,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -122271,6 +124346,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -122299,6 +124377,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -122311,6 +124390,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -122378,6 +124458,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFilter<"Utilizador"> | string
     nome?: StringFilter<"Utilizador"> | string
     passwordHash?: StringFilter<"Utilizador"> | string
+    mfaSecret?: StringNullableFilter<"Utilizador"> | string | null
+    mfaAtivo?: BoolFilter<"Utilizador"> | boolean
+    passwordExpiresAt?: DateTimeNullableFilter<"Utilizador"> | Date | string | null
     role?: StringFilter<"Utilizador"> | string
     subRole?: StringNullableFilter<"Utilizador"> | string | null
     servico?: EnumServicoFilter<"Utilizador"> | $Enums.Servico
@@ -122516,6 +124599,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
@@ -122563,6 +124647,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -122626,6 +124711,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
@@ -122673,6 +124759,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -122729,6 +124816,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -122755,6 +124845,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -122767,6 +124858,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -122817,6 +124909,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -122844,6 +124939,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -122856,6 +124952,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -123002,6 +125099,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     estadoValidacao?: string | null
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
@@ -123019,6 +125117,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     prescritoPorId: string
     estadoValidacao?: string | null
     validadoPorId?: string | null
@@ -123044,6 +125143,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacao: MedicacaoCreateNestedOneWithoutRegistosInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -123055,6 +125155,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     administradoPorId: string
   }
@@ -123312,6 +125413,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
     autor: UtilizadorCreateNestedOneWithoutNotasClinciasAutorInput
   }
 
@@ -123324,6 +125426,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type NotaClinicaCreateOrConnectWithoutDoenteInput = {
@@ -123934,6 +126037,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -123960,6 +126066,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -123972,6 +126079,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -124022,6 +126130,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -124049,6 +126160,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -124061,6 +126173,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -124653,6 +126766,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -124679,6 +126795,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -124691,6 +126808,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -124741,6 +126859,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -124768,6 +126889,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -124780,6 +126902,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -125003,6 +127126,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -125029,6 +127155,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -125041,6 +127168,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -125091,6 +127219,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -125118,6 +127249,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -125130,6 +127262,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -125285,6 +127418,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
@@ -125332,6 +127466,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
@@ -125374,6 +127509,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -125400,6 +127538,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -125412,6 +127551,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -125462,6 +127602,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -125489,6 +127632,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -125501,6 +127645,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -125607,6 +127752,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
@@ -125654,6 +127800,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -125702,6 +127849,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -125728,6 +127878,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -125740,6 +127891,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -125790,6 +127942,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -125817,6 +127972,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -125829,6 +127985,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -125946,6 +128103,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -125972,6 +128132,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -125984,6 +128145,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -126034,6 +128196,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -126061,6 +128226,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -126073,6 +128239,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -126175,6 +128342,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -126201,6 +128371,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -126213,6 +128384,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -126263,6 +128435,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -126290,6 +128465,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -126302,6 +128478,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -126423,6 +128600,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -126470,6 +128648,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -126607,6 +128786,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -126654,6 +128834,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -126701,6 +128882,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -126748,6 +128930,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -126790,6 +128973,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -126817,6 +129003,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
@@ -126828,6 +129015,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -126878,6 +129066,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -126906,6 +129097,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
@@ -126917,6 +129109,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -126992,6 +129185,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -127039,6 +129233,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -127087,6 +129282,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -127114,6 +129312,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
@@ -127125,6 +129324,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -127175,6 +129375,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -127203,6 +129406,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
@@ -127214,6 +129418,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -127273,6 +129478,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -127320,6 +129526,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -127362,6 +129569,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -127389,6 +129599,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -127400,6 +129611,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -127450,6 +129662,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -127478,6 +129693,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -127489,6 +129705,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -127564,6 +129781,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -127611,6 +129829,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -127659,6 +129878,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -127686,6 +129908,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -127697,6 +129920,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -127747,6 +129971,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -127775,6 +130002,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -127786,6 +130014,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -127876,6 +130105,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -127923,6 +130153,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -127965,6 +130196,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -127991,6 +130225,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -128003,6 +130238,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -128053,6 +130289,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -128080,6 +130319,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -128092,6 +130332,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -128204,6 +130445,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -128251,6 +130493,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -128299,6 +130542,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -128325,6 +130571,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -128337,6 +130584,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -128387,6 +130635,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -128414,6 +130665,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -128426,6 +130678,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -128485,6 +130738,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -128532,6 +130786,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -128574,6 +130829,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -128600,6 +130858,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -128612,6 +130871,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -128662,6 +130922,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -128689,6 +130952,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -128701,6 +130965,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -128755,6 +131020,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -128781,6 +131049,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -128793,6 +131062,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -128843,6 +131113,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -128870,6 +131143,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -128882,6 +131156,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -128988,6 +131263,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -129035,6 +131311,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -129083,6 +131360,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -129109,6 +131389,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -129121,6 +131402,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -129171,6 +131453,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -129198,6 +131483,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -129210,6 +131496,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -129270,6 +131557,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -129296,6 +131586,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -129308,6 +131599,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -129358,6 +131650,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -129385,6 +131680,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -129397,6 +131693,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -129493,6 +131790,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -129540,6 +131838,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -129582,6 +131881,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -129608,6 +131910,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -129620,6 +131923,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -129670,6 +131974,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -129697,6 +132004,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -129709,6 +132017,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -129763,6 +132072,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -129790,6 +132102,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -129802,6 +132115,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -129851,6 +132165,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -129879,6 +132196,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -129891,6 +132209,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -129946,6 +132265,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     doente: DoenteCreateNestedOneWithoutRegistosMedicacaoInput
     administradoPor: UtilizadorCreateNestedOneWithoutRegistosMedicacaoInput
   }
@@ -129957,6 +132277,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     doenteId: string
     administradoPorId: string
   }
@@ -129997,6 +132318,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -130044,6 +132366,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -130092,6 +132415,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -130118,6 +132444,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -130130,6 +132457,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -130180,6 +132508,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -130207,6 +132538,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -130219,6 +132551,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -130279,6 +132612,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -130306,6 +132642,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -130318,6 +132655,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -130367,6 +132705,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -130395,6 +132736,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -130407,6 +132749,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -130475,6 +132818,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     estadoValidacao?: string | null
     validadaEm?: Date | string | null
     motivoRejeicao?: string | null
@@ -130492,6 +132836,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao?: string | null
@@ -130520,6 +132865,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -130567,6 +132913,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -130609,6 +132956,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -130635,6 +132985,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -130647,6 +132998,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -130697,6 +133049,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -130724,6 +133079,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -130736,6 +133092,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -130805,6 +133162,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -130822,6 +133180,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -130856,6 +133215,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -130903,6 +133263,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -130951,6 +133312,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -130977,6 +133341,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -130989,6 +133354,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -131039,6 +133405,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -131066,6 +133435,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -131078,6 +133448,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -131127,6 +133498,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -131153,6 +133527,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -131165,6 +133540,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -131215,6 +133591,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -131242,6 +133621,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -131254,6 +133634,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -131347,6 +133728,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -131373,6 +133757,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -131385,6 +133770,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -131435,6 +133821,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -131462,6 +133851,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -131474,6 +133864,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -131740,6 +134131,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -131766,6 +134160,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -131778,6 +134173,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -131828,6 +134224,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -131855,6 +134254,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -131867,6 +134267,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -131961,6 +134362,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -131987,6 +134391,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -131999,6 +134404,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -132049,6 +134455,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -132076,6 +134485,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -132088,6 +134498,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -132137,6 +134548,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132163,6 +134577,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -132175,6 +134590,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -132225,6 +134641,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132252,6 +134671,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -132264,6 +134684,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -132318,6 +134739,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132344,6 +134768,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -132356,6 +134781,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -132406,6 +134832,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132433,6 +134862,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -132445,6 +134875,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -132522,6 +134953,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132548,6 +134982,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -132560,6 +134995,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -132610,6 +135046,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -132637,6 +135076,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -132649,6 +135089,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -132714,6 +135155,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -132740,6 +135184,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -132752,6 +135197,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -132802,6 +135248,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -132829,6 +135278,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -132841,6 +135291,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -132901,6 +135352,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -132927,6 +135381,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -132939,6 +135394,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -132989,6 +135445,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -133016,6 +135475,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -133028,6 +135488,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -133117,6 +135578,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -133143,6 +135607,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -133155,6 +135620,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -133205,6 +135671,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -133232,6 +135701,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -133244,6 +135714,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -133326,6 +135797,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -133373,6 +135845,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -133415,6 +135888,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -133441,6 +135917,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -133453,6 +135930,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -133503,6 +135981,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -133530,6 +136011,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -133542,6 +136024,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -133596,6 +136079,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -133622,6 +136108,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -133634,6 +136121,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -133684,6 +136172,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -133711,6 +136202,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -133723,6 +136215,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -133827,6 +136320,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -133874,6 +136368,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -133922,6 +136417,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -133948,6 +136446,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -133960,6 +136459,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -134010,6 +136510,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -134037,6 +136540,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -134049,6 +136553,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -134109,6 +136614,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -134135,6 +136643,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -134147,6 +136656,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -134197,6 +136707,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -134224,6 +136737,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -134236,6 +136750,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -134295,6 +136810,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -134342,6 +136858,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -134384,6 +136901,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -134410,6 +136930,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -134422,6 +136943,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -134472,6 +136994,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -134499,6 +137024,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -134511,6 +137037,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -134586,6 +137113,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -134633,6 +137161,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -134681,6 +137210,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -134707,6 +137239,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -134719,6 +137252,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -134769,6 +137303,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -134796,6 +137333,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -134808,6 +137346,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -134857,6 +137396,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -134883,6 +137425,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -134895,6 +137438,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -134945,6 +137489,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -134972,6 +137519,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -134984,6 +137532,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -135049,6 +137598,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -135075,6 +137627,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -135087,6 +137640,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -135137,6 +137691,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -135164,6 +137721,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -135176,6 +137734,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -135235,6 +137794,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -135282,6 +137842,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -135345,6 +137906,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -135392,6 +137954,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -135439,6 +138002,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -135486,6 +138050,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -135549,6 +138114,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -135596,6 +138162,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -135643,6 +138210,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -135690,6 +138258,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -135732,6 +138301,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -135759,6 +138331,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -135771,6 +138344,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -135820,6 +138394,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -135848,6 +138425,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -135860,6 +138438,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -135934,6 +138513,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -135981,6 +138561,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -136029,6 +138610,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -136056,6 +138640,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -136068,6 +138653,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -136117,6 +138703,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -136145,6 +138734,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -136157,6 +138747,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -136215,6 +138806,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -136262,6 +138854,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -136304,6 +138897,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -136331,6 +138927,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
     escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
@@ -136342,6 +138939,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -136392,6 +138990,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -136420,6 +139021,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
@@ -136431,6 +139033,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -136506,6 +139109,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -136553,6 +139157,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -136601,6 +139206,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -136628,6 +139236,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
@@ -136639,6 +139248,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -136689,6 +139299,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -136717,6 +139330,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
@@ -136728,6 +139342,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -136787,6 +139402,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -136834,6 +139450,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -136876,6 +139493,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -136903,6 +139523,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
     escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
@@ -136914,6 +139535,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -136964,6 +139586,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -136992,6 +139617,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
@@ -137003,6 +139629,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -137078,6 +139705,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -137125,6 +139753,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -137173,6 +139802,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -137200,6 +139832,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
@@ -137211,6 +139844,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -137261,6 +139895,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -137289,6 +139926,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
     escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
@@ -137300,6 +139938,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -137349,6 +139988,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -137375,6 +140017,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -137387,6 +140030,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -137437,6 +140081,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -137464,6 +140111,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -137476,6 +140124,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -137541,6 +140190,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -137567,6 +140219,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -137579,6 +140232,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -137629,6 +140283,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -137656,6 +140313,7 @@ export namespace Prisma {
     trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -137668,6 +140326,395 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutNotificacoesInAppInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutNotificacoesInAppInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutNotificacoesInAppInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutNotificacoesInAppInput, UtilizadorUncheckedCreateWithoutNotificacoesInAppInput>
+  }
+
+  export type UtilizadorUpsertWithoutNotificacoesInAppInput = {
+    update: XOR<UtilizadorUpdateWithoutNotificacoesInAppInput, UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput>
+    create: XOR<UtilizadorCreateWithoutNotificacoesInAppInput, UtilizadorUncheckedCreateWithoutNotificacoesInAppInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutNotificacoesInAppInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutNotificacoesInAppInput, UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput>
+  }
+
+  export type UtilizadorUpdateWithoutNotificacoesInAppInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -137727,6 +140774,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -137774,6 +140822,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -137816,6 +140865,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -137843,6 +140895,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -137854,6 +140907,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -137904,6 +140958,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -137932,6 +140989,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -137943,6 +141001,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -138042,6 +141101,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -138089,6 +141149,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -138137,6 +141198,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -138164,6 +141228,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -138175,6 +141240,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -138225,6 +141291,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -138253,6 +141322,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -138264,6 +141334,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -138422,6 +141493,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -138469,6 +141541,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -138511,6 +141584,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -138538,6 +141614,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -138549,6 +141626,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -138599,6 +141677,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -138627,6 +141708,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -138638,6 +141720,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -138692,6 +141775,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -138719,6 +141805,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -138730,6 +141817,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -138780,6 +141868,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -138808,6 +141899,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -138819,6 +141911,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -138894,6 +141987,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -138941,6 +142035,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -138989,6 +142084,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -139016,6 +142114,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -139027,6 +142126,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -139077,6 +142177,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -139105,6 +142208,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -139116,6 +142220,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -139176,6 +142281,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -139203,6 +142311,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -139214,6 +142323,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -139264,6 +142374,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -139292,6 +142405,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -139303,6 +142417,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -139362,6 +142477,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -139409,6 +142525,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -139451,6 +142568,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -139478,6 +142598,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -139489,6 +142610,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -139539,6 +142661,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -139567,6 +142692,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -139578,6 +142704,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -139632,6 +142759,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -139659,6 +142789,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -139670,6 +142801,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -139720,6 +142852,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -139748,6 +142883,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -139759,6 +142895,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -139865,6 +143002,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -139912,6 +143050,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -139960,6 +143099,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -139987,6 +143129,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -139998,6 +143141,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -140048,6 +143192,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -140076,6 +143223,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -140087,6 +143235,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -140147,6 +143296,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -140174,6 +143326,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -140185,6 +143338,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -140235,6 +143389,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -140263,6 +143420,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -140274,6 +143432,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -140399,6 +143558,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140426,6 +143588,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -140438,6 +143601,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -140487,6 +143651,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140515,6 +143682,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -140527,6 +143695,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -140580,6 +143749,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140607,6 +143779,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -140619,6 +143792,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -140668,6 +143842,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140696,6 +143873,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -140708,6 +143886,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -140761,6 +143940,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140788,6 +143970,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -140800,6 +143983,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -140849,6 +144033,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -140877,6 +144064,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -140889,6 +144077,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -140998,6 +144187,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141025,6 +144217,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -141037,6 +144230,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -141086,6 +144280,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141114,6 +144311,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -141126,6 +144324,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -141185,6 +144384,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141212,6 +144414,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -141224,6 +144427,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -141273,6 +144477,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141301,6 +144508,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -141313,6 +144521,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -141372,6 +144581,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141399,6 +144611,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -141411,6 +144624,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -141460,6 +144674,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -141488,6 +144705,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -141500,6 +144718,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -141558,6 +144777,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -141605,6 +144825,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -141647,6 +144868,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -141674,6 +144898,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -141685,6 +144910,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -141735,6 +144961,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -141763,6 +144992,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -141774,6 +145004,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -141910,6 +145141,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -141957,6 +145189,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -142005,6 +145238,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -142032,6 +145268,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -142043,6 +145280,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -142093,6 +145331,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -142121,6 +145362,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -142132,6 +145374,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -142250,6 +145493,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142277,6 +145523,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -142289,6 +145536,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -142338,6 +145586,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142366,6 +145617,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -142378,6 +145630,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -142442,6 +145695,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -142469,6 +145725,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -142481,6 +145738,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -142530,6 +145788,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -142558,6 +145819,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -142570,6 +145832,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -142618,6 +145881,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142645,6 +145911,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -142657,6 +145924,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -142706,6 +145974,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142734,6 +146005,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -142746,6 +146018,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -142799,6 +146072,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142826,6 +146102,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -142838,6 +146115,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -142887,6 +146165,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -142915,6 +146196,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -142927,6 +146209,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -142991,6 +146274,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -143018,6 +146304,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -143030,6 +146317,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -143079,6 +146367,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -143107,6 +146398,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -143119,6 +146411,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -143178,6 +146471,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -143205,6 +146501,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -143217,6 +146514,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -143266,6 +146564,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -143294,6 +146595,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -143306,6 +146608,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -143385,10 +146688,13 @@ export namespace Prisma {
     quantidade: number
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
     solicitadoPor: UtilizadorCreateNestedOneWithoutStockPedidosSolicitadosInput
     processadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosProcessadosInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutStockPedidosAprovadosInput
   }
 
   export type PedidoFarmaciaUncheckedCreateWithoutStockItemInput = {
@@ -143398,6 +146704,9 @@ export namespace Prisma {
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -143659,6 +146968,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -143686,6 +146998,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -143697,6 +147010,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -143747,6 +147061,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -143775,6 +147092,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -143786,6 +147104,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -143840,6 +147159,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -143867,6 +147189,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -143878,6 +147201,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -143928,6 +147252,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -143956,6 +147283,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -143967,6 +147295,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -144014,6 +147343,197 @@ export namespace Prisma {
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutStockPedidosProcessadosInput, UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput>
+  }
+
+  export type UtilizadorCreateWithoutStockPedidosAprovadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutStockPedidosAprovadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput>
   }
 
   export type StockItemUpsertWithoutPedidosInput = {
@@ -144077,6 +147597,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144104,6 +147627,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -144115,6 +147639,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -144165,6 +147690,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144193,6 +147721,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -144204,6 +147733,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -144264,6 +147794,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144291,6 +147824,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -144302,6 +147836,7 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -144352,6 +147887,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144380,6 +147918,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -144391,6 +147930,204 @@ export namespace Prisma {
     cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutStockPedidosAprovadosInput = {
+    update: XOR<UtilizadorUpdateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput>
+    create: XOR<UtilizadorCreateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutStockPedidosAprovadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutStockPedidosAprovadosInput, UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutStockPedidosAprovadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -144556,6 +148293,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -144583,6 +148323,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -144595,6 +148336,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -144644,6 +148386,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -144672,6 +148417,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -144684,6 +148430,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -144793,6 +148540,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144820,6 +148570,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -144832,6 +148583,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -144881,6 +148633,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -144909,6 +148664,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -144921,6 +148677,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -145008,6 +148765,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -145035,6 +148795,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -145047,6 +148808,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -145096,6 +148858,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -145124,6 +148889,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -145136,6 +148902,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -145189,6 +148956,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -145216,6 +148986,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -145228,6 +148999,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -145277,6 +149049,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -145305,6 +149080,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -145317,6 +149093,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -145426,6 +149203,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -145453,6 +149233,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -145465,6 +149246,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -145514,6 +149296,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -145542,6 +149327,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -145554,6 +149340,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -145613,6 +149400,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -145640,6 +149430,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -145652,6 +149443,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -145701,6 +149493,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -145729,6 +149524,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -145741,6 +149537,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -145909,6 +149706,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -145936,6 +149736,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -145948,6 +149749,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -145997,6 +149799,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -146025,6 +149830,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -146037,6 +149843,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -146179,6 +149986,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -146206,6 +150016,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -146218,6 +150029,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -146267,6 +150079,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -146295,6 +150110,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -146307,6 +150123,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -146365,6 +150182,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -146412,6 +150230,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -146454,6 +150273,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -146481,6 +150303,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -146493,6 +150316,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
     pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
@@ -146542,6 +150366,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -146570,6 +150397,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -146582,6 +150410,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
     pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
@@ -146688,6 +150517,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -146735,6 +150565,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -146783,6 +150614,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -146810,6 +150644,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -146822,6 +150657,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
     pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
@@ -146871,6 +150707,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -146899,6 +150738,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -146911,6 +150751,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
@@ -147012,6 +150853,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -147059,6 +150901,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -147101,6 +150944,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -147128,6 +150974,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -147140,6 +150987,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
     pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
@@ -147189,6 +151037,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -147217,6 +151068,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -147229,6 +151081,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
     pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
@@ -147336,6 +151189,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -147383,6 +151237,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -147431,6 +151286,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -147458,6 +151316,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -147470,6 +151329,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
     pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
@@ -147519,6 +151379,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -147547,6 +151410,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -147559,6 +151423,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
@@ -147617,6 +151482,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -147664,6 +151530,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -147706,6 +151573,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -147733,6 +151603,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -147745,6 +151616,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
@@ -147794,6 +151666,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -147822,6 +151697,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -147834,6 +151710,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
@@ -147887,6 +151764,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -147914,6 +151794,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -147926,6 +151807,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -147975,6 +151857,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -148003,6 +151888,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -148015,6 +151901,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -148089,6 +151976,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -148136,6 +152024,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -148184,6 +152073,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148211,6 +152103,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -148223,6 +152116,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
@@ -148272,6 +152166,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148300,6 +152197,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -148312,6 +152210,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
@@ -148371,6 +152270,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148398,6 +152300,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -148410,6 +152313,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -148459,6 +152363,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148487,6 +152394,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -148499,6 +152407,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -148547,6 +152456,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -148574,6 +152486,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -148586,6 +152499,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -148635,6 +152549,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -148663,6 +152580,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -148675,6 +152593,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -148739,6 +152658,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148766,6 +152688,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -148778,6 +152701,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -148827,6 +152751,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -148855,6 +152782,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -148867,6 +152795,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -148915,6 +152844,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -148942,6 +152874,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -148954,6 +152887,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -149003,6 +152937,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149031,6 +152968,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -149043,6 +152981,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -149096,6 +153035,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149123,6 +153065,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -149135,6 +153078,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -149184,6 +153128,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149212,6 +153159,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -149224,6 +153172,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -149288,6 +153237,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -149315,6 +153267,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -149327,6 +153280,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -149376,6 +153330,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -149404,6 +153361,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -149416,6 +153374,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -149475,6 +153434,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -149502,6 +153464,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -149514,6 +153477,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -149563,6 +153527,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -149591,6 +153558,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -149603,6 +153571,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -149661,6 +153630,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -149708,6 +153678,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -149750,6 +153721,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149777,6 +153751,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -149789,6 +153764,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -149838,6 +153814,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149866,6 +153845,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -149878,6 +153858,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -149931,6 +153912,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -149958,6 +153942,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -149970,6 +153955,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -150019,6 +154005,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -150047,6 +154036,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -150059,6 +154049,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -150133,6 +154124,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -150180,6 +154172,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -150228,6 +154221,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -150255,6 +154251,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -150267,6 +154264,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -150316,6 +154314,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -150344,6 +154345,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -150356,6 +154358,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -150415,6 +154418,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -150442,6 +154448,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -150454,6 +154461,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -150503,6 +154511,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -150531,6 +154542,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -150543,6 +154555,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -150601,6 +154614,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -150648,6 +154662,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -150690,6 +154705,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -150717,6 +154735,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -150729,6 +154748,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -150778,6 +154798,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -150806,6 +154829,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -150818,6 +154842,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -150892,6 +154917,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -150939,6 +154965,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -150987,6 +155014,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151014,6 +155044,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -151026,6 +155057,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -151075,6 +155107,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151103,6 +155138,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -151115,6 +155151,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -151163,6 +155200,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -151190,6 +155230,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -151202,6 +155243,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -151251,6 +155293,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -151279,6 +155324,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -151291,6 +155337,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -151344,6 +155391,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -151371,6 +155421,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -151383,6 +155434,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -151432,6 +155484,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -151460,6 +155515,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -151472,6 +155528,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -151536,6 +155593,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151563,6 +155623,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -151575,6 +155636,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -151624,6 +155686,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151652,6 +155717,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -151664,6 +155730,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -151723,6 +155790,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151750,6 +155820,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -151762,6 +155833,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -151811,6 +155883,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -151839,6 +155914,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -151851,6 +155927,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -151899,6 +155976,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -151926,6 +156006,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -151938,6 +156019,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -151987,6 +156069,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -152015,6 +156100,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -152027,6 +156113,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -152080,6 +156167,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -152107,6 +156197,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -152119,6 +156210,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -152168,6 +156260,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -152196,6 +156291,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -152208,6 +156304,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -152272,6 +156369,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -152299,6 +156399,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -152311,6 +156412,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -152360,6 +156462,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -152388,6 +156493,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -152400,6 +156506,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -152459,6 +156566,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -152486,6 +156596,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -152498,6 +156609,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -152547,6 +156659,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -152575,6 +156690,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -152587,6 +156703,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -152645,6 +156762,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -152692,6 +156810,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -152734,6 +156853,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -152761,6 +156883,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -152773,6 +156896,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -152822,6 +156946,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -152850,6 +156977,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -152862,6 +156990,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -152936,6 +157065,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -152983,6 +157113,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -153031,6 +157162,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -153058,6 +157192,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -153070,6 +157205,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -153119,6 +157255,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -153147,6 +157286,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -153159,6 +157299,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -153217,6 +157358,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -153264,6 +157406,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -153347,6 +157490,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -153374,6 +157520,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -153386,6 +157533,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -153435,6 +157583,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -153463,6 +157614,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -153475,6 +157627,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -153607,6 +157760,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -153654,6 +157808,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -153749,6 +157904,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -153776,6 +157934,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -153788,6 +157947,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -153837,6 +157997,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -153865,6 +158028,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -153877,6 +158041,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -154082,6 +158247,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -154109,6 +158277,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -154121,6 +158290,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -154170,6 +158340,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -154198,6 +158371,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -154210,6 +158384,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -154315,6 +158490,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -154342,6 +158520,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -154354,6 +158533,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -154403,6 +158583,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -154431,6 +158614,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -154443,6 +158627,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -154681,6 +158866,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -154708,6 +158896,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -154720,6 +158909,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -154769,6 +158959,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -154797,6 +158990,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -154809,6 +159003,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -154873,6 +159068,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -154900,6 +159098,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -154912,6 +159111,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -154961,6 +159161,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -154989,6 +159192,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -155001,6 +159205,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -155059,6 +159264,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -155106,6 +159312,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -155148,6 +159355,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155175,6 +159385,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -155187,6 +159398,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -155236,6 +159448,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155264,6 +159479,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -155276,6 +159492,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -155350,6 +159567,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -155397,6 +159615,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -155445,6 +159664,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -155472,6 +159694,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -155484,6 +159707,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -155533,6 +159757,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -155561,6 +159788,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -155573,6 +159801,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -155702,6 +159931,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155729,6 +159961,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -155741,6 +159974,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -155790,6 +160024,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155818,6 +160055,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -155830,6 +160068,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -155883,6 +160122,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155910,6 +160152,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -155922,6 +160165,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -155971,6 +160215,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -155999,6 +160246,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -156011,6 +160259,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -156110,6 +160359,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156137,6 +160389,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -156149,6 +160402,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -156198,6 +160452,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156226,6 +160483,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -156238,6 +160496,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -156297,6 +160556,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156324,6 +160586,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -156336,6 +160599,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -156385,6 +160649,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156413,6 +160680,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -156425,6 +160693,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -156473,6 +160742,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -156500,6 +160772,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -156512,6 +160785,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -156561,6 +160835,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -156589,6 +160866,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -156601,6 +160879,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -156654,6 +160933,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -156681,6 +160963,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -156693,6 +160976,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -156742,6 +161026,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -156770,6 +161057,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -156782,6 +161070,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -156846,6 +161135,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156873,6 +161165,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -156885,6 +161178,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -156934,6 +161228,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -156962,6 +161259,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -156974,6 +161272,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -157033,6 +161332,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -157060,6 +161362,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -157072,6 +161375,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -157121,6 +161425,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -157149,6 +161456,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -157161,6 +161469,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -157209,6 +161518,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -157236,6 +161548,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -157248,6 +161561,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -157297,6 +161611,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -157325,6 +161642,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -157337,6 +161655,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -157401,6 +161720,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -157428,6 +161750,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -157440,6 +161763,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -157489,6 +161813,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -157517,6 +161844,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -157529,6 +161857,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -157587,6 +161916,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -157634,6 +161964,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -157676,6 +162007,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -157703,6 +162037,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -157715,6 +162050,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -157764,6 +162100,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -157792,6 +162131,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -157804,6 +162144,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -157878,6 +162219,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -157925,6 +162267,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -157973,6 +162316,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -158000,6 +162346,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -158012,6 +162359,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -158061,6 +162409,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -158089,6 +162440,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -158101,6 +162453,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -158159,6 +162512,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     cama?: CamaCreateNestedOneWithoutDoenteInput
     administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
     atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
@@ -158206,6 +162560,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
     administrativoAdmissaoId?: string | null
     atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
@@ -158248,6 +162603,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -158275,6 +162633,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -158287,6 +162646,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -158336,6 +162696,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -158364,6 +162727,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -158376,6 +162740,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -158450,6 +162815,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
@@ -158497,6 +162863,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
@@ -158545,6 +162912,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -158572,6 +162942,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -158584,6 +162955,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -158633,6 +163005,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -158661,6 +163036,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -158673,6 +163049,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -158721,6 +163098,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -158748,6 +163128,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -158760,6 +163141,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -158809,6 +163191,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -158837,6 +163222,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -158849,6 +163235,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -158902,6 +163289,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -158929,6 +163319,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -158941,6 +163332,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -158990,6 +163382,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -159018,6 +163413,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -159030,6 +163426,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -159094,6 +163491,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159121,6 +163521,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -159133,6 +163534,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -159182,6 +163584,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159210,6 +163615,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -159222,6 +163628,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -159281,6 +163688,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159308,6 +163718,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -159320,6 +163731,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -159369,6 +163781,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159397,6 +163812,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -159409,6 +163825,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -159457,6 +163874,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -159484,6 +163904,7 @@ export namespace Prisma {
     auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
@@ -159496,6 +163917,7 @@ export namespace Prisma {
     consultas?: ConsultaCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
@@ -159545,6 +163967,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -159573,6 +163998,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
     sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
     dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
     sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
     notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
@@ -159585,6 +164011,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
@@ -159649,6 +164076,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159676,6 +164106,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -159688,6 +164119,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -159737,6 +164169,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -159765,6 +164200,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -159777,6 +164213,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -159915,6 +164352,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     estadoValidacao?: string | null
     validadoPorId?: string | null
@@ -159929,6 +164367,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     doenteId: string
   }
@@ -159948,6 +164387,7 @@ export namespace Prisma {
     ativo?: boolean
     emIsolamento?: boolean
     motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
     camaId?: string | null
   }
 
@@ -160046,6 +164486,16 @@ export namespace Prisma {
     criadoEm?: Date | string
   }
 
+  export type NotificacaoInAppCreateManyUtilizadorInput = {
+    id?: string
+    titulo: string
+    corpo: string
+    lida?: boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: Date | string
+    lidaEm?: Date | string | null
+  }
+
   export type AvaliacaoRiscoCreateManyRegistadoPorInput = {
     id?: string
     doenteId: string
@@ -160076,6 +164526,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type EscalaClinicaCreateManyRegistadoPorInput = {
@@ -160191,6 +164642,9 @@ export namespace Prisma {
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -160202,6 +164656,23 @@ export namespace Prisma {
     servico: string
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type PedidoFarmaciaCreateManyAprovadoPorInput = {
+    id?: string
+    stockItemId: string
+    quantidade: number
+    servico: string
+    estado?: $Enums.EstadoPedidoFarmacia
+    solicitadoPorId: string
+    processadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -160331,6 +164802,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     doenteId: string
     prescritoPorId: string
     estadoValidacao?: string | null
@@ -160653,6 +165125,9 @@ export namespace Prisma {
     numeroFuncionario: string
     nome: string
     passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
     role: string
     subRole?: string | null
     servico?: $Enums.Servico
@@ -160895,6 +165370,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -160912,6 +165388,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -160929,6 +165406,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -160943,6 +165421,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -160954,6 +165433,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
   }
@@ -160965,6 +165445,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     doenteId?: StringFieldUpdateOperationsInput | string
   }
@@ -160984,6 +165465,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cama?: CamaUpdateOneWithoutDoenteNestedInput
     atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
@@ -161031,6 +165513,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
     atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
     atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
@@ -161078,6 +165561,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     emIsolamento?: BoolFieldUpdateOperationsInput | boolean
     motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     camaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -161368,6 +165852,36 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificacaoInAppUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificacaoInAppUncheckedUpdateWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    corpo?: StringFieldUpdateOperationsInput | string
+    lida?: BoolFieldUpdateOperationsInput | boolean
+    dadosExtra?: NullableJsonNullValueInput | InputJsonValue
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    lidaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type AvaliacaoRiscoUpdateWithoutRegistadoPorInput = {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: StringFieldUpdateOperationsInput | string
@@ -161439,6 +165953,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutNotasClinciasNestedInput
   }
 
@@ -161451,6 +165966,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type NotaClinicaUncheckedUpdateManyWithoutAutorInput = {
@@ -161462,6 +165978,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type EscalaClinicaUpdateWithoutRegistadoPorInput = {
@@ -161797,10 +166314,13 @@ export namespace Prisma {
     quantidade?: FloatFieldUpdateOperationsInput | number
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     stockItem?: StockItemUpdateOneRequiredWithoutPedidosNestedInput
     processadoPor?: UtilizadorUpdateOneWithoutStockPedidosProcessadosNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutStockPedidosAprovadosNestedInput
   }
 
   export type PedidoFarmaciaUncheckedUpdateWithoutSolicitadoPorInput = {
@@ -161810,6 +166330,9 @@ export namespace Prisma {
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -161821,6 +166344,9 @@ export namespace Prisma {
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -161830,10 +166356,13 @@ export namespace Prisma {
     quantidade?: FloatFieldUpdateOperationsInput | number
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     stockItem?: StockItemUpdateOneRequiredWithoutPedidosNestedInput
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutStockPedidosSolicitadosNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutStockPedidosAprovadosNestedInput
   }
 
   export type PedidoFarmaciaUncheckedUpdateWithoutProcessadoPorInput = {
@@ -161843,6 +166372,9 @@ export namespace Prisma {
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -161854,6 +166386,51 @@ export namespace Prisma {
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PedidoFarmaciaUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servico?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockItem?: StockItemUpdateOneRequiredWithoutPedidosNestedInput
+    solicitadoPor?: UtilizadorUpdateOneRequiredWithoutStockPedidosSolicitadosNestedInput
+    processadoPor?: UtilizadorUpdateOneWithoutStockPedidosProcessadosNestedInput
+  }
+
+  export type PedidoFarmaciaUncheckedUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servico?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stockItemId?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    servico?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    solicitadoPorId?: StringFieldUpdateOperationsInput | string
+    processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -162217,6 +166794,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -162234,6 +166812,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -162251,6 +166830,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -163197,6 +167777,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -163224,6 +167807,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
@@ -163236,6 +167820,7 @@ export namespace Prisma {
     consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
@@ -163285,6 +167870,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -163312,6 +167900,7 @@ export namespace Prisma {
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
     sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
     dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
     avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
     sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
     notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
@@ -163324,6 +167913,7 @@ export namespace Prisma {
     consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
     stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
     stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
     planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
     pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
@@ -163373,6 +167963,9 @@ export namespace Prisma {
     numeroFuncionario?: StringFieldUpdateOperationsInput | string
     nome?: StringFieldUpdateOperationsInput | string
     passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: StringFieldUpdateOperationsInput | string
     subRole?: NullableStringFieldUpdateOperationsInput | string | null
     servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
@@ -163568,6 +168161,7 @@ export namespace Prisma {
     ativo?: boolean
     iniciadoEm?: Date | string
     terminadoEm?: Date | string | null
+    deletedAt?: Date | string | null
     prescritoPorId: string
     estadoValidacao?: string | null
     validadoPorId?: string | null
@@ -163582,6 +168176,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     medicacaoId: string
     administradoPorId: string
   }
@@ -163664,6 +168259,7 @@ export namespace Prisma {
     plano: string
     criadaEm?: Date | string
     editadaEm?: Date | string | null
+    deletedAt?: Date | string | null
   }
 
   export type EscalaClinicaCreateManyDoenteInput = {
@@ -163945,6 +168541,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
@@ -163962,6 +168559,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -163979,6 +168577,7 @@ export namespace Prisma {
     ativo?: BoolFieldUpdateOperationsInput | boolean
     iniciadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     terminadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     prescritoPorId?: StringFieldUpdateOperationsInput | string
     estadoValidacao?: NullableStringFieldUpdateOperationsInput | string | null
     validadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -163993,6 +168592,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacao?: MedicacaoUpdateOneRequiredWithoutRegistosNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -164004,6 +168604,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -164015,6 +168616,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     medicacaoId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -164234,6 +168836,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     autor?: UtilizadorUpdateOneRequiredWithoutNotasClinciasAutorNestedInput
   }
 
@@ -164246,6 +168849,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type NotaClinicaUncheckedUpdateManyWithoutDoenteInput = {
@@ -164257,6 +168861,7 @@ export namespace Prisma {
     plano?: StringFieldUpdateOperationsInput | string
     criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
     editadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type EscalaClinicaUpdateWithoutDoenteInput = {
@@ -165025,6 +169630,7 @@ export namespace Prisma {
     verificacao5Certas?: boolean
     naoAdministrada?: boolean
     motivoNaoAdmin?: string | null
+    deletedAt?: Date | string | null
     doenteId: string
     administradoPorId: string
   }
@@ -165036,6 +169642,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doente?: DoenteUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
     administradoPor?: UtilizadorUpdateOneRequiredWithoutRegistosMedicacaoNestedInput
   }
@@ -165047,6 +169654,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -165058,6 +169666,7 @@ export namespace Prisma {
     verificacao5Certas?: BoolFieldUpdateOperationsInput | boolean
     naoAdministrada?: BoolFieldUpdateOperationsInput | boolean
     motivoNaoAdmin?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     doenteId?: StringFieldUpdateOperationsInput | string
     administradoPorId?: StringFieldUpdateOperationsInput | string
   }
@@ -165243,6 +169852,9 @@ export namespace Prisma {
     estado?: $Enums.EstadoPedidoFarmacia
     solicitadoPorId: string
     processadoPorId?: string | null
+    aprovadoPorId?: string | null
+    aprovadoEm?: Date | string | null
+    motivoRejeicao?: string | null
     observacoes?: string | null
     criadoEm?: Date | string
   }
@@ -165288,10 +169900,13 @@ export namespace Prisma {
     quantidade?: FloatFieldUpdateOperationsInput | number
     servico?: StringFieldUpdateOperationsInput | string
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     solicitadoPor?: UtilizadorUpdateOneRequiredWithoutStockPedidosSolicitadosNestedInput
     processadoPor?: UtilizadorUpdateOneWithoutStockPedidosProcessadosNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutStockPedidosAprovadosNestedInput
   }
 
   export type PedidoFarmaciaUncheckedUpdateWithoutStockItemInput = {
@@ -165301,6 +169916,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -165312,6 +169930,9 @@ export namespace Prisma {
     estado?: EnumEstadoPedidoFarmaciaFieldUpdateOperationsInput | $Enums.EstadoPedidoFarmacia
     solicitadoPorId?: StringFieldUpdateOperationsInput | string
     processadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    aprovadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motivoRejeicao?: NullableStringFieldUpdateOperationsInput | string | null
     observacoes?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }

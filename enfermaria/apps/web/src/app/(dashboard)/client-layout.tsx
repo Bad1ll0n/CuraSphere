@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../lib/auth-context';
 import api from '../../lib/api';
 import { useSocket } from '../../lib/use-socket';
@@ -640,7 +641,7 @@ function Avatar({ nome }: { nome: string }) {
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { utilizador, loading, logout } = useAuth();
+  const { utilizador, loading, logout, passwordAviso } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -656,10 +657,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [modalConfig, setModalConfig] = useState(false);
   const [tema, setTema] = useState<'light'|'dark'>('light');
 
+  const { data: notifData } = useQuery<{ count: number }>({
+    queryKey: ['notificacoes-count'],
+    queryFn: () => api.get('/notificacoes/nao-lidas').then(r => r.data),
+    refetchInterval: 60_000,
+    staleTime: 30_000,
+  });
+  const naoLidas = notifData?.count ?? 0;
+
   // SOS global via WebSocket
   const [sosAlerta, setSosAlerta] = useState<{ doenteId: string; doenteNome: string; quarto: string; acionadoPor: string } | null>(null);
   const sosTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wsToken = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
+  const wsToken = utilizador?.id;
   useSocket(wsToken, {
     'sos:alerta': (data) => {
       setSosAlerta(data);
@@ -684,7 +693,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (novaSenha.length < 6) { setPwdErro('A nova password deve ter pelo menos 6 caracteres'); return; }
     setSalvandoPwd(true); setPwdErro('');
     try {
-      await api.patch('/auth/alterar-password', { senhaAtual, novaSenha });
+      await api.patch('/auth/alterar-password', { passwordAtual: senhaAtual, novaPassword: novaSenha });
       setSenhaAtual(''); setNovaSenha(''); setConfirmarSenha(''); setPwdSucesso(true);
     } catch (e: any) {
       setPwdErro(e.response?.data?.message ?? 'Erro ao alterar password');
@@ -839,6 +848,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           {/* Acções */}
+          <Link
+            href="/notificacoes"
+            onClick={() => setSidebarAberta(false)}
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/5 rounded-lg text-[13px] transition-all"
+          >
+            <div className="relative w-4 h-4 shrink-0">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              {naoLidas > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {naoLidas > 9 ? '9+' : naoLidas}
+                </span>
+              )}
+            </div>
+            Notificações {naoLidas > 0 && <span className="ml-auto text-[10px] font-bold text-red-500">{naoLidas}</span>}
+          </Link>
+          <Link
+            href="/perfil"
+            onClick={() => setSidebarAberta(false)}
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/5 rounded-lg text-[13px] transition-all"
+          >
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Meu Perfil
+          </Link>
           <button
             onClick={() => setModalConfig(true)}
             className="w-full flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:text-blue-400 hover:bg-blue-400/5 rounded-lg text-[13px] transition-all"
@@ -875,6 +911,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </svg>
         </button>
         <ToastProvider>
+          {passwordAviso.ativo && (
+            <div className="bg-amber-50 border-b border-amber-200 flex items-center justify-between gap-4" style={{ padding: '10px 24px' }}>
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p className="text-sm text-amber-800 font-medium">
+                  {passwordAviso.diasRestantes !== null && passwordAviso.diasRestantes <= 0
+                    ? 'A tua password expirou. Altera-a agora para continuar a aceder.'
+                    : `A tua password expira em ${passwordAviso.diasRestantes} dia${passwordAviso.diasRestantes !== 1 ? 's' : ''}. Altera-a brevemente.`}
+                </p>
+              </div>
+              <Link href="/perfil" className="text-xs font-semibold text-amber-700 underline hover:text-amber-900 shrink-0">
+                Alterar password
+              </Link>
+            </div>
+          )}
           {children}
         </ToastProvider>
       </main>

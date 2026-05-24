@@ -419,21 +419,29 @@ export class DoenteService {
     });
   }
 
-  async listarRegistosAdministrativos(search?: string) {
-    return this.prisma.doente.findMany({
-      where: {
-        estadoRegisto: { in: ['pendente_cama', 'ambulatorio'] },
-        ...(search ? { nome: { contains: search, mode: 'insensitive' as any } } : {}),
-      },
-      select: {
-        id: true, nome: true, dataNascimento: true, numeroProcesso: true,
-        estadoRegisto: true, tipoVisita: true, dataAdmissao: true,
-        ficheiroPessoal: {
-          select: { nif: true, numeroSNS: true, telefone: true, tipoCobertura: true },
+  async listarRegistosAdministrativos(search?: string, page = 1, limit = 25) {
+    const skip = (page - 1) * limit;
+    const where = {
+      estadoRegisto: { in: ['pendente_cama', 'ambulatorio'] },
+      ...(search ? { nome: { contains: search, mode: 'insensitive' as any } } : {}),
+    };
+    const [total, doentes] = await Promise.all([
+      this.prisma.doente.count({ where }),
+      this.prisma.doente.findMany({
+        where,
+        select: {
+          id: true, nome: true, dataNascimento: true, numeroProcesso: true,
+          estadoRegisto: true, tipoVisita: true, dataAdmissao: true,
+          ficheiroPessoal: {
+            select: { nif: true, numeroSNS: true, telefone: true, tipoCobertura: true },
+          },
         },
-      },
-      orderBy: { dataAdmissao: 'desc' },
-    });
+        orderBy: { dataAdmissao: 'desc' },
+        take: limit,
+        skip,
+      }),
+    ]);
+    return { total, pagina: page, totalPaginas: Math.ceil(total / limit), doentes };
   }
 
   async listarIsolados() {

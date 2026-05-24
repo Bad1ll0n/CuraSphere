@@ -2,6 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
 
@@ -20,6 +21,7 @@ async function bootstrap() {
 
   app.use((compression as any).default());
   app.use((helmet as any).default());
+  app.use((cookieParser as any)());
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
