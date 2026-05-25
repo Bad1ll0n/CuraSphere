@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -11,6 +11,8 @@ function gerarCodigo(): string {
 
 @Injectable()
 export class ConsultasService {
+  private readonly logger = new Logger(ConsultasService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly ticketsService: TicketsService,
@@ -311,7 +313,7 @@ export class ConsultasService {
           `${consultasMedico.length} consulta${consultasMedico.length > 1 ? 's' : ''} amanhã`,
           `Doentes: ${nomes}`,
         )
-        .catch(() => {});
+        .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       enviados += consultasMedico.length;
     }
 

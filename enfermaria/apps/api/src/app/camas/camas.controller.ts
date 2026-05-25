@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { CamasService } from './camas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -30,5 +30,11 @@ export class CamasController {
   @Patch(':id/estado')
   atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoCama }) {
     return this.camasService.atualizarEstado(id, body.estado);
+  }
+
+  @Roles('auxiliar', 'enfermeiro', 'administrativo')
+  @Patch(':id/confirmar-limpeza')
+  confirmarLimpeza(@Param('id') id: string) {
+    return this.camasService.confirmarLimpeza(id);
   }
 }

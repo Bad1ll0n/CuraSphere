@@ -15,6 +15,7 @@
     "axios": "^1.14.0",
     "expo": "*",
     "expo-barcode-scanner": "^13.0.1",
+    "expo-location": "^56.0.13",
     "expo-notifications": "^55.0.19",
     "expo-splash-screen": "*",
     "expo-status-bar": "*",

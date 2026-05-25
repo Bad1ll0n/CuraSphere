@@ -396,9 +396,9 @@ export default function DashboardQualidade() {
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Por Tipo</p>
                 <div className="flex flex-col gap-2">
-                  {eventosIndicadores.porTipo.slice(0, 5).map(t => {
+                  {eventosIndicadores.porTipo.slice(0, 5).map((t: { tipo: string; total: number }) => {
                     const TIPO_LABEL: Record<string, string> = { queda: 'Queda', erro_medicacao: 'Erro Medicação', near_miss: 'Near Miss', infecao: 'Infeção', lesao_pressao: 'Lesão Pressão', outro: 'Outro' };
-                    const max = Math.max(...eventosIndicadores.porTipo.map(x => x.total), 1);
+                    const max = Math.max(...eventosIndicadores.porTipo.map((x: { total: number }) => x.total), 1);
                     return (
                       <div key={t.tipo} className="flex items-center gap-2">
                         <span className="text-xs text-slate-600 w-28 shrink-0">{TIPO_LABEL[t.tipo] ?? t.tipo}</span>
@@ -416,11 +416,11 @@ export default function DashboardQualidade() {
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '10px' }}>Por Gravidade</p>
                 <div className="flex flex-col gap-2">
                   {(['obito', 'dano_grave', 'dano_moderado', 'dano_leve', 'sem_dano'] as const).map(g => {
-                    const item = eventosIndicadores.porGravidade.find(x => x.gravidade === g);
+                    const item = eventosIndicadores.porGravidade.find((x: { gravidade: string }) => x.gravidade === g);
                     if (!item) return null;
                     const LABEL: Record<string, string> = { sem_dano: 'Sem Dano', dano_leve: 'Dano Leve', dano_moderado: 'Moderado', dano_grave: 'Grave', obito: 'Óbito' };
                     const COR: Record<string, string> = { sem_dano: 'bg-green-400', dano_leve: 'bg-yellow-400', dano_moderado: 'bg-orange-400', dano_grave: 'bg-red-500', obito: 'bg-slate-700' };
-                    const max = Math.max(...eventosIndicadores.porGravidade.map(x => x.total), 1);
+                    const max = Math.max(...eventosIndicadores.porGravidade.map((x: { total: number }) => x.total), 1);
                     return (
                       <div key={g} className="flex items-center gap-2">
                         <span className="text-xs text-slate-600 w-28 shrink-0">{LABEL[g]}</span>

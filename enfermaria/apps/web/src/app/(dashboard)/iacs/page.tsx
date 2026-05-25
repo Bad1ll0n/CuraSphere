@@ -47,11 +47,6 @@ export default function IacsPage() {
 
   const podeEditar = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
 
-  const ativarIsolamento = (d: DoenteIsolado) => {
-    setMotivo('');
-    setModal({ id: d.id, nome: d.nome });
-  };
-
   const confirmarIsolamento = async () => {
     if (!modal) return;
     setSalvando(true);

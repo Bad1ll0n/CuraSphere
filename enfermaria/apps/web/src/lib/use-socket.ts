@@ -35,7 +35,7 @@ export function useSocket(
 
   const subscribe = useCallback((socket: Socket) => {
     const entries = Object.entries(handlersRef.current) as [SocketEvent, (d: any) => void][];
-    for (const [event, handler] of entries) {
+    for (const [event] of entries) {
       socket.on(event, (data: any) => handlersRef.current[event]?.(data));
     }
     return () => {

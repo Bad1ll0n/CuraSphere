@@ -104,6 +104,7 @@ export class DoenteController {
     return this.doenteService.darAlta(id, req.user.sub);
   }
 
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   @Post(':id/nota')
   adicionarNota(
     @Param('id') doenteId: string,
@@ -113,6 +114,7 @@ export class DoenteController {
     return this.doenteService.adicionarNota(doenteId, req.user.sub, body.texto);
   }
 
+  @Roles('medico', 'enfermeiro')
   @Patch(':id/nota/:notaId')
   editarNota(
     @Param('id') _doenteId: string,
@@ -123,6 +125,7 @@ export class DoenteController {
     return this.doenteService.editarNota(notaId, req.user.sub, body.texto);
   }
 
+  @Roles('medico')
   @Delete(':id/nota/:notaId')
   apagarNota(
     @Param('id') _doenteId: string,
@@ -132,6 +135,7 @@ export class DoenteController {
     return this.doenteService.apagarNota(notaId, req.user.sub);
   }
 
+  @Roles('medico', 'enfermeiro', 'administrativo')
   @Post(':id/alta-estruturada')
   altaEstruturada(
     @Param('id') doenteId: string,
@@ -158,6 +162,7 @@ export class DoenteController {
     res.send(buffer);
   }
 
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno')
   @Post(':id/tarefa')
   criarTarefa(
     @Param('id') doenteId: string,

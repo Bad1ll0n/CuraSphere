@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
@@ -7,6 +7,8 @@ const ORDEM_TRIAGEM = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 }
 
 @Injectable()
 export class UrgenciaService {
+  private readonly logger = new Logger(UrgenciaService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
@@ -79,7 +81,7 @@ export class UrgenciaService {
     const pushData = { tipo: 'ambulancia', episodioId: episodio.id };
 
     for (const id of targets) {
-      this.notificacoes.enviarParaUtilizador(id, titulo, corpo, pushData).catch(() => {});
+      this.notificacoes.enviarParaUtilizador(id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     this.gateway.emitirPreNotificacao(episodio.id, dto.triagem, dto.etaMinutos, dto.queixaPrincipal);

@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { authenticator } from 'otplib';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import * as interacoesJson from './interacoes.json';
@@ -30,6 +31,8 @@ function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Intera
 
 @Injectable()
 export class MedicacaoService {
+  private readonly logger = new Logger(MedicacaoService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
@@ -291,7 +294,7 @@ export class MedicacaoService {
         'Proposta de prescrição aguarda aprovação',
         `Enfermeiro propôs ${data.nome} (${data.dose}) para ${doente.nome}. Aguarda a tua aprovação.`,
         { medicacaoId: medicacao.id, doenteId: data.doenteId },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     return medicacao;
@@ -333,7 +336,7 @@ export class MedicacaoService {
       'Proposta de prescrição aprovada',
       `A tua proposta de ${med.nome} (${med.dose}) para ${med.doente.nome} foi aprovada pelo médico.`,
       { medicacaoId: id, doenteId: med.doenteId },
-    ).catch(() => {});
+    ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     return resultado;
   }
@@ -359,8 +362,29 @@ export class MedicacaoService {
       'Proposta de prescrição rejeitada',
       `A tua proposta de ${med.nome} para ${med.doente.nome} foi rejeitada: ${motivoRejeicao}`,
       { medicacaoId: id, doenteId: med.doenteId },
-    ).catch(() => {});
+    ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     return resultado;
+  }
+
+  async assinar(medicacaoId: string, utilizadorId: string, totpCode: string) {
+    const utilizador = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId } });
+    if (!utilizador) throw new NotFoundException('Utilizador não encontrado');
+    if (!utilizador.mfaAtivo || !utilizador.mfaSecret) {
+      throw new ForbiddenException('MFA não configurado. Configure o autenticador antes de assinar.');
+    }
+
+    const valido = authenticator.verify({ token: totpCode, secret: utilizador.mfaSecret });
+    if (!valido) throw new ForbiddenException('Código TOTP inválido');
+
+    const med = await this.prisma.medicacao.findUnique({ where: { id: medicacaoId } });
+    if (!med) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);
+    if (med.assinadoEm) throw new BadRequestException('Medicação já assinada');
+
+    return this.prisma.medicacao.update({
+      where: { id: medicacaoId },
+      data: { assinadoEm: new Date(), assinadoPorId: utilizadorId },
+      select: { id: true, nome: true, assinadoEm: true, assinadoPor: { select: { id: true, nome: true } } },
+    });
   }
 }

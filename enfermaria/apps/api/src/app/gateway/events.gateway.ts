@@ -1,24 +1,30 @@
+import { Logger } from '@nestjs/common';
 import {
   WebSocketGateway, WebSocketServer, SubscribeMessage,
-  OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket,
+  OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket, MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
 
 @WebSocketGateway({
   cors: { origin: '*' },
   namespace: '/ws',
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  private readonly logger = new Logger(EventsGateway.name);
+
   @WebSocketServer()
   server: Server;
 
   private clientRooms = new Map<string, string[]>();
+  private clientUsers = new Map<string, string>(); // socketId → utilizadorId
 
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async handleConnection(client: Socket) {
@@ -29,7 +35,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const role: string = payload.role ?? '';
       const servico: string = payload.servico ?? '';
 
-      // Subscrever salas com base no role/serviço
       const rooms: string[] = ['geral'];
       if (role) rooms.push(`role:${role}`);
       if (servico) rooms.push(`servico:${servico}`);
@@ -37,23 +42,92 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       for (const room of rooms) client.join(room);
       this.clientRooms.set(client.id, rooms);
+      this.clientUsers.set(client.id, payload.sub);
+
+      // Registar presença online
+      await this.prisma.presencaOnline.upsert({
+        where: { utilizadorId: payload.sub },
+        update: { socketId: client.id, ligadoEm: new Date(), ultimoPing: new Date() },
+        create: { utilizadorId: payload.sub, socketId: client.id },
+      }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     } catch {
       client.disconnect();
     }
   }
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
+    const utilizadorId = this.clientUsers.get(client.id);
     this.clientRooms.delete(client.id);
+    this.clientUsers.delete(client.id);
+
+    if (utilizadorId) {
+      await this.prisma.presencaOnline.deleteMany({
+        where: { utilizadorId, socketId: client.id },
+      }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+    }
   }
 
   @SubscribeMessage('ping')
-  handlePing(@ConnectedSocket() client: Socket) {
+  async handlePing(@ConnectedSocket() client: Socket) {
+    const utilizadorId = this.clientUsers.get(client.id);
+    if (utilizadorId) {
+      await this.prisma.presencaOnline.updateMany({
+        where: { utilizadorId },
+        data: { ultimoPing: new Date() },
+      }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+    }
     client.emit('pong', { ts: Date.now() });
   }
 
-  // ── Métodos de emissão (chamados por outros serviços) ────────────────────
+  @SubscribeMessage('turno:passagem-aceite')
+  async handlePassagemAceite(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { passagemId: string },
+  ) {
+    const utilizadorId = this.clientUsers.get(client.id);
+    if (!utilizadorId || !data?.passagemId) return;
 
-  /** Atualização da lista de espera da urgência */
+    const passagem = await this.prisma.passagemTurno.findUnique({
+      where: { id: data.passagemId },
+    }).catch(() => null);
+
+    if (!passagem || passagem.estadoDesafio !== 'pendente') return;
+
+    await this.prisma.passagemTurno.update({
+      where: { id: data.passagemId },
+      data: { estadoDesafio: 'aceite', desafioAceitoEm: new Date() },
+    }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+
+    // Notificar o enfermeiro saindo que a passagem foi aceite
+    this.server.to(`user:${utilizadorId}`).emit('turno:passagem-confirmada', {
+      passagemId: data.passagemId,
+      aceitoPor: utilizadorId,
+      ts: Date.now(),
+    });
+  }
+
+  // ── Verificar se utilizador está online ─────────────────────────────────────
+
+  async estaOnline(utilizadorId: string): Promise<boolean> {
+    const presenca = await this.prisma.presencaOnline.findUnique({
+      where: { utilizadorId },
+    }).catch(() => null);
+    if (!presenca) return false;
+    // Considerar offline se último ping há mais de 2 min
+    const doisMinutos = 2 * 60 * 1000;
+    return (Date.now() - presenca.ultimoPing.getTime()) < doisMinutos;
+  }
+
+  // ── Métodos de emissão (chamados por outros serviços) ────────────────────────
+
+  emitirPassagemDesafio(receptorId: string, passagemId: string, turnoInfo: object) {
+    this.server.to(`user:${receptorId}`).emit('turno:passagem-desafio', {
+      passagemId,
+      turnoInfo,
+      ts: Date.now(),
+    });
+  }
+
   emitirUrgenciaUpdate(data: object) {
     this.server.to('servico:urgencia').emit('urgencia:update', data);
     this.server.to('role:medico').emit('urgencia:update', data);
@@ -61,21 +135,18 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to('role:administrativo').emit('urgencia:update', data);
   }
 
-  /** SOS acionado — notificar médicos e enfermeiros */
   emitirSOS(doenteId: string, doenteNome: string, quarto: string, acionadoPor: string) {
     const payload = { doenteId, doenteNome, quarto, acionadoPor, ts: Date.now() };
     this.server.to('role:medico').emit('sos:alerta', payload);
     this.server.to('role:enfermeiro').emit('sos:alerta', payload);
   }
 
-  /** Alerta clínico novo */
   emitirAlerta(doenteId: string, tipo: string, mensagem: string) {
     const payload = { doenteId, tipo, mensagem, ts: Date.now() };
     this.server.to('role:medico').emit('alerta:novo', payload);
     this.server.to('role:enfermeiro').emit('alerta:novo', payload);
   }
 
-  /** Pré-notificação de ambulância */
   emitirPreNotificacao(episodioId: string, triagem: string, etaMinutos: number, queixa: string) {
     const payload = { episodioId, triagem, etaMinutos, queixa, ts: Date.now() };
     this.server.to('servico:urgencia').emit('urgencia:ambulancia', payload);
@@ -83,7 +154,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to('role:enfermeiro').emit('urgencia:ambulancia', payload);
   }
 
-  /** Dashboard — qualquer atualização de estado de doente */
   emitirEstadoDoente(doenteId: string, estado: string) {
     this.server.to('geral').emit('doente:estado', { doenteId, estado, ts: Date.now() });
   }

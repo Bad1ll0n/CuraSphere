@@ -103,7 +103,7 @@ export default function FarmaciaPage() {
   const { utilizador } = useAuth();
   const qc = useQueryClient();
   const toast = useToast();
-  const [tab, setTab] = useState<'stock' | 'pedidos' | 'alertas' | 'validacao' | 'transferencias' | 'relatorio'>('stock');
+  const [tab, setTab] = useState<'stock' | 'pedidos' | 'alertas' | 'validacao' | 'transferencias' | 'relatorio' | 'aprovacao_medico'>('stock');
 
   // Modais
   const [pedidoModal, setPedidoModal] = useState<StockItem | null>(null);

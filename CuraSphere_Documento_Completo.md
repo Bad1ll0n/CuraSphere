@@ -918,6 +918,13 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] IACS (isolados por motivo, levantar isolamento)
 - [x] MAR — Mapa de Administração de Medicação
 - [x] Comunicação (mensagens + anúncios com badge de não lidos)
+- [x] **Assinatura Digital de Prescrições e Notas Clínicas** (sessão 10) — challenge TOTP via MFA já configurado; `POST /medicacao/:id/assinar` + `POST /notas-clinicas/:id/assinar`; campos `assinadoEm`/`assinadoPorId` no schema; `AuditLog` com ação `ASSINATURA_DIGITAL`
+- [x] **Break-Glass Access** (sessão 10) — módulo `break-glass/`; `POST /break-glass { doenteId, motivo }`; acesso de emergência com TTL de 4h; notificação imediata a role `ti` + chefes de turno/enfermeiros/direção; registo em `AuditLog` com ação `BREAK_GLASS_ACTIVADO`
+- [x] **Consentimento Informado Digital** (sessão 10) — módulo `consentimentos/`; tipos: cirurgia, procedimento invasivo, anestesia, transfusão, outro; endpoints criar/assinar/recusar; campo `motivoRecusa` obrigatório na recusa; página `/doentes/[id]/consentimentos` com modais
+- [x] **Protocolo Clínico Automático** (sessão 10) — módulo `protocolos/`; bundle Sepsis (5 itens com prazos 30–180min) ativado automaticamente quando NEWS2 ≥7 em `sinais-vitais.service.ts`; bundle AVC (6 itens) ativado por CID-10 I63/I64; `ativarSeNaoAtivo()` evita duplicados; checklist com `concluirItem()`
+- [x] **Workflow de Limpeza de Camas** (sessão 10) — `alta` → cama passa a `em_limpeza` + notificação push ao role `auxiliar`; `PATCH /camas/:id/confirmar-limpeza` (auxiliar/enfermeiro) → estado `livre`; campos `servico` e `piso` adicionados ao modelo `Cama`
+- [x] **Dietética** (sessão 10) — módulo `dietas/`; tipos: normal, hipocalórica, diabética, renal, hepática, líquida, jejum; restrições: glúten, lactose, sal, potássio, fósforo, proteína, gordura, açúcar; `GET /dietas/hoje` devolve todas as dietas de doentes internados (vista cozinha); página `/dietas` com grid de cards e formulário de prescrição
+- [x] **Relatórios DGS/SNS** (sessão 10) — módulo `relatorios/`; 5 relatórios com filtro de período: demora média de internamento, taxa de ocupação, top 20 diagnósticos CID-10, top 20 medicamentos consumidos, episódios de urgência por triagem; export CSV via `Accept: text/csv`; acesso restrito a direcao/administrativo/ti; página `/relatorios`
 
 ---
 
@@ -928,6 +935,13 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Feature | Prioridade | Notas |
 |---------|-----------|-------|
 | Relatórios e exportação PDF | ~~Média~~ | ✅ Implementado: nota de alta PDF (`GET /doentes/:id/alta/pdf`) e relatório de turno PDF (`GET /turnos/:id/relatorio/pdf`) via pdfmake; faltam relatórios de produtividade |
+| ~~Relatórios DGS/SNS~~ | ~~Alta~~ | ✅ Implementado (sessão 10): 5 relatórios com export CSV — internamento, ocupação, diagnósticos, medicamentos, urgência |
+| ~~Assinatura digital de prescrições~~ | ~~Alta~~ | ✅ Implementado (sessão 10): challenge TOTP em `/medicacao/:id/assinar` + `/notas-clinicas/:id/assinar` |
+| ~~Consentimento informado digital~~ | ~~Alta~~ | ✅ Implementado (sessão 10): módulo `consentimentos/`; criar/assinar/recusar + página `/doentes/[id]/consentimentos` |
+| ~~Break-glass access~~ | ~~Alta~~ | ✅ Implementado (sessão 10): módulo `break-glass/`; TTL 4h; auditoria + notificação chefes/TI |
+| ~~Protocolo clínico (Sepsis/AVC)~~ | ~~Alta~~ | ✅ Implementado (sessão 10): ativação automática por NEWS2 ≥7 (Sepsis) ou CID-10 I63/I64 (AVC); checklist com prazos |
+| ~~Dietética~~ | ~~Média~~ | ✅ Implementado (sessão 10): módulo `dietas/`; 7 tipos + 8 restrições; vista cozinha `/dietas` |
+| ~~Workflow limpeza de camas~~ | ~~Média~~ | ✅ Implementado (sessão 10): alta → `em_limpeza` + notificação auxiliares; `confirmar-limpeza` → `livre` |
 | Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
 | ~~Aprovação de pedidos farmácia pelo médico~~ | ~~Alta~~ | ✅ Backend + Frontend: fluxo pendente→aprovado→dispensado; tab "Aprovação Médica" na farmácia; proposta de prescrição por enfermeiro com aprovação/rejeição pelo médico na ficha do doente |
 | Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
@@ -1020,7 +1034,11 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - ~~**Worklist mobile**~~ — ✅ `WorklistScreen.tsx` existia e está ligado em MaisScreen (tecnico_saude/medico)
 - ~~**Dashboard executivo**~~ — ✅ Já completo (`/dashboard-executivo`) — KPIs internamento, camas, faturação, consultas, pessoal
 
-### Prioridade Baixa — Backlog
+### ✅ Completado na Sessão 11 (2026-05-25)
+- ~~**Restrição de rede hospitalar**~~ — ✅ Nginx `allow 192.168.0.0/16; allow 10.0.0.0/8; deny all;` no bloco HTTPS; apenas LAN hospitalar e VPN acedem à plataforma
+- ~~**Passagem de turno com presença real**~~ — ✅ Modelo `PresencaOnline` (upsert/delete no WebSocket connect/disconnect); novos campos em `PassagemTurno` (`estadoDesafio`, `desafioEnviadoEm`, `desafioAceitoEm`, `desafioExpiradoEm`); `POST /turnos/iniciar-passagem` verifica presença online e emite desafio WS `turno:passagem-desafio`; receptor aceita via `turno:passagem-aceite`; timeout 5min marca `expirado` e notifica
+- ~~**Monitorização de presença e check-in com GPS**~~ — ✅ Modelo `RegistoCheckin` com lat/lon/distância/dentroGeofence/IP; `checkIn` captura GPS ou verifica IP interno; alerta ao chefe de turno se fora da geofence; `GET /turnos/ativo/inatividade` lista profissionais sem actividade > 2h
+- ~~**Mobile GPS check-in**~~ — ✅ `TurnoScreen` com botão "📍 Fazer Check-in" usa `expo-location`; botão "🔄 Passar Turno" inicia desafio de passagem; aviso visual se fora do hospital
 
 ### Prioridade Baixa — Backlog
 10. Vista de sala do bloco (disponibilidade em tempo real)
@@ -1119,6 +1137,47 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | `confirm-modal.tsx` | `apps/web/src/components/` | Modal de confirmação acessível; substitui `confirm()` nativo; `role="dialog"`, focus trap, Escape, backdrop blur |
 | `breadcrumb.tsx` | `apps/web/src/components/` | Breadcrumb semântico; `aria-label="Localização"`; `aria-current="page"` no último item |
 | `page-header.tsx` | `apps/web/src/components/` | Header padronizado com `<h1>` e slot para acções; garante hierarquia de headings consistente |
+
+### 12.8 Segurança Clínica Avançada e Relatórios (sessão 10)
+
+#### Novos Modelos Prisma
+
+| Modelo | Descrição |
+|--------|-----------|
+| `ConsentimentoInformado` | Consentimento para cirurgia/procedimento/anestesia/transfusão; estados: pendente, assinado, recusado; campo `motivoRecusa` |
+| `BreakGlassAccess` | Acesso de emergência a doente fora do serviço do utilizador; TTL 4h; `expiradoEm`, `ativo` |
+| `ProtocoloClinico` | Protocolo clínico ativo para um doente; tipos: `sepsis`, `avc`, `iamcst`; estados: ativo/concluido/cancelado |
+| `ItemProtocolo` | Item individual de um protocolo clínico com prazo em minutos e timestamp de conclusão |
+| `PrescricaoDieta` | Prescrição dietética com tipo e array de restrições alimentares; uma activa por doente |
+
+#### Novos Módulos API
+
+| Módulo | Endpoints principais | Roles |
+|--------|---------------------|-------|
+| `consentimentos/` | `POST /consentimentos`, `POST /:id/assinar`, `POST /:id/recusar`, `GET /doente/:id` | medico, enfermeiro, direcao |
+| `break-glass/` | `POST /break-glass { doenteId, motivo }`, `GET /break-glass?doenteId=` | qualquer autenticado |
+| `protocolos/` | `POST /protocolos`, `GET /doente/:id`, `PATCH /item/:itemId/concluir`, `PATCH /:id/concluir|cancelar` | medico, enfermeiro |
+| `dietas/` | `POST /dietas`, `GET /doente/:id`, `GET /hoje` (vista cozinha) | medico, enfermeiro, cozinha, nutricao |
+| `relatorios/` | `GET /internamento\|ocupacao\|diagnosticos\|medicamentos\|urgencia?inicio=&fim=` | direcao, administrativo, ti |
+
+#### Novas Páginas Web
+
+| Página | Caminho | Descrição |
+|--------|---------|-----------|
+| Relatórios DGS/SNS | `/relatorios` | 5 tipos de relatório com seletor de período; tabelas de resultados; download CSV |
+| Dietética | `/dietas` | Vista cozinha (grid de dietas ativas) + tab prescrever (médico/enfermeiro) |
+| Consentimentos do Doente | `/doentes/[id]/consentimentos` | Lista de consentimentos com modais assinar/recusar |
+
+#### Integrações em Módulos Existentes
+
+| Módulo | Alteração |
+|--------|-----------|
+| `sinais-vitais.service.ts` | NEWS2 ≥7 → `protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis')` |
+| `doentes.service.ts` | Alta → cama `em_limpeza` + `notificacoes.enviarParaRole('auxiliar', ...)` |
+| `medicacao.service.ts` | `assinar(id, userId, totpCode)` — verificação TOTP + campos `assinadoEm/assinadoPorId` |
+| `notas-clinicas.service.ts` | Mesmo padrão de assinatura digital |
+| `camas.controller.ts` | `PATCH /:id/confirmar-limpeza` (auxiliar/enfermeiro) |
+| `notificacoes.service.ts` | Novo método `enviarParaRole(role, titulo, corpo, data?)` |
 
 ---
 

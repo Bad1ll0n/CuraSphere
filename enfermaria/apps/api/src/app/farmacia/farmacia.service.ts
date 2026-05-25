@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
 export class FarmaciaService {
+  private readonly logger = new Logger(FarmaciaService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
@@ -119,7 +121,7 @@ export class FarmaciaService {
       'Pedido de farmácia aprovado',
       `O teu pedido de ${resultado.stockItem.nome} (${pedido.quantidade} ${resultado.stockItem.unidade}) foi aprovado pelo médico.`,
       { pedidoFarmaciaId: id },
-    ).catch(() => {});
+    ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     return resultado;
   }
@@ -144,7 +146,7 @@ export class FarmaciaService {
       'Pedido de farmácia rejeitado',
       `O teu pedido de ${resultado.stockItem.nome} foi rejeitado: ${motivoRejeicao}`,
       { pedidoFarmaciaId: id },
-    ).catch(() => {});
+    ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     return resultado;
   }

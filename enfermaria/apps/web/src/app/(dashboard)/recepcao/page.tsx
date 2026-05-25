@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useAuth } from '../../../lib/auth-context';
+import api from '../../../lib/api';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const SSE_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
 
 const TIPO_LABEL: Record<string, string> = {
   admissao: 'Admissão',
@@ -63,7 +64,6 @@ export default function RecepcaoPage() {
   const [flash, setFlash] = useState(false);
   const esRef = useRef<EventSource | null>(null);
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const carregarDadosRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   const podeVer = utilizador?.role === 'administrativo';
@@ -128,33 +128,25 @@ export default function RecepcaoPage() {
     setCriandoUtente(true);
     setNovoUtenteErro('');
     try {
-      const res = await fetch(`${API}/doentes/registro-rapido`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          nome: novoUtenteForm.nome,
-          tipoVisita: novoUtenteForm.tipoVisita,
-          dataNascimento: novoUtenteForm.dataNascimento || undefined,
-          nif: novoUtenteForm.nif || undefined,
-          numeroSNS: novoUtenteForm.numeroSNS || undefined,
-          telefone: novoUtenteForm.telefone || undefined,
-          email: novoUtenteForm.email || undefined,
-          tipoCobertura: novoUtenteForm.tipoCobertura,
-          morada: novoUtenteForm.morada || undefined,
-          codigoPostal: novoUtenteForm.codigoPostal || undefined,
-          localidade: novoUtenteForm.localidade || undefined,
-          entidadeSeguradora: novoUtenteForm.entidadeSeguradora || undefined,
-          numeroApolice: novoUtenteForm.numeroApolice || undefined,
-        }),
+      const { data: doente } = await api.post('/doentes/registro-rapido', {
+        nome: novoUtenteForm.nome,
+        tipoVisita: novoUtenteForm.tipoVisita,
+        dataNascimento: novoUtenteForm.dataNascimento || undefined,
+        nif: novoUtenteForm.nif || undefined,
+        numeroSNS: novoUtenteForm.numeroSNS || undefined,
+        telefone: novoUtenteForm.telefone || undefined,
+        email: novoUtenteForm.email || undefined,
+        tipoCobertura: novoUtenteForm.tipoCobertura,
+        morada: novoUtenteForm.morada || undefined,
+        codigoPostal: novoUtenteForm.codigoPostal || undefined,
+        localidade: novoUtenteForm.localidade || undefined,
+        entidadeSeguradora: novoUtenteForm.entidadeSeguradora || undefined,
+        numeroApolice: novoUtenteForm.numeroApolice || undefined,
       });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        setNovoUtenteErro(err.message ?? 'Erro ao registar utente');
-        return;
-      }
-      const doente = await res.json();
       setNovoUtenteSucesso({ nome: doente.nome, numeroProcesso: doente.numeroProcesso, tipoVisita: novoUtenteForm.tipoVisita });
       setNovoUtenteForm(formVazio);
+    } catch (err: any) {
+      setNovoUtenteErro(err.response?.data?.message ?? 'Erro ao registar utente');
     } finally {
       setCriandoUtente(false);
     }
@@ -175,34 +167,32 @@ export default function RecepcaoPage() {
   }
 
   const carregarDados = useCallback(async () => {
-    if (!token) return;
-    const headers = { Authorization: `Bearer ${token}` };
-    const [filaRes, ultimosRes, statsRes] = await Promise.all([
-      fetch(`${API}/tickets/fila`, { headers }),
-      fetch(`${API}/tickets/ultimos`, { headers }),
-      fetch(`${API}/tickets/stats`, { headers }),
+    const [filaRes, ultimosRes, statsRes] = await Promise.allSettled([
+      api.get('/tickets/fila'),
+      api.get('/tickets/ultimos'),
+      api.get('/tickets/stats'),
     ]);
-    if (filaRes.ok) setFila(await filaRes.json());
-    if (ultimosRes.ok) {
-      const u = await ultimosRes.json();
+    if (filaRes.status === 'fulfilled') setFila(filaRes.value.data);
+    if (ultimosRes.status === 'fulfilled') {
+      const u = ultimosRes.value.data;
       setUltimos(u);
       if (u.length > 0) setUltimoChamado(u[0]);
     }
-    if (statsRes.ok) setStats(await statsRes.json());
-  }, [token]);
+    if (statsRes.status === 'fulfilled') setStats(statsRes.value.data);
+  }, []);
 
   // Manter ref sempre atualizada para usar dentro do SSE sem stale closure
   useEffect(() => { carregarDadosRef.current = carregarDados; }, [carregarDados]);
 
   useEffect(() => {
-    if (!podeVer || !token) return;
+    if (!podeVer) return;
     carregarDadosRef.current();
 
     // Polling de backup — garante sincronização mesmo que o SSE falhe
     const pollInterval = setInterval(() => carregarDadosRef.current(), 8000);
 
     function conectar() {
-      const es = new EventSource(`${API}/quiosque/eventos`);
+      const es = new EventSource(`${SSE_BASE}/quiosque/eventos`);
       esRef.current = es;
 
       es.addEventListener('ticket_chamado', (e) => {
@@ -238,18 +228,13 @@ export default function RecepcaoPage() {
       clearInterval(pollInterval);
       if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     };
-  }, [podeVer, token]);
+  }, [podeVer]);
 
   async function chamarProximo() {
-    if (!token || chamando) return;
+    if (chamando) return;
     setChamando(true);
     try {
-      const res = await fetch(`${API}/tickets/chamar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ balcao }),
-      });
-      const data = await res.json();
+      const { data } = await api.post('/tickets/chamar', { balcao });
       if (!data || !data.numero) {
         alert('Não há tickets em espera.');
       }
@@ -259,28 +244,15 @@ export default function RecepcaoPage() {
   }
 
   async function rechamar(id: string) {
-    if (!token) return;
-    await fetch(`${API}/tickets/${id}/rechamar`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ balcao }),
-    });
+    await api.patch(`/tickets/${id}/rechamar`, { balcao });
   }
 
   async function concluir(id: string) {
-    if (!token) return;
-    await fetch(`${API}/tickets/${id}/concluir`, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await api.patch(`/tickets/${id}/concluir`);
   }
 
   async function desistiu(id: string) {
-    if (!token) return;
-    await fetch(`${API}/tickets/${id}/desistiu`, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await api.patch(`/tickets/${id}/desistiu`);
     setFila((prev) => prev.filter((t) => t.id !== id));
   }
 
@@ -559,14 +531,7 @@ export default function RecepcaoPage() {
                       </div>
                       <div style={{ display: 'flex', gap: 8 }}>
                         <button
-                          onClick={async () => {
-                            const res = await fetch(`${API}/tickets/chamar`, {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                              body: JSON.stringify({ balcao, ticketId: t.id }),
-                            });
-                            await res.json();
-                          }}
+                          onClick={() => api.post('/tickets/chamar', { balcao, ticketId: t.id })}
                           style={{
                             background: '#3b82f620',
                             border: '1px solid #3b82f6',

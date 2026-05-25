@@ -54,7 +54,7 @@ export class ReconciliacaoService implements OnApplicationBootstrap, OnApplicati
           : `Reconciliação MAR: ${problemas.length} problemas detectados (ex: ${problemas[0].descricao})`;
 
         for (const f of farmaceuticos) {
-          this.notificacoes.enviarParaUtilizador(f.id, 'Alerta de Reconciliação', mensagem, { tipo: 'reconciliacao' }).catch(() => {});
+          this.notificacoes.enviarParaUtilizador(f.id, 'Alerta de Reconciliação', mensagem, { tipo: 'reconciliacao' }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
         }
       }
     } catch (e) {

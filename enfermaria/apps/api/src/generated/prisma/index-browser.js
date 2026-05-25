@@ -162,7 +162,9 @@ exports.Prisma.CamaScalarFieldEnum = {
   id: 'id',
   numero: 'numero',
   quarto: 'quarto',
-  estado: 'estado'
+  estado: 'estado',
+  servico: 'servico',
+  piso: 'piso'
 };
 
 exports.Prisma.DoenteScalarFieldEnum = {
@@ -212,7 +214,31 @@ exports.Prisma.PassagemTurnoScalarFieldEnum = {
   id: 'id',
   turnoAnteriorId: 'turnoAnteriorId',
   turnoAtualId: 'turnoAtualId',
-  doenteId: 'doenteId'
+  doenteId: 'doenteId',
+  estadoDesafio: 'estadoDesafio',
+  desafioEnviadoEm: 'desafioEnviadoEm',
+  desafioAceitoEm: 'desafioAceitoEm',
+  desafioExpiradoEm: 'desafioExpiradoEm'
+};
+
+exports.Prisma.PresencaOnlineScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  socketId: 'socketId',
+  ligadoEm: 'ligadoEm',
+  ultimoPing: 'ultimoPing'
+};
+
+exports.Prisma.RegistoCheckinScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  turnoId: 'turnoId',
+  lat: 'lat',
+  lon: 'lon',
+  distanciaHospital: 'distanciaHospital',
+  dentroGeofence: 'dentroGeofence',
+  ip: 'ip',
+  criadoEm: 'criadoEm'
 };
 
 exports.Prisma.NotaClinicaScalarFieldEnum = {
@@ -225,7 +251,9 @@ exports.Prisma.NotaClinicaScalarFieldEnum = {
   plano: 'plano',
   criadaEm: 'criadaEm',
   editadaEm: 'editadaEm',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  assinadaEm: 'assinadaEm',
+  assinadaPorId: 'assinadaPorId'
 };
 
 exports.Prisma.EscalaClinicaScalarFieldEnum = {
@@ -281,7 +309,9 @@ exports.Prisma.MedicacaoScalarFieldEnum = {
   estadoValidacao: 'estadoValidacao',
   validadoPorId: 'validadoPorId',
   validadaEm: 'validadaEm',
-  motivoRejeicao: 'motivoRejeicao'
+  motivoRejeicao: 'motivoRejeicao',
+  assinadoEm: 'assinadoEm',
+  assinadoPorId: 'assinadoPorId'
 };
 
 exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
@@ -971,6 +1001,61 @@ exports.Prisma.DadosContratuaisScalarFieldEnum = {
   atualizadoEm: 'atualizadoEm'
 };
 
+exports.Prisma.ConsentimentoInformadoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  descricao: 'descricao',
+  assinadoDoenteEm: 'assinadoDoenteEm',
+  assinadoTestemunhaEm: 'assinadoTestemunhaEm',
+  testemunhaId: 'testemunhaId',
+  recusado: 'recusado',
+  motivoRecusa: 'motivoRecusa',
+  criadoEm: 'criadoEm',
+  criadoPorId: 'criadoPorId'
+};
+
+exports.Prisma.BreakGlassAccessScalarFieldEnum = {
+  id: 'id',
+  utilizadorId: 'utilizadorId',
+  doenteId: 'doenteId',
+  motivo: 'motivo',
+  ip: 'ip',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm',
+  expiradoEm: 'expiradoEm'
+};
+
+exports.Prisma.ProtocoloClinicoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  estadoGeral: 'estadoGeral',
+  ativadoPorId: 'ativadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.ItemProtocoloScalarFieldEnum = {
+  id: 'id',
+  protocoloId: 'protocoloId',
+  descricao: 'descricao',
+  prazo: 'prazo',
+  concluido: 'concluido',
+  concluidoEm: 'concluidoEm',
+  concluidoPorId: 'concluidoPorId'
+};
+
+exports.Prisma.PrescricaoDietaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  restricoes: 'restricoes',
+  observacoes: 'observacoes',
+  ativa: 'ativa',
+  criadaEm: 'criadaEm',
+  criadaPorId: 'criadaPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1244,6 +1329,8 @@ exports.Prisma.ModelName = {
   AtribuicaoDoente: 'AtribuicaoDoente',
   HorarioEntrada: 'HorarioEntrada',
   PassagemTurno: 'PassagemTurno',
+  PresencaOnline: 'PresencaOnline',
+  RegistoCheckin: 'RegistoCheckin',
   NotaClinica: 'NotaClinica',
   EscalaClinica: 'EscalaClinica',
   NotaTurno: 'NotaTurno',
@@ -1304,7 +1391,12 @@ exports.Prisma.ModelName = {
   EventoAdverso: 'EventoAdverso',
   SessaoEspecialidade: 'SessaoEspecialidade',
   AvaliacaoDesempenho: 'AvaliacaoDesempenho',
-  DadosContratuais: 'DadosContratuais'
+  DadosContratuais: 'DadosContratuais',
+  ConsentimentoInformado: 'ConsentimentoInformado',
+  BreakGlassAccess: 'BreakGlassAccess',
+  ProtocoloClinico: 'ProtocoloClinico',
+  ItemProtocolo: 'ItemProtocolo',
+  PrescricaoDieta: 'PrescricaoDieta'
 };
 
 /**

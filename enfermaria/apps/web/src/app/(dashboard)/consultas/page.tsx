@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../../lib/auth-context';
 import api from '../../../lib/api';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
 
 interface Consulta {
   id: string;

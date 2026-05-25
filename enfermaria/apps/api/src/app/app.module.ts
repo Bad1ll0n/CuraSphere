@@ -55,58 +55,81 @@ import { GatewayModule } from './gateway/gateway.module';
 import { CatalogoModule } from './catalogo/catalogo.module';
 import { FornecedoresModule } from './fornecedores/fornecedores.module';
 import { ReconciliacaoModule } from './reconciliacao/reconciliacao.module';
+import { ConsentimentosModule } from './consentimentos/consentimentos.module';
+import { BreakGlassModule } from './break-glass/break-glass.module';
+import { ProtocolosModule } from './protocolos/protocolos.module';
+import { DietasModule } from './dietas/dietas.module';
+import { RelatoriosModule } from './relatorios/relatorios.module';
 
 @Module({
   imports: [
+    // ─── Infra ────────────────────────────────────────────────────────────────
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     TerminusModule,
     PrismaModule,
     RedisModule,
     AuthModule,
+    NotificacoesModule,
+    GatewayModule,
+    ConfiguracoesModule,
+
+    // ─── Gestão de Utilizadores / RH ─────────────────────────────────────────
     UtilizadoresModule,
-    DoenteModule,
-    CamasModule,
-    TarefasModule,
-    MedicacaoModule,
+    RhModule,
+    EspecialidadesModule,
     TurnosModule,
     HorariosModule,
     AtribuicoesModule,
     TrocasModule,
+    EscalasModule,
+
+    // ─── Clínico — Doente & Cama ──────────────────────────────────────────────
+    DoenteModule,
+    CamasModule,
+    TarefasModule,
     SinaisVitaisModule,
     AlergiasModule,
     ContactosModule,
     AlertasModule,
-    NotificacoesModule,
-    EscalasModule,
-    DashboardModule,
-    ExamesModule,
-    UrgenciaModule,
-    BlocoModule,
-    ConsultasModule,
-    FarmaciaModule,
-    FisioterapiaModule,
-    PedidosInternosModule,
-    ComunicacaoModule,
     NotasClinicasModule,
     EscalasClinicasModule,
-    InterconsultasModule,
     DispositivosInvasivosModule,
+    AtosClinicosModule,
+    BreakGlassModule,
+    ConsentimentosModule,
+    EventosAdversosModule,
+
+    // ─── Clínico — Terapêutica & Diagnóstico ─────────────────────────────────
+    MedicacaoModule,
+    FarmaciaModule,
+    ReconciliacaoModule,
+    ExamesModule,
+    ProtocolosModule,
+    DietasModule,
+
+    // ─── Clínico — Serviços Especializados ────────────────────────────────────
+    ConsultasModule,
+    InterconsultasModule,
+    UrgenciaModule,
+    BlocoModule,
+    FisioterapiaModule,
+
+    // ─── Operacional / Suporte ────────────────────────────────────────────────
+    TicketsModule,
     SalaEsperaModule,
+    FaturacaoModule,
+    PedidosInternosModule,
+    ComunicacaoModule,
     IncidentesTIModule,
     PedidosTIModule,
-    ConfiguracoesModule,
-    FaturacaoModule,
-    TicketsModule,
     EquipamentosModule,
-    AtosClinicosModule,
-    RhModule,
-    EspecialidadesModule,
-    EventosAdversosModule,
-    GatewayModule,
     CatalogoModule,
     FornecedoresModule,
-    ReconciliacaoModule,
+
+    // ─── Analytics ────────────────────────────────────────────────────────────
+    DashboardModule,
+    RelatoriosModule,
   ],
   controllers: [AppController, AuditController],
   providers: [

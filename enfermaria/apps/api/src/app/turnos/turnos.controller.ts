@@ -26,13 +26,32 @@ export class TurnosController {
   }
 
   @Post('check-in')
-  checkIn(@Request() req: any) {
-    return this.turnosService.checkIn(req.user.sub);
+  checkIn(
+    @Request() req: any,
+    @Body() body: { lat?: number; lon?: number } = {},
+  ) {
+    const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
+    return this.turnosService.checkIn(req.user.sub, {
+      lat: body.lat,
+      lon: body.lon,
+      ip,
+    });
+  }
+
+  @Post('iniciar-passagem')
+  iniciarPassagem(@Request() req: any) {
+    return this.turnosService.iniciarPassagem(req.user.sub);
   }
 
   @Post('confirmar-passagem')
   confirmarPassagem(@Request() req: any) {
     return this.turnosService.confirmarPassagemTurno(req.user.sub);
+  }
+
+  @Roles('enfermeiro', 'direcao', 'ti')
+  @Get('ativo/inatividade')
+  inatividade() {
+    return this.turnosService.inatividade();
   }
 
   @Roles('enfermeiro')

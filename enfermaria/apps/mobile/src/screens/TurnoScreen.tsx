@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl,
+  StyleSheet, ActivityIndicator, RefreshControl, Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import * as Location from 'expo-location';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 
@@ -45,18 +46,19 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [doenteAberto, setDoenteAberto] = useState<string | null>(null);
+  const [checkInFeito, setCheckInFeito] = useState(false);
+  const [checkInLoading, setCheckInLoading] = useState(false);
+  const [passagemLoading, setPassagemLoading] = useState(false);
 
   const meuGrupoChave = utilizador.role === 'medico' ? 'medico'
     : utilizador.role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
 
   const carregar = async () => {
     try {
-      // Doentes atribuídos no turno actual (filtrado pelo backend)
       const { data: doentesResp } = await api.get('/doentes');
       const doentesData = doentesResp.data ?? doentesResp;
       setDoentes(doentesData);
 
-      // Buscar tarefas de cada doente
       const tarefasMap: Record<string, Tarefa[]> = {};
       await Promise.all(doentesData.map(async (d: Doente) => {
         try {
@@ -72,6 +74,62 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
   };
 
   useFocusEffect(useCallback(() => { carregar(); }, []));
+
+  const fazerCheckIn = async () => {
+    setCheckInLoading(true);
+    try {
+      let lat: number | undefined;
+      let lon: number | undefined;
+
+      // Pedir permissão de localização
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === 'granted') {
+        try {
+          const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          lat = loc.coords.latitude;
+          lon = loc.coords.longitude;
+        } catch {
+          // Se falhar GPS, prosseguir sem coordenadas (validação por IP)
+        }
+      }
+
+      const resp = await api.post('/turnos/check-in', { lat, lon });
+      const { dentroGeofence } = resp.data;
+
+      setCheckInFeito(true);
+
+      if (!dentroGeofence) {
+        Alert.alert(
+          '⚠️ Localização fora do hospital',
+          'O check-in foi registado, mas a tua localização indica que podes estar fora das instalações hospitalares. O chefe de turno foi notificado.',
+          [{ text: 'OK' }],
+        );
+      } else {
+        Alert.alert('✅ Check-in realizado', 'Check-in confirmado com sucesso. Bem-vindo ao turno!');
+      }
+    } catch (e: any) {
+      const msg = e?.response?.data?.message ?? 'Erro ao fazer check-in';
+      Alert.alert('Erro', msg);
+    } finally {
+      setCheckInLoading(false);
+    }
+  };
+
+  const iniciarPassagem = async () => {
+    setPassagemLoading(true);
+    try {
+      const resp = await api.post('/turnos/iniciar-passagem');
+      Alert.alert(
+        'Passagem de turno enviada',
+        `Desafio enviado a ${resp.data.receptores} profissional(is) online. Aguarda a confirmação.`,
+      );
+    } catch (e: any) {
+      const msg = e?.response?.data?.message ?? 'Erro ao iniciar passagem';
+      Alert.alert('Erro na passagem de turno', msg);
+    } finally {
+      setPassagemLoading(false);
+    }
+  };
 
   const concluirTarefa = async (tarefaId: string) => {
     try {
@@ -90,20 +148,6 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
     </View>
   );
 
-  if (doentes.length === 0) return (
-    <View style={{ flex: 1, backgroundColor: '#f1f5f9' }}>
-      <View style={s.header}>
-        {onVoltar && <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}><Text style={s.voltarTexto}>‹  Voltar</Text></TouchableOpacity>}
-        <Text style={s.headerTitulo}>O Meu Turno</Text>
-        <Text style={s.headerSubtitulo}>Sem doentes atribuídos</Text>
-      </View>
-      <View style={s.centro}>
-        <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
-        <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
-      </View>
-    </View>
-  );
-
   return (
     <ScrollView
       style={s.container}
@@ -116,8 +160,42 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
           </TouchableOpacity>
         )}
         <Text style={s.headerTitulo}>O Meu Turno</Text>
-        <Text style={s.headerSubtitulo}>{doentes.length} doente{doentes.length !== 1 ? 's' : ''} atribuído{doentes.length !== 1 ? 's' : ''}</Text>
+        <Text style={s.headerSubtitulo}>
+          {doentes.length > 0 ? `${doentes.length} doente${doentes.length !== 1 ? 's' : ''} atribuído${doentes.length !== 1 ? 's' : ''}` : 'Sem doentes atribuídos'}
+        </Text>
       </View>
+
+      {/* Acções de turno */}
+      <View style={s.accoesRow}>
+        <TouchableOpacity
+          style={[s.accaoBotao, checkInFeito ? s.accaoBotaoSucesso : s.accaoBotaoPrimario, checkInLoading && s.accaoBotaoDisabled]}
+          onPress={fazerCheckIn}
+          disabled={checkInFeito || checkInLoading}
+        >
+          {checkInLoading
+            ? <ActivityIndicator size="small" color="#fff" />
+            : <Text style={s.accaoBotaoTexto}>{checkInFeito ? '✓ Check-in feito' : '📍 Fazer Check-in'}</Text>
+          }
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[s.accaoBotao, s.accaoBotaoSecundario, passagemLoading && s.accaoBotaoDisabled]}
+          onPress={iniciarPassagem}
+          disabled={passagemLoading}
+        >
+          {passagemLoading
+            ? <ActivityIndicator size="small" color="#1e293b" />
+            : <Text style={[s.accaoBotaoTexto, { color: '#1e293b' }]}>🔄 Passar Turno</Text>
+          }
+        </TouchableOpacity>
+      </View>
+
+      {doentes.length === 0 && (
+        <View style={s.centro}>
+          <Text style={s.semTurnoTitulo}>Sem doentes atribuídos</Text>
+          <Text style={s.semTurnoSub}>Não tens doentes atribuídos no turno actual</Text>
+        </View>
+      )}
 
       {doentes.map((d) => {
         const tarefas = tarefasPorDoente[d.id] ?? [];
@@ -129,7 +207,6 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
             onPress={() => setDoenteAberto(aberto ? null : d.id)}
             activeOpacity={0.8}
           >
-            {/* Cabeçalho */}
             <View style={s.cartaoCabecalho}>
               <View style={s.cartaoCabecalhoEsq}>
                 <Text style={s.doenteNome}>{d.nome}</Text>
@@ -143,21 +220,18 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
               </View>
             </View>
 
-            {/* Resumo */}
             <View style={s.resumo}>
-              {tarefas.length > 0 && (
+              {tarefas.length > 0 ? (
                 <View style={s.badge}>
                   <Text style={s.badgeTexto}>{tarefas.length} tarefa{tarefas.length !== 1 ? 's' : ''}</Text>
                 </View>
-              )}
-              {tarefas.length === 0 && (
+              ) : (
                 <View style={[s.badge, { backgroundColor: '#f0fdf4' }]}>
                   <Text style={[s.badgeTexto, { color: '#16a34a' }]}>Sem tarefas</Text>
                 </View>
               )}
             </View>
 
-            {/* Tarefas expandidas */}
             {aberto && tarefas.length > 0 && (
               <View style={s.detalhes}>
                 <Text style={s.secaoTitulo}>Tarefas Pendentes</Text>
@@ -195,7 +269,7 @@ export default function TurnoScreen({ utilizador, onVoltar }: Props) {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
-  centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32, backgroundColor: '#f1f5f9' },
+  centro: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
   semTurnoTitulo: { fontSize: 20, fontWeight: '700', color: '#1e293b', textAlign: 'center', marginBottom: 8 },
   semTurnoSub: { fontSize: 15, color: '#64748b', textAlign: 'center', lineHeight: 22 },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16, paddingBottom: 20 },
@@ -203,6 +277,13 @@ const s = StyleSheet.create({
   voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
   headerTitulo: { fontSize: 22, fontWeight: '700', color: '#fff' },
   headerSubtitulo: { fontSize: 14, color: '#94a3b8', marginTop: 2 },
+  accoesRow: { flexDirection: 'row', gap: 10, margin: 16 },
+  accaoBotao: { flex: 1, paddingVertical: 12, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  accaoBotaoPrimario: { backgroundColor: '#2563eb' },
+  accaoBotaoSucesso: { backgroundColor: '#16a34a' },
+  accaoBotaoSecundario: { backgroundColor: '#e2e8f0' },
+  accaoBotaoDisabled: { opacity: 0.6 },
+  accaoBotaoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
   cartao: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 12, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOpacity: 0.06, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 },
   cartaoCabecalho: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   cartaoCabecalhoEsq: { flex: 1, marginRight: 12 },

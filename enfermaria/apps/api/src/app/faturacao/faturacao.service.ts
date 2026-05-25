@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
 @Injectable()
 export class FaturacaoService {
+  private readonly logger = new Logger(FaturacaoService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
@@ -165,7 +167,7 @@ export class FaturacaoService {
           'Fatura emitida',
           `Fatura do doente ${(ep as any).doente?.nome ?? 'desconhecido'} foi emitida e aguarda pagamento.`,
         )
-        .catch(() => {});
+        .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     return updated;

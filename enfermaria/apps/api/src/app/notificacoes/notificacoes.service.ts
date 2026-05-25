@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 interface ExpoPushMessage {
@@ -10,6 +10,8 @@ interface ExpoPushMessage {
 
 @Injectable()
 export class NotificacoesService {
+  private readonly logger = new Logger(NotificacoesService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async registarToken(utilizadorId: string, token: string, plataforma: string) {
@@ -24,7 +26,7 @@ export class NotificacoesService {
     // Persistir in-app
     await this.prisma.notificacaoInApp.create({
       data: { utilizadorId, titulo, corpo, dadosExtra: data ?? null },
-    }).catch(() => {});
+    }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     // Push via Expo
     const dispositivos = await this.prisma.dispositivoToken.findMany({ where: { utilizadorId } });
@@ -41,7 +43,7 @@ export class NotificacoesService {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(mensagens),
-    }).catch(() => {});
+    }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
   }
 
   async listar(utilizadorId: string, page = 1, limit = 30) {
@@ -74,6 +76,14 @@ export class NotificacoesService {
 
   async contarNaoLidas(utilizadorId: string) {
     return this.prisma.notificacaoInApp.count({ where: { utilizadorId, lida: false } });
+  }
+
+  async enviarParaRole(role: string, titulo: string, corpo: string, data?: Record<string, any>): Promise<void> {
+    const utilizadores = await this.prisma.utilizador.findMany({
+      where: { role, ativo: true },
+      select: { id: true },
+    });
+    await Promise.all(utilizadores.map((u) => this.enviarParaUtilizador(u.id, titulo, corpo, data)));
   }
 
   async enviarParaDoente(doenteId: string, titulo: string, corpo: string): Promise<void> {

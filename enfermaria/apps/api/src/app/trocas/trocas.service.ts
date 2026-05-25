@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 
@@ -11,6 +11,8 @@ const include = {
 
 @Injectable()
 export class TrocasService {
+  private readonly logger = new Logger(TrocasService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
@@ -140,7 +142,7 @@ export class TrocasService {
       'Pedido de Troca de Turno',
       `${solicitante?.nome ?? 'Um colega'} solicitou uma troca de turno consigo.`,
       { tipo: 'troca', pedidoId: pedido.id },
-    ).catch(() => {});
+    ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     return pedido;
   }
@@ -164,14 +166,14 @@ export class TrocasService {
         'Troca Aceite — Aguarda Aprovação',
         `${resultado.destinatario.nome} aceitou a troca. Aguarda aprovação do chefe de turno.`,
         { tipo: 'troca', pedidoId },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     } else {
       this.notificacoes.enviarParaUtilizador(
         pedido.solicitanteId,
         'Troca Recusada',
         `${resultado.destinatario.nome} recusou o pedido de troca de turno.`,
         { tipo: 'troca', pedidoId },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     return resultado;
@@ -214,13 +216,13 @@ export class TrocasService {
         'Troca de Turno Aprovada ✅',
         'O chefe de turno aprovou a sua troca. O turno foi actualizado.',
         { tipo: 'troca', pedidoId },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       this.notificacoes.enviarParaUtilizador(
         pedido.destinatarioId,
         'Troca de Turno Aprovada ✅',
         'A troca de turno foi aprovada. Fique atento ao seu horário.',
         { tipo: 'troca', pedidoId },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       return aprovado;
     });
   }

@@ -28,13 +28,6 @@ const ESPECIALIDADES = [
   'Oftalmologia', 'Otorrinolaringologia', 'Medicina Interna', 'Anestesiologia',
 ];
 
-const ESTADO_COR: Record<string, string> = {
-  pendente: 'bg-amber-50 text-amber-700 border-amber-200',
-  aceite: 'bg-blue-50 text-blue-700 border-blue-200',
-  respondida: 'bg-green-50 text-green-700 border-green-200',
-  cancelada: 'bg-slate-50 text-slate-500 border-slate-200',
-};
-
 const ESTADO_LABEL: Record<string, string> = {
   pendente: 'Pendente', aceite: 'Aceite', respondida: 'Respondida', cancelada: 'Cancelada',
 };

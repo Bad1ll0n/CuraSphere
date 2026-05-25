@@ -19,6 +19,7 @@ export class TarefasController {
     return this.tarefasService.listarPorDoente(doenteId);
   }
 
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Post()
   criar(@Body() body: {
     doenteId: string;
@@ -30,6 +31,7 @@ export class TarefasController {
     return this.tarefasService.criar({ ...body, criadoPorId: req.user.sub });
   }
 
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Patch(':id/estado')
   atualizarEstado(
     @Param('id') id: string,
@@ -38,6 +40,7 @@ export class TarefasController {
     return this.tarefasService.atualizarEstado(id, body.estado);
   }
 
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Patch(':id')
   editar(
     @Param('id') id: string,

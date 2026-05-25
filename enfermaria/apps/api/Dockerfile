@@ -22,7 +22,7 @@ COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
 
 # Gerar cliente Prisma com binário linux-musl
-RUN cd apps/api && npx prisma generate --schema src/prisma/schema.prisma
+RUN cd apps/api && npx prisma generate --schema prisma/schema.prisma
 
 # Build da API via Nx
 RUN pnpm exec nx build api

@@ -46,7 +46,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
         if (t.responsavel?.id) ids.add(t.responsavel.id);
         if (t.criadoPor?.id) ids.add(t.criadoPor.id);
         for (const id of ids) {
-          this.notificacoes.enviarParaUtilizador(id, titulo, corpo, { tarefaId: t.id, doenteId: t.doenteId }).catch(() => {});
+          this.notificacoes.enviarParaUtilizador(id, titulo, corpo, { tarefaId: t.id, doenteId: t.doenteId }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
         }
       }
 
@@ -165,7 +165,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
         `Nova Tarefa — ${prioLabel[data.prioridade] ?? data.prioridade}`,
         `${tarefa.doente.nome}: ${data.descricao}`,
         { tipo: 'tarefa', tarefaId: tarefa.id },
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     return tarefa;

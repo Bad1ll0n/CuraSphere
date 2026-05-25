@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -44,6 +44,8 @@ function calcularMorse(itens: Record<string, number>): { pontuacao: number; risc
 
 @Injectable()
 export class EscalasService {
+  private readonly logger = new Logger(EscalasService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly alertasService: AlertasService,
@@ -97,7 +99,7 @@ export class EscalasService {
         doenteId,
         `⚠ Risco ${nivelLabel} — ${doente.nome}`,
         msg,
-      ).catch(() => {});
+      ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     return avaliacao;

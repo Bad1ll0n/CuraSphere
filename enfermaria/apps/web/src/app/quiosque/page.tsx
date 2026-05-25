@@ -69,7 +69,6 @@ export default function QuiosquePage() {
   const [slots, setSlots] = useState<Slot[]>([]);
   const [slotSelecionado, setSlotSelecionado] = useState<Slot | null>(null);
   const [carregandoMedicos, setCarregandoMedicos] = useState(false);
-  const [carregandoSlots, setCarregandoSlots] = useState(false);
   const [novaConsulta, setNovaConsulta] = useState<{ codigo: string; dataHora: string; medico: { nome: string } } | null>(null);
   const [erroMarcacao, setErroMarcacao] = useState('');
   const [especialidadeSelecionada, setEspecialidadeSelecionada] = useState('');
@@ -184,21 +183,6 @@ export default function QuiosquePage() {
     setDataSelecionada(dia);
     setSlots(cached);
     setSlotSelecionado(null);
-  }
-
-  async function selecionarData(data: string) {
-    setDataSelecionada(data);
-    setCarregandoSlots(true);
-    setSlots([]);
-    setSlotSelecionado(null);
-    try {
-      const res = await fetch(`${API}/quiosque/medicos/${medicoSelecionado!.id}/slots?data=${data}`);
-      if (!res.ok) { setSlots([]); return; }
-      setSlots(await res.json());
-      setEstado('nova_slot');
-    } finally {
-      setCarregandoSlots(false);
-    }
   }
 
   async function confirmarMarcacao() {

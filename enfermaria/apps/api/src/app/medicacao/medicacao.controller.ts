@@ -124,6 +124,12 @@ export class MedicacaoController {
     return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, body.motivoRejeicao);
   }
 
+  @Roles('medico', 'enfermeiro')
+  @Post(':id/assinar')
+  assinar(@Param('id') id: string, @Body() body: { totpCode: string }, @Request() req: any) {
+    return this.medicacaoService.assinar(id, req.user.sub, body.totpCode);
+  }
+
   @Get('interacoes')
   verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string) {
     return this.medicacaoService.verificarInteracoes(doenteId, nome);

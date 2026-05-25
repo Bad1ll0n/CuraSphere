@@ -125,7 +125,7 @@ export default function ConfiguracoesPage() {
   const isCriarSub     = modal === 'criar-subrole';
   const isEditarSub    = modal === 'editar-subrole';
   const modalAberto    = modal !== null;
-  const modalTitulo    = isCriarRole ? 'Nova Role' : isEditarRole ? 'Editar Role' : isCriarSub ? 'Novo Sub-Role' : 'Editar Sub-Role';
+  const modalTitulo    = isCriarRole ? 'Nova Role' : isEditarRole ? 'Editar Role' : isCriarSub ? 'Novo Sub-Role' : isEditarSub ? 'Editar Sub-Role' : '';
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: '960px', margin: '0 auto' }}>

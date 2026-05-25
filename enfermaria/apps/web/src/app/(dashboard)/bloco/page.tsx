@@ -173,11 +173,6 @@ export default function BlocoPage() {
   const podeChecklist = ['medico', 'enfermeiro'].includes(utilizador?.role ?? '');
   const salas = [...new Set(cirurgias.map(c => c.sala))].sort();
 
-  const corFase = (fase: Fase) => {
-    const c = WHO_FASES[fase].cor;
-    return c === 'blue' ? 'text-blue-600 bg-blue-50' : c === 'amber' ? 'text-amber-600 bg-amber-50' : 'text-green-600 bg-green-50';
-  };
-
   return (
     <div style={{ padding: '32px 40px' }}>
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>

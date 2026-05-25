@@ -1,7 +1,8 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { ProtocolosService } from '../protocolos/protocolos.service';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -94,10 +95,13 @@ function calcularNEWS2(dto: CriarSinalVitalDto): number | null {
 
 @Injectable()
 export class SinaisVitaisService {
+  private readonly logger = new Logger(SinaisVitaisService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly alertasService: AlertasService,
     private readonly notificacoesService: NotificacoesService,
+    private readonly protocolosService: ProtocolosService,
   ) {}
 
   async criar(doenteId: string, utilizadorId: string, role: string, dto: CriarSinalVitalDto) {
@@ -139,6 +143,10 @@ export class SinaisVitaisService {
         `🔴 NEWS2 ${nivel} — ${doente.nome}`,
         msg,
       );
+
+      if (news2 >= 7) {
+        this.protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis').catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+      }
     }
 
     return registo;

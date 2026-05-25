@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
 
 @Injectable()
 export class AlertasService {
+  private readonly logger = new Logger(AlertasService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoesService: NotificacoesService,
@@ -37,9 +39,9 @@ export class AlertasService {
     this.prisma.alertaClinico
       .create({ data: { doenteId, tipo, mensagem } })
       .then(() => {
-        this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem).catch(() => {});
+        this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       })
-      .catch(() => {});
+      .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
   }
 
   // ─── SOS ──────────────────────────────────────────────────────────────────
@@ -139,7 +141,7 @@ export class AlertasService {
     if (medicosAtribuidos.length > 0) {
       for (const a of medicosAtribuidos) {
         notificadosIds.add(a.utilizador.id);
-        this.notificacoesService.enviarParaUtilizador(a.utilizador.id, titulo, corpo, pushData).catch(() => {});
+        this.notificacoesService.enviarParaUtilizador(a.utilizador.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
     } else {
       // Tentar pelo subRole da especialidade do doente
@@ -179,14 +181,14 @@ export class AlertasService {
         for (const m of todosMedicos) {
           if (!notificadosIds.has(m.id)) {
             notificadosIds.add(m.id);
-            this.notificacoesService.enviarParaUtilizador(m.id, titulo, corpo, pushData).catch(() => {});
+            this.notificacoesService.enviarParaUtilizador(m.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
           }
         }
       } else {
         for (const t of targets) {
           if (!notificadosIds.has(t.utilizador.id)) {
             notificadosIds.add(t.utilizador.id);
-            this.notificacoesService.enviarParaUtilizador(t.utilizador.id, titulo, corpo, pushData).catch(() => {});
+            this.notificacoesService.enviarParaUtilizador(t.utilizador.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
           }
         }
       }
@@ -198,7 +200,7 @@ export class AlertasService {
       select: { chefeTurnoId: true },
     });
     if (turno && !notificadosIds.has(turno.chefeTurnoId)) {
-      this.notificacoesService.enviarParaUtilizador(turno.chefeTurnoId, titulo, corpo, pushData).catch(() => {});
+      this.notificacoesService.enviarParaUtilizador(turno.chefeTurnoId, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     // Emitir via WebSocket para todos os médicos/enfermeiros online

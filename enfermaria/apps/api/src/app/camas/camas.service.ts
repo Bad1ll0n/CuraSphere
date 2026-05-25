@@ -49,6 +49,20 @@ export class CamasService {
     return result;
   }
 
+  async confirmarLimpeza(id: string) {
+    const cama = await this.prisma.cama.findUnique({ where: { id } });
+    if (!cama) throw new NotFoundException(`Cama (ID ${id}) não encontrada`);
+    if (cama.estado !== 'em_limpeza') throw new ConflictException('A cama não está em estado de limpeza');
+
+    const result = await this.prisma.cama.update({
+      where: { id },
+      data: { estado: 'livre' },
+      include: { doente: { select: { id: true, nome: true } } },
+    });
+    await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    return result;
+  }
+
   async ocupacao() {
     const cached = await this.redis.get<Record<string, number>>(KEY_OCUPACAO);
     if (cached) return cached;

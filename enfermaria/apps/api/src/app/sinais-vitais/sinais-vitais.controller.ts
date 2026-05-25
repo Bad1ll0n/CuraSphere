@@ -1,12 +1,15 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { SinaisVitaisService } from './sinais-vitais.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sinais-vitais')
 export class SinaisVitaisController {
   constructor(private readonly service: SinaisVitaisService) {}
 
+  @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
   @Post(':doenteId')
   criar(@Param('doenteId') doenteId: string, @Body() dto: Record<string, any>, @Request() req: any) {
     return this.service.criar(doenteId, req.user.sub, req.user.role, dto);

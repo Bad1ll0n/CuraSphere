@@ -31,4 +31,10 @@ export class NotasClinicasController {
   apagar(@Param('id') id: string) {
     return this.service.apagar(id);
   }
+
+  @Post(':id/assinar')
+  @Roles('medico', 'enfermeiro')
+  assinar(@Param('id') id: string, @Body() body: { totpCode: string }, @Request() req: any) {
+    return this.service.assinar(id, req.user.sub, body.totpCode);
+  }
 }

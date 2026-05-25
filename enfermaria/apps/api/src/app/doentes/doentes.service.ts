@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EstadoDoente } from '../common/enums';
 
 @Injectable()
 export class DoenteService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(DoenteService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notificacoes: NotificacoesService,
+  ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25) {
     const skip = (page - 1) * limit;
@@ -393,10 +399,16 @@ export class DoenteService {
       });
 
       if (doente.camaId) {
-        await tx.cama.update({
+        const cama = await tx.cama.update({
           where: { id: doente.camaId },
           data: { estado: 'em_limpeza' },
         });
+        this.notificacoes.enviarParaRole(
+          'auxiliar',
+          '🧹 Cama disponível para limpeza',
+          `Cama ${cama.quarto}/${cama.numero} — doente teve alta. Por favor efectue a limpeza.`,
+          { camaId: cama.id },
+        ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
 
       return sumario;

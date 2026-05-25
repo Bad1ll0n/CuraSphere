@@ -156,6 +156,16 @@ model Utilizador {
   transferenciasSolicitadas    TransferenciaStock[]       @relation("TransfSolicitadas")
   transferenciasConfirmadas    TransferenciaStock[]       @relation("TransfConfirmadas")
   encomendasRecebidas          EncomendaFornecedor[]      @relation("EncomendasRecebidas")
+  presencaOnline               PresencaOnline?
+  registosCheckin              RegistoCheckin[]
+  consentimentosCriados        ConsentimentoInformado[]   @relation("ConsentimentoCriador")
+  consentimentosTestemunha     ConsentimentoInformado[]   @relation("ConsentimentoTestemunha")
+  breakGlassUsados             BreakGlassAccess[]
+  protocolosAtivados           ProtocoloClinico[]
+  itensProtocoloConcluidos     ItemProtocolo[]
+  prescricoesDietaCriadas      PrescricaoDieta[]
+  medicacoesAssinadas          Medicacao[]                @relation("MedicacaoAssinatura")
+  notasAssinadas               NotaClinica[]              @relation("NotaAssinatura")
 
   @@index([role, ativo])
   @@index([servico])
@@ -172,14 +182,17 @@ enum EstadoCama {
 }
 
 model Cama {
-  id     String     @id @default(uuid())
-  numero String     @unique
-  quarto String
-  estado EstadoCama @default(livre)
+  id      String     @id @default(uuid())
+  numero  String     @unique
+  quarto  String
+  estado  EstadoCama @default(livre)
+  servico String?
+  piso    Int?
 
   doente Doente?
 
   @@index([quarto, estado])
+  @@index([servico, estado])
   @@map("camas")
 }
 
@@ -249,6 +262,10 @@ model Doente {
   episodiosFaturacao    EpisodioFaturacao[]
   problemas             ProblemaClinico[]
   eventosAdversos       EventoAdverso[]          @relation("EventosAdversosDoente")
+  consentimentos        ConsentimentoInformado[]
+  breakGlassAcessos     BreakGlassAccess[]
+  protocolosClinicos    ProtocoloClinico[]
+  prescricoesDieta      PrescricaoDieta[]
 
   @@index([ativo])
   @@index([estado])
@@ -320,28 +337,65 @@ model PassagemTurno {
   turnoAtualId    String
   doenteId        String
 
+  // Desafio de presença em tempo real
+  estadoDesafio     String    @default("pendente") // pendente | aceite | expirado
+  desafioEnviadoEm  DateTime?
+  desafioAceitoEm   DateTime?
+  desafioExpiradoEm DateTime?
+
   turnoAnterior Turno  @relation("PassagemTurnoAnterior", fields: [turnoAnteriorId], references: [id])
   turnoAtual    Turno  @relation("PassagemTurnoAtual", fields: [turnoAtualId], references: [id])
   doente        Doente @relation(fields: [doenteId], references: [id])
 
+  @@index([estadoDesafio])
   @@map("passagens_turno")
+}
+
+model PresencaOnline {
+  id           String     @id @default(uuid())
+  utilizadorId String     @unique
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  socketId     String
+  ligadoEm     DateTime   @default(now())
+  ultimoPing   DateTime   @default(now())
+
+  @@map("presenca_online")
+}
+
+model RegistoCheckin {
+  id                String     @id @default(uuid())
+  utilizadorId      String
+  utilizador        Utilizador @relation(fields: [utilizadorId], references: [id])
+  turnoId           String?
+  lat               Float?
+  lon               Float?
+  distanciaHospital Float?
+  dentroGeofence    Boolean    @default(true)
+  ip                String?
+  criadoEm          DateTime   @default(now())
+
+  @@index([utilizadorId, criadoEm])
+  @@map("registos_checkin")
 }
 
 // ─── Notas Clínicas SOAP ─────────────────────────────────────────────────────
 
 model NotaClinica {
-  id        String     @id @default(uuid())
-  doenteId  String
-  doente    Doente     @relation(fields: [doenteId], references: [id])
-  autorId   String
-  autor     Utilizador @relation(fields: [autorId], references: [id])
-  subjetivo String
-  objetivo  String
-  avaliacao String
-  plano     String
-  criadaEm  DateTime   @default(now())
-  editadaEm DateTime?
-  deletedAt DateTime?
+  id            String      @id @default(uuid())
+  doenteId      String
+  doente        Doente      @relation(fields: [doenteId], references: [id])
+  autorId       String
+  autor         Utilizador  @relation(fields: [autorId], references: [id])
+  subjetivo     String
+  objetivo      String
+  avaliacao     String
+  plano         String
+  criadaEm      DateTime    @default(now())
+  editadaEm     DateTime?
+  deletedAt     DateTime?
+  assinadaEm    DateTime?
+  assinadaPorId String?
+  assinadaPor   Utilizador? @relation("NotaAssinatura", fields: [assinadaPorId], references: [id])
 
   @@index([doenteId, criadaEm])
   @@index([deletedAt])
@@ -470,10 +524,13 @@ model Medicacao {
   validadoPorId   String?
   validadaEm      DateTime?
   motivoRejeicao  String?
+  assinadoEm      DateTime?
+  assinadoPorId   String?
 
   doente       Doente             @relation(fields: [doenteId], references: [id])
   prescritoPor Utilizador         @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id])
   validadoPor  Utilizador?        @relation("MedicacaoValidador", fields: [validadoPorId], references: [id])
+  assinadoPor  Utilizador?        @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id])
   registos     RegistoMedicacao[]
 
   @@index([doenteId, ativo])
@@ -1727,4 +1784,97 @@ model DadosContratuais {
   utilizador Utilizador @relation(fields: [utilizadorId], references: [id])
 
   @@map("dados_contratuais")
+}
+
+// ─── Consentimento Informado ──────────────────────────────────────────────────
+
+model ConsentimentoInformado {
+  id                   String      @id @default(uuid())
+  doenteId             String
+  doente               Doente      @relation(fields: [doenteId], references: [id])
+  tipo                 String // cirurgia | procedimento_invasivo | anestesia | transfusao | outro
+  descricao            String
+  assinadoDoenteEm     DateTime?
+  assinadoTestemunhaEm DateTime?
+  testemunhaId         String?
+  testemunha           Utilizador? @relation("ConsentimentoTestemunha", fields: [testemunhaId], references: [id])
+  recusado             Boolean     @default(false)
+  motivoRecusa         String?
+  criadoEm             DateTime    @default(now())
+  criadoPorId          String
+  criadoPor            Utilizador  @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id])
+
+  @@index([doenteId])
+  @@index([tipo])
+  @@map("consentimentos_informados")
+}
+
+// ─── Break-Glass Access ───────────────────────────────────────────────────────
+
+model BreakGlassAccess {
+  id           String     @id @default(uuid())
+  utilizadorId String
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  doenteId     String
+  doente       Doente     @relation(fields: [doenteId], references: [id])
+  motivo       String
+  ip           String?
+  ativo        Boolean    @default(true)
+  criadoEm     DateTime   @default(now())
+  expiradoEm   DateTime
+
+  @@index([utilizadorId, doenteId, ativo])
+  @@index([expiradoEm])
+  @@map("break_glass_access")
+}
+
+// ─── Protocolos Clínicos ──────────────────────────────────────────────────────
+
+model ProtocoloClinico {
+  id           String          @id @default(uuid())
+  doenteId     String
+  doente       Doente          @relation(fields: [doenteId], references: [id])
+  tipo         String // sepsis | avc | iamcst | outro
+  estadoGeral  String          @default("ativo") // ativo | concluido | cancelado
+  ativadoPorId String?
+  ativadoPor   Utilizador?     @relation(fields: [ativadoPorId], references: [id])
+  criadoEm     DateTime        @default(now())
+  itens        ItemProtocolo[]
+
+  @@index([doenteId, estadoGeral])
+  @@index([tipo, estadoGeral])
+  @@map("protocolos_clinicos")
+}
+
+model ItemProtocolo {
+  id             String           @id @default(uuid())
+  protocoloId    String
+  protocolo      ProtocoloClinico @relation(fields: [protocoloId], references: [id])
+  descricao      String
+  prazo          Int? // minutos desde criação do protocolo
+  concluido      Boolean          @default(false)
+  concluidoEm    DateTime?
+  concluidoPorId String?
+  concluidoPor   Utilizador?      @relation(fields: [concluidoPorId], references: [id])
+
+  @@index([protocoloId])
+  @@map("itens_protocolo")
+}
+
+// ─── Dietética ────────────────────────────────────────────────────────────────
+
+model PrescricaoDieta {
+  id          String     @id @default(uuid())
+  doenteId    String
+  doente      Doente     @relation(fields: [doenteId], references: [id])
+  tipo        String // normal | hipocalorica | diab | renal | hepatica | liquida | jejum | outra
+  restricoes  String[]
+  observacoes String?
+  ativa       Boolean    @default(true)
+  criadaEm    DateTime   @default(now())
+  criadaPorId String
+  criadaPor   Utilizador @relation(fields: [criadaPorId], references: [id])
+
+  @@index([doenteId, ativa])
+  @@map("prescricoes_dieta")
 }
