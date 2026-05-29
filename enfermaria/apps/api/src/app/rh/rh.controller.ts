@@ -142,4 +142,41 @@ export class RhController {
   criarContrato(@Param('id') id: string, @Body() dto: CriarContratoDto) {
     return this.rh.criarOuAtualizarContrato(id, dto);
   }
+
+  // ── Trocas de Folga ───────────────────────────────────────────────────────
+
+  @Post('trocas-folga')
+  criarTrocaFolga(@Body() body: any, @Request() req: any) {
+    return this.rh.criarTrocaFolga(req.user.sub, body);
+  }
+
+  @Get('trocas-folga/minhas')
+  minhasTrocasFolga(@Request() req: any) {
+    return this.rh.minhasTrocasFolga(req.user.sub);
+  }
+
+  @Get('trocas-folga/para-aprovar')
+  trocasFolgaParaAprovar(@Request() req: any) {
+    return this.rh.trocasFolgaParaAprovar(req.user.sub);
+  }
+
+  @Patch('trocas-folga/:id/aceitar')
+  aceitarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+    return this.rh.aceitarTrocaFolga(id, req.user.sub);
+  }
+
+  @Patch('trocas-folga/:id/recusar')
+  recusarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+    return this.rh.recusarTrocaFolga(id, req.user.sub);
+  }
+
+  @Patch('trocas-folga/:id/aprovar')
+  aprovarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+    return this.rh.aprovarTrocaFolga(id, req.user.sub);
+  }
+
+  @Patch('trocas-folga/:id/cancelar')
+  cancelarTrocaFolga(@Param('id') id: string, @Request() req: any) {
+    return this.rh.cancelarTrocaFolga(id, req.user.sub);
+  }
 }

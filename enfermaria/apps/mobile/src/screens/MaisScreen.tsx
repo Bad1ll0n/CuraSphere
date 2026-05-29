@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Platform,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import api from '../lib/api';
 import { logout, Utilizador } from '../lib/auth';
 import HorariosScreen from './HorariosScreen';
 import AtribuicoesScreen from './AtribuicoesScreen';
@@ -29,6 +31,8 @@ import WorklistScreen from './WorklistScreen';
 import EspecialidadesScreen from './EspecialidadesScreen';
 import BlocoScreen from './BlocoScreen';
 import CatalogoScreen from './CatalogoScreen';
+import DashboardQualidadeScreen from './DashboardQualidadeScreen';
+import NotificacoesScreen from './NotificacoesScreen';
 
 type SubTela =
   | null
@@ -37,7 +41,8 @@ type SubTela =
   | 'farmacia' | 'fisioterapia' | 'consultas' | 'urgencia'
   | 'salaespera' | 'iacs' | 'mar' | 'comunicacao'
   | 'ferias' | 'pedidosInternos' | 'interconsultas' | 'worklist'
-  | 'especialidades' | 'bloco' | 'catalogo';
+  | 'especialidades' | 'bloco' | 'catalogo' | 'dashboardqualidade'
+  | 'notificacoes';
 
 const ROLES_MEDICO     = ['medico'];
 const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
@@ -62,6 +67,13 @@ interface Props { utilizador: Utilizador; onLogout: () => void }
 
 export default function MaisScreen({ utilizador, onLogout }: Props) {
   const [subTela, setSubTela] = useState<SubTela>(null);
+  const [naoLidasNotif, setNaoLidasNotif] = useState(0);
+
+  useFocusEffect(useCallback(() => {
+    api.get('/notificacoes/nao-lidas')
+      .then(r => setNaoLidasNotif(r.data.count ?? 0))
+      .catch(() => {});
+  }, []));
 
   const voltar = () => setSubTela(null);
 
@@ -88,8 +100,10 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'interconsultas')  return <InterconsultasScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'worklist')        return <WorklistScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'especialidades')  return <EspecialidadesScreen utilizador={utilizador} onVoltar={voltar} />;
-  if (subTela === 'bloco')           return <BlocoScreen utilizador={utilizador} onVoltar={voltar} />;
-  if (subTela === 'catalogo')        return <CatalogoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'bloco')               return <BlocoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'catalogo')            return <CatalogoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'dashboardqualidade')  return <DashboardQualidadeScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'notificacoes')        return <NotificacoesScreen utilizador={utilizador} onVoltar={() => { setNaoLidasNotif(0); voltar(); }} />;
 
   const confirmarLogout = async () => {
     if (Platform.OS === 'web') {
@@ -116,11 +130,12 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   const eAdmin = ROLES_ADMIN.includes(role);
   const eOperacional = role === 'operacional';
 
-  const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean }[] = [
+  const itens: { key: SubTela; icon: keyof typeof Ionicons.glyphMap; cor: string; titulo: string; sub: string; visivel: boolean; badge?: number }[] = [
     // — TI
     { key: 'utilizadores', icon: 'people-outline',           cor: '#ec4899', titulo: 'Utilizadores',      sub: 'Gestão de profissionais',          visivel: eTI && subRole === 'it_admin' },
     { key: 'auditoria',    icon: 'document-text-outline',    cor: '#64748b', titulo: 'Auditoria',          sub: 'Logs de acesso e ações',           visivel: eTI || ROLES_QUALIDADE.includes(role) },
-    // — Comunicação (universal)
+    // — Comunicação e Notificações (universal)
+    { key: 'notificacoes', icon: 'notifications-outline',    cor: '#6366f1', titulo: 'Notificações',       sub: 'Alertas e avisos do sistema',      visivel: true, badge: naoLidasNotif || undefined },
     { key: 'comunicacao',  icon: 'chatbubbles-outline',      cor: '#6366f1', titulo: 'Comunicação',        sub: 'Mensagens e anúncios',             visivel: true },
     // — Clínico geral
     { key: 'turno',        icon: 'time-outline',             cor: '#8b5cf6', titulo: 'Turno',              sub: 'Doentes e tarefas do meu turno',   visivel: eClinical },
@@ -144,7 +159,8 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     { key: 'worklist',        icon: 'clipboard-outline',             cor: '#06b6d4', titulo: 'Worklist',            sub: 'Lista de trabalho',                      visivel: eTecnicoSaude || eMedico },
     { key: 'especialidades',  icon: 'ribbon-outline',                cor: '#14b8a6', titulo: 'Especialidades',      sub: 'Sessões de especialidade',               visivel: eTecnicoSaude },
     { key: 'bloco',           icon: 'cut-outline',                   cor: '#7c3aed', titulo: 'Bloco Operatório',    sub: 'Cirurgias agendadas',                    visivel: eMedico || eEnfermagem },
-    { key: 'catalogo',        icon: 'book-outline',                  cor: '#ec4899', titulo: 'Catálogo',            sub: 'Medicamentos e fármacos',                visivel: eFarmaceutico || eAdmin || eMedico || eEnfermagem },
+    { key: 'catalogo',            icon: 'book-outline',            cor: '#ec4899', titulo: 'Catálogo',               sub: 'Medicamentos e fármacos',            visivel: eFarmaceutico || eAdmin || eMedico || eEnfermagem },
+    { key: 'dashboardqualidade',  icon: 'analytics-outline',       cor: '#0d9488', titulo: 'Dashboard Qualidade',    sub: 'Indicadores clínicos e de segurança', visivel: ROLES_QUALIDADE.includes(role) || role === 'direcao' || eMedico || eEnfermagem },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);
@@ -184,7 +200,13 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
                 <Text style={s.menuTitulo}>{item.titulo}</Text>
                 <Text style={s.menuSub}>{item.sub}</Text>
               </View>
-              <Text style={s.menuArrow}>›</Text>
+              {item.badge ? (
+                <View style={s.badge}>
+                  <Text style={s.badgeText}>{item.badge > 99 ? '99+' : item.badge}</Text>
+                </View>
+              ) : (
+                <Text style={s.menuArrow}>›</Text>
+              )}
             </TouchableOpacity>
           ))}
         </View>
@@ -222,6 +244,11 @@ const s = StyleSheet.create({
   menuTitulo: { fontSize: 15, fontWeight: '600', color: '#1e293b' },
   menuSub: { fontSize: 12, color: '#94a3b8', marginTop: 2 },
   menuArrow: { fontSize: 20, color: '#cbd5e1', fontWeight: '300' },
+  badge: {
+    backgroundColor: '#ef4444', borderRadius: 12,
+    minWidth: 22, height: 22, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
+  },
+  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
   sairBotao: { backgroundColor: '#fef2f2', borderWidth: 1, borderColor: '#fecaca', paddingVertical: 14, borderRadius: 14, alignItems: 'center', marginTop: 6 },
   sairTexto: { color: '#dc2626', fontWeight: '700', fontSize: 16 },
 });

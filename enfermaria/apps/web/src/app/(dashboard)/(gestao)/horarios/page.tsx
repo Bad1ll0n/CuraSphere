@@ -88,6 +88,28 @@ export default function HorariosPagina() {
   const [gerandoAuto, setGerandoAuto] = useState(false);
   const [resultadoAuto, setResultadoAuto] = useState<{ turnosCriados: number; profissionaisUsados: number; diasGerados: number } | null>(null);
 
+  // Gestão de folgas
+  const [minhasFolgas, setMinhasFolgas] = useState<Array<{ id: string; dataInicio: string; dataFim: string; estado: string; tipo: string }>>([]);
+  const [folgasPendentes, setFolgasPendentes] = useState<Array<Ausencia & { tipo: string }>>([]);
+  const [pedindoFolga, setPedindoFolga] = useState(false);
+  const [aprovandoFolga, setAprovandoFolga] = useState<string | null>(null);
+
+  // Trocas de folga
+  interface TrocaFolga {
+    id: string; estado: string; dataOrigem: string; dataDestino: string; motivo?: string; criadoEm: string;
+    solicitante: { id: string; nome: string; role: string };
+    destinatario: { id: string; nome: string; role: string };
+    aprovadoPor?: { id: string; nome: string } | null;
+  }
+  const [minhasTrocas, setMinhasTrocas] = useState<TrocaFolga[]>([]);
+  const [trocasParaAprovar, setTrocasParaAprovar] = useState<TrocaFolga[]>([]);
+  const [modalTroca, setModalTroca] = useState<{ diaOrigem: string } | null>(null);
+  const [trocaDestId, setTrocaDestId] = useState('');
+  const [trocaDiaDest, setTrocaDiaDest] = useState('');
+  const [trocaMotivo, setTrocaMotivo] = useState('');
+  const [submittingTroca, setSubmittingTroca] = useState(false);
+  const [respondendoTroca, setRespondendoTroca] = useState<string | null>(null);
+
   const SUBROLES_CHEFE_ENF = ['supervisor_enfermagem', 'head_nurse'];
   const isChefe =
     (utilizador?.role === 'enfermeiro' && SUBROLES_CHEFE_ENF.includes(utilizador?.subRole ?? '')) ||
@@ -101,14 +123,18 @@ export default function HorariosPagina() {
     setLoading(true);
     setErro('');
     try {
-      const [escalR, meuR, ausenciasR] = await Promise.all([
+      const [escalR, meuR, ausenciasR, minhasFolgasR, minhasTrocasR] = await Promise.all([
         api.get(`/horarios/mes?mes=${mes}&ano=${ano}`).catch(() => ({ data: null })),
         api.get(`/horarios/meu?mes=${mes}&ano=${ano}`),
         api.get(`/horarios/ausencias?mes=${mes}&ano=${ano}`).catch(() => ({ data: [] })),
+        api.get('/rh/ausencias/minhas').catch(() => ({ data: [] })),
+        api.get('/rh/trocas-folga/minhas').catch(() => ({ data: [] })),
       ]);
       setEscala(escalR.data);
       setMeuHorario(meuR.data);
       setAusencias(ausenciasR.data ?? []);
+      setMinhasFolgas((minhasFolgasR.data ?? []).filter((a: any) => a.tipo === 'folga'));
+      setMinhasTrocas(minhasTrocasR.data ?? []);
     } catch {
       setErro('Erro ao carregar horários');
     } finally {
@@ -131,7 +157,6 @@ export default function HorariosPagina() {
     if (isChefe) {
       api.get('/utilizadores').then((r) => {
         const todos: Utilizador[] = r.data?.data ?? r.data ?? [];
-        // chefe_medicos vê só médicos; chefe_enfermeiros vê enfermeiros/auxiliares
         setProfissionais(todos.filter((u) =>
           grupoDoChefe.includes(u.role) &&
           (utilizador?.role === 'administrativo' || u.servico === utilizador?.servico)
@@ -139,6 +164,17 @@ export default function HorariosPagina() {
       }).catch(() => {});
     }
   }, [isChefe]);
+
+  useEffect(() => {
+    if (!isChefe) return;
+    Promise.all([
+      api.get('/rh/ausencias/para-aprovar').catch(() => ({ data: [] })),
+      api.get('/rh/trocas-folga/para-aprovar').catch(() => ({ data: [] })),
+    ]).then(([ausR, trocR]) => {
+      setFolgasPendentes((ausR.data ?? []).filter((a: any) => a.tipo === 'folga'));
+      setTrocasParaAprovar(trocR.data ?? []);
+    });
+  }, [isChefe, mes, ano]);
 
   const mensagemSemTurnos: Record<string, string> = {
     medico: 'O seu horário é gerido pela agenda de consultas.',
@@ -280,6 +316,109 @@ export default function HorariosPagina() {
     );
   };
 
+  const minhaFolgaNoDia = (diaStr: string) => {
+    const dia = new Date(diaStr + 'T12:00:00Z');
+    return minhasFolgas.find(f =>
+      new Date(f.dataInicio) <= dia && new Date(f.dataFim) >= dia
+    );
+  };
+
+  const pedirFolga = async (diaStr: string) => {
+    setPedindoFolga(true);
+    try {
+      await api.post('/rh/ausencias', { tipo: 'folga', dataInicio: diaStr, dataFim: diaStr });
+      await carregar();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Erro ao pedir folga');
+    } finally {
+      setPedindoFolga(false);
+    }
+  };
+
+  const cancelarFolga = async (folgaId: string) => {
+    if (!confirm('Cancelar este pedido de folga?')) return;
+    try {
+      await api.delete(`/rh/ausencias/${folgaId}`);
+      await carregar();
+    } catch { /* silencioso */ }
+  };
+
+  const aprovarFolga = async (id: string) => {
+    setAprovandoFolga(id);
+    try {
+      await api.patch(`/rh/ausencias/${id}/aprovar`);
+      setFolgasPendentes(prev => prev.filter(f => f.id !== id));
+      await carregar();
+    } finally { setAprovandoFolga(null); }
+  };
+
+  const rejeitarFolga = async (id: string) => {
+    setAprovandoFolga(id);
+    try {
+      await api.patch(`/rh/ausencias/${id}/rejeitar`);
+      setFolgasPendentes(prev => prev.filter(f => f.id !== id));
+    } finally { setAprovandoFolga(null); }
+  };
+
+  const pedirTrocaFolga = async () => {
+    if (!modalTroca || !trocaDestId || !trocaDiaDest) return;
+    setSubmittingTroca(true);
+    try {
+      await api.post('/rh/trocas-folga', {
+        destinatarioId: trocaDestId,
+        dataOrigem: modalTroca.diaOrigem,
+        dataDestino: trocaDiaDest,
+        motivo: trocaMotivo || undefined,
+      });
+      setModalTroca(null);
+      setTrocaDestId('');
+      setTrocaDiaDest('');
+      setTrocaMotivo('');
+      await carregar();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Erro ao pedir troca de folga');
+    } finally {
+      setSubmittingTroca(false);
+    }
+  };
+
+  const aceitarTrocaFolga = async (id: string) => {
+    setRespondendoTroca(id);
+    try {
+      await api.patch(`/rh/trocas-folga/${id}/aceitar`);
+      await carregar();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Erro');
+    } finally { setRespondendoTroca(null); }
+  };
+
+  const recusarTrocaFolga = async (id: string) => {
+    setRespondendoTroca(id);
+    try {
+      await api.patch(`/rh/trocas-folga/${id}/recusar`);
+      await carregar();
+    } catch (err: any) {
+      alert(err.response?.data?.message ?? 'Erro');
+    } finally { setRespondendoTroca(null); }
+  };
+
+  const aprovarTrocaFolga = async (id: string) => {
+    setRespondendoTroca(id);
+    try {
+      await api.patch(`/rh/trocas-folga/${id}/aprovar`);
+      setTrocasParaAprovar(prev => prev.filter(t => t.id !== id));
+      await carregar();
+    } finally { setRespondendoTroca(null); }
+  };
+
+  const cancelarTrocaFolga = async (id: string) => {
+    if (!confirm('Cancelar este pedido de troca de folga?')) return;
+    try {
+      await api.patch(`/rh/trocas-folga/${id}/cancelar`);
+      await carregar();
+    } catch { /* silencioso */ }
+  };
+
   const toggleEditProfissional = (id: string) => {
     setEditTurno((prev) => ({
       ...prev,
@@ -414,6 +553,156 @@ export default function HorariosPagina() {
             </div>
           )}
 
+          {/* Pedidos de Folga Pendentes (chefe) */}
+          {isChefe && folgasPendentes.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '20px' }}>
+              <div className="flex items-center gap-2" style={{ marginBottom: '14px' }}>
+                <div className="w-6 h-6 rounded-lg bg-yellow-50 flex items-center justify-center shrink-0">
+                  <svg className="w-3.5 h-3.5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-700">Pedidos de Folga Pendentes</h3>
+                <span className="text-xs font-bold text-yellow-700 bg-yellow-100 rounded-full w-5 h-5 flex items-center justify-center">{folgasPendentes.length}</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {folgasPendentes.map(f => (
+                  <div key={f.id} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{f.utilizador.nome}</p>
+                      <p className="text-xs text-slate-400">
+                        {new Date(f.dataInicio).toLocaleDateString('pt-PT', { weekday: 'short', day: 'numeric', month: 'short' })}
+                        {f.dataInicio !== f.dataFim && ` – ${new Date(f.dataFim).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}`}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      <button
+                        onClick={() => rejeitarFolga(f.id)}
+                        disabled={aprovandoFolga === f.id}
+                        className="text-xs font-semibold border border-red-200 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                        style={{ padding: '5px 12px' }}>
+                        Rejeitar
+                      </button>
+                      <button
+                        onClick={() => aprovarFolga(f.id)}
+                        disabled={aprovandoFolga === f.id}
+                        className="text-xs font-semibold bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50"
+                        style={{ padding: '5px 12px' }}>
+                        {aprovandoFolga === f.id ? '...' : 'Aprovar'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Trocas de Folga para Aprovar (chefe) */}
+          {isChefe && trocasParaAprovar.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '20px' }}>
+              <div className="flex items-center gap-2" style={{ marginBottom: '14px' }}>
+                <div className="w-6 h-6 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+                  <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-700">Trocas de Folga para Aprovar</h3>
+                <span className="text-xs font-bold text-indigo-700 bg-indigo-100 rounded-full w-5 h-5 flex items-center justify-center">{trocasParaAprovar.length}</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {trocasParaAprovar.map(t => (
+                  <div key={t.id} className="flex items-center justify-between bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {t.solicitante.nome} ↔ {t.destinatario.nome}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {new Date(t.dataOrigem).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })} →{' '}
+                        {new Date(t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => aprovarTrocaFolga(t.id)}
+                      disabled={respondendoTroca === t.id}
+                      className="text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50"
+                      style={{ padding: '5px 14px' }}>
+                      {respondendoTroca === t.id ? '...' : 'Aprovar'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* As minhas trocas de folga pendentes/recebidas */}
+          {minhasTrocas.filter(t => ['pendente', 'aceite'].includes(t.estado)).length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '20px' }}>
+              <div className="flex items-center gap-2" style={{ marginBottom: '14px' }}>
+                <div className="w-6 h-6 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                  <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-slate-700">Trocas de Folga</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {minhasTrocas.filter(t => ['pendente', 'aceite'].includes(t.estado)).map(t => {
+                  const euSouSolicitante = t.solicitante.id === utilizador?.id;
+                  const euSouDestinatario = t.destinatario.id === utilizador?.id;
+                  const estadoCor = t.estado === 'aceite' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200';
+                  return (
+                    <div key={t.id} className="bg-slate-50 rounded-xl" style={{ padding: '10px 14px' }}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-slate-800">
+                            {euSouSolicitante ? `→ ${t.destinatario.nome}` : `← ${t.solicitante.nome}`}
+                          </p>
+                          <p className="text-xs text-slate-400">
+                            Minha folga {new Date(euSouSolicitante ? t.dataOrigem : t.dataDestino).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
+                            {' ↔ '}
+                            folga de {euSouSolicitante ? t.destinatario.nome.split(' ')[0] : t.solicitante.nome.split(' ')[0]}{' '}
+                            {new Date(euSouSolicitante ? t.dataDestino : t.dataOrigem).toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}
+                          </p>
+                        </div>
+                        <span className={`text-xs font-semibold border rounded-full px-2 py-0.5 ${estadoCor}`}>
+                          {t.estado === 'aceite' ? 'Aceite — aguarda chefe' : 'Pendente'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
+                        {euSouDestinatario && t.estado === 'pendente' && (
+                          <>
+                            <button
+                              onClick={() => recusarTrocaFolga(t.id)}
+                              disabled={respondendoTroca === t.id}
+                              className="text-xs font-semibold border border-red-200 text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                              style={{ padding: '4px 10px' }}>
+                              Recusar
+                            </button>
+                            <button
+                              onClick={() => aceitarTrocaFolga(t.id)}
+                              disabled={respondendoTroca === t.id}
+                              className="text-xs font-semibold bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50"
+                              style={{ padding: '4px 10px' }}>
+                              {respondendoTroca === t.id ? '...' : 'Aceitar'}
+                            </button>
+                          </>
+                        )}
+                        {euSouSolicitante && t.estado === 'pendente' && (
+                          <button
+                            onClick={() => cancelarTrocaFolga(t.id)}
+                            className="text-xs font-semibold border border-slate-200 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+                            style={{ padding: '4px 10px' }}>
+                            Cancelar pedido
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
             <div className="grid grid-cols-7 border-b border-slate-100">
               {diasSemana.map((d) => (
@@ -443,9 +732,20 @@ export default function HorariosPagina() {
                     </div>
                     {utilizador && isAusenteNoDia(utilizador.id, dia) && (
                       <div className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-200 rounded-md text-center" style={{ padding: '2px 4px', marginBottom: '3px' }}>
-                        Férias
+                        Ausência
                       </div>
                     )}
+                    {(() => {
+                      const f = minhaFolgaNoDia(dia);
+                      if (!f) return null;
+                      const aprovada = f.estado === 'aprovada';
+                      return (
+                        <div className={`text-[10px] font-semibold rounded-md text-center ${aprovada ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-yellow-50 text-yellow-700 border border-yellow-200'}`}
+                          style={{ padding: '2px 4px', marginBottom: '3px' }}>
+                          {aprovada ? 'Folga ✓' : 'Folga ⟳'}
+                        </div>
+                      );
+                    })()}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                       {(['manha', 'tarde', 'noite'] as const).map((tipo) => {
                         const t = turnos.find((x) => x.tipo === tipo);
@@ -787,6 +1087,73 @@ export default function HorariosPagina() {
           </div>
         );
       })()}
+      {/* Modal pedir troca de folga */}
+      {modalTroca && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '480px', padding: '32px' }}>
+            <div style={{ marginBottom: '24px' }}>
+              <h2 className="text-xl font-bold text-slate-900">Pedir Troca de Folga</h2>
+              <p className="text-slate-400 text-sm" style={{ marginTop: '4px' }}>
+                A sua folga: <strong>{new Date(modalTroca.diaOrigem).toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' })}</strong>
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Com quem quer trocar?</label>
+              <select
+                value={trocaDestId}
+                onChange={e => setTrocaDestId(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                style={{ padding: '10px 14px' }}>
+                <option value="">Selecionar colega...</option>
+                {profissionais.filter(p => p.id !== utilizador?.id).map(p => (
+                  <option key={p.id} value={p.id}>{p.nome} ({roleLabel[p.role] ?? p.role})</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Dia da folga do colega (a receber)</label>
+              <input
+                type="date"
+                value={trocaDiaDest}
+                onChange={e => setTrocaDiaDest(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                style={{ padding: '10px 14px' }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Motivo (opcional)</label>
+              <input
+                type="text"
+                value={trocaMotivo}
+                onChange={e => setTrocaMotivo(e.target.value)}
+                placeholder="ex: compromisso familiar"
+                className="w-full bg-white border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                style={{ padding: '10px 14px' }}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => { setModalTroca(null); setTrocaDestId(''); setTrocaDiaDest(''); setTrocaMotivo(''); }}
+                className="flex-1 border border-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors"
+                style={{ padding: '11px' }}>
+                Cancelar
+              </button>
+              <button
+                onClick={pedirTrocaFolga}
+                disabled={submittingTroca || !trocaDestId || !trocaDiaDest}
+                className="flex-1 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 transition-colors"
+                style={{ padding: '11px' }}>
+                {submittingTroca ? 'A enviar...' : 'Enviar Pedido'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Painel lateral — vista de dia */}
       {diaSelecionado && (() => {
         const turnosDia = turnosPorDia[diaSelecionado] ?? [];
@@ -820,12 +1187,31 @@ export default function HorariosPagina() {
                 </button>
               </div>
 
-              {/* Aviso férias */}
+              {/* Aviso férias/ausência */}
               {utilizador && isAusenteNoDia(utilizador.id, diaSelecionado) && (
                 <div className="bg-amber-50 border-b border-amber-100 shrink-0" style={{ padding: '10px 24px' }}>
-                  <span className="text-xs font-semibold text-amber-700">Férias / Ausência aprovada neste dia</span>
+                  <span className="text-xs font-semibold text-amber-700">Ausência aprovada neste dia</span>
                 </div>
               )}
+              {/* Aviso folga */}
+              {(() => {
+                const f = minhaFolgaNoDia(diaSelecionado);
+                if (!f) return null;
+                return (
+                  <div className={`border-b shrink-0 flex items-center justify-between ${f.estado === 'aprovada' ? 'bg-green-50 border-green-100' : 'bg-yellow-50 border-yellow-100'}`}
+                    style={{ padding: '10px 24px' }}>
+                    <span className={`text-xs font-semibold ${f.estado === 'aprovada' ? 'text-green-700' : 'text-yellow-700'}`}>
+                      {f.estado === 'aprovada' ? 'Folga aprovada neste dia' : 'Pedido de folga pendente'}
+                    </span>
+                    {f.estado === 'pendente' && (
+                      <button onClick={() => cancelarFolga(f.id)}
+                        className="text-xs text-yellow-600 hover:text-yellow-800 font-semibold underline">
+                        Cancelar
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Corpo */}
               <div className="flex-1 overflow-y-auto" style={{ padding: '24px' }}>
@@ -928,6 +1314,36 @@ export default function HorariosPagina() {
                     );
                   })}
                 </div>}
+
+                {/* Pedir Folga (non-chefes) */}
+                {!isChefe && (() => {
+                  const f = minhaFolgaNoDia(diaSelecionado);
+                  const isPassado = new Date(diaSelecionado) < new Date(hojeStr);
+                  if (isPassado) return null;
+                  return (
+                    <div style={{ marginTop: '20px' }}>
+                      <div className="border-t border-slate-100" style={{ paddingTop: '20px' }}>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest" style={{ marginBottom: '10px' }}>Folga</p>
+                        {!f ? (
+                          <button
+                            onClick={() => pedirFolga(diaSelecionado)}
+                            disabled={pedindoFolga}
+                            className="w-full border border-dashed border-slate-300 text-slate-600 text-sm font-medium rounded-xl hover:border-yellow-400 hover:text-yellow-700 hover:bg-yellow-50 disabled:opacity-50 transition-colors"
+                            style={{ padding: '10px' }}>
+                            {pedindoFolga ? 'A enviar pedido...' : '+ Pedir folga neste dia'}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => { setModalTroca({ diaOrigem: diaSelecionado }); setDiaSelecionado(null); }}
+                            className="w-full border border-dashed border-indigo-300 text-indigo-600 text-sm font-medium rounded-xl hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
+                            style={{ padding: '10px', marginTop: '6px' }}>
+                            ↔ Pedir troca de folga neste dia
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Consultas do dia (médicos) */}
                 {utilizador?.role === 'medico' && (

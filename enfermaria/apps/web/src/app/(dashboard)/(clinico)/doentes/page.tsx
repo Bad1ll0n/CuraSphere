@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
@@ -34,19 +34,34 @@ const LIMIT = 25;
 export default function DoentesPagina() {
   const { utilizador } = useAuth();
   const [pesquisa, setPesquisa] = useState('');
+  const [pesquisaDebounced, setPesquisaDebounced] = useState('');
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroServico, setFiltroServico] = useState('');
   const [pagina, setPagina] = useState(1);
   const [aba, setAba] = useState<'meus' | 'todos'>('meus');
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isClinico = ROLES_CLINICOS.includes(utilizador?.role ?? '');
   const podeAdmitir = ['administrativo', 'enfermeiro', 'medico'].includes(utilizador?.role ?? '');
 
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setPesquisaDebounced(pesquisa);
+      setPagina(1);
+    }, 300);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [pesquisa]);
+
   const todos = !isClinico || aba === 'todos';
   const { data, isLoading } = useQuery({
-    queryKey: ['doentes', pagina, todos],
-    queryFn: () =>
-      api.get(`/doentes?page=${pagina}&limit=${LIMIT}${todos ? '&todos=true' : ''}`).then(r => r.data),
+    queryKey: ['doentes', pagina, todos, pesquisaDebounced],
+    queryFn: () => {
+      const params = new URLSearchParams({ page: String(pagina), limit: String(LIMIT) });
+      if (todos) params.set('todos', 'true');
+      if (pesquisaDebounced) params.set('search', pesquisaDebounced);
+      return api.get(`/doentes?${params}`).then(r => r.data);
+    },
     placeholderData: (prev) => prev,
   });
 
@@ -56,11 +71,11 @@ export default function DoentesPagina() {
 
   const mudarAba = (novaAba: 'meus' | 'todos') => { setAba(novaAba); setPagina(1); };
 
+  // Filtros client-side residuais (estado + serviço, não há query params para estes)
   const filtrados = doentes.filter((d) => {
-    const matchText = !pesquisa || d.nome.toLowerCase().includes(pesquisa.toLowerCase()) || d.numeroProcesso.includes(pesquisa) || (d.cama?.numero ?? '').includes(pesquisa);
     const matchEstado = !filtroEstado || d.estado === filtroEstado;
     const matchServico = !filtroServico || d.cama?.servico === filtroServico;
-    return matchText && matchEstado && matchServico;
+    return matchEstado && matchServico;
   });
 
   return (

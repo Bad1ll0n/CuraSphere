@@ -27,6 +27,7 @@ export class DoenteController {
     @Query('todos') todos?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
+    @Query('search') search?: string,
   ) {
     const ignorarFiltro = todos === 'true';
     return this.doenteService.listar(
@@ -34,6 +35,7 @@ export class DoenteController {
       ignorarFiltro ? 'todos' : req.user.role,
       page ? parseInt(page, 10) : 1,
       limit ? parseInt(limit, 10) : 25,
+      search,
     );
   }
 

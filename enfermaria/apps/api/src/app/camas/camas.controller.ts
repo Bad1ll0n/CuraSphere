@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, Sse } from '@nestjs/common';
+import { map } from 'rxjs';
 import { CamasService } from './camas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -20,6 +21,13 @@ export class CamasController {
   @Get('ocupacao')
   ocupacao() {
     return this.camasService.ocupacao();
+  }
+
+  @Sse('eventos')
+  eventos() {
+    return this.camasService.eventStream().pipe(
+      map((evento) => ({ type: evento.type, data: evento.data })),
+    );
   }
 
   @Roles('enfermeiro', 'administrativo')

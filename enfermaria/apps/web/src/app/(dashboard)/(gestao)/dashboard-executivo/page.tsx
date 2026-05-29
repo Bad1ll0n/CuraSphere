@@ -2,6 +2,10 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
+import {
+  AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, CartesianGrid,
+} from 'recharts';
 
 interface DashExec {
   doentes: { internados: number; ambulatorio: number; pendenteCama: number; mediaInternamento: number };
@@ -10,10 +14,20 @@ interface DashExec {
   consultasHoje: { total: number; faltaram: number; taxaNoShow: number };
   trocasPendentes: number;
   pessoal: { utilizadoresPorRole: Record<string, number> };
+  tendenciaOcupacao: { data: string; ocupadas: number; total: number; taxa: number }[];
+  tendenciaFaturacao: { mes: string; total: number }[];
+  urgenciaHoje: { total: number; emAtendimento: number; aguardaAlta: number; alta: number };
+  cirurgiasMes: { total: number; concluidas: number; emCurso: number; canceladas: number };
+  ausenciasAtivas: number;
 }
 
 function fmt(v: number) {
   return new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+}
+
+function fmtK(v: number) {
+  if (v >= 1000) return new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', notation: 'compact', maximumFractionDigits: 0 }).format(v);
+  return fmt(v);
 }
 
 function BigStat({ label, value, sub, cor }: { label: string; value: string | number; sub?: string; cor: string }) {
@@ -24,6 +38,8 @@ function BigStat({ label, value, sub, cor }: { label: string; value: string | nu
     red:    { bg: 'bg-red-50',    text: 'text-red-700',    subtext: 'text-red-500' },
     slate:  { bg: 'bg-slate-50',  text: 'text-slate-700',  subtext: 'text-slate-500' },
     indigo: { bg: 'bg-indigo-50', text: 'text-indigo-700', subtext: 'text-indigo-400' },
+    teal:   { bg: 'bg-teal-50',   text: 'text-teal-700',   subtext: 'text-teal-500' },
+    purple: { bg: 'bg-purple-50', text: 'text-purple-700', subtext: 'text-purple-500' },
   };
   const c = cores[cor] ?? cores.slate;
   return (
@@ -72,6 +88,27 @@ const ROLE_LABEL: Record<string, string> = {
   ti: 'TI', qualidade: 'Qualidade', direcao: 'Direção',
 };
 
+function CustomTooltipOcupacao({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl shadow-md text-xs" style={{ padding: '10px 14px' }}>
+      <p className="font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{label}</p>
+      <p className="text-indigo-600">Ocupadas: <strong>{payload[0]?.value}</strong></p>
+      <p className="text-slate-500">Taxa: <strong>{payload[0]?.payload?.taxa}%</strong></p>
+    </div>
+  );
+}
+
+function CustomTooltipFaturacao({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl shadow-md text-xs" style={{ padding: '10px 14px' }}>
+      <p className="font-semibold text-slate-700" style={{ marginBottom: '4px' }}>{label}</p>
+      <p className="text-green-600">Total: <strong>{fmt(payload[0]?.value ?? 0)}</strong></p>
+    </div>
+  );
+}
+
 export default function DashboardExecutivo() {
   const qc = useQueryClient();
   const { data: dados, isLoading: loading, dataUpdatedAt } = useQuery<DashExec>({
@@ -83,7 +120,7 @@ export default function DashboardExecutivo() {
   const lastUpdate = dataUpdatedAt ? new Date(dataUpdatedAt) : null;
 
   return (
-    <div style={{ padding: '32px 40px', maxWidth: '1100px', margin: '0 auto' }}>
+    <div style={{ padding: '32px 40px', maxWidth: '1200px', margin: '0 auto' }}>
       {/* Header */}
       <div className="flex items-center justify-between" style={{ marginBottom: '28px' }}>
         <div>
@@ -126,7 +163,7 @@ export default function DashboardExecutivo() {
             <div>
               <div className="flex items-center justify-between" style={{ marginBottom: '12px' }}>
                 <span className="text-sm font-semibold text-slate-700">Camas ({dados.camas.total} total)</span>
-                <span className={`text-sm font-bold badge-pad py-1 rounded-full ${
+                <span className={`text-sm font-bold px-3 py-1 rounded-full ${
                   dados.camas.taxaOcupacao >= 90 ? 'bg-red-50 text-red-600' :
                   dados.camas.taxaOcupacao >= 75 ? 'bg-amber-50 text-amber-700' : 'bg-green-50 text-green-700'
                 }`}>
@@ -142,6 +179,28 @@ export default function DashboardExecutivo() {
               />
             </div>
           </div>
+
+          {/* ── Tendência Ocupação 14 dias ── */}
+          {dados.tendenciaOcupacao?.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '20px' }}>Tendência de Ocupação — 14 dias</h2>
+              <ResponsiveContainer width="100%" height={200}>
+                <AreaChart data={dados.tendenciaOcupacao} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="gradOcup" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="data" tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => v.slice(5)} />
+                  <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <Tooltip content={<CustomTooltipOcupacao />} />
+                  <Area type="monotone" dataKey="ocupadas" stroke="#6366f1" strokeWidth={2} fill="url(#gradOcup)" dot={false} activeDot={{ r: 4 }} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
 
           {/* ── Faturação ── */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
@@ -167,7 +226,23 @@ export default function DashboardExecutivo() {
             </div>
           </div>
 
-          {/* ── Consultas & Operacional ── */}
+          {/* ── Tendência Faturação 6 meses ── */}
+          {dados.tendenciaFaturacao?.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '20px' }}>Faturação — 6 Meses</h2>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={dados.tendenciaFaturacao} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                  <XAxis dataKey="mes" tick={{ fontSize: 11, fill: '#94a3b8' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => fmtK(v)} width={72} />
+                  <Tooltip content={<CustomTooltipFaturacao />} />
+                  <Bar dataKey="total" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {/* ── Consultas & Urgência ── */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '16px' }}>Consultas Hoje</h2>
@@ -179,12 +254,49 @@ export default function DashboardExecutivo() {
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '16px' }}>Urgência Hoje</h2>
+              {dados.urgenciaHoje ? (
+                <div className="grid grid-cols-2 gap-3">
+                  <BigStat label="Total Episódios" value={dados.urgenciaHoje.total} cor="slate" />
+                  <BigStat label="Em Atendimento" value={dados.urgenciaHoje.emAtendimento} cor="amber" />
+                  <BigStat label="Aguarda Alta" value={dados.urgenciaHoje.aguardaAlta} cor="blue" />
+                  <BigStat label="Alta Dada" value={dados.urgenciaHoje.alta} cor="green" />
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400">Sem dados de urgência.</p>
+              )}
+            </div>
+          </div>
+
+          {/* ── Bloco Operatório & Operacional ── */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '16px' }}>Bloco Operatório — Mês</h2>
+              {dados.cirurgiasMes ? (
+                <div className="grid grid-cols-2 gap-3">
+                  <BigStat label="Total Cirurgias" value={dados.cirurgiasMes.total} cor="slate" />
+                  <BigStat label="Concluídas" value={dados.cirurgiasMes.concluidas} cor="green" />
+                  <BigStat label="Em Curso" value={dados.cirurgiasMes.emCurso} cor="indigo" />
+                  <BigStat label="Canceladas" value={dados.cirurgiasMes.canceladas} cor={dados.cirurgiasMes.canceladas > 0 ? 'red' : 'slate'} />
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400">Sem dados de cirurgias.</p>
+              )}
+            </div>
+
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '16px' }}>Operacional</h2>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
                   <span className="text-sm text-slate-600">Trocas de Turno Pendentes</span>
                   <span className={`text-sm font-bold ${dados.trocasPendentes > 0 ? 'text-amber-600' : 'text-slate-400'}`}>
                     {dados.trocasPendentes}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded-xl bg-slate-50" style={{ padding: '12px 16px' }}>
+                  <span className="text-sm text-slate-600">Ausências Activas</span>
+                  <span className={`text-sm font-bold ${(dados.ausenciasAtivas ?? 0) > 0 ? 'text-red-600' : 'text-slate-400'}`}>
+                    {dados.ausenciasAtivas ?? 0}
                   </span>
                 </div>
               </div>

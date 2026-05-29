@@ -63,43 +63,43 @@ export class MedicacaoService {
     forcarApesarDeAlergia?: boolean;
     justificativaOverride?: string;
   }) {
-    const doente = await this.prisma.doente.findUnique({ where: { id: data.doenteId } });
-    if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
+    return this.prisma.$transaction(async (tx) => {
+      const doente = await tx.doente.findUnique({ where: { id: data.doenteId } });
+      if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
 
-    if (!data.forcarApesarDeAlergia) {
-      const alergias = await this.prisma.alergia.findMany({ where: { doenteId: data.doenteId } });
-      const nomeNorm = data.nome.toLowerCase();
-      const alergiaMatch = alergias.find((a) => {
-        const alg = a.alergenio.toLowerCase();
-        const palavrasMed = nomeNorm.split(/\s+/).filter((w) => w.length > 3);
-        const palavrasAlg = alg.split(/\s+/).filter((w) => w.length > 3);
-        return (
-          palavrasAlg.some((w) => nomeNorm.includes(w)) ||
-          palavrasMed.some((w) => alg.includes(w))
-        );
-      });
-      if (alergiaMatch) {
-        throw new ConflictException(
-          `ALERGIA: ${doente.nome} tem alergia registada a "${alergiaMatch.alergenio}" (severidade: ${alergiaMatch.severidade}). Para prescrever mesmo assim, envie forcarApesarDeAlergia=true com justificativaOverride.`,
-        );
+      if (!data.forcarApesarDeAlergia) {
+        const alergias = await tx.alergia.findMany({ where: { doenteId: data.doenteId } });
+        const nomeNorm = data.nome.toLowerCase();
+        const alergiaMatch = alergias.find((a) => {
+          const alg = a.alergenio.toLowerCase();
+          const palavrasMed = nomeNorm.split(/\s+/).filter((w) => w.length > 3);
+          const palavrasAlg = alg.split(/\s+/).filter((w) => w.length > 3);
+          return (
+            palavrasAlg.some((w) => nomeNorm.includes(w)) ||
+            palavrasMed.some((w) => alg.includes(w))
+          );
+        });
+        if (alergiaMatch) {
+          throw new ConflictException(
+            `ALERGIA: ${doente.nome} tem alergia registada a "${alergiaMatch.alergenio}" (severidade: ${alergiaMatch.severidade}). Para prescrever mesmo assim, envie forcarApesarDeAlergia=true com justificativaOverride.`,
+          );
+        }
       }
-    }
 
-    // Verificar interações medicamentosas (não bloqueante — apenas aviso)
-    const medicacoesAtivas = await this.prisma.medicacao.findMany({
-      where: { doenteId: data.doenteId, ativo: true },
-      select: { nome: true },
-    });
-    const nomesMeds = medicacoesAtivas.map((m) => m.nome);
-    const interacoesDetectadas = verificarInteracao(data.nome, nomesMeds);
+      const medicacoesAtivas = await tx.medicacao.findMany({
+        where: { doenteId: data.doenteId, ativo: true },
+        select: { nome: true },
+      });
+      const interacoesDetectadas = verificarInteracao(data.nome, medicacoesAtivas.map((m) => m.nome));
 
-    const { forcarApesarDeAlergia: _, justificativaOverride: __, ...dadosMedicacao } = data;
-    const medicacao = await this.prisma.medicacao.create({
-      data: dadosMedicacao,
-      include: { prescritoPor: { select: { id: true, nome: true } } },
-    });
+      const { forcarApesarDeAlergia: _, justificativaOverride: __, ...dadosMedicacao } = data;
+      const medicacao = await tx.medicacao.create({
+        data: dadosMedicacao,
+        include: { prescritoPor: { select: { id: true, nome: true } } },
+      });
 
-    return { ...medicacao, avisoInteracoes: interacoesDetectadas };
+      return { ...medicacao, avisoInteracoes: interacoesDetectadas };
+    }, { isolationLevel: 'Serializable' });
   }
 
   async verificarInteracoes(doenteId: string, nomeMed: string): Promise<Interacao[]> {
@@ -116,23 +116,25 @@ export class MedicacaoService {
     observacoes?: string;
     verificacao5Certas?: boolean;
   }) {
-    const medicacao = await this.prisma.medicacao.findUnique({ where: { id: data.medicacaoId } });
-    if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
-    if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
+    return this.prisma.$transaction(async (tx) => {
+      const medicacao = await tx.medicacao.findUnique({ where: { id: data.medicacaoId } });
+      if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
+      if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
 
-    return this.prisma.registoMedicacao.create({
-      data: {
-        medicacaoId: data.medicacaoId,
-        doenteId: medicacao.doenteId,
-        administradoPorId: data.administradoPorId,
-        observacoes: data.observacoes,
-        verificacao5Certas: data.verificacao5Certas ?? false,
-      },
-      include: {
-        administradoPor: { select: { id: true, nome: true } },
-        medicacao: { select: { nome: true, dose: true, via: true } },
-      },
-    });
+      return tx.registoMedicacao.create({
+        data: {
+          medicacaoId: data.medicacaoId,
+          doenteId: medicacao.doenteId,
+          administradoPorId: data.administradoPorId,
+          observacoes: data.observacoes,
+          verificacao5Certas: data.verificacao5Certas ?? false,
+        },
+        include: {
+          administradoPor: { select: { id: true, nome: true } },
+          medicacao: { select: { nome: true, dose: true, via: true } },
+        },
+      });
+    }, { isolationLevel: 'Serializable' });
   }
 
   async naoAdministrar(data: {

@@ -170,6 +170,10 @@ model Utilizador {
   surtosRegistados             SurtoIACS[]
   notasIncidentesTI            NotaIncidenteTI[]           @relation("NotasIncidentesTI")
   checklistsConformidade       ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
+  // Trocas de folga
+  trocasFolgaSolicitadas       TrocaFolga[]                @relation("TrocaFolgaSolicitante")
+  trocasFolgaRecebidas         TrocaFolga[]                @relation("TrocaFolgaDestinatario")
+  trocasFolgaAprovadas         TrocaFolga[]                @relation("TrocaFolgaAprovador")
 
   @@index([role, ativo])
   @@index([servico])
@@ -1703,6 +1707,28 @@ model Ausencia {
   @@index([utilizadorId])
   @@index([estado])
   @@map("ausencias")
+}
+
+model TrocaFolga {
+  id             String   @id @default(uuid())
+  solicitanteId  String
+  destinatarioId String
+  dataOrigem     DateTime // dia do solicitante (folga a ceder)
+  dataDestino    DateTime // dia do destinatário (folga a ceder)
+  motivo         String?
+  estado         String   @default("pendente") // pendente|aceite|recusado|aprovado|cancelado
+  aprovadoPorId  String?
+  criadoEm       DateTime @default(now())
+  atualizadoEm   DateTime @updatedAt
+
+  solicitante  Utilizador  @relation("TrocaFolgaSolicitante", fields: [solicitanteId], references: [id])
+  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id])
+  aprovadoPor  Utilizador? @relation("TrocaFolgaAprovador", fields: [aprovadoPorId], references: [id])
+
+  @@index([solicitanteId])
+  @@index([destinatarioId])
+  @@index([estado])
+  @@map("trocas_folga")
 }
 
 model FormacaoUtilizador {

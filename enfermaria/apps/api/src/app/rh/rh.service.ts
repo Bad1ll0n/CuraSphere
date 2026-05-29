@@ -296,4 +296,103 @@ export class RhService {
     if (!a) throw new NotFoundException(`Ausência (ID ${id}) não encontrada`);
     return a;
   }
+
+  // ── Trocas de Folga ───────────────────────────────────────────────────────
+
+  private readonly TROCA_INCLUDE = {
+    solicitante:  { select: { id: true, nome: true, role: true, servico: true } },
+    destinatario: { select: { id: true, nome: true, role: true, servico: true } },
+    aprovadoPor:  { select: { id: true, nome: true } },
+  };
+
+  async criarTrocaFolga(solicitanteId: string, dto: {
+    destinatarioId: string;
+    dataOrigem: string;
+    dataDestino: string;
+    motivo?: string;
+  }) {
+    return this.prisma.trocaFolga.create({
+      data: {
+        solicitanteId,
+        destinatarioId: dto.destinatarioId,
+        dataOrigem:  new Date(dto.dataOrigem),
+        dataDestino: new Date(dto.dataDestino),
+        motivo: dto.motivo ?? null,
+      },
+      include: this.TROCA_INCLUDE,
+    });
+  }
+
+  async minhasTrocasFolga(utilizadorId: string) {
+    return this.prisma.trocaFolga.findMany({
+      where: {
+        OR: [{ solicitanteId: utilizadorId }, { destinatarioId: utilizadorId }],
+      },
+      include: this.TROCA_INCLUDE,
+      orderBy: { criadoEm: 'desc' },
+    });
+  }
+
+  async trocasFolgaParaAprovar(chefeId: string) {
+    const subordinados = await this.prisma.utilizador.findMany({
+      where: { chefeId },
+      select: { id: true },
+    });
+    const ids = subordinados.map(s => s.id);
+    return this.prisma.trocaFolga.findMany({
+      where: {
+        estado: 'aceite',
+        OR: [{ solicitanteId: { in: ids } }, { destinatarioId: { in: ids } }],
+      },
+      include: this.TROCA_INCLUDE,
+      orderBy: { criadoEm: 'asc' },
+    });
+  }
+
+  async aceitarTrocaFolga(id: string, utilizadorId: string) {
+    const troca = await this.prisma.trocaFolga.findUnique({ where: { id } });
+    if (!troca) throw new NotFoundException('Troca não encontrada');
+    if (troca.destinatarioId !== utilizadorId) throw new ForbiddenException('Só o destinatário pode aceitar');
+    if (troca.estado !== 'pendente') throw new ForbiddenException('Troca já respondida');
+    return this.prisma.trocaFolga.update({
+      where: { id },
+      data: { estado: 'aceite' },
+      include: this.TROCA_INCLUDE,
+    });
+  }
+
+  async recusarTrocaFolga(id: string, utilizadorId: string) {
+    const troca = await this.prisma.trocaFolga.findUnique({ where: { id } });
+    if (!troca) throw new NotFoundException('Troca não encontrada');
+    if (troca.destinatarioId !== utilizadorId) throw new ForbiddenException('Só o destinatário pode recusar');
+    if (troca.estado !== 'pendente') throw new ForbiddenException('Troca já respondida');
+    return this.prisma.trocaFolga.update({
+      where: { id },
+      data: { estado: 'recusado' },
+      include: this.TROCA_INCLUDE,
+    });
+  }
+
+  async aprovarTrocaFolga(id: string, aprovadoPorId: string) {
+    const troca = await this.prisma.trocaFolga.findUnique({ where: { id } });
+    if (!troca) throw new NotFoundException('Troca não encontrada');
+    if (troca.estado !== 'aceite') throw new ForbiddenException('A troca ainda não foi aceite pelas duas partes');
+    return this.prisma.trocaFolga.update({
+      where: { id },
+      data: { estado: 'aprovado', aprovadoPorId },
+      include: this.TROCA_INCLUDE,
+    });
+  }
+
+  async cancelarTrocaFolga(id: string, utilizadorId: string) {
+    const troca = await this.prisma.trocaFolga.findUnique({ where: { id } });
+    if (!troca) throw new NotFoundException('Troca não encontrada');
+    if (troca.solicitanteId !== utilizadorId) throw new ForbiddenException('Só o solicitante pode cancelar');
+    if (!['pendente', 'aceite'].includes(troca.estado)) throw new ForbiddenException('Troca não pode ser cancelada');
+    return this.prisma.trocaFolga.update({
+      where: { id },
+      data: { estado: 'cancelado' },
+      include: this.TROCA_INCLUDE,
+    });
+  }
 }

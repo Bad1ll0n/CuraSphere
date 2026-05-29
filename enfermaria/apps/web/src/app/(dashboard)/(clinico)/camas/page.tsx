@@ -3,12 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
+import type { Cama as SharedCama } from '@org/shared';
 
-interface Cama {
-  id: string;
-  numero: string;
-  quarto: string;
-  estado: string;
+interface Cama extends SharedCama {
   doente?: { id: string; nome: string; estado: string; diagnosticoPrincipal: string } | null;
 }
 
@@ -51,6 +48,8 @@ export default function CamasPagina() {
   const podeGerir = ['administrativo', 'enfermeiro'].includes(utilizador?.role ?? '');
   const podeCriar = utilizador?.role === 'administrativo';
 
+  const [sseConectado, setSseConectado] = useState(false);
+
   const carregar = async () => {
     const r = await api.get('/camas');
     setCamas(r.data);
@@ -58,6 +57,24 @@ export default function CamasPagina() {
   };
 
   useEffect(() => { carregar(); }, []);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+    const es = new EventSource(`${apiUrl}/camas/eventos`, { withCredentials: true });
+
+    es.addEventListener('cama_atualizada', (e: MessageEvent) => {
+      const cama: Cama = JSON.parse(e.data);
+      setCamas(prev => prev.map(c => c.id === cama.id ? cama : c));
+    });
+
+    es.onopen = () => setSseConectado(true);
+    es.onerror = () => setSseConectado(false);
+
+    return () => {
+      es.close();
+      setSseConectado(false);
+    };
+  }, []);
 
   const alterarEstado = async (id: string, estado: string) => {
     setAtualizando(id);
@@ -86,7 +103,15 @@ export default function CamasPagina() {
       {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: '32px' }}>
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Mapa de Camas</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold text-slate-900">Mapa de Camas</h1>
+            {sseConectado && (
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Em directo
+              </span>
+            )}
+          </div>
           <p className="text-slate-500 text-sm" style={{ marginTop: '6px' }}>
             {ocupadas} de {camas.length} camas ocupadas
           </p>

@@ -42,7 +42,19 @@ const RELATORIOS = [
     icon: '🚨',
     color: 'red',
   },
+  {
+    key: 'produtividade',
+    label: 'Produtividade por Profissional',
+    desc: 'Consultas, notas clínicas, tarefas e cirurgias por profissional',
+    icon: '📊',
+    color: 'amber',
+  },
 ];
+
+const ROLE_LABEL: Record<string, string> = {
+  medico: 'Médico', enfermeiro: 'Enfermeiro', auxiliar: 'Auxiliar',
+  tecnico_saude: 'Técnico de Saúde', farmaceutico: 'Farmacêutico',
+};
 
 export default function RelatoriosPage() {
   const { utilizador } = useAuth();
@@ -290,6 +302,70 @@ export default function RelatoriosPage() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                )}
+
+                {/* Produtividade */}
+                {relatorioAtivo === 'produtividade' && (
+                  <div>
+                    {/* Totais */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                      {[
+                        { label: 'Consultas Realizadas', value: data.totais?.consultasRealizadas ?? 0, bg: 'bg-blue-50', text: 'text-blue-700', sub: 'text-blue-500' },
+                        { label: 'Notas Clínicas', value: data.totais?.notasClincias ?? 0, bg: 'bg-violet-50', text: 'text-violet-700', sub: 'text-violet-500' },
+                        { label: 'Tarefas Concluídas', value: data.totais?.tarefasConcluidas ?? 0, bg: 'bg-emerald-50', text: 'text-emerald-700', sub: 'text-emerald-500' },
+                        { label: 'Cirurgias Concluídas', value: data.totais?.cirurgiasConcluidas ?? 0, bg: 'bg-amber-50', text: 'text-amber-700', sub: 'text-amber-500' },
+                      ].map(s => (
+                        <div key={s.label} className={`${s.bg} rounded-xl p-4 text-center`}>
+                          <div className={`text-3xl font-bold ${s.text}`}>{s.value}</div>
+                          <div className={`text-xs font-medium ${s.sub} mt-1`}>{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tabela por profissional */}
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b-2 border-slate-200 bg-slate-50 text-left">
+                            <th className="py-2.5 px-3 text-slate-600 font-semibold">Profissional</th>
+                            <th className="py-2.5 px-3 text-slate-600 font-semibold">Função</th>
+                            <th className="py-2.5 px-3 text-slate-600 font-semibold">Serviço</th>
+                            <th className="py-2.5 px-3 text-right text-blue-600 font-semibold">Consultas</th>
+                            <th className="py-2.5 px-3 text-right text-violet-600 font-semibold">Notas</th>
+                            <th className="py-2.5 px-3 text-right text-emerald-600 font-semibold">Tarefas</th>
+                            <th className="py-2.5 px-3 text-right text-amber-600 font-semibold">Cirurgias</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(data.linhas ?? []).map((l: any, i: number) => {
+                            const total = l.consultasRealizadas + l.notasClincias + l.tarefasConcluidas + l.cirurgiasConcluidas;
+                            return (
+                              <tr key={i} className={`border-b border-slate-100 hover:bg-slate-50 ${total === 0 ? 'opacity-40' : ''}`}>
+                                <td className="py-2.5 px-3 font-medium text-slate-800">{l.nome}</td>
+                                <td className="py-2.5 px-3 text-slate-500">{ROLE_LABEL[l.role] ?? l.role}</td>
+                                <td className="py-2.5 px-3 text-slate-400 text-xs">{l.servico}</td>
+                                <td className="py-2.5 px-3 text-right">
+                                  {l.consultasRealizadas > 0 ? <span className="font-semibold text-blue-700">{l.consultasRealizadas}</span> : <span className="text-slate-300">—</span>}
+                                </td>
+                                <td className="py-2.5 px-3 text-right">
+                                  {l.notasClincias > 0 ? <span className="font-semibold text-violet-700">{l.notasClincias}</span> : <span className="text-slate-300">—</span>}
+                                </td>
+                                <td className="py-2.5 px-3 text-right">
+                                  {l.tarefasConcluidas > 0 ? <span className="font-semibold text-emerald-700">{l.tarefasConcluidas}</span> : <span className="text-slate-300">—</span>}
+                                </td>
+                                <td className="py-2.5 px-3 text-right">
+                                  {l.cirurgiasConcluidas > 0 ? <span className="font-semibold text-amber-700">{l.cirurgiasConcluidas}</span> : <span className="text-slate-300">—</span>}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-3">
+                      Profissionais sem actividade no período aparecem a transparência reduzida. Inclui médicos, enfermeiros, auxiliares, técnicos de saúde e farmacêuticos activos.
+                    </p>
                   </div>
                 )}
               </div>

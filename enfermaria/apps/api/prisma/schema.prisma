@@ -170,6 +170,10 @@ model Utilizador {
   surtosRegistados           SurtoIACS[]
   notasIncidentesTI          NotaIncidenteTI[]          @relation("NotasIncidentesTI")
   checklistsConformidade     ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
+  // Trocas de folga
+  trocasFolgaSolicitadas     TrocaFolga[]               @relation("TrocaFolgaSolicitante")
+  trocasFolgaRecebidas       TrocaFolga[]               @relation("TrocaFolgaDestinatario")
+  trocasFolgaAprovadas       TrocaFolga[]               @relation("TrocaFolgaAprovador")
 
   @@index([role, ativo])
   @@index([servico])
@@ -1298,19 +1302,34 @@ model Anuncio {
 }
 
 model MensagemInterna {
-  id             String     @id @default(uuid())
+  id             String          @id @default(uuid())
   remetenteId    String
-  remetente      Utilizador @relation("MensagemRemetente", fields: [remetenteId], references: [id])
+  remetente      Utilizador      @relation("MensagemRemetente", fields: [remetenteId], references: [id])
   destinatarioId String
-  destinatario   Utilizador @relation("MensagemDestinatario", fields: [destinatarioId], references: [id])
+  destinatario   Utilizador      @relation("MensagemDestinatario", fields: [destinatarioId], references: [id])
   assunto        String?
   texto          String
-  lida           Boolean    @default(false)
-  criadaEm      DateTime   @default(now())
+  lida           Boolean         @default(false)
+  criadaEm      DateTime        @default(now())
+  anexos         AnexoMensagem[]
 
   @@index([destinatarioId, lida])
   @@index([remetenteId])
   @@map("mensagens_internas")
+}
+
+model AnexoMensagem {
+  id          String          @id @default(uuid())
+  mensagemId  String
+  mensagem    MensagemInterna @relation(fields: [mensagemId], references: [id], onDelete: Cascade)
+  nome        String
+  url         String
+  mimeType    String
+  tamanho     Int
+  criadoEm   DateTime        @default(now())
+
+  @@index([mensagemId])
+  @@map("anexos_mensagem")
 }
 
 // ─── Interconsultas ──────────────────────────────────────────────────────────
@@ -1703,6 +1722,28 @@ model Ausencia {
   @@index([utilizadorId])
   @@index([estado])
   @@map("ausencias")
+}
+
+model TrocaFolga {
+  id              String    @id @default(uuid())
+  solicitanteId   String
+  destinatarioId  String
+  dataOrigem      DateTime  // dia do solicitante (folga a ceder)
+  dataDestino     DateTime  // dia do destinatário (folga a ceder)
+  motivo          String?
+  estado          String    @default("pendente") // pendente|aceite|recusado|aprovado|cancelado
+  aprovadoPorId   String?
+  criadoEm        DateTime  @default(now())
+  atualizadoEm    DateTime  @updatedAt
+
+  solicitante  Utilizador  @relation("TrocaFolgaSolicitante",  fields: [solicitanteId],  references: [id])
+  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id])
+  aprovadoPor  Utilizador? @relation("TrocaFolgaAprovador",    fields: [aprovadoPorId],  references: [id])
+
+  @@index([solicitanteId])
+  @@index([destinatarioId])
+  @@index([estado])
+  @@map("trocas_folga")
 }
 
 model FormacaoUtilizador {

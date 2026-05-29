@@ -104,10 +104,16 @@ type Fase = keyof typeof WHO_FASES;
 
 export default function BlocoPage() {
   const { utilizador } = useAuth();
-  const [vistaAtiva, setVistaAtiva] = useState<'agenda' | 'salas'>('agenda');
+  const hoje = new Date();
+  const [vistaAtiva, setVistaAtiva] = useState<'agenda' | 'salas' | 'calendario'>('agenda');
   const [cirurgias, setCirurgias] = useState<CirurgiaProgramada[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dataFiltro, setDataFiltro] = useState(new Date().toISOString().split('T')[0]);
+  const [dataFiltro, setDataFiltro] = useState(hoje.toISOString().split('T')[0]);
+  // Calendário
+  const [calMes, setCalMes] = useState(hoje.getMonth() + 1);
+  const [calAno, setCalAno] = useState(hoje.getFullYear());
+  const [calDados, setCalDados] = useState<Array<{ dia: string; total: number; cirurgias: Array<{ id: string; designacao: string; dataHora: string; sala: string; estado: string; doente: { nome: string }; cirurgiao: { nome: string } }> }>>([]);
+  const [loadingCal, setLoadingCal] = useState(false);
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({ designacao: '', dataHora: '', duracaoPrevista: 60, sala: 'Bloco 1', doenteId: '', notasPreOperatorio: '' });
   const [salvando, setSalvando] = useState(false);
@@ -149,6 +155,15 @@ export default function BlocoPage() {
     const t = setInterval(carregarSalas, 30_000);
     return () => clearInterval(t);
   }, [vistaAtiva]);
+
+  useEffect(() => {
+    if (vistaAtiva !== 'calendario') return;
+    setLoadingCal(true);
+    api.get('/bloco/agenda/mes', { params: { mes: calMes, ano: calAno } })
+      .then(r => setCalDados(r.data ?? []))
+      .catch(() => {})
+      .finally(() => setLoadingCal(false));
+  }, [vistaAtiva, calMes, calAno]);
 
   useSocket(undefined, {
     'bloco:update': () => { carregar(); if (vistaAtiva === 'salas') carregarSalas(); },
@@ -224,6 +239,13 @@ export default function BlocoPage() {
               className="border border-slate-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               style={{ padding: '9px 14px' }} />
           )}
+          {vistaAtiva === 'calendario' && (
+            <button onClick={() => { setDataFiltro(hoje.toISOString().split('T')[0]); setCalMes(hoje.getMonth() + 1); setCalAno(hoje.getFullYear()); }}
+              className="border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium rounded-xl transition-colors"
+              style={{ padding: '9px 16px' }}>
+              Hoje
+            </button>
+          )}
           {podeAgendar && (
             <button onClick={() => setModal(true)}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
@@ -239,14 +261,141 @@ export default function BlocoPage() {
 
       {/* Tabs */}
       <div className="flex gap-1 bg-slate-100 rounded-xl p-1" style={{ marginBottom: '28px', width: 'fit-content' }}>
-        {(['agenda', 'salas'] as const).map(v => (
-          <button key={v} onClick={() => setVistaAtiva(v)}
-            className={`text-sm font-semibold rounded-lg transition-colors ${vistaAtiva === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+        {([
+          { id: 'agenda',     label: 'Agenda Diária' },
+          { id: 'calendario', label: 'Calendário' },
+          { id: 'salas',      label: 'Vista de Sala' },
+        ] as const).map(v => (
+          <button key={v.id} onClick={() => setVistaAtiva(v.id)}
+            className={`text-sm font-semibold rounded-lg transition-colors ${vistaAtiva === v.id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
             style={{ padding: '8px 20px' }}>
-            {v === 'agenda' ? 'Agenda' : 'Vista de Sala'}
+            {v.label}
           </button>
         ))}
       </div>
+
+      {/* Vista Calendário */}
+      {vistaAtiva === 'calendario' && (() => {
+        const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+        const diasSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        const diasNoMes = new Date(calAno, calMes, 0).getDate();
+        const primeiroDiaSemana = new Date(calAno, calMes - 1, 1).getDay();
+        const hojeStr = hoje.toISOString().split('T')[0];
+        const cirurgiasPorDia: Record<string, typeof calDados[0]['cirurgias']> = {};
+        for (const d of calDados) cirurgiasPorDia[d.dia] = d.cirurgias;
+        const SALA_CORES: Record<string, string> = {
+          'Bloco 1': '#3b82f6', 'Bloco 2': '#8b5cf6', 'Bloco 3': '#f97316',
+          'Bloco 4': '#ec4899', 'Bloco 5': '#14b8a6',
+        };
+        const ESTADO_PONTO: Record<string, string> = {
+          agendada: '#3b82f6', em_curso: '#f59e0b', concluida: '#22c55e', cancelada: '#ef4444', adiada: '#94a3b8',
+        };
+        return (
+          <div>
+            {/* Controlos mês */}
+            <div className="flex items-center gap-3" style={{ marginBottom: '20px' }}>
+              <button onClick={() => { if (calMes === 1) { setCalMes(12); setCalAno(y => y - 1); } else setCalMes(m => m - 1); }}
+                className="w-9 h-9 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <h3 className="text-base font-bold text-slate-800">{meses[calMes - 1]} {calAno}</h3>
+              <button onClick={() => { if (calMes === 12) { setCalMes(1); setCalAno(y => y + 1); } else setCalMes(m => m + 1); }}
+                className="w-9 h-9 flex items-center justify-center border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              {loadingCal && (
+                <svg className="animate-spin w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+              )}
+              <div className="ml-auto flex flex-wrap gap-3">
+                {Object.entries(SALA_CORES).map(([sala, cor]) => (
+                  <div key={sala} className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: cor }} />
+                    <span className="text-xs text-slate-500">{sala}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Grelha calendário */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+              <div className="grid grid-cols-7 border-b border-slate-100">
+                {diasSemana.map(d => (
+                  <div key={d} className="text-center text-xs text-slate-400 font-semibold uppercase tracking-wide" style={{ padding: '12px 0' }}>{d}</div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7">
+                {Array.from({ length: primeiroDiaSemana }).map((_, i) => (
+                  <div key={`off-${i}`} className="bg-slate-50/40 border-r border-b border-slate-50" style={{ minHeight: '110px' }} />
+                ))}
+                {Array.from({ length: diasNoMes }, (_, i) => {
+                  const diaNum = i + 1;
+                  const diaStr = `${calAno}-${String(calMes).padStart(2, '0')}-${String(diaNum).padStart(2, '0')}`;
+                  const cirurgiasDia = cirurgiasPorDia[diaStr] ?? [];
+                  const ehHoje = diaStr === hojeStr;
+                  const total = cirurgiasDia.length;
+                  // Group by sala for colored dots
+                  const porSala: Record<string, number> = {};
+                  for (const c of cirurgiasDia) porSala[c.sala] = (porSala[c.sala] ?? 0) + 1;
+                  return (
+                    <div key={diaStr}
+                      className={`border-r border-b border-slate-100 cursor-pointer hover:bg-blue-50/30 transition-colors`}
+                      style={{ minHeight: '110px', padding: '8px 6px' }}
+                      onClick={() => { setDataFiltro(diaStr); setVistaAtiva('agenda'); }}>
+                      <div style={{ marginBottom: '6px' }}>
+                        <span className={`text-xs font-bold flex items-center justify-center rounded-full ${ehHoje ? 'bg-blue-600 text-white' : 'text-slate-500'}`}
+                          style={{ width: '22px', height: '22px' }}>
+                          {diaNum}
+                        </span>
+                      </div>
+                      {total > 0 && (
+                        <>
+                          <div className="text-[10px] font-bold text-slate-600 bg-slate-100 rounded text-center" style={{ padding: '1px 4px', marginBottom: '4px' }}>
+                            {total} cirurgia{total > 1 ? 's' : ''}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                            {cirurgiasDia.slice(0, 3).map(c => {
+                              const hora = new Date(c.dataHora).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+                              const cor = SALA_CORES[c.sala] ?? '#64748b';
+                              const pontoCor = ESTADO_PONTO[c.estado] ?? '#94a3b8';
+                              return (
+                                <div key={c.id} className="flex items-center gap-1 rounded overflow-hidden" style={{ padding: '2px 4px', backgroundColor: cor + '15', border: `1px solid ${cor}30` }}>
+                                  <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: pontoCor }} />
+                                  <span className="text-[9px] font-semibold truncate" style={{ color: cor }}>{hora} {c.designacao}</span>
+                                </div>
+                              );
+                            })}
+                            {total > 3 && (
+                              <span className="text-[9px] text-slate-400 font-medium" style={{ paddingLeft: '4px' }}>+{total - 3} mais</span>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Legenda de estado */}
+            <div className="flex flex-wrap items-center gap-4" style={{ marginTop: '16px' }}>
+              {Object.entries(ESTADO_PONTO).map(([estado, cor]) => (
+                <div key={estado} className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: cor }} />
+                  <span className="text-xs text-slate-500 capitalize">{estado.replace('_', ' ')}</span>
+                </div>
+              ))}
+              <span className="text-xs text-slate-400 ml-auto">Clique num dia para ver a agenda desse dia</span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Vista de Sala */}
       {vistaAtiva === 'salas' && (

@@ -945,6 +945,19 @@ exports.Prisma.AusenciaScalarFieldEnum = {
   atualizadoEm: 'atualizadoEm'
 };
 
+exports.Prisma.TrocaFolgaScalarFieldEnum = {
+  id: 'id',
+  solicitanteId: 'solicitanteId',
+  destinatarioId: 'destinatarioId',
+  dataOrigem: 'dataOrigem',
+  dataDestino: 'dataDestino',
+  motivo: 'motivo',
+  estado: 'estado',
+  aprovadoPorId: 'aprovadoPorId',
+  criadoEm: 'criadoEm',
+  atualizadoEm: 'atualizadoEm'
+};
+
 exports.Prisma.FormacaoUtilizadorScalarFieldEnum = {
   id: 'id',
   utilizadorId: 'utilizadorId',
@@ -1445,6 +1458,7 @@ exports.Prisma.ModelName = {
   Equipamento: 'Equipamento',
   Manutencao: 'Manutencao',
   Ausencia: 'Ausencia',
+  TrocaFolga: 'TrocaFolga',
   FormacaoUtilizador: 'FormacaoUtilizador',
   EventoAdverso: 'EventoAdverso',
   SessaoEspecialidade: 'SessaoEspecialidade',

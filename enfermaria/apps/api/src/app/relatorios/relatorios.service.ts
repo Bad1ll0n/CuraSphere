@@ -143,6 +143,66 @@ export class RelatoriosService {
     };
   }
 
+  async produtividade(inicio: Date, fim: Date) {
+    const [
+      consultasPorMedico,
+      notasPorAutor,
+      tarefasPorResp,
+      cirurgiasPorCircurgiao,
+      profissionais,
+    ] = await Promise.all([
+      this.prisma.consulta.groupBy({
+        by: ['medicoId'],
+        where: { dataHora: { gte: inicio, lte: fim }, estado: 'realizada' },
+        _count: { medicoId: true },
+      }),
+      this.prisma.notaClinica.groupBy({
+        by: ['autorId'],
+        where: { criadaEm: { gte: inicio, lte: fim } },
+        _count: { autorId: true },
+      }),
+      this.prisma.tarefa.groupBy({
+        by: ['responsavelId'],
+        where: { concluidaEm: { gte: inicio, lte: fim }, estado: 'concluida', responsavelId: { not: null } },
+        _count: { responsavelId: true },
+      }),
+      this.prisma.cirurgiaProgramada.groupBy({
+        by: ['cirurgiaoId'],
+        where: { dataHora: { gte: inicio, lte: fim }, estado: 'concluida' },
+        _count: { cirurgiaoId: true },
+      }),
+      this.prisma.utilizador.findMany({
+        where: { ativo: true, role: { in: ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'farmaceutico'] } },
+        select: { id: true, nome: true, role: true, servico: true },
+        orderBy: [{ role: 'asc' }, { nome: 'asc' }],
+      }),
+    ]);
+
+    const mapConsultas = Object.fromEntries(consultasPorMedico.map(r => [r.medicoId, r._count.medicoId]));
+    const mapNotas     = Object.fromEntries(notasPorAutor.map(r => [r.autorId, r._count.autorId]));
+    const mapTarefas   = Object.fromEntries(tarefasPorResp.map(r => [r.responsavelId as string, r._count.responsavelId]));
+    const mapCirurgias = Object.fromEntries(cirurgiasPorCircurgiao.map(r => [r.cirurgiaoId, r._count.cirurgiaoId]));
+
+    const linhas = profissionais.map(p => ({
+      nome: p.nome,
+      role: p.role,
+      servico: p.servico ?? '—',
+      consultasRealizadas: mapConsultas[p.id] ?? 0,
+      notasClincias: mapNotas[p.id] ?? 0,
+      tarefasConcluidas: mapTarefas[p.id] ?? 0,
+      cirurgiasConcluidas: mapCirurgias[p.id] ?? 0,
+    }));
+
+    const totais = {
+      consultasRealizadas: linhas.reduce((s, l) => s + l.consultasRealizadas, 0),
+      notasClincias: linhas.reduce((s, l) => s + l.notasClincias, 0),
+      tarefasConcluidas: linhas.reduce((s, l) => s + l.tarefasConcluidas, 0),
+      cirurgiasConcluidas: linhas.reduce((s, l) => s + l.cirurgiasConcluidas, 0),
+    };
+
+    return { periodo: { inicio, fim }, totais, linhas };
+  }
+
   toCSV(data: Record<string, any>[]): string {
     if (data.length === 0) return '';
     const headers = Object.keys(data[0]);

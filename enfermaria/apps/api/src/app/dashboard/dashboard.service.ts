@@ -147,6 +147,7 @@ export class DashboardService {
       internados, ambulatorio, pendenteCama,
       todasCamas, camasOcupadas, camasLimpeza, camasReservadas,
       faturacaoMes, consultasHoje, trocasPendentes, utilizadoresPorRole,
+      episodiosUrgenciaHoje, cirurgiasMesRaw, ausenciasAtivas,
     ] = await Promise.all([
       this.prisma.doente.count({ where: { estadoRegisto: 'internado', ativo: true } }),
       this.prisma.doente.count({ where: { estadoRegisto: 'ambulatorio', ativo: true } }),
@@ -159,7 +160,42 @@ export class DashboardService {
       this.prisma.consulta.findMany({ where: { dataHora: { gte: hoje, lt: amanha } }, select: { estado: true } }),
       this.prisma.pedidoTrocaTurno.count({ where: { estado: 'pendente' } }),
       this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
+      this.prisma.episodioUrgencia.groupBy({ by: ['estado'], where: { criadoEm: { gte: hoje } }, _count: { id: true } }).catch(() => []),
+      this.prisma.cirurgiaProgramada.groupBy({ by: ['estado'], where: { dataHora: { gte: inicioMes } }, _count: { id: true } }).catch(() => []),
+      this.prisma.ausencia.count({ where: { estado: 'aprovada', dataInicio: { lte: agora }, dataFim: { gte: agora } } }).catch(() => 0),
     ]);
+
+    // Tendência de ocupação — 14 dias
+    const totalCamas = await this.prisma.cama.count();
+    const tendenciaOcupacao = await Promise.all(
+      Array.from({ length: 14 }, (_, i) => {
+        const dia = new Date(agora); dia.setDate(dia.getDate() - (13 - i)); dia.setHours(23, 59, 59, 999);
+        const inicioDia = new Date(dia); inicioDia.setHours(0, 0, 0, 0);
+        return this.prisma.doente.count({
+          where: { dataAdmissao: { lte: dia }, OR: [{ dataAlta: null }, { dataAlta: { gte: inicioDia } }] },
+        }).then((ocupadas) => ({
+          data: inicioDia.toISOString().split('T')[0],
+          ocupadas,
+          total: totalCamas,
+          taxa: totalCamas > 0 ? Math.round((ocupadas / totalCamas) * 100) : 0,
+        }));
+      }),
+    );
+
+    // Tendência de faturação — 6 meses
+    const tendenciaFaturacao = await Promise.all(
+      Array.from({ length: 6 }, (_, i) => {
+        const data = new Date(agora.getFullYear(), agora.getMonth() - (5 - i), 1);
+        const fimMes = new Date(data.getFullYear(), data.getMonth() + 1, 1);
+        return this.prisma.episodioFaturacao.aggregate({
+          where: { criadoEm: { gte: data, lt: fimMes } },
+          _sum: { totalCobrado: true },
+        }).then((r) => ({
+          mes: data.toLocaleString('pt-PT', { month: 'short' }),
+          total: Math.round((r._sum.totalCobrado ?? 0) * 100) / 100,
+        }));
+      }),
+    );
 
     const doentesCama = await this.prisma.doente.findMany({
       where: { estadoRegisto: 'internado', ativo: true },
@@ -178,6 +214,9 @@ export class DashboardService {
       if (k in porCobertura) porCobertura[k] += f.totalCobrado;
     }
 
+    const countUrg = (estado: string) => (episodiosUrgenciaHoje as any[]).find(e => e.estado === estado)?._count?.id ?? 0;
+    const countCir = (estado: string) => (cirurgiasMesRaw as any[]).find(e => e.estado === estado)?._count?.id ?? 0;
+
     const faltaram = consultasHoje.filter(c => c.estado === 'faltou').length;
     return {
       doentes: { internados, ambulatorio, pendenteCama, mediaInternamento },
@@ -191,6 +230,21 @@ export class DashboardService {
       consultasHoje: { total: consultasHoje.length, faltaram, taxaNoShow: consultasHoje.length > 0 ? Math.round((faltaram / consultasHoje.length) * 100) : 0 },
       trocasPendentes,
       pessoal: { utilizadoresPorRole: utilizadoresPorRole.reduce((acc, r) => { acc[r.role] = r._count.id; return acc; }, {} as Record<string, number>) },
+      tendenciaOcupacao,
+      tendenciaFaturacao,
+      urgenciaHoje: {
+        total: (episodiosUrgenciaHoje as any[]).reduce((a: number, e: any) => a + (e._count?.id ?? 0), 0),
+        emAtendimento: countUrg('em_atendimento') + countUrg('em_observacao'),
+        aguardaAlta: countUrg('alta_urgencia') + countUrg('aguarda_resultado'),
+        alta: countUrg('alta'),
+      },
+      cirurgiasMes: {
+        total: (cirurgiasMesRaw as any[]).reduce((a: number, e: any) => a + (e._count?.id ?? 0), 0),
+        concluidas: countCir('concluida'),
+        emCurso: countCir('em_curso'),
+        canceladas: countCir('cancelada'),
+      },
+      ausenciasAtivas,
     };
   }
 

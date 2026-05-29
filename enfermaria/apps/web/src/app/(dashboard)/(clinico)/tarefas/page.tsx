@@ -5,20 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import type { Tarefa as SharedTarefa } from '@org/shared';
 
-interface Doente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
-interface Tarefa {
-  id: string;
-  descricao: string;
-  tipo: string;
-  prioridade: string;
-  estado: string;
-  prazo?: string;
-  criadaEm: string;
+interface TarefaDoente { id: string; nome: string; estado: string; cama: { numero: string; quarto: string } }
+interface Tarefa extends SharedTarefa {
   grupoResponsavel?: string;
-  doente: Doente;
-  criadoPor?: { id: string; nome: string; role: string };
-  responsavel?: { id: string; nome: string; role: string };
+  doente: TarefaDoente;
 }
 
 const ORDEM_PRIORIDADE = ['urgente', 'alta', 'media', 'baixa'];
@@ -84,6 +76,8 @@ export default function TarefasPage() {
   const [ePrazo, setEPrazo] = useState('');
   const [editando, setEditando] = useState(false);
 
+  const [sseConectado, setSseConectado] = useState(false);
+
   const carregar = async () => {
     setLoading(true);
     try {
@@ -95,6 +89,31 @@ export default function TarefasPage() {
   };
 
   useEffect(() => { carregar(); }, []);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+    const es = new EventSource(`${apiUrl}/tarefas/eventos`, { withCredentials: true });
+
+    es.addEventListener('tarefa_criada', (e: MessageEvent) => {
+      const payload = JSON.parse(e.data);
+      if (payload.prioridade === 'urgente') {
+        toast.error('Nova tarefa urgente atribuída ao seu grupo');
+      }
+      carregar();
+    });
+
+    es.addEventListener('tarefa_atualizada', () => {
+      carregar();
+    });
+
+    es.onopen = () => setSseConectado(true);
+    es.onerror = () => setSseConectado(false);
+
+    return () => {
+      es.close();
+      setSseConectado(false);
+    };
+  }, []);
 
   const abrirModalNovaTarefa = async () => {
     setTDesc(''); setDoenteSelId(''); setSearchDoente('');
@@ -199,6 +218,12 @@ export default function TarefasPage() {
               <span className="inline-flex items-center gap-1 text-xs font-semibold badge-pad py-1 rounded-lg bg-red-50 text-red-700 border border-red-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
                 {totalUrgentes} urgente{totalUrgentes > 1 ? 's' : ''}
+              </span>
+            )}
+            {sseConectado && (
+              <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Em directo
               </span>
             )}
           </div>

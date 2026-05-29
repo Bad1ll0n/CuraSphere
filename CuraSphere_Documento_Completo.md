@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-27 (sessão 18)
+> **Última actualização:** 2026-05-29 (sessão 31)
 > **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
@@ -604,7 +604,7 @@ DELETE /contactos/:id
 ### 6.5 Gestão e Suporte
 | Página | Rota | Roles | Estado |
 |--------|------|-------|--------|
-| Comunicação | `/comunicacao` | todos | ✅ Mensagens + anúncios |
+| Comunicação | `/comunicacao` | todos | ✅ Mensagens + anúncios + **picker de destinatário com pesquisa** |
 | Pedidos Internos | `/pedidos-internos` | clínico + admin + operacional | ✅ |
 | Equipamentos | `/equipamentos` | operacional, ti, direcao | ✅ Lista + manutenções + **Tab Alertas** (badge por urgência); React Query |
 | Pedidos TI | `/pedidos-ti` | ti | ✅ |
@@ -934,7 +934,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 
 | Feature | Prioridade | Notas |
 |---------|-----------|-------|
-| Relatórios e exportação PDF | ~~Média~~ | ✅ Implementado: nota de alta PDF (`GET /doentes/:id/alta/pdf`) e relatório de turno PDF (`GET /turnos/:id/relatorio/pdf`) via pdfmake; faltam relatórios de produtividade |
+| ~~Relatórios e exportação PDF~~ | ~~Média~~ | ✅ Implementado: nota de alta PDF, relatório de turno PDF via pdfmake + **relatórios de produtividade** (sessão 28): `GET /relatorios/produtividade` com `groupBy` em 4 modelos; frontend com totais 4-KPI e tabela por profissional |
 | ~~Relatórios DGS/SNS~~ | ~~Alta~~ | ✅ Implementado (sessão 10): 5 relatórios com export CSV — internamento, ocupação, diagnósticos, medicamentos, urgência |
 | ~~Assinatura digital de prescrições~~ | ~~Alta~~ | ✅ Implementado (sessão 10): challenge TOTP em `/medicacao/:id/assinar` + `/notas-clinicas/:id/assinar` |
 | ~~Consentimento informado digital~~ | ~~Alta~~ | ✅ Implementado (sessão 10): módulo `consentimentos/`; criar/assinar/recusar + página `/doentes/[id]/consentimentos` |
@@ -942,10 +942,13 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | ~~Protocolo clínico (Sepsis/AVC)~~ | ~~Alta~~ | ✅ Implementado (sessão 10): ativação automática por NEWS2 ≥7 (Sepsis) ou CID-10 I63/I64 (AVC); checklist com prazos |
 | ~~Dietética~~ | ~~Média~~ | ✅ Implementado (sessão 10): módulo `dietas/`; 7 tipos + 8 restrições; vista cozinha `/dietas` |
 | ~~Workflow limpeza de camas~~ | ~~Média~~ | ✅ Implementado (sessão 10): alta → `em_limpeza` + notificação auxiliares; `confirmar-limpeza` → `livre` |
-| Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
+| ~~Agenda de bloco (calendário)~~ | ~~Média~~ | ✅ Implementado (sessão 22): tab "Calendário" com grelha mensal, navegação mês a mês, badges de cirurgias por dia + sala colorida; click → filtra agenda diária |
+| ~~Dashboard Qualidade mobile~~ | ~~Alta~~ | ✅ Implementado (sessão 23): `DashboardQualidadeScreen` com 4 KPI cards, ocupação, tendência IACS 7d, alertas recentes, riscos por tipo, completitude de alta, eventos adversos por tipo/gravidade |
+| ~~Broadcast por serviço~~ | ~~Média~~ | ✅ Implementado (sessão 25): `POST /comunicacao/broadcast` com filtros `servicoAlvo` + `roleAlvo`; botão "Broadcast" na página de comunicação; modal com selectors + aviso; `createMany` atómico; tab Enviadas com ícone lida/não lida por mensagem |
+| ~~Trocas de dia de folga~~ | ~~Média~~ | ✅ Implementado (sessão 24): modelo `TrocaFolga` no schema + `db push`; 6 endpoints REST (`POST`, `GET minhas`, `GET para-aprovar`, `PATCH aceitar/recusar/aprovar/cancelar`); UI em horários — painéis "Trocas para Aprovar" (chefe) + "Minhas Trocas" + modal picker + botão "↔ Pedir troca" no painel de dia |
 | ~~Aprovação de pedidos farmácia pelo médico~~ | ~~Alta~~ | ✅ Backend + Frontend: fluxo pendente→aprovado→dispensado; tab "Aprovação Médica" na farmácia; proposta de prescrição por enfermeiro com aprovação/rejeição pelo médico na ficha do doente |
 | ~~Ficha pessoal no formulário de admissão~~ | ~~Média~~ | ✅ Campos NIF, SNS, morada, CP, localidade, telefone opcionais na admissão; `$transaction` cria `FicheiroPessoalDoente` se preenchidos |
-| Painel de BI / Analytics | Baixa | Dashboard executivo para Direção com gráficos históricos |
+| ~~Painel de BI / Analytics~~ | ~~Baixa~~ | ✅ Dashboard executivo enriquecido (sessão 26) + relatórios de produtividade (sessão 28) |
 | Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
 | Módulo de RH / gestão de férias | ~~Baixa~~ | ✅ Implementado: `/rh/pessoal`, `/rh/avaliacoes`, `/ferias` com workflow de aprovação por chefe |
 | Telemedicina / Videochamada | Baixa | Fora de âmbito actual |
@@ -955,12 +958,12 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 
 | Feature | O que existe | O que falta |
 |---------|-------------|------------|
-| Push notifications | Trigger em Trocas + Tarefas + **Tarefas urgentes pendentes** + **SOS contextual** + **NEWS2 ≥5/≥7** (sessão 7) | Leitura confirmada de notificações |
-| Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) | Grupos/broadcast por serviço; attachments; leitura confirmada |
-| Dashboard Direção | Acede a Dashboard TI + Qualidade | Falta dashboard executivo (KPIs financeiros, ocupação hospitalar, etc.) |
-| Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) | Gestão de folgas, trocas de dia de folga |
+| Push notifications | Trigger em Trocas + Tarefas + **Tarefas urgentes pendentes** + **SOS contextual** + **NEWS2 ≥5/≥7** (sessão 7) + **NotificacoesScreen mobile + leitura confirmada individual/todas** (sessão 27) | — |
+| Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) + **broadcast por serviço/role + leitura confirmada** (sessão 25) | Attachments |
+| Dashboard Direção | Acede a Dashboard TI + Qualidade + **Dashboard Executivo enriquecido** (sessão 26): tendência ocupação 14d (AreaChart), faturação 6 meses (BarChart), urgência hoje, bloco operatório mês, ausências activas | — |
+| Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) + **gestão de folgas** (sessão 20) + **trocas de folga** (sessão 24) | — |
 | Bloco Operatório | ✅ Lista + checklist + **vista de sala em tempo real** (sessão 15) | — |
-| Urgência | Episódios + triagem Manchester + mobile + **atribuir médico** (sessão 6) | Falta protocolo de triagem Manchester completo no mobile |
+| Urgência | Episódios + triagem Manchester + mobile + **atribuir médico** (sessão 6) + **Manchester completo no mobile** (sessão 21) | — |
 | IACS | Lista isolados + activar/desactivar + **culturas microbiológicas + surtos** (sessão 16) | — |
 | Exames | Solicitar + resultado texto | Falta visualizador DICOM integrado para imagiologia |
 | Worklist mobile | ✅ WorklistScreen (filtros + executar) | — |
@@ -983,10 +986,10 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Comunicação | ✅ Completo | ✅ ComunicacaoScreen (mensagens + anúncios) |
 | Pedidos Internos | ✅ Completo | ✅ PedidosInternosScreen (criar + aceitar + concluir) |
 | IACS | ✅ Completo | ✅ IACSScreen (3 tabs: isolamentos + culturas + surtos) |
-| Worklist | ✅ Completo | ❌ Ausente |
+| Worklist | ✅ Completo | ✅ WorklistScreen (filtros + executar + concluir) |
 | MAR | ✅ Completo | ✅ MARScreen (pendentes + administrar) |
-| Interconsultas | ✅ (na ficha) | ⚠️ Parcial (no DoenteDetalheScreen) |
-| Dashboard Qualidade | ✅ Completo | ❌ Ausente |
+| Interconsultas | ✅ (na ficha) | ✅ `InterconsultasScreen` (lista recebidas/enviadas, nova IC, aceitar, responder) |
+| Dashboard Qualidade | ✅ Completo | ✅ DashboardQualidadeScreen (KPIs, IACS, alertas, riscos, alta, eventos adversos) |
 
 ### 10.4 Dívida Técnica
 
@@ -995,8 +998,8 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Testes | Nenhum teste unitário ou e2e escrito |
 | Validação de input | DTOs têm validação básica; faltam validações de negócio (e.g., conflito de camas) |
 | Erro handling | API devolve mensagens genéricas; falta padronização de erros |
-| Paginação | Utilizadores paginado; maioria dos outros endpoints sem paginação |
-| SSE / Tempo Real | Tickets usam SSE; restantes módulos ainda sem actualizações em tempo real |
+| Paginação | Doentes: paginação já existia; **pesquisa server-side adicionada** (sessão 31) com debounce 300ms — procura em nome, processo e diagnóstico; clínicos sem search vêem só os seus doentes do turno, com search vêem todos os internados |
+| SSE / Tempo Real | Tickets + **Camas** (sessão 29) + **Tarefas** (sessão 30) usam SSE; outros módulos ainda sem actualizações em tempo real |
 | Seed de dados de teste | `seed-demo.ts` criado com dados hospitalares realistas |
 | Documentação API (Swagger) | ✅ `/api/docs` (SwaggerModule + addCookieAuth) |
 | ~~Acessibilidade (WCAG AA)~~ | ✅ Resolvido (sessão 8): `aria-label`, `scope="col"`, `htmlFor`/`id`, `role="dialog"`, `aria-live="polite"`, `confirm()` → `<ConfirmModal>`, contraste de botões desactivados |
@@ -1145,6 +1148,143 @@ Todos os 5 itens de alta/média prioridade do roadmap foram resolvidos.
   - `AdmitirDoenteDto` expandido com campos opcionais: `nif`, `numeroSNS`, `morada`, `codigoPostal`, `localidade`, `telefone`
   - `admitir()` no service cria `FicheiroPessoalDoente` dentro do mesmo `$transaction` se qualquer campo admin estiver preenchido
   - Web: nova secção "Dados Administrativos" na página `/doentes/admitir` com 6 campos opcionais (NIF, SNS, telefone, localidade, morada, código postal); nota informativa que pode ser preenchido depois
+
+### ✅ Completado na Sessão 22 (2026-05-29) — Bloco: Calendário Mensal
+- ~~**Agenda de bloco (calendário visual)**~~ — ✅ Implementado
+  - Backend: `GET /bloco/agenda/mes?mes=M&ano=Y` — consulta mês completo, agrupa cirurgias por dia (`{ dia, total, cirurgias[] }`)
+  - Frontend: nova tab "Calendário" (entre "Agenda Diária" e "Vista de Sala")
+  - Grelha 7 colunas com navegação ← mês → e botão "Hoje"
+  - Cada célula de dia: count badge "N cirurgia(s)" + até 3 itens (hora + designação) com cores por sala (Bloco 1=azul, Bloco 2=violeta, Bloco 3=laranja, etc.)
+  - Ponto colorido por estado (agendada=azul, em_curso=âmbar, concluida=verde, cancelada=vermelho, adiada=cinza)
+  - Dia de hoje com círculo azul; "+N mais" quando > 3 cirurgias no mesmo dia
+  - Click num dia → muda para tab "Agenda Diária" com `dataFiltro` já definido para esse dia
+  - Legenda de salas + legenda de estados na base do calendário
+
+### ✅ Completado na Sessão 21 (2026-05-29) — Urgência Mobile: Manchester Completo
+- ~~**Urgência mobile — protocolo Manchester completo**~~ — ✅ `UrgenciaScreen.tsx` reescrito
+  - Corrigidos nomes de estados (eram `em_observacao`, `aguarda_resultado`, `alta` → alinhados com API: `sala_espera`, `em_atendimento`, `alta_urgencia`)
+  - Botão "+" no header (roles: enfermeiro/médico/administrativo) → modal "Nova Entrada — Triagem Manchester"
+  - Modal de entrada: queixa principal, nome temporário (opcional), notas (opcional), seleção de cor Manchester (5 botões com label + tempo máximo de espera; botão fica colorido ao seleccionar)
+  - Botão "Registar Entrada" fica na cor da prioridade selecionada
+  - Episódios ordenados por prioridade (vermelho → azul)
+  - Tap num episódio activo → bottom sheet "Acções" com botões de transição de estado por fase:
+    - `triagem` → `sala_espera`
+    - `sala_espera` → `em_atendimento`, `transferido`
+    - `em_atendimento` → `aguarda_resultado`, `alta_urgencia`, `internado`, `transferido`
+    - `aguarda_resultado` → `em_atendimento`, `alta_urgencia`, `transferido`
+  - Tempo de espera calculado desde `dataEntrada`
+  - Ícone médico visível se atribuído; indicador "Acções" quando existem transições disponíveis
+
+### ✅ Completado na Sessão 20 (2026-05-29) — Horários: Gestão de Folgas
+- ~~**Horários — Gestão de folgas**~~ — ✅ Implementado
+  - Backend: `folga` adicionado como tipo válido em `CriarAusenciaDto` (usa modelo `Ausencia` existente; reutiliza endpoints `/rh/ausencias/...`)
+  - Web: `carregar()` carrega `GET /rh/ausencias/minhas` em paralelo; filtra as de tipo `folga` → `minhasFolgas`
+  - Chefes: `GET /rh/ausencias/para-aprovar` carregado em `useEffect`; painel "Pedidos de Folga Pendentes" acima do calendário com nome, data, botões Aprovar/Rejeitar por row
+  - Calendário: badge "Folga ✓" verde (aprovada) ou "Folga ⟳" âmbar (pendente) por dia
+  - Painel lateral (dia): banner colorido se já existe folga/pendente + botão "Cancelar" se pendente; botão "Pedir folga neste dia" (não-chefes, dias futuros, sem folga já pedida)
+  - `aprovandoFolga` state bloqueia botões duplicados durante requests
+
+### ✅ Completado na Sessão 31 (2026-05-29) — Doentes: pesquisa server-side
+- ~~**Pesquisa de doentes client-side**~~ — ✅ Migrada para server-side com debounce
+  - **Problema resolvido**: pesquisa anterior filtrava só os 25 resultados da página actual; com >25 doentes, resultados ficavam incompletos
+  - **Backend** (`doentes.service.ts`): parâmetro `search?` no `listar()`:
+    - Filtra por `nome ILIKE %search%` + `numeroProcesso ILIKE %search%` + `diagnosticoPrincipal ILIKE %search%`
+    - Comportamento especial para clínicos: sem search → apenas doentes do turno/atribuídos; com search → todos os internados (permite encontrar qualquer doente)
+  - **Backend** (`doentes.controller.ts`): `@Query('search') search?` exposto no `GET /doentes`
+  - **Frontend** (`doentes/page.tsx`):
+    - `useEffect` com debounce 300ms: `pesquisa` → `pesquisaDebounced` + reset `pagina` para 1
+    - `pesquisaDebounced` incluído no `queryKey` e no URL (`?search=…`)
+    - Filtros client-side residuais apenas para `estado` e `serviço` (não têm parâmetros server-side)
+    - Compatível com paginação: trocar de página mantém o termo de pesquisa
+
+### ✅ Completado na Sessão 30 (2026-05-29) — Tarefas: SSE em tempo real
+- ~~**SSE para Tarefas**~~ — ✅ Lista de tarefas actualiza automaticamente para todos os utilizadores
+  - **Backend** (`tarefas.service.ts`): `Subject<{data,type}>` com `eventStream()` + `emit()` privado
+    - `criar()` emite `tarefa_criada` com `{ id, prioridade, grupoResponsavel }`
+    - `atualizarEstado()` emite `tarefa_atualizada` com `{ id, estado, doenteId }`
+  - **Backend** (`tarefas.controller.ts`): `@Sse('eventos')` com `map()` → `{ type, data }`
+  - **Frontend** (`tarefas/page.tsx`):
+    - `useEffect` cria `EventSource('/tarefas/eventos', { withCredentials: true })`
+    - `tarefa_criada`: re-fetch lista; se `prioridade === 'urgente'` → `toast.error('Nova tarefa urgente...')`
+    - `tarefa_atualizada`: re-fetch lista (lista é user-specific, re-fetch é a estratégia correcta)
+    - Badge "Em directo" verde com pulse animation no cabeçalho
+    - Cleanup `es.close()` no unmount
+  - Diferença de abordagem vs. Camas: tarefas usam re-fetch completo (lista é filtrada por utilizador); camas usavam actualização cirúrgica (lista é global)
+
+### ✅ Completado na Sessão 29 (2026-05-29) — Mapa de Camas: SSE em tempo real
+- ~~**SSE para Camas**~~ — ✅ Mapa de camas actualiza automaticamente para todos os utilizadores
+  - **Backend** (`camas.service.ts`): `Subject<{data,type}>` com `eventStream()` + `emit()` privado; `emitirAtualizacaoCama()` público para uso por outros serviços
+    - `atualizarEstado()` emite `cama_atualizada` após cada mudança de estado
+    - `confirmarLimpeza()` emite `cama_atualizada` após limpeza confirmada
+  - **Backend** (`camas.controller.ts`): `@Sse('eventos')` com `map()` → `{ type, data }` (autenticado via cookie JWT + `@UseGuards(JwtAuthGuard, RolesGuard)`)
+  - **Frontend** (`camas/page.tsx`):
+    - `useEffect` cria `EventSource('/camas/eventos', { withCredentials: true })` no mount
+    - `addEventListener('cama_atualizada')` actualiza a cama específica em state com `setCamas(prev => prev.map(...))` — sem re-fetch completo
+    - `sseConectado` state: `true` no `onopen`, `false` no `onerror`
+    - Badge "Em directo" (verde, pulse animation) no cabeçalho quando SSE conectado
+    - Cleanup `es.close()` no unmount
+
+### ✅ Completado na Sessão 28 (2026-05-29) — Relatórios: Produtividade por Profissional
+- ~~**Relatórios de produtividade**~~ — ✅ `GET /relatorios/produtividade`
+  - **Backend** (`relatorios.service.ts`): método `produtividade()` com 5 queries `Promise.all`:
+    - `Consulta.groupBy(['medicoId'])` where `estado='realizada'`, período filtrado
+    - `NotaClinica.groupBy(['autorId'])` no período
+    - `Tarefa.groupBy(['responsavelId'])` where `estado='concluida'`, período via `concluidaEm`
+    - `CirurgiaProgramada.groupBy(['cirurgiaoId'])` where `estado='concluida'`, período
+    - `Utilizador.findMany` para médicos, enfermeiros, auxiliares, técnicos, farmacêuticos activos
+    - Join em memória com `Object.fromEntries` + retorna `{ periodo, totais, linhas }`
+  - **Backend** (`relatorios.controller.ts`): `GET /relatorios/produtividade` com export CSV via `toCSV(data.linhas)`
+  - **Frontend** (`relatorios/page.tsx`):
+    - Adicionada entrada "Produtividade por Profissional" ao grid de selecção (ícone 📊)
+    - Constante `ROLE_LABEL` para nomes PT de cada role
+    - 4 KPI summary cards (Consultas / Notas Clínicas / Tarefas / Cirurgias) com cores distintas
+    - Tabela detalhada: Profissional | Função | Serviço | Consultas | Notas | Tarefas | Cirurgias
+    - Profissionais sem actividade no período: `opacity-40`; células com `0` mostram `—`
+    - Export CSV funcional (dados de `data.linhas`)
+
+### ✅ Completado na Sessão 27 (2026-05-29) — Notificações mobile: centro de notificações
+- ~~**Leitura confirmada de notificações push**~~ — ✅ `NotificacoesScreen.tsx` criado de raiz
+  - Lista todas as notificações in-app (`GET /notificacoes?limit=50`) com paginação
+  - Indicador visual por notificação: dot indigo + fundo azul lavanda para não lidas; dot cinzento para lidas
+  - Toque na notificação não lida → `PATCH /notificacoes/:id/ler` e actualização optimista do estado
+  - Botão "Ler todas" no header → `PATCH /notificacoes/marcar-todas-lidas`; desaparece quando `naoLidas === 0`
+  - Badge vermelho no header com contagem de não lidas
+  - Pull-to-refresh + `useFocusEffect` para recarga automática ao entrar no ecrã
+  - Formatação de data relativa (Agora mesmo / Há Xmin / Há Xh / Há X dias / data PT)
+  - Ecrã vazio com ícone `notifications-off-outline` quando sem notificações
+- **MaisScreen.tsx** actualizado:
+  - Importa e roteia `NotificacoesScreen`
+  - `useFocusEffect` carrega `GET /notificacoes/nao-lidas` ao entrar no separador
+  - Item "Notificações" adicionado ao menu (visível a todos, acima de "Comunicação")
+  - Badge vermelho no item do menu quando há não lidas (substitui a seta `›`)
+  - Ao voltar do ecrã de notificações: badge do menu é zerado
+- ~~**Interconsultas mobile ⚠️ Parcial**~~ — ✅ Correcção documental: `InterconsultasScreen` já estava completo e ligado em `MaisScreen`
+
+### ✅ Completado na Sessão 26 (2026-05-29) — Dashboard Executivo: BI enriquecido
+- ~~**Dashboard Executivo — novos KPIs e tendências**~~ — ✅ Backend + Frontend
+  - **Backend** (`dashboard.service.ts`): `dashboardExecutivo()` expandido com 5 novas métricas calculadas em paralelo:
+    - `tendenciaOcupacao`: array de 14 dias com `{ data, ocupadas, total, taxa }` (baseado em episódios activos por dia)
+    - `tendenciaFaturacao`: array de 6 meses com `{ mes, total }` (soma `valorTotal` de facturas por mês)
+    - `urgenciaHoje`: `{ total, emAtendimento, aguardaAlta, alta }` via `groupBy estado` nos episódios de urgência de hoje
+    - `cirurgiasMes`: `{ total, concluidas, emCurso, canceladas }` via `groupBy estado` no mês corrente
+    - `ausenciasAtivas`: contagem de ausências aprovadas activas (startDate ≤ hoje ≤ endDate)
+  - **Frontend** (`dashboard-executivo/page.tsx`): Interface `DashExec` actualizada; novos charts com Recharts:
+    - `AreaChart` "Tendência de Ocupação — 14 dias" com gradiente indigo e tooltip personalizado
+    - `BarChart` "Faturação — 6 Meses" com barras verdes e formatação `fmtK` (compact notation para k€)
+    - Nova secção "Urgência Hoje" (2×2 grid: total, em atendimento, aguarda alta, alta)
+    - Nova secção "Bloco Operatório — Mês" (2×2 grid: total, concluídas, em curso, canceladas)
+    - "Ausências Activas" adicionado ao painel Operacional (cor red quando > 0)
+    - Tooltip custom para ambos os gráficos com formatação PT
+
+### ✅ Completado na Sessão 19 (2026-05-29) — Comunicação: picker de destinatário
+- ~~**Comunicação — "Enviar Mensagem" modal com UUID raw**~~ — ✅ Corrigido
+  - Substituído campo de texto livre ("UUID do utilizador") por picker com pesquisa em tempo real
+  - Ao abrir o modal: `GET /utilizadores?limit=200` carrega todos os utilizadores activos (lazy, só uma vez por sessão do modal)
+  - Input de pesquisa filtra por nome e por role (PT); dropdown com até 8 resultados (avatar inicial, nome, role, serviço)
+  - Após selecção: exibe pill azul com inicial + nome + botão X para limpar
+  - `onClick` no overlay fecha o dropdown; `onMouseDown preventDefault` previne fechar ao clicar num item
+  - Utilizador actual filtrado da lista (não pode enviar mensagem para si próprio)
+  - Botão "Enviar" só activa se destinatário seleccionado + mensagem preenchida
 
 ### Prioridade Baixa — Backlog
 12. Visualizador DICOM para imagiologia

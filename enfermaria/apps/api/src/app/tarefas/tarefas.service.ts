@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -7,11 +8,20 @@ import { NotificacoesService } from '../notificacoes/notificacoes.service';
 export class TarefasService implements OnApplicationBootstrap, OnApplicationShutdown {
   private readonly logger = new Logger(TarefasService.name);
   private intervalo: ReturnType<typeof setInterval> | null = null;
+  private readonly eventos$ = new Subject<{ data: string; type: string }>();
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
   ) {}
+
+  eventStream() {
+    return this.eventos$.asObservable();
+  }
+
+  private emit(type: string, payload: unknown) {
+    this.eventos$.next({ type, data: JSON.stringify(payload) });
+  }
 
   onApplicationBootstrap() {
     // Verificar tarefas urgentes não iniciadas a cada 10 minutos
@@ -168,6 +178,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
       ).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
+    this.emit('tarefa_criada', { id: tarefa.id, prioridade: tarefa.prioridade, grupoResponsavel: (tarefa as any).grupoResponsavel });
     return tarefa;
   }
 
@@ -175,7 +186,7 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
     const tarefa = await this.prisma.tarefa.findUnique({ where: { id } });
     if (!tarefa) throw new NotFoundException(`Tarefa (ID ${id}) não encontrada`);
 
-    return this.prisma.tarefa.update({
+    const result = await this.prisma.tarefa.update({
       where: { id },
       data: {
         estado,
@@ -185,6 +196,9 @@ export class TarefasService implements OnApplicationBootstrap, OnApplicationShut
         doente: { select: { id: true, nome: true } },
       },
     });
+
+    this.emit('tarefa_atualizada', { id: result.id, estado: result.estado, doenteId: result.doenteId });
+    return result;
   }
 
   async editar(id: string, dto: { descricao?: string; prioridade?: PrioridadeTarefa; prazo?: string | null; grupoResponsavel?: string }) {

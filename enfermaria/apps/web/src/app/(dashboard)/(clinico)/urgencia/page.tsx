@@ -61,6 +61,7 @@ export default function UrgenciaPage() {
   const [etaMap, setEtaMap] = useState<Record<string, number>>({});
   const [modalAtribuir, setModalAtribuir] = useState<string | null>(null);
   const [medicoSelecionadoId, setMedicoSelecionadoId] = useState('');
+  const [sseConectado, setSseConectado] = useState(false);
   const etaRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const { data: medicos = [] } = useQuery<Array<{ id: string; nome: string }>>({
@@ -120,6 +121,30 @@ export default function UrgenciaPage() {
     'urgencia:ambulancia':() => { qc.invalidateQueries({ queryKey: ['urgencia-lista'] }); qc.invalidateQueries({ queryKey: ['urgencia-dashboard'] }); },
   });
 
+  // SSE — real-time list updates
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333';
+    const es = new EventSource(`${apiUrl}/urgencia/eventos`, { withCredentials: true });
+    es.onopen = () => setSseConectado(true);
+    es.onerror = () => setSseConectado(false);
+    es.addEventListener('urgencia_nova', (e: MessageEvent) => {
+      try {
+        const payload = JSON.parse(e.data);
+        invalidarDireto();
+        if (payload.triagem === 'vermelho') toast.error(`🚨 Vermelho — ${payload.queixaPrincipal}`);
+        else if (payload.triagem === 'laranja') toast.error(`🟠 Laranja — ${payload.queixaPrincipal}`);
+      } catch { invalidarDireto(); }
+    });
+    es.addEventListener('urgencia_atualizada', () => invalidarDireto());
+    return () => { es.close(); setSseConectado(false); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const invalidarDireto = () => {
+    qc.invalidateQueries({ queryKey: ['urgencia-lista'] });
+    qc.invalidateQueries({ queryKey: ['urgencia-dashboard'] });
+  };
+
   const invalidar = () => {
     qc.invalidateQueries({ queryKey: ['urgencia-lista'] });
     qc.invalidateQueries({ queryKey: ['urgencia-dashboard'] });
@@ -175,7 +200,15 @@ export default function UrgenciaPage() {
       {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: '24px' }}>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Urgência</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-slate-900">Urgência</h1>
+            {sseConectado && (
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-full" style={{ padding: '3px 10px' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                Em directo
+              </span>
+            )}
+          </div>
           <p className="text-slate-500 text-sm" style={{ marginTop: '4px' }}>Lista de espera e triagem de Manchester</p>
         </div>
         <div className="flex items-center gap-2">

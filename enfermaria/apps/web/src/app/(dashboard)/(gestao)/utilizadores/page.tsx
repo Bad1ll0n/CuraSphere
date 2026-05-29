@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
+import type { Utilizador as SharedUtilizador } from '@org/shared';
 
-interface Utilizador {
-  id: string; nome: string; numeroFuncionario: string;
-  role: string; subRole?: string; servico: string;
-  ordemExperiencia?: number; equipa?: string; ativo: boolean;
+interface Utilizador extends SharedUtilizador {
+  servico: string;
+  ativo: boolean;
+  ordemExperiencia?: number;
+  equipa?: string;
 }
 interface SubRoleOpc { id: string; chave: string; label: string; }
 interface RoleOpc { id: string; chave: string; label: string; subRoles: SubRoleOpc[]; }

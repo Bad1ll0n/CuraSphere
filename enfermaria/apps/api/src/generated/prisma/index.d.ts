@@ -354,6 +354,11 @@ export type Manutencao = $Result.DefaultSelection<Prisma.$ManutencaoPayload>
  */
 export type Ausencia = $Result.DefaultSelection<Prisma.$AusenciaPayload>
 /**
+ * Model TrocaFolga
+ * 
+ */
+export type TrocaFolga = $Result.DefaultSelection<Prisma.$TrocaFolgaPayload>
+/**
  * Model FormacaoUtilizador
  * 
  */
@@ -1687,6 +1692,16 @@ export class PrismaClient<
   get ausencia(): Prisma.AusenciaDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.trocaFolga`: Exposes CRUD operations for the **TrocaFolga** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrocaFolgas
+    * const trocaFolgas = await prisma.trocaFolga.findMany()
+    * ```
+    */
+  get trocaFolga(): Prisma.TrocaFolgaDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.formacaoUtilizador`: Exposes CRUD operations for the **FormacaoUtilizador** model.
     * Example usage:
     * ```ts
@@ -2324,6 +2339,7 @@ export namespace Prisma {
     Equipamento: 'Equipamento',
     Manutencao: 'Manutencao',
     Ausencia: 'Ausencia',
+    TrocaFolga: 'TrocaFolga',
     FormacaoUtilizador: 'FormacaoUtilizador',
     EventoAdverso: 'EventoAdverso',
     SessaoEspecialidade: 'SessaoEspecialidade',
@@ -2355,7 +2371,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "trocaFolga" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -7391,6 +7407,80 @@ export namespace Prisma {
           }
         }
       }
+      TrocaFolga: {
+        payload: Prisma.$TrocaFolgaPayload<ExtArgs>
+        fields: Prisma.TrocaFolgaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrocaFolgaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrocaFolgaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          findFirst: {
+            args: Prisma.TrocaFolgaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrocaFolgaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          findMany: {
+            args: Prisma.TrocaFolgaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>[]
+          }
+          create: {
+            args: Prisma.TrocaFolgaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          createMany: {
+            args: Prisma.TrocaFolgaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrocaFolgaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>[]
+          }
+          delete: {
+            args: Prisma.TrocaFolgaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          update: {
+            args: Prisma.TrocaFolgaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrocaFolgaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrocaFolgaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrocaFolgaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrocaFolgaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrocaFolgaPayload>
+          }
+          aggregate: {
+            args: Prisma.TrocaFolgaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrocaFolga>
+          }
+          groupBy: {
+            args: Prisma.TrocaFolgaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrocaFolgaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrocaFolgaCountArgs<ExtArgs>
+            result: $Utils.Optional<TrocaFolgaCountAggregateOutputType> | number
+          }
+        }
+      }
       FormacaoUtilizador: {
         payload: Prisma.$FormacaoUtilizadorPayload<ExtArgs>
         fields: Prisma.FormacaoUtilizadorFieldRefs
@@ -8517,6 +8607,7 @@ export namespace Prisma {
     equipamento?: EquipamentoOmit
     manutencao?: ManutencaoOmit
     ausencia?: AusenciaOmit
+    trocaFolga?: TrocaFolgaOmit
     formacaoUtilizador?: FormacaoUtilizadorOmit
     eventoAdverso?: EventoAdversoOmit
     sessaoEspecialidade?: SessaoEspecialidadeOmit
@@ -8728,6 +8819,9 @@ export namespace Prisma {
     surtosRegistados: number
     notasIncidentesTI: number
     checklistsConformidade: number
+    trocasFolgaSolicitadas: number
+    trocasFolgaRecebidas: number
+    trocasFolgaAprovadas: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8818,6 +8912,9 @@ export namespace Prisma {
     surtosRegistados?: boolean | UtilizadorCountOutputTypeCountSurtosRegistadosArgs
     notasIncidentesTI?: boolean | UtilizadorCountOutputTypeCountNotasIncidentesTIArgs
     checklistsConformidade?: boolean | UtilizadorCountOutputTypeCountChecklistsConformidadeArgs
+    trocasFolgaSolicitadas?: boolean | UtilizadorCountOutputTypeCountTrocasFolgaSolicitadasArgs
+    trocasFolgaRecebidas?: boolean | UtilizadorCountOutputTypeCountTrocasFolgaRecebidasArgs
+    trocasFolgaAprovadas?: boolean | UtilizadorCountOutputTypeCountTrocasFolgaAprovadasArgs
   }
 
   // Custom InputTypes
@@ -9438,6 +9535,27 @@ export namespace Prisma {
    */
   export type UtilizadorCountOutputTypeCountChecklistsConformidadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ConformidadeChecklistItemWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasFolgaSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrocaFolgaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasFolgaRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrocaFolgaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountTrocasFolgaAprovadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrocaFolgaWhereInput
   }
 
 
@@ -12917,6 +13035,9 @@ export namespace Prisma {
     surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
     notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
     checklistsConformidade?: boolean | Utilizador$checklistsConformidadeArgs<ExtArgs>
+    trocasFolgaSolicitadas?: boolean | Utilizador$trocasFolgaSolicitadasArgs<ExtArgs>
+    trocasFolgaRecebidas?: boolean | Utilizador$trocasFolgaRecebidasArgs<ExtArgs>
+    trocasFolgaAprovadas?: boolean | Utilizador$trocasFolgaAprovadasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -13071,6 +13192,9 @@ export namespace Prisma {
     surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
     notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
     checklistsConformidade?: boolean | Utilizador$checklistsConformidadeArgs<ExtArgs>
+    trocasFolgaSolicitadas?: boolean | Utilizador$trocasFolgaSolicitadasArgs<ExtArgs>
+    trocasFolgaRecebidas?: boolean | Utilizador$trocasFolgaRecebidasArgs<ExtArgs>
+    trocasFolgaAprovadas?: boolean | Utilizador$trocasFolgaAprovadasArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13173,6 +13297,9 @@ export namespace Prisma {
       surtosRegistados: Prisma.$SurtoIACSPayload<ExtArgs>[]
       notasIncidentesTI: Prisma.$NotaIncidenteTIPayload<ExtArgs>[]
       checklistsConformidade: Prisma.$ConformidadeChecklistItemPayload<ExtArgs>[]
+      trocasFolgaSolicitadas: Prisma.$TrocaFolgaPayload<ExtArgs>[]
+      trocasFolgaRecebidas: Prisma.$TrocaFolgaPayload<ExtArgs>[]
+      trocasFolgaAprovadas: Prisma.$TrocaFolgaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13675,6 +13802,9 @@ export namespace Prisma {
     surtosRegistados<T extends Utilizador$surtosRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$surtosRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasIncidentesTI<T extends Utilizador$notasIncidentesTIArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasIncidentesTIArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     checklistsConformidade<T extends Utilizador$checklistsConformidadeArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$checklistsConformidadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasFolgaSolicitadas<T extends Utilizador$trocasFolgaSolicitadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasFolgaSolicitadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasFolgaRecebidas<T extends Utilizador$trocasFolgaRecebidasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasFolgaRecebidasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trocasFolgaAprovadas<T extends Utilizador$trocasFolgaAprovadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$trocasFolgaAprovadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16258,6 +16388,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ConformidadeChecklistItemScalarFieldEnum | ConformidadeChecklistItemScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasFolgaSolicitadas
+   */
+  export type Utilizador$trocasFolgaSolicitadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    where?: TrocaFolgaWhereInput
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    cursor?: TrocaFolgaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasFolgaRecebidas
+   */
+  export type Utilizador$trocasFolgaRecebidasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    where?: TrocaFolgaWhereInput
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    cursor?: TrocaFolgaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.trocasFolgaAprovadas
+   */
+  export type Utilizador$trocasFolgaAprovadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    where?: TrocaFolgaWhereInput
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    cursor?: TrocaFolgaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
   }
 
   /**
@@ -92129,6 +92331,1164 @@ export namespace Prisma {
 
 
   /**
+   * Model TrocaFolga
+   */
+
+  export type AggregateTrocaFolga = {
+    _count: TrocaFolgaCountAggregateOutputType | null
+    _min: TrocaFolgaMinAggregateOutputType | null
+    _max: TrocaFolgaMaxAggregateOutputType | null
+  }
+
+  export type TrocaFolgaMinAggregateOutputType = {
+    id: string | null
+    solicitanteId: string | null
+    destinatarioId: string | null
+    dataOrigem: Date | null
+    dataDestino: Date | null
+    motivo: string | null
+    estado: string | null
+    aprovadoPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type TrocaFolgaMaxAggregateOutputType = {
+    id: string | null
+    solicitanteId: string | null
+    destinatarioId: string | null
+    dataOrigem: Date | null
+    dataDestino: Date | null
+    motivo: string | null
+    estado: string | null
+    aprovadoPorId: string | null
+    criadoEm: Date | null
+    atualizadoEm: Date | null
+  }
+
+  export type TrocaFolgaCountAggregateOutputType = {
+    id: number
+    solicitanteId: number
+    destinatarioId: number
+    dataOrigem: number
+    dataDestino: number
+    motivo: number
+    estado: number
+    aprovadoPorId: number
+    criadoEm: number
+    atualizadoEm: number
+    _all: number
+  }
+
+
+  export type TrocaFolgaMinAggregateInputType = {
+    id?: true
+    solicitanteId?: true
+    destinatarioId?: true
+    dataOrigem?: true
+    dataDestino?: true
+    motivo?: true
+    estado?: true
+    aprovadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type TrocaFolgaMaxAggregateInputType = {
+    id?: true
+    solicitanteId?: true
+    destinatarioId?: true
+    dataOrigem?: true
+    dataDestino?: true
+    motivo?: true
+    estado?: true
+    aprovadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+  }
+
+  export type TrocaFolgaCountAggregateInputType = {
+    id?: true
+    solicitanteId?: true
+    destinatarioId?: true
+    dataOrigem?: true
+    dataDestino?: true
+    motivo?: true
+    estado?: true
+    aprovadoPorId?: true
+    criadoEm?: true
+    atualizadoEm?: true
+    _all?: true
+  }
+
+  export type TrocaFolgaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrocaFolga to aggregate.
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrocaFolgas to fetch.
+     */
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrocaFolgaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrocaFolgas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrocaFolgas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrocaFolgas
+    **/
+    _count?: true | TrocaFolgaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrocaFolgaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrocaFolgaMaxAggregateInputType
+  }
+
+  export type GetTrocaFolgaAggregateType<T extends TrocaFolgaAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrocaFolga]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrocaFolga[P]>
+      : GetScalarType<T[P], AggregateTrocaFolga[P]>
+  }
+
+
+
+
+  export type TrocaFolgaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrocaFolgaWhereInput
+    orderBy?: TrocaFolgaOrderByWithAggregationInput | TrocaFolgaOrderByWithAggregationInput[]
+    by: TrocaFolgaScalarFieldEnum[] | TrocaFolgaScalarFieldEnum
+    having?: TrocaFolgaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrocaFolgaCountAggregateInputType | true
+    _min?: TrocaFolgaMinAggregateInputType
+    _max?: TrocaFolgaMaxAggregateInputType
+  }
+
+  export type TrocaFolgaGroupByOutputType = {
+    id: string
+    solicitanteId: string
+    destinatarioId: string
+    dataOrigem: Date
+    dataDestino: Date
+    motivo: string | null
+    estado: string
+    aprovadoPorId: string | null
+    criadoEm: Date
+    atualizadoEm: Date
+    _count: TrocaFolgaCountAggregateOutputType | null
+    _min: TrocaFolgaMinAggregateOutputType | null
+    _max: TrocaFolgaMaxAggregateOutputType | null
+  }
+
+  type GetTrocaFolgaGroupByPayload<T extends TrocaFolgaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrocaFolgaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrocaFolgaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrocaFolgaGroupByOutputType[P]>
+            : GetScalarType<T[P], TrocaFolgaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrocaFolgaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    solicitanteId?: boolean
+    destinatarioId?: boolean
+    dataOrigem?: boolean
+    dataDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    aprovadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["trocaFolga"]>
+
+  export type TrocaFolgaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    solicitanteId?: boolean
+    destinatarioId?: boolean
+    dataOrigem?: boolean
+    dataDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    aprovadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["trocaFolga"]>
+
+  export type TrocaFolgaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    solicitanteId?: boolean
+    destinatarioId?: boolean
+    dataOrigem?: boolean
+    dataDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    aprovadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["trocaFolga"]>
+
+  export type TrocaFolgaSelectScalar = {
+    id?: boolean
+    solicitanteId?: boolean
+    destinatarioId?: boolean
+    dataOrigem?: boolean
+    dataDestino?: boolean
+    motivo?: boolean
+    estado?: boolean
+    aprovadoPorId?: boolean
+    criadoEm?: boolean
+    atualizadoEm?: boolean
+  }
+
+  export type TrocaFolgaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "solicitanteId" | "destinatarioId" | "dataOrigem" | "dataDestino" | "motivo" | "estado" | "aprovadoPorId" | "criadoEm" | "atualizadoEm", ExtArgs["result"]["trocaFolga"]>
+  export type TrocaFolgaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }
+  export type TrocaFolgaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }
+  export type TrocaFolgaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    solicitante?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    destinatario?: boolean | UtilizadorDefaultArgs<ExtArgs>
+    aprovadoPor?: boolean | TrocaFolga$aprovadoPorArgs<ExtArgs>
+  }
+
+  export type $TrocaFolgaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrocaFolga"
+    objects: {
+      solicitante: Prisma.$UtilizadorPayload<ExtArgs>
+      destinatario: Prisma.$UtilizadorPayload<ExtArgs>
+      aprovadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      solicitanteId: string
+      destinatarioId: string
+      dataOrigem: Date
+      dataDestino: Date
+      motivo: string | null
+      estado: string
+      aprovadoPorId: string | null
+      criadoEm: Date
+      atualizadoEm: Date
+    }, ExtArgs["result"]["trocaFolga"]>
+    composites: {}
+  }
+
+  type TrocaFolgaGetPayload<S extends boolean | null | undefined | TrocaFolgaDefaultArgs> = $Result.GetResult<Prisma.$TrocaFolgaPayload, S>
+
+  type TrocaFolgaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrocaFolgaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrocaFolgaCountAggregateInputType | true
+    }
+
+  export interface TrocaFolgaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrocaFolga'], meta: { name: 'TrocaFolga' } }
+    /**
+     * Find zero or one TrocaFolga that matches the filter.
+     * @param {TrocaFolgaFindUniqueArgs} args - Arguments to find a TrocaFolga
+     * @example
+     * // Get one TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrocaFolgaFindUniqueArgs>(args: SelectSubset<T, TrocaFolgaFindUniqueArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrocaFolga that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrocaFolgaFindUniqueOrThrowArgs} args - Arguments to find a TrocaFolga
+     * @example
+     * // Get one TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrocaFolgaFindUniqueOrThrowArgs>(args: SelectSubset<T, TrocaFolgaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrocaFolga that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaFindFirstArgs} args - Arguments to find a TrocaFolga
+     * @example
+     * // Get one TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrocaFolgaFindFirstArgs>(args?: SelectSubset<T, TrocaFolgaFindFirstArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrocaFolga that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaFindFirstOrThrowArgs} args - Arguments to find a TrocaFolga
+     * @example
+     * // Get one TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrocaFolgaFindFirstOrThrowArgs>(args?: SelectSubset<T, TrocaFolgaFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrocaFolgas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrocaFolgas
+     * const trocaFolgas = await prisma.trocaFolga.findMany()
+     * 
+     * // Get first 10 TrocaFolgas
+     * const trocaFolgas = await prisma.trocaFolga.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trocaFolgaWithIdOnly = await prisma.trocaFolga.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrocaFolgaFindManyArgs>(args?: SelectSubset<T, TrocaFolgaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrocaFolga.
+     * @param {TrocaFolgaCreateArgs} args - Arguments to create a TrocaFolga.
+     * @example
+     * // Create one TrocaFolga
+     * const TrocaFolga = await prisma.trocaFolga.create({
+     *   data: {
+     *     // ... data to create a TrocaFolga
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrocaFolgaCreateArgs>(args: SelectSubset<T, TrocaFolgaCreateArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrocaFolgas.
+     * @param {TrocaFolgaCreateManyArgs} args - Arguments to create many TrocaFolgas.
+     * @example
+     * // Create many TrocaFolgas
+     * const trocaFolga = await prisma.trocaFolga.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrocaFolgaCreateManyArgs>(args?: SelectSubset<T, TrocaFolgaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrocaFolgas and returns the data saved in the database.
+     * @param {TrocaFolgaCreateManyAndReturnArgs} args - Arguments to create many TrocaFolgas.
+     * @example
+     * // Create many TrocaFolgas
+     * const trocaFolga = await prisma.trocaFolga.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrocaFolgas and only return the `id`
+     * const trocaFolgaWithIdOnly = await prisma.trocaFolga.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrocaFolgaCreateManyAndReturnArgs>(args?: SelectSubset<T, TrocaFolgaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrocaFolga.
+     * @param {TrocaFolgaDeleteArgs} args - Arguments to delete one TrocaFolga.
+     * @example
+     * // Delete one TrocaFolga
+     * const TrocaFolga = await prisma.trocaFolga.delete({
+     *   where: {
+     *     // ... filter to delete one TrocaFolga
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrocaFolgaDeleteArgs>(args: SelectSubset<T, TrocaFolgaDeleteArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrocaFolga.
+     * @param {TrocaFolgaUpdateArgs} args - Arguments to update one TrocaFolga.
+     * @example
+     * // Update one TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrocaFolgaUpdateArgs>(args: SelectSubset<T, TrocaFolgaUpdateArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrocaFolgas.
+     * @param {TrocaFolgaDeleteManyArgs} args - Arguments to filter TrocaFolgas to delete.
+     * @example
+     * // Delete a few TrocaFolgas
+     * const { count } = await prisma.trocaFolga.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrocaFolgaDeleteManyArgs>(args?: SelectSubset<T, TrocaFolgaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrocaFolgas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrocaFolgas
+     * const trocaFolga = await prisma.trocaFolga.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrocaFolgaUpdateManyArgs>(args: SelectSubset<T, TrocaFolgaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrocaFolgas and returns the data updated in the database.
+     * @param {TrocaFolgaUpdateManyAndReturnArgs} args - Arguments to update many TrocaFolgas.
+     * @example
+     * // Update many TrocaFolgas
+     * const trocaFolga = await prisma.trocaFolga.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrocaFolgas and only return the `id`
+     * const trocaFolgaWithIdOnly = await prisma.trocaFolga.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrocaFolgaUpdateManyAndReturnArgs>(args: SelectSubset<T, TrocaFolgaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrocaFolga.
+     * @param {TrocaFolgaUpsertArgs} args - Arguments to update or create a TrocaFolga.
+     * @example
+     * // Update or create a TrocaFolga
+     * const trocaFolga = await prisma.trocaFolga.upsert({
+     *   create: {
+     *     // ... data to create a TrocaFolga
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrocaFolga we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrocaFolgaUpsertArgs>(args: SelectSubset<T, TrocaFolgaUpsertArgs<ExtArgs>>): Prisma__TrocaFolgaClient<$Result.GetResult<Prisma.$TrocaFolgaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrocaFolgas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaCountArgs} args - Arguments to filter TrocaFolgas to count.
+     * @example
+     * // Count the number of TrocaFolgas
+     * const count = await prisma.trocaFolga.count({
+     *   where: {
+     *     // ... the filter for the TrocaFolgas we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrocaFolgaCountArgs>(
+      args?: Subset<T, TrocaFolgaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrocaFolgaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrocaFolga.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrocaFolgaAggregateArgs>(args: Subset<T, TrocaFolgaAggregateArgs>): Prisma.PrismaPromise<GetTrocaFolgaAggregateType<T>>
+
+    /**
+     * Group by TrocaFolga.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrocaFolgaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrocaFolgaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrocaFolgaGroupByArgs['orderBy'] }
+        : { orderBy?: TrocaFolgaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrocaFolgaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrocaFolgaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrocaFolga model
+   */
+  readonly fields: TrocaFolgaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrocaFolga.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrocaFolgaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    solicitante<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    destinatario<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    aprovadoPor<T extends TrocaFolga$aprovadoPorArgs<ExtArgs> = {}>(args?: Subset<T, TrocaFolga$aprovadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrocaFolga model
+   */
+  interface TrocaFolgaFieldRefs {
+    readonly id: FieldRef<"TrocaFolga", 'String'>
+    readonly solicitanteId: FieldRef<"TrocaFolga", 'String'>
+    readonly destinatarioId: FieldRef<"TrocaFolga", 'String'>
+    readonly dataOrigem: FieldRef<"TrocaFolga", 'DateTime'>
+    readonly dataDestino: FieldRef<"TrocaFolga", 'DateTime'>
+    readonly motivo: FieldRef<"TrocaFolga", 'String'>
+    readonly estado: FieldRef<"TrocaFolga", 'String'>
+    readonly aprovadoPorId: FieldRef<"TrocaFolga", 'String'>
+    readonly criadoEm: FieldRef<"TrocaFolga", 'DateTime'>
+    readonly atualizadoEm: FieldRef<"TrocaFolga", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrocaFolga findUnique
+   */
+  export type TrocaFolgaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter, which TrocaFolga to fetch.
+     */
+    where: TrocaFolgaWhereUniqueInput
+  }
+
+  /**
+   * TrocaFolga findUniqueOrThrow
+   */
+  export type TrocaFolgaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter, which TrocaFolga to fetch.
+     */
+    where: TrocaFolgaWhereUniqueInput
+  }
+
+  /**
+   * TrocaFolga findFirst
+   */
+  export type TrocaFolgaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter, which TrocaFolga to fetch.
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrocaFolgas to fetch.
+     */
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrocaFolgas.
+     */
+    cursor?: TrocaFolgaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrocaFolgas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrocaFolgas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrocaFolgas.
+     */
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
+  }
+
+  /**
+   * TrocaFolga findFirstOrThrow
+   */
+  export type TrocaFolgaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter, which TrocaFolga to fetch.
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrocaFolgas to fetch.
+     */
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrocaFolgas.
+     */
+    cursor?: TrocaFolgaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrocaFolgas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrocaFolgas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrocaFolgas.
+     */
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
+  }
+
+  /**
+   * TrocaFolga findMany
+   */
+  export type TrocaFolgaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter, which TrocaFolgas to fetch.
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrocaFolgas to fetch.
+     */
+    orderBy?: TrocaFolgaOrderByWithRelationInput | TrocaFolgaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrocaFolgas.
+     */
+    cursor?: TrocaFolgaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrocaFolgas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrocaFolgas.
+     */
+    skip?: number
+    distinct?: TrocaFolgaScalarFieldEnum | TrocaFolgaScalarFieldEnum[]
+  }
+
+  /**
+   * TrocaFolga create
+   */
+  export type TrocaFolgaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrocaFolga.
+     */
+    data: XOR<TrocaFolgaCreateInput, TrocaFolgaUncheckedCreateInput>
+  }
+
+  /**
+   * TrocaFolga createMany
+   */
+  export type TrocaFolgaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrocaFolgas.
+     */
+    data: TrocaFolgaCreateManyInput | TrocaFolgaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrocaFolga createManyAndReturn
+   */
+  export type TrocaFolgaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrocaFolgas.
+     */
+    data: TrocaFolgaCreateManyInput | TrocaFolgaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrocaFolga update
+   */
+  export type TrocaFolgaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrocaFolga.
+     */
+    data: XOR<TrocaFolgaUpdateInput, TrocaFolgaUncheckedUpdateInput>
+    /**
+     * Choose, which TrocaFolga to update.
+     */
+    where: TrocaFolgaWhereUniqueInput
+  }
+
+  /**
+   * TrocaFolga updateMany
+   */
+  export type TrocaFolgaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrocaFolgas.
+     */
+    data: XOR<TrocaFolgaUpdateManyMutationInput, TrocaFolgaUncheckedUpdateManyInput>
+    /**
+     * Filter which TrocaFolgas to update
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * Limit how many TrocaFolgas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrocaFolga updateManyAndReturn
+   */
+  export type TrocaFolgaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * The data used to update TrocaFolgas.
+     */
+    data: XOR<TrocaFolgaUpdateManyMutationInput, TrocaFolgaUncheckedUpdateManyInput>
+    /**
+     * Filter which TrocaFolgas to update
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * Limit how many TrocaFolgas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrocaFolga upsert
+   */
+  export type TrocaFolgaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrocaFolga to update in case it exists.
+     */
+    where: TrocaFolgaWhereUniqueInput
+    /**
+     * In case the TrocaFolga found by the `where` argument doesn't exist, create a new TrocaFolga with this data.
+     */
+    create: XOR<TrocaFolgaCreateInput, TrocaFolgaUncheckedCreateInput>
+    /**
+     * In case the TrocaFolga was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrocaFolgaUpdateInput, TrocaFolgaUncheckedUpdateInput>
+  }
+
+  /**
+   * TrocaFolga delete
+   */
+  export type TrocaFolgaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+    /**
+     * Filter which TrocaFolga to delete.
+     */
+    where: TrocaFolgaWhereUniqueInput
+  }
+
+  /**
+   * TrocaFolga deleteMany
+   */
+  export type TrocaFolgaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrocaFolgas to delete
+     */
+    where?: TrocaFolgaWhereInput
+    /**
+     * Limit how many TrocaFolgas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrocaFolga.aprovadoPor
+   */
+  export type TrocaFolga$aprovadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * TrocaFolga without action
+   */
+  export type TrocaFolgaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrocaFolga
+     */
+    select?: TrocaFolgaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrocaFolga
+     */
+    omit?: TrocaFolgaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrocaFolgaInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model FormacaoUtilizador
    */
 
@@ -107969,6 +109329,22 @@ export namespace Prisma {
   export type AusenciaScalarFieldEnum = (typeof AusenciaScalarFieldEnum)[keyof typeof AusenciaScalarFieldEnum]
 
 
+  export const TrocaFolgaScalarFieldEnum: {
+    id: 'id',
+    solicitanteId: 'solicitanteId',
+    destinatarioId: 'destinatarioId',
+    dataOrigem: 'dataOrigem',
+    dataDestino: 'dataDestino',
+    motivo: 'motivo',
+    estado: 'estado',
+    aprovadoPorId: 'aprovadoPorId',
+    criadoEm: 'criadoEm',
+    atualizadoEm: 'atualizadoEm'
+  };
+
+  export type TrocaFolgaScalarFieldEnum = (typeof TrocaFolgaScalarFieldEnum)[keyof typeof TrocaFolgaScalarFieldEnum]
+
+
   export const FormacaoUtilizadorScalarFieldEnum: {
     id: 'id',
     utilizadorId: 'utilizadorId',
@@ -108964,6 +110340,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSListRelationFilter
     notasIncidentesTI?: NotaIncidenteTIListRelationFilter
     checklistsConformidade?: ConformidadeChecklistItemListRelationFilter
+    trocasFolgaSolicitadas?: TrocaFolgaListRelationFilter
+    trocasFolgaRecebidas?: TrocaFolgaListRelationFilter
+    trocasFolgaAprovadas?: TrocaFolgaListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -109073,6 +110452,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSOrderByRelationAggregateInput
     notasIncidentesTI?: NotaIncidenteTIOrderByRelationAggregateInput
     checklistsConformidade?: ConformidadeChecklistItemOrderByRelationAggregateInput
+    trocasFolgaSolicitadas?: TrocaFolgaOrderByRelationAggregateInput
+    trocasFolgaRecebidas?: TrocaFolgaOrderByRelationAggregateInput
+    trocasFolgaAprovadas?: TrocaFolgaOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -109185,6 +110567,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSListRelationFilter
     notasIncidentesTI?: NotaIncidenteTIListRelationFilter
     checklistsConformidade?: ConformidadeChecklistItemListRelationFilter
+    trocasFolgaSolicitadas?: TrocaFolgaListRelationFilter
+    trocasFolgaRecebidas?: TrocaFolgaListRelationFilter
+    trocasFolgaAprovadas?: TrocaFolgaListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -114570,6 +115955,92 @@ export namespace Prisma {
     atualizadoEm?: DateTimeWithAggregatesFilter<"Ausencia"> | Date | string
   }
 
+  export type TrocaFolgaWhereInput = {
+    AND?: TrocaFolgaWhereInput | TrocaFolgaWhereInput[]
+    OR?: TrocaFolgaWhereInput[]
+    NOT?: TrocaFolgaWhereInput | TrocaFolgaWhereInput[]
+    id?: StringFilter<"TrocaFolga"> | string
+    solicitanteId?: StringFilter<"TrocaFolga"> | string
+    destinatarioId?: StringFilter<"TrocaFolga"> | string
+    dataOrigem?: DateTimeFilter<"TrocaFolga"> | Date | string
+    dataDestino?: DateTimeFilter<"TrocaFolga"> | Date | string
+    motivo?: StringNullableFilter<"TrocaFolga"> | string | null
+    estado?: StringFilter<"TrocaFolga"> | string
+    aprovadoPorId?: StringNullableFilter<"TrocaFolga"> | string | null
+    criadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+    solicitante?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    destinatario?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type TrocaFolgaOrderByWithRelationInput = {
+    id?: SortOrder
+    solicitanteId?: SortOrder
+    destinatarioId?: SortOrder
+    dataOrigem?: SortOrder
+    dataDestino?: SortOrder
+    motivo?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    solicitante?: UtilizadorOrderByWithRelationInput
+    destinatario?: UtilizadorOrderByWithRelationInput
+    aprovadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type TrocaFolgaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrocaFolgaWhereInput | TrocaFolgaWhereInput[]
+    OR?: TrocaFolgaWhereInput[]
+    NOT?: TrocaFolgaWhereInput | TrocaFolgaWhereInput[]
+    solicitanteId?: StringFilter<"TrocaFolga"> | string
+    destinatarioId?: StringFilter<"TrocaFolga"> | string
+    dataOrigem?: DateTimeFilter<"TrocaFolga"> | Date | string
+    dataDestino?: DateTimeFilter<"TrocaFolga"> | Date | string
+    motivo?: StringNullableFilter<"TrocaFolga"> | string | null
+    estado?: StringFilter<"TrocaFolga"> | string
+    aprovadoPorId?: StringNullableFilter<"TrocaFolga"> | string | null
+    criadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+    solicitante?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    destinatario?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+    aprovadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id">
+
+  export type TrocaFolgaOrderByWithAggregationInput = {
+    id?: SortOrder
+    solicitanteId?: SortOrder
+    destinatarioId?: SortOrder
+    dataOrigem?: SortOrder
+    dataDestino?: SortOrder
+    motivo?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    aprovadoPorId?: SortOrderInput | SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+    _count?: TrocaFolgaCountOrderByAggregateInput
+    _max?: TrocaFolgaMaxOrderByAggregateInput
+    _min?: TrocaFolgaMinOrderByAggregateInput
+  }
+
+  export type TrocaFolgaScalarWhereWithAggregatesInput = {
+    AND?: TrocaFolgaScalarWhereWithAggregatesInput | TrocaFolgaScalarWhereWithAggregatesInput[]
+    OR?: TrocaFolgaScalarWhereWithAggregatesInput[]
+    NOT?: TrocaFolgaScalarWhereWithAggregatesInput | TrocaFolgaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrocaFolga"> | string
+    solicitanteId?: StringWithAggregatesFilter<"TrocaFolga"> | string
+    destinatarioId?: StringWithAggregatesFilter<"TrocaFolga"> | string
+    dataOrigem?: DateTimeWithAggregatesFilter<"TrocaFolga"> | Date | string
+    dataDestino?: DateTimeWithAggregatesFilter<"TrocaFolga"> | Date | string
+    motivo?: StringNullableWithAggregatesFilter<"TrocaFolga"> | string | null
+    estado?: StringWithAggregatesFilter<"TrocaFolga"> | string
+    aprovadoPorId?: StringNullableWithAggregatesFilter<"TrocaFolga"> | string | null
+    criadoEm?: DateTimeWithAggregatesFilter<"TrocaFolga"> | Date | string
+    atualizadoEm?: DateTimeWithAggregatesFilter<"TrocaFolga"> | Date | string
+  }
+
   export type FormacaoUtilizadorWhereInput = {
     AND?: FormacaoUtilizadorWhereInput | FormacaoUtilizadorWhereInput[]
     OR?: FormacaoUtilizadorWhereInput[]
@@ -115818,6 +117289,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -115926,6 +117400,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -116034,6 +117511,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -116142,6 +117622,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -121830,6 +123313,94 @@ export namespace Prisma {
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TrocaFolgaCreateInput = {
+    id?: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasFolgaSolicitadasInput
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasFolgaRecebidasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasFolgaAprovadasInput
+  }
+
+  export type TrocaFolgaUncheckedCreateInput = {
+    id?: string
+    solicitanteId: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaSolicitadasNestedInput
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaRecebidasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasFolgaAprovadasNestedInput
+  }
+
+  export type TrocaFolgaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaCreateManyInput = {
+    id?: string
+    solicitanteId: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type FormacaoUtilizadorCreateInput = {
     id?: string
     nome: string
@@ -123502,6 +125073,12 @@ export namespace Prisma {
     none?: ConformidadeChecklistItemWhereInput
   }
 
+  export type TrocaFolgaListRelationFilter = {
+    every?: TrocaFolgaWhereInput
+    some?: TrocaFolgaWhereInput
+    none?: TrocaFolgaWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -123756,6 +125333,10 @@ export namespace Prisma {
   }
 
   export type ConformidadeChecklistItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrocaFolgaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -127326,6 +128907,45 @@ export namespace Prisma {
     atualizadoEm?: SortOrder
   }
 
+  export type TrocaFolgaCountOrderByAggregateInput = {
+    id?: SortOrder
+    solicitanteId?: SortOrder
+    destinatarioId?: SortOrder
+    dataOrigem?: SortOrder
+    dataDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    aprovadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type TrocaFolgaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    solicitanteId?: SortOrder
+    destinatarioId?: SortOrder
+    dataOrigem?: SortOrder
+    dataDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    aprovadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
+  export type TrocaFolgaMinOrderByAggregateInput = {
+    id?: SortOrder
+    solicitanteId?: SortOrder
+    destinatarioId?: SortOrder
+    dataOrigem?: SortOrder
+    dataDestino?: SortOrder
+    motivo?: SortOrder
+    estado?: SortOrder
+    aprovadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    atualizadoEm?: SortOrder
+  }
+
   export type FormacaoUtilizadorCountOrderByAggregateInput = {
     id?: SortOrder
     utilizadorId?: SortOrder
@@ -128571,6 +130191,27 @@ export namespace Prisma {
     connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
   }
 
+  export type TrocaFolgaCreateNestedManyWithoutSolicitanteInput = {
+    create?: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput> | TrocaFolgaCreateWithoutSolicitanteInput[] | TrocaFolgaUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutSolicitanteInput | TrocaFolgaCreateOrConnectWithoutSolicitanteInput[]
+    createMany?: TrocaFolgaCreateManySolicitanteInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+  }
+
+  export type TrocaFolgaCreateNestedManyWithoutDestinatarioInput = {
+    create?: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput> | TrocaFolgaCreateWithoutDestinatarioInput[] | TrocaFolgaUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutDestinatarioInput | TrocaFolgaCreateOrConnectWithoutDestinatarioInput[]
+    createMany?: TrocaFolgaCreateManyDestinatarioInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+  }
+
+  export type TrocaFolgaCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput> | TrocaFolgaCreateWithoutAprovadoPorInput[] | TrocaFolgaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutAprovadoPorInput | TrocaFolgaCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: TrocaFolgaCreateManyAprovadoPorInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -129190,6 +130831,27 @@ export namespace Prisma {
     connectOrCreate?: ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput | ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput[]
     createMany?: ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope
     connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+  }
+
+  export type TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput = {
+    create?: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput> | TrocaFolgaCreateWithoutSolicitanteInput[] | TrocaFolgaUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutSolicitanteInput | TrocaFolgaCreateOrConnectWithoutSolicitanteInput[]
+    createMany?: TrocaFolgaCreateManySolicitanteInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+  }
+
+  export type TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput = {
+    create?: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput> | TrocaFolgaCreateWithoutDestinatarioInput[] | TrocaFolgaUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutDestinatarioInput | TrocaFolgaCreateOrConnectWithoutDestinatarioInput[]
+    createMany?: TrocaFolgaCreateManyDestinatarioInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+  }
+
+  export type TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput = {
+    create?: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput> | TrocaFolgaCreateWithoutAprovadoPorInput[] | TrocaFolgaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutAprovadoPorInput | TrocaFolgaCreateOrConnectWithoutAprovadoPorInput[]
+    createMany?: TrocaFolgaCreateManyAprovadoPorInputEnvelope
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -130464,6 +132126,48 @@ export namespace Prisma {
     deleteMany?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
   }
 
+  export type TrocaFolgaUpdateManyWithoutSolicitanteNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput> | TrocaFolgaCreateWithoutSolicitanteInput[] | TrocaFolgaUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutSolicitanteInput | TrocaFolgaCreateOrConnectWithoutSolicitanteInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutSolicitanteInput | TrocaFolgaUpsertWithWhereUniqueWithoutSolicitanteInput[]
+    createMany?: TrocaFolgaCreateManySolicitanteInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutSolicitanteInput | TrocaFolgaUpdateWithWhereUniqueWithoutSolicitanteInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutSolicitanteInput | TrocaFolgaUpdateManyWithWhereWithoutSolicitanteInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+  }
+
+  export type TrocaFolgaUpdateManyWithoutDestinatarioNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput> | TrocaFolgaCreateWithoutDestinatarioInput[] | TrocaFolgaUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutDestinatarioInput | TrocaFolgaCreateOrConnectWithoutDestinatarioInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutDestinatarioInput | TrocaFolgaUpsertWithWhereUniqueWithoutDestinatarioInput[]
+    createMany?: TrocaFolgaCreateManyDestinatarioInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutDestinatarioInput | TrocaFolgaUpdateWithWhereUniqueWithoutDestinatarioInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutDestinatarioInput | TrocaFolgaUpdateManyWithWhereWithoutDestinatarioInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+  }
+
+  export type TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput> | TrocaFolgaCreateWithoutAprovadoPorInput[] | TrocaFolgaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutAprovadoPorInput | TrocaFolgaCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutAprovadoPorInput | TrocaFolgaUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: TrocaFolgaCreateManyAprovadoPorInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutAprovadoPorInput | TrocaFolgaUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutAprovadoPorInput | TrocaFolgaUpdateManyWithWhereWithoutAprovadoPorInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -131700,6 +133404,48 @@ export namespace Prisma {
     update?: ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput[]
     updateMany?: ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput[]
     deleteMany?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput> | TrocaFolgaCreateWithoutSolicitanteInput[] | TrocaFolgaUncheckedCreateWithoutSolicitanteInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutSolicitanteInput | TrocaFolgaCreateOrConnectWithoutSolicitanteInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutSolicitanteInput | TrocaFolgaUpsertWithWhereUniqueWithoutSolicitanteInput[]
+    createMany?: TrocaFolgaCreateManySolicitanteInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutSolicitanteInput | TrocaFolgaUpdateWithWhereUniqueWithoutSolicitanteInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutSolicitanteInput | TrocaFolgaUpdateManyWithWhereWithoutSolicitanteInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput> | TrocaFolgaCreateWithoutDestinatarioInput[] | TrocaFolgaUncheckedCreateWithoutDestinatarioInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutDestinatarioInput | TrocaFolgaCreateOrConnectWithoutDestinatarioInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutDestinatarioInput | TrocaFolgaUpsertWithWhereUniqueWithoutDestinatarioInput[]
+    createMany?: TrocaFolgaCreateManyDestinatarioInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutDestinatarioInput | TrocaFolgaUpdateWithWhereUniqueWithoutDestinatarioInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutDestinatarioInput | TrocaFolgaUpdateManyWithWhereWithoutDestinatarioInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput = {
+    create?: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput> | TrocaFolgaCreateWithoutAprovadoPorInput[] | TrocaFolgaUncheckedCreateWithoutAprovadoPorInput[]
+    connectOrCreate?: TrocaFolgaCreateOrConnectWithoutAprovadoPorInput | TrocaFolgaCreateOrConnectWithoutAprovadoPorInput[]
+    upsert?: TrocaFolgaUpsertWithWhereUniqueWithoutAprovadoPorInput | TrocaFolgaUpsertWithWhereUniqueWithoutAprovadoPorInput[]
+    createMany?: TrocaFolgaCreateManyAprovadoPorInputEnvelope
+    set?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    disconnect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    delete?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    connect?: TrocaFolgaWhereUniqueInput | TrocaFolgaWhereUniqueInput[]
+    update?: TrocaFolgaUpdateWithWhereUniqueWithoutAprovadoPorInput | TrocaFolgaUpdateWithWhereUniqueWithoutAprovadoPorInput[]
+    updateMany?: TrocaFolgaUpdateManyWithWhereWithoutAprovadoPorInput | TrocaFolgaUpdateManyWithWhereWithoutAprovadoPorInput[]
+    deleteMany?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
   }
 
   export type DoenteCreateNestedOneWithoutCamaInput = {
@@ -136244,6 +137990,50 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutAusenciasAprovadasInput, UtilizadorUpdateWithoutAusenciasAprovadasInput>, UtilizadorUncheckedUpdateWithoutAusenciasAprovadasInput>
   }
 
+  export type UtilizadorCreateNestedOneWithoutTrocasFolgaSolicitadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTrocasFolgaRecebidasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaRecebidasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutTrocasFolgaAprovadasInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaAprovadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaAprovadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutTrocasFolgaSolicitadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaSolicitadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaSolicitadasInput
+    upsert?: UtilizadorUpsertWithoutTrocasFolgaSolicitadasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaSolicitadasInput, UtilizadorUpdateWithoutTrocasFolgaSolicitadasInput>, UtilizadorUncheckedUpdateWithoutTrocasFolgaSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutTrocasFolgaRecebidasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaRecebidasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaRecebidasInput
+    upsert?: UtilizadorUpsertWithoutTrocasFolgaRecebidasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaRecebidasInput, UtilizadorUpdateWithoutTrocasFolgaRecebidasInput>, UtilizadorUncheckedUpdateWithoutTrocasFolgaRecebidasInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutTrocasFolgaAprovadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaAprovadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutTrocasFolgaAprovadasInput
+    upsert?: UtilizadorUpsertWithoutTrocasFolgaAprovadasInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaAprovadasInput, UtilizadorUpdateWithoutTrocasFolgaAprovadasInput>, UtilizadorUncheckedUpdateWithoutTrocasFolgaAprovadasInput>
+  }
+
   export type UtilizadorCreateNestedOneWithoutFormacoesInput = {
     create?: XOR<UtilizadorCreateWithoutFormacoesInput, UtilizadorUncheckedCreateWithoutFormacoesInput>
     connectOrCreate?: UtilizadorCreateOrConnectWithoutFormacoesInput
@@ -140149,6 +141939,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSubordinadosInput = {
@@ -140256,6 +142049,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSubordinadosInput = {
@@ -140368,6 +142164,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChefeInput = {
@@ -140475,6 +142274,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChefeInput = {
@@ -141069,6 +142871,108 @@ export namespace Prisma {
 
   export type ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope = {
     data: ConformidadeChecklistItemCreateManyAtualizadoPorInput | ConformidadeChecklistItemCreateManyAtualizadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrocaFolgaCreateWithoutSolicitanteInput = {
+    id?: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasFolgaRecebidasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasFolgaAprovadasInput
+  }
+
+  export type TrocaFolgaUncheckedCreateWithoutSolicitanteInput = {
+    id?: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateOrConnectWithoutSolicitanteInput = {
+    where: TrocaFolgaWhereUniqueInput
+    create: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput>
+  }
+
+  export type TrocaFolgaCreateManySolicitanteInputEnvelope = {
+    data: TrocaFolgaCreateManySolicitanteInput | TrocaFolgaCreateManySolicitanteInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrocaFolgaCreateWithoutDestinatarioInput = {
+    id?: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasFolgaSolicitadasInput
+    aprovadoPor?: UtilizadorCreateNestedOneWithoutTrocasFolgaAprovadasInput
+  }
+
+  export type TrocaFolgaUncheckedCreateWithoutDestinatarioInput = {
+    id?: string
+    solicitanteId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateOrConnectWithoutDestinatarioInput = {
+    where: TrocaFolgaWhereUniqueInput
+    create: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput>
+  }
+
+  export type TrocaFolgaCreateManyDestinatarioInputEnvelope = {
+    data: TrocaFolgaCreateManyDestinatarioInput | TrocaFolgaCreateManyDestinatarioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrocaFolgaCreateWithoutAprovadoPorInput = {
+    id?: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    solicitante: UtilizadorCreateNestedOneWithoutTrocasFolgaSolicitadasInput
+    destinatario: UtilizadorCreateNestedOneWithoutTrocasFolgaRecebidasInput
+  }
+
+  export type TrocaFolgaUncheckedCreateWithoutAprovadoPorInput = {
+    id?: string
+    solicitanteId: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateOrConnectWithoutAprovadoPorInput = {
+    where: TrocaFolgaWhereUniqueInput
+    create: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type TrocaFolgaCreateManyAprovadoPorInputEnvelope = {
+    data: TrocaFolgaCreateManyAprovadoPorInput | TrocaFolgaCreateManyAprovadoPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -143092,6 +144996,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSubordinadosInput = {
@@ -143199,6 +145106,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithWhereUniqueWithoutChefeInput = {
@@ -143725,6 +145635,70 @@ export namespace Prisma {
     atualizadoPorId?: StringNullableFilter<"ConformidadeChecklistItem"> | string | null
   }
 
+  export type TrocaFolgaUpsertWithWhereUniqueWithoutSolicitanteInput = {
+    where: TrocaFolgaWhereUniqueInput
+    update: XOR<TrocaFolgaUpdateWithoutSolicitanteInput, TrocaFolgaUncheckedUpdateWithoutSolicitanteInput>
+    create: XOR<TrocaFolgaCreateWithoutSolicitanteInput, TrocaFolgaUncheckedCreateWithoutSolicitanteInput>
+  }
+
+  export type TrocaFolgaUpdateWithWhereUniqueWithoutSolicitanteInput = {
+    where: TrocaFolgaWhereUniqueInput
+    data: XOR<TrocaFolgaUpdateWithoutSolicitanteInput, TrocaFolgaUncheckedUpdateWithoutSolicitanteInput>
+  }
+
+  export type TrocaFolgaUpdateManyWithWhereWithoutSolicitanteInput = {
+    where: TrocaFolgaScalarWhereInput
+    data: XOR<TrocaFolgaUpdateManyMutationInput, TrocaFolgaUncheckedUpdateManyWithoutSolicitanteInput>
+  }
+
+  export type TrocaFolgaScalarWhereInput = {
+    AND?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+    OR?: TrocaFolgaScalarWhereInput[]
+    NOT?: TrocaFolgaScalarWhereInput | TrocaFolgaScalarWhereInput[]
+    id?: StringFilter<"TrocaFolga"> | string
+    solicitanteId?: StringFilter<"TrocaFolga"> | string
+    destinatarioId?: StringFilter<"TrocaFolga"> | string
+    dataOrigem?: DateTimeFilter<"TrocaFolga"> | Date | string
+    dataDestino?: DateTimeFilter<"TrocaFolga"> | Date | string
+    motivo?: StringNullableFilter<"TrocaFolga"> | string | null
+    estado?: StringFilter<"TrocaFolga"> | string
+    aprovadoPorId?: StringNullableFilter<"TrocaFolga"> | string | null
+    criadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+    atualizadoEm?: DateTimeFilter<"TrocaFolga"> | Date | string
+  }
+
+  export type TrocaFolgaUpsertWithWhereUniqueWithoutDestinatarioInput = {
+    where: TrocaFolgaWhereUniqueInput
+    update: XOR<TrocaFolgaUpdateWithoutDestinatarioInput, TrocaFolgaUncheckedUpdateWithoutDestinatarioInput>
+    create: XOR<TrocaFolgaCreateWithoutDestinatarioInput, TrocaFolgaUncheckedCreateWithoutDestinatarioInput>
+  }
+
+  export type TrocaFolgaUpdateWithWhereUniqueWithoutDestinatarioInput = {
+    where: TrocaFolgaWhereUniqueInput
+    data: XOR<TrocaFolgaUpdateWithoutDestinatarioInput, TrocaFolgaUncheckedUpdateWithoutDestinatarioInput>
+  }
+
+  export type TrocaFolgaUpdateManyWithWhereWithoutDestinatarioInput = {
+    where: TrocaFolgaScalarWhereInput
+    data: XOR<TrocaFolgaUpdateManyMutationInput, TrocaFolgaUncheckedUpdateManyWithoutDestinatarioInput>
+  }
+
+  export type TrocaFolgaUpsertWithWhereUniqueWithoutAprovadoPorInput = {
+    where: TrocaFolgaWhereUniqueInput
+    update: XOR<TrocaFolgaUpdateWithoutAprovadoPorInput, TrocaFolgaUncheckedUpdateWithoutAprovadoPorInput>
+    create: XOR<TrocaFolgaCreateWithoutAprovadoPorInput, TrocaFolgaUncheckedCreateWithoutAprovadoPorInput>
+  }
+
+  export type TrocaFolgaUpdateWithWhereUniqueWithoutAprovadoPorInput = {
+    where: TrocaFolgaWhereUniqueInput
+    data: XOR<TrocaFolgaUpdateWithoutAprovadoPorInput, TrocaFolgaUncheckedUpdateWithoutAprovadoPorInput>
+  }
+
+  export type TrocaFolgaUpdateManyWithWhereWithoutAprovadoPorInput = {
+    where: TrocaFolgaScalarWhereInput
+    data: XOR<TrocaFolgaUpdateManyMutationInput, TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorInput>
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -144081,6 +146055,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -144188,6 +146165,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -145510,6 +147490,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -145617,6 +147600,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -146351,6 +148337,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -146458,6 +148447,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -146755,6 +148747,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -146862,6 +148857,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -147176,6 +149174,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -147283,6 +149284,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -147554,6 +149558,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -147661,6 +149668,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -147836,6 +149846,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -147943,6 +149956,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -148103,6 +150119,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -148210,6 +150229,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -148681,6 +150703,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPresencaOnlineInput = {
@@ -148788,6 +150813,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPresencaOnlineInput = {
@@ -148911,6 +150939,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPresencaOnlineInput = {
@@ -149018,6 +151049,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutRegistosCheckinInput = {
@@ -149125,6 +151159,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosCheckinInput = {
@@ -149232,6 +151269,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosCheckinInput = {
@@ -149355,6 +151395,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosCheckinInput = {
@@ -149462,6 +151505,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutNotasClinciasInput = {
@@ -149680,6 +151726,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -149787,6 +151836,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -149899,6 +151951,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasAssinadasInput = {
@@ -150006,6 +152061,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasAssinadasInput = {
@@ -150246,6 +152304,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -150353,6 +152414,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasAssinadasInput = {
@@ -150471,6 +152535,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasAssinadasInput = {
@@ -150578,6 +152645,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -150796,6 +152866,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -150903,6 +152976,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -151143,6 +153219,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -151250,6 +153329,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -151499,6 +153581,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -151606,6 +153691,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -151883,6 +153971,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -151990,6 +154081,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -152208,6 +154302,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -152315,6 +154412,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -152427,6 +154527,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -152534,6 +154637,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -152805,6 +154911,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -152912,6 +155021,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -153030,6 +155142,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -153137,6 +155252,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -153392,6 +155510,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -153499,6 +155620,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -153611,6 +155735,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -153718,6 +155845,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -153830,6 +155960,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesAssinadasInput = {
@@ -153937,6 +156070,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesAssinadasInput = {
@@ -154211,6 +156347,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -154318,6 +156457,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -154436,6 +156578,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -154543,6 +156688,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesAssinadasInput = {
@@ -154661,6 +156809,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesAssinadasInput = {
@@ -154768,6 +156919,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -155047,6 +157201,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -155154,6 +157311,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -155445,6 +157605,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -155552,6 +157715,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -155659,6 +157825,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -155766,6 +157935,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -155917,6 +158089,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -156024,6 +158199,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -156348,6 +158526,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -156455,6 +158636,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -156607,6 +158791,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -156714,6 +158901,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -156821,6 +159011,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -156928,6 +159121,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -157040,6 +159236,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -157147,6 +159346,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -157282,6 +159484,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -157389,6 +159594,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -157512,6 +159720,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -157619,6 +159830,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -157737,6 +159951,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -157844,6 +160061,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -157991,6 +160211,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -158098,6 +160321,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -158339,6 +160565,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -158446,6 +160675,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -158558,6 +160790,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -158665,6 +160900,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -158934,6 +161172,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -159041,6 +161282,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -159159,6 +161403,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -159266,6 +161513,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -159484,6 +161734,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -159591,6 +161844,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -159831,6 +162087,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -159938,6 +162197,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -160045,6 +162307,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -160152,6 +162417,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -160275,6 +162543,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -160382,6 +162653,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -161056,6 +163330,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAlertasAcusadosInput = {
@@ -161163,6 +163440,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAlertasAcusadosInput = {
@@ -161403,6 +163683,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAlertasAcusadosInput = {
@@ -161510,6 +163793,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
@@ -161728,6 +164014,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -161835,6 +164124,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -162075,6 +164367,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -162182,6 +164477,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -162400,6 +164698,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -162507,6 +164808,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -162747,6 +165051,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -162854,6 +165161,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -162961,6 +165271,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -163068,6 +165381,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -163191,6 +165507,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -163298,6 +165617,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutNotificacoesInAppInput = {
@@ -163405,6 +165727,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotificacoesInAppInput = {
@@ -163512,6 +165837,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotificacoesInAppInput = {
@@ -163635,6 +165963,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput = {
@@ -163742,6 +166073,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -163960,6 +166294,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -164067,6 +166404,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -164331,6 +166671,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -164438,6 +166781,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -164755,6 +167101,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -164862,6 +167211,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -164974,6 +167326,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -165081,6 +167436,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -165321,6 +167679,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -165428,6 +167789,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -165546,6 +167910,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -165653,6 +168020,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -165871,6 +168241,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -165978,6 +168351,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -166090,6 +168466,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -166197,6 +168576,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -166468,6 +168850,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -166575,6 +168960,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -166693,6 +169081,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -166800,6 +169191,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -166983,6 +169377,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -167090,6 +169487,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -167202,6 +169602,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -167309,6 +169712,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -167421,6 +169827,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -167528,6 +169937,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -167696,6 +170108,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -167803,6 +170218,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -167921,6 +170339,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -168028,6 +170449,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -168146,6 +170570,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -168253,6 +170680,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -168471,6 +170901,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -168578,6 +171011,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -168879,6 +171315,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -168986,6 +171425,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput = {
@@ -169162,6 +171604,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAgendasInput = {
@@ -169269,6 +171714,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAgendasInput = {
@@ -169392,6 +171840,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAgendasInput = {
@@ -169499,6 +171950,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -169606,6 +172060,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -169713,6 +172170,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -169825,6 +172285,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -169932,6 +172395,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -170055,6 +172521,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -170162,6 +172631,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -170280,6 +172752,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -170387,6 +172862,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type CatalogoMedicamentoCreateWithoutStockItemsInput = {
@@ -170805,6 +173283,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -170912,6 +173393,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -171024,6 +173508,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -171131,6 +173618,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -171243,6 +173733,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput = {
@@ -171350,6 +173843,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosAprovadosInput = {
@@ -171518,6 +174014,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -171625,6 +174124,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -171743,6 +174245,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -171850,6 +174355,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosAprovadosInput = {
@@ -171968,6 +174476,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput = {
@@ -172075,6 +174586,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type StockItemCreateWithoutCatalogoInput = {
@@ -172298,6 +174812,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAjustesStockInput = {
@@ -172405,6 +174922,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAjustesStockInput = {
@@ -172573,6 +175093,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAjustesStockInput = {
@@ -172680,6 +175203,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type StockItemCreateWithoutTransferenciasInput = {
@@ -172826,6 +175352,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput = {
@@ -172933,6 +175462,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTransferenciasSolicitadasInput = {
@@ -173045,6 +175577,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput = {
@@ -173152,6 +175687,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTransferenciasConfirmadasInput = {
@@ -173320,6 +175858,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput = {
@@ -173427,6 +175968,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransferenciasConfirmadasInput = {
@@ -173545,6 +176089,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput = {
@@ -173652,6 +176199,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type EncomendaFornecedorCreateWithoutFornecedorInput = {
@@ -173879,6 +176429,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput = {
@@ -173986,6 +176539,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEncomendasRecebidasInput = {
@@ -174187,6 +176743,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput = {
@@ -174294,6 +176853,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -174512,6 +177074,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -174619,6 +177184,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -174891,6 +177459,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -174998,6 +177569,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -175259,6 +177833,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -175366,6 +177943,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -175639,6 +178219,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -175746,6 +178329,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -175964,6 +178550,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -176071,6 +178660,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -176183,6 +178775,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -176290,6 +178885,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -176530,6 +179128,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -176637,6 +179238,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -176755,6 +179359,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -176862,6 +179469,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -176969,6 +179579,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -177076,6 +179689,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -177199,6 +179815,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -177306,6 +179925,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -177413,6 +180035,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -177520,6 +180145,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -177632,6 +180260,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -177739,6 +180370,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -177862,6 +180496,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -177969,6 +180606,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -178087,6 +180727,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -178194,6 +180837,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -178412,6 +181058,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -178519,6 +181168,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -178631,6 +181283,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -178738,6 +181393,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -178978,6 +181636,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -179085,6 +181746,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -179203,6 +181867,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -179310,6 +181977,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -179528,6 +182198,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -179635,6 +182308,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -179875,6 +182551,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -179982,6 +182661,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutIncidentesCriadosInput = {
@@ -180089,6 +182771,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
@@ -180196,6 +182881,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
@@ -180308,6 +182996,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
@@ -180415,6 +183106,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
@@ -180562,6 +183256,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
@@ -180669,6 +183366,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
@@ -180787,6 +183487,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
@@ -180894,6 +183597,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput = {
@@ -181050,6 +183756,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput = {
@@ -181157,6 +183866,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasIncidentesTIInput = {
@@ -181319,6 +184031,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasIncidentesTIInput = {
@@ -181426,6 +184141,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutPedidosTICriadosInput = {
@@ -181533,6 +184251,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
@@ -181640,6 +184361,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
@@ -181752,6 +184476,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
@@ -181859,6 +184586,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
@@ -181982,6 +184712,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
@@ -182089,6 +184822,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
@@ -182207,6 +184943,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
@@ -182314,6 +185053,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutFicheiroPessoalInput = {
@@ -182532,6 +185274,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -182639,6 +185384,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput = {
@@ -182879,6 +185627,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -182986,6 +185737,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
@@ -183245,6 +185999,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -183352,6 +186109,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput = {
@@ -183697,6 +186457,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -183804,6 +186567,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput = {
@@ -184068,6 +186834,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput = {
@@ -184175,6 +186944,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput = {
@@ -184339,6 +187111,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput = {
@@ -184446,6 +187221,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type AtoConsultaCreateWithoutAtoInput = {
@@ -184743,6 +187521,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
@@ -184850,6 +187631,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
@@ -184973,6 +187757,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
@@ -185080,6 +187867,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutProblemasInput = {
@@ -185298,6 +188088,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutProblemasRegistadosInput = {
@@ -185405,6 +188198,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutProblemasRegistadosInput = {
@@ -185645,6 +188441,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput = {
@@ -185752,6 +188551,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type ManutencaoCreateWithoutEquipamentoInput = {
@@ -185940,6 +188742,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesReportadasInput = {
@@ -186047,6 +188852,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesReportadasInput = {
@@ -186159,6 +188967,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput = {
@@ -186266,6 +189077,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput = {
@@ -186424,6 +189238,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput = {
@@ -186531,6 +189348,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutManutencoesTecnicoInput = {
@@ -186649,6 +189469,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput = {
@@ -186756,6 +189579,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAusenciasInput = {
@@ -186863,6 +189689,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasInput = {
@@ -186970,6 +189799,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasInput = {
@@ -187082,6 +189914,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasAprovadasInput = {
@@ -187189,6 +190024,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasAprovadasInput = {
@@ -187312,6 +190150,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasInput = {
@@ -187419,6 +190260,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAusenciasAprovadasInput = {
@@ -187537,6 +190381,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasAprovadasInput = {
@@ -187644,6 +190491,1377 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutTrocasFolgaSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasFolgaSolicitadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasFolgaSolicitadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaSolicitadasInput>
+  }
+
+  export type UtilizadorCreateWithoutTrocasFolgaRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasFolgaRecebidasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasFolgaRecebidasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaRecebidasInput>
+  }
+
+  export type UtilizadorCreateWithoutTrocasFolgaAprovadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutTrocasFolgaAprovadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutTrocasFolgaAprovadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaAprovadasInput>
+  }
+
+  export type UtilizadorUpsertWithoutTrocasFolgaSolicitadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaSolicitadasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaSolicitadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaSolicitadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasFolgaSolicitadasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaSolicitadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasFolgaSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasFolgaSolicitadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTrocasFolgaRecebidasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaRecebidasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaRecebidasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaRecebidasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasFolgaRecebidasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaRecebidasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasFolgaRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasFolgaRecebidasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutTrocasFolgaAprovadasInput = {
+    update: XOR<UtilizadorUpdateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaAprovadasInput>
+    create: XOR<UtilizadorCreateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedCreateWithoutTrocasFolgaAprovadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutTrocasFolgaAprovadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutTrocasFolgaAprovadasInput, UtilizadorUncheckedUpdateWithoutTrocasFolgaAprovadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutTrocasFolgaAprovadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutTrocasFolgaAprovadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
   }
 
   export type UtilizadorCreateWithoutFormacoesInput = {
@@ -187751,6 +191969,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFormacoesInput = {
@@ -187858,6 +192079,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFormacoesInput = {
@@ -187981,6 +192205,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFormacoesInput = {
@@ -188088,6 +192315,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEventosAdversosInput = {
@@ -188306,6 +192536,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEventosAdversosRegistadosInput = {
@@ -188413,6 +192646,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEventosAdversosRegistadosInput = {
@@ -188653,6 +192889,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEventosAdversosRegistadosInput = {
@@ -188760,6 +192999,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSessoesEspecialidadeInput = {
@@ -188978,6 +193220,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -189085,6 +193330,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -189325,6 +193573,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -189432,6 +193683,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -189539,6 +193793,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -189646,6 +193903,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadoInput = {
@@ -189758,6 +194018,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadorInput = {
@@ -189865,6 +194128,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadorInput = {
@@ -189988,6 +194254,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadoInput = {
@@ -190095,6 +194364,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesComoAvaliadorInput = {
@@ -190213,6 +194485,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadorInput = {
@@ -190320,6 +194595,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDadosContratuaisInput = {
@@ -190427,6 +194705,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDadosContratuaisInput = {
@@ -190534,6 +194815,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDadosContratuaisInput = {
@@ -190657,6 +194941,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDadosContratuaisInput = {
@@ -190764,6 +195051,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutConsentimentosInput = {
@@ -190982,6 +195272,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsentimentosTestemunhaInput = {
@@ -191089,6 +195382,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsentimentosTestemunhaInput = {
@@ -191201,6 +195497,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsentimentosCriadosInput = {
@@ -191308,6 +195607,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsentimentosCriadosInput = {
@@ -191548,6 +195850,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsentimentosTestemunhaInput = {
@@ -191655,6 +195960,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsentimentosCriadosInput = {
@@ -191773,6 +196081,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsentimentosCriadosInput = {
@@ -191880,6 +196191,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutBreakGlassUsadosInput = {
@@ -191987,6 +196301,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutBreakGlassUsadosInput = {
@@ -192094,6 +196411,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutBreakGlassUsadosInput = {
@@ -192328,6 +196648,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutBreakGlassUsadosInput = {
@@ -192435,6 +196758,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteUpsertWithoutBreakGlassAcessosInput = {
@@ -192770,6 +197096,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutProtocolosAtivadosInput = {
@@ -192877,6 +197206,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutProtocolosAtivadosInput = {
@@ -193145,6 +197477,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutProtocolosAtivadosInput = {
@@ -193252,6 +197587,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type ItemProtocoloUpsertWithWhereUniqueWithoutProtocoloInput = {
@@ -193398,6 +197736,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutItensProtocoloConcluidosInput = {
@@ -193505,6 +197846,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutItensProtocoloConcluidosInput = {
@@ -193657,6 +198001,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutItensProtocoloConcluidosInput = {
@@ -193764,6 +198111,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPrescricoesDietaInput = {
@@ -193982,6 +198332,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPrescricoesDietaCriadasInput = {
@@ -194089,6 +198442,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPrescricoesDietaCriadasInput = {
@@ -194329,6 +198685,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPrescricoesDietaCriadasInput = {
@@ -194436,6 +198795,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type DoenteCreateWithoutCulturasMicrobiologicasInput = {
@@ -194654,6 +199016,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCulturasRegistadasInput = {
@@ -194761,6 +199126,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCulturasRegistadasInput = {
@@ -195001,6 +199369,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCulturasRegistadasInput = {
@@ -195108,6 +199479,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutSurtosRegistadosInput = {
@@ -195215,6 +199589,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSurtosRegistadosInput = {
@@ -195322,6 +199699,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSurtosRegistadosInput = {
@@ -195445,6 +199825,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSurtosRegistadosInput = {
@@ -195552,6 +199935,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutChecklistsConformidadeInput = {
@@ -195659,6 +200045,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput = {
@@ -195766,6 +200155,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
     surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsConformidadeInput = {
@@ -195889,6 +200281,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsConformidadeInput = {
@@ -195996,6 +200391,9 @@ export namespace Prisma {
     culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -197078,6 +201476,42 @@ export namespace Prisma {
     id?: string
     itemKey: string
     estado?: string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateManySolicitanteInput = {
+    id?: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateManyDestinatarioInput = {
+    id?: string
+    solicitanteId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    aprovadoPorId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type TrocaFolgaCreateManyAprovadoPorInput = {
+    id?: string
+    solicitanteId: string
+    destinatarioId: string
+    dataOrigem: Date | string
+    dataDestino: Date | string
+    motivo?: string | null
+    estado?: string
+    criadoEm?: Date | string
     atualizadoEm?: Date | string
   }
 
@@ -199803,6 +204237,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChefeInput = {
@@ -199910,6 +204347,9 @@ export namespace Prisma {
     surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
     notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
     checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateManyWithoutChefeInput = {
@@ -200519,6 +204959,114 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     itemKey?: StringFieldUpdateOperationsInput | string
     estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUpdateWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaRecebidasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasFolgaAprovadasNestedInput
+  }
+
+  export type TrocaFolgaUncheckedUpdateWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutSolicitanteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUpdateWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaSolicitadasNestedInput
+    aprovadoPor?: UtilizadorUpdateOneWithoutTrocasFolgaAprovadasNestedInput
+  }
+
+  export type TrocaFolgaUncheckedUpdateWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutDestinatarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    aprovadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    solicitante?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaSolicitadasNestedInput
+    destinatario?: UtilizadorUpdateOneRequiredWithoutTrocasFolgaRecebidasNestedInput
+  }
+
+  export type TrocaFolgaUncheckedUpdateWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    solicitanteId?: StringFieldUpdateOperationsInput | string
+    destinatarioId?: StringFieldUpdateOperationsInput | string
+    dataOrigem?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataDestino?: DateTimeFieldUpdateOperationsInput | Date | string
+    motivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

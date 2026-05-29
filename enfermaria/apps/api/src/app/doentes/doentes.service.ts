@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EstadoDoente } from '../common/enums';
@@ -12,13 +12,23 @@ export class DoenteService {
     private readonly notificacoes: NotificacoesService,
   ) {}
 
-  async listar(utilizadorId: string, role: string, page = 1, limit = 25) {
+  async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
     const skip = (page - 1) * limit;
     const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 
+    const searchFilter = search?.trim()
+      ? {
+          OR: [
+            { nome: { contains: search.trim(), mode: 'insensitive' as const } },
+            { numeroProcesso: { contains: search.trim(), mode: 'insensitive' as const } },
+            { diagnosticoPrincipal: { contains: search.trim(), mode: 'insensitive' as const } },
+          ],
+        }
+      : {};
+
     if (!restritos.includes(role)) {
       // Admin e outros roles não clínicos: ver internados + ambulatorio (não pendente_cama)
-      const whereBase = { ativo: true, estadoRegisto: { not: 'pendente_cama' } };
+      const whereBase = { ativo: true, estadoRegisto: { not: 'pendente_cama' }, ...searchFilter };
       const [data, total] = await this.prisma.$transaction([
         this.prisma.doente.findMany({
           where: whereBase,
@@ -47,10 +57,15 @@ export class DoenteService {
       : dataHoje;
     const dataFim = new Date(dataBase.getTime() + 24 * 60 * 60 * 1000 - 1);
 
-    const where = {
+    const whereClinico: any = {
       ativo: true,
       estadoRegisto: 'internado',
-      atribuicoesHorario: {
+      ...searchFilter,
+    };
+
+    // Quando pesquisa, mostrar todos os internados (não filtrar por atribuição)
+    if (!search?.trim()) {
+      whereClinico.atribuicoesHorario = {
         some: {
           utilizadorId,
           horarioTurno: {
@@ -58,18 +73,18 @@ export class DoenteService {
             data: { gte: dataBase, lte: dataFim },
           },
         },
-      },
-    };
+      };
+    }
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.doente.findMany({
-        where,
+        where: whereClinico,
         include: { cama: true },
         orderBy: { dataAdmissao: 'desc' },
         take: limit,
         skip,
       }),
-      this.prisma.doente.count({ where }),
+      this.prisma.doente.count({ where: whereClinico }),
     ]);
     return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
   }
@@ -130,6 +145,15 @@ export class DoenteService {
       if (!cama) throw new NotFoundException(`Cama (ID ${data.camaId}) não encontrada`);
       if (cama.estado !== 'livre' && cama.estado !== 'reservada') {
         throw new BadRequestException('Cama não está disponível');
+      }
+
+      if (data.nif) {
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: data.nif } });
+        if (existenteNif) throw new ConflictException(`Já existe um doente com o NIF ${data.nif}`);
+      }
+      if (data.numeroSNS) {
+        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: data.numeroSNS } });
+        if (existenteSns) throw new ConflictException(`Já existe um doente com o número SNS ${data.numeroSNS}`);
       }
 
       const ano = new Date().getFullYear();
@@ -617,6 +641,15 @@ export class DoenteService {
     }
 
     return this.prisma.$transaction(async (tx) => {
+      if (dto.nif) {
+        const existenteNif = await tx.ficheiroPessoalDoente.findFirst({ where: { nif: dto.nif } });
+        if (existenteNif) throw new ConflictException(`Já existe um registo com o NIF ${dto.nif}`);
+      }
+      if (dto.numeroSNS) {
+        const existenteSns = await tx.ficheiroPessoalDoente.findFirst({ where: { numeroSNS: dto.numeroSNS } });
+        if (existenteSns) throw new ConflictException(`Já existe um registo com o número SNS ${dto.numeroSNS}`);
+      }
+
       const numeroProcesso = await this.gerarNumeroProcesso(tx);
       // Internamento → pendente_cama (aguarda cama clínica); tudo o resto → ambulatorio
       const estadoRegisto = dto.tipoVisita === 'internamento' ? 'pendente_cama' : 'ambulatorio';

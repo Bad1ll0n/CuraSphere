@@ -3,14 +3,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import type { EstadoDoente, Turno as SharedTurno } from '@org/shared';
 
-type EstadoDoente = 'estavel' | 'grave' | 'critico' | 'alta_prevista';
-
-interface Turno {
-  id: string;
-  tipo: string;
-  dataInicio: string;
-  dataFim: string;
+interface Turno extends SharedTurno {
   chefeTurno?: { nome: string };
   horariosEntrada?: { utilizadorId: string; passagemTurnoVista: boolean }[];
 }

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, Sse } from '@nestjs/common';
+import { map } from 'rxjs';
 import { TarefasService } from './tarefas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -15,6 +16,13 @@ export class TarefasController {
   @Get('minhas')
   listarMinhas(@Request() req: any) {
     return this.tarefasService.listarPorResponsavel(req.user.sub);
+  }
+
+  @Sse('eventos')
+  eventos() {
+    return this.tarefasService.eventStream().pipe(
+      map((evento) => ({ type: evento.type, data: evento.data })),
+    );
   }
 
   @Get('doente/:doenteId')

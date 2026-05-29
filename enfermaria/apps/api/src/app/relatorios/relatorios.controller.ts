@@ -77,4 +77,16 @@ export class RelatoriosController {
     }
     return res ? res.json(data) : data;
   }
+
+  @Get('produtividade')
+  async produtividade(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Res() res?: Response) {
+    const datas = this.parseDatas(inicio, fim);
+    const data = await this.service.produtividade(datas.inicio, datas.fim);
+    if (res?.req?.headers?.accept?.includes('text/csv')) {
+      res.set('Content-Type', 'text/csv');
+      res.set('Content-Disposition', 'attachment; filename="produtividade.csv"');
+      return res.send(this.service.toCSV(data.linhas));
+    }
+    return res ? res.json(data) : data;
+  }
 }

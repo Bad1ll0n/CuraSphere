@@ -23,6 +23,15 @@ export class BlocoController {
     return this.service.salaStatus();
   }
 
+  @Get('agenda/mes')
+  agendaMes(@Query('mes') mes: string, @Query('ano') ano: string) {
+    const agora = new Date();
+    return this.service.agendaMes(
+      Number(mes) || agora.getMonth() + 1,
+      Number(ano) || agora.getFullYear(),
+    );
+  }
+
   @Get('agenda')
   agenda(@Query('data') data?: string, @Query('sala') sala?: string) {
     return this.service.agenda(data, sala);

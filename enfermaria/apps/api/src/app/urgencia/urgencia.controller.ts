@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Patch, Param, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, UseGuards, Request, Sse, MessageEvent } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -38,6 +40,13 @@ export class UrgenciaController {
   @Get('dashboard')
   dashboard() {
     return this.service.dashboard();
+  }
+
+  @Sse('eventos')
+  eventos(): Observable<MessageEvent> {
+    return this.service.eventStream().pipe(
+      map(e => ({ type: e.type, data: e.data }) as MessageEvent),
+    );
   }
 
   @Patch(':id/estado')

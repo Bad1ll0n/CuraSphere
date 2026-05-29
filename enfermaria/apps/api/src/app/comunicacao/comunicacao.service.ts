@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 const PAGE_SIZE = 20;
@@ -33,7 +33,10 @@ export class ComunicacaoService {
         orderBy: { criadaEm: 'desc' },
         take: PAGE_SIZE,
         skip,
-        include: { remetente: { select: { id: true, nome: true, role: true, servico: true } } },
+        include: {
+          remetente: { select: { id: true, nome: true, role: true, servico: true } },
+          anexos: { select: { id: true, nome: true, url: true, mimeType: true, tamanho: true } },
+        },
       }),
     ]);
     return { total, pagina: page, totalPaginas: Math.ceil(total / PAGE_SIZE), mensagens };
@@ -49,7 +52,10 @@ export class ComunicacaoService {
         orderBy: { criadaEm: 'desc' },
         take: PAGE_SIZE,
         skip,
-        include: { destinatario: { select: { id: true, nome: true, role: true, servico: true } } },
+        include: {
+          destinatario: { select: { id: true, nome: true, role: true, servico: true } },
+          anexos: { select: { id: true, nome: true, url: true, mimeType: true, tamanho: true } },
+        },
       }),
     ]);
     return { total, pagina: page, totalPaginas: Math.ceil(total / PAGE_SIZE), mensagens };
@@ -71,5 +77,43 @@ export class ComunicacaoService {
   async contarNaoLidas(utilizadorId: string) {
     const count = await this.prisma.mensagemInterna.count({ where: { destinatarioId: utilizadorId, lida: false } });
     return { naoLidas: count };
+  }
+
+  async enviarBroadcast(dto: {
+    servicoAlvo?: string;
+    roleAlvo?: string;
+    assunto?: string;
+    texto: string;
+  }, remetenteId: string) {
+    const where: any = { ativo: true, id: { not: remetenteId } };
+    if (dto.servicoAlvo) where.servico = dto.servicoAlvo;
+    if (dto.roleAlvo)    where.role = dto.roleAlvo;
+
+    const destinatarios = await this.prisma.utilizador.findMany({ where, select: { id: true } });
+    if (destinatarios.length === 0) throw new NotFoundException('Nenhum utilizador encontrado para os critérios seleccionados');
+
+    await this.prisma.mensagemInterna.createMany({
+      data: destinatarios.map(d => ({
+        remetenteId,
+        destinatarioId: d.id,
+        assunto: dto.assunto ?? null,
+        texto: dto.texto,
+      })),
+    });
+    return { enviadas: destinatarios.length };
+  }
+
+  async adicionarAnexo(
+    mensagemId: string,
+    utilizadorId: string,
+    file: { nome: string; url: string; mimeType: string; tamanho: number },
+  ) {
+    const mensagem = await this.prisma.mensagemInterna.findUnique({ where: { id: mensagemId } });
+    if (!mensagem) throw new NotFoundException(`Mensagem (ID ${mensagemId}) não encontrada`);
+    if (mensagem.remetenteId !== utilizadorId) throw new ForbiddenException('Sem permissão para adicionar anexo a esta mensagem');
+
+    return this.prisma.anexoMensagem.create({
+      data: { mensagemId, ...file },
+    });
   }
 }

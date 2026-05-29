@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
@@ -8,6 +9,10 @@ const ORDEM_TRIAGEM = { vermelho: 0, laranja: 1, amarelo: 2, verde: 3, azul: 4 }
 @Injectable()
 export class UrgenciaService {
   private readonly logger = new Logger(UrgenciaService.name);
+  private readonly urgenciaSubject = new Subject<{ data: string; type: string }>();
+
+  eventStream() { return this.urgenciaSubject.asObservable(); }
+  private emit(type: string, payload: unknown) { this.urgenciaSubject.next({ type, data: JSON.stringify(payload) }); }
 
   constructor(
     private readonly prisma: PrismaService,
@@ -19,7 +24,7 @@ export class UrgenciaService {
     doenteId?: string; nomeTemporario?: string; queixaPrincipal: string;
     triagem: string; sinaisVitaisTriagem?: object; notas?: string;
   }, triadoPorId: string) {
-    return this.prisma.episodioUrgencia.create({
+    const episodio = await this.prisma.episodioUrgencia.create({
       data: {
         doenteId: dto.doenteId ?? null,
         nomeTemporario: dto.nomeTemporario ?? null,
@@ -32,6 +37,8 @@ export class UrgenciaService {
       },
       include: { doente: { select: { id: true, nome: true, dataNascimento: true } }, triadoPor: { select: { id: true, nome: true } } },
     });
+    this.emit('urgencia_nova', { id: episodio.id, triagem: episodio.triagem, queixaPrincipal: episodio.queixaPrincipal });
+    return episodio;
   }
 
   async preNotificar(dto: {
@@ -92,7 +99,7 @@ export class UrgenciaService {
     doenteId?: string; triagem?: string; sinaisVitaisTriagem?: object; notas?: string;
   }) {
     await this.buscar(id);
-    return this.prisma.episodioUrgencia.update({
+    const resultado = await this.prisma.episodioUrgencia.update({
       where: { id },
       data: {
         ...(dto.doenteId ? { doenteId: dto.doenteId } : {}),
@@ -103,6 +110,8 @@ export class UrgenciaService {
       },
       include: { doente: { select: { id: true, nome: true, dataNascimento: true } }, triadoPor: { select: { id: true, nome: true } } },
     });
+    this.emit('urgencia_atualizada', { id, estado: 'sala_espera' });
+    return resultado;
   }
 
   async listaEspera() {
@@ -131,16 +140,19 @@ export class UrgenciaService {
       include: { doente: { select: { id: true, nome: true } }, medicoResponsavel: { select: { id: true, nome: true } } },
     });
     this.gateway.emitirUrgenciaUpdate({ id, estado });
+    this.emit('urgencia_atualizada', { id, estado });
     return result;
   }
 
   async atribuirMedico(id: string, medicoResponsavelId: string) {
     await this.buscar(id);
-    return this.prisma.episodioUrgencia.update({
+    const resultado = await this.prisma.episodioUrgencia.update({
       where: { id },
       data: { medicoResponsavelId, estadoEpisodio: 'em_atendimento' },
       include: { doente: { select: { id: true, nome: true } }, medicoResponsavel: { select: { id: true, nome: true } } },
     });
+    this.emit('urgencia_atualizada', { id, estado: 'em_atendimento' });
+    return resultado;
   }
 
   async dashboard() {

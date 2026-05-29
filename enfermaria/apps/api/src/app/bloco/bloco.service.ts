@@ -45,6 +45,30 @@ export class BlocoService {
     });
   }
 
+  async agendaMes(mes: number, ano: number) {
+    const inicio = new Date(Date.UTC(ano, mes - 1, 1));
+    const fim    = new Date(Date.UTC(ano, mes, 1));
+    const cirurgias = await this.prisma.cirurgiaProgramada.findMany({
+      where: { dataHora: { gte: inicio, lt: fim } },
+      orderBy: { dataHora: 'asc' },
+      select: {
+        id: true, designacao: true, dataHora: true,
+        duracaoPrevista: true, sala: true, estado: true,
+        doente: { select: { id: true, nome: true } },
+        cirurgiao: { select: { id: true, nome: true } },
+      },
+    });
+    const porDia: Record<string, typeof cirurgias> = {};
+    for (const c of cirurgias) {
+      const dia = new Date(c.dataHora).toISOString().split('T')[0];
+      if (!porDia[dia]) porDia[dia] = [];
+      porDia[dia].push(c);
+    }
+    return Object.entries(porDia)
+      .map(([dia, lista]) => ({ dia, total: lista.length, cirurgias: lista }))
+      .sort((a, b) => a.dia.localeCompare(b.dia));
+  }
+
   async detalhe(id: string) {
     const c = await this.prisma.cirurgiaProgramada.findUnique({ where: { id }, include: this.includeRelations() });
     if (!c) throw new NotFoundException(`Cirurgia (ID ${id}) não encontrada`);

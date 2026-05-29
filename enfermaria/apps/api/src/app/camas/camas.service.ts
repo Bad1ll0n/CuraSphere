@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Subject } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import { EstadoCama } from '../common/enums';
@@ -9,10 +10,20 @@ const CACHE_TTL = 30; // 30 segundos
 
 @Injectable()
 export class CamasService {
+  private readonly eventos$ = new Subject<{ data: string; type: string }>();
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
   ) {}
+
+  eventStream() {
+    return this.eventos$.asObservable();
+  }
+
+  private emit(type: string, payload: unknown) {
+    this.eventos$.next({ type, data: JSON.stringify(payload) });
+  }
 
   async listar() {
     const cached = await this.redis.get<unknown[]>(KEY_LISTA);
@@ -46,6 +57,7 @@ export class CamasService {
       include: { doente: { select: { id: true, nome: true } } },
     });
     await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    this.emit('cama_atualizada', result);
     return result;
   }
 
@@ -60,7 +72,12 @@ export class CamasService {
       include: { doente: { select: { id: true, nome: true } } },
     });
     await this.redis.del(KEY_LISTA, KEY_OCUPACAO);
+    this.emit('cama_atualizada', result);
     return result;
+  }
+
+  emitirAtualizacaoCama(cama: { id: string; numero: string; quarto: string; estado: string; doente?: any }) {
+    this.emit('cama_atualizada', cama);
   }
 
   async ocupacao() {
