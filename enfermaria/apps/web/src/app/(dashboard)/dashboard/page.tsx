@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useAuth } from '../../../lib/auth-context';
-import api from '../../../lib/api';
-import { useToast } from '../../../components/toast';
-import { useSocket } from '../../../lib/use-socket';
+import { useAuth } from '@/lib/auth-context';
+import api from '@/lib/api';
+import { useToast } from '@/components/toast';
+import { useSocket } from '@/lib/use-socket';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, BarChart, Bar,

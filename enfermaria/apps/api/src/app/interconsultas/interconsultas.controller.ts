@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { InterconsultasService } from './interconsultas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CriarInterconsultaDto } from './dto/criar-interconsulta.dto';
+import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('interconsultas')
@@ -10,10 +12,10 @@ export class InterconsultasController {
   @Post('doente/:doenteId')
   criar(
     @Param('doenteId') doenteId: string,
-    @Body() body: { especialidadeAlvo: string; motivo: string; urgente?: boolean },
+    @Body() dto: CriarInterconsultaDto,
     @Request() req: any,
   ) {
-    return this.interconsultasService.criar(doenteId, req.user.sub, body);
+    return this.interconsultasService.criar(doenteId, req.user.sub, dto);
   }
 
   @Get('doente/:doenteId')
@@ -39,10 +41,10 @@ export class InterconsultasController {
   @Patch(':id/responder')
   responder(
     @Param('id') id: string,
-    @Body() body: { resposta: string },
+    @Body() dto: ResponderInterconsultaDto,
     @Request() req: any,
   ) {
-    return this.interconsultasService.responder(id, req.user.sub, body.resposta);
+    return this.interconsultasService.responder(id, req.user.sub, dto.resposta);
   }
 
   @Patch(':id/cancelar')

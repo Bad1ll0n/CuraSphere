@@ -6,6 +6,12 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EstadoDoente } from '../common/enums';
+import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
+import { RegistroRapidoDto } from './dto/registro-rapido.dto';
+import { EditarDoenteDto } from './dto/editar-doente.dto';
+import { NotaDoenteDto } from './dto/nota-doente.dto';
+import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
+import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -54,42 +60,22 @@ export class DoenteController {
   @Roles('administrativo')
   @Post('registro-rapido')
   registroRapido(
-    @Body() body: {
-      nome: string;
-      tipoVisita?: string;
-      dataNascimento?: string;
-      nif?: string;
-      numeroSNS?: string;
-      telefone?: string;
-      email?: string;
-      tipoCobertura?: string;
-      morada?: string;
-      codigoPostal?: string;
-      localidade?: string;
-      entidadeSeguradora?: string;
-      numeroApolice?: string;
-    },
+    @Body() dto: RegistroRapidoDto,
     @Request() req: any,
   ) {
-    return this.doenteService.registroRapido(body, req.user.sub);
+    return this.doenteService.registroRapido(dto, req.user.sub);
   }
 
   @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
-  admitir(@Body() body: {
-    nome: string;
-    dataNascimento: Date;
-    diagnosticoPrincipal: string;
-    camaId: string;
-    dataAltaPrevista?: Date;
-  }, @Request() req: any) {
-    return this.doenteService.admitir({ ...body, administrativoAdmissaoId: req.user.sub });
+  admitir(@Body() dto: AdmitirDoenteDto, @Request() req: any) {
+    return this.doenteService.admitir({ ...dto, administrativoAdmissaoId: req.user.sub });
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
-  editar(@Param('id') id: string, @Body() body: { diagnosticoPrincipal?: string; dataAltaPrevista?: Date | null; numeroProcesso?: string }) {
-    return this.doenteService.editar(id, body);
+  editar(@Param('id') id: string, @Body() dto: EditarDoenteDto) {
+    return this.doenteService.editar(id, dto);
   }
 
   @Roles('enfermeiro', 'medico')
@@ -108,10 +94,10 @@ export class DoenteController {
   @Post(':id/nota')
   adicionarNota(
     @Param('id') doenteId: string,
-    @Body() body: { texto: string },
+    @Body() dto: NotaDoenteDto,
     @Request() req: any,
   ) {
-    return this.doenteService.adicionarNota(doenteId, req.user.sub, body.texto);
+    return this.doenteService.adicionarNota(doenteId, req.user.sub, dto.texto);
   }
 
   @Roles('medico', 'enfermeiro')
@@ -119,10 +105,10 @@ export class DoenteController {
   editarNota(
     @Param('id') _doenteId: string,
     @Param('notaId') notaId: string,
-    @Body() body: { texto: string },
+    @Body() dto: NotaDoenteDto,
     @Request() req: any,
   ) {
-    return this.doenteService.editarNota(notaId, req.user.sub, body.texto);
+    return this.doenteService.editarNota(notaId, req.user.sub, dto.texto);
   }
 
   @Roles('medico')
@@ -139,10 +125,10 @@ export class DoenteController {
   @Post(':id/alta-estruturada')
   altaEstruturada(
     @Param('id') doenteId: string,
-    @Body() body: Record<string, any>,
+    @Body() dto: AltaEstruturadaDto,
     @Request() req: any,
   ) {
-    return this.doenteService.altaEstruturada(doenteId, req.user.sub, req.user.role, body);
+    return this.doenteService.altaEstruturada(doenteId, req.user.sub, req.user.role, dto);
   }
 
   @Get(':id/sumario-alta')
@@ -166,16 +152,10 @@ export class DoenteController {
   @Post(':id/tarefa')
   criarTarefa(
     @Param('id') doenteId: string,
-    @Body() body: {
-      descricao: string;
-      tipo: string;
-      prioridade: string;
-      grupoResponsavel: string;
-      prazo?: Date;
-    },
+    @Body() dto: TarefaDoenteDto,
     @Request() req: any,
   ) {
-    return this.doenteService.criarTarefa(doenteId, req.user.sub, body);
+    return this.doenteService.criarTarefa(doenteId, req.user.sub, dto);
   }
 
   @Get('iacs/isolados')

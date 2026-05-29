@@ -3,6 +3,9 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { BlocoService } from './bloco.service';
+import { AgendarCirurgiaDto } from './dto/agendar-cirurgia.dto';
+import { RegistarNotasPosDto } from './dto/registar-notas-pos.dto';
+import { ChecklistBlocoDto } from './dto/checklist-bloco.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('bloco')
@@ -11,8 +14,13 @@ export class BlocoController {
 
   @Post('cirurgia')
   @Roles('medico', 'enfermeiro', 'administrativo')
-  agendar(@Body() dto: any, @Request() req: any) {
+  agendar(@Body() dto: AgendarCirurgiaDto, @Request() req: any) {
     return this.service.agendar({ cirurgiaoId: req.user.sub, ...dto });
+  }
+
+  @Get('salas/status')
+  salaStatus() {
+    return this.service.salaStatus();
   }
 
   @Get('agenda')
@@ -33,7 +41,7 @@ export class BlocoController {
 
   @Patch('cirurgia/:id/notas-pos')
   @Roles('medico')
-  registarNotasPos(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+  registarNotasPos(@Param('id') id: string, @Body() dto: RegistarNotasPosDto, @Request() req: any) {
     return this.service.registarNotasPos(id, dto, req.user.sub);
   }
 
@@ -44,19 +52,19 @@ export class BlocoController {
 
   @Post('cirurgia/:id/checklist/sign-in')
   @Roles('medico', 'enfermeiro')
-  signIn(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+  signIn(@Param('id') id: string, @Body() dto: ChecklistBlocoDto, @Request() req: any) {
     return this.service.completarFase(id, 'signIn', req.user.sub, dto);
   }
 
   @Post('cirurgia/:id/checklist/time-out')
   @Roles('medico', 'enfermeiro')
-  timeOut(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+  timeOut(@Param('id') id: string, @Body() dto: ChecklistBlocoDto, @Request() req: any) {
     return this.service.completarFase(id, 'timeOut', req.user.sub, dto);
   }
 
   @Post('cirurgia/:id/checklist/sign-out')
   @Roles('medico', 'enfermeiro')
-  signOut(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+  signOut(@Param('id') id: string, @Body() dto: ChecklistBlocoDto, @Request() req: any) {
     return this.service.completarFase(id, 'signOut', req.user.sub, dto);
   }
 }

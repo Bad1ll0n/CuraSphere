@@ -5,6 +5,7 @@ import { Roles, SubRoles } from '../auth/roles.decorator';
 import { IncidentesTIService } from './incidentes-ti.service';
 import { CriarIncidenteDto } from './dto/criar-incidente.dto';
 import { AtualizarIncidenteDto } from './dto/atualizar-incidente.dto';
+import { AdicionarNotaDto } from './dto/adicionar-nota.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('incidentes-ti')
@@ -29,6 +30,16 @@ export class IncidentesTIController {
   @Patch(':id')
   atualizar(@Param('id') id: string, @Body() dto: AtualizarIncidenteDto, @Request() req: any) {
     return this.service.atualizar(id, dto, req.user.role);
+  }
+
+  @Get(':id/notas')
+  listarNotas(@Param('id') id: string) {
+    return this.service.listarNotas(id);
+  }
+
+  @Post(':id/notas')
+  adicionarNota(@Param('id') id: string, @Body() dto: AdicionarNotaDto, @Request() req: any) {
+    return this.service.adicionarNota(id, req.user.id, dto);
   }
 
   @Delete(':id')

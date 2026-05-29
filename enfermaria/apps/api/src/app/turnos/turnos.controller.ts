@@ -6,6 +6,9 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { TipoTurno } from '../common/enums';
+import { CheckInDto } from './dto/check-in.dto';
+import { NotaTurnoDto } from './dto/nota-turno.dto';
+import { CriarTurnoDto } from './dto/criar-turno.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -28,12 +31,12 @@ export class TurnosController {
   @Post('check-in')
   checkIn(
     @Request() req: any,
-    @Body() body: { lat?: number; lon?: number } = {},
+    @Body() dto: CheckInDto = {},
   ) {
     const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
     return this.turnosService.checkIn(req.user.sub, {
-      lat: body.lat,
-      lon: body.lon,
+      lat: dto.lat,
+      lon: dto.lon,
       ip,
     });
   }
@@ -65,21 +68,16 @@ export class TurnosController {
 
   @Post('nota')
   adicionarNota(
-    @Body() body: { turnoId: string; doenteId: string; texto: string },
+    @Body() dto: NotaTurnoDto,
     @Request() req: any,
   ) {
-    return this.turnosService.adicionarNota({ ...body, autorId: req.user.sub });
+    return this.turnosService.adicionarNota({ ...dto, autorId: req.user.sub });
   }
 
   @Roles('enfermeiro', 'administrativo')
   @Post()
-  criar(@Body() body: {
-    tipo: TipoTurno;
-    dataInicio: Date;
-    dataFim: Date;
-    chefeTurnoId: string;
-  }) {
-    return this.turnosService.criar(body);
+  criar(@Body() dto: CriarTurnoDto) {
+    return this.turnosService.criar({ ...dto, tipo: dto.tipo as TipoTurno });
   }
 
   @Get(':id/relatorio/pdf')

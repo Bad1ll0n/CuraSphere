@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Patch, Param, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PedidosInternosService } from './pedidos-internos.service';
+import { CriarPedidoInternoDto } from './dto/criar-pedido-interno.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('pedidos-internos')
@@ -8,7 +9,7 @@ export class PedidosInternosController {
   constructor(private readonly service: PedidosInternosService) {}
 
   @Post()
-  criar(@Body() dto: any, @Request() req: any) {
+  criar(@Body() dto: CriarPedidoInternoDto, @Request() req: any) {
     return this.service.criar({ ...dto, servicoOrigem: dto.servicoOrigem ?? req.user.servico }, req.user.sub);
   }
 

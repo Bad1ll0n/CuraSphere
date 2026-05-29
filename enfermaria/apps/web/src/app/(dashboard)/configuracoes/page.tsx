@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useAuth } from '../../../lib/auth-context';
+import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
-import api from '../../../lib/api';
+import api from '@/lib/api';
 
 interface SubRole { id: string; chave: string; label: string; roleChave: string; ordem: number; ativo: boolean; }
 interface Role { id: string; chave: string; label: string; categoria: string; ordem: number; ativo: boolean; subRoles: SubRole[]; }

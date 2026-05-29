@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-24 (sessão 9)
+> **Última actualização:** 2026-05-27 (sessão 18)
 > **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
@@ -72,7 +72,7 @@ enfermaria/
 **Comandos de arranque:**
 ```bash
 # API
-cd apps/api && npx prisma migrate deploy --schema src/prisma/schema.prisma
+cd apps/api && npx prisma migrate deploy --schema prisma/schema.prisma
 cd apps/api && npx ts-node src/prisma/seed.ts
 
 # Web
@@ -790,7 +790,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Conformidade/RGPD: `GET /audit/conformidade` agrega acessos a dados de doentes, ações de alto risco e gráfico de acessos por dia
 - [x] Pedidos internos (material, manutenção, etc.)
 - [x] Comunicação interna (mensagens + anúncios)
-- [x] Incidentes TI e Pedidos TI (**atribuir responsável** TI via dropdown)
+- [x] Incidentes TI e Pedidos TI (**atribuir responsável** TI via dropdown; **notas/comentários por incidente** — `GET/POST /incidentes-ti/:id/notas`; `NotaIncidenteTI` model)
 - [x] Configurações (CRUD de roles e sub-roles via API)
 - [x] Dashboard KPIs (clínico + TI + Qualidade)
 - [x] Geração automática de escala mensal (`POST /horarios/gerar-automatico`) — round-robin por médicos/enfermeiros/auxiliares
@@ -858,7 +858,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Fisioterapia (planos + sessões)
 - [x] Especialidades clínicas (`/especialidades`) — página genérica adaptada ao sub-role: Nutrição, Psicologia, Terapia da Fala, TAE; agendar, registar evolução, cancelar sessões
 - [x] Dashboard Operacional (`/operacional`) — resume tarefas, pedidos internos e equipamentos em manutenção adaptado ao sub-role operacional
-- [x] Conformidade/RGPD (`/conformidade`) — registo de acessos, checklist **persistido em localStorage**; exportação CSV
+- [x] Conformidade/RGPD (`/conformidade`) — registo de acessos, checklist **sincronizado com backend** (`GET/PATCH /audit/checklist`; `ConformidadeChecklistItem`); timestamp de última actualização; exportação CSV
 - [x] RH expandido — `/rh/pessoal` (**pesquisa por nome + filtro serviço**), `/rh/avaliacoes` (**filtro por colaborador**)
 - [x] Férias/Ausências (`/ferias`) — saldo, pedir férias, **outros tipos de ausência** (baixa médica, formação, licença…); secção "Para Aprovar" para chefes
 - [x] Horários com calendário + geração automática + **aviso de conflito** ao atribuir profissionais já com turno no mesmo dia
@@ -915,7 +915,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Consultas Externas (filtros por estado, marcar como realizada)
 - [x] Urgência (triagem Manchester, cores, tempo de espera)
 - [x] Sala de Espera (chamar + atendido)
-- [x] IACS (isolados por motivo, levantar isolamento)
+- [x] IACS (**3 tabs**: isolamentos com levantar isolamento; culturas microbiológicas com resultado; surtos com estado/casos/medidas)
 - [x] MAR — Mapa de Administração de Medicação
 - [x] Comunicação (mensagens + anúncios com badge de não lidos)
 - [x] **Assinatura Digital de Prescrições e Notas Clínicas** (sessão 10) — challenge TOTP via MFA já configurado; `POST /medicacao/:id/assinar` + `POST /notas-clinicas/:id/assinar`; campos `assinadoEm`/`assinadoPorId` no schema; `AuditLog` com ação `ASSINATURA_DIGITAL`
@@ -944,7 +944,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | ~~Workflow limpeza de camas~~ | ~~Média~~ | ✅ Implementado (sessão 10): alta → `em_limpeza` + notificação auxiliares; `confirmar-limpeza` → `livre` |
 | Agenda de bloco (calendário) | Média | Bloco tem lista de cirurgias mas falta vista calendário/agendamento visual |
 | ~~Aprovação de pedidos farmácia pelo médico~~ | ~~Alta~~ | ✅ Backend + Frontend: fluxo pendente→aprovado→dispensado; tab "Aprovação Médica" na farmácia; proposta de prescrição por enfermeiro com aprovação/rejeição pelo médico na ficha do doente |
-| Ficha pessoal no formulário de admissão | Média | Dados admin (NIF, SNS, morada) não pedidos no momento da admissão |
+| ~~Ficha pessoal no formulário de admissão~~ | ~~Média~~ | ✅ Campos NIF, SNS, morada, CP, localidade, telefone opcionais na admissão; `$transaction` cria `FicheiroPessoalDoente` se preenchidos |
 | Painel de BI / Analytics | Baixa | Dashboard executivo para Direção com gráficos históricos |
 | Controlo de stock em tempo real (barcode) | Baixa | Stock gerido manualmente; sem leitura de código de barras |
 | Módulo de RH / gestão de férias | ~~Baixa~~ | ✅ Implementado: `/rh/pessoal`, `/rh/avaliacoes`, `/ferias` com workflow de aprovação por chefe |
@@ -959,16 +959,16 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) | Grupos/broadcast por serviço; attachments; leitura confirmada |
 | Dashboard Direção | Acede a Dashboard TI + Qualidade | Falta dashboard executivo (KPIs financeiros, ocupação hospitalar, etc.) |
 | Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) | Gestão de folgas, trocas de dia de folga |
-| Bloco Operatório | Lista + checklist | Falta vista de sala (quais salas livres/ocupadas em tempo real) |
+| Bloco Operatório | ✅ Lista + checklist + **vista de sala em tempo real** (sessão 15) | — |
 | Urgência | Episódios + triagem Manchester + mobile + **atribuir médico** (sessão 6) | Falta protocolo de triagem Manchester completo no mobile |
-| IACS | Lista isolados + activar/desactivar (web + mobile) | Falta registo de culturas microbiológicas, histórico de surtos |
+| IACS | Lista isolados + activar/desactivar + **culturas microbiológicas + surtos** (sessão 16) | — |
 | Exames | Solicitar + resultado texto | Falta visualizador DICOM integrado para imagiologia |
 | Worklist mobile | ✅ WorklistScreen (filtros + executar) | — |
-| Pedidos Internos mobile | Ausente | Falta screen de pedidos internos no mobile |
+| Pedidos Internos mobile | ✅ PedidosInternosScreen (criar + aceitar + concluir) | — |
 | Bloco Operatório mobile | ✅ BlocoScreen (filtros + equipa) | — |
 | MAR | Administrar + **Não Administrada com motivo** (sessão 6) | — |
-| Incidentes TI | Lista + workflow estados + **atribuir responsável** (sessão 6) | Notas/comentários por incidente |
-| Conformidade checklist | RGPD/DGS/ACSS/SNS + **persistido em localStorage** (sessão 6) | Sincronização com backend |
+| Incidentes TI | Lista + workflow estados + **atribuir responsável** + **notas/comentários** (sessão 17) | — |
+| Conformidade checklist | RGPD/DGS/ACSS/SNS + **sincronizado com backend** (sessão 18) | — |
 
 ### 10.3 Divergências Web vs. Mobile
 
@@ -978,11 +978,11 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Fisioterapia | ✅ Completo | ✅ FisioterapiaScreen (planos + sessões) |
 | Consultas Externas | ✅ Completo | ✅ ConsultasScreen (filtros + realizar) |
 | Urgência | ✅ Completo | ✅ UrgenciaScreen (Manchester + tempo espera) |
-| Bloco Operatório | ✅ Completo | ❌ Ausente |
+| Bloco Operatório | ✅ Completo | ✅ BlocoScreen (filtros por estado + equipa) |
 | Sala de Espera | ✅ Completo | ✅ SalaEsperaScreen (chamar + atendido) |
 | Comunicação | ✅ Completo | ✅ ComunicacaoScreen (mensagens + anúncios) |
-| Pedidos Internos | ✅ Completo | ❌ Ausente |
-| IACS | ✅ Completo | ✅ IACSScreen (isolados + levantar isolamento) |
+| Pedidos Internos | ✅ Completo | ✅ PedidosInternosScreen (criar + aceitar + concluir) |
+| IACS | ✅ Completo | ✅ IACSScreen (3 tabs: isolamentos + culturas + surtos) |
 | Worklist | ✅ Completo | ❌ Ausente |
 | MAR | ✅ Completo | ✅ MARScreen (pendentes + administrar) |
 | Interconsultas | ✅ (na ficha) | ⚠️ Parcial (no DoenteDetalheScreen) |
@@ -998,7 +998,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Paginação | Utilizadores paginado; maioria dos outros endpoints sem paginação |
 | SSE / Tempo Real | Tickets usam SSE; restantes módulos ainda sem actualizações em tempo real |
 | Seed de dados de teste | `seed-demo.ts` criado com dados hospitalares realistas |
-| Documentação API (Swagger) | Não configurado |
+| Documentação API (Swagger) | ✅ `/api/docs` (SwaggerModule + addCookieAuth) |
 | ~~Acessibilidade (WCAG AA)~~ | ✅ Resolvido (sessão 8): `aria-label`, `scope="col"`, `htmlFor`/`id`, `role="dialog"`, `aria-live="polite"`, `confirm()` → `<ConfirmModal>`, contraste de botões desactivados |
 
 ---
@@ -1040,13 +1040,116 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - ~~**Monitorização de presença e check-in com GPS**~~ — ✅ Modelo `RegistoCheckin` com lat/lon/distância/dentroGeofence/IP; `checkIn` captura GPS ou verifica IP interno; alerta ao chefe de turno se fora da geofence; `GET /turnos/ativo/inatividade` lista profissionais sem actividade > 2h
 - ~~**Mobile GPS check-in**~~ — ✅ `TurnoScreen` com botão "📍 Fazer Check-in" usa `expo-location`; botão "🔄 Passar Turno" inicia desafio de passagem; aviso visual se fora do hospital
 
+### ✅ Completado na Sessão 12 (2026-05-26) — Avaliação Arquitectural + Correcções
+- ~~**Páginas em falta: Dietas e Consentimentos**~~ — ✅ `dietas/page.tsx` (prescrição + vista cozinha) e `doentes/[id]/consentimentos/page.tsx` (criar/assinar/recusar modais) implementadas
+- ~~**Segurança RBAC — endpoints sem `@Roles`**~~ — ✅ Adicionados `@Roles` a 15+ endpoints sem restrição de role: `break-glass`, `sinais-vitais:POST`, `alergias:POST/DELETE`, `notificacoes`, `doentes:nota/alta/tarefa`, `tarefas:POST/PATCH`
+- ~~**`recepcao/page.tsx` — `fetch()` directo + `localStorage`**~~ — ✅ Substituídas todas as 9 chamadas `fetch()` + header `Authorization: Bearer` pelo `api` axios (httpOnly cookies); removidos `const API` e `const token`; SSE mantido com `SSE_BASE`
+- ~~**Mobile — URL hardcoded**~~ — ✅ `const API_URL = 'http://localhost:3333'` → `process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3333'` em `apps/mobile/src/lib/api.ts`
+- ~~**`schema.prisma` fora da convenção NestJS**~~ — ✅ Movido de `apps/api/src/prisma/` para `apps/api/prisma/`; `output` actualizado para `../src/generated/prisma`; Dockerfile actualizado
+- ~~**`.catch(() => {})` silenciosos**~~ — ✅ Substituídos em 17 ficheiros de serviço/gateway por `.catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)))`; `Logger` injectado nos 15 serviços que não o tinham
+- ~~**`app.module.ts` — 52 imports flat**~~ — ✅ Agrupados em 6 secções comentadas: Infra, Gestão Utilizadores/RH, Clínico—Doente&Cama, Clínico—Terapêutica, Clínico—Serviços Especializados, Operacional, Analytics
+- ~~**Transacções em falta**~~ — ✅ `$transaction()` adicionado a `dietas:prescrever()` (deactivate+create atómico), `exames:registarResultado()` (auto-faturação atómica), `bloco:registarNotasPos()` (auto-faturação atómica); os restantes serviços críticos (`doentes`, `faturacao`, `horarios`, `farmacia`) já tinham transacções correctas
+- ~~**Custom hooks de data fetching**~~ — ✅ Criados `src/lib/hooks/`: `use-doentes.ts`, `use-tarefas.ts`, `use-notificacoes.ts`, `use-utilizadores.ts`, `use-alertas.ts` (React Query + barrel `index.ts`)
+
+### ✅ Completado na Sessão 14 (2026-05-26) — DTOs API + Swagger
+- ~~**DTOs em todos os módulos**~~ — ✅ 69 ficheiros DTO criados em 25 módulos; 0 `@Body() dto: any` restantes em qualquer controller
+  - Validação activa: `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true })` já estava configurado globalmente em `main.ts`
+  - `@ApiProperty` / `@ApiPropertyOptional` em todos os DTOs para geração automática do Swagger
+- ~~**Configurar Swagger/OpenAPI**~~ — ✅ `SwaggerModule` configurado em `main.ts`; documentação disponível em `/api/docs`
+  - Auth via cookie (`addCookieAuth('access_token')`)
+  - Título: "CuraSphere API"; versão 1.0
+
+### ✅ Completado na Sessão 13 (2026-05-26) — Decomposição client-layout.tsx + doentes/[id]/page.tsx
+- ~~**Decompor `client-layout.tsx`**~~ — ✅ 1077L → 265L; extraídos 3 ficheiros:
+  - `nav-data.tsx` (634L) — ROLES constants, `navItems` array (45 itens com ícones SVG), `roleLabel`, `subRoleLabel`, `servicoLabel`, `roleColor` maps, `Avatar` component
+  - `sos-banner.tsx` (37L) — componente puro; props `{ sosAlerta, onClose }`
+  - `sidebar-nav.tsx` (164L) — sidebar completa; props `{ utilizador, itemsVisiveis, naoLidas, pathname, sidebarAberta, onCloseSidebar, onOpenConfig, onLogout }`
+  - `client-layout.tsx` reduzido a orquestração: state, hooks (`useSocket`, `useQuery`), `useEffect`, modais de config/password
+- ~~**Decompor `doentes/[id]/page.tsx`**~~ — ✅ 3852L → 2624L; criados 5 componentes em `doentes/[id]/components/`:
+  - `sinais-vitais-panel.tsx` (277L) — gráfico de sinais vitais (recharts), banner NEWS2, tabela com highlighting de valores críticos, modal de registo; props `{ doenteId, utilizador }`
+  - `risco-escalas-panel.tsx` (164L) — Escalas de Braden e Morse (risco úlceras + queda), modal de avaliação por itens; props `{ doenteId, utilizador }`
+  - `exames-panel.tsx` (234L) — lista de exames por tipo, registo de resultados, cancelamento; props `{ doenteId, utilizador }`
+  - `notas-clinicas-panel.tsx` (189L) — Notas SOAP (Subjetivo/Objetivo/Avaliação/Plano), edição inline, delete; props `{ doenteId, utilizador }`
+  - `escalas-clinicas-panel.tsx` (375L) — ESCALA_CONFIG (13 escalas: RASS, CPOT, SOFA, Apgar, PEWS, FLACC, CTG, Barthel, MRC, NRS2002, PHQ9, GAD7, FOIS), pontuação + classificação automática; props `{ doenteId, utilizador }`
+
+### ✅ Completado na Sessão 14 cont. (2026-05-27) — Activar `libs/shared`
+- ~~**Activar `libs/shared`**~~ — ✅ Tipos actualizados e apps a importar de `@org/shared`
+  - `utilizador.types.ts`: `Role` expandido para 10 roles; `Utilizador` com `subRole`, `servico`, `email`, `mfaAtivo`
+  - `doente.types.ts`: datas como `string` (API response); adicionados `DoenteListItem` e `DoentesPaginados`; `estadoRegisto` incluído
+  - `tarefa.types.ts`: datas como `string`; adicionados campos de relação `responsavel`, `criadoPor`, `doente`
+  - `medicacao.types.ts`: datas como `string`; campos opcionais alinhados com API
+  - `turno.types.ts`: datas como `string`; campos opcionais onde a API pode omitir
+  - `horario.types.ts`: data como `string`
+  - Ficheiros migrados para `import from '@org/shared'`:
+    - `apps/web/src/lib/auth-context.tsx` — `Utilizador`
+    - `apps/web/src/lib/hooks/use-doentes.ts` — `DoenteListItem`, `DoentesPaginados`
+    - `apps/web/src/lib/hooks/use-tarefas.ts` — `Tarefa`
+    - `apps/web/src/lib/hooks/use-utilizadores.ts` — `Utilizador`
+    - `apps/mobile/src/lib/auth.ts` — `Utilizador`
+  - Re-exportações preservadas (`export type { X }`) para compatibilidade com importadores existentes
+
+### ✅ Completado na Sessão 14 cont. (2026-05-27) — Sub-agrupamento de rotas web
+- ~~**Sub-agrupar rotas web**~~ — ✅ 43 pastas reorganizadas em 4 grupos de domínio dentro de `(dashboard)/`
+  - `(clinico)/` — workflow clínico diário: doentes, mar, tarefas, passagem-turno, atribuicoes, interconsultas, especialidades, fisioterapia, bloco, urgencia, worklist, iacs, camas
+  - `(administrativo)/` — recepção e administração: recepcao, sala-espera, doentes-admin, faturacao, tabela-atos, relatorios-financeiros, registos-administrativos, catalogo, fornecedores, consultas
+  - `(gestao)/` — gestão e RH: rh (+ subpastas), horarios, ferias, trocas, operacional, utilizadores, dashboards executivo/qualidade, eventos-adversos, conformidade, auditoria, relatorios, comunicacao
+  - `(suporte)/` — TI e suporte: dashboard-ti, incidentes-ti, pedidos-ti, pedidos-internos, equipamentos, dietas, farmacia
+  - Raiz: dashboard/, notificacoes/, perfil/, configuracoes/ (transversais)
+  - 61 ficheiros `.tsx` migrados de imports relativos (`../../../lib/`) para aliases absolutos (`@/lib/`, `@/components/`)
+  - URLs não foram alterados (route groups Next.js são transparentes ao router)
+
+### Dívida Técnica Arquitectural — CONCLUÍDA
+Todos os 5 itens de alta/média prioridade do roadmap foram resolvidos.
+
+### ✅ Completado na Sessão 15 (2026-05-27) — Vista de Sala do Bloco + Fix tsconfig
+- ~~**Vista de sala do bloco (disponibilidade em tempo real)**~~ — ✅ Implementado
+  - Backend: `GET /bloco/salas/status` — devolve todas as salas conhecidas com `status: livre|em_uso|proxima_cirurgia`, cirurgia activa e próxima cirurgia do dia; cirurgias `em_curso` de dias anteriores incluídas
+  - `EventsGateway.emitirBlocoUpdate()` — emite `bloco:update` para sala geral ao actualizar estado de cirurgia
+  - `BlocoModule` importa `GatewayModule`; `BlocoService` injeta `EventsGateway`
+  - Frontend: tab "Vista de Sala" na página `/bloco` com grid de cards por sala; cores: vermelho pulsante (em_uso), âmbar (próxima), verde (livre); barra de progresso da cirurgia em curso; polling 30s + botão de actualização manual; WebSocket `bloco:update` dispara re-fetch
+  - `use-socket.ts`: adicionado `'bloco:update'` ao tipo `SocketEvent`
+- **Fix tsconfig web** — `composite: false` + `declarationMap: false` adicionados ao tsconfig do web para permitir importar de `@org/shared` (fora de `src/`); zero erros de TypeScript após fix
+
+### ✅ Completado na Sessão 16 (2026-05-27) — Culturas Microbiológicas e Surtos IACS
+- **Módulo `iacs/`** — registo e listagem de culturas microbiológicas e surtos IACS
+  - Novos modelos Prisma: `CulturaMicrobiologica` + `SurtoIACS` + enums `ResultadoCultura` + `EstadoSurto`
+  - `GET /iacs/dashboard` — contagem de isolados activos, culturas positivas/pendentes, surtos activos + últimas 5 culturas positivas
+  - `POST /iacs/cultura` — registar colheita (tipoAmostra, agente?, antibiograma JSON, resultado, serviço); roles: medico, enfermeiro, tecnico_saude
+  - `GET /iacs/culturas` — listar com filtros `doenteId`, `agente` (insensitive), `resultado`
+  - `PATCH /iacs/cultura/:id` — actualizar resultado/antibiograma/observações
+  - `POST /iacs/surto` — registar surto (agente, serviço, dataInicio, numCasos, medidas JSON); roles: medico, enfermeiro, qualidade
+  - `GET /iacs/surtos` — listar com filtro `estado`
+  - `PATCH /iacs/surto/:id` — actualizar estado/numCasos/dataFim/medidas
+  - `IacsModule` registado em `AppModule`; DB actualizada via `prisma db push`
+  - Zero erros de TypeScript
+
+### ✅ Completado na Sessão 17 (2026-05-27) — Notas em Incidentes TI + Mobile IACSScreen
+- ~~**Incidentes TI — notas/comentários**~~ — ✅ Implementado
+  - Novo modelo Prisma `NotaIncidenteTI` com `onDelete: Cascade`; `db push` aplicado
+  - `GET /incidentes-ti/:id/notas` — lista notas ordenadas por data (inclui `autor`)
+  - `POST /incidentes-ti/:id/notas` — adicionar nota; `AdicionarNotaDto` com validação (MinLength 1, MaxLength 2000)
+  - Web: secção "Notas (N)" no painel expandido de cada incidente; lista de notas com autor + timestamp; textarea + botão "Adicionar"; carregamento lazy quando expandido
+- ~~**Mobile IACSScreen — Culturas + Surtos**~~ — ✅ `IACSScreen.tsx` reescrito com 3 abas
+  - Tab "Isolamentos" — lista doentes em isolamento com botão "Levantar" (médico/enfermeiro/qualidade)
+  - Tab "Culturas" — lista culturas microbiológicas com badge de resultado colorido; agente; data colheita; serviço
+  - Tab "Surtos" — lista surtos com badge de estado (activo/controlado/encerrado); número de casos; medidas; duração
+  - Todas as 3 abas carregam em paralelo (`Promise.all`) no `useFocusEffect`
+
+### ✅ Completado na Sessão 18 (2026-05-27) — Conformidade Backend + Ficha Pessoal na Admissão
+- ~~**Conformidade checklist — sincronização com backend**~~ — ✅ Implementado
+  - Novo modelo Prisma `ConformidadeChecklistItem` (itemKey único, estado, atualizadoEm, atualizadoPorId); `db push` aplicado
+  - `GET /audit/checklist` — devolve os 8 itens (com defaults `verificar` para os ainda não persistidos)
+  - `PATCH /audit/checklist/:itemKey` — upsert do estado; gravado com `atualizadoPorId` do utilizador autenticado
+  - Web: `useQuery` para checklist da API; `useMutation` para toggle (3 estados em ciclo: verificar → conforme → nao_conforme); timestamp "Actualizado DD/MM/AAAA" visível; removido localStorage
+- ~~**Ficha pessoal no formulário de admissão**~~ — ✅ Implementado
+  - `AdmitirDoenteDto` expandido com campos opcionais: `nif`, `numeroSNS`, `morada`, `codigoPostal`, `localidade`, `telefone`
+  - `admitir()` no service cria `FicheiroPessoalDoente` dentro do mesmo `$transaction` se qualquer campo admin estiver preenchido
+  - Web: nova secção "Dados Administrativos" na página `/doentes/admitir` com 6 campos opcionais (NIF, SNS, telefone, localidade, morada, código postal); nota informativa que pode ser preenchido depois
+
 ### Prioridade Baixa — Backlog
-10. Vista de sala do bloco (disponibilidade em tempo real)
-11. Culturas microbiológicas e histórico de surtos IACS
 12. Visualizador DICOM para imagiologia
 13. Testes automatizados (unitários + e2e)
-14. Swagger/OpenAPI
-15. Integrações externas (HL7, FHIR, SONHO/SClínico)
+14. Integrações externas (HL7, FHIR, SONHO/SClínico)
 
 ---
 
@@ -1120,6 +1223,8 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | `IncidenteTI` | Incidente tecnológico reportado |
 | `PedidoTI` | Pedido de suporte/equipamento TI |
 | `NotificacaoPush` | Token de notificação push por dispositivo |
+| `CulturaMicrobiologica` | Cultura microbiológica com antibiograma JSON, resultado (`pendente/positivo/negativo/contaminado`), agente e serviço |
+| `SurtoIACS` | Surto de IACS com agente, serviço, numCasos, medidas JSON, estado (`activo/controlado/encerrado`) |
 
 ### 12.6 Segurança Clínica e Utilitários (sessão 7)
 

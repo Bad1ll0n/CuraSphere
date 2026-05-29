@@ -1,5 +1,6 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -47,9 +48,19 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   });
 
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('CuraSphere API')
+    .setDescription('API de Gestão Hospitalar CuraSphere')
+    .setVersion('1.0')
+    .addCookieAuth('access_token')
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/docs', app, document);
+
   const port = process.env.PORT || 3333;
   await app.listen(port);
   Logger.log(`API a correr em: http://localhost:${port}`);
+  Logger.log(`Swagger docs em: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();

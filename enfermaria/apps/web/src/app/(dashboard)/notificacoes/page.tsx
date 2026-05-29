@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../../../lib/api';
-import { useToast } from '../../../components/toast';
+import api from '@/lib/api';
+import { useToast } from '@/components/toast';
 
 interface Notificacao {
   id: string;

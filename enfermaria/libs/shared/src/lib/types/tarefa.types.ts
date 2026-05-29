@@ -7,15 +7,14 @@ export type EstadoTarefa = 'pendente' | 'em_progresso' | 'concluida' | 'cancelad
 export interface Tarefa {
   id: string;
   doenteId: string;
-  tipo: TipoTarefa;
   descricao: string;
-  prioridade: PrioridadeTarefa;
-  estado: EstadoTarefa;
-  prazo?: Date;
-  responsavelId: string;      // id do enfermeiro ou auxiliar responsável
-  criadoPorId: string;        // id de quem criou (médico, enfermeiro ou auxiliar)
-  turnoId: string;            // turno em que foi criada
-  transitouDeTurno: boolean;  // se veio do turno anterior
-  criadaEm: Date;
-  concluidaEm?: Date;
+  tipo: TipoTarefa | string;
+  prioridade: PrioridadeTarefa | string;
+  estado: EstadoTarefa | string;
+  prazo?: string | null;
+  criadaEm: string;
+  concluidaEm?: string | null;
+  responsavel?: { id: string; nome: string; role: string } | null;
+  criadoPor?: { id: string; nome: string; role: string } | null;
+  doente?: { id: string; nome: string } | null;
 }

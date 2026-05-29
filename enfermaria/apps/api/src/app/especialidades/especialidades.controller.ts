@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EspecialidadesService } from './especialidades.service';
+import { CriarSessaoEspecialidadeDto } from './dto/criar-sessao-especialidade.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('tecnico_saude')
@@ -21,7 +22,7 @@ export class EspecialidadesController {
   }
 
   @Post()
-  criar(@Body() dto: any, @Request() req: any) {
+  criar(@Body() dto: CriarSessaoEspecialidadeDto, @Request() req: any) {
     return this.service.criar(req.user.sub, req.user.subRole, dto);
   }
 

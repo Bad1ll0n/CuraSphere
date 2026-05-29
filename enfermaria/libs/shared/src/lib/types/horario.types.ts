@@ -1,9 +1,9 @@
 export interface HorarioTurno {
   id: string;
   tipo: 'manha' | 'tarde' | 'noite';
-  data: Date;
+  data: string;
   profissionaisIds: string[];
-  criadoPorId: string; // chefe de enfermeiros
+  criadoPorId: string;
 }
 
 export interface Escala {
@@ -11,5 +11,5 @@ export interface Escala {
   mes: number;
   ano: number;
   turnos: HorarioTurno[];
-  criadaPorId: string; // chefe de enfermeiros
+  criadaPorId: string;
 }

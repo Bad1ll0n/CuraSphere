@@ -4,6 +4,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EstadoCama } from '../common/enums';
+import { CriarCamaDto } from './dto/criar-cama.dto';
+import { AtualizarEstadoCamaDto } from './dto/atualizar-estado-cama.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('camas')
@@ -22,14 +24,14 @@ export class CamasController {
 
   @Roles('enfermeiro', 'administrativo')
   @Post()
-  criar(@Body() body: { numero: string; quarto: string }) {
-    return this.camasService.criar(body);
+  criar(@Body() dto: CriarCamaDto) {
+    return this.camasService.criar(dto);
   }
 
   @Roles('administrativo', 'enfermeiro')
   @Patch(':id/estado')
-  atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoCama }) {
-    return this.camasService.atualizarEstado(id, body.estado);
+  atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoCamaDto) {
+    return this.camasService.atualizarEstado(id, dto.estado as EstadoCama);
   }
 
   @Roles('auxiliar', 'enfermeiro', 'administrativo')

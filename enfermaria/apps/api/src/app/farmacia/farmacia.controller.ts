@@ -3,6 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { FarmaciaService } from './farmacia.service';
+import { CriarStockItemDto } from './dto/criar-stock-item.dto';
+import { CriarPedidoFarmaciaDto } from './dto/criar-pedido-farmacia.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('farmacia')
@@ -16,7 +18,7 @@ export class FarmaciaController {
 
   @Roles('farmaceutico', 'administrativo')
   @Post('stock')
-  criarStockItem(@Body() dto: any) {
+  criarStockItem(@Body() dto: CriarStockItemDto) {
     return this.service.criarStockItem(dto);
   }
 
@@ -37,7 +39,7 @@ export class FarmaciaController {
   }
 
   @Post('pedido')
-  criarPedido(@Body() dto: any, @Request() req: any) {
+  criarPedido(@Body() dto: CriarPedidoFarmaciaDto, @Request() req: any) {
     return this.service.criarPedido(dto, req.user.sub);
   }
 

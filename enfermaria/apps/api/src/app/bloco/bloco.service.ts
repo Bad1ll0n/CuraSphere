@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { EventsGateway } from '../gateway/events.gateway';
 
 @Injectable()
 export class BlocoService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly gateway: EventsGateway,
+  ) {}
 
   async agendar(dto: {
     doenteId: string; designacao: string; dataHora: string; duracaoPrevista: number;
@@ -49,7 +53,13 @@ export class BlocoService {
 
   async atualizarEstado(id: string, estado: string) {
     await this.detalhe(id);
-    return this.prisma.cirurgiaProgramada.update({ where: { id }, data: { estado: estado as any } });
+    const atualizado = await this.prisma.cirurgiaProgramada.update({
+      where: { id },
+      data: { estado: estado as any },
+      include: this.includeRelations(),
+    });
+    this.gateway.emitirBlocoUpdate({ cirurgiaId: id, estado, sala: atualizado.sala });
+    return atualizado;
   }
 
   async registarNotasPos(id: string, dto: { notasPosOperatorio: string; complicacoes?: string }, userId: string) {
@@ -119,6 +129,54 @@ export class BlocoService {
         timeOutPor: { select: { id: true, nome: true } },
         signOutPor: { select: { id: true, nome: true } },
       },
+    });
+  }
+
+  async salaStatus() {
+    const inicioHoje = new Date();
+    inicioHoje.setHours(0, 0, 0, 0);
+    const fimHoje = new Date(inicioHoje);
+    fimHoje.setDate(fimHoje.getDate() + 1);
+
+    // Cirurgias de hoje agendadas ou em curso
+    const hoje = await this.prisma.cirurgiaProgramada.findMany({
+      where: { dataHora: { gte: inicioHoje, lt: fimHoje }, estado: { in: ['agendada', 'em_curso'] } },
+      orderBy: { dataHora: 'asc' },
+      include: {
+        doente: { select: { id: true, nome: true } },
+        cirurgiao: { select: { id: true, nome: true } },
+      },
+    });
+
+    // Cirurgias de dias anteriores ainda em_curso (cirurgia nocturna, por exemplo)
+    const emCursoExtras = await this.prisma.cirurgiaProgramada.findMany({
+      where: { estado: 'em_curso', dataHora: { lt: inicioHoje } },
+      include: {
+        doente: { select: { id: true, nome: true } },
+        cirurgiao: { select: { id: true, nome: true } },
+      },
+    });
+
+    // Todas as salas conhecidas (distintas de todas as cirurgias)
+    const salasBD = await this.prisma.cirurgiaProgramada.findMany({
+      select: { sala: true },
+      distinct: ['sala'],
+      orderBy: { sala: 'asc' },
+    });
+
+    const salas = salasBD.map(s => s.sala);
+    const todas = [...emCursoExtras, ...hoje];
+
+    return salas.map(sala => {
+      const emCurso = todas.find(c => c.sala === sala && c.estado === 'em_curso') ?? null;
+      const proxima = hoje.find(c => c.sala === sala && c.estado === 'agendada') ?? null;
+
+      let status: 'livre' | 'em_uso' | 'proxima_cirurgia';
+      if (emCurso) status = 'em_uso';
+      else if (proxima) status = 'proxima_cirurgia';
+      else status = 'livre';
+
+      return { sala, status, emCurso, proxima };
     });
   }
 

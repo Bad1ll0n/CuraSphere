@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { DispositivosInvasivosService } from './dispositivos-invasivos.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CriarDispositivoDto } from './dto/criar-dispositivo.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('dispositivos-invasivos')
@@ -18,10 +19,10 @@ export class DispositivosInvasivosController {
   @Post('doente/:doenteId')
   registar(
     @Param('doenteId') doenteId: string,
-    @Body() body: { tipo: string; localizacao?: string; observacoes?: string },
+    @Body() dto: CriarDispositivoDto,
     @Request() req: any,
   ) {
-    return this.dispositivosInvasivosService.registar(doenteId, req.user.sub, body);
+    return this.dispositivosInvasivosService.registar(doenteId, req.user.sub, dto);
   }
 
   @Patch(':id/remover')

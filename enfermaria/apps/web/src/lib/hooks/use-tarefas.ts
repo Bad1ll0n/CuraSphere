@@ -1,20 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Tarefa } from '@org/shared';
 import api from '../api';
 
-export interface Tarefa {
-  id: string;
-  doenteId: string;
-  descricao: string;
-  tipo: string;
-  prioridade: string;
-  estado: string;
-  prazo?: string | null;
-  criadaEm: string;
-  concluidaEm?: string | null;
-  responsavel?: { id: string; nome: string; role: string };
-  criadoPor?: { id: string; nome: string; role: string };
-  doente?: { id: string; nome: string };
-}
+export type { Tarefa };
 
 export function useTarefasPorDoente(doenteId: string | undefined) {
   return useQuery<Tarefa[]>({

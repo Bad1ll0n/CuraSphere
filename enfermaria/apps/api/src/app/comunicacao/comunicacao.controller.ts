@@ -3,6 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ComunicacaoService } from './comunicacao.service';
+import { CriarAnuncioDto } from './dto/criar-anuncio.dto';
+import { EnviarMensagemDto } from './dto/enviar-mensagem.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('comunicacao')
@@ -17,7 +19,7 @@ export class ComunicacaoController {
   @UseGuards(RolesGuard)
   @Roles('enfermeiro', 'medico', 'administrativo', 'direcao')
   @Post('anuncios')
-  publicarAnuncio(@Body() dto: any, @Request() req: any) {
+  publicarAnuncio(@Body() dto: CriarAnuncioDto, @Request() req: any) {
     return this.service.publicarAnuncio(dto, req.user.sub);
   }
 
@@ -37,7 +39,7 @@ export class ComunicacaoController {
   }
 
   @Post('mensagens')
-  enviarMensagem(@Body() dto: any, @Request() req: any) {
+  enviarMensagem(@Body() dto: EnviarMensagemDto, @Request() req: any) {
     return this.service.enviarMensagem(dto, req.user.sub);
   }
 

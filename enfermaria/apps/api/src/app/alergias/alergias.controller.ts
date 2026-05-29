@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { AlergiasService } from './alergias.service';
+import { CriarAlergiaDto } from './dto/criar-alergia.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('alergias')
@@ -16,8 +17,8 @@ export class AlergiasController {
 
   @Roles('medico', 'enfermeiro')
   @Post(':doenteId')
-  criar(@Param('doenteId') doenteId: string, @Body() body: Record<string, any>, @Request() req: any) {
-    return this.service.criar(doenteId, req.user.role, body);
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarAlergiaDto, @Request() req: any) {
+    return this.service.criar(doenteId, req.user.role, dto);
   }
 
   @Roles('medico', 'enfermeiro')

@@ -3,6 +3,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RhService } from './rh.service';
+import { CriarAusenciaDto } from './dto/criar-ausencia.dto';
+import { RegistarFormacaoDto } from './dto/registar-formacao.dto';
+import { CriarAvaliacaoDto } from './dto/criar-avaliacao.dto';
+import { AtualizarAvaliacaoDto } from './dto/atualizar-avaliacao.dto';
+import { CriarContratoDto } from './dto/criar-contrato.dto';
 
 const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
 
@@ -20,7 +25,7 @@ export class RhController {
   // ── Ausências ─────────────────────────────────────────────────────────────
 
   @Post('ausencias')
-  criarAusencia(@Body() dto: any, @Request() req: any) {
+  criarAusencia(@Body() dto: CriarAusenciaDto, @Request() req: any) {
     return this.rh.criarAusencia(req.user.sub, dto);
   }
 
@@ -73,7 +78,7 @@ export class RhController {
 
   @Post('formacoes')
   @Roles(...RH_ROLES)
-  registarFormacao(@Body() dto: any) {
+  registarFormacao(@Body() dto: RegistarFormacaoDto) {
     return this.rh.registarFormacao(dto);
   }
 
@@ -114,13 +119,13 @@ export class RhController {
 
   @Post('avaliacoes')
   @Roles(...RH_ROLES)
-  criarAvaliacao(@Body() dto: any, @Request() req: any) {
+  criarAvaliacao(@Body() dto: CriarAvaliacaoDto, @Request() req: any) {
     return this.rh.criarAvaliacao(req.user.sub, dto);
   }
 
   @Patch('avaliacoes/:id')
   @Roles(...RH_ROLES)
-  atualizarAvaliacao(@Param('id') id: string, @Body() dto: any) {
+  atualizarAvaliacao(@Param('id') id: string, @Body() dto: AtualizarAvaliacaoDto) {
     return this.rh.atualizarAvaliacao(id, dto);
   }
 
@@ -134,7 +139,7 @@ export class RhController {
 
   @Post('pessoal/:id/contrato')
   @Roles(...RH_ROLES)
-  criarContrato(@Param('id') id: string, @Body() dto: any) {
+  criarContrato(@Param('id') id: string, @Body() dto: CriarContratoDto) {
     return this.rh.criarOuAtualizarContrato(id, dto);
   }
 }

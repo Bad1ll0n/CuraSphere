@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { EscalasService } from './escalas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CriarEscalaDto } from './dto/criar-escala.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('escalas')
@@ -23,15 +24,15 @@ export class EscalasController {
   @Post(':doenteId')
   criar(
     @Param('doenteId') doenteId: string,
-    @Body() body: Record<string, any>,
+    @Body() dto: CriarEscalaDto,
     @Request() req: any,
   ) {
     return this.escalasService.criar(
       doenteId,
       req.user.sub,
       req.user.role,
-      body['tipo'] as string,
-      body['itens'] as Record<string, number>,
+      dto.tipo,
+      dto.itens,
     );
   }
 }

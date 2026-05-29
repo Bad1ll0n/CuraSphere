@@ -60,6 +60,7 @@ import { BreakGlassModule } from './break-glass/break-glass.module';
 import { ProtocolosModule } from './protocolos/protocolos.module';
 import { DietasModule } from './dietas/dietas.module';
 import { RelatoriosModule } from './relatorios/relatorios.module';
+import { IacsModule } from './iacs/iacs.module';
 
 @Module({
   imports: [
@@ -126,6 +127,9 @@ import { RelatoriosModule } from './relatorios/relatorios.module';
     EquipamentosModule,
     CatalogoModule,
     FornecedoresModule,
+
+    // ─── IACS ────────────────────────────────────────────────────────────────
+    IacsModule,
 
     // ─── Analytics ────────────────────────────────────────────────────────────
     DashboardModule,

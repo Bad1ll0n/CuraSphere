@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SalaEsperaService } from './sala-espera.service';
+import { RegistarSalaEsperaDto } from './dto/registar-sala-espera.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sala-espera')
@@ -21,7 +22,7 @@ export class SalaEsperaController {
 
   @Post()
   @Roles('administrativo', 'auxiliar')
-  registar(@Body() dto: any, @Request() req: any) {
+  registar(@Body() dto: RegistarSalaEsperaDto, @Request() req: any) {
     return this.service.registar(dto, req.user.sub);
   }
 

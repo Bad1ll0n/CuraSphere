@@ -1,17 +1,24 @@
 export type Role =
+  | 'medico'
   | 'enfermeiro'
   | 'auxiliar'
-  | 'medico'
-  | 'chefe_turno'
-  | 'chefe_enfermeiros'
-  | 'administrativo';
+  | 'tecnico_saude'
+  | 'farmaceutico'
+  | 'administrativo'
+  | 'operacional'
+  | 'ti'
+  | 'qualidade'
+  | 'direcao';
 
 export interface Utilizador {
   id: string;
-  numeroFuncionario: string;
   nome: string;
-  role: Role;
-  ordemExperiencia?: number; // definida pela chefe de enfermeiros (para determinar chefe de turno)
-  ativo: boolean;
-  criadoEm: Date;
+  numeroFuncionario: string;
+  email?: string;
+  role: Role | string;
+  subRole?: string | null;
+  servico?: string | null;
+  mfaAtivo?: boolean;
+  ativo?: boolean;
+  criadoEm?: string;
 }

@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useAuth } from '../../../lib/auth-context';
-import api from '../../../lib/api';
+import { useAuth } from '@/lib/auth-context';
+import api from '@/lib/api';
 
 export default function PerfilPage() {
   const { utilizador, logout } = useAuth();

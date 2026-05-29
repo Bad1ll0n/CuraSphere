@@ -776,6 +776,14 @@ exports.Prisma.IncidenteTIScalarFieldEnum = {
   atualizadoEm: 'atualizadoEm'
 };
 
+exports.Prisma.NotaIncidenteTIScalarFieldEnum = {
+  id: 'id',
+  incidenteId: 'incidenteId',
+  autorId: 'autorId',
+  conteudo: 'conteudo',
+  criadaEm: 'criadaEm'
+};
+
 exports.Prisma.PedidoTIScalarFieldEnum = {
   id: 'id',
   titulo: 'titulo',
@@ -1056,6 +1064,42 @@ exports.Prisma.PrescricaoDietaScalarFieldEnum = {
   criadaPorId: 'criadaPorId'
 };
 
+exports.Prisma.CulturaMicrobiologicaScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  dataColheita: 'dataColheita',
+  tipoAmostra: 'tipoAmostra',
+  agente: 'agente',
+  antibiograma: 'antibiograma',
+  resultado: 'resultado',
+  servico: 'servico',
+  observacoes: 'observacoes',
+  registadoPorId: 'registadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.SurtoIACSScalarFieldEnum = {
+  id: 'id',
+  agente: 'agente',
+  servico: 'servico',
+  dataInicio: 'dataInicio',
+  dataFim: 'dataFim',
+  estado: 'estado',
+  numCasos: 'numCasos',
+  medidas: 'medidas',
+  observacoes: 'observacoes',
+  registadoPorId: 'registadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.ConformidadeChecklistItemScalarFieldEnum = {
+  id: 'id',
+  itemKey: 'itemKey',
+  estado: 'estado',
+  atualizadoEm: 'atualizadoEm',
+  atualizadoPorId: 'atualizadoPorId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1319,6 +1363,19 @@ exports.EstadoFatura = exports.$Enums.EstadoFatura = {
   anulada: 'anulada'
 };
 
+exports.ResultadoCultura = exports.$Enums.ResultadoCultura = {
+  pendente: 'pendente',
+  positivo: 'positivo',
+  negativo: 'negativo',
+  contaminado: 'contaminado'
+};
+
+exports.EstadoSurto = exports.$Enums.EstadoSurto = {
+  activo: 'activo',
+  controlado: 'controlado',
+  encerrado: 'encerrado'
+};
+
 exports.Prisma.ModelName = {
   RoleConfig: 'RoleConfig',
   SubRoleConfig: 'SubRoleConfig',
@@ -1374,6 +1431,7 @@ exports.Prisma.ModelName = {
   Interconsulta: 'Interconsulta',
   DispositivoInvasivo: 'DispositivoInvasivo',
   IncidenteTI: 'IncidenteTI',
+  NotaIncidenteTI: 'NotaIncidenteTI',
   PedidoTI: 'PedidoTI',
   FicheiroPessoalDoente: 'FicheiroPessoalDoente',
   EpisodioFaturacao: 'EpisodioFaturacao',
@@ -1396,7 +1454,10 @@ exports.Prisma.ModelName = {
   BreakGlassAccess: 'BreakGlassAccess',
   ProtocoloClinico: 'ProtocoloClinico',
   ItemProtocolo: 'ItemProtocolo',
-  PrescricaoDieta: 'PrescricaoDieta'
+  PrescricaoDieta: 'PrescricaoDieta',
+  CulturaMicrobiologica: 'CulturaMicrobiologica',
+  SurtoIACS: 'SurtoIACS',
+  ConformidadeChecklistItem: 'ConformidadeChecklistItem'
 };
 
 /**

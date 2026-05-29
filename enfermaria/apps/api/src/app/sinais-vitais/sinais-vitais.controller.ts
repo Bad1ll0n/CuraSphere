@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SinaisVitaisService } from './sinais-vitais.service';
+import { CriarSinalVitalDto } from './dto/criar-sinal-vital.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sinais-vitais')
@@ -11,7 +12,7 @@ export class SinaisVitaisController {
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
   @Post(':doenteId')
-  criar(@Param('doenteId') doenteId: string, @Body() dto: Record<string, any>, @Request() req: any) {
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarSinalVitalDto, @Request() req: any) {
     return this.service.criar(doenteId, req.user.sub, req.user.role, dto);
   }
 

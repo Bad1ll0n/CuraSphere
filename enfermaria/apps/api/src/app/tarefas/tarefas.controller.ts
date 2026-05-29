@@ -3,6 +3,9 @@ import { TarefasService } from './tarefas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
+import { CriarTarefaDto } from './dto/criar-tarefa.dto';
+import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
+import { EditarTarefaDto } from './dto/editar-tarefa.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('tarefas')
@@ -21,31 +24,25 @@ export class TarefasController {
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Post()
-  criar(@Body() body: {
-    doenteId: string;
-    tipo: TipoTarefa;
-    descricao: string;
-    prioridade: PrioridadeTarefa;
-    prazo?: Date;
-  }, @Request() req: any) {
-    return this.tarefasService.criar({ ...body, criadoPorId: req.user.sub });
+  criar(@Body() dto: CriarTarefaDto, @Request() req: any) {
+    return this.tarefasService.criar({ ...dto, criadoPorId: req.user.sub });
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Patch(':id/estado')
   atualizarEstado(
     @Param('id') id: string,
-    @Body() body: { estado: EstadoTarefa },
+    @Body() dto: AtualizarEstadoTarefaDto,
   ) {
-    return this.tarefasService.atualizarEstado(id, body.estado);
+    return this.tarefasService.atualizarEstado(id, dto.estado as EstadoTarefa);
   }
 
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Patch(':id')
   editar(
     @Param('id') id: string,
-    @Body() body: { descricao?: string; prioridade?: PrioridadeTarefa; prazo?: string | null; grupoResponsavel?: string },
+    @Body() dto: EditarTarefaDto,
   ) {
-    return this.tarefasService.editar(id, body);
+    return this.tarefasService.editar(id, dto);
   }
 }

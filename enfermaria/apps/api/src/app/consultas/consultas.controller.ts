@@ -3,6 +3,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ConsultasService } from './consultas.service';
+import { CriarAgendaDto } from './dto/criar-agenda.dto';
+import { AtualizarAgendaDto } from './dto/atualizar-agenda.dto';
+import { AgendarConsultaDto } from './dto/agendar-consulta.dto';
+import { RealizarConsultaDto } from './dto/realizar-consulta.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('consultas')
@@ -13,13 +17,13 @@ export class ConsultasController {
 
   @Post('agenda')
   @Roles('medico', 'administrativo', 'direcao', 'ti')
-  criarAgenda(@Body() dto: any) {
+  criarAgenda(@Body() dto: CriarAgendaDto) {
     return this.service.criarAgenda(dto);
   }
 
   @Patch('agenda/:id')
   @Roles('medico', 'administrativo', 'direcao', 'ti')
-  atualizarAgenda(@Param('id') id: string, @Body() dto: any) {
+  atualizarAgenda(@Param('id') id: string, @Body() dto: AtualizarAgendaDto) {
     return this.service.atualizarAgenda(id, dto);
   }
 
@@ -51,7 +55,7 @@ export class ConsultasController {
 
   @Post()
   @Roles('medico', 'administrativo')
-  agendar(@Body() dto: any) {
+  agendar(@Body() dto: AgendarConsultaDto) {
     return this.service.agendar(dto);
   }
 
@@ -78,7 +82,7 @@ export class ConsultasController {
 
   @Patch(':id/realizar')
   @Roles('medico')
-  realizar(@Param('id') id: string, @Body() dto: any, @Request() req: any) {
+  realizar(@Param('id') id: string, @Body() dto: RealizarConsultaDto, @Request() req: any) {
     return this.service.realizar(id, dto, req.user.sub);
   }
 

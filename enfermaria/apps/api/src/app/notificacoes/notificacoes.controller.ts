@@ -2,6 +2,7 @@ import { Controller, Post, Patch, Get, Body, Param, Query, UseGuards, Request } 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { NotificacoesService } from './notificacoes.service';
+import { RegistarTokenDto } from './dto/registar-token.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('notificacoes')
@@ -9,8 +10,8 @@ export class NotificacoesController {
   constructor(private readonly service: NotificacoesService) {}
 
   @Post('registar-token')
-  registar(@Body() body: Record<string, any>, @Request() req: any) {
-    return this.service.registarToken(req.user.sub, body.token, body.plataforma ?? 'unknown');
+  registar(@Body() body: RegistarTokenDto, @Request() req: any) {
+    return this.service.registarToken(req.user.sub, body.token, body.plataforma);
   }
 
   @Get()

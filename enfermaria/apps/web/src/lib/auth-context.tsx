@@ -2,17 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { Utilizador } from '@org/shared';
 import api from './api';
-
-interface Utilizador {
-  id: string;
-  nome: string;
-  numeroFuncionario: string;
-  role: string;
-  subRole?: string;
-  servico: string;
-  mfaAtivo?: boolean;
-}
 
 interface LoginResult {
   mfaPendente: boolean;

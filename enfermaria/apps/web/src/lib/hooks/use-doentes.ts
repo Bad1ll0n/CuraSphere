@@ -1,24 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { DoenteListItem, DoentesPaginados } from '@org/shared';
 import api from '../api';
 
-export interface DoenteListItem {
-  id: string;
-  nome: string;
-  numeroProcesso: string;
-  estado: string;
-  estadoRegisto: string;
-  diagnosticoPrincipal: string;
-  dataAdmissao: string;
-  cama?: { id: string; numero: string; quarto: string } | null;
-}
-
-export interface DoentesPaginados {
-  data: DoenteListItem[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPaginas: number;
-}
+export type { DoenteListItem, DoentesPaginados };
 
 export function useDoentes(page = 1, limit = 25) {
   return useQuery<DoentesPaginados>({

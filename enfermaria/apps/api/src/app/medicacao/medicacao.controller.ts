@@ -3,6 +3,11 @@ import { MedicacaoService } from './medicacao.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { PrescreverMedicacaoDto } from './dto/prescrever-medicacao.dto';
+import { ProporMedicacaoDto } from './dto/propor-medicacao.dto';
+import { RejeitarMedicacaoDto } from './dto/rejeitar-medicacao.dto';
+import { AdministrarMedicacaoDto } from './dto/administrar-medicacao.dto';
+import { NaoAdministrarDto } from './dto/nao-administrar.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('medicacao')
@@ -21,27 +26,14 @@ export class MedicacaoController {
 
   @Roles('medico')
   @Post('prescrever')
-  prescrever(@Body() body: {
-    doenteId: string;
-    nome: string;
-    dose: string;
-    via: string;
-    frequencia: string;
-  }, @Request() req: any) {
-    return this.medicacaoService.prescrever({ ...body, prescritoPorId: req.user.sub });
+  prescrever(@Body() dto: PrescreverMedicacaoDto, @Request() req: any) {
+    return this.medicacaoService.prescrever({ ...dto, prescritoPorId: req.user.sub });
   }
 
   @Roles('enfermeiro')
   @Post('propor')
-  proporPrescricao(@Body() body: {
-    doenteId: string;
-    nome: string;
-    dose: string;
-    via: string;
-    frequencia: string;
-    observacoes?: string;
-  }, @Request() req: any) {
-    return this.medicacaoService.proporPrescricao({ ...body, prescritoPorId: req.user.sub });
+  proporPrescricao(@Body() dto: ProporMedicacaoDto, @Request() req: any) {
+    return this.medicacaoService.proporPrescricao({ ...dto, prescritoPorId: req.user.sub });
   }
 
   @Roles('medico', 'direcao')
@@ -60,24 +52,24 @@ export class MedicacaoController {
   @Patch(':id/rejeitar-medico')
   rejeitarPrescricaoMedico(
     @Param('id') id: string,
-    @Body() body: { motivoRejeicao: string },
+    @Body() dto: RejeitarMedicacaoDto,
     @Request() req: any,
   ) {
-    return this.medicacaoService.rejeitarPrescricaoMedico(id, req.user.sub, body.motivoRejeicao);
+    return this.medicacaoService.rejeitarPrescricaoMedico(id, req.user.sub, dto.motivoRejeicao);
   }
 
   @Roles('enfermeiro')
   @Post(':id/administrar')
   registarAdministracao(
     @Param('id') id: string,
-    @Body() body: { observacoes?: string; verificacao5Certas?: boolean },
+    @Body() dto: AdministrarMedicacaoDto,
     @Request() req: any,
   ) {
     return this.medicacaoService.registarAdministracao({
       medicacaoId: id,
       administradoPorId: req.user.sub,
-      observacoes: body.observacoes,
-      verificacao5Certas: body.verificacao5Certas,
+      observacoes: dto.observacoes,
+      verificacao5Certas: dto.verificacao5Certas,
     });
   }
 
@@ -85,13 +77,13 @@ export class MedicacaoController {
   @Post(':id/nao-administrar')
   naoAdministrar(
     @Param('id') id: string,
-    @Body() body: { motivo: string },
+    @Body() dto: NaoAdministrarDto,
     @Request() req: any,
   ) {
     return this.medicacaoService.naoAdministrar({
       medicacaoId: id,
       registadoPorId: req.user.sub,
-      motivo: body.motivo,
+      motivo: dto.motivo,
     });
   }
 
@@ -120,8 +112,8 @@ export class MedicacaoController {
 
   @Roles('farmaceutico')
   @Patch(':id/rejeitar')
-  rejeitar(@Param('id') id: string, @Body() body: { motivoRejeicao: string }, @Request() req: any) {
-    return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, body.motivoRejeicao);
+  rejeitar(@Param('id') id: string, @Body() dto: RejeitarMedicacaoDto, @Request() req: any) {
+    return this.medicacaoService.rejeitarPrescricao(id, req.user.sub, dto.motivoRejeicao);
   }
 
   @Roles('medico', 'enfermeiro')

@@ -1,16 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Utilizador } from '@org/shared';
 import api from '../api';
 
-export interface Utilizador {
-  id: string;
-  nome: string;
-  email: string;
-  role: string;
-  subRole?: string | null;
-  servico?: string | null;
-  ativo: boolean;
-  criadoEm: string;
-}
+export type { Utilizador };
 
 export function useUtilizadores(params?: { role?: string; ativo?: boolean; servico?: string }) {
   return useQuery<Utilizador[]>({

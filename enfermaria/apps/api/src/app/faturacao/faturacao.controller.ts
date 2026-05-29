@@ -3,6 +3,9 @@ import { FaturacaoService } from './faturacao.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { CriarFaturacaoDto } from './dto/criar-faturacao.dto';
+import { CriarItemFaturaDto } from './dto/criar-item-fatura.dto';
+import { RegistarPagamentoDto } from './dto/registar-pagamento.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('administrativo')
@@ -31,8 +34,8 @@ export class FaturacaoController {
   }
 
   @Post()
-  criar(@Body() body: { doenteId: string; tipoCobertura?: string; notas?: string }, @Request() req: any) {
-    return this.faturacaoService.criar({ ...body, criadoPorId: req.user.sub });
+  criar(@Body() dto: CriarFaturacaoDto, @Request() req: any) {
+    return this.faturacaoService.criar({ ...dto, criadoPorId: req.user.sub });
   }
 
   @Get(':id')
@@ -43,9 +46,9 @@ export class FaturacaoController {
   @Post(':id/itens')
   adicionarItem(
     @Param('id') id: string,
-    @Body() body: { descricao: string; categoria: string; quantidade?: number; precoUnitario: number },
+    @Body() dto: CriarItemFaturaDto,
   ) {
-    return this.faturacaoService.adicionarItem(id, body);
+    return this.faturacaoService.adicionarItem(id, dto);
   }
 
   @Delete(':id/itens/:itemId')
@@ -56,10 +59,10 @@ export class FaturacaoController {
   @Post(':id/pagamento')
   registarPagamento(
     @Param('id') id: string,
-    @Body() body: { valor: number; metodo: string; referencia?: string },
+    @Body() dto: RegistarPagamentoDto,
     @Request() req: any,
   ) {
-    return this.faturacaoService.registarPagamento(id, { ...body, registadoPorId: req.user.sub });
+    return this.faturacaoService.registarPagamento(id, { ...dto, registadoPorId: req.user.sub });
   }
 
   @Patch(':id/estado')

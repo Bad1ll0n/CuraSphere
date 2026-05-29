@@ -2,6 +2,7 @@ import { Controller, Get, Post, Param, Body, Query, UseGuards, Request } from '@
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { EscalasClinicasService } from './escalas-clinicas.service';
+import { CriarEscalaClinicaDto } from './dto/criar-escala-clinica.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('escalas-clinicas')
@@ -9,7 +10,7 @@ export class EscalasClinicasController {
   constructor(private readonly service: EscalasClinicasService) {}
 
   @Post(':doenteId')
-  registar(@Param('doenteId') doenteId: string, @Body() dto: any, @Request() req: any) {
+  registar(@Param('doenteId') doenteId: string, @Body() dto: CriarEscalaClinicaDto, @Request() req: any) {
     return this.service.registar(doenteId, dto, req.user.sub);
   }
 

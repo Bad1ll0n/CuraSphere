@@ -118,6 +118,12 @@ export class DoenteService {
     camaId: string;
     dataAltaPrevista?: Date;
     administrativoAdmissaoId: string;
+    nif?: string;
+    numeroSNS?: string;
+    morada?: string;
+    codigoPostal?: string;
+    localidade?: string;
+    telefone?: string;
   }) {
     return this.prisma.$transaction(async (tx) => {
       const cama = await tx.cama.findUnique({ where: { id: data.camaId } });
@@ -153,6 +159,22 @@ export class DoenteService {
         where: { id: data.camaId },
         data: { estado: 'ocupada' },
       });
+
+      const temFicha = data.nif || data.numeroSNS || data.morada || data.codigoPostal || data.localidade || data.telefone;
+      if (temFicha) {
+        await tx.ficheiroPessoalDoente.create({
+          data: {
+            doenteId: doente.id,
+            atualizadoPorId: data.administrativoAdmissaoId,
+            ...(data.nif && { nif: data.nif }),
+            ...(data.numeroSNS && { numeroSNS: data.numeroSNS }),
+            ...(data.morada && { morada: data.morada }),
+            ...(data.codigoPostal && { codigoPostal: data.codigoPostal }),
+            ...(data.localidade && { localidade: data.localidade }),
+            ...(data.telefone && { telefone: data.telefone }),
+          },
+        });
+      }
 
       return doente;
     }, { isolationLevel: 'Serializable' });

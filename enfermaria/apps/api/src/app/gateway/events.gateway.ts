@@ -157,4 +157,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   emitirEstadoDoente(doenteId: string, estado: string) {
     this.server.to('geral').emit('doente:estado', { doenteId, estado, ts: Date.now() });
   }
+
+  emitirBlocoUpdate(data: object) {
+    this.server.to('geral').emit('bloco:update', { ...data, ts: Date.now() });
+  }
 }

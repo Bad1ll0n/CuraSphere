@@ -2,12 +2,12 @@ export type TipoTurno = 'manha' | 'tarde' | 'noite';
 
 export interface Turno {
   id: string;
-  tipo: TipoTurno;
-  dataInicio: Date;
-  dataFim: Date;
-  chefeTurnoId: string;           // determinado automaticamente pela ordem de experiência
-  profissionaisIds: string[];     // todos os profissionais no turno
-  atribuicoes: AtribuicaoDoente[];
+  tipo: TipoTurno | string;
+  dataInicio: string;
+  dataFim: string;
+  chefeTurnoId?: string | null;
+  profissionaisIds?: string[];
+  atribuicoes?: AtribuicaoDoente[];
 }
 
 export interface AtribuicaoDoente {
@@ -19,8 +19,8 @@ export interface HorarioEntrada {
   id: string;
   turnoId: string;
   utilizadorId: string;
-  checkInEm: Date;
-  passagemTurnoVista: boolean; // confirmou que viu a passagem de turno
+  checkInEm: string;
+  passagemTurnoVista: boolean;
 }
 
 export interface NotaTurno {
@@ -29,14 +29,14 @@ export interface NotaTurno {
   doenteId: string;
   autorId: string;
   texto: string;
-  criadaEm: Date;
+  criadaEm: string;
 }
 
 export interface PassagemTurno {
   turnoAnteriorId: string;
   turnoAtualId: string;
   doenteId: string;
-  tarefasPendentes: string[];  // ids de tarefas
+  tarefasPendentes: string[];
   notas: NotaTurno[];
   estado: string;
 }

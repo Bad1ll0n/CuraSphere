@@ -166,6 +166,10 @@ model Utilizador {
   prescricoesDietaCriadas    PrescricaoDieta[]
   medicacoesAssinadas        Medicacao[]              @relation("MedicacaoAssinatura")
   notasAssinadas             NotaClinica[]            @relation("NotaAssinatura")
+  culturasRegistadas         CulturaMicrobiologica[]
+  surtosRegistados           SurtoIACS[]
+  notasIncidentesTI          NotaIncidenteTI[]          @relation("NotasIncidentesTI")
+  checklistsConformidade     ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
 
   @@index([role, ativo])
   @@index([servico])
@@ -266,6 +270,7 @@ model Doente {
   breakGlassAcessos   BreakGlassAccess[]
   protocolosClinicos  ProtocoloClinico[]
   prescricoesDieta    PrescricaoDieta[]
+  culturasMicrobiologicas    CulturaMicrobiologica[]
 
   @@index([ativo])
   @@index([estado])
@@ -1411,10 +1416,24 @@ model IncidenteTI {
   responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id])
   criadoEm     DateTime              @default(now())
   atualizadoEm DateTime              @updatedAt
+  notas         NotaIncidenteTI[]
 
   @@index([estado])
   @@index([subRoleAlvo])
   @@map("incidentes_ti")
+}
+
+model NotaIncidenteTI {
+  id           String       @id @default(uuid())
+  incidenteId  String
+  incidente    IncidenteTI  @relation(fields: [incidenteId], references: [id], onDelete: Cascade)
+  autorId      String
+  autor        Utilizador   @relation("NotasIncidentesTI", fields: [autorId], references: [id])
+  conteudo     String
+  criadaEm    DateTime     @default(now())
+
+  @@index([incidenteId])
+  @@map("notas_incidentes_ti")
 }
 
 // ─── Pedidos TI ───────────────────────────────────────────────────────────────
@@ -1877,4 +1896,72 @@ model PrescricaoDieta {
 
   @@index([doenteId, ativa])
   @@map("prescricoes_dieta")
+}
+
+// ─── IACS — Culturas Microbiológicas e Surtos ─────────────────────────────────
+
+enum ResultadoCultura {
+  pendente
+  positivo
+  negativo
+  contaminado
+}
+
+model CulturaMicrobiologica {
+  id             String           @id @default(uuid())
+  doenteId       String
+  doente         Doente           @relation(fields: [doenteId], references: [id])
+  dataColheita   DateTime
+  tipoAmostra    String
+  agente         String?
+  antibiograma   Json?
+  resultado      ResultadoCultura @default(pendente)
+  servico        String?
+  observacoes    String?
+  registadoPorId String
+  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id])
+  criadoEm       DateTime         @default(now())
+
+  @@index([doenteId])
+  @@index([resultado])
+  @@index([agente])
+  @@map("culturas_microbiologicas")
+}
+
+enum EstadoSurto {
+  activo
+  controlado
+  encerrado
+}
+
+model SurtoIACS {
+  id             String      @id @default(uuid())
+  agente         String
+  servico        String
+  dataInicio     DateTime
+  dataFim        DateTime?
+  estado         EstadoSurto @default(activo)
+  numCasos       Int         @default(1)
+  medidas        Json?
+  observacoes    String?
+  registadoPorId String
+  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id])
+  criadoEm       DateTime    @default(now())
+
+  @@index([estado])
+  @@index([agente])
+  @@map("surtos_iacs")
+}
+
+// ─── Conformidade / RGPD Checklist ───────────────────────────────────────────
+
+model ConformidadeChecklistItem {
+  id              String      @id @default(uuid())
+  itemKey         String      @unique
+  estado          String      @default("verificar") // 'conforme' | 'verificar' | 'nao_conforme'
+  atualizadoEm   DateTime    @updatedAt
+  atualizadoPorId String?
+  atualizadoPor   Utilizador? @relation("ChecklistAtualizador", fields: [atualizadoPorId], references: [id])
+
+  @@map("conformidade_checklist")
 }

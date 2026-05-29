@@ -1,28 +1,46 @@
 export type EstadoDoente = 'estavel' | 'critico' | 'grave' | 'alta_prevista';
 
-export type EstadoCama = 'livre' | 'ocupada' | 'em_limpeza' | 'reservada';
+export type EstadoCama = 'disponivel' | 'ocupada' | 'em_limpeza' | 'em_manutencao' | 'reservada';
 
 export interface Cama {
   id: string;
   numero: string;
   quarto: string;
-  estado: EstadoCama;
-  doenteId?: string;
+  estado: EstadoCama | string;
+  doenteId?: string | null;
 }
 
 export interface Doente {
   id: string;
   nome: string;
-  dataNascimento: Date;
-  numeroProcesso: string;
-  estado: EstadoDoente;
-  diagnosticoPrincipal: string;
-  camaId: string;
-  enfermeirosAtribuidos: string[]; // ids dos enfermeiros
-  medicoAtribuido?: string;        // id do médico
-  dataAdmissao: Date;
-  dataAltaPrevista?: Date;
-  dataAlta?: Date;
-  administrativoAdmissaoId: string;
+  dataNascimento: string;
+  numeroProcesso?: string | null;
+  estado: EstadoDoente | string;
+  estadoRegisto?: string | null;
+  diagnosticoPrincipal?: string | null;
+  camaId?: string | null;
+  cama?: Cama | null;
+  dataAdmissao: string;
+  dataAltaPrevista?: string | null;
+  dataAlta?: string | null;
   ativo: boolean;
+}
+
+export interface DoenteListItem {
+  id: string;
+  nome: string;
+  numeroProcesso: string;
+  estado: string;
+  estadoRegisto: string;
+  diagnosticoPrincipal: string;
+  dataAdmissao: string;
+  cama?: { id: string; numero: string; quarto: string } | null;
+}
+
+export interface DoentesPaginados {
+  data: DoenteListItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPaginas: number;
 }

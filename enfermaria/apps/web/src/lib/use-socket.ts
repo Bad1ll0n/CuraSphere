@@ -24,6 +24,7 @@ type SocketEvent =
   | 'sos:alerta'
   | 'alerta:novo'
   | 'doente:estado'
+  | 'bloco:update'
   | 'pong';
 
 export function useSocket(

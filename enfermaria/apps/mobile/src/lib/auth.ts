@@ -1,13 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Utilizador } from '@org/shared';
 import api, { setMemToken } from './api';
 
-export interface Utilizador {
-  id: string;
-  nome: string;
-  numeroFuncionario: string;
-  role: string;
-  subRole?: string | null;
-}
+export type { Utilizador };
 
 export async function login(numeroFuncionario: string, password: string): Promise<Utilizador> {
   const { data } = await api.post('/auth/login', { numeroFuncionario, password });

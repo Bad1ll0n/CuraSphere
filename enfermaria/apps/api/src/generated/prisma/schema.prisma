@@ -1,6 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
-  output        = "../generated/prisma"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -68,24 +68,24 @@ model Utilizador {
   atualizadoEm      DateTime  @updatedAt
 
   // Relações existentes
-  turnosComoChefe              Turno[]                    @relation("ChefeTurno")
+  turnosComoChefe              Turno[]                     @relation("ChefeTurno")
   horariosEntrada              HorarioEntrada[]
   notasTurno                   NotaTurno[]
-  tarefasCriadas               Tarefa[]                   @relation("TarefaCriadaPor")
-  tarefasResponsavel           Tarefa[]                   @relation("TarefaResponsavel")
-  medicacoesPrescritas         Medicacao[]                @relation("MedicacaoPrescritor")
+  tarefasCriadas               Tarefa[]                    @relation("TarefaCriadaPor")
+  tarefasResponsavel           Tarefa[]                    @relation("TarefaResponsavel")
+  medicacoesPrescritas         Medicacao[]                 @relation("MedicacaoPrescritor")
   registosMedicacao            RegistoMedicacao[]
-  doentesAdmitidos             Doente[]                   @relation("DoenteAdmissao")
+  doentesAdmitidos             Doente[]                    @relation("DoenteAdmissao")
   escalas                      Escala[]
   atribuicoesEnfermeiro        AtribuicaoDoente[]
   horariosTurnoProfissional    HorarioTurnoProfissional[]
-  atribuicoesComoUtilizador    AtribuicaoHorarioTurno[]   @relation("AtribuicaoUtilizador")
-  atribuicoesFeitas            AtribuicaoHorarioTurno[]   @relation("AtribuicaoAtribuidoPor")
-  trocasSolicitadas            PedidoTrocaTurno[]         @relation("TrocaSolicitante")
-  trocasRecebidas              PedidoTrocaTurno[]         @relation("TrocaDestinatario")
-  trocasAprovadas              PedidoTrocaTurno[]         @relation("TrocaAprovadoPor")
+  atribuicoesComoUtilizador    AtribuicaoHorarioTurno[]    @relation("AtribuicaoUtilizador")
+  atribuicoesFeitas            AtribuicaoHorarioTurno[]    @relation("AtribuicaoAtribuidoPor")
+  trocasSolicitadas            PedidoTrocaTurno[]          @relation("TrocaSolicitante")
+  trocasRecebidas              PedidoTrocaTurno[]          @relation("TrocaDestinatario")
+  trocasAprovadas              PedidoTrocaTurno[]          @relation("TrocaAprovadoPor")
   auditLogs                    AuditLog[]
-  sinaisVitaisRegistados       SinalVital[]               @relation("SinaisVitaisRegistados")
+  sinaisVitaisRegistados       SinalVital[]                @relation("SinaisVitaisRegistados")
   dispositivosTokens           DispositivoToken[]
   notificacoesInApp            NotificacaoInApp[]
   avaliacoesRisco              AvaliacaoRisco[]
@@ -94,78 +94,82 @@ model Utilizador {
   notasClinciasAutor           NotaClinica[]
   escalasClinicasRegistadas    EscalaClinica[]
   // Novos — Fase 5
-  examesSolicitados            Exame[]                    @relation("ExameSolicitadoPor")
-  episodiosTriados             EpisodioUrgencia[]         @relation("EpisodioTriador")
-  episodiosMedico              EpisodioUrgencia[]         @relation("EpisodioMedico")
-  cirurgiasComoCircurgiao      CirurgiaProgramada[]       @relation("CirurgiaCircurgiao")
-  cirurgiasComoAnestesista     CirurgiaProgramada[]       @relation("CirurgiaAnestesista")
+  examesSolicitados            Exame[]                     @relation("ExameSolicitadoPor")
+  episodiosTriados             EpisodioUrgencia[]          @relation("EpisodioTriador")
+  episodiosMedico              EpisodioUrgencia[]          @relation("EpisodioMedico")
+  cirurgiasComoCircurgiao      CirurgiaProgramada[]        @relation("CirurgiaCircurgiao")
+  cirurgiasComoAnestesista     CirurgiaProgramada[]        @relation("CirurgiaAnestesista")
   consultas                    Consulta[]
-  stockPedidosSolicitados      PedidoFarmacia[]           @relation("PedidoSolicitante")
-  stockPedidosProcessados      PedidoFarmacia[]           @relation("PedidoProcessador")
-  stockPedidosAprovados        PedidoFarmacia[]           @relation("PedidoAprovador")
+  stockPedidosSolicitados      PedidoFarmacia[]            @relation("PedidoSolicitante")
+  stockPedidosProcessados      PedidoFarmacia[]            @relation("PedidoProcessador")
+  stockPedidosAprovados        PedidoFarmacia[]            @relation("PedidoAprovador")
   planosReabilitacao           PlanoReabilitacao[]
   sessoesFisioterapia          SessaoFisioterapia[]
-  pedidosInternosSolicitados   PedidoInterno[]            @relation("PedidoInternoSolicitante")
-  pedidosInternosExecutados    PedidoInterno[]            @relation("PedidoInternoExecutor")
+  pedidosInternosSolicitados   PedidoInterno[]             @relation("PedidoInternoSolicitante")
+  pedidosInternosExecutados    PedidoInterno[]             @relation("PedidoInternoExecutor")
   anunciosPublicados           Anuncio[]
-  mensagensEnviadas            MensagemInterna[]          @relation("MensagemRemetente")
-  mensagensRecebidas           MensagemInterna[]          @relation("MensagemDestinatario")
+  mensagensEnviadas            MensagemInterna[]           @relation("MensagemRemetente")
+  mensagensRecebidas           MensagemInterna[]           @relation("MensagemDestinatario")
   // Novos — Fase 8A
-  interconsultasRequisitadas   Interconsulta[]            @relation("InterconsultaRequisitante")
-  interconsultasRespondidas    Interconsulta[]            @relation("InterconsultaResposta")
-  dispositivosInseridos        DispositivoInvasivo[]      @relation("DispositivoInserido")
+  interconsultasRequisitadas   Interconsulta[]             @relation("InterconsultaRequisitante")
+  interconsultasRespondidas    Interconsulta[]             @relation("InterconsultaResposta")
+  dispositivosInseridos        DispositivoInvasivo[]       @relation("DispositivoInserido")
   // Novos — Fase 8B
-  medicacoesValidadas          Medicacao[]                @relation("MedicacaoValidador")
+  medicacoesValidadas          Medicacao[]                 @relation("MedicacaoValidador")
   // Novos — Fase 8B WHO Checklist
-  checklistsSignIn             ChecklistCirurgia[]        @relation("ChecklistSignIn")
-  checklistsTimeOut            ChecklistCirurgia[]        @relation("ChecklistTimeOut")
-  checklistsSignOut            ChecklistCirurgia[]        @relation("ChecklistSignOut")
+  checklistsSignIn             ChecklistCirurgia[]         @relation("ChecklistSignIn")
+  checklistsTimeOut            ChecklistCirurgia[]         @relation("ChecklistTimeOut")
+  checklistsSignOut            ChecklistCirurgia[]         @relation("ChecklistSignOut")
   // Novos — Fase 8C Sala de Espera
-  checkinsRececionados         CheckinSalaEspera[]        @relation("CheckinRececionista")
-  checkinsAtendidos            CheckinSalaEspera[]        @relation("CheckinMedico")
+  checkinsRececionados         CheckinSalaEspera[]         @relation("CheckinRececionista")
+  checkinsAtendidos            CheckinSalaEspera[]         @relation("CheckinMedico")
   refreshTokens                RefreshToken[]
-  incidentesCriados            IncidenteTI[]              @relation("IncidentesCriados")
-  incidentesAtribuidos         IncidenteTI[]              @relation("IncidentesAtribuidos")
-  pedidosTICriados             PedidoTI[]                 @relation("PedidosTICriados")
-  pedidosTIAtribuidos          PedidoTI[]                 @relation("PedidosTIAtribuidos")
+  incidentesCriados            IncidenteTI[]               @relation("IncidentesCriados")
+  incidentesAtribuidos         IncidenteTI[]               @relation("IncidentesAtribuidos")
+  pedidosTICriados             PedidoTI[]                  @relation("PedidosTICriados")
+  pedidosTIAtribuidos          PedidoTI[]                  @relation("PedidosTIAtribuidos")
   ficheirosPessoaisAtualizados FicheiroPessoalDoente[]
   episodiosFaturacaoCriados    EpisodioFaturacao[]
   pagamentosRegistados         Pagamento[]
-  agendas                      AgendaMedico[]             @relation("AgendaMedico")
-  problemasRegistados          ProblemaClinico[]          @relation("ProblemaRegistado")
-  manutencoesReportadas        Manutencao[]               @relation("ManutencaoReportada")
-  manutencoesTecnico           Manutencao[]               @relation("ManutencaoTecnico")
-  alertasAcusados              AlertaClinico[]            @relation("AlertaAcusador")
+  agendas                      AgendaMedico[]              @relation("AgendaMedico")
+  problemasRegistados          ProblemaClinico[]           @relation("ProblemaRegistado")
+  manutencoesReportadas        Manutencao[]                @relation("ManutencaoReportada")
+  manutencoesTecnico           Manutencao[]                @relation("ManutencaoTecnico")
+  alertasAcusados              AlertaClinico[]             @relation("AlertaAcusador")
   // RH
-  ausencias                    Ausencia[]                 @relation("AusenciaUtilizador")
-  ausenciasAprovadas           Ausencia[]                 @relation("AusenciaAprovador")
-  formacoes                    FormacaoUtilizador[]       @relation("FormacaoUtilizador")
-  eventosAdversosRegistados    EventoAdverso[]            @relation("EventoAdversoRegistado")
+  ausencias                    Ausencia[]                  @relation("AusenciaUtilizador")
+  ausenciasAprovadas           Ausencia[]                  @relation("AusenciaAprovador")
+  formacoes                    FormacaoUtilizador[]        @relation("FormacaoUtilizador")
+  eventosAdversosRegistados    EventoAdverso[]             @relation("EventoAdversoRegistado")
   // Especialidades
-  sessoesEspecialidade         SessaoEspecialidade[]      @relation("SessaoEspecialidadeProfissional")
+  sessoesEspecialidade         SessaoEspecialidade[]       @relation("SessaoEspecialidadeProfissional")
   // RH expandido
-  avaliacoesComoAvaliado       AvaliacaoDesempenho[]      @relation("AvaliacaoAvaliado")
-  avaliacoesComoAvaliador      AvaliacaoDesempenho[]      @relation("AvaliacaoAvaliador")
+  avaliacoesComoAvaliado       AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliado")
+  avaliacoesComoAvaliador      AvaliacaoDesempenho[]       @relation("AvaliacaoAvaliador")
   dadosContratuais             DadosContratuais?
   // Chefe directo (hierarquia para aprovação de férias)
   chefeId                      String?
-  chefe                        Utilizador?                @relation("ChefeSubordinado", fields: [chefeId], references: [id])
-  subordinados                 Utilizador[]               @relation("ChefeSubordinado")
+  chefe                        Utilizador?                 @relation("ChefeSubordinado", fields: [chefeId], references: [id])
+  subordinados                 Utilizador[]                @relation("ChefeSubordinado")
   // Inventário expandido
-  ajustesStock                 AjusteStock[]              @relation("AjustesFeitos")
-  transferenciasSolicitadas    TransferenciaStock[]       @relation("TransfSolicitadas")
-  transferenciasConfirmadas    TransferenciaStock[]       @relation("TransfConfirmadas")
-  encomendasRecebidas          EncomendaFornecedor[]      @relation("EncomendasRecebidas")
+  ajustesStock                 AjusteStock[]               @relation("AjustesFeitos")
+  transferenciasSolicitadas    TransferenciaStock[]        @relation("TransfSolicitadas")
+  transferenciasConfirmadas    TransferenciaStock[]        @relation("TransfConfirmadas")
+  encomendasRecebidas          EncomendaFornecedor[]       @relation("EncomendasRecebidas")
   presencaOnline               PresencaOnline?
   registosCheckin              RegistoCheckin[]
-  consentimentosCriados        ConsentimentoInformado[]   @relation("ConsentimentoCriador")
-  consentimentosTestemunha     ConsentimentoInformado[]   @relation("ConsentimentoTestemunha")
+  consentimentosCriados        ConsentimentoInformado[]    @relation("ConsentimentoCriador")
+  consentimentosTestemunha     ConsentimentoInformado[]    @relation("ConsentimentoTestemunha")
   breakGlassUsados             BreakGlassAccess[]
   protocolosAtivados           ProtocoloClinico[]
   itensProtocoloConcluidos     ItemProtocolo[]
   prescricoesDietaCriadas      PrescricaoDieta[]
-  medicacoesAssinadas          Medicacao[]                @relation("MedicacaoAssinatura")
-  notasAssinadas               NotaClinica[]              @relation("NotaAssinatura")
+  medicacoesAssinadas          Medicacao[]                 @relation("MedicacaoAssinatura")
+  notasAssinadas               NotaClinica[]               @relation("NotaAssinatura")
+  culturasRegistadas           CulturaMicrobiologica[]
+  surtosRegistados             SurtoIACS[]
+  notasIncidentesTI            NotaIncidenteTI[]           @relation("NotasIncidentesTI")
+  checklistsConformidade       ConformidadeChecklistItem[] @relation("ChecklistAtualizador")
 
   @@index([role, ativo])
   @@index([servico])
@@ -229,43 +233,44 @@ model Doente {
   administrativo           Utilizador? @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
 
   // Relações existentes
-  atribuicoes           AtribuicaoDoente[]
-  atribuicoesHorario    AtribuicaoHorarioTurno[]
-  tarefas               Tarefa[]
-  medicacoes            Medicacao[]
-  registosMedicacao     RegistoMedicacao[]
-  notasTurno            NotaTurno[]
-  passagensTurno        PassagemTurno[]
-  sinaisVitais          SinalVital[]
-  alergias              Alergia[]
-  contactosEmergencia   ContactoEmergencia[]
-  alertasClinicos       AlertaClinico[]
-  avaliacoesRisco       AvaliacaoRisco[]
-  sumarioAlta           SumarioAlta?
+  atribuicoes             AtribuicaoDoente[]
+  atribuicoesHorario      AtribuicaoHorarioTurno[]
+  tarefas                 Tarefa[]
+  medicacoes              Medicacao[]
+  registosMedicacao       RegistoMedicacao[]
+  notasTurno              NotaTurno[]
+  passagensTurno          PassagemTurno[]
+  sinaisVitais            SinalVital[]
+  alergias                Alergia[]
+  contactosEmergencia     ContactoEmergencia[]
+  alertasClinicos         AlertaClinico[]
+  avaliacoesRisco         AvaliacaoRisco[]
+  sumarioAlta             SumarioAlta?
   // Novos — Fase 7
-  notasClincias         NotaClinica[]
-  escalasClinicas       EscalaClinica[]
+  notasClincias           NotaClinica[]
+  escalasClinicas         EscalaClinica[]
   // Novos — Fase 5
-  exames                Exame[]
-  episodiosUrgencia     EpisodioUrgencia[]
-  cirurgias             CirurgiaProgramada[]
-  consultas             Consulta[]
-  planosReabilitacao    PlanoReabilitacao[]
-  sessoesFisioterapia   SessaoFisioterapia[]
-  sessoesEspecialidade  SessaoEspecialidade[]
-  pedidosInternos       PedidoInterno[]
+  exames                  Exame[]
+  episodiosUrgencia       EpisodioUrgencia[]
+  cirurgias               CirurgiaProgramada[]
+  consultas               Consulta[]
+  planosReabilitacao      PlanoReabilitacao[]
+  sessoesFisioterapia     SessaoFisioterapia[]
+  sessoesEspecialidade    SessaoEspecialidade[]
+  pedidosInternos         PedidoInterno[]
   // Novos — Fase 8A
-  interconsultas        Interconsulta[]
-  dispositivosInvasivos DispositivoInvasivo[]
+  interconsultas          Interconsulta[]
+  dispositivosInvasivos   DispositivoInvasivo[]
   // Dados administrativos (acesso restrito a role 'administrativo')
-  ficheiroPessoal       FicheiroPessoalDoente?
-  episodiosFaturacao    EpisodioFaturacao[]
-  problemas             ProblemaClinico[]
-  eventosAdversos       EventoAdverso[]          @relation("EventosAdversosDoente")
-  consentimentos        ConsentimentoInformado[]
-  breakGlassAcessos     BreakGlassAccess[]
-  protocolosClinicos    ProtocoloClinico[]
-  prescricoesDieta      PrescricaoDieta[]
+  ficheiroPessoal         FicheiroPessoalDoente?
+  episodiosFaturacao      EpisodioFaturacao[]
+  problemas               ProblemaClinico[]
+  eventosAdversos         EventoAdverso[]          @relation("EventosAdversosDoente")
+  consentimentos          ConsentimentoInformado[]
+  breakGlassAcessos       BreakGlassAccess[]
+  protocolosClinicos      ProtocoloClinico[]
+  prescricoesDieta        PrescricaoDieta[]
+  culturasMicrobiologicas CulturaMicrobiologica[]
 
   @@index([ativo])
   @@index([estado])
@@ -1411,10 +1416,24 @@ model IncidenteTI {
   responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id])
   criadoEm      DateTime              @default(now())
   atualizadoEm  DateTime              @updatedAt
+  notas         NotaIncidenteTI[]
 
   @@index([estado])
   @@index([subRoleAlvo])
   @@map("incidentes_ti")
+}
+
+model NotaIncidenteTI {
+  id          String      @id @default(uuid())
+  incidenteId String
+  incidente   IncidenteTI @relation(fields: [incidenteId], references: [id], onDelete: Cascade)
+  autorId     String
+  autor       Utilizador  @relation("NotasIncidentesTI", fields: [autorId], references: [id])
+  conteudo    String
+  criadaEm    DateTime    @default(now())
+
+  @@index([incidenteId])
+  @@map("notas_incidentes_ti")
 }
 
 // ─── Pedidos TI ───────────────────────────────────────────────────────────────
@@ -1877,4 +1896,72 @@ model PrescricaoDieta {
 
   @@index([doenteId, ativa])
   @@map("prescricoes_dieta")
+}
+
+// ─── IACS — Culturas Microbiológicas e Surtos ─────────────────────────────────
+
+enum ResultadoCultura {
+  pendente
+  positivo
+  negativo
+  contaminado
+}
+
+model CulturaMicrobiologica {
+  id             String           @id @default(uuid())
+  doenteId       String
+  doente         Doente           @relation(fields: [doenteId], references: [id])
+  dataColheita   DateTime
+  tipoAmostra    String
+  agente         String?
+  antibiograma   Json?
+  resultado      ResultadoCultura @default(pendente)
+  servico        String?
+  observacoes    String?
+  registadoPorId String
+  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id])
+  criadoEm       DateTime         @default(now())
+
+  @@index([doenteId])
+  @@index([resultado])
+  @@index([agente])
+  @@map("culturas_microbiologicas")
+}
+
+enum EstadoSurto {
+  activo
+  controlado
+  encerrado
+}
+
+model SurtoIACS {
+  id             String      @id @default(uuid())
+  agente         String
+  servico        String
+  dataInicio     DateTime
+  dataFim        DateTime?
+  estado         EstadoSurto @default(activo)
+  numCasos       Int         @default(1)
+  medidas        Json?
+  observacoes    String?
+  registadoPorId String
+  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id])
+  criadoEm       DateTime    @default(now())
+
+  @@index([estado])
+  @@index([agente])
+  @@map("surtos_iacs")
+}
+
+// ─── Conformidade / RGPD Checklist ───────────────────────────────────────────
+
+model ConformidadeChecklistItem {
+  id              String      @id @default(uuid())
+  itemKey         String      @unique
+  estado          String      @default("verificar") // 'conforme' | 'verificar' | 'nao_conforme'
+  atualizadoEm    DateTime    @updatedAt
+  atualizadoPorId String?
+  atualizadoPor   Utilizador? @relation("ChecklistAtualizador", fields: [atualizadoPorId], references: [id])
+
+  @@map("conformidade_checklist")
 }

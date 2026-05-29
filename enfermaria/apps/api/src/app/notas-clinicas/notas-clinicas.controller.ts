@@ -3,6 +3,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { NotasClinicasService } from './notas-clinicas.service';
+import { CriarNotaClinicaDto } from './dto/criar-nota-clinica.dto';
+import { AtualizarNotaClinicaDto } from './dto/atualizar-nota-clinica.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('notas-clinicas')
@@ -11,7 +13,7 @@ export class NotasClinicasController {
 
   @Post(':doenteId')
   @Roles('medico', 'enfermeiro')
-  criar(@Param('doenteId') doenteId: string, @Body() dto: any, @Request() req: any) {
+  criar(@Param('doenteId') doenteId: string, @Body() dto: CriarNotaClinicaDto, @Request() req: any) {
     return this.service.criar(doenteId, dto, req.user.sub);
   }
 
@@ -22,7 +24,7 @@ export class NotasClinicasController {
 
   @Patch(':id')
   @Roles('medico', 'enfermeiro')
-  atualizar(@Param('id') id: string, @Body() dto: any) {
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarNotaClinicaDto) {
     return this.service.atualizar(id, dto);
   }
 

@@ -1,8 +1,10 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Patch, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
+
+const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('ti', 'qualidade', 'direcao')
@@ -44,6 +46,31 @@ export class AuditController {
     ]);
 
     return { total, pagina: parseInt(page), totalPaginas: Math.ceil(total / take), logs };
+  }
+
+  @Get('checklist')
+  async listarChecklist() {
+    const itens = await this.prisma.conformidadeChecklistItem.findMany();
+    const map = Object.fromEntries(itens.map(i => [i.itemKey, i]));
+    return CHECKLIST_KEYS.map(key => ({
+      itemKey: key,
+      estado: map[key]?.estado ?? 'verificar',
+      atualizadoEm: map[key]?.atualizadoEm ?? null,
+      atualizadoPor: map[key] ? undefined : null,
+    }));
+  }
+
+  @Patch('checklist/:itemKey')
+  async atualizarChecklist(
+    @Param('itemKey') itemKey: string,
+    @Body() body: { estado: string },
+    @Request() req: any,
+  ) {
+    return this.prisma.conformidadeChecklistItem.upsert({
+      where: { itemKey },
+      create: { itemKey, estado: body.estado, atualizadoPorId: req.user.sub },
+      update: { estado: body.estado, atualizadoPorId: req.user.sub },
+    });
   }
 
   @Get('conformidade')

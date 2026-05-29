@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TipoIncidenteTI } from '../../generated/prisma';
 import { CriarIncidenteDto } from './dto/criar-incidente.dto';
 import { AtualizarIncidenteDto } from './dto/atualizar-incidente.dto';
+import { AdicionarNotaDto } from './dto/adicionar-nota.dto';
 
 const TIPO_PARA_SUBROLE: Partial<Record<TipoIncidenteTI, string>> = {
   [TipoIncidenteTI.infraestrutura]: 'sysadmin',
@@ -59,6 +60,23 @@ export class IncidentesTIService {
     });
     if (!inc) throw new NotFoundException(`Incidente TI (ID ${id}) não encontrado`);
     return inc;
+  }
+
+  async listarNotas(incidenteId: string) {
+    await this.detalhe(incidenteId);
+    return this.prisma.notaIncidenteTI.findMany({
+      where: { incidenteId },
+      orderBy: { criadaEm: 'asc' },
+      include: { autor: { select: { id: true, nome: true, role: true } } },
+    });
+  }
+
+  async adicionarNota(incidenteId: string, autorId: string, dto: AdicionarNotaDto) {
+    await this.detalhe(incidenteId);
+    return this.prisma.notaIncidenteTI.create({
+      data: { incidenteId, autorId, conteudo: dto.conteudo },
+      include: { autor: { select: { id: true, nome: true, role: true } } },
+    });
   }
 
   async atualizar(id: string, dto: AtualizarIncidenteDto, role: string) {

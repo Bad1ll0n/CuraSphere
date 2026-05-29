@@ -284,6 +284,11 @@ export type DispositivoInvasivo = $Result.DefaultSelection<Prisma.$DispositivoIn
  */
 export type IncidenteTI = $Result.DefaultSelection<Prisma.$IncidenteTIPayload>
 /**
+ * Model NotaIncidenteTI
+ * 
+ */
+export type NotaIncidenteTI = $Result.DefaultSelection<Prisma.$NotaIncidenteTIPayload>
+/**
  * Model PedidoTI
  * 
  */
@@ -398,6 +403,21 @@ export type ItemProtocolo = $Result.DefaultSelection<Prisma.$ItemProtocoloPayloa
  * 
  */
 export type PrescricaoDieta = $Result.DefaultSelection<Prisma.$PrescricaoDietaPayload>
+/**
+ * Model CulturaMicrobiologica
+ * 
+ */
+export type CulturaMicrobiologica = $Result.DefaultSelection<Prisma.$CulturaMicrobiologicaPayload>
+/**
+ * Model SurtoIACS
+ * 
+ */
+export type SurtoIACS = $Result.DefaultSelection<Prisma.$SurtoIACSPayload>
+/**
+ * Model ConformidadeChecklistItem
+ * 
+ */
+export type ConformidadeChecklistItem = $Result.DefaultSelection<Prisma.$ConformidadeChecklistItemPayload>
 
 /**
  * Enums
@@ -723,6 +743,25 @@ export const EstadoFatura: {
 
 export type EstadoFatura = (typeof EstadoFatura)[keyof typeof EstadoFatura]
 
+
+export const ResultadoCultura: {
+  pendente: 'pendente',
+  positivo: 'positivo',
+  negativo: 'negativo',
+  contaminado: 'contaminado'
+};
+
+export type ResultadoCultura = (typeof ResultadoCultura)[keyof typeof ResultadoCultura]
+
+
+export const EstadoSurto: {
+  activo: 'activo',
+  controlado: 'controlado',
+  encerrado: 'encerrado'
+};
+
+export type EstadoSurto = (typeof EstadoSurto)[keyof typeof EstadoSurto]
+
 }
 
 export type Servico = $Enums.Servico
@@ -840,6 +879,14 @@ export const EstadoPedidoTI: typeof $Enums.EstadoPedidoTI
 export type EstadoFatura = $Enums.EstadoFatura
 
 export const EstadoFatura: typeof $Enums.EstadoFatura
+
+export type ResultadoCultura = $Enums.ResultadoCultura
+
+export const ResultadoCultura: typeof $Enums.ResultadoCultura
+
+export type EstadoSurto = $Enums.EstadoSurto
+
+export const EstadoSurto: typeof $Enums.EstadoSurto
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1500,6 +1547,16 @@ export class PrismaClient<
   get incidenteTI(): Prisma.IncidenteTIDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.notaIncidenteTI`: Exposes CRUD operations for the **NotaIncidenteTI** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotaIncidenteTIS
+    * const notaIncidenteTIS = await prisma.notaIncidenteTI.findMany()
+    * ```
+    */
+  get notaIncidenteTI(): Prisma.NotaIncidenteTIDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.pedidoTI`: Exposes CRUD operations for the **PedidoTI** model.
     * Example usage:
     * ```ts
@@ -1728,6 +1785,36 @@ export class PrismaClient<
     * ```
     */
   get prescricaoDieta(): Prisma.PrescricaoDietaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.culturaMicrobiologica`: Exposes CRUD operations for the **CulturaMicrobiologica** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CulturaMicrobiologicas
+    * const culturaMicrobiologicas = await prisma.culturaMicrobiologica.findMany()
+    * ```
+    */
+  get culturaMicrobiologica(): Prisma.CulturaMicrobiologicaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.surtoIACS`: Exposes CRUD operations for the **SurtoIACS** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SurtoIACS
+    * const surtoIACS = await prisma.surtoIACS.findMany()
+    * ```
+    */
+  get surtoIACS(): Prisma.SurtoIACSDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.conformidadeChecklistItem`: Exposes CRUD operations for the **ConformidadeChecklistItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConformidadeChecklistItems
+    * const conformidadeChecklistItems = await prisma.conformidadeChecklistItem.findMany()
+    * ```
+    */
+  get conformidadeChecklistItem(): Prisma.ConformidadeChecklistItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -2223,6 +2310,7 @@ export namespace Prisma {
     Interconsulta: 'Interconsulta',
     DispositivoInvasivo: 'DispositivoInvasivo',
     IncidenteTI: 'IncidenteTI',
+    NotaIncidenteTI: 'NotaIncidenteTI',
     PedidoTI: 'PedidoTI',
     FicheiroPessoalDoente: 'FicheiroPessoalDoente',
     EpisodioFaturacao: 'EpisodioFaturacao',
@@ -2245,7 +2333,10 @@ export namespace Prisma {
     BreakGlassAccess: 'BreakGlassAccess',
     ProtocoloClinico: 'ProtocoloClinico',
     ItemProtocolo: 'ItemProtocolo',
-    PrescricaoDieta: 'PrescricaoDieta'
+    PrescricaoDieta: 'PrescricaoDieta',
+    CulturaMicrobiologica: 'CulturaMicrobiologica',
+    SurtoIACS: 'SurtoIACS',
+    ConformidadeChecklistItem: 'ConformidadeChecklistItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -2264,7 +2355,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta"
+      modelProps: "roleConfig" | "subRoleConfig" | "utilizador" | "cama" | "doente" | "turno" | "atribuicaoDoente" | "horarioEntrada" | "passagemTurno" | "presencaOnline" | "registoCheckin" | "notaClinica" | "escalaClinica" | "notaTurno" | "tarefa" | "medicacao" | "registoMedicacao" | "escala" | "horarioTurno" | "horarioTurnoProfissional" | "pedidoTrocaTurno" | "atribuicaoHorarioTurno" | "sinalVital" | "auditLog" | "alergia" | "contactoEmergencia" | "alertaClinico" | "avaliacaoRisco" | "sumarioAlta" | "dispositivoToken" | "notificacaoInApp" | "exame" | "ficheiroExame" | "episodioUrgencia" | "cirurgiaProgramada" | "checklistCirurgia" | "consulta" | "agendaMedico" | "checkinSalaEspera" | "stockItem" | "pedidoFarmacia" | "catalogoMedicamento" | "ajusteStock" | "transferenciaStock" | "fornecedor" | "encomendaFornecedor" | "planoReabilitacao" | "sessaoFisioterapia" | "pedidoInterno" | "anuncio" | "mensagemInterna" | "interconsulta" | "dispositivoInvasivo" | "incidenteTI" | "notaIncidenteTI" | "pedidoTI" | "ficheiroPessoalDoente" | "episodioFaturacao" | "itemFatura" | "pagamento" | "atoClinico" | "atoConsulta" | "ticket" | "refreshToken" | "problemaClinico" | "equipamento" | "manutencao" | "ausencia" | "formacaoUtilizador" | "eventoAdverso" | "sessaoEspecialidade" | "avaliacaoDesempenho" | "dadosContratuais" | "consentimentoInformado" | "breakGlassAccess" | "protocoloClinico" | "itemProtocolo" | "prescricaoDieta" | "culturaMicrobiologica" | "surtoIACS" | "conformidadeChecklistItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -6264,6 +6355,80 @@ export namespace Prisma {
           }
         }
       }
+      NotaIncidenteTI: {
+        payload: Prisma.$NotaIncidenteTIPayload<ExtArgs>
+        fields: Prisma.NotaIncidenteTIFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotaIncidenteTIFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotaIncidenteTIFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          findFirst: {
+            args: Prisma.NotaIncidenteTIFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotaIncidenteTIFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          findMany: {
+            args: Prisma.NotaIncidenteTIFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>[]
+          }
+          create: {
+            args: Prisma.NotaIncidenteTICreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          createMany: {
+            args: Prisma.NotaIncidenteTICreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotaIncidenteTICreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>[]
+          }
+          delete: {
+            args: Prisma.NotaIncidenteTIDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          update: {
+            args: Prisma.NotaIncidenteTIUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotaIncidenteTIDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotaIncidenteTIUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotaIncidenteTIUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotaIncidenteTIUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotaIncidenteTIPayload>
+          }
+          aggregate: {
+            args: Prisma.NotaIncidenteTIAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotaIncidenteTI>
+          }
+          groupBy: {
+            args: Prisma.NotaIncidenteTIGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotaIncidenteTIGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotaIncidenteTICountArgs<ExtArgs>
+            result: $Utils.Optional<NotaIncidenteTICountAggregateOutputType> | number
+          }
+        }
+      }
       PedidoTI: {
         payload: Prisma.$PedidoTIPayload<ExtArgs>
         fields: Prisma.PedidoTIFieldRefs
@@ -7966,6 +8131,228 @@ export namespace Prisma {
           }
         }
       }
+      CulturaMicrobiologica: {
+        payload: Prisma.$CulturaMicrobiologicaPayload<ExtArgs>
+        fields: Prisma.CulturaMicrobiologicaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CulturaMicrobiologicaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CulturaMicrobiologicaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          findFirst: {
+            args: Prisma.CulturaMicrobiologicaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CulturaMicrobiologicaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          findMany: {
+            args: Prisma.CulturaMicrobiologicaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>[]
+          }
+          create: {
+            args: Prisma.CulturaMicrobiologicaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          createMany: {
+            args: Prisma.CulturaMicrobiologicaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CulturaMicrobiologicaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>[]
+          }
+          delete: {
+            args: Prisma.CulturaMicrobiologicaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          update: {
+            args: Prisma.CulturaMicrobiologicaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          deleteMany: {
+            args: Prisma.CulturaMicrobiologicaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CulturaMicrobiologicaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CulturaMicrobiologicaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>[]
+          }
+          upsert: {
+            args: Prisma.CulturaMicrobiologicaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CulturaMicrobiologicaPayload>
+          }
+          aggregate: {
+            args: Prisma.CulturaMicrobiologicaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCulturaMicrobiologica>
+          }
+          groupBy: {
+            args: Prisma.CulturaMicrobiologicaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CulturaMicrobiologicaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CulturaMicrobiologicaCountArgs<ExtArgs>
+            result: $Utils.Optional<CulturaMicrobiologicaCountAggregateOutputType> | number
+          }
+        }
+      }
+      SurtoIACS: {
+        payload: Prisma.$SurtoIACSPayload<ExtArgs>
+        fields: Prisma.SurtoIACSFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SurtoIACSFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SurtoIACSFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          findFirst: {
+            args: Prisma.SurtoIACSFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SurtoIACSFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          findMany: {
+            args: Prisma.SurtoIACSFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>[]
+          }
+          create: {
+            args: Prisma.SurtoIACSCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          createMany: {
+            args: Prisma.SurtoIACSCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SurtoIACSCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>[]
+          }
+          delete: {
+            args: Prisma.SurtoIACSDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          update: {
+            args: Prisma.SurtoIACSUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          deleteMany: {
+            args: Prisma.SurtoIACSDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SurtoIACSUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SurtoIACSUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>[]
+          }
+          upsert: {
+            args: Prisma.SurtoIACSUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SurtoIACSPayload>
+          }
+          aggregate: {
+            args: Prisma.SurtoIACSAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSurtoIACS>
+          }
+          groupBy: {
+            args: Prisma.SurtoIACSGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SurtoIACSGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SurtoIACSCountArgs<ExtArgs>
+            result: $Utils.Optional<SurtoIACSCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConformidadeChecklistItem: {
+        payload: Prisma.$ConformidadeChecklistItemPayload<ExtArgs>
+        fields: Prisma.ConformidadeChecklistItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConformidadeChecklistItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConformidadeChecklistItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          findFirst: {
+            args: Prisma.ConformidadeChecklistItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConformidadeChecklistItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          findMany: {
+            args: Prisma.ConformidadeChecklistItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>[]
+          }
+          create: {
+            args: Prisma.ConformidadeChecklistItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          createMany: {
+            args: Prisma.ConformidadeChecklistItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConformidadeChecklistItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>[]
+          }
+          delete: {
+            args: Prisma.ConformidadeChecklistItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          update: {
+            args: Prisma.ConformidadeChecklistItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConformidadeChecklistItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConformidadeChecklistItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConformidadeChecklistItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConformidadeChecklistItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConformidadeChecklistItemPayload>
+          }
+          aggregate: {
+            args: Prisma.ConformidadeChecklistItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConformidadeChecklistItem>
+          }
+          groupBy: {
+            args: Prisma.ConformidadeChecklistItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConformidadeChecklistItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConformidadeChecklistItemCountArgs<ExtArgs>
+            result: $Utils.Optional<ConformidadeChecklistItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -8116,6 +8503,7 @@ export namespace Prisma {
     interconsulta?: InterconsultaOmit
     dispositivoInvasivo?: DispositivoInvasivoOmit
     incidenteTI?: IncidenteTIOmit
+    notaIncidenteTI?: NotaIncidenteTIOmit
     pedidoTI?: PedidoTIOmit
     ficheiroPessoalDoente?: FicheiroPessoalDoenteOmit
     episodioFaturacao?: EpisodioFaturacaoOmit
@@ -8139,6 +8527,9 @@ export namespace Prisma {
     protocoloClinico?: ProtocoloClinicoOmit
     itemProtocolo?: ItemProtocoloOmit
     prescricaoDieta?: PrescricaoDietaOmit
+    culturaMicrobiologica?: CulturaMicrobiologicaOmit
+    surtoIACS?: SurtoIACSOmit
+    conformidadeChecklistItem?: ConformidadeChecklistItemOmit
   }
 
   /* Types for Logging */
@@ -8333,6 +8724,10 @@ export namespace Prisma {
     prescricoesDietaCriadas: number
     medicacoesAssinadas: number
     notasAssinadas: number
+    culturasRegistadas: number
+    surtosRegistados: number
+    notasIncidentesTI: number
+    checklistsConformidade: number
   }
 
   export type UtilizadorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8419,6 +8814,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | UtilizadorCountOutputTypeCountPrescricoesDietaCriadasArgs
     medicacoesAssinadas?: boolean | UtilizadorCountOutputTypeCountMedicacoesAssinadasArgs
     notasAssinadas?: boolean | UtilizadorCountOutputTypeCountNotasAssinadasArgs
+    culturasRegistadas?: boolean | UtilizadorCountOutputTypeCountCulturasRegistadasArgs
+    surtosRegistados?: boolean | UtilizadorCountOutputTypeCountSurtosRegistadosArgs
+    notasIncidentesTI?: boolean | UtilizadorCountOutputTypeCountNotasIncidentesTIArgs
+    checklistsConformidade?: boolean | UtilizadorCountOutputTypeCountChecklistsConformidadeArgs
   }
 
   // Custom InputTypes
@@ -9013,6 +9412,34 @@ export namespace Prisma {
     where?: NotaClinicaWhereInput
   }
 
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountCulturasRegistadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CulturaMicrobiologicaWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountSurtosRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SurtoIACSWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountNotasIncidentesTIArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaIncidenteTIWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountChecklistsConformidadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConformidadeChecklistItemWhereInput
+  }
+
 
   /**
    * Count Type DoenteCountOutputType
@@ -9050,6 +9477,7 @@ export namespace Prisma {
     breakGlassAcessos: number
     protocolosClinicos: number
     prescricoesDieta: number
+    culturasMicrobiologicas: number
   }
 
   export type DoenteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9084,6 +9512,7 @@ export namespace Prisma {
     breakGlassAcessos?: boolean | DoenteCountOutputTypeCountBreakGlassAcessosArgs
     protocolosClinicos?: boolean | DoenteCountOutputTypeCountProtocolosClinicosArgs
     prescricoesDieta?: boolean | DoenteCountOutputTypeCountPrescricoesDietaArgs
+    culturasMicrobiologicas?: boolean | DoenteCountOutputTypeCountCulturasMicrobiologicasArgs
   }
 
   // Custom InputTypes
@@ -9312,6 +9741,13 @@ export namespace Prisma {
    */
   export type DoenteCountOutputTypeCountPrescricoesDietaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PrescricaoDietaWhereInput
+  }
+
+  /**
+   * DoenteCountOutputType without action
+   */
+  export type DoenteCountOutputTypeCountCulturasMicrobiologicasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CulturaMicrobiologicaWhereInput
   }
 
 
@@ -9712,6 +10148,37 @@ export namespace Prisma {
    */
   export type PlanoReabilitacaoCountOutputTypeCountSessoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessaoFisioterapiaWhereInput
+  }
+
+
+  /**
+   * Count Type IncidenteTICountOutputType
+   */
+
+  export type IncidenteTICountOutputType = {
+    notas: number
+  }
+
+  export type IncidenteTICountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    notas?: boolean | IncidenteTICountOutputTypeCountNotasArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * IncidenteTICountOutputType without action
+   */
+  export type IncidenteTICountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidenteTICountOutputType
+     */
+    select?: IncidenteTICountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * IncidenteTICountOutputType without action
+   */
+  export type IncidenteTICountOutputTypeCountNotasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaIncidenteTIWhereInput
   }
 
 
@@ -12446,6 +12913,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | Utilizador$prescricoesDietaCriadasArgs<ExtArgs>
     medicacoesAssinadas?: boolean | Utilizador$medicacoesAssinadasArgs<ExtArgs>
     notasAssinadas?: boolean | Utilizador$notasAssinadasArgs<ExtArgs>
+    culturasRegistadas?: boolean | Utilizador$culturasRegistadasArgs<ExtArgs>
+    surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
+    notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
+    checklistsConformidade?: boolean | Utilizador$checklistsConformidadeArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["utilizador"]>
 
@@ -12596,6 +13067,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: boolean | Utilizador$prescricoesDietaCriadasArgs<ExtArgs>
     medicacoesAssinadas?: boolean | Utilizador$medicacoesAssinadasArgs<ExtArgs>
     notasAssinadas?: boolean | Utilizador$notasAssinadasArgs<ExtArgs>
+    culturasRegistadas?: boolean | Utilizador$culturasRegistadasArgs<ExtArgs>
+    surtosRegistados?: boolean | Utilizador$surtosRegistadosArgs<ExtArgs>
+    notasIncidentesTI?: boolean | Utilizador$notasIncidentesTIArgs<ExtArgs>
+    checklistsConformidade?: boolean | Utilizador$checklistsConformidadeArgs<ExtArgs>
     _count?: boolean | UtilizadorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UtilizadorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12694,6 +13169,10 @@ export namespace Prisma {
       prescricoesDietaCriadas: Prisma.$PrescricaoDietaPayload<ExtArgs>[]
       medicacoesAssinadas: Prisma.$MedicacaoPayload<ExtArgs>[]
       notasAssinadas: Prisma.$NotaClinicaPayload<ExtArgs>[]
+      culturasRegistadas: Prisma.$CulturaMicrobiologicaPayload<ExtArgs>[]
+      surtosRegistados: Prisma.$SurtoIACSPayload<ExtArgs>[]
+      notasIncidentesTI: Prisma.$NotaIncidenteTIPayload<ExtArgs>[]
+      checklistsConformidade: Prisma.$ConformidadeChecklistItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13192,6 +13671,10 @@ export namespace Prisma {
     prescricoesDietaCriadas<T extends Utilizador$prescricoesDietaCriadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$prescricoesDietaCriadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescricaoDietaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     medicacoesAssinadas<T extends Utilizador$medicacoesAssinadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$medicacoesAssinadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MedicacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notasAssinadas<T extends Utilizador$notasAssinadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasAssinadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaClinicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    culturasRegistadas<T extends Utilizador$culturasRegistadasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$culturasRegistadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    surtosRegistados<T extends Utilizador$surtosRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$surtosRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notasIncidentesTI<T extends Utilizador$notasIncidentesTIArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$notasIncidentesTIArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    checklistsConformidade<T extends Utilizador$checklistsConformidadeArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$checklistsConformidadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15682,6 +16165,102 @@ export namespace Prisma {
   }
 
   /**
+   * Utilizador.culturasRegistadas
+   */
+  export type Utilizador$culturasRegistadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    where?: CulturaMicrobiologicaWhereInput
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CulturaMicrobiologicaScalarFieldEnum | CulturaMicrobiologicaScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.surtosRegistados
+   */
+  export type Utilizador$surtosRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    where?: SurtoIACSWhereInput
+    orderBy?: SurtoIACSOrderByWithRelationInput | SurtoIACSOrderByWithRelationInput[]
+    cursor?: SurtoIACSWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SurtoIACSScalarFieldEnum | SurtoIACSScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.notasIncidentesTI
+   */
+  export type Utilizador$notasIncidentesTIArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    where?: NotaIncidenteTIWhereInput
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotaIncidenteTIScalarFieldEnum | NotaIncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.checklistsConformidade
+   */
+  export type Utilizador$checklistsConformidadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    where?: ConformidadeChecklistItemWhereInput
+    orderBy?: ConformidadeChecklistItemOrderByWithRelationInput | ConformidadeChecklistItemOrderByWithRelationInput[]
+    cursor?: ConformidadeChecklistItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConformidadeChecklistItemScalarFieldEnum | ConformidadeChecklistItemScalarFieldEnum[]
+  }
+
+  /**
    * Utilizador without action
    */
   export type UtilizadorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17105,6 +17684,7 @@ export namespace Prisma {
     breakGlassAcessos?: boolean | Doente$breakGlassAcessosArgs<ExtArgs>
     protocolosClinicos?: boolean | Doente$protocolosClinicosArgs<ExtArgs>
     prescricoesDieta?: boolean | Doente$prescricoesDietaArgs<ExtArgs>
+    culturasMicrobiologicas?: boolean | Doente$culturasMicrobiologicasArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["doente"]>
 
@@ -17209,6 +17789,7 @@ export namespace Prisma {
     breakGlassAcessos?: boolean | Doente$breakGlassAcessosArgs<ExtArgs>
     protocolosClinicos?: boolean | Doente$protocolosClinicosArgs<ExtArgs>
     prescricoesDieta?: boolean | Doente$prescricoesDietaArgs<ExtArgs>
+    culturasMicrobiologicas?: boolean | Doente$culturasMicrobiologicasArgs<ExtArgs>
     _count?: boolean | DoenteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DoenteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17258,6 +17839,7 @@ export namespace Prisma {
       breakGlassAcessos: Prisma.$BreakGlassAccessPayload<ExtArgs>[]
       protocolosClinicos: Prisma.$ProtocoloClinicoPayload<ExtArgs>[]
       prescricoesDieta: Prisma.$PrescricaoDietaPayload<ExtArgs>[]
+      culturasMicrobiologicas: Prisma.$CulturaMicrobiologicaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17706,6 +18288,7 @@ export namespace Prisma {
     breakGlassAcessos<T extends Doente$breakGlassAcessosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$breakGlassAcessosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BreakGlassAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     protocolosClinicos<T extends Doente$protocolosClinicosArgs<ExtArgs> = {}>(args?: Subset<T, Doente$protocolosClinicosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProtocoloClinicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prescricoesDieta<T extends Doente$prescricoesDietaArgs<ExtArgs> = {}>(args?: Subset<T, Doente$prescricoesDietaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescricaoDietaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    culturasMicrobiologicas<T extends Doente$culturasMicrobiologicasArgs<ExtArgs> = {}>(args?: Subset<T, Doente$culturasMicrobiologicasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18965,6 +19548,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PrescricaoDietaScalarFieldEnum | PrescricaoDietaScalarFieldEnum[]
+  }
+
+  /**
+   * Doente.culturasMicrobiologicas
+   */
+  export type Doente$culturasMicrobiologicasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    where?: CulturaMicrobiologicaWhereInput
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CulturaMicrobiologicaScalarFieldEnum | CulturaMicrobiologicaScalarFieldEnum[]
   }
 
   /**
@@ -74548,6 +75155,8 @@ export namespace Prisma {
     atualizadoEm?: boolean
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+    notas?: boolean | IncidenteTI$notasArgs<ExtArgs>
+    _count?: boolean | IncidenteTICountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["incidenteTI"]>
 
   export type IncidenteTISelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -74600,6 +75209,8 @@ export namespace Prisma {
   export type IncidenteTIInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
     responsavel?: boolean | IncidenteTI$responsavelArgs<ExtArgs>
+    notas?: boolean | IncidenteTI$notasArgs<ExtArgs>
+    _count?: boolean | IncidenteTICountOutputTypeDefaultArgs<ExtArgs>
   }
   export type IncidenteTIIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -74615,6 +75226,7 @@ export namespace Prisma {
     objects: {
       criadoPor: Prisma.$UtilizadorPayload<ExtArgs>
       responsavel: Prisma.$UtilizadorPayload<ExtArgs> | null
+      notas: Prisma.$NotaIncidenteTIPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -75024,6 +75636,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     criadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     responsavel<T extends IncidenteTI$responsavelArgs<ExtArgs> = {}>(args?: Subset<T, IncidenteTI$responsavelArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    notas<T extends IncidenteTI$notasArgs<ExtArgs> = {}>(args?: Subset<T, IncidenteTI$notasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -75479,6 +76092,30 @@ export namespace Prisma {
   }
 
   /**
+   * IncidenteTI.notas
+   */
+  export type IncidenteTI$notasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    where?: NotaIncidenteTIWhereInput
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotaIncidenteTIScalarFieldEnum | NotaIncidenteTIScalarFieldEnum[]
+  }
+
+  /**
    * IncidenteTI without action
    */
   export type IncidenteTIDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -75494,6 +76131,1072 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: IncidenteTIInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NotaIncidenteTI
+   */
+
+  export type AggregateNotaIncidenteTI = {
+    _count: NotaIncidenteTICountAggregateOutputType | null
+    _min: NotaIncidenteTIMinAggregateOutputType | null
+    _max: NotaIncidenteTIMaxAggregateOutputType | null
+  }
+
+  export type NotaIncidenteTIMinAggregateOutputType = {
+    id: string | null
+    incidenteId: string | null
+    autorId: string | null
+    conteudo: string | null
+    criadaEm: Date | null
+  }
+
+  export type NotaIncidenteTIMaxAggregateOutputType = {
+    id: string | null
+    incidenteId: string | null
+    autorId: string | null
+    conteudo: string | null
+    criadaEm: Date | null
+  }
+
+  export type NotaIncidenteTICountAggregateOutputType = {
+    id: number
+    incidenteId: number
+    autorId: number
+    conteudo: number
+    criadaEm: number
+    _all: number
+  }
+
+
+  export type NotaIncidenteTIMinAggregateInputType = {
+    id?: true
+    incidenteId?: true
+    autorId?: true
+    conteudo?: true
+    criadaEm?: true
+  }
+
+  export type NotaIncidenteTIMaxAggregateInputType = {
+    id?: true
+    incidenteId?: true
+    autorId?: true
+    conteudo?: true
+    criadaEm?: true
+  }
+
+  export type NotaIncidenteTICountAggregateInputType = {
+    id?: true
+    incidenteId?: true
+    autorId?: true
+    conteudo?: true
+    criadaEm?: true
+    _all?: true
+  }
+
+  export type NotaIncidenteTIAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotaIncidenteTI to aggregate.
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaIncidenteTIS to fetch.
+     */
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaIncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaIncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotaIncidenteTIS
+    **/
+    _count?: true | NotaIncidenteTICountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotaIncidenteTIMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotaIncidenteTIMaxAggregateInputType
+  }
+
+  export type GetNotaIncidenteTIAggregateType<T extends NotaIncidenteTIAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotaIncidenteTI]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotaIncidenteTI[P]>
+      : GetScalarType<T[P], AggregateNotaIncidenteTI[P]>
+  }
+
+
+
+
+  export type NotaIncidenteTIGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotaIncidenteTIWhereInput
+    orderBy?: NotaIncidenteTIOrderByWithAggregationInput | NotaIncidenteTIOrderByWithAggregationInput[]
+    by: NotaIncidenteTIScalarFieldEnum[] | NotaIncidenteTIScalarFieldEnum
+    having?: NotaIncidenteTIScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotaIncidenteTICountAggregateInputType | true
+    _min?: NotaIncidenteTIMinAggregateInputType
+    _max?: NotaIncidenteTIMaxAggregateInputType
+  }
+
+  export type NotaIncidenteTIGroupByOutputType = {
+    id: string
+    incidenteId: string
+    autorId: string
+    conteudo: string
+    criadaEm: Date
+    _count: NotaIncidenteTICountAggregateOutputType | null
+    _min: NotaIncidenteTIMinAggregateOutputType | null
+    _max: NotaIncidenteTIMaxAggregateOutputType | null
+  }
+
+  type GetNotaIncidenteTIGroupByPayload<T extends NotaIncidenteTIGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotaIncidenteTIGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotaIncidenteTIGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotaIncidenteTIGroupByOutputType[P]>
+            : GetScalarType<T[P], NotaIncidenteTIGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotaIncidenteTISelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    incidenteId?: boolean
+    autorId?: boolean
+    conteudo?: boolean
+    criadaEm?: boolean
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaIncidenteTI"]>
+
+  export type NotaIncidenteTISelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    incidenteId?: boolean
+    autorId?: boolean
+    conteudo?: boolean
+    criadaEm?: boolean
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaIncidenteTI"]>
+
+  export type NotaIncidenteTISelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    incidenteId?: boolean
+    autorId?: boolean
+    conteudo?: boolean
+    criadaEm?: boolean
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notaIncidenteTI"]>
+
+  export type NotaIncidenteTISelectScalar = {
+    id?: boolean
+    incidenteId?: boolean
+    autorId?: boolean
+    conteudo?: boolean
+    criadaEm?: boolean
+  }
+
+  export type NotaIncidenteTIOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "incidenteId" | "autorId" | "conteudo" | "criadaEm", ExtArgs["result"]["notaIncidenteTI"]>
+  export type NotaIncidenteTIInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotaIncidenteTIIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type NotaIncidenteTIIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidente?: boolean | IncidenteTIDefaultArgs<ExtArgs>
+    autor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $NotaIncidenteTIPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotaIncidenteTI"
+    objects: {
+      incidente: Prisma.$IncidenteTIPayload<ExtArgs>
+      autor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      incidenteId: string
+      autorId: string
+      conteudo: string
+      criadaEm: Date
+    }, ExtArgs["result"]["notaIncidenteTI"]>
+    composites: {}
+  }
+
+  type NotaIncidenteTIGetPayload<S extends boolean | null | undefined | NotaIncidenteTIDefaultArgs> = $Result.GetResult<Prisma.$NotaIncidenteTIPayload, S>
+
+  type NotaIncidenteTICountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotaIncidenteTIFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotaIncidenteTICountAggregateInputType | true
+    }
+
+  export interface NotaIncidenteTIDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotaIncidenteTI'], meta: { name: 'NotaIncidenteTI' } }
+    /**
+     * Find zero or one NotaIncidenteTI that matches the filter.
+     * @param {NotaIncidenteTIFindUniqueArgs} args - Arguments to find a NotaIncidenteTI
+     * @example
+     * // Get one NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotaIncidenteTIFindUniqueArgs>(args: SelectSubset<T, NotaIncidenteTIFindUniqueArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NotaIncidenteTI that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotaIncidenteTIFindUniqueOrThrowArgs} args - Arguments to find a NotaIncidenteTI
+     * @example
+     * // Get one NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotaIncidenteTIFindUniqueOrThrowArgs>(args: SelectSubset<T, NotaIncidenteTIFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotaIncidenteTI that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIFindFirstArgs} args - Arguments to find a NotaIncidenteTI
+     * @example
+     * // Get one NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotaIncidenteTIFindFirstArgs>(args?: SelectSubset<T, NotaIncidenteTIFindFirstArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NotaIncidenteTI that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIFindFirstOrThrowArgs} args - Arguments to find a NotaIncidenteTI
+     * @example
+     * // Get one NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotaIncidenteTIFindFirstOrThrowArgs>(args?: SelectSubset<T, NotaIncidenteTIFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NotaIncidenteTIS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotaIncidenteTIS
+     * const notaIncidenteTIS = await prisma.notaIncidenteTI.findMany()
+     * 
+     * // Get first 10 NotaIncidenteTIS
+     * const notaIncidenteTIS = await prisma.notaIncidenteTI.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notaIncidenteTIWithIdOnly = await prisma.notaIncidenteTI.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotaIncidenteTIFindManyArgs>(args?: SelectSubset<T, NotaIncidenteTIFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NotaIncidenteTI.
+     * @param {NotaIncidenteTICreateArgs} args - Arguments to create a NotaIncidenteTI.
+     * @example
+     * // Create one NotaIncidenteTI
+     * const NotaIncidenteTI = await prisma.notaIncidenteTI.create({
+     *   data: {
+     *     // ... data to create a NotaIncidenteTI
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotaIncidenteTICreateArgs>(args: SelectSubset<T, NotaIncidenteTICreateArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NotaIncidenteTIS.
+     * @param {NotaIncidenteTICreateManyArgs} args - Arguments to create many NotaIncidenteTIS.
+     * @example
+     * // Create many NotaIncidenteTIS
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotaIncidenteTICreateManyArgs>(args?: SelectSubset<T, NotaIncidenteTICreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotaIncidenteTIS and returns the data saved in the database.
+     * @param {NotaIncidenteTICreateManyAndReturnArgs} args - Arguments to create many NotaIncidenteTIS.
+     * @example
+     * // Create many NotaIncidenteTIS
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotaIncidenteTIS and only return the `id`
+     * const notaIncidenteTIWithIdOnly = await prisma.notaIncidenteTI.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotaIncidenteTICreateManyAndReturnArgs>(args?: SelectSubset<T, NotaIncidenteTICreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NotaIncidenteTI.
+     * @param {NotaIncidenteTIDeleteArgs} args - Arguments to delete one NotaIncidenteTI.
+     * @example
+     * // Delete one NotaIncidenteTI
+     * const NotaIncidenteTI = await prisma.notaIncidenteTI.delete({
+     *   where: {
+     *     // ... filter to delete one NotaIncidenteTI
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotaIncidenteTIDeleteArgs>(args: SelectSubset<T, NotaIncidenteTIDeleteArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NotaIncidenteTI.
+     * @param {NotaIncidenteTIUpdateArgs} args - Arguments to update one NotaIncidenteTI.
+     * @example
+     * // Update one NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotaIncidenteTIUpdateArgs>(args: SelectSubset<T, NotaIncidenteTIUpdateArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NotaIncidenteTIS.
+     * @param {NotaIncidenteTIDeleteManyArgs} args - Arguments to filter NotaIncidenteTIS to delete.
+     * @example
+     * // Delete a few NotaIncidenteTIS
+     * const { count } = await prisma.notaIncidenteTI.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotaIncidenteTIDeleteManyArgs>(args?: SelectSubset<T, NotaIncidenteTIDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotaIncidenteTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotaIncidenteTIS
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotaIncidenteTIUpdateManyArgs>(args: SelectSubset<T, NotaIncidenteTIUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotaIncidenteTIS and returns the data updated in the database.
+     * @param {NotaIncidenteTIUpdateManyAndReturnArgs} args - Arguments to update many NotaIncidenteTIS.
+     * @example
+     * // Update many NotaIncidenteTIS
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NotaIncidenteTIS and only return the `id`
+     * const notaIncidenteTIWithIdOnly = await prisma.notaIncidenteTI.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotaIncidenteTIUpdateManyAndReturnArgs>(args: SelectSubset<T, NotaIncidenteTIUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NotaIncidenteTI.
+     * @param {NotaIncidenteTIUpsertArgs} args - Arguments to update or create a NotaIncidenteTI.
+     * @example
+     * // Update or create a NotaIncidenteTI
+     * const notaIncidenteTI = await prisma.notaIncidenteTI.upsert({
+     *   create: {
+     *     // ... data to create a NotaIncidenteTI
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotaIncidenteTI we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotaIncidenteTIUpsertArgs>(args: SelectSubset<T, NotaIncidenteTIUpsertArgs<ExtArgs>>): Prisma__NotaIncidenteTIClient<$Result.GetResult<Prisma.$NotaIncidenteTIPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NotaIncidenteTIS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTICountArgs} args - Arguments to filter NotaIncidenteTIS to count.
+     * @example
+     * // Count the number of NotaIncidenteTIS
+     * const count = await prisma.notaIncidenteTI.count({
+     *   where: {
+     *     // ... the filter for the NotaIncidenteTIS we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotaIncidenteTICountArgs>(
+      args?: Subset<T, NotaIncidenteTICountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotaIncidenteTICountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotaIncidenteTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotaIncidenteTIAggregateArgs>(args: Subset<T, NotaIncidenteTIAggregateArgs>): Prisma.PrismaPromise<GetNotaIncidenteTIAggregateType<T>>
+
+    /**
+     * Group by NotaIncidenteTI.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotaIncidenteTIGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotaIncidenteTIGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotaIncidenteTIGroupByArgs['orderBy'] }
+        : { orderBy?: NotaIncidenteTIGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotaIncidenteTIGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotaIncidenteTIGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotaIncidenteTI model
+   */
+  readonly fields: NotaIncidenteTIFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotaIncidenteTI.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotaIncidenteTIClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    incidente<T extends IncidenteTIDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncidenteTIDefaultArgs<ExtArgs>>): Prisma__IncidenteTIClient<$Result.GetResult<Prisma.$IncidenteTIPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    autor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotaIncidenteTI model
+   */
+  interface NotaIncidenteTIFieldRefs {
+    readonly id: FieldRef<"NotaIncidenteTI", 'String'>
+    readonly incidenteId: FieldRef<"NotaIncidenteTI", 'String'>
+    readonly autorId: FieldRef<"NotaIncidenteTI", 'String'>
+    readonly conteudo: FieldRef<"NotaIncidenteTI", 'String'>
+    readonly criadaEm: FieldRef<"NotaIncidenteTI", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotaIncidenteTI findUnique
+   */
+  export type NotaIncidenteTIFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaIncidenteTI to fetch.
+     */
+    where: NotaIncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * NotaIncidenteTI findUniqueOrThrow
+   */
+  export type NotaIncidenteTIFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaIncidenteTI to fetch.
+     */
+    where: NotaIncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * NotaIncidenteTI findFirst
+   */
+  export type NotaIncidenteTIFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaIncidenteTI to fetch.
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaIncidenteTIS to fetch.
+     */
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotaIncidenteTIS.
+     */
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaIncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaIncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotaIncidenteTIS.
+     */
+    distinct?: NotaIncidenteTIScalarFieldEnum | NotaIncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * NotaIncidenteTI findFirstOrThrow
+   */
+  export type NotaIncidenteTIFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaIncidenteTI to fetch.
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaIncidenteTIS to fetch.
+     */
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotaIncidenteTIS.
+     */
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaIncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaIncidenteTIS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotaIncidenteTIS.
+     */
+    distinct?: NotaIncidenteTIScalarFieldEnum | NotaIncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * NotaIncidenteTI findMany
+   */
+  export type NotaIncidenteTIFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter, which NotaIncidenteTIS to fetch.
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotaIncidenteTIS to fetch.
+     */
+    orderBy?: NotaIncidenteTIOrderByWithRelationInput | NotaIncidenteTIOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotaIncidenteTIS.
+     */
+    cursor?: NotaIncidenteTIWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotaIncidenteTIS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotaIncidenteTIS.
+     */
+    skip?: number
+    distinct?: NotaIncidenteTIScalarFieldEnum | NotaIncidenteTIScalarFieldEnum[]
+  }
+
+  /**
+   * NotaIncidenteTI create
+   */
+  export type NotaIncidenteTICreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotaIncidenteTI.
+     */
+    data: XOR<NotaIncidenteTICreateInput, NotaIncidenteTIUncheckedCreateInput>
+  }
+
+  /**
+   * NotaIncidenteTI createMany
+   */
+  export type NotaIncidenteTICreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotaIncidenteTIS.
+     */
+    data: NotaIncidenteTICreateManyInput | NotaIncidenteTICreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotaIncidenteTI createManyAndReturn
+   */
+  export type NotaIncidenteTICreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * The data used to create many NotaIncidenteTIS.
+     */
+    data: NotaIncidenteTICreateManyInput | NotaIncidenteTICreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotaIncidenteTI update
+   */
+  export type NotaIncidenteTIUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotaIncidenteTI.
+     */
+    data: XOR<NotaIncidenteTIUpdateInput, NotaIncidenteTIUncheckedUpdateInput>
+    /**
+     * Choose, which NotaIncidenteTI to update.
+     */
+    where: NotaIncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * NotaIncidenteTI updateMany
+   */
+  export type NotaIncidenteTIUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotaIncidenteTIS.
+     */
+    data: XOR<NotaIncidenteTIUpdateManyMutationInput, NotaIncidenteTIUncheckedUpdateManyInput>
+    /**
+     * Filter which NotaIncidenteTIS to update
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * Limit how many NotaIncidenteTIS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotaIncidenteTI updateManyAndReturn
+   */
+  export type NotaIncidenteTIUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * The data used to update NotaIncidenteTIS.
+     */
+    data: XOR<NotaIncidenteTIUpdateManyMutationInput, NotaIncidenteTIUncheckedUpdateManyInput>
+    /**
+     * Filter which NotaIncidenteTIS to update
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * Limit how many NotaIncidenteTIS to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotaIncidenteTI upsert
+   */
+  export type NotaIncidenteTIUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotaIncidenteTI to update in case it exists.
+     */
+    where: NotaIncidenteTIWhereUniqueInput
+    /**
+     * In case the NotaIncidenteTI found by the `where` argument doesn't exist, create a new NotaIncidenteTI with this data.
+     */
+    create: XOR<NotaIncidenteTICreateInput, NotaIncidenteTIUncheckedCreateInput>
+    /**
+     * In case the NotaIncidenteTI was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotaIncidenteTIUpdateInput, NotaIncidenteTIUncheckedUpdateInput>
+  }
+
+  /**
+   * NotaIncidenteTI delete
+   */
+  export type NotaIncidenteTIDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
+    /**
+     * Filter which NotaIncidenteTI to delete.
+     */
+    where: NotaIncidenteTIWhereUniqueInput
+  }
+
+  /**
+   * NotaIncidenteTI deleteMany
+   */
+  export type NotaIncidenteTIDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotaIncidenteTIS to delete
+     */
+    where?: NotaIncidenteTIWhereInput
+    /**
+     * Limit how many NotaIncidenteTIS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NotaIncidenteTI without action
+   */
+  export type NotaIncidenteTIDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotaIncidenteTI
+     */
+    select?: NotaIncidenteTISelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NotaIncidenteTI
+     */
+    omit?: NotaIncidenteTIOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotaIncidenteTIInclude<ExtArgs> | null
   }
 
 
@@ -101842,6 +103545,3389 @@ export namespace Prisma {
 
 
   /**
+   * Model CulturaMicrobiologica
+   */
+
+  export type AggregateCulturaMicrobiologica = {
+    _count: CulturaMicrobiologicaCountAggregateOutputType | null
+    _min: CulturaMicrobiologicaMinAggregateOutputType | null
+    _max: CulturaMicrobiologicaMaxAggregateOutputType | null
+  }
+
+  export type CulturaMicrobiologicaMinAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    dataColheita: Date | null
+    tipoAmostra: string | null
+    agente: string | null
+    resultado: $Enums.ResultadoCultura | null
+    servico: string | null
+    observacoes: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type CulturaMicrobiologicaMaxAggregateOutputType = {
+    id: string | null
+    doenteId: string | null
+    dataColheita: Date | null
+    tipoAmostra: string | null
+    agente: string | null
+    resultado: $Enums.ResultadoCultura | null
+    servico: string | null
+    observacoes: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type CulturaMicrobiologicaCountAggregateOutputType = {
+    id: number
+    doenteId: number
+    dataColheita: number
+    tipoAmostra: number
+    agente: number
+    antibiograma: number
+    resultado: number
+    servico: number
+    observacoes: number
+    registadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type CulturaMicrobiologicaMinAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataColheita?: true
+    tipoAmostra?: true
+    agente?: true
+    resultado?: true
+    servico?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type CulturaMicrobiologicaMaxAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataColheita?: true
+    tipoAmostra?: true
+    agente?: true
+    resultado?: true
+    servico?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type CulturaMicrobiologicaCountAggregateInputType = {
+    id?: true
+    doenteId?: true
+    dataColheita?: true
+    tipoAmostra?: true
+    agente?: true
+    antibiograma?: true
+    resultado?: true
+    servico?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type CulturaMicrobiologicaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CulturaMicrobiologica to aggregate.
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CulturaMicrobiologicas to fetch.
+     */
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CulturaMicrobiologicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CulturaMicrobiologicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CulturaMicrobiologicas
+    **/
+    _count?: true | CulturaMicrobiologicaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CulturaMicrobiologicaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CulturaMicrobiologicaMaxAggregateInputType
+  }
+
+  export type GetCulturaMicrobiologicaAggregateType<T extends CulturaMicrobiologicaAggregateArgs> = {
+        [P in keyof T & keyof AggregateCulturaMicrobiologica]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCulturaMicrobiologica[P]>
+      : GetScalarType<T[P], AggregateCulturaMicrobiologica[P]>
+  }
+
+
+
+
+  export type CulturaMicrobiologicaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CulturaMicrobiologicaWhereInput
+    orderBy?: CulturaMicrobiologicaOrderByWithAggregationInput | CulturaMicrobiologicaOrderByWithAggregationInput[]
+    by: CulturaMicrobiologicaScalarFieldEnum[] | CulturaMicrobiologicaScalarFieldEnum
+    having?: CulturaMicrobiologicaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CulturaMicrobiologicaCountAggregateInputType | true
+    _min?: CulturaMicrobiologicaMinAggregateInputType
+    _max?: CulturaMicrobiologicaMaxAggregateInputType
+  }
+
+  export type CulturaMicrobiologicaGroupByOutputType = {
+    id: string
+    doenteId: string
+    dataColheita: Date
+    tipoAmostra: string
+    agente: string | null
+    antibiograma: JsonValue | null
+    resultado: $Enums.ResultadoCultura
+    servico: string | null
+    observacoes: string | null
+    registadoPorId: string
+    criadoEm: Date
+    _count: CulturaMicrobiologicaCountAggregateOutputType | null
+    _min: CulturaMicrobiologicaMinAggregateOutputType | null
+    _max: CulturaMicrobiologicaMaxAggregateOutputType | null
+  }
+
+  type GetCulturaMicrobiologicaGroupByPayload<T extends CulturaMicrobiologicaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CulturaMicrobiologicaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CulturaMicrobiologicaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CulturaMicrobiologicaGroupByOutputType[P]>
+            : GetScalarType<T[P], CulturaMicrobiologicaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CulturaMicrobiologicaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataColheita?: boolean
+    tipoAmostra?: boolean
+    agente?: boolean
+    antibiograma?: boolean
+    resultado?: boolean
+    servico?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["culturaMicrobiologica"]>
+
+  export type CulturaMicrobiologicaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataColheita?: boolean
+    tipoAmostra?: boolean
+    agente?: boolean
+    antibiograma?: boolean
+    resultado?: boolean
+    servico?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["culturaMicrobiologica"]>
+
+  export type CulturaMicrobiologicaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    doenteId?: boolean
+    dataColheita?: boolean
+    tipoAmostra?: boolean
+    agente?: boolean
+    antibiograma?: boolean
+    resultado?: boolean
+    servico?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["culturaMicrobiologica"]>
+
+  export type CulturaMicrobiologicaSelectScalar = {
+    id?: boolean
+    doenteId?: boolean
+    dataColheita?: boolean
+    tipoAmostra?: boolean
+    agente?: boolean
+    antibiograma?: boolean
+    resultado?: boolean
+    servico?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type CulturaMicrobiologicaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "dataColheita" | "tipoAmostra" | "agente" | "antibiograma" | "resultado" | "servico" | "observacoes" | "registadoPorId" | "criadoEm", ExtArgs["result"]["culturaMicrobiologica"]>
+  export type CulturaMicrobiologicaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type CulturaMicrobiologicaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type CulturaMicrobiologicaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    doente?: boolean | DoenteDefaultArgs<ExtArgs>
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $CulturaMicrobiologicaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CulturaMicrobiologica"
+    objects: {
+      doente: Prisma.$DoentePayload<ExtArgs>
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      doenteId: string
+      dataColheita: Date
+      tipoAmostra: string
+      agente: string | null
+      antibiograma: Prisma.JsonValue | null
+      resultado: $Enums.ResultadoCultura
+      servico: string | null
+      observacoes: string | null
+      registadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["culturaMicrobiologica"]>
+    composites: {}
+  }
+
+  type CulturaMicrobiologicaGetPayload<S extends boolean | null | undefined | CulturaMicrobiologicaDefaultArgs> = $Result.GetResult<Prisma.$CulturaMicrobiologicaPayload, S>
+
+  type CulturaMicrobiologicaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CulturaMicrobiologicaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CulturaMicrobiologicaCountAggregateInputType | true
+    }
+
+  export interface CulturaMicrobiologicaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CulturaMicrobiologica'], meta: { name: 'CulturaMicrobiologica' } }
+    /**
+     * Find zero or one CulturaMicrobiologica that matches the filter.
+     * @param {CulturaMicrobiologicaFindUniqueArgs} args - Arguments to find a CulturaMicrobiologica
+     * @example
+     * // Get one CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CulturaMicrobiologicaFindUniqueArgs>(args: SelectSubset<T, CulturaMicrobiologicaFindUniqueArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CulturaMicrobiologica that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CulturaMicrobiologicaFindUniqueOrThrowArgs} args - Arguments to find a CulturaMicrobiologica
+     * @example
+     * // Get one CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CulturaMicrobiologicaFindUniqueOrThrowArgs>(args: SelectSubset<T, CulturaMicrobiologicaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CulturaMicrobiologica that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaFindFirstArgs} args - Arguments to find a CulturaMicrobiologica
+     * @example
+     * // Get one CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CulturaMicrobiologicaFindFirstArgs>(args?: SelectSubset<T, CulturaMicrobiologicaFindFirstArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CulturaMicrobiologica that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaFindFirstOrThrowArgs} args - Arguments to find a CulturaMicrobiologica
+     * @example
+     * // Get one CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CulturaMicrobiologicaFindFirstOrThrowArgs>(args?: SelectSubset<T, CulturaMicrobiologicaFindFirstOrThrowArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CulturaMicrobiologicas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CulturaMicrobiologicas
+     * const culturaMicrobiologicas = await prisma.culturaMicrobiologica.findMany()
+     * 
+     * // Get first 10 CulturaMicrobiologicas
+     * const culturaMicrobiologicas = await prisma.culturaMicrobiologica.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const culturaMicrobiologicaWithIdOnly = await prisma.culturaMicrobiologica.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CulturaMicrobiologicaFindManyArgs>(args?: SelectSubset<T, CulturaMicrobiologicaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CulturaMicrobiologica.
+     * @param {CulturaMicrobiologicaCreateArgs} args - Arguments to create a CulturaMicrobiologica.
+     * @example
+     * // Create one CulturaMicrobiologica
+     * const CulturaMicrobiologica = await prisma.culturaMicrobiologica.create({
+     *   data: {
+     *     // ... data to create a CulturaMicrobiologica
+     *   }
+     * })
+     * 
+     */
+    create<T extends CulturaMicrobiologicaCreateArgs>(args: SelectSubset<T, CulturaMicrobiologicaCreateArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CulturaMicrobiologicas.
+     * @param {CulturaMicrobiologicaCreateManyArgs} args - Arguments to create many CulturaMicrobiologicas.
+     * @example
+     * // Create many CulturaMicrobiologicas
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CulturaMicrobiologicaCreateManyArgs>(args?: SelectSubset<T, CulturaMicrobiologicaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CulturaMicrobiologicas and returns the data saved in the database.
+     * @param {CulturaMicrobiologicaCreateManyAndReturnArgs} args - Arguments to create many CulturaMicrobiologicas.
+     * @example
+     * // Create many CulturaMicrobiologicas
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CulturaMicrobiologicas and only return the `id`
+     * const culturaMicrobiologicaWithIdOnly = await prisma.culturaMicrobiologica.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CulturaMicrobiologicaCreateManyAndReturnArgs>(args?: SelectSubset<T, CulturaMicrobiologicaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CulturaMicrobiologica.
+     * @param {CulturaMicrobiologicaDeleteArgs} args - Arguments to delete one CulturaMicrobiologica.
+     * @example
+     * // Delete one CulturaMicrobiologica
+     * const CulturaMicrobiologica = await prisma.culturaMicrobiologica.delete({
+     *   where: {
+     *     // ... filter to delete one CulturaMicrobiologica
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CulturaMicrobiologicaDeleteArgs>(args: SelectSubset<T, CulturaMicrobiologicaDeleteArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CulturaMicrobiologica.
+     * @param {CulturaMicrobiologicaUpdateArgs} args - Arguments to update one CulturaMicrobiologica.
+     * @example
+     * // Update one CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CulturaMicrobiologicaUpdateArgs>(args: SelectSubset<T, CulturaMicrobiologicaUpdateArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CulturaMicrobiologicas.
+     * @param {CulturaMicrobiologicaDeleteManyArgs} args - Arguments to filter CulturaMicrobiologicas to delete.
+     * @example
+     * // Delete a few CulturaMicrobiologicas
+     * const { count } = await prisma.culturaMicrobiologica.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CulturaMicrobiologicaDeleteManyArgs>(args?: SelectSubset<T, CulturaMicrobiologicaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CulturaMicrobiologicas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CulturaMicrobiologicas
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CulturaMicrobiologicaUpdateManyArgs>(args: SelectSubset<T, CulturaMicrobiologicaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CulturaMicrobiologicas and returns the data updated in the database.
+     * @param {CulturaMicrobiologicaUpdateManyAndReturnArgs} args - Arguments to update many CulturaMicrobiologicas.
+     * @example
+     * // Update many CulturaMicrobiologicas
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CulturaMicrobiologicas and only return the `id`
+     * const culturaMicrobiologicaWithIdOnly = await prisma.culturaMicrobiologica.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CulturaMicrobiologicaUpdateManyAndReturnArgs>(args: SelectSubset<T, CulturaMicrobiologicaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CulturaMicrobiologica.
+     * @param {CulturaMicrobiologicaUpsertArgs} args - Arguments to update or create a CulturaMicrobiologica.
+     * @example
+     * // Update or create a CulturaMicrobiologica
+     * const culturaMicrobiologica = await prisma.culturaMicrobiologica.upsert({
+     *   create: {
+     *     // ... data to create a CulturaMicrobiologica
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CulturaMicrobiologica we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CulturaMicrobiologicaUpsertArgs>(args: SelectSubset<T, CulturaMicrobiologicaUpsertArgs<ExtArgs>>): Prisma__CulturaMicrobiologicaClient<$Result.GetResult<Prisma.$CulturaMicrobiologicaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CulturaMicrobiologicas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaCountArgs} args - Arguments to filter CulturaMicrobiologicas to count.
+     * @example
+     * // Count the number of CulturaMicrobiologicas
+     * const count = await prisma.culturaMicrobiologica.count({
+     *   where: {
+     *     // ... the filter for the CulturaMicrobiologicas we want to count
+     *   }
+     * })
+    **/
+    count<T extends CulturaMicrobiologicaCountArgs>(
+      args?: Subset<T, CulturaMicrobiologicaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CulturaMicrobiologicaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CulturaMicrobiologica.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CulturaMicrobiologicaAggregateArgs>(args: Subset<T, CulturaMicrobiologicaAggregateArgs>): Prisma.PrismaPromise<GetCulturaMicrobiologicaAggregateType<T>>
+
+    /**
+     * Group by CulturaMicrobiologica.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CulturaMicrobiologicaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CulturaMicrobiologicaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CulturaMicrobiologicaGroupByArgs['orderBy'] }
+        : { orderBy?: CulturaMicrobiologicaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CulturaMicrobiologicaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCulturaMicrobiologicaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CulturaMicrobiologica model
+   */
+  readonly fields: CulturaMicrobiologicaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CulturaMicrobiologica.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CulturaMicrobiologicaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CulturaMicrobiologica model
+   */
+  interface CulturaMicrobiologicaFieldRefs {
+    readonly id: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly doenteId: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly dataColheita: FieldRef<"CulturaMicrobiologica", 'DateTime'>
+    readonly tipoAmostra: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly agente: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly antibiograma: FieldRef<"CulturaMicrobiologica", 'Json'>
+    readonly resultado: FieldRef<"CulturaMicrobiologica", 'ResultadoCultura'>
+    readonly servico: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly observacoes: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly registadoPorId: FieldRef<"CulturaMicrobiologica", 'String'>
+    readonly criadoEm: FieldRef<"CulturaMicrobiologica", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CulturaMicrobiologica findUnique
+   */
+  export type CulturaMicrobiologicaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter, which CulturaMicrobiologica to fetch.
+     */
+    where: CulturaMicrobiologicaWhereUniqueInput
+  }
+
+  /**
+   * CulturaMicrobiologica findUniqueOrThrow
+   */
+  export type CulturaMicrobiologicaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter, which CulturaMicrobiologica to fetch.
+     */
+    where: CulturaMicrobiologicaWhereUniqueInput
+  }
+
+  /**
+   * CulturaMicrobiologica findFirst
+   */
+  export type CulturaMicrobiologicaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter, which CulturaMicrobiologica to fetch.
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CulturaMicrobiologicas to fetch.
+     */
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CulturaMicrobiologicas.
+     */
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CulturaMicrobiologicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CulturaMicrobiologicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CulturaMicrobiologicas.
+     */
+    distinct?: CulturaMicrobiologicaScalarFieldEnum | CulturaMicrobiologicaScalarFieldEnum[]
+  }
+
+  /**
+   * CulturaMicrobiologica findFirstOrThrow
+   */
+  export type CulturaMicrobiologicaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter, which CulturaMicrobiologica to fetch.
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CulturaMicrobiologicas to fetch.
+     */
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CulturaMicrobiologicas.
+     */
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CulturaMicrobiologicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CulturaMicrobiologicas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CulturaMicrobiologicas.
+     */
+    distinct?: CulturaMicrobiologicaScalarFieldEnum | CulturaMicrobiologicaScalarFieldEnum[]
+  }
+
+  /**
+   * CulturaMicrobiologica findMany
+   */
+  export type CulturaMicrobiologicaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter, which CulturaMicrobiologicas to fetch.
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CulturaMicrobiologicas to fetch.
+     */
+    orderBy?: CulturaMicrobiologicaOrderByWithRelationInput | CulturaMicrobiologicaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CulturaMicrobiologicas.
+     */
+    cursor?: CulturaMicrobiologicaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CulturaMicrobiologicas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CulturaMicrobiologicas.
+     */
+    skip?: number
+    distinct?: CulturaMicrobiologicaScalarFieldEnum | CulturaMicrobiologicaScalarFieldEnum[]
+  }
+
+  /**
+   * CulturaMicrobiologica create
+   */
+  export type CulturaMicrobiologicaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CulturaMicrobiologica.
+     */
+    data: XOR<CulturaMicrobiologicaCreateInput, CulturaMicrobiologicaUncheckedCreateInput>
+  }
+
+  /**
+   * CulturaMicrobiologica createMany
+   */
+  export type CulturaMicrobiologicaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CulturaMicrobiologicas.
+     */
+    data: CulturaMicrobiologicaCreateManyInput | CulturaMicrobiologicaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CulturaMicrobiologica createManyAndReturn
+   */
+  export type CulturaMicrobiologicaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * The data used to create many CulturaMicrobiologicas.
+     */
+    data: CulturaMicrobiologicaCreateManyInput | CulturaMicrobiologicaCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CulturaMicrobiologica update
+   */
+  export type CulturaMicrobiologicaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CulturaMicrobiologica.
+     */
+    data: XOR<CulturaMicrobiologicaUpdateInput, CulturaMicrobiologicaUncheckedUpdateInput>
+    /**
+     * Choose, which CulturaMicrobiologica to update.
+     */
+    where: CulturaMicrobiologicaWhereUniqueInput
+  }
+
+  /**
+   * CulturaMicrobiologica updateMany
+   */
+  export type CulturaMicrobiologicaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CulturaMicrobiologicas.
+     */
+    data: XOR<CulturaMicrobiologicaUpdateManyMutationInput, CulturaMicrobiologicaUncheckedUpdateManyInput>
+    /**
+     * Filter which CulturaMicrobiologicas to update
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * Limit how many CulturaMicrobiologicas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CulturaMicrobiologica updateManyAndReturn
+   */
+  export type CulturaMicrobiologicaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * The data used to update CulturaMicrobiologicas.
+     */
+    data: XOR<CulturaMicrobiologicaUpdateManyMutationInput, CulturaMicrobiologicaUncheckedUpdateManyInput>
+    /**
+     * Filter which CulturaMicrobiologicas to update
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * Limit how many CulturaMicrobiologicas to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CulturaMicrobiologica upsert
+   */
+  export type CulturaMicrobiologicaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CulturaMicrobiologica to update in case it exists.
+     */
+    where: CulturaMicrobiologicaWhereUniqueInput
+    /**
+     * In case the CulturaMicrobiologica found by the `where` argument doesn't exist, create a new CulturaMicrobiologica with this data.
+     */
+    create: XOR<CulturaMicrobiologicaCreateInput, CulturaMicrobiologicaUncheckedCreateInput>
+    /**
+     * In case the CulturaMicrobiologica was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CulturaMicrobiologicaUpdateInput, CulturaMicrobiologicaUncheckedUpdateInput>
+  }
+
+  /**
+   * CulturaMicrobiologica delete
+   */
+  export type CulturaMicrobiologicaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+    /**
+     * Filter which CulturaMicrobiologica to delete.
+     */
+    where: CulturaMicrobiologicaWhereUniqueInput
+  }
+
+  /**
+   * CulturaMicrobiologica deleteMany
+   */
+  export type CulturaMicrobiologicaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CulturaMicrobiologicas to delete
+     */
+    where?: CulturaMicrobiologicaWhereInput
+    /**
+     * Limit how many CulturaMicrobiologicas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CulturaMicrobiologica without action
+   */
+  export type CulturaMicrobiologicaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CulturaMicrobiologica
+     */
+    select?: CulturaMicrobiologicaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CulturaMicrobiologica
+     */
+    omit?: CulturaMicrobiologicaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CulturaMicrobiologicaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SurtoIACS
+   */
+
+  export type AggregateSurtoIACS = {
+    _count: SurtoIACSCountAggregateOutputType | null
+    _avg: SurtoIACSAvgAggregateOutputType | null
+    _sum: SurtoIACSSumAggregateOutputType | null
+    _min: SurtoIACSMinAggregateOutputType | null
+    _max: SurtoIACSMaxAggregateOutputType | null
+  }
+
+  export type SurtoIACSAvgAggregateOutputType = {
+    numCasos: number | null
+  }
+
+  export type SurtoIACSSumAggregateOutputType = {
+    numCasos: number | null
+  }
+
+  export type SurtoIACSMinAggregateOutputType = {
+    id: string | null
+    agente: string | null
+    servico: string | null
+    dataInicio: Date | null
+    dataFim: Date | null
+    estado: $Enums.EstadoSurto | null
+    numCasos: number | null
+    observacoes: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type SurtoIACSMaxAggregateOutputType = {
+    id: string | null
+    agente: string | null
+    servico: string | null
+    dataInicio: Date | null
+    dataFim: Date | null
+    estado: $Enums.EstadoSurto | null
+    numCasos: number | null
+    observacoes: string | null
+    registadoPorId: string | null
+    criadoEm: Date | null
+  }
+
+  export type SurtoIACSCountAggregateOutputType = {
+    id: number
+    agente: number
+    servico: number
+    dataInicio: number
+    dataFim: number
+    estado: number
+    numCasos: number
+    medidas: number
+    observacoes: number
+    registadoPorId: number
+    criadoEm: number
+    _all: number
+  }
+
+
+  export type SurtoIACSAvgAggregateInputType = {
+    numCasos?: true
+  }
+
+  export type SurtoIACSSumAggregateInputType = {
+    numCasos?: true
+  }
+
+  export type SurtoIACSMinAggregateInputType = {
+    id?: true
+    agente?: true
+    servico?: true
+    dataInicio?: true
+    dataFim?: true
+    estado?: true
+    numCasos?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type SurtoIACSMaxAggregateInputType = {
+    id?: true
+    agente?: true
+    servico?: true
+    dataInicio?: true
+    dataFim?: true
+    estado?: true
+    numCasos?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+  }
+
+  export type SurtoIACSCountAggregateInputType = {
+    id?: true
+    agente?: true
+    servico?: true
+    dataInicio?: true
+    dataFim?: true
+    estado?: true
+    numCasos?: true
+    medidas?: true
+    observacoes?: true
+    registadoPorId?: true
+    criadoEm?: true
+    _all?: true
+  }
+
+  export type SurtoIACSAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SurtoIACS to aggregate.
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SurtoIACS to fetch.
+     */
+    orderBy?: SurtoIACSOrderByWithRelationInput | SurtoIACSOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SurtoIACSWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SurtoIACS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SurtoIACS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SurtoIACS
+    **/
+    _count?: true | SurtoIACSCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SurtoIACSAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SurtoIACSSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SurtoIACSMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SurtoIACSMaxAggregateInputType
+  }
+
+  export type GetSurtoIACSAggregateType<T extends SurtoIACSAggregateArgs> = {
+        [P in keyof T & keyof AggregateSurtoIACS]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSurtoIACS[P]>
+      : GetScalarType<T[P], AggregateSurtoIACS[P]>
+  }
+
+
+
+
+  export type SurtoIACSGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SurtoIACSWhereInput
+    orderBy?: SurtoIACSOrderByWithAggregationInput | SurtoIACSOrderByWithAggregationInput[]
+    by: SurtoIACSScalarFieldEnum[] | SurtoIACSScalarFieldEnum
+    having?: SurtoIACSScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SurtoIACSCountAggregateInputType | true
+    _avg?: SurtoIACSAvgAggregateInputType
+    _sum?: SurtoIACSSumAggregateInputType
+    _min?: SurtoIACSMinAggregateInputType
+    _max?: SurtoIACSMaxAggregateInputType
+  }
+
+  export type SurtoIACSGroupByOutputType = {
+    id: string
+    agente: string
+    servico: string
+    dataInicio: Date
+    dataFim: Date | null
+    estado: $Enums.EstadoSurto
+    numCasos: number
+    medidas: JsonValue | null
+    observacoes: string | null
+    registadoPorId: string
+    criadoEm: Date
+    _count: SurtoIACSCountAggregateOutputType | null
+    _avg: SurtoIACSAvgAggregateOutputType | null
+    _sum: SurtoIACSSumAggregateOutputType | null
+    _min: SurtoIACSMinAggregateOutputType | null
+    _max: SurtoIACSMaxAggregateOutputType | null
+  }
+
+  type GetSurtoIACSGroupByPayload<T extends SurtoIACSGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SurtoIACSGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SurtoIACSGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SurtoIACSGroupByOutputType[P]>
+            : GetScalarType<T[P], SurtoIACSGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SurtoIACSSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agente?: boolean
+    servico?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    estado?: boolean
+    numCasos?: boolean
+    medidas?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["surtoIACS"]>
+
+  export type SurtoIACSSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agente?: boolean
+    servico?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    estado?: boolean
+    numCasos?: boolean
+    medidas?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["surtoIACS"]>
+
+  export type SurtoIACSSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agente?: boolean
+    servico?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    estado?: boolean
+    numCasos?: boolean
+    medidas?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["surtoIACS"]>
+
+  export type SurtoIACSSelectScalar = {
+    id?: boolean
+    agente?: boolean
+    servico?: boolean
+    dataInicio?: boolean
+    dataFim?: boolean
+    estado?: boolean
+    numCasos?: boolean
+    medidas?: boolean
+    observacoes?: boolean
+    registadoPorId?: boolean
+    criadoEm?: boolean
+  }
+
+  export type SurtoIACSOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agente" | "servico" | "dataInicio" | "dataFim" | "estado" | "numCasos" | "medidas" | "observacoes" | "registadoPorId" | "criadoEm", ExtArgs["result"]["surtoIACS"]>
+  export type SurtoIACSInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SurtoIACSIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+  export type SurtoIACSIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    registadoPor?: boolean | UtilizadorDefaultArgs<ExtArgs>
+  }
+
+  export type $SurtoIACSPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SurtoIACS"
+    objects: {
+      registadoPor: Prisma.$UtilizadorPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      agente: string
+      servico: string
+      dataInicio: Date
+      dataFim: Date | null
+      estado: $Enums.EstadoSurto
+      numCasos: number
+      medidas: Prisma.JsonValue | null
+      observacoes: string | null
+      registadoPorId: string
+      criadoEm: Date
+    }, ExtArgs["result"]["surtoIACS"]>
+    composites: {}
+  }
+
+  type SurtoIACSGetPayload<S extends boolean | null | undefined | SurtoIACSDefaultArgs> = $Result.GetResult<Prisma.$SurtoIACSPayload, S>
+
+  type SurtoIACSCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SurtoIACSFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SurtoIACSCountAggregateInputType | true
+    }
+
+  export interface SurtoIACSDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SurtoIACS'], meta: { name: 'SurtoIACS' } }
+    /**
+     * Find zero or one SurtoIACS that matches the filter.
+     * @param {SurtoIACSFindUniqueArgs} args - Arguments to find a SurtoIACS
+     * @example
+     * // Get one SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SurtoIACSFindUniqueArgs>(args: SelectSubset<T, SurtoIACSFindUniqueArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SurtoIACS that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SurtoIACSFindUniqueOrThrowArgs} args - Arguments to find a SurtoIACS
+     * @example
+     * // Get one SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SurtoIACSFindUniqueOrThrowArgs>(args: SelectSubset<T, SurtoIACSFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SurtoIACS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSFindFirstArgs} args - Arguments to find a SurtoIACS
+     * @example
+     * // Get one SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SurtoIACSFindFirstArgs>(args?: SelectSubset<T, SurtoIACSFindFirstArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SurtoIACS that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSFindFirstOrThrowArgs} args - Arguments to find a SurtoIACS
+     * @example
+     * // Get one SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SurtoIACSFindFirstOrThrowArgs>(args?: SelectSubset<T, SurtoIACSFindFirstOrThrowArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SurtoIACS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findMany()
+     * 
+     * // Get first 10 SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const surtoIACSWithIdOnly = await prisma.surtoIACS.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SurtoIACSFindManyArgs>(args?: SelectSubset<T, SurtoIACSFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SurtoIACS.
+     * @param {SurtoIACSCreateArgs} args - Arguments to create a SurtoIACS.
+     * @example
+     * // Create one SurtoIACS
+     * const SurtoIACS = await prisma.surtoIACS.create({
+     *   data: {
+     *     // ... data to create a SurtoIACS
+     *   }
+     * })
+     * 
+     */
+    create<T extends SurtoIACSCreateArgs>(args: SelectSubset<T, SurtoIACSCreateArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SurtoIACS.
+     * @param {SurtoIACSCreateManyArgs} args - Arguments to create many SurtoIACS.
+     * @example
+     * // Create many SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SurtoIACSCreateManyArgs>(args?: SelectSubset<T, SurtoIACSCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SurtoIACS and returns the data saved in the database.
+     * @param {SurtoIACSCreateManyAndReturnArgs} args - Arguments to create many SurtoIACS.
+     * @example
+     * // Create many SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SurtoIACS and only return the `id`
+     * const surtoIACSWithIdOnly = await prisma.surtoIACS.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SurtoIACSCreateManyAndReturnArgs>(args?: SelectSubset<T, SurtoIACSCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SurtoIACS.
+     * @param {SurtoIACSDeleteArgs} args - Arguments to delete one SurtoIACS.
+     * @example
+     * // Delete one SurtoIACS
+     * const SurtoIACS = await prisma.surtoIACS.delete({
+     *   where: {
+     *     // ... filter to delete one SurtoIACS
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SurtoIACSDeleteArgs>(args: SelectSubset<T, SurtoIACSDeleteArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SurtoIACS.
+     * @param {SurtoIACSUpdateArgs} args - Arguments to update one SurtoIACS.
+     * @example
+     * // Update one SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SurtoIACSUpdateArgs>(args: SelectSubset<T, SurtoIACSUpdateArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SurtoIACS.
+     * @param {SurtoIACSDeleteManyArgs} args - Arguments to filter SurtoIACS to delete.
+     * @example
+     * // Delete a few SurtoIACS
+     * const { count } = await prisma.surtoIACS.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SurtoIACSDeleteManyArgs>(args?: SelectSubset<T, SurtoIACSDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SurtoIACS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SurtoIACSUpdateManyArgs>(args: SelectSubset<T, SurtoIACSUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SurtoIACS and returns the data updated in the database.
+     * @param {SurtoIACSUpdateManyAndReturnArgs} args - Arguments to update many SurtoIACS.
+     * @example
+     * // Update many SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SurtoIACS and only return the `id`
+     * const surtoIACSWithIdOnly = await prisma.surtoIACS.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SurtoIACSUpdateManyAndReturnArgs>(args: SelectSubset<T, SurtoIACSUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SurtoIACS.
+     * @param {SurtoIACSUpsertArgs} args - Arguments to update or create a SurtoIACS.
+     * @example
+     * // Update or create a SurtoIACS
+     * const surtoIACS = await prisma.surtoIACS.upsert({
+     *   create: {
+     *     // ... data to create a SurtoIACS
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SurtoIACS we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SurtoIACSUpsertArgs>(args: SelectSubset<T, SurtoIACSUpsertArgs<ExtArgs>>): Prisma__SurtoIACSClient<$Result.GetResult<Prisma.$SurtoIACSPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SurtoIACS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSCountArgs} args - Arguments to filter SurtoIACS to count.
+     * @example
+     * // Count the number of SurtoIACS
+     * const count = await prisma.surtoIACS.count({
+     *   where: {
+     *     // ... the filter for the SurtoIACS we want to count
+     *   }
+     * })
+    **/
+    count<T extends SurtoIACSCountArgs>(
+      args?: Subset<T, SurtoIACSCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SurtoIACSCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SurtoIACS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SurtoIACSAggregateArgs>(args: Subset<T, SurtoIACSAggregateArgs>): Prisma.PrismaPromise<GetSurtoIACSAggregateType<T>>
+
+    /**
+     * Group by SurtoIACS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SurtoIACSGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SurtoIACSGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SurtoIACSGroupByArgs['orderBy'] }
+        : { orderBy?: SurtoIACSGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SurtoIACSGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSurtoIACSGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SurtoIACS model
+   */
+  readonly fields: SurtoIACSFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SurtoIACS.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SurtoIACSClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    registadoPor<T extends UtilizadorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UtilizadorDefaultArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SurtoIACS model
+   */
+  interface SurtoIACSFieldRefs {
+    readonly id: FieldRef<"SurtoIACS", 'String'>
+    readonly agente: FieldRef<"SurtoIACS", 'String'>
+    readonly servico: FieldRef<"SurtoIACS", 'String'>
+    readonly dataInicio: FieldRef<"SurtoIACS", 'DateTime'>
+    readonly dataFim: FieldRef<"SurtoIACS", 'DateTime'>
+    readonly estado: FieldRef<"SurtoIACS", 'EstadoSurto'>
+    readonly numCasos: FieldRef<"SurtoIACS", 'Int'>
+    readonly medidas: FieldRef<"SurtoIACS", 'Json'>
+    readonly observacoes: FieldRef<"SurtoIACS", 'String'>
+    readonly registadoPorId: FieldRef<"SurtoIACS", 'String'>
+    readonly criadoEm: FieldRef<"SurtoIACS", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SurtoIACS findUnique
+   */
+  export type SurtoIACSFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter, which SurtoIACS to fetch.
+     */
+    where: SurtoIACSWhereUniqueInput
+  }
+
+  /**
+   * SurtoIACS findUniqueOrThrow
+   */
+  export type SurtoIACSFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter, which SurtoIACS to fetch.
+     */
+    where: SurtoIACSWhereUniqueInput
+  }
+
+  /**
+   * SurtoIACS findFirst
+   */
+  export type SurtoIACSFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter, which SurtoIACS to fetch.
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SurtoIACS to fetch.
+     */
+    orderBy?: SurtoIACSOrderByWithRelationInput | SurtoIACSOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SurtoIACS.
+     */
+    cursor?: SurtoIACSWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SurtoIACS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SurtoIACS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SurtoIACS.
+     */
+    distinct?: SurtoIACSScalarFieldEnum | SurtoIACSScalarFieldEnum[]
+  }
+
+  /**
+   * SurtoIACS findFirstOrThrow
+   */
+  export type SurtoIACSFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter, which SurtoIACS to fetch.
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SurtoIACS to fetch.
+     */
+    orderBy?: SurtoIACSOrderByWithRelationInput | SurtoIACSOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SurtoIACS.
+     */
+    cursor?: SurtoIACSWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SurtoIACS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SurtoIACS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SurtoIACS.
+     */
+    distinct?: SurtoIACSScalarFieldEnum | SurtoIACSScalarFieldEnum[]
+  }
+
+  /**
+   * SurtoIACS findMany
+   */
+  export type SurtoIACSFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter, which SurtoIACS to fetch.
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SurtoIACS to fetch.
+     */
+    orderBy?: SurtoIACSOrderByWithRelationInput | SurtoIACSOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SurtoIACS.
+     */
+    cursor?: SurtoIACSWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SurtoIACS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SurtoIACS.
+     */
+    skip?: number
+    distinct?: SurtoIACSScalarFieldEnum | SurtoIACSScalarFieldEnum[]
+  }
+
+  /**
+   * SurtoIACS create
+   */
+  export type SurtoIACSCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SurtoIACS.
+     */
+    data: XOR<SurtoIACSCreateInput, SurtoIACSUncheckedCreateInput>
+  }
+
+  /**
+   * SurtoIACS createMany
+   */
+  export type SurtoIACSCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SurtoIACS.
+     */
+    data: SurtoIACSCreateManyInput | SurtoIACSCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SurtoIACS createManyAndReturn
+   */
+  export type SurtoIACSCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * The data used to create many SurtoIACS.
+     */
+    data: SurtoIACSCreateManyInput | SurtoIACSCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SurtoIACS update
+   */
+  export type SurtoIACSUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SurtoIACS.
+     */
+    data: XOR<SurtoIACSUpdateInput, SurtoIACSUncheckedUpdateInput>
+    /**
+     * Choose, which SurtoIACS to update.
+     */
+    where: SurtoIACSWhereUniqueInput
+  }
+
+  /**
+   * SurtoIACS updateMany
+   */
+  export type SurtoIACSUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SurtoIACS.
+     */
+    data: XOR<SurtoIACSUpdateManyMutationInput, SurtoIACSUncheckedUpdateManyInput>
+    /**
+     * Filter which SurtoIACS to update
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * Limit how many SurtoIACS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SurtoIACS updateManyAndReturn
+   */
+  export type SurtoIACSUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * The data used to update SurtoIACS.
+     */
+    data: XOR<SurtoIACSUpdateManyMutationInput, SurtoIACSUncheckedUpdateManyInput>
+    /**
+     * Filter which SurtoIACS to update
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * Limit how many SurtoIACS to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SurtoIACS upsert
+   */
+  export type SurtoIACSUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SurtoIACS to update in case it exists.
+     */
+    where: SurtoIACSWhereUniqueInput
+    /**
+     * In case the SurtoIACS found by the `where` argument doesn't exist, create a new SurtoIACS with this data.
+     */
+    create: XOR<SurtoIACSCreateInput, SurtoIACSUncheckedCreateInput>
+    /**
+     * In case the SurtoIACS was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SurtoIACSUpdateInput, SurtoIACSUncheckedUpdateInput>
+  }
+
+  /**
+   * SurtoIACS delete
+   */
+  export type SurtoIACSDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+    /**
+     * Filter which SurtoIACS to delete.
+     */
+    where: SurtoIACSWhereUniqueInput
+  }
+
+  /**
+   * SurtoIACS deleteMany
+   */
+  export type SurtoIACSDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SurtoIACS to delete
+     */
+    where?: SurtoIACSWhereInput
+    /**
+     * Limit how many SurtoIACS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SurtoIACS without action
+   */
+  export type SurtoIACSDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SurtoIACS
+     */
+    select?: SurtoIACSSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SurtoIACS
+     */
+    omit?: SurtoIACSOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SurtoIACSInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConformidadeChecklistItem
+   */
+
+  export type AggregateConformidadeChecklistItem = {
+    _count: ConformidadeChecklistItemCountAggregateOutputType | null
+    _min: ConformidadeChecklistItemMinAggregateOutputType | null
+    _max: ConformidadeChecklistItemMaxAggregateOutputType | null
+  }
+
+  export type ConformidadeChecklistItemMinAggregateOutputType = {
+    id: string | null
+    itemKey: string | null
+    estado: string | null
+    atualizadoEm: Date | null
+    atualizadoPorId: string | null
+  }
+
+  export type ConformidadeChecklistItemMaxAggregateOutputType = {
+    id: string | null
+    itemKey: string | null
+    estado: string | null
+    atualizadoEm: Date | null
+    atualizadoPorId: string | null
+  }
+
+  export type ConformidadeChecklistItemCountAggregateOutputType = {
+    id: number
+    itemKey: number
+    estado: number
+    atualizadoEm: number
+    atualizadoPorId: number
+    _all: number
+  }
+
+
+  export type ConformidadeChecklistItemMinAggregateInputType = {
+    id?: true
+    itemKey?: true
+    estado?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+  }
+
+  export type ConformidadeChecklistItemMaxAggregateInputType = {
+    id?: true
+    itemKey?: true
+    estado?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+  }
+
+  export type ConformidadeChecklistItemCountAggregateInputType = {
+    id?: true
+    itemKey?: true
+    estado?: true
+    atualizadoEm?: true
+    atualizadoPorId?: true
+    _all?: true
+  }
+
+  export type ConformidadeChecklistItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConformidadeChecklistItem to aggregate.
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConformidadeChecklistItems to fetch.
+     */
+    orderBy?: ConformidadeChecklistItemOrderByWithRelationInput | ConformidadeChecklistItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConformidadeChecklistItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConformidadeChecklistItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConformidadeChecklistItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConformidadeChecklistItems
+    **/
+    _count?: true | ConformidadeChecklistItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConformidadeChecklistItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConformidadeChecklistItemMaxAggregateInputType
+  }
+
+  export type GetConformidadeChecklistItemAggregateType<T extends ConformidadeChecklistItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateConformidadeChecklistItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConformidadeChecklistItem[P]>
+      : GetScalarType<T[P], AggregateConformidadeChecklistItem[P]>
+  }
+
+
+
+
+  export type ConformidadeChecklistItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConformidadeChecklistItemWhereInput
+    orderBy?: ConformidadeChecklistItemOrderByWithAggregationInput | ConformidadeChecklistItemOrderByWithAggregationInput[]
+    by: ConformidadeChecklistItemScalarFieldEnum[] | ConformidadeChecklistItemScalarFieldEnum
+    having?: ConformidadeChecklistItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConformidadeChecklistItemCountAggregateInputType | true
+    _min?: ConformidadeChecklistItemMinAggregateInputType
+    _max?: ConformidadeChecklistItemMaxAggregateInputType
+  }
+
+  export type ConformidadeChecklistItemGroupByOutputType = {
+    id: string
+    itemKey: string
+    estado: string
+    atualizadoEm: Date
+    atualizadoPorId: string | null
+    _count: ConformidadeChecklistItemCountAggregateOutputType | null
+    _min: ConformidadeChecklistItemMinAggregateOutputType | null
+    _max: ConformidadeChecklistItemMaxAggregateOutputType | null
+  }
+
+  type GetConformidadeChecklistItemGroupByPayload<T extends ConformidadeChecklistItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConformidadeChecklistItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConformidadeChecklistItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConformidadeChecklistItemGroupByOutputType[P]>
+            : GetScalarType<T[P], ConformidadeChecklistItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConformidadeChecklistItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    itemKey?: boolean
+    estado?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["conformidadeChecklistItem"]>
+
+  export type ConformidadeChecklistItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    itemKey?: boolean
+    estado?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["conformidadeChecklistItem"]>
+
+  export type ConformidadeChecklistItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    itemKey?: boolean
+    estado?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }, ExtArgs["result"]["conformidadeChecklistItem"]>
+
+  export type ConformidadeChecklistItemSelectScalar = {
+    id?: boolean
+    itemKey?: boolean
+    estado?: boolean
+    atualizadoEm?: boolean
+    atualizadoPorId?: boolean
+  }
+
+  export type ConformidadeChecklistItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "itemKey" | "estado" | "atualizadoEm" | "atualizadoPorId", ExtArgs["result"]["conformidadeChecklistItem"]>
+  export type ConformidadeChecklistItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }
+  export type ConformidadeChecklistItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }
+  export type ConformidadeChecklistItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    atualizadoPor?: boolean | ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>
+  }
+
+  export type $ConformidadeChecklistItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConformidadeChecklistItem"
+    objects: {
+      atualizadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      itemKey: string
+      estado: string
+      atualizadoEm: Date
+      atualizadoPorId: string | null
+    }, ExtArgs["result"]["conformidadeChecklistItem"]>
+    composites: {}
+  }
+
+  type ConformidadeChecklistItemGetPayload<S extends boolean | null | undefined | ConformidadeChecklistItemDefaultArgs> = $Result.GetResult<Prisma.$ConformidadeChecklistItemPayload, S>
+
+  type ConformidadeChecklistItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConformidadeChecklistItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConformidadeChecklistItemCountAggregateInputType | true
+    }
+
+  export interface ConformidadeChecklistItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConformidadeChecklistItem'], meta: { name: 'ConformidadeChecklistItem' } }
+    /**
+     * Find zero or one ConformidadeChecklistItem that matches the filter.
+     * @param {ConformidadeChecklistItemFindUniqueArgs} args - Arguments to find a ConformidadeChecklistItem
+     * @example
+     * // Get one ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConformidadeChecklistItemFindUniqueArgs>(args: SelectSubset<T, ConformidadeChecklistItemFindUniqueArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConformidadeChecklistItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConformidadeChecklistItemFindUniqueOrThrowArgs} args - Arguments to find a ConformidadeChecklistItem
+     * @example
+     * // Get one ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConformidadeChecklistItemFindUniqueOrThrowArgs>(args: SelectSubset<T, ConformidadeChecklistItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConformidadeChecklistItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemFindFirstArgs} args - Arguments to find a ConformidadeChecklistItem
+     * @example
+     * // Get one ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConformidadeChecklistItemFindFirstArgs>(args?: SelectSubset<T, ConformidadeChecklistItemFindFirstArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConformidadeChecklistItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemFindFirstOrThrowArgs} args - Arguments to find a ConformidadeChecklistItem
+     * @example
+     * // Get one ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConformidadeChecklistItemFindFirstOrThrowArgs>(args?: SelectSubset<T, ConformidadeChecklistItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConformidadeChecklistItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConformidadeChecklistItems
+     * const conformidadeChecklistItems = await prisma.conformidadeChecklistItem.findMany()
+     * 
+     * // Get first 10 ConformidadeChecklistItems
+     * const conformidadeChecklistItems = await prisma.conformidadeChecklistItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const conformidadeChecklistItemWithIdOnly = await prisma.conformidadeChecklistItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConformidadeChecklistItemFindManyArgs>(args?: SelectSubset<T, ConformidadeChecklistItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConformidadeChecklistItem.
+     * @param {ConformidadeChecklistItemCreateArgs} args - Arguments to create a ConformidadeChecklistItem.
+     * @example
+     * // Create one ConformidadeChecklistItem
+     * const ConformidadeChecklistItem = await prisma.conformidadeChecklistItem.create({
+     *   data: {
+     *     // ... data to create a ConformidadeChecklistItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConformidadeChecklistItemCreateArgs>(args: SelectSubset<T, ConformidadeChecklistItemCreateArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConformidadeChecklistItems.
+     * @param {ConformidadeChecklistItemCreateManyArgs} args - Arguments to create many ConformidadeChecklistItems.
+     * @example
+     * // Create many ConformidadeChecklistItems
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConformidadeChecklistItemCreateManyArgs>(args?: SelectSubset<T, ConformidadeChecklistItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConformidadeChecklistItems and returns the data saved in the database.
+     * @param {ConformidadeChecklistItemCreateManyAndReturnArgs} args - Arguments to create many ConformidadeChecklistItems.
+     * @example
+     * // Create many ConformidadeChecklistItems
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConformidadeChecklistItems and only return the `id`
+     * const conformidadeChecklistItemWithIdOnly = await prisma.conformidadeChecklistItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConformidadeChecklistItemCreateManyAndReturnArgs>(args?: SelectSubset<T, ConformidadeChecklistItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConformidadeChecklistItem.
+     * @param {ConformidadeChecklistItemDeleteArgs} args - Arguments to delete one ConformidadeChecklistItem.
+     * @example
+     * // Delete one ConformidadeChecklistItem
+     * const ConformidadeChecklistItem = await prisma.conformidadeChecklistItem.delete({
+     *   where: {
+     *     // ... filter to delete one ConformidadeChecklistItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConformidadeChecklistItemDeleteArgs>(args: SelectSubset<T, ConformidadeChecklistItemDeleteArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConformidadeChecklistItem.
+     * @param {ConformidadeChecklistItemUpdateArgs} args - Arguments to update one ConformidadeChecklistItem.
+     * @example
+     * // Update one ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConformidadeChecklistItemUpdateArgs>(args: SelectSubset<T, ConformidadeChecklistItemUpdateArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConformidadeChecklistItems.
+     * @param {ConformidadeChecklistItemDeleteManyArgs} args - Arguments to filter ConformidadeChecklistItems to delete.
+     * @example
+     * // Delete a few ConformidadeChecklistItems
+     * const { count } = await prisma.conformidadeChecklistItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConformidadeChecklistItemDeleteManyArgs>(args?: SelectSubset<T, ConformidadeChecklistItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConformidadeChecklistItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConformidadeChecklistItems
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConformidadeChecklistItemUpdateManyArgs>(args: SelectSubset<T, ConformidadeChecklistItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConformidadeChecklistItems and returns the data updated in the database.
+     * @param {ConformidadeChecklistItemUpdateManyAndReturnArgs} args - Arguments to update many ConformidadeChecklistItems.
+     * @example
+     * // Update many ConformidadeChecklistItems
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConformidadeChecklistItems and only return the `id`
+     * const conformidadeChecklistItemWithIdOnly = await prisma.conformidadeChecklistItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConformidadeChecklistItemUpdateManyAndReturnArgs>(args: SelectSubset<T, ConformidadeChecklistItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConformidadeChecklistItem.
+     * @param {ConformidadeChecklistItemUpsertArgs} args - Arguments to update or create a ConformidadeChecklistItem.
+     * @example
+     * // Update or create a ConformidadeChecklistItem
+     * const conformidadeChecklistItem = await prisma.conformidadeChecklistItem.upsert({
+     *   create: {
+     *     // ... data to create a ConformidadeChecklistItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConformidadeChecklistItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConformidadeChecklistItemUpsertArgs>(args: SelectSubset<T, ConformidadeChecklistItemUpsertArgs<ExtArgs>>): Prisma__ConformidadeChecklistItemClient<$Result.GetResult<Prisma.$ConformidadeChecklistItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConformidadeChecklistItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemCountArgs} args - Arguments to filter ConformidadeChecklistItems to count.
+     * @example
+     * // Count the number of ConformidadeChecklistItems
+     * const count = await prisma.conformidadeChecklistItem.count({
+     *   where: {
+     *     // ... the filter for the ConformidadeChecklistItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConformidadeChecklistItemCountArgs>(
+      args?: Subset<T, ConformidadeChecklistItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConformidadeChecklistItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConformidadeChecklistItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConformidadeChecklistItemAggregateArgs>(args: Subset<T, ConformidadeChecklistItemAggregateArgs>): Prisma.PrismaPromise<GetConformidadeChecklistItemAggregateType<T>>
+
+    /**
+     * Group by ConformidadeChecklistItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConformidadeChecklistItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConformidadeChecklistItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConformidadeChecklistItemGroupByArgs['orderBy'] }
+        : { orderBy?: ConformidadeChecklistItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConformidadeChecklistItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConformidadeChecklistItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConformidadeChecklistItem model
+   */
+  readonly fields: ConformidadeChecklistItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConformidadeChecklistItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConformidadeChecklistItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    atualizadoPor<T extends ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs> = {}>(args?: Subset<T, ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConformidadeChecklistItem model
+   */
+  interface ConformidadeChecklistItemFieldRefs {
+    readonly id: FieldRef<"ConformidadeChecklistItem", 'String'>
+    readonly itemKey: FieldRef<"ConformidadeChecklistItem", 'String'>
+    readonly estado: FieldRef<"ConformidadeChecklistItem", 'String'>
+    readonly atualizadoEm: FieldRef<"ConformidadeChecklistItem", 'DateTime'>
+    readonly atualizadoPorId: FieldRef<"ConformidadeChecklistItem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConformidadeChecklistItem findUnique
+   */
+  export type ConformidadeChecklistItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ConformidadeChecklistItem to fetch.
+     */
+    where: ConformidadeChecklistItemWhereUniqueInput
+  }
+
+  /**
+   * ConformidadeChecklistItem findUniqueOrThrow
+   */
+  export type ConformidadeChecklistItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ConformidadeChecklistItem to fetch.
+     */
+    where: ConformidadeChecklistItemWhereUniqueInput
+  }
+
+  /**
+   * ConformidadeChecklistItem findFirst
+   */
+  export type ConformidadeChecklistItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ConformidadeChecklistItem to fetch.
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConformidadeChecklistItems to fetch.
+     */
+    orderBy?: ConformidadeChecklistItemOrderByWithRelationInput | ConformidadeChecklistItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConformidadeChecklistItems.
+     */
+    cursor?: ConformidadeChecklistItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConformidadeChecklistItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConformidadeChecklistItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConformidadeChecklistItems.
+     */
+    distinct?: ConformidadeChecklistItemScalarFieldEnum | ConformidadeChecklistItemScalarFieldEnum[]
+  }
+
+  /**
+   * ConformidadeChecklistItem findFirstOrThrow
+   */
+  export type ConformidadeChecklistItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ConformidadeChecklistItem to fetch.
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConformidadeChecklistItems to fetch.
+     */
+    orderBy?: ConformidadeChecklistItemOrderByWithRelationInput | ConformidadeChecklistItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConformidadeChecklistItems.
+     */
+    cursor?: ConformidadeChecklistItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConformidadeChecklistItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConformidadeChecklistItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConformidadeChecklistItems.
+     */
+    distinct?: ConformidadeChecklistItemScalarFieldEnum | ConformidadeChecklistItemScalarFieldEnum[]
+  }
+
+  /**
+   * ConformidadeChecklistItem findMany
+   */
+  export type ConformidadeChecklistItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter, which ConformidadeChecklistItems to fetch.
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConformidadeChecklistItems to fetch.
+     */
+    orderBy?: ConformidadeChecklistItemOrderByWithRelationInput | ConformidadeChecklistItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConformidadeChecklistItems.
+     */
+    cursor?: ConformidadeChecklistItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConformidadeChecklistItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConformidadeChecklistItems.
+     */
+    skip?: number
+    distinct?: ConformidadeChecklistItemScalarFieldEnum | ConformidadeChecklistItemScalarFieldEnum[]
+  }
+
+  /**
+   * ConformidadeChecklistItem create
+   */
+  export type ConformidadeChecklistItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConformidadeChecklistItem.
+     */
+    data: XOR<ConformidadeChecklistItemCreateInput, ConformidadeChecklistItemUncheckedCreateInput>
+  }
+
+  /**
+   * ConformidadeChecklistItem createMany
+   */
+  export type ConformidadeChecklistItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConformidadeChecklistItems.
+     */
+    data: ConformidadeChecklistItemCreateManyInput | ConformidadeChecklistItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConformidadeChecklistItem createManyAndReturn
+   */
+  export type ConformidadeChecklistItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConformidadeChecklistItems.
+     */
+    data: ConformidadeChecklistItemCreateManyInput | ConformidadeChecklistItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConformidadeChecklistItem update
+   */
+  export type ConformidadeChecklistItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConformidadeChecklistItem.
+     */
+    data: XOR<ConformidadeChecklistItemUpdateInput, ConformidadeChecklistItemUncheckedUpdateInput>
+    /**
+     * Choose, which ConformidadeChecklistItem to update.
+     */
+    where: ConformidadeChecklistItemWhereUniqueInput
+  }
+
+  /**
+   * ConformidadeChecklistItem updateMany
+   */
+  export type ConformidadeChecklistItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConformidadeChecklistItems.
+     */
+    data: XOR<ConformidadeChecklistItemUpdateManyMutationInput, ConformidadeChecklistItemUncheckedUpdateManyInput>
+    /**
+     * Filter which ConformidadeChecklistItems to update
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * Limit how many ConformidadeChecklistItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConformidadeChecklistItem updateManyAndReturn
+   */
+  export type ConformidadeChecklistItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * The data used to update ConformidadeChecklistItems.
+     */
+    data: XOR<ConformidadeChecklistItemUpdateManyMutationInput, ConformidadeChecklistItemUncheckedUpdateManyInput>
+    /**
+     * Filter which ConformidadeChecklistItems to update
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * Limit how many ConformidadeChecklistItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConformidadeChecklistItem upsert
+   */
+  export type ConformidadeChecklistItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConformidadeChecklistItem to update in case it exists.
+     */
+    where: ConformidadeChecklistItemWhereUniqueInput
+    /**
+     * In case the ConformidadeChecklistItem found by the `where` argument doesn't exist, create a new ConformidadeChecklistItem with this data.
+     */
+    create: XOR<ConformidadeChecklistItemCreateInput, ConformidadeChecklistItemUncheckedCreateInput>
+    /**
+     * In case the ConformidadeChecklistItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConformidadeChecklistItemUpdateInput, ConformidadeChecklistItemUncheckedUpdateInput>
+  }
+
+  /**
+   * ConformidadeChecklistItem delete
+   */
+  export type ConformidadeChecklistItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+    /**
+     * Filter which ConformidadeChecklistItem to delete.
+     */
+    where: ConformidadeChecklistItemWhereUniqueInput
+  }
+
+  /**
+   * ConformidadeChecklistItem deleteMany
+   */
+  export type ConformidadeChecklistItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConformidadeChecklistItems to delete
+     */
+    where?: ConformidadeChecklistItemWhereInput
+    /**
+     * Limit how many ConformidadeChecklistItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConformidadeChecklistItem.atualizadoPor
+   */
+  export type ConformidadeChecklistItem$atualizadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * ConformidadeChecklistItem without action
+   */
+  export type ConformidadeChecklistItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConformidadeChecklistItem
+     */
+    select?: ConformidadeChecklistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConformidadeChecklistItem
+     */
+    omit?: ConformidadeChecklistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConformidadeChecklistItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -102672,6 +107758,17 @@ export namespace Prisma {
   export type IncidenteTIScalarFieldEnum = (typeof IncidenteTIScalarFieldEnum)[keyof typeof IncidenteTIScalarFieldEnum]
 
 
+  export const NotaIncidenteTIScalarFieldEnum: {
+    id: 'id',
+    incidenteId: 'incidenteId',
+    autorId: 'autorId',
+    conteudo: 'conteudo',
+    criadaEm: 'criadaEm'
+  };
+
+  export type NotaIncidenteTIScalarFieldEnum = (typeof NotaIncidenteTIScalarFieldEnum)[keyof typeof NotaIncidenteTIScalarFieldEnum]
+
+
   export const PedidoTIScalarFieldEnum: {
     id: 'id',
     titulo: 'titulo',
@@ -103019,6 +108116,51 @@ export namespace Prisma {
   };
 
   export type PrescricaoDietaScalarFieldEnum = (typeof PrescricaoDietaScalarFieldEnum)[keyof typeof PrescricaoDietaScalarFieldEnum]
+
+
+  export const CulturaMicrobiologicaScalarFieldEnum: {
+    id: 'id',
+    doenteId: 'doenteId',
+    dataColheita: 'dataColheita',
+    tipoAmostra: 'tipoAmostra',
+    agente: 'agente',
+    antibiograma: 'antibiograma',
+    resultado: 'resultado',
+    servico: 'servico',
+    observacoes: 'observacoes',
+    registadoPorId: 'registadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type CulturaMicrobiologicaScalarFieldEnum = (typeof CulturaMicrobiologicaScalarFieldEnum)[keyof typeof CulturaMicrobiologicaScalarFieldEnum]
+
+
+  export const SurtoIACSScalarFieldEnum: {
+    id: 'id',
+    agente: 'agente',
+    servico: 'servico',
+    dataInicio: 'dataInicio',
+    dataFim: 'dataFim',
+    estado: 'estado',
+    numCasos: 'numCasos',
+    medidas: 'medidas',
+    observacoes: 'observacoes',
+    registadoPorId: 'registadoPorId',
+    criadoEm: 'criadoEm'
+  };
+
+  export type SurtoIACSScalarFieldEnum = (typeof SurtoIACSScalarFieldEnum)[keyof typeof SurtoIACSScalarFieldEnum]
+
+
+  export const ConformidadeChecklistItemScalarFieldEnum: {
+    id: 'id',
+    itemKey: 'itemKey',
+    estado: 'estado',
+    atualizadoEm: 'atualizadoEm',
+    atualizadoPorId: 'atualizadoPorId'
+  };
+
+  export type ConformidadeChecklistItemScalarFieldEnum = (typeof ConformidadeChecklistItemScalarFieldEnum)[keyof typeof ConformidadeChecklistItemScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -103555,6 +108697,34 @@ export namespace Prisma {
    */
   export type ListEnumEstadoFaturaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoFatura[]'>
     
+
+
+  /**
+   * Reference to a field of type 'ResultadoCultura'
+   */
+  export type EnumResultadoCulturaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResultadoCultura'>
+    
+
+
+  /**
+   * Reference to a field of type 'ResultadoCultura[]'
+   */
+  export type ListEnumResultadoCulturaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResultadoCultura[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoSurto'
+   */
+  export type EnumEstadoSurtoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoSurto'>
+    
+
+
+  /**
+   * Reference to a field of type 'EstadoSurto[]'
+   */
+  export type ListEnumEstadoSurtoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoSurto[]'>
+    
   /**
    * Deep Input Types
    */
@@ -103790,6 +108960,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaListRelationFilter
     medicacoesAssinadas?: MedicacaoListRelationFilter
     notasAssinadas?: NotaClinicaListRelationFilter
+    culturasRegistadas?: CulturaMicrobiologicaListRelationFilter
+    surtosRegistados?: SurtoIACSListRelationFilter
+    notasIncidentesTI?: NotaIncidenteTIListRelationFilter
+    checklistsConformidade?: ConformidadeChecklistItemListRelationFilter
   }
 
   export type UtilizadorOrderByWithRelationInput = {
@@ -103895,6 +109069,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaOrderByRelationAggregateInput
     medicacoesAssinadas?: MedicacaoOrderByRelationAggregateInput
     notasAssinadas?: NotaClinicaOrderByRelationAggregateInput
+    culturasRegistadas?: CulturaMicrobiologicaOrderByRelationAggregateInput
+    surtosRegistados?: SurtoIACSOrderByRelationAggregateInput
+    notasIncidentesTI?: NotaIncidenteTIOrderByRelationAggregateInput
+    checklistsConformidade?: ConformidadeChecklistItemOrderByRelationAggregateInput
   }
 
   export type UtilizadorWhereUniqueInput = Prisma.AtLeast<{
@@ -104003,6 +109181,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaListRelationFilter
     medicacoesAssinadas?: MedicacaoListRelationFilter
     notasAssinadas?: NotaClinicaListRelationFilter
+    culturasRegistadas?: CulturaMicrobiologicaListRelationFilter
+    surtosRegistados?: SurtoIACSListRelationFilter
+    notasIncidentesTI?: NotaIncidenteTIListRelationFilter
+    checklistsConformidade?: ConformidadeChecklistItemListRelationFilter
   }, "id" | "numeroFuncionario">
 
   export type UtilizadorOrderByWithAggregationInput = {
@@ -104169,6 +109351,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessListRelationFilter
     protocolosClinicos?: ProtocoloClinicoListRelationFilter
     prescricoesDieta?: PrescricaoDietaListRelationFilter
+    culturasMicrobiologicas?: CulturaMicrobiologicaListRelationFilter
   }
 
   export type DoenteOrderByWithRelationInput = {
@@ -104224,6 +109407,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessOrderByRelationAggregateInput
     protocolosClinicos?: ProtocoloClinicoOrderByRelationAggregateInput
     prescricoesDieta?: PrescricaoDietaOrderByRelationAggregateInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaOrderByRelationAggregateInput
   }
 
   export type DoenteWhereUniqueInput = Prisma.AtLeast<{
@@ -104282,6 +109466,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessListRelationFilter
     protocolosClinicos?: ProtocoloClinicoListRelationFilter
     prescricoesDieta?: PrescricaoDietaListRelationFilter
+    culturasMicrobiologicas?: CulturaMicrobiologicaListRelationFilter
   }, "id" | "numeroProcesso" | "camaId">
 
   export type DoenteOrderByWithAggregationInput = {
@@ -108208,6 +113393,7 @@ export namespace Prisma {
     atualizadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    notas?: NotaIncidenteTIListRelationFilter
   }
 
   export type IncidenteTIOrderByWithRelationInput = {
@@ -108224,6 +113410,7 @@ export namespace Prisma {
     atualizadoEm?: SortOrder
     criadoPor?: UtilizadorOrderByWithRelationInput
     responsavel?: UtilizadorOrderByWithRelationInput
+    notas?: NotaIncidenteTIOrderByRelationAggregateInput
   }
 
   export type IncidenteTIWhereUniqueInput = Prisma.AtLeast<{
@@ -108243,6 +113430,7 @@ export namespace Prisma {
     atualizadoEm?: DateTimeFilter<"IncidenteTI"> | Date | string
     criadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
     responsavel?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    notas?: NotaIncidenteTIListRelationFilter
   }, "id">
 
   export type IncidenteTIOrderByWithAggregationInput = {
@@ -108277,6 +113465,64 @@ export namespace Prisma {
     responsavelId?: StringNullableWithAggregatesFilter<"IncidenteTI"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"IncidenteTI"> | Date | string
     atualizadoEm?: DateTimeWithAggregatesFilter<"IncidenteTI"> | Date | string
+  }
+
+  export type NotaIncidenteTIWhereInput = {
+    AND?: NotaIncidenteTIWhereInput | NotaIncidenteTIWhereInput[]
+    OR?: NotaIncidenteTIWhereInput[]
+    NOT?: NotaIncidenteTIWhereInput | NotaIncidenteTIWhereInput[]
+    id?: StringFilter<"NotaIncidenteTI"> | string
+    incidenteId?: StringFilter<"NotaIncidenteTI"> | string
+    autorId?: StringFilter<"NotaIncidenteTI"> | string
+    conteudo?: StringFilter<"NotaIncidenteTI"> | string
+    criadaEm?: DateTimeFilter<"NotaIncidenteTI"> | Date | string
+    incidente?: XOR<IncidenteTIScalarRelationFilter, IncidenteTIWhereInput>
+    autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type NotaIncidenteTIOrderByWithRelationInput = {
+    id?: SortOrder
+    incidenteId?: SortOrder
+    autorId?: SortOrder
+    conteudo?: SortOrder
+    criadaEm?: SortOrder
+    incidente?: IncidenteTIOrderByWithRelationInput
+    autor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type NotaIncidenteTIWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotaIncidenteTIWhereInput | NotaIncidenteTIWhereInput[]
+    OR?: NotaIncidenteTIWhereInput[]
+    NOT?: NotaIncidenteTIWhereInput | NotaIncidenteTIWhereInput[]
+    incidenteId?: StringFilter<"NotaIncidenteTI"> | string
+    autorId?: StringFilter<"NotaIncidenteTI"> | string
+    conteudo?: StringFilter<"NotaIncidenteTI"> | string
+    criadaEm?: DateTimeFilter<"NotaIncidenteTI"> | Date | string
+    incidente?: XOR<IncidenteTIScalarRelationFilter, IncidenteTIWhereInput>
+    autor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type NotaIncidenteTIOrderByWithAggregationInput = {
+    id?: SortOrder
+    incidenteId?: SortOrder
+    autorId?: SortOrder
+    conteudo?: SortOrder
+    criadaEm?: SortOrder
+    _count?: NotaIncidenteTICountOrderByAggregateInput
+    _max?: NotaIncidenteTIMaxOrderByAggregateInput
+    _min?: NotaIncidenteTIMinOrderByAggregateInput
+  }
+
+  export type NotaIncidenteTIScalarWhereWithAggregatesInput = {
+    AND?: NotaIncidenteTIScalarWhereWithAggregatesInput | NotaIncidenteTIScalarWhereWithAggregatesInput[]
+    OR?: NotaIncidenteTIScalarWhereWithAggregatesInput[]
+    NOT?: NotaIncidenteTIScalarWhereWithAggregatesInput | NotaIncidenteTIScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotaIncidenteTI"> | string
+    incidenteId?: StringWithAggregatesFilter<"NotaIncidenteTI"> | string
+    autorId?: StringWithAggregatesFilter<"NotaIncidenteTI"> | string
+    conteudo?: StringWithAggregatesFilter<"NotaIncidenteTI"> | string
+    criadaEm?: DateTimeWithAggregatesFilter<"NotaIncidenteTI"> | Date | string
   }
 
   export type PedidoTIWhereInput = {
@@ -110107,6 +115353,236 @@ export namespace Prisma {
     criadaPorId?: StringWithAggregatesFilter<"PrescricaoDieta"> | string
   }
 
+  export type CulturaMicrobiologicaWhereInput = {
+    AND?: CulturaMicrobiologicaWhereInput | CulturaMicrobiologicaWhereInput[]
+    OR?: CulturaMicrobiologicaWhereInput[]
+    NOT?: CulturaMicrobiologicaWhereInput | CulturaMicrobiologicaWhereInput[]
+    id?: StringFilter<"CulturaMicrobiologica"> | string
+    doenteId?: StringFilter<"CulturaMicrobiologica"> | string
+    dataColheita?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+    tipoAmostra?: StringFilter<"CulturaMicrobiologica"> | string
+    agente?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    antibiograma?: JsonNullableFilter<"CulturaMicrobiologica">
+    resultado?: EnumResultadoCulturaFilter<"CulturaMicrobiologica"> | $Enums.ResultadoCultura
+    servico?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    observacoes?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    registadoPorId?: StringFilter<"CulturaMicrobiologica"> | string
+    criadoEm?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type CulturaMicrobiologicaOrderByWithRelationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataColheita?: SortOrder
+    tipoAmostra?: SortOrder
+    agente?: SortOrderInput | SortOrder
+    antibiograma?: SortOrderInput | SortOrder
+    resultado?: SortOrder
+    servico?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    doente?: DoenteOrderByWithRelationInput
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type CulturaMicrobiologicaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CulturaMicrobiologicaWhereInput | CulturaMicrobiologicaWhereInput[]
+    OR?: CulturaMicrobiologicaWhereInput[]
+    NOT?: CulturaMicrobiologicaWhereInput | CulturaMicrobiologicaWhereInput[]
+    doenteId?: StringFilter<"CulturaMicrobiologica"> | string
+    dataColheita?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+    tipoAmostra?: StringFilter<"CulturaMicrobiologica"> | string
+    agente?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    antibiograma?: JsonNullableFilter<"CulturaMicrobiologica">
+    resultado?: EnumResultadoCulturaFilter<"CulturaMicrobiologica"> | $Enums.ResultadoCultura
+    servico?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    observacoes?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    registadoPorId?: StringFilter<"CulturaMicrobiologica"> | string
+    criadoEm?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+    doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type CulturaMicrobiologicaOrderByWithAggregationInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataColheita?: SortOrder
+    tipoAmostra?: SortOrder
+    agente?: SortOrderInput | SortOrder
+    antibiograma?: SortOrderInput | SortOrder
+    resultado?: SortOrder
+    servico?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: CulturaMicrobiologicaCountOrderByAggregateInput
+    _max?: CulturaMicrobiologicaMaxOrderByAggregateInput
+    _min?: CulturaMicrobiologicaMinOrderByAggregateInput
+  }
+
+  export type CulturaMicrobiologicaScalarWhereWithAggregatesInput = {
+    AND?: CulturaMicrobiologicaScalarWhereWithAggregatesInput | CulturaMicrobiologicaScalarWhereWithAggregatesInput[]
+    OR?: CulturaMicrobiologicaScalarWhereWithAggregatesInput[]
+    NOT?: CulturaMicrobiologicaScalarWhereWithAggregatesInput | CulturaMicrobiologicaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CulturaMicrobiologica"> | string
+    doenteId?: StringWithAggregatesFilter<"CulturaMicrobiologica"> | string
+    dataColheita?: DateTimeWithAggregatesFilter<"CulturaMicrobiologica"> | Date | string
+    tipoAmostra?: StringWithAggregatesFilter<"CulturaMicrobiologica"> | string
+    agente?: StringNullableWithAggregatesFilter<"CulturaMicrobiologica"> | string | null
+    antibiograma?: JsonNullableWithAggregatesFilter<"CulturaMicrobiologica">
+    resultado?: EnumResultadoCulturaWithAggregatesFilter<"CulturaMicrobiologica"> | $Enums.ResultadoCultura
+    servico?: StringNullableWithAggregatesFilter<"CulturaMicrobiologica"> | string | null
+    observacoes?: StringNullableWithAggregatesFilter<"CulturaMicrobiologica"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"CulturaMicrobiologica"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"CulturaMicrobiologica"> | Date | string
+  }
+
+  export type SurtoIACSWhereInput = {
+    AND?: SurtoIACSWhereInput | SurtoIACSWhereInput[]
+    OR?: SurtoIACSWhereInput[]
+    NOT?: SurtoIACSWhereInput | SurtoIACSWhereInput[]
+    id?: StringFilter<"SurtoIACS"> | string
+    agente?: StringFilter<"SurtoIACS"> | string
+    servico?: StringFilter<"SurtoIACS"> | string
+    dataInicio?: DateTimeFilter<"SurtoIACS"> | Date | string
+    dataFim?: DateTimeNullableFilter<"SurtoIACS"> | Date | string | null
+    estado?: EnumEstadoSurtoFilter<"SurtoIACS"> | $Enums.EstadoSurto
+    numCasos?: IntFilter<"SurtoIACS"> | number
+    medidas?: JsonNullableFilter<"SurtoIACS">
+    observacoes?: StringNullableFilter<"SurtoIACS"> | string | null
+    registadoPorId?: StringFilter<"SurtoIACS"> | string
+    criadoEm?: DateTimeFilter<"SurtoIACS"> | Date | string
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }
+
+  export type SurtoIACSOrderByWithRelationInput = {
+    id?: SortOrder
+    agente?: SortOrder
+    servico?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    numCasos?: SortOrder
+    medidas?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    registadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type SurtoIACSWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SurtoIACSWhereInput | SurtoIACSWhereInput[]
+    OR?: SurtoIACSWhereInput[]
+    NOT?: SurtoIACSWhereInput | SurtoIACSWhereInput[]
+    agente?: StringFilter<"SurtoIACS"> | string
+    servico?: StringFilter<"SurtoIACS"> | string
+    dataInicio?: DateTimeFilter<"SurtoIACS"> | Date | string
+    dataFim?: DateTimeNullableFilter<"SurtoIACS"> | Date | string | null
+    estado?: EnumEstadoSurtoFilter<"SurtoIACS"> | $Enums.EstadoSurto
+    numCasos?: IntFilter<"SurtoIACS"> | number
+    medidas?: JsonNullableFilter<"SurtoIACS">
+    observacoes?: StringNullableFilter<"SurtoIACS"> | string | null
+    registadoPorId?: StringFilter<"SurtoIACS"> | string
+    criadoEm?: DateTimeFilter<"SurtoIACS"> | Date | string
+    registadoPor?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
+  }, "id">
+
+  export type SurtoIACSOrderByWithAggregationInput = {
+    id?: SortOrder
+    agente?: SortOrder
+    servico?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrderInput | SortOrder
+    estado?: SortOrder
+    numCasos?: SortOrder
+    medidas?: SortOrderInput | SortOrder
+    observacoes?: SortOrderInput | SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+    _count?: SurtoIACSCountOrderByAggregateInput
+    _avg?: SurtoIACSAvgOrderByAggregateInput
+    _max?: SurtoIACSMaxOrderByAggregateInput
+    _min?: SurtoIACSMinOrderByAggregateInput
+    _sum?: SurtoIACSSumOrderByAggregateInput
+  }
+
+  export type SurtoIACSScalarWhereWithAggregatesInput = {
+    AND?: SurtoIACSScalarWhereWithAggregatesInput | SurtoIACSScalarWhereWithAggregatesInput[]
+    OR?: SurtoIACSScalarWhereWithAggregatesInput[]
+    NOT?: SurtoIACSScalarWhereWithAggregatesInput | SurtoIACSScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SurtoIACS"> | string
+    agente?: StringWithAggregatesFilter<"SurtoIACS"> | string
+    servico?: StringWithAggregatesFilter<"SurtoIACS"> | string
+    dataInicio?: DateTimeWithAggregatesFilter<"SurtoIACS"> | Date | string
+    dataFim?: DateTimeNullableWithAggregatesFilter<"SurtoIACS"> | Date | string | null
+    estado?: EnumEstadoSurtoWithAggregatesFilter<"SurtoIACS"> | $Enums.EstadoSurto
+    numCasos?: IntWithAggregatesFilter<"SurtoIACS"> | number
+    medidas?: JsonNullableWithAggregatesFilter<"SurtoIACS">
+    observacoes?: StringNullableWithAggregatesFilter<"SurtoIACS"> | string | null
+    registadoPorId?: StringWithAggregatesFilter<"SurtoIACS"> | string
+    criadoEm?: DateTimeWithAggregatesFilter<"SurtoIACS"> | Date | string
+  }
+
+  export type ConformidadeChecklistItemWhereInput = {
+    AND?: ConformidadeChecklistItemWhereInput | ConformidadeChecklistItemWhereInput[]
+    OR?: ConformidadeChecklistItemWhereInput[]
+    NOT?: ConformidadeChecklistItemWhereInput | ConformidadeChecklistItemWhereInput[]
+    id?: StringFilter<"ConformidadeChecklistItem"> | string
+    itemKey?: StringFilter<"ConformidadeChecklistItem"> | string
+    estado?: StringFilter<"ConformidadeChecklistItem"> | string
+    atualizadoEm?: DateTimeFilter<"ConformidadeChecklistItem"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"ConformidadeChecklistItem"> | string | null
+    atualizadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }
+
+  export type ConformidadeChecklistItemOrderByWithRelationInput = {
+    id?: SortOrder
+    itemKey?: SortOrder
+    estado?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrderInput | SortOrder
+    atualizadoPor?: UtilizadorOrderByWithRelationInput
+  }
+
+  export type ConformidadeChecklistItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    itemKey?: string
+    AND?: ConformidadeChecklistItemWhereInput | ConformidadeChecklistItemWhereInput[]
+    OR?: ConformidadeChecklistItemWhereInput[]
+    NOT?: ConformidadeChecklistItemWhereInput | ConformidadeChecklistItemWhereInput[]
+    estado?: StringFilter<"ConformidadeChecklistItem"> | string
+    atualizadoEm?: DateTimeFilter<"ConformidadeChecklistItem"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"ConformidadeChecklistItem"> | string | null
+    atualizadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+  }, "id" | "itemKey">
+
+  export type ConformidadeChecklistItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    itemKey?: SortOrder
+    estado?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrderInput | SortOrder
+    _count?: ConformidadeChecklistItemCountOrderByAggregateInput
+    _max?: ConformidadeChecklistItemMaxOrderByAggregateInput
+    _min?: ConformidadeChecklistItemMinOrderByAggregateInput
+  }
+
+  export type ConformidadeChecklistItemScalarWhereWithAggregatesInput = {
+    AND?: ConformidadeChecklistItemScalarWhereWithAggregatesInput | ConformidadeChecklistItemScalarWhereWithAggregatesInput[]
+    OR?: ConformidadeChecklistItemScalarWhereWithAggregatesInput[]
+    NOT?: ConformidadeChecklistItemScalarWhereWithAggregatesInput | ConformidadeChecklistItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConformidadeChecklistItem"> | string
+    itemKey?: StringWithAggregatesFilter<"ConformidadeChecklistItem"> | string
+    estado?: StringWithAggregatesFilter<"ConformidadeChecklistItem"> | string
+    atualizadoEm?: DateTimeWithAggregatesFilter<"ConformidadeChecklistItem"> | Date | string
+    atualizadoPorId?: StringNullableWithAggregatesFilter<"ConformidadeChecklistItem"> | string | null
+  }
+
   export type RoleConfigCreateInput = {
     id?: string
     chave: string
@@ -110338,6 +115814,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateInput = {
@@ -110442,6 +115922,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUpdateInput = {
@@ -110546,6 +116030,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateInput = {
@@ -110650,6 +116138,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateManyInput = {
@@ -110826,6 +116318,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateInput = {
@@ -110879,6 +116372,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUpdateInput = {
@@ -110932,6 +116426,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateInput = {
@@ -110985,6 +116480,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateManyInput = {
@@ -115069,6 +120565,7 @@ export namespace Prisma {
     atualizadoEm?: Date | string
     criadoPor: UtilizadorCreateNestedOneWithoutIncidentesCriadosInput
     responsavel?: UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput
+    notas?: NotaIncidenteTICreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTIUncheckedCreateInput = {
@@ -115083,6 +120580,7 @@ export namespace Prisma {
     responsavelId?: string | null
     criadoEm?: Date | string
     atualizadoEm?: Date | string
+    notas?: NotaIncidenteTIUncheckedCreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTIUpdateInput = {
@@ -115097,6 +120595,7 @@ export namespace Prisma {
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     criadoPor?: UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput
     responsavel?: UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput
+    notas?: NotaIncidenteTIUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTIUncheckedUpdateInput = {
@@ -115111,6 +120610,7 @@ export namespace Prisma {
     responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    notas?: NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTICreateManyInput = {
@@ -115151,6 +120651,60 @@ export namespace Prisma {
     responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTICreateInput = {
+    id?: string
+    conteudo: string
+    criadaEm?: Date | string
+    incidente: IncidenteTICreateNestedOneWithoutNotasInput
+    autor: UtilizadorCreateNestedOneWithoutNotasIncidentesTIInput
+  }
+
+  export type NotaIncidenteTIUncheckedCreateInput = {
+    id?: string
+    incidenteId: string
+    autorId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaIncidenteTIUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidente?: IncidenteTIUpdateOneRequiredWithoutNotasNestedInput
+    autor?: UtilizadorUpdateOneRequiredWithoutNotasIncidentesTINestedInput
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidenteId?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTICreateManyInput = {
+    id?: string
+    incidenteId: string
+    autorId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaIncidenteTIUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidenteId?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PedidoTICreateInput = {
@@ -117094,6 +122648,254 @@ export namespace Prisma {
     criadaPorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type CulturaMicrobiologicaCreateInput = {
+    id?: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutCulturasMicrobiologicasInput
+    registadoPor: UtilizadorCreateNestedOneWithoutCulturasRegistadasInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedCreateInput = {
+    id?: string
+    doenteId: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type CulturaMicrobiologicaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutCulturasMicrobiologicasNestedInput
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutCulturasRegistadasNestedInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CulturaMicrobiologicaCreateManyInput = {
+    id?: string
+    doenteId: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type CulturaMicrobiologicaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSCreateInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    criadoEm?: Date | string
+    registadoPor: UtilizadorCreateNestedOneWithoutSurtosRegistadosInput
+  }
+
+  export type SurtoIACSUncheckedCreateInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type SurtoIACSUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutSurtosRegistadosNestedInput
+  }
+
+  export type SurtoIACSUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSCreateManyInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type SurtoIACSUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConformidadeChecklistItemCreateInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+    atualizadoPor?: UtilizadorCreateNestedOneWithoutChecklistsConformidadeInput
+  }
+
+  export type ConformidadeChecklistItemUncheckedCreateInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+    atualizadoPorId?: string | null
+  }
+
+  export type ConformidadeChecklistItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPor?: UtilizadorUpdateOneWithoutChecklistsConformidadeNestedInput
+  }
+
+  export type ConformidadeChecklistItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ConformidadeChecklistItemCreateManyInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+    atualizadoPorId?: string | null
+  }
+
+  export type ConformidadeChecklistItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConformidadeChecklistItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -117676,6 +123478,30 @@ export namespace Prisma {
     none?: PrescricaoDietaWhereInput
   }
 
+  export type CulturaMicrobiologicaListRelationFilter = {
+    every?: CulturaMicrobiologicaWhereInput
+    some?: CulturaMicrobiologicaWhereInput
+    none?: CulturaMicrobiologicaWhereInput
+  }
+
+  export type SurtoIACSListRelationFilter = {
+    every?: SurtoIACSWhereInput
+    some?: SurtoIACSWhereInput
+    none?: SurtoIACSWhereInput
+  }
+
+  export type NotaIncidenteTIListRelationFilter = {
+    every?: NotaIncidenteTIWhereInput
+    some?: NotaIncidenteTIWhereInput
+    none?: NotaIncidenteTIWhereInput
+  }
+
+  export type ConformidadeChecklistItemListRelationFilter = {
+    every?: ConformidadeChecklistItemWhereInput
+    some?: ConformidadeChecklistItemWhereInput
+    none?: ConformidadeChecklistItemWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -117914,6 +123740,22 @@ export namespace Prisma {
   }
 
   export type PrescricaoDietaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CulturaMicrobiologicaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SurtoIACSOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotaIncidenteTIOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConformidadeChecklistItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -120830,6 +126672,35 @@ export namespace Prisma {
     _max?: NestedEnumEstadoIncidenteTIFilter<$PrismaModel>
   }
 
+  export type IncidenteTIScalarRelationFilter = {
+    is?: IncidenteTIWhereInput
+    isNot?: IncidenteTIWhereInput
+  }
+
+  export type NotaIncidenteTICountOrderByAggregateInput = {
+    id?: SortOrder
+    incidenteId?: SortOrder
+    autorId?: SortOrder
+    conteudo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type NotaIncidenteTIMaxOrderByAggregateInput = {
+    id?: SortOrder
+    incidenteId?: SortOrder
+    autorId?: SortOrder
+    conteudo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
+  export type NotaIncidenteTIMinOrderByAggregateInput = {
+    id?: SortOrder
+    incidenteId?: SortOrder
+    autorId?: SortOrder
+    conteudo?: SortOrder
+    criadaEm?: SortOrder
+  }
+
   export type EnumTipoPedidoTIFilter<$PrismaModel = never> = {
     equals?: $Enums.TipoPedidoTI | EnumTipoPedidoTIFieldRefInput<$PrismaModel>
     in?: $Enums.TipoPedidoTI[] | ListEnumTipoPedidoTIFieldRefInput<$PrismaModel>
@@ -121855,6 +127726,152 @@ export namespace Prisma {
     criadaPorId?: SortOrder
   }
 
+  export type EnumResultadoCulturaFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResultadoCultura | EnumResultadoCulturaFieldRefInput<$PrismaModel>
+    in?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumResultadoCulturaFilter<$PrismaModel> | $Enums.ResultadoCultura
+  }
+
+  export type CulturaMicrobiologicaCountOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataColheita?: SortOrder
+    tipoAmostra?: SortOrder
+    agente?: SortOrder
+    antibiograma?: SortOrder
+    resultado?: SortOrder
+    servico?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type CulturaMicrobiologicaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataColheita?: SortOrder
+    tipoAmostra?: SortOrder
+    agente?: SortOrder
+    resultado?: SortOrder
+    servico?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type CulturaMicrobiologicaMinOrderByAggregateInput = {
+    id?: SortOrder
+    doenteId?: SortOrder
+    dataColheita?: SortOrder
+    tipoAmostra?: SortOrder
+    agente?: SortOrder
+    resultado?: SortOrder
+    servico?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type EnumResultadoCulturaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResultadoCultura | EnumResultadoCulturaFieldRefInput<$PrismaModel>
+    in?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumResultadoCulturaWithAggregatesFilter<$PrismaModel> | $Enums.ResultadoCultura
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumResultadoCulturaFilter<$PrismaModel>
+    _max?: NestedEnumResultadoCulturaFilter<$PrismaModel>
+  }
+
+  export type EnumEstadoSurtoFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoSurto | EnumEstadoSurtoFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoSurtoFilter<$PrismaModel> | $Enums.EstadoSurto
+  }
+
+  export type SurtoIACSCountOrderByAggregateInput = {
+    id?: SortOrder
+    agente?: SortOrder
+    servico?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    estado?: SortOrder
+    numCasos?: SortOrder
+    medidas?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type SurtoIACSAvgOrderByAggregateInput = {
+    numCasos?: SortOrder
+  }
+
+  export type SurtoIACSMaxOrderByAggregateInput = {
+    id?: SortOrder
+    agente?: SortOrder
+    servico?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    estado?: SortOrder
+    numCasos?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type SurtoIACSMinOrderByAggregateInput = {
+    id?: SortOrder
+    agente?: SortOrder
+    servico?: SortOrder
+    dataInicio?: SortOrder
+    dataFim?: SortOrder
+    estado?: SortOrder
+    numCasos?: SortOrder
+    observacoes?: SortOrder
+    registadoPorId?: SortOrder
+    criadoEm?: SortOrder
+  }
+
+  export type SurtoIACSSumOrderByAggregateInput = {
+    numCasos?: SortOrder
+  }
+
+  export type EnumEstadoSurtoWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoSurto | EnumEstadoSurtoFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoSurtoWithAggregatesFilter<$PrismaModel> | $Enums.EstadoSurto
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoSurtoFilter<$PrismaModel>
+    _max?: NestedEnumEstadoSurtoFilter<$PrismaModel>
+  }
+
+  export type ConformidadeChecklistItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    itemKey?: SortOrder
+    estado?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
+  export type ConformidadeChecklistItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    itemKey?: SortOrder
+    estado?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
+  export type ConformidadeChecklistItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    itemKey?: SortOrder
+    estado?: SortOrder
+    atualizadoEm?: SortOrder
+    atualizadoPorId?: SortOrder
+  }
+
   export type SubRoleConfigCreateNestedManyWithoutRoleInput = {
     create?: XOR<SubRoleConfigCreateWithoutRoleInput, SubRoleConfigUncheckedCreateWithoutRoleInput> | SubRoleConfigCreateWithoutRoleInput[] | SubRoleConfigUncheckedCreateWithoutRoleInput[]
     connectOrCreate?: SubRoleConfigCreateOrConnectWithoutRoleInput | SubRoleConfigCreateOrConnectWithoutRoleInput[]
@@ -122526,6 +128543,34 @@ export namespace Prisma {
     connect?: NotaClinicaWhereUniqueInput | NotaClinicaWhereUniqueInput[]
   }
 
+  export type CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput> | CulturaMicrobiologicaCreateWithoutRegistadoPorInput[] | CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput | CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: CulturaMicrobiologicaCreateManyRegistadoPorInputEnvelope
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+  }
+
+  export type SurtoIACSCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput> | SurtoIACSCreateWithoutRegistadoPorInput[] | SurtoIACSUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SurtoIACSCreateOrConnectWithoutRegistadoPorInput | SurtoIACSCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: SurtoIACSCreateManyRegistadoPorInputEnvelope
+    connect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+  }
+
+  export type NotaIncidenteTICreateNestedManyWithoutAutorInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput> | NotaIncidenteTICreateWithoutAutorInput[] | NotaIncidenteTIUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutAutorInput | NotaIncidenteTICreateOrConnectWithoutAutorInput[]
+    createMany?: NotaIncidenteTICreateManyAutorInputEnvelope
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+  }
+
+  export type ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput = {
+    create?: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput> | ConformidadeChecklistItemCreateWithoutAtualizadoPorInput[] | ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput | ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput[]
+    createMany?: ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope
+    connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+  }
+
   export type TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -123117,6 +129162,34 @@ export namespace Prisma {
     connectOrCreate?: NotaClinicaCreateOrConnectWithoutAssinadaPorInput | NotaClinicaCreateOrConnectWithoutAssinadaPorInput[]
     createMany?: NotaClinicaCreateManyAssinadaPorInputEnvelope
     connect?: NotaClinicaWhereUniqueInput | NotaClinicaWhereUniqueInput[]
+  }
+
+  export type CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput> | CulturaMicrobiologicaCreateWithoutRegistadoPorInput[] | CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput | CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: CulturaMicrobiologicaCreateManyRegistadoPorInputEnvelope
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+  }
+
+  export type SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput = {
+    create?: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput> | SurtoIACSCreateWithoutRegistadoPorInput[] | SurtoIACSUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SurtoIACSCreateOrConnectWithoutRegistadoPorInput | SurtoIACSCreateOrConnectWithoutRegistadoPorInput[]
+    createMany?: SurtoIACSCreateManyRegistadoPorInputEnvelope
+    connect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+  }
+
+  export type NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput> | NotaIncidenteTICreateWithoutAutorInput[] | NotaIncidenteTIUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutAutorInput | NotaIncidenteTICreateOrConnectWithoutAutorInput[]
+    createMany?: NotaIncidenteTICreateManyAutorInputEnvelope
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+  }
+
+  export type ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput = {
+    create?: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput> | ConformidadeChecklistItemCreateWithoutAtualizadoPorInput[] | ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput | ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput[]
+    createMany?: ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope
+    connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -124335,6 +130408,62 @@ export namespace Prisma {
     deleteMany?: NotaClinicaScalarWhereInput | NotaClinicaScalarWhereInput[]
   }
 
+  export type CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput> | CulturaMicrobiologicaCreateWithoutRegistadoPorInput[] | CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput | CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput | CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: CulturaMicrobiologicaCreateManyRegistadoPorInputEnvelope
+    set?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    disconnect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    delete?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    update?: CulturaMicrobiologicaUpdateWithWhereUniqueWithoutRegistadoPorInput | CulturaMicrobiologicaUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: CulturaMicrobiologicaUpdateManyWithWhereWithoutRegistadoPorInput | CulturaMicrobiologicaUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
+  }
+
+  export type SurtoIACSUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput> | SurtoIACSCreateWithoutRegistadoPorInput[] | SurtoIACSUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SurtoIACSCreateOrConnectWithoutRegistadoPorInput | SurtoIACSCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: SurtoIACSUpsertWithWhereUniqueWithoutRegistadoPorInput | SurtoIACSUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: SurtoIACSCreateManyRegistadoPorInputEnvelope
+    set?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    disconnect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    delete?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    connect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    update?: SurtoIACSUpdateWithWhereUniqueWithoutRegistadoPorInput | SurtoIACSUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: SurtoIACSUpdateManyWithWhereWithoutRegistadoPorInput | SurtoIACSUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: SurtoIACSScalarWhereInput | SurtoIACSScalarWhereInput[]
+  }
+
+  export type NotaIncidenteTIUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput> | NotaIncidenteTICreateWithoutAutorInput[] | NotaIncidenteTIUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutAutorInput | NotaIncidenteTICreateOrConnectWithoutAutorInput[]
+    upsert?: NotaIncidenteTIUpsertWithWhereUniqueWithoutAutorInput | NotaIncidenteTIUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: NotaIncidenteTICreateManyAutorInputEnvelope
+    set?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    disconnect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    delete?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    update?: NotaIncidenteTIUpdateWithWhereUniqueWithoutAutorInput | NotaIncidenteTIUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: NotaIncidenteTIUpdateManyWithWhereWithoutAutorInput | NotaIncidenteTIUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+  }
+
+  export type ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput = {
+    create?: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput> | ConformidadeChecklistItemCreateWithoutAtualizadoPorInput[] | ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput | ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput[]
+    upsert?: ConformidadeChecklistItemUpsertWithWhereUniqueWithoutAtualizadoPorInput | ConformidadeChecklistItemUpsertWithWhereUniqueWithoutAtualizadoPorInput[]
+    createMany?: ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope
+    set?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    disconnect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    delete?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    update?: ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput[]
+    updateMany?: ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput[]
+    deleteMany?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
+  }
+
   export type TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput = {
     create?: XOR<TurnoCreateWithoutChefeTurnoInput, TurnoUncheckedCreateWithoutChefeTurnoInput> | TurnoCreateWithoutChefeTurnoInput[] | TurnoUncheckedCreateWithoutChefeTurnoInput[]
     connectOrCreate?: TurnoCreateOrConnectWithoutChefeTurnoInput | TurnoCreateOrConnectWithoutChefeTurnoInput[]
@@ -125517,6 +131646,62 @@ export namespace Prisma {
     deleteMany?: NotaClinicaScalarWhereInput | NotaClinicaScalarWhereInput[]
   }
 
+  export type CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput> | CulturaMicrobiologicaCreateWithoutRegistadoPorInput[] | CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput | CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput | CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: CulturaMicrobiologicaCreateManyRegistadoPorInputEnvelope
+    set?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    disconnect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    delete?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    update?: CulturaMicrobiologicaUpdateWithWhereUniqueWithoutRegistadoPorInput | CulturaMicrobiologicaUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: CulturaMicrobiologicaUpdateManyWithWhereWithoutRegistadoPorInput | CulturaMicrobiologicaUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
+  }
+
+  export type SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput = {
+    create?: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput> | SurtoIACSCreateWithoutRegistadoPorInput[] | SurtoIACSUncheckedCreateWithoutRegistadoPorInput[]
+    connectOrCreate?: SurtoIACSCreateOrConnectWithoutRegistadoPorInput | SurtoIACSCreateOrConnectWithoutRegistadoPorInput[]
+    upsert?: SurtoIACSUpsertWithWhereUniqueWithoutRegistadoPorInput | SurtoIACSUpsertWithWhereUniqueWithoutRegistadoPorInput[]
+    createMany?: SurtoIACSCreateManyRegistadoPorInputEnvelope
+    set?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    disconnect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    delete?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    connect?: SurtoIACSWhereUniqueInput | SurtoIACSWhereUniqueInput[]
+    update?: SurtoIACSUpdateWithWhereUniqueWithoutRegistadoPorInput | SurtoIACSUpdateWithWhereUniqueWithoutRegistadoPorInput[]
+    updateMany?: SurtoIACSUpdateManyWithWhereWithoutRegistadoPorInput | SurtoIACSUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: SurtoIACSScalarWhereInput | SurtoIACSScalarWhereInput[]
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput> | NotaIncidenteTICreateWithoutAutorInput[] | NotaIncidenteTIUncheckedCreateWithoutAutorInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutAutorInput | NotaIncidenteTICreateOrConnectWithoutAutorInput[]
+    upsert?: NotaIncidenteTIUpsertWithWhereUniqueWithoutAutorInput | NotaIncidenteTIUpsertWithWhereUniqueWithoutAutorInput[]
+    createMany?: NotaIncidenteTICreateManyAutorInputEnvelope
+    set?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    disconnect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    delete?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    update?: NotaIncidenteTIUpdateWithWhereUniqueWithoutAutorInput | NotaIncidenteTIUpdateWithWhereUniqueWithoutAutorInput[]
+    updateMany?: NotaIncidenteTIUpdateManyWithWhereWithoutAutorInput | NotaIncidenteTIUpdateManyWithWhereWithoutAutorInput[]
+    deleteMany?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+  }
+
+  export type ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput = {
+    create?: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput> | ConformidadeChecklistItemCreateWithoutAtualizadoPorInput[] | ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput[]
+    connectOrCreate?: ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput | ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput[]
+    upsert?: ConformidadeChecklistItemUpsertWithWhereUniqueWithoutAtualizadoPorInput | ConformidadeChecklistItemUpsertWithWhereUniqueWithoutAtualizadoPorInput[]
+    createMany?: ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope
+    set?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    disconnect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    delete?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    connect?: ConformidadeChecklistItemWhereUniqueInput | ConformidadeChecklistItemWhereUniqueInput[]
+    update?: ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput[]
+    updateMany?: ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput | ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput[]
+    deleteMany?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
+  }
+
   export type DoenteCreateNestedOneWithoutCamaInput = {
     create?: XOR<DoenteCreateWithoutCamaInput, DoenteUncheckedCreateWithoutCamaInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutCamaInput
@@ -125794,6 +131979,13 @@ export namespace Prisma {
     connect?: PrescricaoDietaWhereUniqueInput | PrescricaoDietaWhereUniqueInput[]
   }
 
+  export type CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput> | CulturaMicrobiologicaCreateWithoutDoenteInput[] | CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput | CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput[]
+    createMany?: CulturaMicrobiologicaCreateManyDoenteInputEnvelope
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -126021,6 +132213,13 @@ export namespace Prisma {
     connectOrCreate?: PrescricaoDietaCreateOrConnectWithoutDoenteInput | PrescricaoDietaCreateOrConnectWithoutDoenteInput[]
     createMany?: PrescricaoDietaCreateManyDoenteInputEnvelope
     connect?: PrescricaoDietaWhereUniqueInput | PrescricaoDietaWhereUniqueInput[]
+  }
+
+  export type CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput> | CulturaMicrobiologicaCreateWithoutDoenteInput[] | CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput | CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput[]
+    createMany?: CulturaMicrobiologicaCreateManyDoenteInputEnvelope
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
   }
 
   export type EnumEstadoDoenteFieldUpdateOperationsInput = {
@@ -126501,6 +132700,20 @@ export namespace Prisma {
     deleteMany?: PrescricaoDietaScalarWhereInput | PrescricaoDietaScalarWhereInput[]
   }
 
+  export type CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput> | CulturaMicrobiologicaCreateWithoutDoenteInput[] | CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput | CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput[]
+    upsert?: CulturaMicrobiologicaUpsertWithWhereUniqueWithoutDoenteInput | CulturaMicrobiologicaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: CulturaMicrobiologicaCreateManyDoenteInputEnvelope
+    set?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    disconnect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    delete?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    update?: CulturaMicrobiologicaUpdateWithWhereUniqueWithoutDoenteInput | CulturaMicrobiologicaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: CulturaMicrobiologicaUpdateManyWithWhereWithoutDoenteInput | CulturaMicrobiologicaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
+  }
+
   export type AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput = {
     create?: XOR<AtribuicaoDoenteCreateWithoutDoenteInput, AtribuicaoDoenteUncheckedCreateWithoutDoenteInput> | AtribuicaoDoenteCreateWithoutDoenteInput[] | AtribuicaoDoenteUncheckedCreateWithoutDoenteInput[]
     connectOrCreate?: AtribuicaoDoenteCreateOrConnectWithoutDoenteInput | AtribuicaoDoenteCreateOrConnectWithoutDoenteInput[]
@@ -126953,6 +133166,20 @@ export namespace Prisma {
     update?: PrescricaoDietaUpdateWithWhereUniqueWithoutDoenteInput | PrescricaoDietaUpdateWithWhereUniqueWithoutDoenteInput[]
     updateMany?: PrescricaoDietaUpdateManyWithWhereWithoutDoenteInput | PrescricaoDietaUpdateManyWithWhereWithoutDoenteInput[]
     deleteMany?: PrescricaoDietaScalarWhereInput | PrescricaoDietaScalarWhereInput[]
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput = {
+    create?: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput> | CulturaMicrobiologicaCreateWithoutDoenteInput[] | CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput[]
+    connectOrCreate?: CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput | CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput[]
+    upsert?: CulturaMicrobiologicaUpsertWithWhereUniqueWithoutDoenteInput | CulturaMicrobiologicaUpsertWithWhereUniqueWithoutDoenteInput[]
+    createMany?: CulturaMicrobiologicaCreateManyDoenteInputEnvelope
+    set?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    disconnect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    delete?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    connect?: CulturaMicrobiologicaWhereUniqueInput | CulturaMicrobiologicaWhereUniqueInput[]
+    update?: CulturaMicrobiologicaUpdateWithWhereUniqueWithoutDoenteInput | CulturaMicrobiologicaUpdateWithWhereUniqueWithoutDoenteInput[]
+    updateMany?: CulturaMicrobiologicaUpdateManyWithWhereWithoutDoenteInput | CulturaMicrobiologicaUpdateManyWithWhereWithoutDoenteInput[]
+    deleteMany?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
   }
 
   export type UtilizadorCreateNestedOneWithoutTurnosComoChefeInput = {
@@ -129445,6 +135672,20 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type NotaIncidenteTICreateNestedManyWithoutIncidenteInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput> | NotaIncidenteTICreateWithoutIncidenteInput[] | NotaIncidenteTIUncheckedCreateWithoutIncidenteInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutIncidenteInput | NotaIncidenteTICreateOrConnectWithoutIncidenteInput[]
+    createMany?: NotaIncidenteTICreateManyIncidenteInputEnvelope
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+  }
+
+  export type NotaIncidenteTIUncheckedCreateNestedManyWithoutIncidenteInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput> | NotaIncidenteTICreateWithoutIncidenteInput[] | NotaIncidenteTIUncheckedCreateWithoutIncidenteInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutIncidenteInput | NotaIncidenteTICreateOrConnectWithoutIncidenteInput[]
+    createMany?: NotaIncidenteTICreateManyIncidenteInputEnvelope
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+  }
+
   export type EnumTipoIncidenteTIFieldUpdateOperationsInput = {
     set?: $Enums.TipoIncidenteTI
   }
@@ -129473,6 +135714,62 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutIncidentesAtribuidosInput, UtilizadorUpdateWithoutIncidentesAtribuidosInput>, UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput>
+  }
+
+  export type NotaIncidenteTIUpdateManyWithoutIncidenteNestedInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput> | NotaIncidenteTICreateWithoutIncidenteInput[] | NotaIncidenteTIUncheckedCreateWithoutIncidenteInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutIncidenteInput | NotaIncidenteTICreateOrConnectWithoutIncidenteInput[]
+    upsert?: NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput | NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput[]
+    createMany?: NotaIncidenteTICreateManyIncidenteInputEnvelope
+    set?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    disconnect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    delete?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    update?: NotaIncidenteTIUpdateWithWhereUniqueWithoutIncidenteInput | NotaIncidenteTIUpdateWithWhereUniqueWithoutIncidenteInput[]
+    updateMany?: NotaIncidenteTIUpdateManyWithWhereWithoutIncidenteInput | NotaIncidenteTIUpdateManyWithWhereWithoutIncidenteInput[]
+    deleteMany?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteNestedInput = {
+    create?: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput> | NotaIncidenteTICreateWithoutIncidenteInput[] | NotaIncidenteTIUncheckedCreateWithoutIncidenteInput[]
+    connectOrCreate?: NotaIncidenteTICreateOrConnectWithoutIncidenteInput | NotaIncidenteTICreateOrConnectWithoutIncidenteInput[]
+    upsert?: NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput | NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput[]
+    createMany?: NotaIncidenteTICreateManyIncidenteInputEnvelope
+    set?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    disconnect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    delete?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    connect?: NotaIncidenteTIWhereUniqueInput | NotaIncidenteTIWhereUniqueInput[]
+    update?: NotaIncidenteTIUpdateWithWhereUniqueWithoutIncidenteInput | NotaIncidenteTIUpdateWithWhereUniqueWithoutIncidenteInput[]
+    updateMany?: NotaIncidenteTIUpdateManyWithWhereWithoutIncidenteInput | NotaIncidenteTIUpdateManyWithWhereWithoutIncidenteInput[]
+    deleteMany?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+  }
+
+  export type IncidenteTICreateNestedOneWithoutNotasInput = {
+    create?: XOR<IncidenteTICreateWithoutNotasInput, IncidenteTIUncheckedCreateWithoutNotasInput>
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutNotasInput
+    connect?: IncidenteTIWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutNotasIncidentesTIInput = {
+    create?: XOR<UtilizadorCreateWithoutNotasIncidentesTIInput, UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutNotasIncidentesTIInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type IncidenteTIUpdateOneRequiredWithoutNotasNestedInput = {
+    create?: XOR<IncidenteTICreateWithoutNotasInput, IncidenteTIUncheckedCreateWithoutNotasInput>
+    connectOrCreate?: IncidenteTICreateOrConnectWithoutNotasInput
+    upsert?: IncidenteTIUpsertWithoutNotasInput
+    connect?: IncidenteTIWhereUniqueInput
+    update?: XOR<XOR<IncidenteTIUpdateToOneWithWhereWithoutNotasInput, IncidenteTIUpdateWithoutNotasInput>, IncidenteTIUncheckedUpdateWithoutNotasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutNotasIncidentesTINestedInput = {
+    create?: XOR<UtilizadorCreateWithoutNotasIncidentesTIInput, UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutNotasIncidentesTIInput
+    upsert?: UtilizadorUpsertWithoutNotasIncidentesTIInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutNotasIncidentesTIInput, UtilizadorUpdateWithoutNotasIncidentesTIInput>, UtilizadorUncheckedUpdateWithoutNotasIncidentesTIInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutPedidosTICriadosInput = {
@@ -130274,6 +136571,72 @@ export namespace Prisma {
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutPrescricoesDietaCriadasInput, UtilizadorUpdateWithoutPrescricoesDietaCriadasInput>, UtilizadorUncheckedUpdateWithoutPrescricoesDietaCriadasInput>
   }
 
+  export type DoenteCreateNestedOneWithoutCulturasMicrobiologicasInput = {
+    create?: XOR<DoenteCreateWithoutCulturasMicrobiologicasInput, DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutCulturasMicrobiologicasInput
+    connect?: DoenteWhereUniqueInput
+  }
+
+  export type UtilizadorCreateNestedOneWithoutCulturasRegistadasInput = {
+    create?: XOR<UtilizadorCreateWithoutCulturasRegistadasInput, UtilizadorUncheckedCreateWithoutCulturasRegistadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutCulturasRegistadasInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EnumResultadoCulturaFieldUpdateOperationsInput = {
+    set?: $Enums.ResultadoCultura
+  }
+
+  export type DoenteUpdateOneRequiredWithoutCulturasMicrobiologicasNestedInput = {
+    create?: XOR<DoenteCreateWithoutCulturasMicrobiologicasInput, DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput>
+    connectOrCreate?: DoenteCreateOrConnectWithoutCulturasMicrobiologicasInput
+    upsert?: DoenteUpsertWithoutCulturasMicrobiologicasInput
+    connect?: DoenteWhereUniqueInput
+    update?: XOR<XOR<DoenteUpdateToOneWithWhereWithoutCulturasMicrobiologicasInput, DoenteUpdateWithoutCulturasMicrobiologicasInput>, DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput>
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutCulturasRegistadasNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutCulturasRegistadasInput, UtilizadorUncheckedCreateWithoutCulturasRegistadasInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutCulturasRegistadasInput
+    upsert?: UtilizadorUpsertWithoutCulturasRegistadasInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutCulturasRegistadasInput, UtilizadorUpdateWithoutCulturasRegistadasInput>, UtilizadorUncheckedUpdateWithoutCulturasRegistadasInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutSurtosRegistadosInput = {
+    create?: XOR<UtilizadorCreateWithoutSurtosRegistadosInput, UtilizadorUncheckedCreateWithoutSurtosRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSurtosRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type EnumEstadoSurtoFieldUpdateOperationsInput = {
+    set?: $Enums.EstadoSurto
+  }
+
+  export type UtilizadorUpdateOneRequiredWithoutSurtosRegistadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutSurtosRegistadosInput, UtilizadorUncheckedCreateWithoutSurtosRegistadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutSurtosRegistadosInput
+    upsert?: UtilizadorUpsertWithoutSurtosRegistadosInput
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutSurtosRegistadosInput, UtilizadorUpdateWithoutSurtosRegistadosInput>, UtilizadorUncheckedUpdateWithoutSurtosRegistadosInput>
+  }
+
+  export type UtilizadorCreateNestedOneWithoutChecklistsConformidadeInput = {
+    create?: XOR<UtilizadorCreateWithoutChecklistsConformidadeInput, UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutChecklistsConformidadeInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
+  export type UtilizadorUpdateOneWithoutChecklistsConformidadeNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutChecklistsConformidadeInput, UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutChecklistsConformidadeInput
+    upsert?: UtilizadorUpsertWithoutChecklistsConformidadeInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutChecklistsConformidadeInput, UtilizadorUpdateWithoutChecklistsConformidadeInput>, UtilizadorUncheckedUpdateWithoutChecklistsConformidadeInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -131046,6 +137409,40 @@ export namespace Prisma {
     _max?: NestedEnumEstadoFaturaFilter<$PrismaModel>
   }
 
+  export type NestedEnumResultadoCulturaFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResultadoCultura | EnumResultadoCulturaFieldRefInput<$PrismaModel>
+    in?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumResultadoCulturaFilter<$PrismaModel> | $Enums.ResultadoCultura
+  }
+
+  export type NestedEnumResultadoCulturaWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ResultadoCultura | EnumResultadoCulturaFieldRefInput<$PrismaModel>
+    in?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ResultadoCultura[] | ListEnumResultadoCulturaFieldRefInput<$PrismaModel>
+    not?: NestedEnumResultadoCulturaWithAggregatesFilter<$PrismaModel> | $Enums.ResultadoCultura
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumResultadoCulturaFilter<$PrismaModel>
+    _max?: NestedEnumResultadoCulturaFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEstadoSurtoFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoSurto | EnumEstadoSurtoFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoSurtoFilter<$PrismaModel> | $Enums.EstadoSurto
+  }
+
+  export type NestedEnumEstadoSurtoWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EstadoSurto | EnumEstadoSurtoFieldRefInput<$PrismaModel>
+    in?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EstadoSurto[] | ListEnumEstadoSurtoFieldRefInput<$PrismaModel>
+    not?: NestedEnumEstadoSurtoWithAggregatesFilter<$PrismaModel> | $Enums.EstadoSurto
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEstadoSurtoFilter<$PrismaModel>
+    _max?: NestedEnumEstadoSurtoFilter<$PrismaModel>
+  }
+
   export type SubRoleConfigCreateWithoutRoleInput = {
     id?: string
     chave: string
@@ -131456,6 +137853,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAdministrativoInput = {
@@ -131508,6 +137906,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAdministrativoInput = {
@@ -132967,6 +139366,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     atualizadoEm?: Date | string
     responsavel?: UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput
+    notas?: NotaIncidenteTICreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTIUncheckedCreateWithoutCriadoPorInput = {
@@ -132980,6 +139380,7 @@ export namespace Prisma {
     responsavelId?: string | null
     criadoEm?: Date | string
     atualizadoEm?: Date | string
+    notas?: NotaIncidenteTIUncheckedCreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTICreateOrConnectWithoutCriadoPorInput = {
@@ -133003,6 +139404,7 @@ export namespace Prisma {
     criadoEm?: Date | string
     atualizadoEm?: Date | string
     criadoPor: UtilizadorCreateNestedOneWithoutIncidentesCriadosInput
+    notas?: NotaIncidenteTICreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTIUncheckedCreateWithoutResponsavelInput = {
@@ -133016,6 +139418,7 @@ export namespace Prisma {
     criadoPorId: string
     criadoEm?: Date | string
     atualizadoEm?: Date | string
+    notas?: NotaIncidenteTIUncheckedCreateNestedManyWithoutIncidenteInput
   }
 
   export type IncidenteTICreateOrConnectWithoutResponsavelInput = {
@@ -133742,6 +140145,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSubordinadosInput = {
@@ -133845,6 +140252,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSubordinadosInput = {
@@ -133953,6 +140364,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChefeInput = {
@@ -134056,6 +140471,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChefeInput = {
@@ -134530,6 +140949,126 @@ export namespace Prisma {
 
   export type NotaClinicaCreateManyAssinadaPorInputEnvelope = {
     data: NotaClinicaCreateManyAssinadaPorInput | NotaClinicaCreateManyAssinadaPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CulturaMicrobiologicaCreateWithoutRegistadoPorInput = {
+    id?: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutCulturasMicrobiologicasInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type CulturaMicrobiologicaCreateOrConnectWithoutRegistadoPorInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    create: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type CulturaMicrobiologicaCreateManyRegistadoPorInputEnvelope = {
+    data: CulturaMicrobiologicaCreateManyRegistadoPorInput | CulturaMicrobiologicaCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SurtoIACSCreateWithoutRegistadoPorInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type SurtoIACSUncheckedCreateWithoutRegistadoPorInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type SurtoIACSCreateOrConnectWithoutRegistadoPorInput = {
+    where: SurtoIACSWhereUniqueInput
+    create: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type SurtoIACSCreateManyRegistadoPorInputEnvelope = {
+    data: SurtoIACSCreateManyRegistadoPorInput | SurtoIACSCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotaIncidenteTICreateWithoutAutorInput = {
+    id?: string
+    conteudo: string
+    criadaEm?: Date | string
+    incidente: IncidenteTICreateNestedOneWithoutNotasInput
+  }
+
+  export type NotaIncidenteTIUncheckedCreateWithoutAutorInput = {
+    id?: string
+    incidenteId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaIncidenteTICreateOrConnectWithoutAutorInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    create: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput>
+  }
+
+  export type NotaIncidenteTICreateManyAutorInputEnvelope = {
+    data: NotaIncidenteTICreateManyAutorInput | NotaIncidenteTICreateManyAutorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ConformidadeChecklistItemCreateWithoutAtualizadoPorInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+  }
+
+  export type ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+  }
+
+  export type ConformidadeChecklistItemCreateOrConnectWithoutAtualizadoPorInput = {
+    where: ConformidadeChecklistItemWhereUniqueInput
+    create: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput>
+  }
+
+  export type ConformidadeChecklistItemCreateManyAtualizadoPorInputEnvelope = {
+    data: ConformidadeChecklistItemCreateManyAtualizadoPorInput | ConformidadeChecklistItemCreateManyAtualizadoPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -136549,6 +143088,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSubordinadosInput = {
@@ -136652,6 +143195,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithWhereUniqueWithoutChefeInput = {
@@ -137058,6 +143605,126 @@ export namespace Prisma {
     data: XOR<NotaClinicaUpdateManyMutationInput, NotaClinicaUncheckedUpdateManyWithoutAssinadaPorInput>
   }
 
+  export type CulturaMicrobiologicaUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    update: XOR<CulturaMicrobiologicaUpdateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<CulturaMicrobiologicaCreateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type CulturaMicrobiologicaUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    data: XOR<CulturaMicrobiologicaUpdateWithoutRegistadoPorInput, CulturaMicrobiologicaUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type CulturaMicrobiologicaUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: CulturaMicrobiologicaScalarWhereInput
+    data: XOR<CulturaMicrobiologicaUpdateManyMutationInput, CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type CulturaMicrobiologicaScalarWhereInput = {
+    AND?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
+    OR?: CulturaMicrobiologicaScalarWhereInput[]
+    NOT?: CulturaMicrobiologicaScalarWhereInput | CulturaMicrobiologicaScalarWhereInput[]
+    id?: StringFilter<"CulturaMicrobiologica"> | string
+    doenteId?: StringFilter<"CulturaMicrobiologica"> | string
+    dataColheita?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+    tipoAmostra?: StringFilter<"CulturaMicrobiologica"> | string
+    agente?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    antibiograma?: JsonNullableFilter<"CulturaMicrobiologica">
+    resultado?: EnumResultadoCulturaFilter<"CulturaMicrobiologica"> | $Enums.ResultadoCultura
+    servico?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    observacoes?: StringNullableFilter<"CulturaMicrobiologica"> | string | null
+    registadoPorId?: StringFilter<"CulturaMicrobiologica"> | string
+    criadoEm?: DateTimeFilter<"CulturaMicrobiologica"> | Date | string
+  }
+
+  export type SurtoIACSUpsertWithWhereUniqueWithoutRegistadoPorInput = {
+    where: SurtoIACSWhereUniqueInput
+    update: XOR<SurtoIACSUpdateWithoutRegistadoPorInput, SurtoIACSUncheckedUpdateWithoutRegistadoPorInput>
+    create: XOR<SurtoIACSCreateWithoutRegistadoPorInput, SurtoIACSUncheckedCreateWithoutRegistadoPorInput>
+  }
+
+  export type SurtoIACSUpdateWithWhereUniqueWithoutRegistadoPorInput = {
+    where: SurtoIACSWhereUniqueInput
+    data: XOR<SurtoIACSUpdateWithoutRegistadoPorInput, SurtoIACSUncheckedUpdateWithoutRegistadoPorInput>
+  }
+
+  export type SurtoIACSUpdateManyWithWhereWithoutRegistadoPorInput = {
+    where: SurtoIACSScalarWhereInput
+    data: XOR<SurtoIACSUpdateManyMutationInput, SurtoIACSUncheckedUpdateManyWithoutRegistadoPorInput>
+  }
+
+  export type SurtoIACSScalarWhereInput = {
+    AND?: SurtoIACSScalarWhereInput | SurtoIACSScalarWhereInput[]
+    OR?: SurtoIACSScalarWhereInput[]
+    NOT?: SurtoIACSScalarWhereInput | SurtoIACSScalarWhereInput[]
+    id?: StringFilter<"SurtoIACS"> | string
+    agente?: StringFilter<"SurtoIACS"> | string
+    servico?: StringFilter<"SurtoIACS"> | string
+    dataInicio?: DateTimeFilter<"SurtoIACS"> | Date | string
+    dataFim?: DateTimeNullableFilter<"SurtoIACS"> | Date | string | null
+    estado?: EnumEstadoSurtoFilter<"SurtoIACS"> | $Enums.EstadoSurto
+    numCasos?: IntFilter<"SurtoIACS"> | number
+    medidas?: JsonNullableFilter<"SurtoIACS">
+    observacoes?: StringNullableFilter<"SurtoIACS"> | string | null
+    registadoPorId?: StringFilter<"SurtoIACS"> | string
+    criadoEm?: DateTimeFilter<"SurtoIACS"> | Date | string
+  }
+
+  export type NotaIncidenteTIUpsertWithWhereUniqueWithoutAutorInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    update: XOR<NotaIncidenteTIUpdateWithoutAutorInput, NotaIncidenteTIUncheckedUpdateWithoutAutorInput>
+    create: XOR<NotaIncidenteTICreateWithoutAutorInput, NotaIncidenteTIUncheckedCreateWithoutAutorInput>
+  }
+
+  export type NotaIncidenteTIUpdateWithWhereUniqueWithoutAutorInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    data: XOR<NotaIncidenteTIUpdateWithoutAutorInput, NotaIncidenteTIUncheckedUpdateWithoutAutorInput>
+  }
+
+  export type NotaIncidenteTIUpdateManyWithWhereWithoutAutorInput = {
+    where: NotaIncidenteTIScalarWhereInput
+    data: XOR<NotaIncidenteTIUpdateManyMutationInput, NotaIncidenteTIUncheckedUpdateManyWithoutAutorInput>
+  }
+
+  export type NotaIncidenteTIScalarWhereInput = {
+    AND?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+    OR?: NotaIncidenteTIScalarWhereInput[]
+    NOT?: NotaIncidenteTIScalarWhereInput | NotaIncidenteTIScalarWhereInput[]
+    id?: StringFilter<"NotaIncidenteTI"> | string
+    incidenteId?: StringFilter<"NotaIncidenteTI"> | string
+    autorId?: StringFilter<"NotaIncidenteTI"> | string
+    conteudo?: StringFilter<"NotaIncidenteTI"> | string
+    criadaEm?: DateTimeFilter<"NotaIncidenteTI"> | Date | string
+  }
+
+  export type ConformidadeChecklistItemUpsertWithWhereUniqueWithoutAtualizadoPorInput = {
+    where: ConformidadeChecklistItemWhereUniqueInput
+    update: XOR<ConformidadeChecklistItemUpdateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedUpdateWithoutAtualizadoPorInput>
+    create: XOR<ConformidadeChecklistItemCreateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedCreateWithoutAtualizadoPorInput>
+  }
+
+  export type ConformidadeChecklistItemUpdateWithWhereUniqueWithoutAtualizadoPorInput = {
+    where: ConformidadeChecklistItemWhereUniqueInput
+    data: XOR<ConformidadeChecklistItemUpdateWithoutAtualizadoPorInput, ConformidadeChecklistItemUncheckedUpdateWithoutAtualizadoPorInput>
+  }
+
+  export type ConformidadeChecklistItemUpdateManyWithWhereWithoutAtualizadoPorInput = {
+    where: ConformidadeChecklistItemScalarWhereInput
+    data: XOR<ConformidadeChecklistItemUpdateManyMutationInput, ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorInput>
+  }
+
+  export type ConformidadeChecklistItemScalarWhereInput = {
+    AND?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
+    OR?: ConformidadeChecklistItemScalarWhereInput[]
+    NOT?: ConformidadeChecklistItemScalarWhereInput | ConformidadeChecklistItemScalarWhereInput[]
+    id?: StringFilter<"ConformidadeChecklistItem"> | string
+    itemKey?: StringFilter<"ConformidadeChecklistItem"> | string
+    estado?: StringFilter<"ConformidadeChecklistItem"> | string
+    atualizadoEm?: DateTimeFilter<"ConformidadeChecklistItem"> | Date | string
+    atualizadoPorId?: StringNullableFilter<"ConformidadeChecklistItem"> | string | null
+  }
+
   export type DoenteCreateWithoutCamaInput = {
     id?: string
     nome: string
@@ -137108,6 +143775,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCamaInput = {
@@ -137160,6 +143828,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCamaInput = {
@@ -137228,6 +143897,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCamaInput = {
@@ -137280,6 +143950,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type CamaCreateWithoutDoenteInput = {
@@ -137406,6 +144077,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDoentesAdmitidosInput = {
@@ -137509,6 +144184,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDoentesAdmitidosInput = {
@@ -138650,6 +145329,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CulturaMicrobiologicaCreateWithoutDoenteInput = {
+    id?: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+    registadoPor: UtilizadorCreateNestedOneWithoutCulturasRegistadasInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput = {
+    id?: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
+  }
+
+  export type CulturaMicrobiologicaCreateOrConnectWithoutDoenteInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    create: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type CulturaMicrobiologicaCreateManyDoenteInputEnvelope = {
+    data: CulturaMicrobiologicaCreateManyDoenteInput | CulturaMicrobiologicaCreateManyDoenteInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CamaUpsertWithoutDoenteInput = {
     update: XOR<CamaUpdateWithoutDoenteInput, CamaUncheckedUpdateWithoutDoenteInput>
     create: XOR<CamaCreateWithoutDoenteInput, CamaUncheckedCreateWithoutDoenteInput>
@@ -138791,6 +145506,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDoentesAdmitidosInput = {
@@ -138894,6 +145613,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutDoenteInput = {
@@ -139507,6 +146230,22 @@ export namespace Prisma {
     data: XOR<PrescricaoDietaUpdateManyMutationInput, PrescricaoDietaUncheckedUpdateManyWithoutDoenteInput>
   }
 
+  export type CulturaMicrobiologicaUpsertWithWhereUniqueWithoutDoenteInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    update: XOR<CulturaMicrobiologicaUpdateWithoutDoenteInput, CulturaMicrobiologicaUncheckedUpdateWithoutDoenteInput>
+    create: XOR<CulturaMicrobiologicaCreateWithoutDoenteInput, CulturaMicrobiologicaUncheckedCreateWithoutDoenteInput>
+  }
+
+  export type CulturaMicrobiologicaUpdateWithWhereUniqueWithoutDoenteInput = {
+    where: CulturaMicrobiologicaWhereUniqueInput
+    data: XOR<CulturaMicrobiologicaUpdateWithoutDoenteInput, CulturaMicrobiologicaUncheckedUpdateWithoutDoenteInput>
+  }
+
+  export type CulturaMicrobiologicaUpdateManyWithWhereWithoutDoenteInput = {
+    where: CulturaMicrobiologicaScalarWhereInput
+    data: XOR<CulturaMicrobiologicaUpdateManyMutationInput, CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteInput>
+  }
+
   export type UtilizadorCreateWithoutTurnosComoChefeInput = {
     id?: string
     numeroFuncionario: string
@@ -139608,6 +146347,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTurnosComoChefeInput = {
@@ -139711,6 +146454,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTurnosComoChefeInput = {
@@ -140004,6 +146751,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTurnosComoChefeInput = {
@@ -140107,6 +146858,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type AtribuicaoDoenteUpsertWithWhereUniqueWithoutTurnoInput = {
@@ -140255,6 +147010,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesInput = {
@@ -140307,6 +147063,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesInput = {
@@ -140415,6 +147172,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesEnfermeiroInput = {
@@ -140518,6 +147279,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesEnfermeiroInput = {
@@ -140617,6 +147382,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesInput = {
@@ -140669,6 +147435,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesEnfermeiroInput = {
@@ -140783,6 +147550,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesEnfermeiroInput = {
@@ -140886,6 +147657,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutAtribuicoesInput = {
@@ -141057,6 +147832,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosEntradaInput = {
@@ -141160,6 +147939,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosEntradaInput = {
@@ -141316,6 +148099,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosEntradaInput = {
@@ -141419,6 +148206,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type TurnoCreateWithoutPassagensTurnoAnteriorInput = {
@@ -141533,6 +148324,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPassagensTurnoInput = {
@@ -141585,6 +148377,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPassagensTurnoInput = {
@@ -141727,6 +148520,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPassagensTurnoInput = {
@@ -141779,6 +148573,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorCreateWithoutPresencaOnlineInput = {
@@ -141882,6 +148677,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPresencaOnlineInput = {
@@ -141985,6 +148784,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPresencaOnlineInput = {
@@ -142104,6 +148907,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPresencaOnlineInput = {
@@ -142207,6 +149014,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutRegistosCheckinInput = {
@@ -142310,6 +149121,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosCheckinInput = {
@@ -142413,6 +149228,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosCheckinInput = {
@@ -142532,6 +149351,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosCheckinInput = {
@@ -142635,6 +149458,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutNotasClinciasInput = {
@@ -142687,6 +149514,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasClinciasInput = {
@@ -142739,6 +149567,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasClinciasInput = {
@@ -142847,6 +149676,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasClinciasAutorInput = {
@@ -142950,6 +149783,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasClinciasAutorInput = {
@@ -143058,6 +149895,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasAssinadasInput = {
@@ -143161,6 +150002,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasAssinadasInput = {
@@ -143229,6 +150074,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasClinciasInput = {
@@ -143281,6 +150127,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasClinciasAutorInput = {
@@ -143395,6 +150242,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasClinciasAutorInput = {
@@ -143498,6 +150349,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasAssinadasInput = {
@@ -143612,6 +150467,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasAssinadasInput = {
@@ -143715,6 +150574,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEscalasClinicasInput = {
@@ -143767,6 +150630,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEscalasClinicasInput = {
@@ -143819,6 +150683,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEscalasClinicasInput = {
@@ -143927,6 +150792,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasClinicasRegistadasInput = {
@@ -144030,6 +150899,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasClinicasRegistadasInput = {
@@ -144098,6 +150971,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEscalasClinicasInput = {
@@ -144150,6 +151024,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEscalasClinicasRegistadasInput = {
@@ -144264,6 +151139,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasClinicasRegistadasInput = {
@@ -144367,6 +151246,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type TurnoCreateWithoutNotasTurnoInput = {
@@ -144450,6 +151333,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutNotasTurnoInput = {
@@ -144502,6 +151386,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutNotasTurnoInput = {
@@ -144610,6 +151495,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotasTurnoInput = {
@@ -144713,6 +151602,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotasTurnoInput = {
@@ -144818,6 +151711,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutNotasTurnoInput = {
@@ -144870,6 +151764,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutNotasTurnoInput = {
@@ -144984,6 +151879,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotasTurnoInput = {
@@ -145087,6 +151986,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutTarefasInput = {
@@ -145139,6 +152042,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutTarefasInput = {
@@ -145191,6 +152095,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutTarefasInput = {
@@ -145299,6 +152204,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasResponsavelInput = {
@@ -145402,6 +152311,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasResponsavelInput = {
@@ -145510,6 +152423,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTarefasCriadasInput = {
@@ -145613,6 +152530,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTarefasCriadasInput = {
@@ -145712,6 +152633,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutTarefasInput = {
@@ -145764,6 +152686,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasResponsavelInput = {
@@ -145878,6 +152801,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasResponsavelInput = {
@@ -145981,6 +152908,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTarefasCriadasInput = {
@@ -146095,6 +153026,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTarefasCriadasInput = {
@@ -146198,6 +153133,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type TurnoUpsertWithoutTarefasInput = {
@@ -146287,6 +153226,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutMedicacoesInput = {
@@ -146339,6 +153279,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutMedicacoesInput = {
@@ -146447,6 +153388,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesPrescritasInput = {
@@ -146550,6 +153495,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesPrescritasInput = {
@@ -146658,6 +153607,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesValidadasInput = {
@@ -146761,6 +153714,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesValidadasInput = {
@@ -146869,6 +153826,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMedicacoesAssinadasInput = {
@@ -146972,6 +153933,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMedicacoesAssinadasInput = {
@@ -147074,6 +154039,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutMedicacoesInput = {
@@ -147126,6 +154092,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesPrescritasInput = {
@@ -147240,6 +154207,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesPrescritasInput = {
@@ -147343,6 +154314,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesValidadasInput = {
@@ -147457,6 +154432,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesValidadasInput = {
@@ -147560,6 +154539,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMedicacoesAssinadasInput = {
@@ -147674,6 +154657,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMedicacoesAssinadasInput = {
@@ -147777,6 +154764,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type RegistoMedicacaoUpsertWithWhereUniqueWithoutMedicacaoInput = {
@@ -147890,6 +154881,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -147942,6 +154934,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -148050,6 +155043,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRegistosMedicacaoInput = {
@@ -148153,6 +155150,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRegistosMedicacaoInput = {
@@ -148272,6 +155273,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -148324,6 +155326,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutRegistosMedicacaoInput = {
@@ -148438,6 +155441,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRegistosMedicacaoInput = {
@@ -148541,6 +155548,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutEscalasInput = {
@@ -148644,6 +155655,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEscalasInput = {
@@ -148747,6 +155762,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEscalasInput = {
@@ -148894,6 +155913,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEscalasInput = {
@@ -148997,6 +156020,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithWhereUniqueWithoutEscalaInput = {
@@ -149317,6 +156344,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutHorariosTurnoProfissionalInput = {
@@ -149420,6 +156451,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutHorariosTurnoProfissionalInput = {
@@ -149568,6 +156603,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutHorariosTurnoProfissionalInput = {
@@ -149671,6 +156710,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutTrocasSolicitadasInput = {
@@ -149774,6 +156817,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasSolicitadasInput = {
@@ -149877,6 +156924,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasSolicitadasInput = {
@@ -149985,6 +157036,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasRecebidasInput = {
@@ -150088,6 +157143,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasRecebidasInput = {
@@ -150219,6 +157278,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTrocasAprovadasInput = {
@@ -150322,6 +157385,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTrocasAprovadasInput = {
@@ -150441,6 +157508,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasSolicitadasInput = {
@@ -150544,6 +157615,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTrocasRecebidasInput = {
@@ -150658,6 +157733,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasRecebidasInput = {
@@ -150761,6 +157840,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type HorarioTurnoUpsertWithoutTrocasInput = {
@@ -150904,6 +157987,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTrocasAprovadasInput = {
@@ -151007,6 +158094,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type HorarioTurnoCreateWithoutAtribuicoesInput = {
@@ -151082,6 +158173,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAtribuicoesHorarioInput = {
@@ -151134,6 +158226,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAtribuicoesHorarioInput = {
@@ -151242,6 +158335,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesComoUtilizadorInput = {
@@ -151345,6 +158442,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesComoUtilizadorInput = {
@@ -151453,6 +158554,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAtribuicoesFeitasInput = {
@@ -151556,6 +158661,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAtribuicoesFeitasInput = {
@@ -151653,6 +158762,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAtribuicoesHorarioInput = {
@@ -151705,6 +158815,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesComoUtilizadorInput = {
@@ -151819,6 +158930,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesComoUtilizadorInput = {
@@ -151922,6 +159037,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAtribuicoesFeitasInput = {
@@ -152036,6 +159155,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAtribuicoesFeitasInput = {
@@ -152139,6 +159262,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSinaisVitaisInput = {
@@ -152191,6 +159318,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSinaisVitaisInput = {
@@ -152243,6 +159371,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSinaisVitaisInput = {
@@ -152351,6 +159480,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSinaisVitaisRegistadosInput = {
@@ -152454,6 +159587,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSinaisVitaisRegistadosInput = {
@@ -152522,6 +159659,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSinaisVitaisInput = {
@@ -152574,6 +159712,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSinaisVitaisRegistadosInput = {
@@ -152688,6 +159827,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSinaisVitaisRegistadosInput = {
@@ -152791,6 +159934,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAuditLogsInput = {
@@ -152894,6 +160041,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAuditLogsInput = {
@@ -152997,6 +160148,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAuditLogsInput = {
@@ -153116,6 +160271,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAuditLogsInput = {
@@ -153219,6 +160378,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutAlergiasInput = {
@@ -153271,6 +160434,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlergiasInput = {
@@ -153323,6 +160487,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlergiasInput = {
@@ -153391,6 +160556,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlergiasInput = {
@@ -153443,6 +160609,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutContactosEmergenciaInput = {
@@ -153495,6 +160662,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutContactosEmergenciaInput = {
@@ -153547,6 +160715,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutContactosEmergenciaInput = {
@@ -153615,6 +160784,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutContactosEmergenciaInput = {
@@ -153667,6 +160837,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutAlertasClinicosInput = {
@@ -153719,6 +160890,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAlertasClinicosInput = {
@@ -153771,6 +160943,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAlertasClinicosInput = {
@@ -153879,6 +161052,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAlertasAcusadosInput = {
@@ -153982,6 +161159,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAlertasAcusadosInput = {
@@ -154050,6 +161231,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAlertasClinicosInput = {
@@ -154102,6 +161284,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAlertasAcusadosInput = {
@@ -154216,6 +161399,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAlertasAcusadosInput = {
@@ -154319,6 +161506,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutAvaliacoesRiscoInput = {
@@ -154371,6 +161562,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -154423,6 +161615,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -154531,6 +161724,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesRiscoInput = {
@@ -154634,6 +161831,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesRiscoInput = {
@@ -154702,6 +161903,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -154754,6 +161956,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesRiscoInput = {
@@ -154868,6 +162071,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesRiscoInput = {
@@ -154971,6 +162178,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSumarioAltaInput = {
@@ -155023,6 +162234,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSumarioAltaInput = {
@@ -155075,6 +162287,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSumarioAltaInput = {
@@ -155183,6 +162396,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSumariosAltaInput = {
@@ -155286,6 +162503,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSumariosAltaInput = {
@@ -155354,6 +162575,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSumarioAltaInput = {
@@ -155406,6 +162628,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSumariosAltaInput = {
@@ -155520,6 +162743,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSumariosAltaInput = {
@@ -155623,6 +162850,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDispositivosTokensInput = {
@@ -155726,6 +162957,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosTokensInput = {
@@ -155829,6 +163064,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosTokensInput = {
@@ -155948,6 +163187,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosTokensInput = {
@@ -156051,6 +163294,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutNotificacoesInAppInput = {
@@ -156154,6 +163401,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutNotificacoesInAppInput = {
@@ -156257,6 +163508,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutNotificacoesInAppInput = {
@@ -156376,6 +163631,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutNotificacoesInAppInput = {
@@ -156479,6 +163738,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutExamesInput = {
@@ -156531,6 +163794,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutExamesInput = {
@@ -156583,6 +163847,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutExamesInput = {
@@ -156691,6 +163956,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutExamesSolicitadosInput = {
@@ -156794,6 +164063,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutExamesSolicitadosInput = {
@@ -156886,6 +164159,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutExamesInput = {
@@ -156938,6 +164212,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutExamesSolicitadosInput = {
@@ -157052,6 +164327,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutExamesSolicitadosInput = {
@@ -157155,6 +164434,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type FicheiroExameUpsertWithWhereUniqueWithoutExameInput = {
@@ -157306,6 +164589,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosUrgenciaInput = {
@@ -157358,6 +164642,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosUrgenciaInput = {
@@ -157466,6 +164751,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosTriadosInput = {
@@ -157569,6 +164858,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosTriadosInput = {
@@ -157677,6 +164970,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosMedicoInput = {
@@ -157780,6 +165077,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosMedicoInput = {
@@ -157848,6 +165149,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosUrgenciaInput = {
@@ -157900,6 +165202,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosTriadosInput = {
@@ -158014,6 +165317,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosTriadosInput = {
@@ -158117,6 +165424,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutEpisodiosMedicoInput = {
@@ -158231,6 +165542,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosMedicoInput = {
@@ -158334,6 +165649,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutCirurgiasInput = {
@@ -158386,6 +165705,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutCirurgiasInput = {
@@ -158438,6 +165758,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutCirurgiasInput = {
@@ -158546,6 +165867,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoCircurgiaoInput = {
@@ -158649,6 +165974,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoCircurgiaoInput = {
@@ -158757,6 +166086,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCirurgiasComoAnestesistaInput = {
@@ -158860,6 +166193,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCirurgiasComoAnestesistaInput = {
@@ -158959,6 +166296,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutCirurgiasInput = {
@@ -159011,6 +166349,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoCircurgiaoInput = {
@@ -159125,6 +166464,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoCircurgiaoInput = {
@@ -159228,6 +166571,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCirurgiasComoAnestesistaInput = {
@@ -159342,6 +166689,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCirurgiasComoAnestesistaInput = {
@@ -159445,6 +166796,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type ChecklistCirurgiaUpsertWithoutCirurgiaInput = {
@@ -159624,6 +166979,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignInInput = {
@@ -159727,6 +167086,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignInInput = {
@@ -159835,6 +167198,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsTimeOutInput = {
@@ -159938,6 +167305,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsTimeOutInput = {
@@ -160046,6 +167417,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutChecklistsSignOutInput = {
@@ -160149,6 +167524,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutChecklistsSignOutInput = {
@@ -160313,6 +167692,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignInInput = {
@@ -160416,6 +167799,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsTimeOutInput = {
@@ -160530,6 +167917,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsTimeOutInput = {
@@ -160633,6 +168024,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutChecklistsSignOutInput = {
@@ -160747,6 +168142,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChecklistsSignOutInput = {
@@ -160850,6 +168249,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutConsultasInput = {
@@ -160902,6 +168305,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsultasInput = {
@@ -160954,6 +168358,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsultasInput = {
@@ -161062,6 +168467,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsultasInput = {
@@ -161165,6 +168574,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsultasInput = {
@@ -161294,6 +168707,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsultasInput = {
@@ -161346,6 +168760,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsultasInput = {
@@ -161460,6 +168875,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsultasInput = {
@@ -161563,6 +168982,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type AtoConsultaUpsertWithWhereUniqueWithoutConsultaInput = {
@@ -161735,6 +169158,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAgendasInput = {
@@ -161838,6 +169265,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAgendasInput = {
@@ -161957,6 +169388,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAgendasInput = {
@@ -162060,6 +169495,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutCheckinsRececionadosInput = {
@@ -162163,6 +169602,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsRececionadosInput = {
@@ -162266,6 +169709,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsRececionadosInput = {
@@ -162374,6 +169821,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutCheckinsAtendidosInput = {
@@ -162477,6 +169928,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutCheckinsAtendidosInput = {
@@ -162596,6 +170051,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsRececionadosInput = {
@@ -162699,6 +170158,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutCheckinsAtendidosInput = {
@@ -162813,6 +170276,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutCheckinsAtendidosInput = {
@@ -162916,6 +170383,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type CatalogoMedicamentoCreateWithoutStockItemsInput = {
@@ -163330,6 +170801,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosSolicitadosInput = {
@@ -163433,6 +170908,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosSolicitadosInput = {
@@ -163541,6 +171020,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosProcessadosInput = {
@@ -163644,6 +171127,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosProcessadosInput = {
@@ -163752,6 +171239,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutStockPedidosAprovadosInput = {
@@ -163855,6 +171346,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutStockPedidosAprovadosInput = {
@@ -164019,6 +171514,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosSolicitadosInput = {
@@ -164122,6 +171621,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosProcessadosInput = {
@@ -164236,6 +171739,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosProcessadosInput = {
@@ -164339,6 +171846,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutStockPedidosAprovadosInput = {
@@ -164453,6 +171964,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutStockPedidosAprovadosInput = {
@@ -164556,6 +172071,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type StockItemCreateWithoutCatalogoInput = {
@@ -164775,6 +172294,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAjustesStockInput = {
@@ -164878,6 +172401,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAjustesStockInput = {
@@ -165042,6 +172569,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAjustesStockInput = {
@@ -165145,6 +172676,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type StockItemCreateWithoutTransferenciasInput = {
@@ -165287,6 +172822,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTransferenciasSolicitadasInput = {
@@ -165390,6 +172929,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTransferenciasSolicitadasInput = {
@@ -165498,6 +173041,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutTransferenciasConfirmadasInput = {
@@ -165601,6 +173148,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutTransferenciasConfirmadasInput = {
@@ -165765,6 +173316,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTransferenciasSolicitadasInput = {
@@ -165868,6 +173423,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutTransferenciasConfirmadasInput = {
@@ -165982,6 +173541,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutTransferenciasConfirmadasInput = {
@@ -166085,6 +173648,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type EncomendaFornecedorCreateWithoutFornecedorInput = {
@@ -166308,6 +173875,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEncomendasRecebidasInput = {
@@ -166411,6 +173982,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEncomendasRecebidasInput = {
@@ -166608,6 +174183,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEncomendasRecebidasInput = {
@@ -166711,6 +174290,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPlanosReabilitacaoInput = {
@@ -166763,6 +174346,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -166815,6 +174399,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -166923,6 +174508,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPlanosReabilitacaoInput = {
@@ -167026,6 +174615,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPlanosReabilitacaoInput = {
@@ -167126,6 +174719,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -167178,6 +174772,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPlanosReabilitacaoInput = {
@@ -167292,6 +174887,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPlanosReabilitacaoInput = {
@@ -167395,6 +174994,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type SessaoFisioterapiaUpsertWithWhereUniqueWithoutPlanoInput = {
@@ -167490,6 +175093,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -167542,6 +175146,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -167650,6 +175255,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesFisioterapiaInput = {
@@ -167753,6 +175362,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesFisioterapiaInput = {
@@ -167854,6 +175467,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -167906,6 +175520,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesFisioterapiaInput = {
@@ -168020,6 +175635,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesFisioterapiaInput = {
@@ -168123,6 +175742,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPedidosInternosInput = {
@@ -168175,6 +175798,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPedidosInternosInput = {
@@ -168227,6 +175851,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPedidosInternosInput = {
@@ -168335,6 +175960,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosSolicitadosInput = {
@@ -168438,6 +176067,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosSolicitadosInput = {
@@ -168546,6 +176179,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosInternosExecutadosInput = {
@@ -168649,6 +176286,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosInternosExecutadosInput = {
@@ -168717,6 +176358,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPedidosInternosInput = {
@@ -168769,6 +176411,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosSolicitadosInput = {
@@ -168883,6 +176526,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosSolicitadosInput = {
@@ -168986,6 +176633,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosInternosExecutadosInput = {
@@ -169100,6 +176751,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosInternosExecutadosInput = {
@@ -169203,6 +176858,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAnunciosPublicadosInput = {
@@ -169306,6 +176965,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAnunciosPublicadosInput = {
@@ -169409,6 +177072,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAnunciosPublicadosInput = {
@@ -169528,6 +177195,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAnunciosPublicadosInput = {
@@ -169631,6 +177302,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutMensagensEnviadasInput = {
@@ -169734,6 +177409,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensEnviadasInput = {
@@ -169837,6 +177516,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensEnviadasInput = {
@@ -169945,6 +177628,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutMensagensRecebidasInput = {
@@ -170048,6 +177735,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutMensagensRecebidasInput = {
@@ -170167,6 +177858,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensEnviadasInput = {
@@ -170270,6 +177965,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutMensagensRecebidasInput = {
@@ -170384,6 +178083,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutMensagensRecebidasInput = {
@@ -170487,6 +178190,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutInterconsultasInput = {
@@ -170539,6 +178246,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutInterconsultasInput = {
@@ -170591,6 +178299,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutInterconsultasInput = {
@@ -170699,6 +178408,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRequisitadasInput = {
@@ -170802,6 +178515,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRequisitadasInput = {
@@ -170910,6 +178627,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutInterconsultasRespondidasInput = {
@@ -171013,6 +178734,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutInterconsultasRespondidasInput = {
@@ -171081,6 +178806,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutInterconsultasInput = {
@@ -171133,6 +178859,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRequisitadasInput = {
@@ -171247,6 +178974,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRequisitadasInput = {
@@ -171350,6 +179081,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutInterconsultasRespondidasInput = {
@@ -171464,6 +179199,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutInterconsultasRespondidasInput = {
@@ -171567,6 +179306,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutDispositivosInvasivosInput = {
@@ -171619,6 +179362,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutDispositivosInvasivosInput = {
@@ -171671,6 +179415,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutDispositivosInvasivosInput = {
@@ -171779,6 +179524,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDispositivosInseridosInput = {
@@ -171882,6 +179631,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDispositivosInseridosInput = {
@@ -171950,6 +179703,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutDispositivosInvasivosInput = {
@@ -172002,6 +179756,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutDispositivosInseridosInput = {
@@ -172116,6 +179871,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDispositivosInseridosInput = {
@@ -172219,6 +179978,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutIncidentesCriadosInput = {
@@ -172322,6 +180085,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesCriadosInput = {
@@ -172425,6 +180192,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesCriadosInput = {
@@ -172533,6 +180304,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput = {
@@ -172636,11 +180411,39 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutIncidentesAtribuidosInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutIncidentesAtribuidosInput, UtilizadorUncheckedCreateWithoutIncidentesAtribuidosInput>
+  }
+
+  export type NotaIncidenteTICreateWithoutIncidenteInput = {
+    id?: string
+    conteudo: string
+    criadaEm?: Date | string
+    autor: UtilizadorCreateNestedOneWithoutNotasIncidentesTIInput
+  }
+
+  export type NotaIncidenteTIUncheckedCreateWithoutIncidenteInput = {
+    id?: string
+    autorId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaIncidenteTICreateOrConnectWithoutIncidenteInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    create: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput>
+  }
+
+  export type NotaIncidenteTICreateManyIncidenteInputEnvelope = {
+    data: NotaIncidenteTICreateManyIncidenteInput | NotaIncidenteTICreateManyIncidenteInput[]
+    skipDuplicates?: boolean
   }
 
   export type UtilizadorUpsertWithoutIncidentesCriadosInput = {
@@ -172755,6 +180558,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesCriadosInput = {
@@ -172858,6 +180665,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutIncidentesAtribuidosInput = {
@@ -172972,6 +180783,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutIncidentesAtribuidosInput = {
@@ -173075,6 +180890,542 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type NotaIncidenteTIUpsertWithWhereUniqueWithoutIncidenteInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    update: XOR<NotaIncidenteTIUpdateWithoutIncidenteInput, NotaIncidenteTIUncheckedUpdateWithoutIncidenteInput>
+    create: XOR<NotaIncidenteTICreateWithoutIncidenteInput, NotaIncidenteTIUncheckedCreateWithoutIncidenteInput>
+  }
+
+  export type NotaIncidenteTIUpdateWithWhereUniqueWithoutIncidenteInput = {
+    where: NotaIncidenteTIWhereUniqueInput
+    data: XOR<NotaIncidenteTIUpdateWithoutIncidenteInput, NotaIncidenteTIUncheckedUpdateWithoutIncidenteInput>
+  }
+
+  export type NotaIncidenteTIUpdateManyWithWhereWithoutIncidenteInput = {
+    where: NotaIncidenteTIScalarWhereInput
+    data: XOR<NotaIncidenteTIUpdateManyMutationInput, NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteInput>
+  }
+
+  export type IncidenteTICreateWithoutNotasInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    criadoPor: UtilizadorCreateNestedOneWithoutIncidentesCriadosInput
+    responsavel?: UtilizadorCreateNestedOneWithoutIncidentesAtribuidosInput
+  }
+
+  export type IncidenteTIUncheckedCreateWithoutNotasInput = {
+    id?: string
+    titulo: string
+    descricao: string
+    tipo: $Enums.TipoIncidenteTI
+    subRoleAlvo?: string | null
+    prioridade?: $Enums.PrioridadeIncidenteTI
+    estado?: $Enums.EstadoIncidenteTI
+    criadoPorId: string
+    responsavelId?: string | null
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+  }
+
+  export type IncidenteTICreateOrConnectWithoutNotasInput = {
+    where: IncidenteTIWhereUniqueInput
+    create: XOR<IncidenteTICreateWithoutNotasInput, IncidenteTIUncheckedCreateWithoutNotasInput>
+  }
+
+  export type UtilizadorCreateWithoutNotasIncidentesTIInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutNotasIncidentesTIInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutNotasIncidentesTIInput, UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput>
+  }
+
+  export type IncidenteTIUpsertWithoutNotasInput = {
+    update: XOR<IncidenteTIUpdateWithoutNotasInput, IncidenteTIUncheckedUpdateWithoutNotasInput>
+    create: XOR<IncidenteTICreateWithoutNotasInput, IncidenteTIUncheckedCreateWithoutNotasInput>
+    where?: IncidenteTIWhereInput
+  }
+
+  export type IncidenteTIUpdateToOneWithWhereWithoutNotasInput = {
+    where?: IncidenteTIWhereInput
+    data: XOR<IncidenteTIUpdateWithoutNotasInput, IncidenteTIUncheckedUpdateWithoutNotasInput>
+  }
+
+  export type IncidenteTIUpdateWithoutNotasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    criadoPor?: UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput
+    responsavel?: UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput
+  }
+
+  export type IncidenteTIUncheckedUpdateWithoutNotasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    tipo?: EnumTipoIncidenteTIFieldUpdateOperationsInput | $Enums.TipoIncidenteTI
+    subRoleAlvo?: NullableStringFieldUpdateOperationsInput | string | null
+    prioridade?: EnumPrioridadeIncidenteTIFieldUpdateOperationsInput | $Enums.PrioridadeIncidenteTI
+    estado?: EnumEstadoIncidenteTIFieldUpdateOperationsInput | $Enums.EstadoIncidenteTI
+    criadoPorId?: StringFieldUpdateOperationsInput | string
+    responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UtilizadorUpsertWithoutNotasIncidentesTIInput = {
+    update: XOR<UtilizadorUpdateWithoutNotasIncidentesTIInput, UtilizadorUncheckedUpdateWithoutNotasIncidentesTIInput>
+    create: XOR<UtilizadorCreateWithoutNotasIncidentesTIInput, UtilizadorUncheckedCreateWithoutNotasIncidentesTIInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutNotasIncidentesTIInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutNotasIncidentesTIInput, UtilizadorUncheckedUpdateWithoutNotasIncidentesTIInput>
+  }
+
+  export type UtilizadorUpdateWithoutNotasIncidentesTIInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutNotasIncidentesTIInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutPedidosTICriadosInput = {
@@ -173178,6 +181529,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTICriadosInput = {
@@ -173281,6 +181636,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTICriadosInput = {
@@ -173389,6 +181748,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPedidosTIAtribuidosInput = {
@@ -173492,6 +181855,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPedidosTIAtribuidosInput = {
@@ -173611,6 +181978,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTICriadosInput = {
@@ -173714,6 +182085,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutPedidosTIAtribuidosInput = {
@@ -173828,6 +182203,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPedidosTIAtribuidosInput = {
@@ -173931,6 +182310,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutFicheiroPessoalInput = {
@@ -173983,6 +182366,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutFicheiroPessoalInput = {
@@ -174035,6 +182419,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutFicheiroPessoalInput = {
@@ -174143,6 +182528,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -174246,6 +182635,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFicheirosPessoaisAtualizadosInput = {
@@ -174314,6 +182707,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutFicheiroPessoalInput = {
@@ -174366,6 +182760,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutFicheirosPessoaisAtualizadosInput = {
@@ -174480,6 +182875,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFicheirosPessoaisAtualizadosInput = {
@@ -174583,6 +182982,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEpisodiosFaturacaoInput = {
@@ -174635,6 +183038,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEpisodiosFaturacaoInput = {
@@ -174687,6 +183091,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEpisodiosFaturacaoInput = {
@@ -174836,6 +183241,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -174939,6 +183348,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEpisodiosFaturacaoCriadosInput = {
@@ -175065,6 +183478,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEpisodiosFaturacaoInput = {
@@ -175117,6 +183531,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type ConsultaUpsertWithoutEpisodioFaturacaoInput = {
@@ -175278,6 +183693,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEpisodiosFaturacaoCriadosInput = {
@@ -175381,6 +183800,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type ItemFaturaUpsertWithWhereUniqueWithoutEpisodioInput = {
@@ -175641,6 +184064,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPagamentosRegistadosInput = {
@@ -175744,6 +184171,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPagamentosRegistadosInput = {
@@ -175904,6 +184335,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPagamentosRegistadosInput = {
@@ -176007,6 +184442,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type AtoConsultaCreateWithoutAtoInput = {
@@ -176300,6 +184739,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutRefreshTokensInput = {
@@ -176403,6 +184846,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutRefreshTokensInput = {
@@ -176522,6 +184969,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutRefreshTokensInput = {
@@ -176625,6 +185076,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutProblemasInput = {
@@ -176677,6 +185132,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProblemasInput = {
@@ -176729,6 +185185,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProblemasInput = {
@@ -176837,6 +185294,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutProblemasRegistadosInput = {
@@ -176940,6 +185401,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutProblemasRegistadosInput = {
@@ -177008,6 +185473,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProblemasInput = {
@@ -177060,6 +185526,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProblemasRegistadosInput = {
@@ -177174,6 +185641,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutProblemasRegistadosInput = {
@@ -177277,6 +185748,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type ManutencaoCreateWithoutEquipamentoInput = {
@@ -177461,6 +185936,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesReportadasInput = {
@@ -177564,6 +186043,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesReportadasInput = {
@@ -177672,6 +186155,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutManutencoesTecnicoInput = {
@@ -177775,6 +186262,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutManutencoesTecnicoInput = {
@@ -177929,6 +186420,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesReportadasInput = {
@@ -178032,6 +186527,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutManutencoesTecnicoInput = {
@@ -178146,6 +186645,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutManutencoesTecnicoInput = {
@@ -178249,6 +186752,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAusenciasInput = {
@@ -178352,6 +186859,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasInput = {
@@ -178455,6 +186966,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasInput = {
@@ -178563,6 +187078,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAusenciasAprovadasInput = {
@@ -178666,6 +187185,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAusenciasAprovadasInput = {
@@ -178785,6 +187308,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasInput = {
@@ -178888,6 +187415,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAusenciasAprovadasInput = {
@@ -179002,6 +187533,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAusenciasAprovadasInput = {
@@ -179105,6 +187640,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutFormacoesInput = {
@@ -179208,6 +187747,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutFormacoesInput = {
@@ -179311,6 +187854,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutFormacoesInput = {
@@ -179430,6 +187977,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutFormacoesInput = {
@@ -179533,6 +188084,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutEventosAdversosInput = {
@@ -179585,6 +188140,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutEventosAdversosInput = {
@@ -179637,6 +188193,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutEventosAdversosInput = {
@@ -179745,6 +188302,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutEventosAdversosRegistadosInput = {
@@ -179848,6 +188409,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutEventosAdversosRegistadosInput = {
@@ -179916,6 +188481,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutEventosAdversosInput = {
@@ -179968,6 +188534,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutEventosAdversosRegistadosInput = {
@@ -180082,6 +188649,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutEventosAdversosRegistadosInput = {
@@ -180185,6 +188756,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutSessoesEspecialidadeInput = {
@@ -180237,6 +188812,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -180289,6 +188865,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -180397,6 +188974,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutSessoesEspecialidadeInput = {
@@ -180500,6 +189081,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutSessoesEspecialidadeInput = {
@@ -180568,6 +189153,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -180620,6 +189206,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutSessoesEspecialidadeInput = {
@@ -180734,6 +189321,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutSessoesEspecialidadeInput = {
@@ -180837,6 +189428,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -180940,6 +189535,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadoInput = {
@@ -181043,6 +189642,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadoInput = {
@@ -181151,6 +189754,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutAvaliacoesComoAvaliadorInput = {
@@ -181254,6 +189861,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutAvaliacoesComoAvaliadorInput = {
@@ -181373,6 +189984,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadoInput = {
@@ -181476,6 +190091,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutAvaliacoesComoAvaliadorInput = {
@@ -181590,6 +190209,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutAvaliacoesComoAvaliadorInput = {
@@ -181693,6 +190316,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutDadosContratuaisInput = {
@@ -181796,6 +190423,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutDadosContratuaisInput = {
@@ -181899,6 +190530,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutDadosContratuaisInput = {
@@ -182018,6 +190653,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutDadosContratuaisInput = {
@@ -182121,6 +190760,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutConsentimentosInput = {
@@ -182173,6 +190816,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutConsentimentosInput = {
@@ -182225,6 +190869,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutConsentimentosInput = {
@@ -182333,6 +190978,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsentimentosTestemunhaInput = {
@@ -182436,6 +191085,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsentimentosTestemunhaInput = {
@@ -182544,6 +191197,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutConsentimentosCriadosInput = {
@@ -182647,6 +191304,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutConsentimentosCriadosInput = {
@@ -182715,6 +191376,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutConsentimentosInput = {
@@ -182767,6 +191429,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsentimentosTestemunhaInput = {
@@ -182881,6 +191544,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsentimentosTestemunhaInput = {
@@ -182984,6 +191651,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUpsertWithoutConsentimentosCriadosInput = {
@@ -183098,6 +191769,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutConsentimentosCriadosInput = {
@@ -183201,6 +191876,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorCreateWithoutBreakGlassUsadosInput = {
@@ -183304,6 +191983,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutBreakGlassUsadosInput = {
@@ -183407,6 +192090,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutBreakGlassUsadosInput = {
@@ -183464,6 +192151,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutBreakGlassAcessosInput = {
@@ -183516,6 +192204,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutBreakGlassAcessosInput = {
@@ -183635,6 +192324,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutBreakGlassUsadosInput = {
@@ -183738,6 +192431,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteUpsertWithoutBreakGlassAcessosInput = {
@@ -183801,6 +192498,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutBreakGlassAcessosInput = {
@@ -183853,6 +192551,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteCreateWithoutProtocolosClinicosInput = {
@@ -183905,6 +192604,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutProtocolosClinicosInput = {
@@ -183957,6 +192657,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutProtocolosClinicosInput = {
@@ -184065,6 +192766,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutProtocolosAtivadosInput = {
@@ -184168,6 +192873,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutProtocolosAtivadosInput = {
@@ -184264,6 +192973,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutProtocolosClinicosInput = {
@@ -184316,6 +193026,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutProtocolosAtivadosInput = {
@@ -184430,6 +193141,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutProtocolosAtivadosInput = {
@@ -184533,6 +193248,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type ItemProtocoloUpsertWithWhereUniqueWithoutProtocoloInput = {
@@ -184675,6 +193394,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutItensProtocoloConcluidosInput = {
@@ -184778,6 +193501,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutItensProtocoloConcluidosInput = {
@@ -184926,6 +193653,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutItensProtocoloConcluidosInput = {
@@ -185029,6 +193760,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type DoenteCreateWithoutPrescricoesDietaInput = {
@@ -185081,6 +193816,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
     breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteUncheckedCreateWithoutPrescricoesDietaInput = {
@@ -185133,6 +193869,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
     breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
     protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutDoenteInput
   }
 
   export type DoenteCreateOrConnectWithoutPrescricoesDietaInput = {
@@ -185241,6 +193978,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
     medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorUncheckedCreateWithoutPrescricoesDietaCriadasInput = {
@@ -185344,6 +194085,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
     medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
     notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
   }
 
   export type UtilizadorCreateOrConnectWithoutPrescricoesDietaCriadasInput = {
@@ -185412,6 +194157,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutPrescricoesDietaInput = {
@@ -185464,6 +194210,7 @@ export namespace Prisma {
     consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type UtilizadorUpsertWithoutPrescricoesDietaCriadasInput = {
@@ -185578,6 +194325,10 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutPrescricoesDietaCriadasInput = {
@@ -185681,6 +194432,1570 @@ export namespace Prisma {
     itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type DoenteCreateWithoutCulturasMicrobiologicasInput = {
+    id?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    cama?: CamaCreateNestedOneWithoutDoenteInput
+    administrativo?: UtilizadorCreateNestedOneWithoutDoentesAdmitidosInput
+    atribuicoes?: AtribuicaoDoenteCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaCreateNestedManyWithoutDoenteInput
+    exames?: ExameCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput = {
+    id?: string
+    nome: string
+    dataNascimento?: Date | string | null
+    numeroProcesso: string
+    estado?: $Enums.EstadoDoente
+    diagnosticoPrincipal?: string | null
+    estadoRegisto?: string
+    tipoVisita?: string | null
+    dataAdmissao?: Date | string
+    dataAltaPrevista?: Date | string | null
+    dataAlta?: Date | string | null
+    ativo?: boolean
+    emIsolamento?: boolean
+    motivoIsolamento?: string | null
+    deletedAt?: Date | string | null
+    camaId?: string | null
+    administrativoAdmissaoId?: string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutDoenteInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    tarefas?: TarefaUncheckedCreateNestedManyWithoutDoenteInput
+    medicacoes?: MedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutDoenteInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    passagensTurno?: PassagemTurnoUncheckedCreateNestedManyWithoutDoenteInput
+    sinaisVitais?: SinalVitalUncheckedCreateNestedManyWithoutDoenteInput
+    alergias?: AlergiaUncheckedCreateNestedManyWithoutDoenteInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedCreateNestedManyWithoutDoenteInput
+    alertasClinicos?: AlertaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutDoenteInput
+    sumarioAlta?: SumarioAltaUncheckedCreateNestedOneWithoutDoenteInput
+    notasClincias?: NotaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    escalasClinicas?: EscalaClinicaUncheckedCreateNestedManyWithoutDoenteInput
+    exames?: ExameUncheckedCreateNestedManyWithoutDoenteInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutDoenteInput
+    cirurgias?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutDoenteInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutDoenteInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutDoenteInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutDoenteInput
+    pedidosInternos?: PedidoInternoUncheckedCreateNestedManyWithoutDoenteInput
+    interconsultas?: InterconsultaUncheckedCreateNestedManyWithoutDoenteInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutDoenteInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedCreateNestedOneWithoutDoenteInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutDoenteInput
+    problemas?: ProblemaClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    eventosAdversos?: EventoAdversoUncheckedCreateNestedManyWithoutDoenteInput
+    consentimentos?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutDoenteInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedCreateNestedManyWithoutDoenteInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedCreateNestedManyWithoutDoenteInput
+    prescricoesDieta?: PrescricaoDietaUncheckedCreateNestedManyWithoutDoenteInput
+  }
+
+  export type DoenteCreateOrConnectWithoutCulturasMicrobiologicasInput = {
+    where: DoenteWhereUniqueInput
+    create: XOR<DoenteCreateWithoutCulturasMicrobiologicasInput, DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput>
+  }
+
+  export type UtilizadorCreateWithoutCulturasRegistadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutCulturasRegistadasInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutCulturasRegistadasInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutCulturasRegistadasInput, UtilizadorUncheckedCreateWithoutCulturasRegistadasInput>
+  }
+
+  export type DoenteUpsertWithoutCulturasMicrobiologicasInput = {
+    update: XOR<DoenteUpdateWithoutCulturasMicrobiologicasInput, DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput>
+    create: XOR<DoenteCreateWithoutCulturasMicrobiologicasInput, DoenteUncheckedCreateWithoutCulturasMicrobiologicasInput>
+    where?: DoenteWhereInput
+  }
+
+  export type DoenteUpdateToOneWithWhereWithoutCulturasMicrobiologicasInput = {
+    where?: DoenteWhereInput
+    data: XOR<DoenteUpdateWithoutCulturasMicrobiologicasInput, DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput>
+  }
+
+  export type DoenteUpdateWithoutCulturasMicrobiologicasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cama?: CamaUpdateOneWithoutDoenteNestedInput
+    administrativo?: UtilizadorUpdateOneWithoutDoentesAdmitidosNestedInput
+    atribuicoes?: AtribuicaoDoenteUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type DoenteUncheckedUpdateWithoutCulturasMicrobiologicasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    dataNascimento?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    numeroProcesso?: StringFieldUpdateOperationsInput | string
+    estado?: EnumEstadoDoenteFieldUpdateOperationsInput | $Enums.EstadoDoente
+    diagnosticoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    estadoRegisto?: StringFieldUpdateOperationsInput | string
+    tipoVisita?: NullableStringFieldUpdateOperationsInput | string | null
+    dataAdmissao?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataAltaPrevista?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    dataAlta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    emIsolamento?: BoolFieldUpdateOperationsInput | boolean
+    motivoIsolamento?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    camaId?: NullableStringFieldUpdateOperationsInput | string | null
+    administrativoAdmissaoId?: NullableStringFieldUpdateOperationsInput | string | null
+    atribuicoes?: AtribuicaoDoenteUncheckedUpdateManyWithoutDoenteNestedInput
+    atribuicoesHorario?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    tarefas?: TarefaUncheckedUpdateManyWithoutDoenteNestedInput
+    medicacoes?: MedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    passagensTurno?: PassagemTurnoUncheckedUpdateManyWithoutDoenteNestedInput
+    sinaisVitais?: SinalVitalUncheckedUpdateManyWithoutDoenteNestedInput
+    alergias?: AlergiaUncheckedUpdateManyWithoutDoenteNestedInput
+    contactosEmergencia?: ContactoEmergenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    alertasClinicos?: AlertaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutDoenteNestedInput
+    sumarioAlta?: SumarioAltaUncheckedUpdateOneWithoutDoenteNestedInput
+    notasClincias?: NotaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    escalasClinicas?: EscalaClinicaUncheckedUpdateManyWithoutDoenteNestedInput
+    exames?: ExameUncheckedUpdateManyWithoutDoenteNestedInput
+    episodiosUrgencia?: EpisodioUrgenciaUncheckedUpdateManyWithoutDoenteNestedInput
+    cirurgias?: CirurgiaProgramadaUncheckedUpdateManyWithoutDoenteNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutDoenteNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutDoenteNestedInput
+    pedidosInternos?: PedidoInternoUncheckedUpdateManyWithoutDoenteNestedInput
+    interconsultas?: InterconsultaUncheckedUpdateManyWithoutDoenteNestedInput
+    dispositivosInvasivos?: DispositivoInvasivoUncheckedUpdateManyWithoutDoenteNestedInput
+    ficheiroPessoal?: FicheiroPessoalDoenteUncheckedUpdateOneWithoutDoenteNestedInput
+    episodiosFaturacao?: EpisodioFaturacaoUncheckedUpdateManyWithoutDoenteNestedInput
+    problemas?: ProblemaClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    eventosAdversos?: EventoAdversoUncheckedUpdateManyWithoutDoenteNestedInput
+    consentimentos?: ConsentimentoInformadoUncheckedUpdateManyWithoutDoenteNestedInput
+    breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
+    protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
+    prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutCulturasRegistadasInput = {
+    update: XOR<UtilizadorUpdateWithoutCulturasRegistadasInput, UtilizadorUncheckedUpdateWithoutCulturasRegistadasInput>
+    create: XOR<UtilizadorCreateWithoutCulturasRegistadasInput, UtilizadorUncheckedCreateWithoutCulturasRegistadasInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutCulturasRegistadasInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutCulturasRegistadasInput, UtilizadorUncheckedUpdateWithoutCulturasRegistadasInput>
+  }
+
+  export type UtilizadorUpdateWithoutCulturasRegistadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutCulturasRegistadasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutSurtosRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutSurtosRegistadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutSurtosRegistadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutSurtosRegistadosInput, UtilizadorUncheckedCreateWithoutSurtosRegistadosInput>
+  }
+
+  export type UtilizadorUpsertWithoutSurtosRegistadosInput = {
+    update: XOR<UtilizadorUpdateWithoutSurtosRegistadosInput, UtilizadorUncheckedUpdateWithoutSurtosRegistadosInput>
+    create: XOR<UtilizadorCreateWithoutSurtosRegistadosInput, UtilizadorUncheckedCreateWithoutSurtosRegistadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutSurtosRegistadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutSurtosRegistadosInput, UtilizadorUncheckedUpdateWithoutSurtosRegistadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutSurtosRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutSurtosRegistadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+  }
+
+  export type UtilizadorCreateWithoutChecklistsConformidadeInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutChecklistsConformidadeInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutChecklistsConformidadeInput, UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput>
+  }
+
+  export type UtilizadorUpsertWithoutChecklistsConformidadeInput = {
+    update: XOR<UtilizadorUpdateWithoutChecklistsConformidadeInput, UtilizadorUncheckedUpdateWithoutChecklistsConformidadeInput>
+    create: XOR<UtilizadorCreateWithoutChecklistsConformidadeInput, UtilizadorUncheckedCreateWithoutChecklistsConformidadeInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutChecklistsConformidadeInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutChecklistsConformidadeInput, UtilizadorUncheckedUpdateWithoutChecklistsConformidadeInput>
+  }
+
+  export type UtilizadorUpdateWithoutChecklistsConformidadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutChecklistsConformidadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
   }
 
   export type SubRoleConfigCreateManyRoleInput = {
@@ -186726,6 +197041,46 @@ export namespace Prisma {
     assinadaEm?: Date | string | null
   }
 
+  export type CulturaMicrobiologicaCreateManyRegistadoPorInput = {
+    id?: string
+    doenteId: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type SurtoIACSCreateManyRegistadoPorInput = {
+    id?: string
+    agente: string
+    servico: string
+    dataInicio: Date | string
+    dataFim?: Date | string | null
+    estado?: $Enums.EstadoSurto
+    numCasos?: number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type NotaIncidenteTICreateManyAutorInput = {
+    id?: string
+    incidenteId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type ConformidadeChecklistItemCreateManyAtualizadoPorInput = {
+    id?: string
+    itemKey: string
+    estado?: string
+    atualizadoEm?: Date | string
+  }
+
   export type TurnoUpdateWithoutChefeTurnoInput = {
     id?: StringFieldUpdateOperationsInput | string
     tipo?: EnumTipoTurnoFieldUpdateOperationsInput | $Enums.TipoTurno
@@ -187045,6 +197400,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateWithoutAdministrativoInput = {
@@ -187097,6 +197453,7 @@ export namespace Prisma {
     breakGlassAcessos?: BreakGlassAccessUncheckedUpdateManyWithoutDoenteNestedInput
     protocolosClinicos?: ProtocoloClinicoUncheckedUpdateManyWithoutDoenteNestedInput
     prescricoesDieta?: PrescricaoDietaUncheckedUpdateManyWithoutDoenteNestedInput
+    culturasMicrobiologicas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteNestedInput
   }
 
   export type DoenteUncheckedUpdateManyWithoutAdministrativoInput = {
@@ -188645,6 +199002,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     responsavel?: UtilizadorUpdateOneWithoutIncidentesAtribuidosNestedInput
+    notas?: NotaIncidenteTIUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTIUncheckedUpdateWithoutCriadoPorInput = {
@@ -188658,6 +199016,7 @@ export namespace Prisma {
     responsavelId?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    notas?: NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTIUncheckedUpdateManyWithoutCriadoPorInput = {
@@ -188684,6 +199043,7 @@ export namespace Prisma {
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     criadoPor?: UtilizadorUpdateOneRequiredWithoutIncidentesCriadosNestedInput
+    notas?: NotaIncidenteTIUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTIUncheckedUpdateWithoutResponsavelInput = {
@@ -188697,6 +199057,7 @@ export namespace Prisma {
     criadoPorId?: StringFieldUpdateOperationsInput | string
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    notas?: NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteNestedInput
   }
 
   export type IncidenteTIUncheckedUpdateManyWithoutResponsavelInput = {
@@ -189438,6 +199799,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateWithoutChefeInput = {
@@ -189541,6 +199906,10 @@ export namespace Prisma {
     prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
     medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
     notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
   }
 
   export type UtilizadorUncheckedUpdateManyWithoutChefeInput = {
@@ -190033,6 +200402,126 @@ export namespace Prisma {
     assinadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type CulturaMicrobiologicaUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutCulturasMicrobiologicasNestedInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSUncheckedUpdateWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SurtoIACSUncheckedUpdateManyWithoutRegistadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agente?: StringFieldUpdateOperationsInput | string
+    servico?: StringFieldUpdateOperationsInput | string
+    dataInicio?: DateTimeFieldUpdateOperationsInput | Date | string
+    dataFim?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    estado?: EnumEstadoSurtoFieldUpdateOperationsInput | $Enums.EstadoSurto
+    numCasos?: IntFieldUpdateOperationsInput | number
+    medidas?: NullableJsonNullValueInput | InputJsonValue
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTIUpdateWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidente?: IncidenteTIUpdateOneRequiredWithoutNotasNestedInput
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidenteId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateManyWithoutAutorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidenteId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConformidadeChecklistItemUpdateWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConformidadeChecklistItemUncheckedUpdateWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    itemKey?: StringFieldUpdateOperationsInput | string
+    estado?: StringFieldUpdateOperationsInput | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyDoenteInput = {
     id?: string
     enfermeiroId: string
@@ -190402,6 +200891,19 @@ export namespace Prisma {
     ativa?: boolean
     criadaEm?: Date | string
     criadaPorId: string
+  }
+
+  export type CulturaMicrobiologicaCreateManyDoenteInput = {
+    id?: string
+    dataColheita: Date | string
+    tipoAmostra: string
+    agente?: string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: $Enums.ResultadoCultura
+    servico?: string | null
+    observacoes?: string | null
+    registadoPorId: string
+    criadoEm?: Date | string
   }
 
   export type AtribuicaoDoenteUpdateWithoutDoenteInput = {
@@ -191535,6 +202037,45 @@ export namespace Prisma {
     criadaPorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type CulturaMicrobiologicaUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    registadoPor?: UtilizadorUpdateOneRequiredWithoutCulturasRegistadasNestedInput
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CulturaMicrobiologicaUncheckedUpdateManyWithoutDoenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dataColheita?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoAmostra?: StringFieldUpdateOperationsInput | string
+    agente?: NullableStringFieldUpdateOperationsInput | string | null
+    antibiograma?: NullableJsonNullValueInput | InputJsonValue
+    resultado?: EnumResultadoCulturaFieldUpdateOperationsInput | $Enums.ResultadoCultura
+    servico?: NullableStringFieldUpdateOperationsInput | string | null
+    observacoes?: NullableStringFieldUpdateOperationsInput | string | null
+    registadoPorId?: StringFieldUpdateOperationsInput | string
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AtribuicaoDoenteCreateManyTurnoInput = {
     id?: string
     doenteId: string
@@ -192343,6 +202884,34 @@ export namespace Prisma {
     descricao?: StringFieldUpdateOperationsInput | string
     evolucao?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoSessaoFieldUpdateOperationsInput | $Enums.EstadoSessao
+  }
+
+  export type NotaIncidenteTICreateManyIncidenteInput = {
+    id?: string
+    autorId: string
+    conteudo: string
+    criadaEm?: Date | string
+  }
+
+  export type NotaIncidenteTIUpdateWithoutIncidenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    autor?: UtilizadorUpdateOneRequiredWithoutNotasIncidentesTINestedInput
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateWithoutIncidenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotaIncidenteTIUncheckedUpdateManyWithoutIncidenteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    autorId?: StringFieldUpdateOperationsInput | string
+    conteudo?: StringFieldUpdateOperationsInput | string
+    criadaEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ItemFaturaCreateManyEpisodioInput = {
