@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { useAuth } from '@/lib/auth-context';
@@ -75,6 +75,29 @@ interface NotaTurno {
   texto: string;
   criadaEm: string;
   autor: { id: string; nome: string; role: string };
+}
+
+class PanelErrorBoundary extends React.Component<
+  { name: string; children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { name: string; children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+          Erro ao carregar {this.props.name}. Os restantes painéis continuam acessíveis.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 const estadoCor: Record<string, { badge: string; dot: string }> = {
@@ -640,42 +663,70 @@ export default function DoenteDetalhe() {
 
       {/* Medicação + Tarefas */}
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
-        <MedicacaoPanel doenteId={id!} utilizador={utilizador} medicacoes={doente.medicacoes} onRefresh={carregar} />
-        <TarefasPanel doenteId={id!} utilizador={utilizador} tarefas={doente.tarefas} emTurno={emTurno} onRefresh={carregar} />
+        <PanelErrorBoundary name="Medicação">
+          <MedicacaoPanel doenteId={id!} utilizador={utilizador} medicacoes={doente.medicacoes} onRefresh={carregar} />
+        </PanelErrorBoundary>
+        <PanelErrorBoundary name="Tarefas">
+          <TarefasPanel doenteId={id!} utilizador={utilizador} tarefas={doente.tarefas} emTurno={emTurno} onRefresh={carregar} />
+        </PanelErrorBoundary>
       </div>
 
       {/* Notas de turno */}
-      <NotasTurnoPanel doenteId={id!} utilizador={utilizador} notas={doente.notasTurno} emTurno={emTurno} onRefresh={carregar} />
+      <PanelErrorBoundary name="Notas de Turno">
+        <NotasTurnoPanel doenteId={id!} utilizador={utilizador} notas={doente.notasTurno} emTurno={emTurno} onRefresh={carregar} />
+      </PanelErrorBoundary>
 
       {/* Alergias + Contactos de Emergência */}
-      <AlergiasContactosPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Alergias e Contactos">
+        <AlergiasContactosPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Sinais Vitais */}
-      <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Sinais Vitais">
+        <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Escalas de Risco */}
-      <RiscoEscalasPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Escalas de Risco">
+        <RiscoEscalasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Exames Complementares */}
-      <ExamesPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Exames Complementares">
+        <ExamesPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Notas Clínicas SOAP */}
-      <NotasClinicasPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Notas Clínicas">
+        <NotasClinicasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Escalas Clínicas Especializadas */}
-      <EscalasClinicasPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Escalas Clínicas">
+        <EscalasClinicasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Interconsultas */}
-      <InterconsultasPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Interconsultas">
+        <InterconsultasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Problemas Clínicos */}
-      <ProblemasPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Problemas Clínicos">
+        <ProblemasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Dispositivos Invasivos */}
-      <DispositivosPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Dispositivos Invasivos">
+        <DispositivosPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
-      <ConsultasPanel doenteId={id!} utilizador={utilizador} />
-      <FaturacaoPanel doenteId={id!} utilizador={utilizador} />
+      <PanelErrorBoundary name="Consultas">
+        <ConsultasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+      <PanelErrorBoundary name="Faturação">
+        <FaturacaoPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Modal Editar Doente */}
       {modalEditarDoente && (
@@ -769,24 +820,22 @@ export default function DoenteDetalhe() {
               </button>
               <button
                 onClick={() => {
-                  const win = window.open('', '_blank');
-                  if (!win) return;
-                  win.document.write(`
-                    <html><head><title>QR - ${doente.nome}</title>
-                    <style>
-                      body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; gap: 12px; }
-                      .nome { font-size: 18px; font-weight: 700; color: #0f172a; }
-                      .sub { font-size: 12px; color: #94a3b8; font-family: monospace; }
-                    </style></head>
-                    <body>
-                      <div id="qr"></div>
-                      <p class="nome">${doente.nome}</p>
-                      <p class="sub">${doente.numeroProcesso} · Cama ${doente.cama.quarto}/${doente.cama.numero}</p>
-                      <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-                      <script>QRCode.toCanvas(document.getElementById('qr'), '${doente.id}', { width: 220 }, function() { window.print(); window.close(); });</script>
-                    </body></html>
-                  `);
-                  win.document.close();
+                  const esc = (s: string) =>
+                    String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] ?? c));
+                  const safeId = JSON.stringify(doente.id);
+                  const html = `<!DOCTYPE html><html><head><title>QR</title>
+<style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;gap:12px}.nome{font-size:18px;font-weight:700;color:#0f172a}.sub{font-size:12px;color:#94a3b8;font-family:monospace}</style>
+</head><body>
+<div id="qr"></div>
+<p class="nome">${esc(doente.nome)}</p>
+<p class="sub">${esc(doente.numeroProcesso)} · Cama ${esc(String(doente.cama.quarto))}/${esc(String(doente.cama.numero))}</p>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"><\/script>
+<script>QRCode.toCanvas(document.getElementById('qr'),${safeId},{width:220},function(){window.print();window.close();})<\/script>
+</body></html>`;
+                  const blob = new Blob([html], { type: 'text/html' });
+                  const url = URL.createObjectURL(blob);
+                  window.open(url, '_blank');
+                  setTimeout(() => URL.revokeObjectURL(url), 30000);
                 }}
                 className="flex-1 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2"
                 style={{ padding: '11px' }}>

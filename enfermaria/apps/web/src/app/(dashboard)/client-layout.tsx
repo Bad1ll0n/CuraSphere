@@ -2,8 +2,9 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import api from '@/lib/api';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useNaoLidasCount } from '@/lib/hooks';
@@ -36,6 +37,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       sosTimeoutRef.current = setTimeout(() => setSosAlerta(null), 30000);
     },
   });
+
+  const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const resetIdleTimer = useCallback(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(async () => {
+      try {
+        await api.post('/auth/logout');
+      } catch { /* ignore */ }
+      router.push('/login');
+    }, IDLE_TIMEOUT_MS);
+  }, [router]);
+
+  useEffect(() => {
+    resetIdleTimer();
+    const events = ['mousemove', 'keydown', 'click', 'touchstart'] as const;
+    events.forEach(e => window.addEventListener(e, resetIdleTimer, { passive: true }));
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      events.forEach(e => window.removeEventListener(e, resetIdleTimer));
+    };
+  }, [resetIdleTimer]);
 
   useEffect(() => {
     if (!loading && !utilizador) { router.push('/login'); return; }
