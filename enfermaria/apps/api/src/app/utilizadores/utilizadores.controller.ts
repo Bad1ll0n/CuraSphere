@@ -3,8 +3,8 @@ import { UtilizadoresService } from './utilizadores.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles, SubRoles } from '../auth/roles.decorator';
-import { Servico } from '../common/enums';
 import { CriarUtilizadorDto } from './dto/criar-utilizador.dto';
+import { EditarUtilizadorDto } from './dto/editar-utilizador.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('utilizadores')
@@ -44,9 +44,9 @@ export class UtilizadoresController {
   @Patch(':id')
   atualizar(
     @Param('id') id: string,
-    @Body() body: { nome?: string; ordemExperiencia?: number; role?: string; subRole?: string | null; servico?: Servico; equipa?: string; chefeId?: string | null },
+    @Body() dto: EditarUtilizadorDto,
   ) {
-    return this.utilizadoresService.atualizar(id, body);
+    return this.utilizadoresService.atualizar(id, dto);
   }
 
   @Roles('ti')

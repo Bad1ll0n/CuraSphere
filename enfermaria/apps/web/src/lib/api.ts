@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/v1`;
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333',
+  baseURL: API_BASE,
   withCredentials: true,
 });
 
@@ -39,7 +41,7 @@ api.interceptors.response.use(
 
     try {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/auth/refresh`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/v1/auth/refresh`,
         {},
         { withCredentials: true },
       );

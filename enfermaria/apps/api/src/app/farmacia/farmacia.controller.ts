@@ -5,6 +5,9 @@ import { Roles } from '../auth/roles.decorator';
 import { FarmaciaService } from './farmacia.service';
 import { CriarStockItemDto } from './dto/criar-stock-item.dto';
 import { CriarPedidoFarmaciaDto } from './dto/criar-pedido-farmacia.dto';
+import { AtualizarQuantidadeDto } from './dto/atualizar-quantidade.dto';
+import { RejeitarPedidoDto } from './dto/rejeitar-pedido.dto';
+import { CriarTransferenciaDto } from './dto/criar-transferencia.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('farmacia')
@@ -26,10 +29,10 @@ export class FarmaciaController {
   @Patch('stock/:id')
   atualizarQuantidade(
     @Param('id') id: string,
-    @Body() body: { quantidade: number; motivo: string; tipo: string },
+    @Body() dto: AtualizarQuantidadeDto,
     @Request() req: any,
   ) {
-    return this.service.atualizarQuantidade(id, body.quantidade, body.motivo, body.tipo, req.user.sub);
+    return this.service.atualizarQuantidade(id, dto.quantidade, dto.motivo, dto.tipo, req.user.sub);
   }
 
   @Roles('farmaceutico', 'administrativo', 'enfermeiro', 'medico')
@@ -65,10 +68,10 @@ export class FarmaciaController {
   @Patch('pedido/:id/rejeitar')
   rejeitarPedido(
     @Param('id') id: string,
-    @Body() body: { motivoRejeicao: string },
+    @Body() dto: RejeitarPedidoDto,
     @Request() req: any,
   ) {
-    return this.service.rejeitarPedido(id, req.user.sub, body.motivoRejeicao);
+    return this.service.rejeitarPedido(id, req.user.sub, dto.motivoRejeicao);
   }
 
   @Roles('farmaceutico')
@@ -88,10 +91,10 @@ export class FarmaciaController {
   @Post('stock/:id/transferir')
   criarTransferencia(
     @Param('id') id: string,
-    @Body() body: { servicoDestino: string; quantidade: number; motivo?: string },
+    @Body() dto: CriarTransferenciaDto,
     @Request() req: any,
   ) {
-    return this.service.criarTransferencia(id, body.servicoDestino, body.quantidade, body.motivo, req.user.sub);
+    return this.service.criarTransferencia(id, dto.servicoDestino, dto.quantidade, dto.motivo, req.user.sub);
   }
 
   @Roles('farmaceutico', 'administrativo')

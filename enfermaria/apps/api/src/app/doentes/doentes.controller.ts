@@ -6,12 +6,17 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EstadoDoente } from '../common/enums';
-import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
+import { AtualizarEstadoDto } from './dto/atualizar-estado.dto';
+import { AtualizarFichaPessoalDto } from './dto/atualizar-ficha-pessoal.dto';
+import { CriarProblemaDto } from './dto/criar-problema.dto';
+import { AtualizarProblemaDto } from './dto/atualizar-problema.dto';
+import { AtualizarIsolamentoDto } from './dto/atualizar-isolamento.dto';
 import { RegistroRapidoDto } from './dto/registro-rapido.dto';
+import { AdmitirDoenteDto } from './dto/admitir-doente.dto';
 import { EditarDoenteDto } from './dto/editar-doente.dto';
 import { NotaDoenteDto } from './dto/nota-doente.dto';
-import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 import { AltaEstruturadaDto } from './dto/alta-estruturada.dto';
+import { TarefaDoenteDto } from './dto/tarefa-doente.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('doentes')
@@ -27,7 +32,6 @@ export class DoenteController {
     @Query('todos') todos?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
-    @Query('search') search?: string,
   ) {
     const ignorarFiltro = todos === 'true';
     return this.doenteService.listar(
@@ -35,7 +39,6 @@ export class DoenteController {
       ignorarFiltro ? 'todos' : req.user.role,
       page ? parseInt(page, 10) : 1,
       limit ? parseInt(limit, 10) : 25,
-      search,
     );
   }
 
@@ -51,12 +54,8 @@ export class DoenteController {
 
   @Roles('administrativo')
   @Get('registos-administrativos')
-  listarRegistosAdministrativos(
-    @Query('search') search?: string,
-    @Query('page') page = '1',
-    @Query('limit') limit = '25',
-  ) {
-    return this.doenteService.listarRegistosAdministrativos(search, parseInt(page), parseInt(limit));
+  listarRegistosAdministrativos(@Query('search') search?: string) {
+    return this.doenteService.listarRegistosAdministrativos(search);
   }
 
   @Roles('administrativo')
@@ -82,8 +81,8 @@ export class DoenteController {
 
   @Roles('enfermeiro', 'medico')
   @Patch(':id/estado')
-  atualizarEstado(@Param('id') id: string, @Body() body: { estado: EstadoDoente }) {
-    return this.doenteService.atualizarEstado(id, body.estado);
+  atualizarEstado(@Param('id') id: string, @Body() dto: AtualizarEstadoDto) {
+    return this.doenteService.atualizarEstado(id, dto.estado);
   }
 
   @Roles('administrativo', 'enfermeiro')
@@ -92,7 +91,6 @@ export class DoenteController {
     return this.doenteService.darAlta(id, req.user.sub);
   }
 
-  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   @Post(':id/nota')
   adicionarNota(
     @Param('id') doenteId: string,
@@ -102,7 +100,6 @@ export class DoenteController {
     return this.doenteService.adicionarNota(doenteId, req.user.sub, dto.texto);
   }
 
-  @Roles('medico', 'enfermeiro')
   @Patch(':id/nota/:notaId')
   editarNota(
     @Param('id') _doenteId: string,
@@ -113,7 +110,6 @@ export class DoenteController {
     return this.doenteService.editarNota(notaId, req.user.sub, dto.texto);
   }
 
-  @Roles('medico')
   @Delete(':id/nota/:notaId')
   apagarNota(
     @Param('id') _doenteId: string,
@@ -123,7 +119,6 @@ export class DoenteController {
     return this.doenteService.apagarNota(notaId, req.user.sub);
   }
 
-  @Roles('medico', 'enfermeiro', 'administrativo')
   @Post(':id/alta-estruturada')
   altaEstruturada(
     @Param('id') doenteId: string,
@@ -150,7 +145,6 @@ export class DoenteController {
     res.send(buffer);
   }
 
-  @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno')
   @Post(':id/tarefa')
   criarTarefa(
     @Param('id') doenteId: string,
@@ -169,10 +163,9 @@ export class DoenteController {
   @Roles('medico', 'enfermeiro')
   atualizarIsolamento(
     @Param('id') id: string,
-    @Body('emIsolamento') emIsolamento: boolean,
-    @Body('motivoIsolamento') motivoIsolamento?: string,
+    @Body() dto: AtualizarIsolamentoDto,
   ) {
-    return this.doenteService.atualizarIsolamento(id, emIsolamento, motivoIsolamento);
+    return this.doenteService.atualizarIsolamento(id, dto.emIsolamento, dto.motivoIsolamento);
   }
 
   @Get(':id/ficha-pessoal')
@@ -185,21 +178,10 @@ export class DoenteController {
   @Roles('administrativo')
   atualizarFicheiroPessoal(
     @Param('id') id: string,
-    @Body() body: {
-      nif?: string;
-      numeroSNS?: string;
-      morada?: string;
-      codigoPostal?: string;
-      localidade?: string;
-      telefone?: string;
-      email?: string;
-      entidadeSeguradora?: string;
-      numeroApolice?: string;
-      tipoCobertura?: string;
-    },
+    @Body() dto: AtualizarFichaPessoalDto,
     @Request() req: any,
   ) {
-    return this.doenteService.atualizarFicheiroPessoal(id, body, req.user.sub);
+    return this.doenteService.atualizarFicheiroPessoal(id, dto, req.user.sub);
   }
 
   // ─── Problemas Clínicos ─────────────────────────────────────────────────────
@@ -214,10 +196,10 @@ export class DoenteController {
   @Roles('medico', 'enfermeiro')
   criarProblema(
     @Param('id') id: string,
-    @Body() body: { descricao: string; tipo?: string; estado?: string; dataInicio?: string },
+    @Body() dto: CriarProblemaDto,
     @Request() req: any,
   ) {
-    return this.doenteService.criarProblema(id, body, req.user.sub);
+    return this.doenteService.criarProblema(id, dto, req.user.sub);
   }
 
   @Patch(':id/problemas/:problemaId')
@@ -225,8 +207,8 @@ export class DoenteController {
   atualizarProblema(
     @Param('id') _doenteId: string,
     @Param('problemaId') problemaId: string,
-    @Body() body: { estado?: string; descricao?: string; dataFim?: string },
+    @Body() dto: AtualizarProblemaDto,
   ) {
-    return this.doenteService.atualizarProblema(problemaId, body);
+    return this.doenteService.atualizarProblema(problemaId, dto);
   }
 }

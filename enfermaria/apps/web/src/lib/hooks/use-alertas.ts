@@ -1,17 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { AlertaClinico } from '@org/shared';
 import api from '../api';
 
-export interface AlertaClinico {
-  id: string;
-  doenteId: string;
-  tipo: string;
-  mensagem: string;
-  urgencia: boolean;
-  lido: boolean;
-  criadoEm: string;
-  acusadoEm?: string | null;
-  acusadoPor?: { id: string; nome: string } | null;
-}
+export type { AlertaClinico };
 
 export function useAlertasPorDoente(doenteId: string | undefined) {
   return useQuery<AlertaClinico[]>({

@@ -1,50 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '@/lib/api';
 import { useToast } from '@/components/toast';
-
-interface Notificacao {
-  id: string;
-  titulo: string;
-  corpo: string;
-  lida: boolean;
-  criadaEm: string;
-  lidaEm?: string;
-  dadosExtra?: Record<string, any>;
-}
-
-interface ListaNotificacoes {
-  total: number;
-  naoLidas: number;
-  pagina: number;
-  totalPaginas: number;
-  notificacoes: Notificacao[];
-}
+import { useNotificacoes, useMarcarLida, useMarcarTodasLidas } from '@/lib/hooks';
 
 export default function NotificacoesPage() {
-  const qc = useQueryClient();
   const toast = useToast();
   const [page, setPage] = useState(1);
   const [filtro, setFiltro] = useState<'todas' | 'nao_lidas'>('todas');
 
-  const { data, isLoading } = useQuery<ListaNotificacoes>({
-    queryKey: ['notificacoes', page],
-    queryFn: () => api.get(`/notificacoes?page=${page}`).then(r => r.data),
-    staleTime: 10_000,
-  });
-
-  const mutLer = useMutation({
-    mutationFn: (id: string) => api.patch(`/notificacoes/${id}/ler`),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['notificacoes'] }),
-  });
-
-  const mutTodasLidas = useMutation({
-    mutationFn: () => api.patch('/notificacoes/marcar-todas-lidas'),
-    onSuccess: () => { toast.success('Todas marcadas como lidas'); qc.invalidateQueries({ queryKey: ['notificacoes'] }); qc.invalidateQueries({ queryKey: ['notificacoes-count'] }); },
-    onError: () => toast.error('Erro ao marcar como lidas'),
-  });
+  const { data, isLoading } = useNotificacoes(page);
+  const mutLer = useMarcarLida();
+  const mutTodasLidas = useMarcarTodasLidas();
 
   const notificacoes = data?.notificacoes ?? [];
   const lista = filtro === 'nao_lidas' ? notificacoes.filter(n => !n.lida) : notificacoes;
@@ -61,7 +28,9 @@ export default function NotificacoesPage() {
           </p>
         </div>
         {(data?.naoLidas ?? 0) > 0 && (
-          <button onClick={() => mutTodasLidas.mutate()} disabled={mutTodasLidas.isPending}
+          <button
+            onClick={() => mutTodasLidas.mutate(undefined, { onSuccess: () => toast.success('Todas marcadas como lidas'), onError: () => toast.error('Erro ao marcar como lidas') })}
+            disabled={mutTodasLidas.isPending}
             className="text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-xl disabled:opacity-50"
             style={{ padding: '8px 16px' }}>
             Marcar todas como lidas

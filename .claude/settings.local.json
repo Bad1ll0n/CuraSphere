@@ -110,7 +110,10 @@
       "Bash(findstr :3333)",
       "Bash(findstr LISTENING)",
       "Bash(taskkill /PID 14748 /F)",
-      "PowerShell(Stop-Process -Id 14748 -Force)"
+      "PowerShell(Stop-Process -Id 14748 -Force)",
+      "Bash(Select-String -Path \"C:\\\\Users\\\\Badillon\\\\Projeto_Enfermaria\\\\enfermaria\\\\apps\\\\api\\\\prisma\\\\schema.prisma\" -Pattern \"onDelete:\")",
+      "Bash(ls /mnt/c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/api/)",
+      "Read(//mnt/c/Users/Badillon/Projeto_Enfermaria/enfermaria/apps/**)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Badillon\\Projeto_Enfermaria\\enfermaria\\apps\\web\\src\\app\\(print)\\doentes\\[id]",

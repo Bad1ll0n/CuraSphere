@@ -10,6 +10,7 @@ import {
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { ChamarTicketDto } from './dto/chamar-ticket.dto';
 import { TicketsService } from './tickets.service';
 
 @Controller('tickets')
@@ -34,13 +35,13 @@ export class TicketsController {
   }
 
   @Post('chamar')
-  chamar(@Body() body: { balcao: string }) {
-    return this.service.chamarProximo(body.balcao ?? '1');
+  chamar(@Body() dto: ChamarTicketDto) {
+    return this.service.chamarProximo(dto.balcao ?? '1');
   }
 
   @Patch(':id/rechamar')
-  rechamar(@Param('id') id: string, @Body() body: { balcao: string }) {
-    return this.service.rechamar(id, body.balcao ?? '1');
+  rechamar(@Param('id') id: string, @Body() dto: ChamarTicketDto) {
+    return this.service.rechamar(id, dto.balcao ?? '1');
   }
 
   @Patch(':id/concluir')

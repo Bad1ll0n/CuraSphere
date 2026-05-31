@@ -8,6 +8,7 @@ import { ProporMedicacaoDto } from './dto/propor-medicacao.dto';
 import { RejeitarMedicacaoDto } from './dto/rejeitar-medicacao.dto';
 import { AdministrarMedicacaoDto } from './dto/administrar-medicacao.dto';
 import { NaoAdministrarDto } from './dto/nao-administrar.dto';
+import { TotpCodeDto } from './dto/totp-code.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('medicacao')
@@ -67,9 +68,9 @@ export class MedicacaoController {
   ) {
     return this.medicacaoService.registarAdministracao({
       medicacaoId: id,
+      doenteId: dto.doenteId,
       administradoPorId: req.user.sub,
       observacoes: dto.observacoes,
-      verificacao5Certas: dto.verificacao5Certas,
     });
   }
 
@@ -118,8 +119,8 @@ export class MedicacaoController {
 
   @Roles('medico', 'enfermeiro')
   @Post(':id/assinar')
-  assinar(@Param('id') id: string, @Body() body: { totpCode: string }, @Request() req: any) {
-    return this.medicacaoService.assinar(id, req.user.sub, body.totpCode);
+  assinar(@Param('id') id: string, @Body() dto: TotpCodeDto, @Request() req: any) {
+    return this.medicacaoService.assinar(id, req.user.sub, dto.totpCode);
   }
 
   @Get('interacoes')

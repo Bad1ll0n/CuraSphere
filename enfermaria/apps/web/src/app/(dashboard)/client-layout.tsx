@@ -5,9 +5,8 @@ export const dynamic = 'force-dynamic';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
-import api from '@/lib/api';
+import { useNaoLidasCount } from '@/lib/hooks';
 import { useSocket } from '@/lib/use-socket';
 import { ToastProvider } from '@/components/toast';
 import { navItems } from './nav-data';
@@ -25,12 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [modalPwd, setModalPwd] = useState(false);
   const [modalConfig, setModalConfig] = useState(false);
 
-  const { data: notifData } = useQuery<{ count: number }>({
-    queryKey: ['notificacoes-count'],
-    queryFn: () => api.get('/notificacoes/nao-lidas').then(r => r.data),
-    refetchInterval: 60_000,
-    staleTime: 30_000,
-  });
+  const { data: notifData } = useNaoLidasCount();
   const naoLidas = notifData?.count ?? 0;
 
   const [sosAlerta, setSosAlerta] = useState<{ doenteId: string; doenteNome: string; quarto: string; acionadoPor: string } | null>(null);

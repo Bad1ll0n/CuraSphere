@@ -9,6 +9,7 @@ import { TipoTurno } from '../common/enums';
 import { CheckInDto } from './dto/check-in.dto';
 import { NotaTurnoDto } from './dto/nota-turno.dto';
 import { CriarTurnoDto } from './dto/criar-turno.dto';
+import { AtribuirDoentesTurnoDto } from './dto/atribuir-doentes-turno.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('turnos')
@@ -61,9 +62,9 @@ export class TurnosController {
   @Post(':id/atribuir-doentes')
   atribuirDoentes(
     @Param('id') turnoId: string,
-    @Body() body: { atribuicoes: { doenteId: string; enfermeiroId: string }[] },
+    @Body() dto: AtribuirDoentesTurnoDto,
   ) {
-    return this.turnosService.atribuirDoentes(turnoId, body.atribuicoes);
+    return this.turnosService.atribuirDoentes(turnoId, dto.atribuicoes);
   }
 
   @Post('nota')

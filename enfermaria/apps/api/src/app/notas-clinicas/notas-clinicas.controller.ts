@@ -5,6 +5,7 @@ import { Roles } from '../auth/roles.decorator';
 import { NotasClinicasService } from './notas-clinicas.service';
 import { CriarNotaClinicaDto } from './dto/criar-nota-clinica.dto';
 import { AtualizarNotaClinicaDto } from './dto/atualizar-nota-clinica.dto';
+import { TotpCodeDto } from './dto/totp-code.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('notas-clinicas')
@@ -36,7 +37,7 @@ export class NotasClinicasController {
 
   @Post(':id/assinar')
   @Roles('medico', 'enfermeiro')
-  assinar(@Param('id') id: string, @Body() body: { totpCode: string }, @Request() req: any) {
-    return this.service.assinar(id, req.user.sub, body.totpCode);
+  assinar(@Param('id') id: string, @Body() dto: TotpCodeDto, @Request() req: any) {
+    return this.service.assinar(id, req.user.sub, dto.totpCode);
   }
 }

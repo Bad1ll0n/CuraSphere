@@ -2,10 +2,18 @@ import { Injectable, Logger, NotFoundException, ConflictException, BadRequestExc
 import { authenticator } from 'otplib';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
-import * as interacoesJson from './interacoes.json';
+import interacoesJson from './interacoes.json';
 
 interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
 const INTERACOES: Interacao[] = interacoesJson as Interacao[];
+
+function parsearFrequenciaHoras(frequencia: string): number | null {
+  const m = frequencia.match(/(\d+)\s*\/\s*(\d+)\s*h/i);
+  if (m) return parseInt(m[2], 10);
+  if (/^(sos|em\s+sos|se\s+necessário|s\.o\.s\.?)/i.test(frequencia)) return null;
+  if (/^(contínuo|perfus)/i.test(frequencia)) return null;
+  return null;
+}
 
 function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Interacao[] {
   const medNorm = nomeMed.toLowerCase();
@@ -112,14 +120,45 @@ export class MedicacaoService {
 
   async registarAdministracao(data: {
     medicacaoId: string;
+    doenteId?: string;
     administradoPorId: string;
     observacoes?: string;
-    verificacao5Certas?: boolean;
   }) {
     return this.prisma.$transaction(async (tx) => {
-      const medicacao = await tx.medicacao.findUnique({ where: { id: data.medicacaoId } });
+      const medicacao = await tx.medicacao.findUnique({
+        where: { id: data.medicacaoId },
+        include: {
+          registos: {
+            where: { naoAdministrada: false },
+            orderBy: { administradoEm: 'desc' },
+            take: 1,
+            select: { administradoEm: true },
+          },
+        },
+      });
       if (!medicacao) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) não encontrada`);
       if (!medicacao.ativo) throw new NotFoundException(`Medicação (ID ${data.medicacaoId}) já foi descontinuada`);
+
+      // 1. Doente certo — validar se doenteId foi enviado
+      if (data.doenteId && data.doenteId !== medicacao.doenteId) {
+        throw new BadRequestException(
+          '5 certas: doente incorrecto — esta medicação não pertence ao doente indicado',
+        );
+      }
+
+      // 4. Hora certa — verificar janela de frequência
+      const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
+      if (intervaloHoras !== null && medicacao.registos.length > 0) {
+        const ultimaAdm = medicacao.registos[0].administradoEm;
+        const horasDesdeUltima = (Date.now() - ultimaAdm.getTime()) / 3_600_000;
+        const TOLERANCIA_H = 1;
+        if (horasDesdeUltima < intervaloHoras - TOLERANCIA_H) {
+          throw new BadRequestException(
+            `5 certas: administração prematura — frequência ${medicacao.frequencia}, ` +
+            `última administração há ${horasDesdeUltima.toFixed(1)}h (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)`,
+          );
+        }
+      }
 
       return tx.registoMedicacao.create({
         data: {
@@ -127,7 +166,7 @@ export class MedicacaoService {
           doenteId: medicacao.doenteId,
           administradoPorId: data.administradoPorId,
           observacoes: data.observacoes,
-          verificacao5Certas: data.verificacao5Certas ?? false,
+          verificacao5Certas: true,
         },
         include: {
           administradoPor: { select: { id: true, nome: true } },

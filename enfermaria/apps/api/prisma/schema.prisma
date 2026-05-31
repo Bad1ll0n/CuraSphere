@@ -34,7 +34,7 @@ model SubRoleConfig {
   ativo     Boolean    @default(true)
   ordem     Int        @default(0)
 
-  role      RoleConfig @relation(fields: [roleChave], references: [chave])
+  role      RoleConfig @relation(fields: [roleChave], references: [chave], onDelete: Cascade)
 
   @@map("subroles_config")
 }
@@ -149,7 +149,7 @@ model Utilizador {
   dadosContratuais           DadosContratuais?
   // Chefe directo (hierarquia para aprovação de férias)
   chefeId                    String?
-  chefe                      Utilizador?                @relation("ChefeSubordinado", fields: [chefeId], references: [id])
+  chefe                      Utilizador?                @relation("ChefeSubordinado", fields: [chefeId], references: [id], onDelete: SetNull)
   subordinados               Utilizador[]               @relation("ChefeSubordinado")
   // Inventário expandido
   ajustesStock               AjusteStock[]              @relation("AjustesFeitos")
@@ -231,10 +231,10 @@ model Doente {
   deletedAt            DateTime?
 
   camaId               String?      @unique
-  cama                 Cama?        @relation(fields: [camaId], references: [id])
+  cama                 Cama?        @relation(fields: [camaId], references: [id], onDelete: SetNull)
 
   administrativoAdmissaoId String?
-  administrativo           Utilizador? @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id])
+  administrativo           Utilizador? @relation("DoenteAdmissao", fields: [administrativoAdmissaoId], references: [id], onDelete: SetNull)
 
   // Relações existentes
   atribuicoes         AtribuicaoDoente[]
@@ -298,7 +298,7 @@ model Turno {
   dataFim    DateTime
 
   chefeTurnoId String
-  chefeTurno   Utilizador @relation("ChefeTurno", fields: [chefeTurnoId], references: [id])
+  chefeTurno   Utilizador @relation("ChefeTurno", fields: [chefeTurnoId], references: [id], onDelete: Restrict)
 
   atribuicoes            AtribuicaoDoente[]
   horariosEntrada        HorarioEntrada[]
@@ -318,9 +318,9 @@ model AtribuicaoDoente {
   enfermeiroId String
   turnoId      String
 
-  doente     Doente     @relation(fields: [doenteId], references: [id])
-  enfermeiro Utilizador @relation(fields: [enfermeiroId], references: [id])
-  turno      Turno      @relation(fields: [turnoId], references: [id])
+  doente     Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  enfermeiro Utilizador @relation(fields: [enfermeiroId], references: [id], onDelete: Cascade)
+  turno      Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
 
   @@unique([doenteId, enfermeiroId, turnoId])
   @@map("atribuicoes_doente")
@@ -333,8 +333,8 @@ model HorarioEntrada {
   checkInEm          DateTime @default(now())
   passagemTurnoVista Boolean  @default(false)
 
-  turno      Turno      @relation(fields: [turnoId], references: [id])
-  utilizador Utilizador @relation(fields: [utilizadorId], references: [id])
+  turno      Turno      @relation(fields: [turnoId], references: [id], onDelete: Cascade)
+  utilizador Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
 
   @@unique([turnoId, utilizadorId])
   @@map("horarios_entrada")
@@ -352,9 +352,9 @@ model PassagemTurno {
   desafioAceitoEm    DateTime?
   desafioExpiradoEm  DateTime?
 
-  turnoAnterior Turno  @relation("PassagemTurnoAnterior", fields: [turnoAnteriorId], references: [id])
-  turnoAtual    Turno  @relation("PassagemTurnoAtual", fields: [turnoAtualId], references: [id])
-  doente        Doente @relation(fields: [doenteId], references: [id])
+  turnoAnterior Turno  @relation("PassagemTurnoAnterior", fields: [turnoAnteriorId], references: [id], onDelete: Cascade)
+  turnoAtual    Turno  @relation("PassagemTurnoAtual", fields: [turnoAtualId], references: [id], onDelete: Cascade)
+  doente        Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
 
   @@index([estadoDesafio])
   @@map("passagens_turno")
@@ -363,7 +363,7 @@ model PassagemTurno {
 model PresencaOnline {
   id           String   @id @default(uuid())
   utilizadorId String   @unique
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
   socketId     String
   ligadoEm     DateTime @default(now())
   ultimoPing   DateTime @default(now())
@@ -374,7 +374,7 @@ model PresencaOnline {
 model RegistoCheckin {
   id                String   @id @default(uuid())
   utilizadorId      String
-  utilizador        Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador        Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
   turnoId           String?
   lat               Float?
   lon               Float?
@@ -392,9 +392,9 @@ model RegistoCheckin {
 model NotaClinica {
   id        String     @id @default(uuid())
   doenteId  String
-  doente    Doente     @relation(fields: [doenteId], references: [id])
+  doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   autorId   String
-  autor     Utilizador @relation(fields: [autorId], references: [id])
+  autor     Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
   subjetivo String
   objetivo  String
   avaliacao String
@@ -404,7 +404,7 @@ model NotaClinica {
   deletedAt     DateTime?
   assinadaEm    DateTime?
   assinadaPorId String?
-  assinadaPor   Utilizador? @relation("NotaAssinatura", fields: [assinadaPorId], references: [id])
+  assinadaPor   Utilizador? @relation("NotaAssinatura", fields: [assinadaPorId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, criadaEm])
   @@index([deletedAt])
@@ -433,9 +433,9 @@ enum TipoEscalaClinica {
 model EscalaClinica {
   id             String            @id @default(uuid())
   doenteId       String
-  doente         Doente            @relation(fields: [doenteId], references: [id])
+  doente         Doente            @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   registadoPorId String
-  registadoPor   Utilizador        @relation(fields: [registadoPorId], references: [id])
+  registadoPor   Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   tipo           TipoEscalaClinica
   valores        Json
   pontuacao      Int?
@@ -458,9 +458,9 @@ model NotaTurno {
   doenteId String
   autorId  String
 
-  turno  Turno?     @relation(fields: [turnoId], references: [id])
-  doente Doente     @relation(fields: [doenteId], references: [id])
-  autor  Utilizador @relation(fields: [autorId], references: [id])
+  turno  Turno?     @relation(fields: [turnoId], references: [id], onDelete: SetNull)
+  doente Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  autor  Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
 
   @@map("notas_turno")
 }
@@ -503,10 +503,10 @@ model Tarefa {
   criadoPorId      String
   turnoId          String?
 
-  doente      Doente      @relation(fields: [doenteId], references: [id])
-  responsavel Utilizador? @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
-  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id])
-  turno       Turno?      @relation(fields: [turnoId], references: [id])
+  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  responsavel Utilizador? @relation("TarefaResponsavel", fields: [responsavelId], references: [id], onDelete: SetNull)
+  criadoPor   Utilizador  @relation("TarefaCriadaPor", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  turno       Turno?      @relation(fields: [turnoId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, estado])
   @@index([responsavelId, estado])
@@ -536,10 +536,10 @@ model Medicacao {
   assinadoEm      DateTime?
   assinadoPorId   String?
 
-  doente       Doente      @relation(fields: [doenteId], references: [id])
-  prescritoPor Utilizador  @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id])
-  validadoPor  Utilizador? @relation("MedicacaoValidador", fields: [validadoPorId], references: [id])
-  assinadoPor  Utilizador? @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id])
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  prescritoPor Utilizador  @relation("MedicacaoPrescritor", fields: [prescritoPorId], references: [id], onDelete: Cascade)
+  validadoPor  Utilizador? @relation("MedicacaoValidador", fields: [validadoPorId], references: [id], onDelete: SetNull)
+  assinadoPor  Utilizador? @relation("MedicacaoAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
   registos     RegistoMedicacao[]
 
   @@index([doenteId, ativo])
@@ -561,9 +561,9 @@ model RegistoMedicacao {
   doenteId          String
   administradoPorId String
 
-  medicacao       Medicacao  @relation(fields: [medicacaoId], references: [id])
-  doente          Doente     @relation(fields: [doenteId], references: [id])
-  administradoPor Utilizador @relation(fields: [administradoPorId], references: [id])
+  medicacao       Medicacao  @relation(fields: [medicacaoId], references: [id], onDelete: Cascade)
+  doente          Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  administradoPor Utilizador @relation(fields: [administradoPorId], references: [id], onDelete: Cascade)
 
   @@index([medicacaoId])
   @@index([doenteId, administradoEm])
@@ -580,7 +580,7 @@ model Escala {
   criadaEm   DateTime @default(now())
   criadaPorId String
 
-  criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id])
+  criadaPor Utilizador     @relation(fields: [criadaPorId], references: [id], onDelete: Cascade)
   turnos    HorarioTurno[]
 
   @@unique([mes, ano])
@@ -593,7 +593,7 @@ model HorarioTurno {
   data    DateTime
   escalId String
 
-  escala        Escala                   @relation(fields: [escalId], references: [id])
+  escala        Escala                   @relation(fields: [escalId], references: [id], onDelete: Cascade)
   profissionais HorarioTurnoProfissional[]
   atribuicoes   AtribuicaoHorarioTurno[]
   trocas        PedidoTrocaTurno[]       @relation("TrocaTurno")
@@ -605,8 +605,8 @@ model HorarioTurnoProfissional {
   horarioTurnoId String
   utilizadorId   String
 
-  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id])
-  utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id])
+  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id], onDelete: Cascade)
+  utilizador   Utilizador   @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
 
   @@id([horarioTurnoId, utilizadorId])
   @@map("horarios_turno_profissionais")
@@ -630,10 +630,10 @@ model PedidoTrocaTurno {
   destinatarioId String
   aprovadoPorId  String?
 
-  solicitante  Utilizador   @relation("TrocaSolicitante", fields: [solicitanteId], references: [id])
-  destinatario Utilizador   @relation("TrocaDestinatario", fields: [destinatarioId], references: [id])
-  turno        HorarioTurno @relation("TrocaTurno", fields: [turnoId], references: [id])
-  aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id])
+  solicitante  Utilizador   @relation("TrocaSolicitante", fields: [solicitanteId], references: [id], onDelete: Cascade)
+  destinatario Utilizador   @relation("TrocaDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  turno        HorarioTurno @relation("TrocaTurno", fields: [turnoId], references: [id], onDelete: Cascade)
+  aprovadoPor  Utilizador?  @relation("TrocaAprovadoPor", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
 
   @@map("pedidos_troca_turno")
 }
@@ -645,10 +645,10 @@ model AtribuicaoHorarioTurno {
   utilizadorId   String
   atribuidoPorId String
 
-  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id])
-  doente       Doente       @relation(fields: [doenteId], references: [id])
-  utilizador   Utilizador   @relation("AtribuicaoUtilizador", fields: [utilizadorId], references: [id])
-  atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id])
+  horarioTurno HorarioTurno @relation(fields: [horarioTurnoId], references: [id], onDelete: Cascade)
+  doente       Doente       @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  utilizador   Utilizador   @relation("AtribuicaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
+  atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id], onDelete: Cascade)
 
   @@unique([horarioTurnoId, doenteId, utilizadorId])
   @@map("atribuicoes_horario_turno")
@@ -659,9 +659,9 @@ model AtribuicaoHorarioTurno {
 model SinalVital {
   id                    String     @id @default(uuid())
   doenteId              String
-  doente                Doente     @relation(fields: [doenteId], references: [id])
+  doente                Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   registadoPorId        String
-  registadoPor          Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id])
+  registadoPor          Utilizador @relation("SinaisVitaisRegistados", fields: [registadoPorId], references: [id], onDelete: Cascade)
   data                  DateTime   @default(now())
 
   pressaoSistolica      Int?
@@ -684,7 +684,7 @@ model SinalVital {
 model AuditLog {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Restrict)
   acao         String
   entidadeId   String?
   entidadeTipo String?
@@ -703,7 +703,7 @@ model AuditLog {
 model Alergia {
   id         String   @id @default(uuid())
   doenteId   String
-  doente     Doente   @relation(fields: [doenteId], references: [id])
+  doente     Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   alergenio  String
   tipo       String
   severidade String
@@ -719,7 +719,7 @@ model Alergia {
 model ContactoEmergencia {
   id        String  @id @default(uuid())
   doenteId  String
-  doente    Doente  @relation(fields: [doenteId], references: [id])
+  doente    Doente  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   nome      String
   relacao   String
   telefone  String
@@ -733,13 +733,13 @@ model ContactoEmergencia {
 model AlertaClinico {
   id       String   @id @default(uuid())
   doenteId String
-  doente   Doente   @relation(fields: [doenteId], references: [id])
+  doente   Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo     String
   mensagem String
   lido     Boolean  @default(false)
   urgencia     Boolean   @default(false)
   acusadoPorId String?
-  acusadoPor   Utilizador? @relation("AlertaAcusador", fields: [acusadoPorId], references: [id])
+  acusadoPor   Utilizador? @relation("AlertaAcusador", fields: [acusadoPorId], references: [id], onDelete: SetNull)
   acusadoEm    DateTime?
   escaladoEm   DateTime?
   criadoEm DateTime @default(now())
@@ -754,13 +754,13 @@ model AlertaClinico {
 model AvaliacaoRisco {
   id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id])
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo           String
   pontuacao      Int
   itens          Json
   risco          String
   registadoPorId String
-  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id])
+  registadoPor   Utilizador @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadaEm       DateTime   @default(now())
 
   @@map("avaliacoes_risco")
@@ -771,14 +771,14 @@ model AvaliacaoRisco {
 model SumarioAlta {
   id             String     @id @default(uuid())
   doenteId       String     @unique
-  doente         Doente     @relation(fields: [doenteId], references: [id])
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   motivoAlta     String
   destino        String?
   resumoClinical String
   prescricaoSaida String?
   medicoFamilia  String?
   criadoPorId    String
-  criadoPor      Utilizador @relation(fields: [criadoPorId], references: [id])
+  criadoPor      Utilizador @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
   criadoEm       DateTime   @default(now())
 
   @@map("sumarios_alta")
@@ -789,7 +789,7 @@ model SumarioAlta {
 model DispositivoToken {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
   token        String     @unique
   plataforma   String
   criadoEm    DateTime   @default(now())
@@ -802,7 +802,7 @@ model DispositivoToken {
 model NotificacaoInApp {
   id           String     @id @default(uuid())
   utilizadorId String
-  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador   Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
   titulo       String
   corpo        String
   lida         Boolean    @default(false)
@@ -841,9 +841,9 @@ enum EstadoExame {
 model Exame {
   id              String      @id @default(uuid())
   doenteId        String
-  doente          Doente      @relation(fields: [doenteId], references: [id])
+  doente          Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   solicitadoPorId String
-  solicitadoPor   Utilizador  @relation("ExameSolicitadoPor", fields: [solicitadoPorId], references: [id])
+  solicitadoPor   Utilizador  @relation("ExameSolicitadoPor", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
   tipo            TipoExame
   descricao       String
   urgente         Boolean     @default(false)
@@ -863,7 +863,7 @@ model Exame {
 model FicheiroExame {
   id       String @id @default(uuid())
   exameId  String
-  exame    Exame  @relation(fields: [exameId], references: [id])
+  exame    Exame  @relation(fields: [exameId], references: [id], onDelete: Cascade)
   nome     String
   url      String
   mimeType String
@@ -893,15 +893,15 @@ enum EstadoEpisodio {
 model EpisodioUrgencia {
   id                String         @id @default(uuid())
   doenteId          String?
-  doente            Doente?        @relation(fields: [doenteId], references: [id])
+  doente            Doente?        @relation(fields: [doenteId], references: [id], onDelete: SetNull)
   nomeTemporario    String?
   queixaPrincipal   String
   triagem           CorTriagem
   estadoEpisodio    EstadoEpisodio @default(sala_espera)
   triadoPorId       String
-  triadoPor         Utilizador     @relation("EpisodioTriador", fields: [triadoPorId], references: [id])
+  triadoPor         Utilizador     @relation("EpisodioTriador", fields: [triadoPorId], references: [id], onDelete: Cascade)
   medicoResponsavelId String?
-  medicoResponsavel Utilizador?    @relation("EpisodioMedico", fields: [medicoResponsavelId], references: [id])
+  medicoResponsavel Utilizador?    @relation("EpisodioMedico", fields: [medicoResponsavelId], references: [id], onDelete: SetNull)
   dataEntrada       DateTime       @default(now())
   dataSaida         DateTime?
   notas             String?
@@ -927,16 +927,16 @@ enum EstadoCirurgia {
 model CirurgiaProgramada {
   id                 String         @id @default(uuid())
   doenteId           String
-  doente             Doente         @relation(fields: [doenteId], references: [id])
+  doente             Doente         @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   designacao         String
   dataHora           DateTime
   duracaoPrevista    Int
   sala               String
   estado             EstadoCirurgia @default(agendada)
   cirurgiaoId        String
-  cirurgiao          Utilizador     @relation("CirurgiaCircurgiao", fields: [cirurgiaoId], references: [id])
+  cirurgiao          Utilizador     @relation("CirurgiaCircurgiao", fields: [cirurgiaoId], references: [id], onDelete: Cascade)
   anestesistaId      String?
-  anestesista        Utilizador?    @relation("CirurgiaAnestesista", fields: [anestesistaId], references: [id])
+  anestesista        Utilizador?    @relation("CirurgiaAnestesista", fields: [anestesistaId], references: [id], onDelete: SetNull)
   equipa             Json?
   notasPreOperatorio  String?
   notasPosOperatorio  String?
@@ -952,21 +952,21 @@ model CirurgiaProgramada {
 model ChecklistCirurgia {
   id         String             @id @default(uuid())
   cirurgiaId String             @unique
-  cirurgia   CirurgiaProgramada @relation(fields: [cirurgiaId], references: [id])
+  cirurgia   CirurgiaProgramada @relation(fields: [cirurgiaId], references: [id], onDelete: Cascade)
 
   signInEm    DateTime?
   signInPorId String?
-  signInPor   Utilizador? @relation("ChecklistSignIn", fields: [signInPorId], references: [id])
+  signInPor   Utilizador? @relation("ChecklistSignIn", fields: [signInPorId], references: [id], onDelete: SetNull)
   signInDados Json?
 
   timeOutEm    DateTime?
   timeOutPorId String?
-  timeOutPor   Utilizador? @relation("ChecklistTimeOut", fields: [timeOutPorId], references: [id])
+  timeOutPor   Utilizador? @relation("ChecklistTimeOut", fields: [timeOutPorId], references: [id], onDelete: SetNull)
   timeOutDados Json?
 
   signOutEm    DateTime?
   signOutPorId String?
-  signOutPor   Utilizador? @relation("ChecklistSignOut", fields: [signOutPorId], references: [id])
+  signOutPor   Utilizador? @relation("ChecklistSignOut", fields: [signOutPorId], references: [id], onDelete: SetNull)
   signOutDados Json?
 
   @@map("checklists_cirurgia")
@@ -984,10 +984,10 @@ enum EstadoConsulta {
 model Consulta {
   id                 String               @id @default(uuid())
   doenteId           String?
-  doente             Doente?              @relation(fields: [doenteId], references: [id])
+  doente             Doente?              @relation(fields: [doenteId], references: [id], onDelete: SetNull)
   nomeDoente         String?
   medicoId           String
-  medico             Utilizador           @relation(fields: [medicoId], references: [id])
+  medico             Utilizador           @relation(fields: [medicoId], references: [id], onDelete: Cascade)
   especialidade      String
   dataHora           DateTime
   duracao            Int                  @default(30)
@@ -1009,7 +1009,7 @@ model Consulta {
 model AgendaMedico {
   id          String     @id @default(uuid())
   medicoId    String
-  medico      Utilizador @relation("AgendaMedico", fields: [medicoId], references: [id])
+  medico      Utilizador @relation("AgendaMedico", fields: [medicoId], references: [id], onDelete: Cascade)
   diaSemana   Int        // 0=Dom 1=Seg 2=Ter 3=Qua 4=Qui 5=Sex 6=Sab
   horaInicio  String     // "08:00"
   horaFim     String     // "13:00"
@@ -1043,9 +1043,9 @@ model CheckinSalaEspera {
   chamadoEm       DateTime?
   atendidoEm      DateTime?
   rececionistadoPorId String?
-  rececionista    Utilizador?    @relation("CheckinRececionista", fields: [rececionistadoPorId], references: [id])
+  rececionista    Utilizador?    @relation("CheckinRececionista", fields: [rececionistadoPorId], references: [id], onDelete: SetNull)
   medicoId        String?
-  medico          Utilizador?    @relation("CheckinMedico", fields: [medicoId], references: [id])
+  medico          Utilizador?    @relation("CheckinMedico", fields: [medicoId], references: [id], onDelete: SetNull)
   observacoes     String?
 
   @@index([estado, chegadaEm])
@@ -1079,7 +1079,7 @@ model StockItem {
   servico          String
   precoUnitario    Float?
   catalogoId       String?
-  catalogo         CatalogoMedicamento? @relation(fields: [catalogoId], references: [id])
+  catalogo         CatalogoMedicamento? @relation(fields: [catalogoId], references: [id], onDelete: SetNull)
   criadoEm         DateTime  @default(now())
 
   pedidos       PedidoFarmacia[]
@@ -1095,16 +1095,16 @@ model StockItem {
 model PedidoFarmacia {
   id              String               @id @default(uuid())
   stockItemId     String
-  stockItem       StockItem            @relation(fields: [stockItemId], references: [id])
+  stockItem       StockItem            @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
   quantidade      Float
   servico         String
   estado          EstadoPedidoFarmacia @default(pendente)
   solicitadoPorId String
-  solicitadoPor   Utilizador           @relation("PedidoSolicitante", fields: [solicitadoPorId], references: [id])
+  solicitadoPor   Utilizador           @relation("PedidoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
   processadoPorId String?
-  processadoPor   Utilizador?          @relation("PedidoProcessador", fields: [processadoPorId], references: [id])
+  processadoPor   Utilizador?          @relation("PedidoProcessador", fields: [processadoPorId], references: [id], onDelete: SetNull)
   aprovadoPorId   String?
-  aprovadoPor     Utilizador?          @relation("PedidoAprovador", fields: [aprovadoPorId], references: [id])
+  aprovadoPor     Utilizador?          @relation("PedidoAprovador", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
   aprovadoEm      DateTime?
   motivoRejeicao  String?
   observacoes     String?
@@ -1134,12 +1134,12 @@ model CatalogoMedicamento {
 model AjusteStock {
   id           String    @id @default(uuid())
   stockItemId  String
-  stockItem    StockItem @relation(fields: [stockItemId], references: [id])
+  stockItem    StockItem @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
   delta        Float
   tipo         String    // "entrada" | "saida" | "ajuste" | "desperdicio" | "validade" | "encomenda" | "transferencia"
   motivo       String
   utilizadorId String
-  utilizador   Utilizador @relation("AjustesFeitos", fields: [utilizadorId], references: [id])
+  utilizador   Utilizador @relation("AjustesFeitos", fields: [utilizadorId], references: [id], onDelete: Cascade)
   criadoEm     DateTime  @default(now())
 
   @@index([stockItemId])
@@ -1150,16 +1150,16 @@ model AjusteStock {
 model TransferenciaStock {
   id              String      @id @default(uuid())
   stockItemId     String
-  stockItem       StockItem   @relation(fields: [stockItemId], references: [id])
+  stockItem       StockItem   @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
   quantidade      Float
   servicoOrigem   String
   servicoDestino  String
   motivo          String?
   estado          String      @default("pendente") // pendente | confirmada | cancelada
   solicitadoPorId String
-  solicitadoPor   Utilizador  @relation("TransfSolicitadas", fields: [solicitadoPorId], references: [id])
+  solicitadoPor   Utilizador  @relation("TransfSolicitadas", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
   confirmadoPorId String?
-  confirmadoPor   Utilizador? @relation("TransfConfirmadas", fields: [confirmadoPorId], references: [id])
+  confirmadoPor   Utilizador? @relation("TransfConfirmadas", fields: [confirmadoPorId], references: [id], onDelete: SetNull)
   criadoEm        DateTime    @default(now())
   atualizadoEm    DateTime    @updatedAt
 
@@ -1185,9 +1185,9 @@ model Fornecedor {
 model EncomendaFornecedor {
   id                    String      @id @default(uuid())
   fornecedorId          String
-  fornecedor            Fornecedor  @relation(fields: [fornecedorId], references: [id])
+  fornecedor            Fornecedor  @relation(fields: [fornecedorId], references: [id], onDelete: Cascade)
   stockItemId           String
-  stockItem             StockItem   @relation(fields: [stockItemId], references: [id])
+  stockItem             StockItem   @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
   quantidadeEncomendada Float
   precoUnitario         Float?
   estado                String      @default("pendente") // pendente | recebida | parcial | cancelada
@@ -1195,7 +1195,7 @@ model EncomendaFornecedor {
   dataEntregaReal       DateTime?
   observacoes           String?
   recebioPorId          String?
-  recebioPor            Utilizador? @relation("EncomendasRecebidas", fields: [recebioPorId], references: [id])
+  recebioPor            Utilizador? @relation("EncomendasRecebidas", fields: [recebioPorId], references: [id], onDelete: SetNull)
   criadoEm              DateTime    @default(now())
   atualizadoEm          DateTime    @updatedAt
 
@@ -1209,9 +1209,9 @@ model EncomendaFornecedor {
 model PlanoReabilitacao {
   id               String   @id @default(uuid())
   doenteId         String
-  doente           Doente   @relation(fields: [doenteId], references: [id])
+  doente           Doente   @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   fisioterapeutaId String
-  fisioterapeuta   Utilizador @relation(fields: [fisioterapeutaId], references: [id])
+  fisioterapeuta   Utilizador @relation(fields: [fisioterapeutaId], references: [id], onDelete: Cascade)
   objetivos        String
   dataInicio       DateTime
   dataFimPrevista  DateTime?
@@ -1233,11 +1233,11 @@ enum EstadoSessao {
 model SessaoFisioterapia {
   id               String       @id @default(uuid())
   planoId          String
-  plano            PlanoReabilitacao @relation(fields: [planoId], references: [id])
+  plano            PlanoReabilitacao @relation(fields: [planoId], references: [id], onDelete: Cascade)
   doenteId         String
-  doente           Doente       @relation(fields: [doenteId], references: [id])
+  doente           Doente       @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   fisioterapeutaId String
-  fisioterapeuta   Utilizador   @relation(fields: [fisioterapeutaId], references: [id])
+  fisioterapeuta   Utilizador   @relation(fields: [fisioterapeutaId], references: [id], onDelete: Cascade)
   data             DateTime
   duracao          Int
   descricao        String
@@ -1267,16 +1267,16 @@ model PedidoInterno {
   id              String              @id @default(uuid())
   tipo            TipoPedidoInterno
   doenteId        String?
-  doente          Doente?             @relation(fields: [doenteId], references: [id])
+  doente          Doente?             @relation(fields: [doenteId], references: [id], onDelete: SetNull)
   localOrigem     String?
   localDestino    String?
   descricao       String
   prioridade      PrioridadeTarefa
   estado          EstadoPedidoInterno @default(pendente)
   solicitadoPorId String
-  solicitadoPor   Utilizador          @relation("PedidoInternoSolicitante", fields: [solicitadoPorId], references: [id])
+  solicitadoPor   Utilizador          @relation("PedidoInternoSolicitante", fields: [solicitadoPorId], references: [id], onDelete: Cascade)
   executadoPorId  String?
-  executadoPor    Utilizador?         @relation("PedidoInternoExecutor", fields: [executadoPorId], references: [id])
+  executadoPor    Utilizador?         @relation("PedidoInternoExecutor", fields: [executadoPorId], references: [id], onDelete: SetNull)
   servicoOrigem   String
   criadoEm        DateTime            @default(now())
   concluidoEm     DateTime?
@@ -1290,7 +1290,7 @@ model PedidoInterno {
 model Anuncio {
   id       String    @id @default(uuid())
   autorId  String
-  autor    Utilizador @relation(fields: [autorId], references: [id])
+  autor    Utilizador @relation(fields: [autorId], references: [id], onDelete: Cascade)
   titulo   String
   texto    String
   servico  String?
@@ -1304,9 +1304,9 @@ model Anuncio {
 model MensagemInterna {
   id             String          @id @default(uuid())
   remetenteId    String
-  remetente      Utilizador      @relation("MensagemRemetente", fields: [remetenteId], references: [id])
+  remetente      Utilizador      @relation("MensagemRemetente", fields: [remetenteId], references: [id], onDelete: Cascade)
   destinatarioId String
-  destinatario   Utilizador      @relation("MensagemDestinatario", fields: [destinatarioId], references: [id])
+  destinatario   Utilizador      @relation("MensagemDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
   assunto        String?
   texto          String
   lida           Boolean         @default(false)
@@ -1344,15 +1344,15 @@ enum EstadoInterconsulta {
 model Interconsulta {
   id                String               @id @default(uuid())
   doenteId          String
-  doente            Doente               @relation(fields: [doenteId], references: [id])
+  doente            Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   requisitanteId    String
-  requisitante      Utilizador           @relation("InterconsultaRequisitante", fields: [requisitanteId], references: [id])
+  requisitante      Utilizador           @relation("InterconsultaRequisitante", fields: [requisitanteId], references: [id], onDelete: Cascade)
   especialidadeAlvo String
   motivo            String
   urgente           Boolean              @default(false)
   estado            EstadoInterconsulta  @default(pendente)
   medicoRespostaId  String?
-  medicoResposta    Utilizador?          @relation("InterconsultaResposta", fields: [medicoRespostaId], references: [id])
+  medicoResposta    Utilizador?          @relation("InterconsultaResposta", fields: [medicoRespostaId], references: [id], onDelete: SetNull)
   resposta          String?
   criadaEm          DateTime             @default(now())
   respondidaEm      DateTime?
@@ -1381,7 +1381,7 @@ enum TipoDispositivoInvasivo {
 model DispositivoInvasivo {
   id            String                  @id @default(uuid())
   doenteId      String
-  doente        Doente                  @relation(fields: [doenteId], references: [id])
+  doente        Doente                  @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo          TipoDispositivoInvasivo
   localizacao   String?
   dataInsercao  DateTime                @default(now())
@@ -1389,7 +1389,7 @@ model DispositivoInvasivo {
   ativo         Boolean                 @default(true)
   observacoes   String?
   inseridoPorId String
-  inseridoPor   Utilizador              @relation("DispositivoInserido", fields: [inseridoPorId], references: [id])
+  inseridoPor   Utilizador              @relation("DispositivoInserido", fields: [inseridoPorId], references: [id], onDelete: Cascade)
 
   @@index([doenteId, ativo])
   @@map("dispositivos_invasivos")
@@ -1430,9 +1430,9 @@ model IncidenteTI {
   prioridade    PrioridadeIncidenteTI @default(media)
   estado        EstadoIncidenteTI     @default(aberto)
   criadoPorId   String
-  criadoPor     Utilizador            @relation("IncidentesCriados", fields: [criadoPorId], references: [id])
+  criadoPor     Utilizador            @relation("IncidentesCriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
   responsavelId String?
-  responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id])
+  responsavel   Utilizador?           @relation("IncidentesAtribuidos", fields: [responsavelId], references: [id], onDelete: SetNull)
   criadoEm     DateTime              @default(now())
   atualizadoEm DateTime              @updatedAt
   notas         NotaIncidenteTI[]
@@ -1447,7 +1447,7 @@ model NotaIncidenteTI {
   incidenteId  String
   incidente    IncidenteTI  @relation(fields: [incidenteId], references: [id], onDelete: Cascade)
   autorId      String
-  autor        Utilizador   @relation("NotasIncidentesTI", fields: [autorId], references: [id])
+  autor        Utilizador   @relation("NotasIncidentesTI", fields: [autorId], references: [id], onDelete: Cascade)
   conteudo     String
   criadaEm    DateTime     @default(now())
 
@@ -1484,10 +1484,10 @@ model PedidoTI {
   resolvidoEm   DateTime?
 
   criadoPorId   String
-  criadoPor     Utilizador  @relation("PedidosTICriados", fields: [criadoPorId], references: [id])
+  criadoPor     Utilizador  @relation("PedidosTICriados", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
   responsavelId String?
-  responsavel   Utilizador? @relation("PedidosTIAtribuidos", fields: [responsavelId], references: [id])
+  responsavel   Utilizador? @relation("PedidosTIAtribuidos", fields: [responsavelId], references: [id], onDelete: SetNull)
 
   @@index([estado])
   @@index([criadoPorId])
@@ -1499,7 +1499,7 @@ model PedidoTI {
 model FicheiroPessoalDoente {
   id                 String      @id @default(uuid())
   doenteId           String      @unique
-  doente             Doente      @relation(fields: [doenteId], references: [id])
+  doente             Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   nif                String?
   numeroSNS          String?
   morada             String?
@@ -1512,7 +1512,7 @@ model FicheiroPessoalDoente {
   tipoCobertura      String?     // 'sns' | 'seguro' | 'particular'
   atualizadoEm       DateTime    @updatedAt
   atualizadoPorId    String?
-  atualizadoPor      Utilizador? @relation(fields: [atualizadoPorId], references: [id])
+  atualizadoPor      Utilizador? @relation(fields: [atualizadoPorId], references: [id], onDelete: SetNull)
 
   @@map("fichas_pessoais_doente")
 }
@@ -1530,9 +1530,9 @@ enum EstadoFatura {
 model EpisodioFaturacao {
   id            String         @id @default(uuid())
   doenteId      String
-  doente        Doente         @relation(fields: [doenteId], references: [id])
+  doente        Doente         @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   consultaId    String?        @unique
-  consulta      Consulta?      @relation(fields: [consultaId], references: [id])
+  consulta      Consulta?      @relation(fields: [consultaId], references: [id], onDelete: SetNull)
   estado        EstadoFatura   @default(pendente)
   dataEmissao   DateTime?
   totalBase     Float          @default(0)
@@ -1540,7 +1540,7 @@ model EpisodioFaturacao {
   tipoCobertura String?
   notas         String?
   criadoPorId   String
-  criadoPor     Utilizador     @relation(fields: [criadoPorId], references: [id])
+  criadoPor     Utilizador     @relation(fields: [criadoPorId], references: [id], onDelete: Cascade)
   criadoEm      DateTime       @default(now())
   itens         ItemFatura[]
   pagamentos    Pagamento[]
@@ -1553,7 +1553,7 @@ model EpisodioFaturacao {
 model ItemFatura {
   id                  String            @id @default(uuid())
   episodioFaturacaoId String
-  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id])
+  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id], onDelete: Cascade)
   descricao           String
   categoria           String            // 'diaria' | 'procedimento' | 'medicacao' | 'exame' | 'outro'
   quantidade          Int               @default(1)
@@ -1567,12 +1567,12 @@ model ItemFatura {
 model Pagamento {
   id                  String            @id @default(uuid())
   episodioFaturacaoId String
-  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id])
+  episodio            EpisodioFaturacao @relation(fields: [episodioFaturacaoId], references: [id], onDelete: Cascade)
   valor               Float
   metodo              String            // 'numerario' | 'multibanco' | 'transferencia' | 'seguro' | 'isencao'
   referencia          String?
   registadoPorId      String
-  registadoPor        Utilizador        @relation(fields: [registadoPorId], references: [id])
+  registadoPor        Utilizador        @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadoEm            DateTime          @default(now())
 
   @@map("pagamentos")
@@ -1597,9 +1597,9 @@ model AtoClinico {
 model AtoConsulta {
   id            String     @id @default(uuid())
   consultaId    String
-  consulta      Consulta   @relation(fields: [consultaId], references: [id])
+  consulta      Consulta   @relation(fields: [consultaId], references: [id], onDelete: Cascade)
   atoId         String
-  ato           AtoClinico @relation(fields: [atoId], references: [id])
+  ato           AtoClinico @relation(fields: [atoId], references: [id], onDelete: Cascade)
   quantidade    Int        @default(1)
   precoUnitario Float
   criadoEm      DateTime   @default(now())
@@ -1650,14 +1650,14 @@ model RefreshToken {
 model ProblemaClinico {
   id             String     @id @default(uuid())
   doenteId       String
-  doente         Doente     @relation(fields: [doenteId], references: [id])
+  doente         Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   descricao      String
   tipo           String     // 'principal' | 'comorbilidade' | 'cirurgico' | 'cronico' | 'agudo'
   estado         String     @default("ativo") // 'ativo' | 'resolvido' | 'cronico'
   dataInicio     DateTime?
   dataFim        DateTime?
   registadoPorId String
-  registadoPor   Utilizador @relation("ProblemaRegistado", fields: [registadoPorId], references: [id])
+  registadoPor   Utilizador @relation("ProblemaRegistado", fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadoEm       DateTime   @default(now())
 
   @@index([doenteId])
@@ -1685,15 +1685,15 @@ model Equipamento {
 model Manutencao {
   id              String      @id @default(uuid())
   equipamentoId   String
-  equipamento     Equipamento @relation(fields: [equipamentoId], references: [id])
+  equipamento     Equipamento @relation(fields: [equipamentoId], references: [id], onDelete: Cascade)
   tipo            String      // 'preventiva' | 'corretiva'
   descricao       String
   estado          String      @default("pendente") // 'pendente'|'em_curso'|'concluida'|'cancelada'
   prioridade      String      @default("normal")   // 'urgente'|'alta'|'normal'|'baixa'
   reportadoPorId  String?
-  reportadoPor    Utilizador? @relation("ManutencaoReportada", fields: [reportadoPorId], references: [id])
+  reportadoPor    Utilizador? @relation("ManutencaoReportada", fields: [reportadoPorId], references: [id], onDelete: SetNull)
   tecnicoId       String?
-  tecnico         Utilizador? @relation("ManutencaoTecnico", fields: [tecnicoId], references: [id])
+  tecnico         Utilizador? @relation("ManutencaoTecnico", fields: [tecnicoId], references: [id], onDelete: SetNull)
   dataReporte     DateTime    @default(now())
   dataConclusao   DateTime?
   observacoes     String?
@@ -1708,14 +1708,14 @@ model Manutencao {
 model Ausencia {
   id              String      @id @default(uuid())
   utilizadorId    String
-  utilizador      Utilizador  @relation("AusenciaUtilizador", fields: [utilizadorId], references: [id])
+  utilizador      Utilizador  @relation("AusenciaUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
   tipo            String      // 'ferias'|'baixa_medica'|'licenca_maternidade'|'falta_justificada'|'outro'
   dataInicio      DateTime
   dataFim         DateTime
   estado          String      @default("pendente") // 'pendente'|'aprovada'|'rejeitada'
   observacoes     String?
   aprovadoPorId   String?
-  aprovadoPor     Utilizador? @relation("AusenciaAprovador", fields: [aprovadoPorId], references: [id])
+  aprovadoPor     Utilizador? @relation("AusenciaAprovador", fields: [aprovadoPorId], references: [id], onDelete: SetNull)
   criadoEm        DateTime    @default(now())
   atualizadoEm    DateTime    @updatedAt
 
@@ -1736,9 +1736,9 @@ model TrocaFolga {
   criadoEm        DateTime  @default(now())
   atualizadoEm    DateTime  @updatedAt
 
-  solicitante  Utilizador  @relation("TrocaFolgaSolicitante",  fields: [solicitanteId],  references: [id])
-  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id])
-  aprovadoPor  Utilizador? @relation("TrocaFolgaAprovador",    fields: [aprovadoPorId],  references: [id])
+  solicitante  Utilizador  @relation("TrocaFolgaSolicitante",  fields: [solicitanteId],  references: [id], onDelete: Cascade)
+  destinatario Utilizador  @relation("TrocaFolgaDestinatario", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  aprovadoPor  Utilizador? @relation("TrocaFolgaAprovador",    fields: [aprovadoPorId],  references: [id], onDelete: SetNull)
 
   @@index([solicitanteId])
   @@index([destinatarioId])
@@ -1749,7 +1749,7 @@ model TrocaFolga {
 model FormacaoUtilizador {
   id             String      @id @default(uuid())
   utilizadorId   String
-  utilizador     Utilizador  @relation("FormacaoUtilizador", fields: [utilizadorId], references: [id])
+  utilizador     Utilizador  @relation("FormacaoUtilizador", fields: [utilizadorId], references: [id], onDelete: Cascade)
   nome           String
   dataRealizacao DateTime
   dataExpiracao  DateTime?
@@ -1770,9 +1770,9 @@ model EventoAdverso {
   descricao        String
   servicoId        String?     // servico onde ocorreu (enum Servico como string)
   doenteId         String?
-  doente           Doente?     @relation("EventosAdversosDoente", fields: [doenteId], references: [id])
+  doente           Doente?     @relation("EventosAdversosDoente", fields: [doenteId], references: [id], onDelete: SetNull)
   registadoPorId   String?
-  registadoPor     Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id])
+  registadoPor     Utilizador? @relation("EventoAdversoRegistado", fields: [registadoPorId], references: [id], onDelete: SetNull)
   acaoCorretiva    String?
   estado           String      @default("aberto") // 'aberto' | 'em_investigacao' | 'encerrado'
   ocorridoEm       DateTime    @default(now())
@@ -1800,8 +1800,8 @@ model SessaoEspecialidade {
   estado         String   @default("agendada") // agendada | realizada | cancelada | faltou
   criadoEm      DateTime @default(now())
 
-  doente        Doente     @relation(fields: [doenteId], references: [id])
-  profissional  Utilizador @relation("SessaoEspecialidadeProfissional", fields: [profissionalId], references: [id])
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  profissional  Utilizador @relation("SessaoEspecialidadeProfissional", fields: [profissionalId], references: [id], onDelete: Cascade)
 
   @@index([profissionalId, data])
   @@index([doenteId])
@@ -1823,8 +1823,8 @@ model AvaliacaoDesempenho {
   estado         String   @default("rascunho") // rascunho | finalizada | assinada
   criadoEm      DateTime @default(now())
 
-  utilizador    Utilizador @relation("AvaliacaoAvaliado",  fields: [utilizadorId], references: [id])
-  avaliador     Utilizador @relation("AvaliacaoAvaliador", fields: [avaliadorId],  references: [id])
+  utilizador    Utilizador @relation("AvaliacaoAvaliado",  fields: [utilizadorId], references: [id], onDelete: Cascade)
+  avaliador     Utilizador @relation("AvaliacaoAvaliador", fields: [avaliadorId],  references: [id], onDelete: Cascade)
 
   @@index([utilizadorId])
   @@index([avaliadorId])
@@ -1841,7 +1841,7 @@ model DadosContratuais {
   criadoEm        DateTime  @default(now())
   atualizadoEm    DateTime  @updatedAt
 
-  utilizador       Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador       Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
 
   @@map("dados_contratuais")
 }
@@ -1851,18 +1851,18 @@ model DadosContratuais {
 model ConsentimentoInformado {
   id                       String     @id @default(uuid())
   doenteId                 String
-  doente                   Doente     @relation(fields: [doenteId], references: [id])
+  doente                   Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo                     String     // cirurgia | procedimento_invasivo | anestesia | transfusao | outro
   descricao                String
   assinadoDoenteEm         DateTime?
   assinadoTestemunhaEm     DateTime?
   testemunhaId             String?
-  testemunha               Utilizador? @relation("ConsentimentoTestemunha", fields: [testemunhaId], references: [id])
+  testemunha               Utilizador? @relation("ConsentimentoTestemunha", fields: [testemunhaId], references: [id], onDelete: SetNull)
   recusado                 Boolean    @default(false)
   motivoRecusa             String?
   criadoEm                 DateTime   @default(now())
   criadoPorId              String
-  criadoPor                Utilizador @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id])
+  criadoPor                Utilizador @relation("ConsentimentoCriador", fields: [criadoPorId], references: [id], onDelete: Cascade)
 
   @@index([doenteId])
   @@index([tipo])
@@ -1874,9 +1874,9 @@ model ConsentimentoInformado {
 model BreakGlassAccess {
   id            String     @id @default(uuid())
   utilizadorId  String
-  utilizador    Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizador    Utilizador @relation(fields: [utilizadorId], references: [id], onDelete: Cascade)
   doenteId      String
-  doente        Doente     @relation(fields: [doenteId], references: [id])
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   motivo        String
   ip            String?
   ativo         Boolean    @default(true)
@@ -1893,11 +1893,11 @@ model BreakGlassAccess {
 model ProtocoloClinico {
   id            String     @id @default(uuid())
   doenteId      String
-  doente        Doente     @relation(fields: [doenteId], references: [id])
+  doente        Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo          String     // sepsis | avc | iamcst | outro
   estadoGeral   String     @default("ativo") // ativo | concluido | cancelado
   ativadoPorId  String?
-  ativadoPor    Utilizador? @relation(fields: [ativadoPorId], references: [id])
+  ativadoPor    Utilizador? @relation(fields: [ativadoPorId], references: [id], onDelete: SetNull)
   criadoEm      DateTime   @default(now())
   itens         ItemProtocolo[]
 
@@ -1909,13 +1909,13 @@ model ProtocoloClinico {
 model ItemProtocolo {
   id              String           @id @default(uuid())
   protocoloId     String
-  protocolo       ProtocoloClinico @relation(fields: [protocoloId], references: [id])
+  protocolo       ProtocoloClinico @relation(fields: [protocoloId], references: [id], onDelete: Cascade)
   descricao       String
   prazo           Int?             // minutos desde criação do protocolo
   concluido       Boolean          @default(false)
   concluidoEm     DateTime?
   concluidoPorId  String?
-  concluidoPor    Utilizador?      @relation(fields: [concluidoPorId], references: [id])
+  concluidoPor    Utilizador?      @relation(fields: [concluidoPorId], references: [id], onDelete: SetNull)
 
   @@index([protocoloId])
   @@map("itens_protocolo")
@@ -1926,14 +1926,14 @@ model ItemProtocolo {
 model PrescricaoDieta {
   id           String     @id @default(uuid())
   doenteId     String
-  doente       Doente     @relation(fields: [doenteId], references: [id])
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   tipo         String     // normal | hipocalorica | diab | renal | hepatica | liquida | jejum | outra
   restricoes   String[]
   observacoes  String?
   ativa        Boolean    @default(true)
   criadaEm     DateTime   @default(now())
   criadaPorId  String
-  criadaPor    Utilizador @relation(fields: [criadaPorId], references: [id])
+  criadaPor    Utilizador @relation(fields: [criadaPorId], references: [id], onDelete: Cascade)
 
   @@index([doenteId, ativa])
   @@map("prescricoes_dieta")
@@ -1951,7 +1951,7 @@ enum ResultadoCultura {
 model CulturaMicrobiologica {
   id             String           @id @default(uuid())
   doenteId       String
-  doente         Doente           @relation(fields: [doenteId], references: [id])
+  doente         Doente           @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   dataColheita   DateTime
   tipoAmostra    String
   agente         String?
@@ -1960,7 +1960,7 @@ model CulturaMicrobiologica {
   servico        String?
   observacoes    String?
   registadoPorId String
-  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id])
+  registadoPor   Utilizador       @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadoEm       DateTime         @default(now())
 
   @@index([doenteId])
@@ -1986,7 +1986,7 @@ model SurtoIACS {
   medidas        Json?
   observacoes    String?
   registadoPorId String
-  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id])
+  registadoPor   Utilizador  @relation(fields: [registadoPorId], references: [id], onDelete: Cascade)
   criadoEm       DateTime    @default(now())
 
   @@index([estado])
@@ -2002,7 +2002,7 @@ model ConformidadeChecklistItem {
   estado          String      @default("verificar") // 'conforme' | 'verificar' | 'nao_conforme'
   atualizadoEm   DateTime    @updatedAt
   atualizadoPorId String?
-  atualizadoPor   Utilizador? @relation("ChecklistAtualizador", fields: [atualizadoPorId], references: [id])
+  atualizadoPor   Utilizador? @relation("ChecklistAtualizador", fields: [atualizadoPorId], references: [id], onDelete: SetNull)
 
   @@map("conformidade_checklist")
 }

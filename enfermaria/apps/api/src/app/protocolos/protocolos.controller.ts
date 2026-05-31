@@ -3,6 +3,7 @@ import { ProtocolosService } from './protocolos.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { CriarProtocoloDto } from './dto/criar-protocolo.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('protocolos')
@@ -11,8 +12,8 @@ export class ProtocolosController {
 
   @Roles('medico', 'enfermeiro')
   @Post()
-  criar(@Body() body: { doenteId: string; tipo: string }, @Request() req: any) {
-    return this.service.criar(body.doenteId, body.tipo, req.user.sub);
+  criar(@Body() dto: CriarProtocoloDto, @Request() req: any) {
+    return this.service.criar(dto.doenteId, dto.tipo, req.user.sub);
   }
 
   @Get('doente/:doenteId')

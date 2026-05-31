@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { PrismaService } from '../prisma/prisma.service';
+import { AtualizarChecklistDto } from './dto/atualizar-checklist.dto';
 
 const CHECKLIST_KEYS = ['rgpd_1','rgpd_2','rgpd_3','dgs_1','dgs_2','acss_1','acss_2','sns_1'];
 
@@ -63,13 +64,13 @@ export class AuditController {
   @Patch('checklist/:itemKey')
   async atualizarChecklist(
     @Param('itemKey') itemKey: string,
-    @Body() body: { estado: string },
+    @Body() dto: AtualizarChecklistDto,
     @Request() req: any,
   ) {
     return this.prisma.conformidadeChecklistItem.upsert({
       where: { itemKey },
-      create: { itemKey, estado: body.estado, atualizadoPorId: req.user.sub },
-      update: { estado: body.estado, atualizadoPorId: req.user.sub },
+      create: { itemKey, estado: dto.estado, atualizadoPorId: req.user.sub },
+      update: { estado: dto.estado, atualizadoPorId: req.user.sub },
     });
   }
 

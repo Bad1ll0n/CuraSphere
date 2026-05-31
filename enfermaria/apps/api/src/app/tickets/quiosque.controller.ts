@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { TicketsService } from './tickets.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConsultasService } from '../consultas/consultas.service';
+import { CriarMarcacaoQuiosqueDto } from './dto/criar-marcacao-quiosque.dto';
 
 @Controller('quiosque')
 export class QuiosqueController {
@@ -141,28 +142,28 @@ export class QuiosqueController {
 
   @Post('marcacao-nova')
   async criarMarcacaoQuiosque(
-    @Body() body: { doenteId: string; medicoId: string; dataHora: string },
+    @Body() dto: CriarMarcacaoQuiosqueDto,
   ) {
     const [doente, medico] = await Promise.all([
-      this.prisma.doente.findUnique({ where: { id: body.doenteId }, select: { id: true, nome: true } }),
-      this.prisma.utilizador.findUnique({ where: { id: body.medicoId }, select: { id: true, nome: true, subRole: true } }),
+      this.prisma.doente.findUnique({ where: { id: dto.doenteId }, select: { id: true, nome: true } }),
+      this.prisma.utilizador.findUnique({ where: { id: dto.medicoId }, select: { id: true, nome: true, subRole: true } }),
     ]);
     if (!doente) throw new NotFoundException('Utente não encontrado');
     if (!medico) throw new NotFoundException('Médico não encontrado');
 
     // Verificar disponibilidade do slot
-    const dataStr = body.dataHora.split('T')[0];
-    const slots = await this.consultasService.calcularSlots(body.medicoId, dataStr);
-    const slotAlvo = new Date(body.dataHora).getTime();
+    const dataStr = dto.dataHora.split('T')[0];
+    const slots = await this.consultasService.calcularSlots(dto.medicoId, dataStr);
+    const slotAlvo = new Date(dto.dataHora).getTime();
     const slot = slots.find((s: any) => new Date(s.dataHora).getTime() === slotAlvo);
     if (!slot || !slot.disponivel) throw new ConflictException('Horário já ocupado ou inválido');
 
     return this.consultasService.agendar({
-      doenteId: body.doenteId,
+      doenteId: dto.doenteId,
       nomeDoente: doente.nome,
-      medicoId: body.medicoId,
+      medicoId: dto.medicoId,
       especialidade: medico.subRole ?? 'Geral',
-      dataHora: body.dataHora,
+      dataHora: dto.dataHora,
     });
   }
 

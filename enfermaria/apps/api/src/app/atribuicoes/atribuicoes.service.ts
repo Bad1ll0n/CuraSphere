@@ -71,48 +71,72 @@ export class AtribuicoesService {
     return profissionais[0]?.utilizador.id ?? null;
   }
 
-  private async grupoDoUtilizador(utilizadorId: string): Promise<string[]> {
-    const u = await this.prisma.utilizador.findUnique({ where: { id: utilizadorId }, select: { role: true } });
-    const grupoMedico = ['medico', 'chefe_medicos'];
-    return grupoMedico.includes(u?.role ?? '') ? grupoMedico : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
-  }
-
   // Atribuir doente a profissional no turno
   async atribuir(turnoId: string, doenteId: string, utilizadorId: string, atribuidoPorId: string) {
-    const turno = await this.buscarTurno(turnoId);
+    return this.prisma.$transaction(async (tx) => {
+      const turno = await tx.horarioTurno.findUnique({
+        where: { id: turnoId },
+        include: {
+          profissionais: {
+            include: { utilizador: { select: { id: true, nome: true, role: true, ordemExperiencia: true, equipa: true } } },
+          },
+          atribuicoes: {
+            include: {
+              doente: { select: { id: true, nome: true, numeroProcesso: true, estado: true, diagnosticoPrincipal: true, cama: true } },
+              utilizador: { select: { id: true, nome: true, role: true } },
+            },
+          },
+        },
+      });
+      if (!turno) throw new NotFoundException('Turno não encontrado');
 
-    const grupo = await this.grupoDoUtilizador(atribuidoPorId);
-    const chefeId = this.chefeDeTurno(turno, grupo);
-    if (chefeId !== atribuidoPorId) {
-      throw new ForbiddenException('Apenas o chefe de turno pode fazer atribuições');
-    }
+      const u = await tx.utilizador.findUnique({ where: { id: atribuidoPorId }, select: { role: true } });
+      const grupoMedico = ['medico', 'chefe_medicos'];
+      const grupo = grupoMedico.includes(u?.role ?? '') ? grupoMedico : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
 
-    const profissionalNoTurno = turno.profissionais.some((p: any) => p.utilizadorId === utilizadorId);
-    if (!profissionalNoTurno) {
-      throw new ForbiddenException('Utilizador não está neste turno');
-    }
+      const chefeId = this.chefeDeTurno(turno, grupo);
+      if (chefeId !== atribuidoPorId) throw new ForbiddenException('Apenas o chefe de turno pode fazer atribuições');
 
-    return this.prisma.atribuicaoHorarioTurno.upsert({
-      where: { horarioTurnoId_doenteId_utilizadorId: { horarioTurnoId: turnoId, doenteId, utilizadorId } },
-      create: { horarioTurnoId: turnoId, doenteId, utilizadorId, atribuidoPorId },
-      update: { atribuidoPorId },
+      const profissionalNoTurno = turno.profissionais.some((p: any) => p.utilizadorId === utilizadorId);
+      if (!profissionalNoTurno) throw new ForbiddenException('Utilizador não está neste turno');
+
+      return tx.atribuicaoHorarioTurno.upsert({
+        where: { horarioTurnoId_doenteId_utilizadorId: { horarioTurnoId: turnoId, doenteId, utilizadorId } },
+        create: { horarioTurnoId: turnoId, doenteId, utilizadorId, atribuidoPorId },
+        update: { atribuidoPorId },
+      });
     });
   }
 
   // Remover atribuição
   async remover(turnoId: string, doenteId: string, utilizadorId: string, atribuidoPorId: string) {
-    const turno = await this.buscarTurno(turnoId);
-    const grupo = await this.grupoDoUtilizador(atribuidoPorId);
-    const chefeId = this.chefeDeTurno(turno, grupo);
-    if (chefeId !== atribuidoPorId) {
-      throw new ForbiddenException('Apenas o chefe de turno pode remover atribuições');
-    }
+    return this.prisma.$transaction(async (tx) => {
+      const turno = await tx.horarioTurno.findUnique({
+        where: { id: turnoId },
+        include: {
+          profissionais: {
+            include: { utilizador: { select: { id: true, nome: true, role: true, ordemExperiencia: true, equipa: true } } },
+          },
+          atribuicoes: {
+            include: {
+              doente: { select: { id: true, nome: true, numeroProcesso: true, estado: true, diagnosticoPrincipal: true, cama: true } },
+              utilizador: { select: { id: true, nome: true, role: true } },
+            },
+          },
+        },
+      });
+      if (!turno) throw new NotFoundException('Turno não encontrado');
 
-    await this.prisma.atribuicaoHorarioTurno.deleteMany({
-      where: { horarioTurnoId: turnoId, doenteId, utilizadorId },
+      const u = await tx.utilizador.findUnique({ where: { id: atribuidoPorId }, select: { role: true } });
+      const grupoMedico = ['medico', 'chefe_medicos'];
+      const grupo = grupoMedico.includes(u?.role ?? '') ? grupoMedico : ['enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar'];
+
+      const chefeId = this.chefeDeTurno(turno, grupo);
+      if (chefeId !== atribuidoPorId) throw new ForbiddenException('Apenas o chefe de turno pode remover atribuições');
+
+      await tx.atribuicaoHorarioTurno.deleteMany({ where: { horarioTurnoId: turnoId, doenteId, utilizadorId } });
+      return { mensagem: 'Atribuição removida' };
     });
-
-    return { mensagem: 'Atribuição removida' };
   }
 
   // Lista turnos do dia (para o chefe escolher qual gerir)

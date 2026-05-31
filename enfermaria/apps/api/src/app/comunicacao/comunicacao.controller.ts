@@ -8,6 +8,7 @@ import { Roles } from '../auth/roles.decorator';
 import { ComunicacaoService } from './comunicacao.service';
 import { CriarAnuncioDto } from './dto/criar-anuncio.dto';
 import { EnviarMensagemDto } from './dto/enviar-mensagem.dto';
+import { EnviarBroadcastDto } from './dto/enviar-broadcast.dto';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads', 'mensagens');
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
@@ -66,8 +67,8 @@ export class ComunicacaoController {
   @UseGuards(RolesGuard)
   @Roles('medico', 'enfermeiro', 'administrativo', 'direcao')
   @Post('broadcast')
-  enviarBroadcast(@Body() body: any, @Request() req: any) {
-    return this.service.enviarBroadcast(body, req.user.sub);
+  enviarBroadcast(@Body() dto: EnviarBroadcastDto, @Request() req: any) {
+    return this.service.enviarBroadcast(dto, req.user.sub);
   }
 
   @Post('mensagens/:id/anexo')

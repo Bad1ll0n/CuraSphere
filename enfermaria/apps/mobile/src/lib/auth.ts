@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { Utilizador } from '@org/shared';
 import api, { setMemToken } from './api';
 
@@ -7,26 +7,25 @@ export type { Utilizador };
 export async function login(numeroFuncionario: string, password: string): Promise<Utilizador> {
   const { data } = await api.post('/auth/login', { numeroFuncionario, password });
   setMemToken(data.accessToken);
-  await AsyncStorage.setItem('token', data.accessToken);
-  await AsyncStorage.setItem('utilizador', JSON.stringify(data.utilizador));
+  await SecureStore.setItemAsync('token', data.accessToken);
+  await SecureStore.setItemAsync('utilizador', JSON.stringify(data.utilizador));
   return data.utilizador;
 }
 
 export async function logout() {
   setMemToken(null);
-  await AsyncStorage.removeItem('token');
-  await AsyncStorage.removeItem('utilizador');
+  await SecureStore.deleteItemAsync('token');
+  await SecureStore.deleteItemAsync('utilizador');
 }
 
 export async function getUtilizador(): Promise<Utilizador | null> {
   const [stored, token] = await Promise.all([
-    AsyncStorage.getItem('utilizador'),
-    AsyncStorage.getItem('token'),
+    SecureStore.getItemAsync('utilizador'),
+    SecureStore.getItemAsync('token'),
   ]);
-  // Sem token = sessão inválida, força novo login
   if (!stored || !token) {
-    await AsyncStorage.removeItem('token');
-    await AsyncStorage.removeItem('utilizador');
+    await SecureStore.deleteItemAsync('token');
+    await SecureStore.deleteItemAsync('utilizador');
     return null;
   }
   setMemToken(token);

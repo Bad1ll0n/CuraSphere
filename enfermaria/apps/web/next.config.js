@@ -9,7 +9,7 @@ const { composePlugins, withNx } = require('@nx/next');
 const nextConfig = {
   nx: {},
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-  transpilePackages: ['@org/shared'],
+  transpilePackages: ['@org/shared', '@org/ui'],
 };
 
 const plugins = [withNx];

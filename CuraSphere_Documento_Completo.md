@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-29 (sessão 31)
+> **Última actualização:** 2026-05-31 (sessão 42)
 > **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
@@ -66,7 +66,9 @@ enfermaria/
 │   ├── api/          NestJS API
 │   ├── web/          Next.js Web
 │   └── mobile/       React Native / Expo
-└── libs/             (partilhadas — actualmente vazias)
+└── libs/
+    ├── shared/       @org/shared — tipos TypeScript partilhados (Utilizador, Doente, Tarefa, Medicacao, Turno, Horario, AlertaClinico, Notificacao…)
+    └── ui/           @org/ui — componentes React web partilhados (StatusBadge, EmptyState, LoadingSpinner, PageShell)
 ```
 
 **Comandos de arranque:**
@@ -892,9 +894,17 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 - [x] Dispositivos Invasivos na ficha do doente — lista activos com dias de inserção, registar novo, remover
 - [x] Pré-notificação ambulância na página de Urgência — banner "Em Trânsito" com countdown ETA, modal de registo, botão "Chegou"
 - [x] WebSocket em tempo real — hook `useSocket` partilhado; eventos: `urgencia:update`, `urgencia:ambulancia`, `sos:alerta`, `alerta:novo`, `doente:estado`; invalidação automática de queries ao receber eventos
+- [x] **Validação de negócio na admissão** (sessão 32) — NIF e SNS únicos verificados com `findFirst` + `ConflictException 409`; cama disponível verificada antes de criar episódio
+- [x] **Padronização de erros API** (sessão 32) — `ErrorCodes` enum + `AppException` + `GlobalExceptionFilter`; todas as respostas de erro com `{ statusCode, errorCode, message, details? }`
+- [x] **Comunicação — anexos em mensagens** (sessão 32) — `POST /comunicacao/mensagens/:id/anexo`; FileInterceptor com diskStorage; validação tipo MIME + limite 10 MB; modelo `AnexoMensagem`
+- [x] **Ficha doente — 12 painéis independentes** (sessão 32) — `doentes/[id]/page.tsx` de 3852L → 1121L; componentes `sinais-vitais`, `risco-escalas`, `exames`, `notas-clinicas`, `escalas-clinicas`, `alergias-contactos`, `notas-turno`, `medicacao`, `tarefas`, `interconsultas`, `problemas`, `dispositivos`
+- [x] **client-layout.tsx refactorizado** (sessão 32) — `modal-configuracoes.tsx` + `modal-alterar-password.tsx` extraídos; layout reduzido a ~130L de pura orquestração
+- [x] **Custom hooks `@/lib/hooks`** — `useNotificacoes`, `useNaoLidasCount`, `useMarcarLida`, `useMarcarTodasLidas`, `useDoentes`, `useDoente`, `useTarefasPorDoente`, `useUtilizadores`, `useAlertasPorDoente`; `notificacoes/page.tsx` + `client-layout.tsx` migrados para hooks (sessão 33)
 
 ### Mobile
-- [x] Login com token persistente
+- [x] Login com token persistente (**`expo-secure-store`** — encriptado no dispositivo, não legível em root/backup)
+- [x] Refresh token automático (interceptor com queue — comportamento idêntico ao web)
+- [x] React Query global (`QueryClientProvider` na raiz — cache 30s entre ecrãs)
 - [x] Timeout de sessão (15 min inactividade)
 - [x] Navegação adaptada por grupo de role
 - [x] QR Scanner → abre ficha do doente
@@ -959,7 +969,7 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | Feature | O que existe | O que falta |
 |---------|-------------|------------|
 | Push notifications | Trigger em Trocas + Tarefas + **Tarefas urgentes pendentes** + **SOS contextual** + **NEWS2 ≥5/≥7** (sessão 7) + **NotificacoesScreen mobile + leitura confirmada individual/todas** (sessão 27) | — |
-| Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) + **broadcast por serviço/role + leitura confirmada** (sessão 25) | Attachments |
+| Comunicação | Mensagens 1-a-1 + anúncios + **tab Enviadas** (sessão 6) + **broadcast por serviço/role + leitura confirmada** (sessão 25) + **anexos em mensagens** (sessão 32) | — |
 | Dashboard Direção | Acede a Dashboard TI + Qualidade + **Dashboard Executivo enriquecido** (sessão 26): tendência ocupação 14d (AreaChart), faturação 6 meses (BarChart), urgência hoje, bloco operatório mês, ausências activas | — |
 | Horários | Calendário + geração automática + **aviso conflito ao atribuir** (sessão 6) + **gestão de folgas** (sessão 20) + **trocas de folga** (sessão 24) | — |
 | Bloco Operatório | ✅ Lista + checklist + **vista de sala em tempo real** (sessão 15) | — |
@@ -990,14 +1000,23 @@ ortopedia | cardiologia | neurologia | laboratorio | imagiologia
 | MAR | ✅ Completo | ✅ MARScreen (pendentes + administrar) |
 | Interconsultas | ✅ (na ficha) | ✅ `InterconsultasScreen` (lista recebidas/enviadas, nova IC, aceitar, responder) |
 | Dashboard Qualidade | ✅ Completo | ✅ DashboardQualidadeScreen (KPIs, IACS, alertas, riscos, alta, eventos adversos) |
+| Dietas | ✅ Completo | ✅ DietasScreen (sessão 34): vista cozinha, dietas por doente, prescrever |
+| Eventos Adversos | ✅ Completo | ✅ EventosAdversosScreen (sessão 34): lista filtrada, registar, atualizar estado/ação |
+| Equipamentos | ✅ Completo | ✅ EquipamentosScreen (sessão 35): inventário, alertas manutenção, reportar, atualizar estado |
+| Consentimentos | ✅ Web completa | ✅ ConsentimentosScreen (sessão 35): seletor de doente, lista, criar, assinar, recusar |
+| RH | ✅ Completo | ✅ RHScreen (sessão 36): 4 tabs — Dashboard KPIs, Ausências (aprovar/rejeitar), Formações, Avaliações |
+| Faturação | ✅ Completo | ✅ FaturacaoScreen (sessão 36): resumo KPIs + lista por estado |
+| Dashboard Executivo | ✅ Completo | ✅ DashboardExecutivoScreen (sessão 36): doentes, camas, faturação, urgência, bloco, pessoal |
+| Relatórios DGS/SNS | ✅ Completo | ✅ RelatoriosScreen (sessão 36): 6 tabs com lazy loading — internamento, ocupação, diagnósticos, medicamentos, urgência, produtividade |
+| Conformidade | ✅ Completo | ✅ ConformidadeScreen (sessão 36): checklist RGPD/DGS/ACSS/SNS (interactiva), acessos 30d, alto risco |
 
 ### 10.4 Dívida Técnica
 
 | Área | Problema |
 |------|---------|
-| Testes | Nenhum teste unitário ou e2e escrito |
-| Validação de input | DTOs têm validação básica; faltam validações de negócio (e.g., conflito de camas) |
-| Erro handling | API devolve mensagens genéricas; falta padronização de erros |
+| Testes | ✅ 95 testes unitários a passar (10 suites: AppController, AppService, DoenteService, MedicacaoService, FaturacaoService, AuthService, CamasService, AlertasService, SinaisVitaisService, TurnosService); e2e por escrever |
+| Validação de input | ✅ DTOs completos (0 `body: any` na API) + validações de negócio implementadas: NIF/SNS únicos com `findFirst` + `ConflictException`; cama disponível verificada em `admitir()` |
+| Erro handling | ✅ Padronizado (sessão 32): `ErrorCodes` enum centralizado em `common/error-codes.ts`; `AppException extends HttpException` com `{ statusCode, errorCode, message, details? }`; `GlobalExceptionFilter` formata todas as respostas de erro uniformemente |
 | Paginação | Doentes: paginação já existia; **pesquisa server-side adicionada** (sessão 31) com debounce 300ms — procura em nome, processo e diagnóstico; clínicos sem search vêem só os seus doentes do turno, com search vêem todos os internados |
 | SSE / Tempo Real | Tickets + **Camas** (sessão 29) + **Tarefas** (sessão 30) usam SSE; outros módulos ainda sem actualizações em tempo real |
 | Seed de dados de teste | `seed-demo.ts` criado com dados hospitalares realistas |
@@ -1286,9 +1305,424 @@ Todos os 5 itens de alta/média prioridade do roadmap foram resolvidos.
   - Utilizador actual filtrado da lista (não pode enviar mensagem para si próprio)
   - Botão "Enviar" só activa se destinatário seleccionado + mensagem preenchida
 
+### ✅ Completado na Sessão 32 (2026-05-30) — Sprint de Qualidade Arquitectural
+- **Validação de negócio na admissão** — NIF e SNS únicos verificados com `findFirst` + `ConflictException 409`; cama disponível (`estado: 'livre' | 'reservada'`) verificada antes de criar episódio
+- **Padronização de erros da API** — `ErrorCodes` enum em `common/error-codes.ts`; `AppException extends HttpException` com `{ statusCode, errorCode, message, details? }`; `GlobalExceptionFilter` unifica todas as respostas de erro
+- **Comunicação — anexos em mensagens** — `POST /comunicacao/mensagens/:id/anexo` com `FileInterceptor` (multer + diskStorage); validação de tipo MIME (imagem, PDF, Word, Excel, TXT) + limite 10 MB; modelo `AnexoMensagem` com `nome`, `url`, `mimeType`, `tamanho`; `TIPOS_PERMITIDOS` e `MAX_SIZE_BYTES` como constantes no controller
+- **`recepcao/page.tsx`** — todas as 9 chamadas `fetch()` directas substituídas por `api` axios com cookies httpOnly; removidos `const API` e `const token localStorage`; SSE mantido com `SSE_BASE`
+- **Mobile — URL da API via variável de ambiente** — `const API_URL = 'http://localhost:3333'` → `process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3333'` em `apps/mobile/src/lib/api.ts`
+- **`$transaction()` adicional** — `dietas:prescrever()` (deactivate+create atómico), `exames:registarResultado()` (auto-faturação atómica), `bloco:registarNotasPos()` (auto-faturação atómica)
+- **`client-layout.tsx` — extracção adicional de modais** — 2 novos ficheiros:
+  - `modal-configuracoes.tsx` (80L) — modal tema claro/escuro; lê/escreve `localStorage('curasphere-theme')`; toggle `document.documentElement.classList.toggle('dark', ...)`
+  - `modal-alterar-password.tsx` (91L) — `PATCH /auth/alterar-password`; estado de sucesso inline
+  - `client-layout.tsx` reduzido de 1077L → ~130L
+- **`doentes/[id]/page.tsx` — decomposição completa** — 7 novos painéis em `components/`:
+  - `alergias-contactos-panel.tsx` (326L) — alergias + contactos de emergência; fetch próprio; `doenteId + utilizador` props
+  - `notas-turno-panel.tsx` (293L) — notas de turno; recebe `notas[]`, `emTurno`, `onRefresh`
+  - `medicacao-panel.tsx` (545L) — medicação activa + propostas enfermeiro; recebe `medicacoes[]`, busca propostas internamente
+  - `tarefas-panel.tsx` (412L) — tarefas do doente; recebe `tarefas[]`, `emTurno`, `onRefresh`
+  - `interconsultas-panel.tsx` (249L) — fetch próprio
+  - `problemas-panel.tsx` (237L) — fetch próprio
+  - `dispositivos-panel.tsx` (268L) — fetch próprio; usa `ConfirmModal` para remoção
+  - Página reduzida de 3852L → 1121L; 12 painéis no total (incluindo os 5 da sessão 13)
+- **`libs/shared` — activação adicional em 5 páginas web**:
+  - `doentes/admitir/page.tsx` — `import type { Cama } from '@org/shared'`
+  - `tarefas/page.tsx` — `interface Tarefa extends SharedTarefa { grupoResponsavel?, doente }`
+  - `camas/page.tsx` — `interface Cama extends SharedCama { doente?: ... | null }`
+  - `utilizadores/page.tsx` — `interface Utilizador extends SharedUtilizador { ordemExperiencia?, equipa? }`
+  - `passagem-turno/page.tsx` — `import type { EstadoDoente, Turno as SharedTurno } from '@org/shared'`
+
+### ✅ Completado na Sessão 33 (2026-05-30) — DTOs finais + Custom hooks integrados
+- **0 `@Body() body: any` em toda a API** — últimos 2 controllers sem DTO tipado corrigidos:
+  - `comunicacao/dto/enviar-broadcast.dto.ts` — `EnviarBroadcastDto` (`servicoAlvo?`, `roleAlvo?`, `assunto?`, `texto`)
+  - `rh/dto/criar-troca-folga.dto.ts` — `CriarTrocaFolgaDto` (`destinatarioId`, `dataOrigem`, `dataDestino`, `motivo?`)
+  - `comunicacao.controller.ts` + `rh.controller.ts` actualizados para usar os novos DTOs
+- **`use-notificacoes.ts` — bugs corrigidos + hook de contagem adicionado**:
+  - `useMarcarLida`: endpoint `/lida` → `/ler` (corrigido para corresponder ao controller)
+  - `useMarcarTodasLidas`: endpoint `/todas/lidas` → `/marcar-todas-lidas` (corrigido)
+  - `useNotificacoes(page)`: tipo de retorno corrigido de `Notificacao[]` → `NotificacoesPaginadas`; aceita `page` param
+  - `useNaoLidasCount()` adicionado — query `/notificacoes/nao-lidas` com `staleTime: 30s`, `refetchInterval: 60s`
+  - Ambas as mutações invalidam `['notificacoes']` + `['notificacoes-count']`
+- **`notificacoes/page.tsx`** — migrada para hooks: remove `useQuery`/`useMutation`/`api` imports directos; usa `useNotificacoes(page)`, `useMarcarLida()`, `useMarcarTodasLidas()` de `@/lib/hooks`
+- **`client-layout.tsx`** — remove `useQuery` + `api` imports; usa `useNaoLidasCount()` do `@/lib/hooks`; layout sem dependências directas de `@tanstack/react-query` ou `api`
+
+### ✅ Completado na Sessão 34 (2026-05-30) — Mobile: Dietas + Eventos Adversos
+- **`DietasScreen.tsx`** — prescrições dietéticas do dia no mobile
+  - `GET /dietas/hoje` → lista todos os doentes internados com/sem dieta activa
+  - Vista dividida: secção "Com dieta prescrita" (verde) + secção "Sem dieta prescrita" (âmbar) com contadores no topo
+  - Cada cartão: nome + cama, badge colorido por tipo de dieta, chips de restrições (glúten, lactose, sal, etc.), observações, prescritor + data
+  - FAB "+" para medico/enfermeiro → modal de prescrição: picker de doente (pesquisa), selector de 7 tipos, multi-select de 8 restrições, campo de observações
+  - Visível a: todos os clínicos, auxiliar, administrativo
+- **`EventosAdversosScreen.tsx`** — registo de incidentes, quedas, erros de medicação no mobile
+  - `GET /eventos-adversos?tipo=&gravidade=&estado=` com 3 filtros em chip (ciclam pelos valores)
+  - KPIs no topo: Total | Abertos (âmbar quando >0) | Graves (vermelho quando >0, conta dano_grave+óbito)
+  - Cada cartão: badge gravidade (5 cores), badge estado, badge tipo, descrição (2 linhas), doente se associado, data, registadoPor
+  - Tap no evento → modal detalhe: informação completa + (para qualidade/direcao/medico) input "Ação Corretiva" + selector de 3 estados com cores + "Guardar Alterações" (`PATCH /eventos-adversos/:id`)
+  - FAB "+" para podeRegistar → modal de criação: selector tipo (6 botões), selector gravidade (5 botões coloridos), descrição (obrigatória), serviço (opcional), doente picker (sub-modal com pesquisa), data/hora ocorrência, ação corretiva opcional
+  - Visível a: todos os clínicos + qualidade + direcao
+- **`MaisScreen.tsx`** — 2 novos itens de menu adicionados (Dietas: ícone restaurant verde; Eventos Adversos: ícone warning vermelho)
+
+### ✅ Completado na Sessão 35 (2026-05-30) — Mobile: EquipamentosScreen
+- **`EquipamentosScreen.tsx`** — gestão de equipamentos médicos no mobile
+  - Dois tabs: **Inventário** (lista com pesquisa + filtro por estado) e **Alertas** (equipamentos com manutenção próxima/vencida)
+  - Cada cartão: ícone por tipo (cama, ventilador, monitor, cadeira de rodas, bomba, desfibrilhador), badge de estado colorido (operacional/avariado/em_manutencao/abatido), badge de alerta de manutenção se próxima ≤30 dias
+  - Tap em equipamento → modal detalhe com grelha de info + histórico de manutenções carregado via `GET /equipamentos/:id/manutencoes`
+  - **Reportar manutenção** (`POST /equipamentos/:id/manutencoes`): visível a operacional, ti, enfermeiro, medico, auxiliar — selectors de tipo (corretiva/preventiva/preditiva/emergencia), prioridade (urgente/alta/normal/baixa), descrição (obrigatória), observações
+  - **Atualizar manutenção** (`PATCH /equipamentos/manutencoes/:id`): visível apenas a operacional e ti — bottom-sheet com selector de estado (pendente/em_curso/concluida/cancelada) e campo de observações
+  - Alertas de manutenção carregados via `GET /equipamentos/alertas-manutencao` (roles: operacional, ti, medico, enfermeiro, direcao)
+  - Visível a: todos os clínicos, operacional, ti, administrativo, direcao
+- **`MaisScreen.tsx`** — 3º item adicionado (Equipamentos: ícone construct azul-ciano)
+
+### ✅ Completado na Sessão 35 (cont.) — Mobile: ConsentimentosScreen
+- **`ConsentimentosScreen.tsx`** — gestão de consentimentos informados no mobile
+  - Pesquisa de doente por nome/processo com dropdown ao vivo (`GET /doentes?search=`)
+  - Uma vez seleccionado o doente, lista os seus consentimentos via `GET /consentimentos/doente/:doenteId`
+  - Cada cartão: tipo (cirurgia/procedimento_invasivo/anestesia/transfusão/outro), descrição, badge de estado (Pendente âmbar / Assinado verde / Recusado vermelho), metadata (criado por, data assinatura, testemunha, motivo de recusa)
+  - **Criar** (`POST /consentimentos`): medico, enfermeiro — selectors de tipo em grade + textarea de descrição
+  - **Assinar** (`POST /consentimentos/:id/assinar`): medico, enfermeiro, administrativo — bottom-sheet com toggle de confirmação obrigatório + registo de testemunha (utilizador actual)
+  - **Recusar** (`POST /consentimentos/:id/recusar`): medico, enfermeiro, administrativo — bottom-sheet com campo obrigatório de motivo; acção irreversível com aviso legal
+  - Visível a: medico, enfermeiro, administrativo
+- **`MaisScreen.tsx`** — 4º item adicionado (Consentimentos: ícone document-text índigo)
+
+### ✅ Completado na Sessão 36 (2026-05-30) — Mobile: RH + Faturação + Dashboard Executivo + Relatórios + Conformidade
+
+#### `RHScreen.tsx` — Recursos Humanos (administrativo, direcao)
+- 4 tabs: **Dashboard** (6 KPI cards em grelha 2 colunas: totalStaff, ausenciasPendentes, ausenciasAtivas, formacoesAExpirar, contratosAExpirar, avaliacoesPendentes), **Ausências** (segmented "Todas"/"Para Aprovar", cartões com tipo/período/estado + botões Aprovar verde / Rejeitar vermelho via `PATCH /rh/ausencias/:id/aprovar|rejeitar`), **Formações** (obrigatória badge vermelho, alerta expiração ≤30d), **Avaliações** (estado badge + nota/10)
+- `useFocusEffect` recarga dados ao mudar de tab
+
+#### `FaturacaoScreen.tsx` — Faturação (administrativo, direcao)
+- 4 KPI cards: Total Faturado / Pago / Pendente / Anulado (via `GET /faturacao/resumo`)
+- Filtro por estado (pills horizontais com contagem)
+- Lista de episódios com doente, estado badge, valor, tipo cobertura (SNS/Seguro/Particular), datas e contagem de itens/pagamentos
+
+#### `DashboardExecutivoScreen.tsx` — Dashboard Executivo (administrativo, direcao)
+- `GET /dashboard/executivo` — sem tabs, ScrollView simples
+- 6 secções: Doentes (internados/ambulatório/pendente cama/demora média), Camas (barra de progresso horizontal colorida + taxa ocupação), Faturação do Mês (totais + cobertura SNS/Seguro/Particular), Urgência Hoje, Bloco Cirúrgico do Mês, Pessoal por role
+- `RefreshControl` para pull-to-refresh
+- Valores monetários formatados em EUR pt-PT
+
+#### `RelatoriosScreen.tsx` — Relatórios DGS/SNS (administrativo, direcao, ti)
+- Range de datas estático: 1º dia do mês corrente → hoje (exibido no header)
+- 6 tab pills horizontais com lazy loading por tab (só carrega quando visitado pela primeira vez)
+- **Internamento**: Total Altas + Demora Média KPIs, tabela por serviço (internados/altas/demora)
+- **Ocupação**: Taxa Média Ocupação KPI, tabela por serviço (total/ocupadas/livres/taxa%)
+- **Diagnósticos**: Total KPI, top 20 rankeado com badge CID-10 azul + descrição + contagem
+- **Medicamentos**: Total Administrações KPI, top 20 rankeado
+- **Urgência**: Total episódios, distribuição por triagem com cores Manchester (vermelho/laranja/amarelo/verde/azul) + percentagem
+- **Produtividade**: Total Ações KPI, lista por profissional com chips de notas/tarefas/exames
+
+#### `ConformidadeScreen.tsx` — Conformidade (qualidade, direcao, ti)
+- `GET /audit/conformidade` + `GET /audit/checklist`
+- **Checklist**: 3 KPI chips (Conforme/A Verificar/Não Conforme), itens agrupados por categoria (RGPD/DGS/ACSS/SNS), toque no badge cicla estado optimisticamente + `PATCH /audit/checklist/:itemKey` com rollback em caso de erro
+- **Acessos**: 2 KPIs (utilizadores únicos/total acessos 30d) + lista de `acessosDoentes`
+- **Alto Risco**: lista com borda esquerda vermelha, vazio se sem entradas
+
+#### `MaisScreen.tsx` — 6 novos itens integrados:
+- Consentimentos (índigo), RH (violeta), Faturação (teal), Dashboard Executivo (índigo), Relatórios DGS/SNS (âmbar), Conformidade (teal)
+
+### ✅ Completado na Sessão 37 (2026-05-30) — Testes Unitários para Serviços Críticos
+
+#### Ficheiros criados:
+
+**`apps/api/src/app/doentes/doentes.service.spec.ts`** — 15 testes
+- `admitir()`: cama inexistente (NotFoundException), cama ocupada (BadRequestException), cama em limpeza (BadRequestException), cama reservada aceite, NIF duplicado (ConflictException), SNS duplicado (ConflictException), criação com sucesso + cama → ocupada, geração de `numeroProcesso` YYYY-00000001 para primeiro doente, incremento correcto de `numeroProcesso`, criação de `FicheiroPessoalDoente` quando dados opcionais fornecidos
+- `darAlta()`: doente inexistente (NotFoundException), marcação ativo=false + cama → em_limpeza, sem cama → não actualiza cama
+- `buscarPorId()`: doente inexistente (NotFoundException), doente encontrado devolvido
+
+**`apps/api/src/app/medicacao/medicacao.service.spec.ts`** — 13 testes
+- `prescrever()`: doente inexistente (NotFoundException), alergia detectada (ConflictException), `forcarApesarDeAlergia=true` bypassa alergia, sem alergias → sucesso com `avisoInteracoes: []`, detecção de interação grave warfarina+aspirina, `forcarApesarDeAlergia/justificativaOverride` removidos dos dados criados na DB
+- `registarAdministracao()`: medicação inexistente (NotFoundException), medicação descontinuada (NotFoundException), criação de registo com `verificacao5Certas`
+- `descontinuar()`: medicação inexistente (NotFoundException), `ativo=false` + `terminadoEm` preenchido
+- `verificarInteracoes()`: sem medicações ativas → vazio, tramadol+sertralina → interação grave detectada
+
+**`apps/api/src/app/faturacao/faturacao.service.spec.ts`** — 13 testes
+- `resumo()`: agregação correcta de totalFaturado/totalPago/totalPendente/totalAnulado, countPorEstado, stats zeradas sem episódios
+- `registarPagamento()`: episódio inexistente (NotFoundException), episódio anulado (BadRequestException), episódio já pago (BadRequestException), pagamento parcial sem mudar estado, pagamento total → estado muda para "paga"
+- `criar()`: doente inexistente (NotFoundException), criação para doente existente
+- `adicionarItem()`: episódio inexistente (NotFoundException), episódio pago (BadRequestException), `total = quantidade × precoUnitario`
+
+**`apps/api/src/app/auth/auth.service.spec.ts`** — 12 testes
+- `login()`: utilizador inexistente (UnauthorizedException), utilizador inativo (UnauthorizedException), password incorreta (UnauthorizedException), MFA ativo → `mfaPendente=true` + `mfaChallengeToken`, login sem MFA → `accessToken` + `refreshToken` (string hex), `passwordExpiradoAviso=true` quando expira em ≤10 dias
+- `refresh()`: token inexistente (UnauthorizedException), token revogado (UnauthorizedException), token expirado (UnauthorizedException), token válido → revoga antigo + devolve novos tokens
+- `alterarPassword()`: password actual incorreta (UnauthorizedException), hash actualizado + todos os refresh tokens revogados
+
+#### Infraestrutura de testes:
+
+**`apps/api/jest.config.js`** (novo) — Equivalente JS do `jest.config.cts`, necessário porque Jest 30.3.0 falha a parsear `.cts` com `moduleResolution:NodeNext`. Inclui `transformIgnorePatterns` para compilar as dependências ESM de `otplib` (`@scure/base`, `@noble/hashes`).
+
+**`apps/api/jest.config.cts`** (actualizado) — Adicionado `transformIgnorePatterns` com a mesma lista para quando o runner Nx estiver operacional.
+
+**Fix aplicado ao código fonte:**
+- `medicacao.service.ts`: `import * as interacoesJson` → `import interacoesJson` (default import) — corrige comportamento com SWC/Jest onde namespace import de JSON resultava em `{ default: [...] }` em vez do array directo.
+
+#### Execução dos testes:
+```bash
+# Na raiz do monorepo
+node_modules/.bin/jest --config=apps/api/jest.config.js --no-coverage
+# Resultado: 55 testes, 6 suites, todos a passar
+```
+
+### ✅ Completado na Sessão 39 (2026-05-30) — Expansão de testes unitários
+
+**4 novos ficheiros de spec criados (40 novos testes):**
+
+**`camas/camas.service.spec.ts`** — 10 testes
+- `criar()`: ConflictException em número duplicado; criação com sucesso + `redis.del('camas:lista', 'camas:ocupacao')`
+- `atualizarEstado()`: NotFoundException em cama inexistente; actualização com `{ data: { estado } }` + redis invalidation
+- `confirmarLimpeza()`: NotFoundException em cama inexistente; ConflictException quando `estado !== 'em_limpeza'`; actualização para 'livre' quando em limpeza
+- `ocupacao()`: cache hit não chama `prisma.cama.count`; cache miss → 5 chamadas `count` + `redis.set('camas:ocupacao', result, 30)`
+
+**`alertas/alertas.service.spec.ts`** — 9 testes
+- `listarNaoLidos()`, `marcarLido()`, `marcarTodosLidos()`, `acusar()`
+- `acionarSOS()`: cria alerta com `urgencia=true`; emite SOS via WebSocket; notifica médicos atribuídos quando presentes; fallback para todos os médicos activos quando sem atribuição; inclui dados de sinais vitais, medicações e alergias em paralelo
+
+**`sinais-vitais/sinais-vitais.service.spec.ts`** — 14 testes
+- `criar()` — controlo de acesso: ForbiddenException para `administrativo`; NotFoundException para doente inexistente/inactivo
+- `criar()` — scoring NEWS2: score=0 para parâmetros normais; score=9 crítico (FR=28+SpO2=89+PA=85) activa protocolo sepsis; score=5 alto gera 'news2_alto' sem protocolo; sem cálculo NEWS2 com <3 parâmetros; AVPU≠'A' adiciona +3
+- Alertas individuais: SpO2<90 → 'sinal_vital_critico'; Pulso>120 → alerta; TA<80 → alerta
+- `analisarTendencia()`: risco 'indeterminado' com 1 registo; risco 'alto' quando NEWS2≥7; risco 'baixo' com parâmetros estáveis; detecção de queda progressiva de SpO2
+
+**`turnos/turnos.service.spec.ts`** — 7 testes
+- `checkIn()`: BadRequestException sem turno ativo; BadRequestException com check-in duplicado; ForbiddenException quando não escalado; sucesso + `dentroGeofence: true`; IP externo → `dentroGeofence: false` + notifica chefe turno
+- `atribuirDoentes()`: chama `$transaction([deleteMany, createMany])`
+- `adicionarNota()`: cria nota com include de autor
+
+**Total acumulado: 95 testes unitários, 10 suites**
+
+**Fix adicional (continuação sessão 37):**
+- `app.service.spec.ts`: string `'Hello API'` → `'CuraSphere API'` (teste antigo desactualizado)
+- `app.controller.spec.ts`: adicionados 4 providers em falta (`HealthCheckService`, `PrismaHealthIndicator`, `RedisHealthIndicator`, `PrismaService`) — o `AppController` injecta todos eles mas o módulo de teste não os fornecia
+
+### ✅ Completado na Sessão 38 (2026-05-30) — DTOs: cobertura total de todos os controllers
+
+**Contexto:** 4 agentes paralelos em worktrees isolados criaram DTOs para 22 controllers durante a sessão 37. Esta sessão copiou o trabalho para o repositório principal e completou os controllers que ficaram por cobrir.
+
+#### DTOs copiados de worktrees de agentes:
+
+**Worktree a045** (atribuições, horários, trocas):
+- `atribuicoes/dto/atribuir-doente.dto.ts` — `doenteId`, `utilizadorId`
+- `horarios/dto/criar-escala.dto.ts` — `mes`, `ano`
+- `horarios/dto/adicionar-turno.dto.ts` — `tipo`, `data`, `profissionaisIds[]`
+- `horarios/dto/editar-turno.dto.ts` — tudo opcional
+- `horarios/dto/gerar-automatico.dto.ts` — `mes`, `ano`, `servico?`
+- `trocas/dto/criar-troca.dto.ts` — `turnoId`, `destinatarioId`
+- `trocas/dto/responder-troca.dto.ts` — `aceitar: boolean`
+- `trocas/dto/aprovar-troca.dto.ts` — `aprovar: boolean`
+
+**Worktree abe21** (configurações, equipamentos):
+- `configuracoes/dto/criar-role.dto.ts`, `criar-subrole.dto.ts`, `editar-role.dto.ts`, `editar-subrole.dto.ts`
+- `equipamentos/dto/criar-equipamento.dto.ts`, `atualizar-equipamento.dto.ts`, `criar-manutencao.dto.ts`, `atualizar-manutencao.dto.ts`
+
+**Worktree a6f05** (doentes, medicação, utilizadores):
+- `doentes/dto/atualizar-estado.dto.ts`, `atualizar-ficha-pessoal.dto.ts`, `atualizar-isolamento.dto.ts`, `atualizar-problema.dto.ts`, `criar-problema.dto.ts`
+- `medicacao/dto/totp-code.dto.ts` — `totpCode: string`
+- `utilizadores/dto/editar-utilizador.dto.ts` — todos os campos opcionais
+
+**Worktree ae5fe** (atos-clínicos, catálogo, fornecedores, notificações, tickets):
+- `atos-clinicos/dto/criar-ato-clinico.dto.ts`, `atualizar-ato-clinico.dto.ts`
+- `catalogo/dto/criar-catalogo-item.dto.ts`, `atualizar-catalogo-item.dto.ts`
+- `fornecedores/dto/criar-fornecedor.dto.ts`, `atualizar-fornecedor.dto.ts`, `criar-encomenda.dto.ts`, `receber-encomenda.dto.ts`
+- `notificacoes/dto/registar-token.dto.ts`
+- `tickets/dto/chamar-ticket.dto.ts`, `criar-marcacao-quiosque.dto.ts`, `tirar-senha.dto.ts`
+
+#### Novos DTOs criados nesta sessão (controllers sem cobertura):
+
+- `break-glass/dto/ativar-break-glass.dto.ts` — `doenteId`, `motivo`
+- `common/dto/atualizar-checklist.dto.ts` — `estado`
+- `consentimentos/dto/criar-consentimento.dto.ts` — `doenteId`, `tipo`, `descricao`
+- `consentimentos/dto/assinar-consentimento.dto.ts` — `testemunhaId?`
+- `consentimentos/dto/recusar-consentimento.dto.ts` — `motivo`
+- `dietas/dto/prescrever-dieta.dto.ts` — `doenteId`, `tipo`, `restricoes[]?`, `observacoes?`
+- `farmacia/dto/atualizar-quantidade.dto.ts` — `quantidade`, `motivo`, `tipo` (entrada/saida/ajuste)
+- `farmacia/dto/rejeitar-pedido.dto.ts` — `motivoRejeicao`
+- `farmacia/dto/criar-transferencia.dto.ts` — `servicoDestino`, `quantidade`, `motivo?`
+- `notas-clinicas/dto/totp-code.dto.ts` — `totpCode: string`
+- `protocolos/dto/criar-protocolo.dto.ts` — `doenteId`, `tipo`
+- `turnos/dto/atribuir-doentes-turno.dto.ts` — `atribuicoes[]` com `doenteId` + `enfermeiroId` (ValidateNested)
+
+#### Controllers actualizados nesta sessão:
+
+`doentes.controller.ts`, `equipamentos.controller.ts`, `medicacao.controller.ts`, `notas-clinicas.controller.ts`, `farmacia.controller.ts`, `break-glass.controller.ts`, `common/audit.controller.ts`, `consentimentos.controller.ts`, `dietas.controller.ts`, `protocolos.controller.ts`, `tickets/quiosque.controller.ts`, `tickets/tickets.controller.ts`, `turnos.controller.ts`
+
+#### Estado final:
+```bash
+grep -rn "body: any|@Body() body: {" apps/api/src/app --include="*.controller.ts"
+# Resultado: 0 correspondências
+```
+**100% dos controllers da API usam DTOs tipados com `class-validator` + `@nestjs/swagger`.**
+
+### ✅ Completado na Sessão 40 (2026-05-30) — Decomposição mobile, componentes partilhados e circuit breaker
+
+#### DoenteDetalheScreen.tsx — decomposição completa
+
+O ficheiro monolítico de **1655 linhas** foi decomposto em **20 ficheiros focados**, reduzindo o ecrã principal para **335 linhas**.
+
+**Estrutura criada em `apps/mobile/src/screens/doente-detalhe/`:**
+
+```
+styles.ts                         — StyleSheet partilhado (shared export)
+modals/
+  ModalAlterarEstado.tsx          — alteração de estado clínico do doente
+  ModalCriarTarefa.tsx            — criação de tarefa com SelectPicker
+  ModalPrescreverMedicacao.tsx    — prescrição com nome/dose/via/frequência
+  ModalRegistarVitais.tsx         — 8 campos vitais em grelha 2 colunas
+  ModalAltaEstruturada.tsx        — alta com motivo/destino/resumo/prescrição
+  ModalRegistarAlergia.tsx        — alergénio/tipo/severidade/notas
+  ModalContactoEmergencia.tsx     — contacto com checkbox "principal"
+  ModalEditarDoente.tsx           — edição de diagnóstico e alta prevista
+  ModalAvaliacaoEscala.tsx        — avaliação Braden e Morse com itens ponderados
+  ModalHistoricoTarefas.tsx       — listagem de histórico de tarefas
+  ModalHistoricoMedicacao.tsx     — listagem de histórico de medicação
+tabs/
+  TabInfo.tsx                     — dados clínicos, atribuições, alergias, contactos
+  TabTarefas.tsx                  — lista de tarefas com dots de prioridade
+  TabMedicacao.tsx                — medicações activas com Registar/Concluir
+  TabNotas.tsx                    — input + listagem de notas de turno
+  TabVitais.tsx                   — sinais vitais com cores por criticidade
+  TabEscalas.tsx                  — escalas Braden e Morse com badges de risco
+```
+
+**Padrão aplicado:**
+- Modais detêm o próprio estado de formulário — sem prop drilling
+- Tabs recebem dados e callbacks do pai — sem estado próprio
+- `shared` de `styles.ts` usado por todos os componentes — zero duplicação de estilos
+
+#### Componentes partilhados mobile — novos em `apps/mobile/src/components/`
+
+- **`EmptyState.tsx`** — componente genérico de estado vazio com texto centrado em cinzento
+- **`SelectPicker.tsx`** — picker de opções em pills horizontais com genérico TypeScript `<T extends string | number>`
+
+#### Circuit breaker — `NotificacoesService`
+
+Adicionado `PushCircuitBreaker` ao `apps/api/src/app/notificacoes/notificacoes.service.ts`:
+- **Threshold:** 3 falhas consecutivas abrem o breaker
+- **Cooldown:** 60 segundos com reset half-open automático
+- **Logging:** `Logger.warn` em cada falha e quando o breaker está aberto
+- Substituiu o `.catch(() => {})` silencioso — push failures agora são observáveis
+
+### ✅ Completado na Sessão 41 (2026-05-30) — $transaction, libs/shared, domain modules, libs/ui
+
+#### Item 2 — `$transaction` em `atribuicoes.service.ts`
+
+`atribuir` e `remover` envolvidos em `prisma.$transaction(async (tx) => {...})` com lógica de validação inline:
+- Leitura do turno + role do utilizador dentro da transação via `tx.horarioTurno.findUnique` e `tx.utilizador.findUnique`
+- `upsert` ou `deleteMany` dentro da mesma transação
+- Elimina race condition TOCTOU (time-of-check-to-time-of-use) entre validação do chefe e escrita da atribuição
+
+#### Item 5 — `libs/shared` completo
+
+Adicionados 2 novos ficheiros de tipos:
+- `libs/shared/src/lib/types/alerta.types.ts` — `AlertaClinico`
+- `libs/shared/src/lib/types/notificacao.types.ts` — `Notificacao`, `NotificacoesPaginadas`
+
+`libs/shared/src/index.ts` actualizado com re-export dos 2 novos módulos.
+
+Hooks web actualizados para consumir a lib partilhada:
+- `use-alertas.ts`: removeu declaração local `interface AlertaClinico`; importa de `@org/shared`
+- `use-notificacoes.ts`: removeu declarações locais `Notificacao` e `NotificacoesPaginadas`; importa de `@org/shared`
+
+Estado final: 5 hooks web + `apps/mobile/src/lib/auth.ts` importam tipos de `@org/shared` — **zero tipos duplicados** nos hooks.
+
+#### Item 6 — Agrupamento do `AppModule` em domínios
+
+Criados 3 módulos NestJS de domínio em `apps/api/src/app/`:
+
+| Ficheiro | Módulos agrupados |
+|---|---|
+| `clinical.module.ts` | 26 módulos — Doente, Cama, Tarefas, Sinais Vitais, Alergias, Contactos, Alertas, Notas, Escalas, Dispositivos, Atos, BreakGlass, Consentimentos, Eventos, Medicação, Farmácia, Reconciliação, Exames, Protocolos, Dietas, Consultas, Interconsultas, Urgência, Bloco, Fisioterapia, IACS |
+| `gestao.module.ts` | 8 módulos — Utilizadores, RH, Especialidades, Turnos, Horários, Atribuições, Trocas, Escalas |
+| `operacional.module.ts` | 12 módulos — Tickets, Sala Espera, Faturação, Pedidos Internos, Comunicação, Incidentes TI, Pedidos TI, Equipamentos, Catálogo, Fornecedores, Dashboard, Relatórios |
+
+`app.module.ts`: reduzido de 64 imports para **12 imports** (9 infra + 3 domínios). Cada domínio faz `imports` e `exports` de todos os sub-módulos para preservar injecção cross-domain.
+
+#### Item 13 — `libs/ui` — componentes web partilhados
+
+Criado pacote `@org/ui` em `libs/ui/` com estrutura idêntica a `@org/shared`:
+- `package.json` com `"@org/source": "./src/index.ts"` nos exports
+- `tsconfig.json` com suporte JSX
+- `apps/web/next.config.js`: adicionado `'@org/ui'` a `transpilePackages`
+
+**4 componentes criados em `libs/ui/src/components/`:**
+
+| Componente | Descrição |
+|---|---|
+| `StatusBadge` | Badge colorido com `colorMap`, `labelMap` e dot opcional |
+| `EmptyState` | Estado vazio com título, descrição e ícone opcional |
+| `LoadingSpinner` | Spinner animado com tamanhos `sm / md / lg` |
+| `PageShell` | Wrapper de página com título, subtítulo e slot de actions |
+
+### ✅ Completado na Sessão 42 (2026-05-31) — Auditoria Arquitectural: Segurança, Robustez e Qualidade
+
+Implementação dos 11 itens do plano de melhorias arquitecturais (avaliação estrutura + arquitectura).
+
+#### 🔴 Alta Prioridade — Segurança e Integridade de Dados
+
+**Item 1 — `onDelete` explícito no schema Prisma**
+- 155 relações FK sem `onDelete` receberam estratégia explícita:
+  - `Cascade` (113 relações): registos dependentes sem sentido sem o pai (ex: `SinalVital → Doente`, `RegistoMedicacao → Medicacao`, `NotificacaoInApp → Utilizador`)
+  - `SetNull` (42 relações): registo pode existir sem o pai (ex: `Tarefa.responsavelId → Utilizador`, `AuditLog.utilizadorId → Utilizador`)
+  - `Restrict` (2 relações): `Turno.chefeTurno → Utilizador`, `AuditLog.utilizador → Utilizador`
+- Elimina erros runtime ao eliminar doentes/utilizadores com registos dependentes
+
+**Item 2 — Tokens mobile para `expo-secure-store`**
+- `apps/mobile/src/lib/auth.ts` reescrito: `AsyncStorage` → `expo-secure-store`
+- `setItemAsync` / `deleteItemAsync` / `getItemAsync` em todos os pontos de leitura/escrita de `token` e `utilizador`
+- Tokens JWT não legíveis em dispositivos rooteados ou backups sem encriptação
+
+**Item 3 — Refresh token no mobile**
+- `apps/mobile/src/lib/api.ts` reescrito com interceptor de response completo:
+  - Flag `isRefreshing` + `refreshQueue: Array<(token: string) => void>` — previne chamadas concorrentes de refresh
+  - 401 → tenta `POST /v1/auth/refresh` com cookie → emite novo token para toda a queue
+  - Falha no refresh → limpa SecureStore + chama `onUnauthorized()` → logout automático
+- Comportamento agora idêntico ao web (sem divergência no tratamento de sessão expirada)
+
+#### 🟡 Média Prioridade — Robustez e Experiência
+
+**Item 4 — `middleware.ts` Next.js para protecção de rotas**
+- Criado `apps/web/src/middleware.ts`:
+  - Lê cookie `access_token` server-side antes de renderizar qualquer página
+  - Rotas públicas: `/login`, `/quiosque`, `/painel`
+  - Sem token + rota protegida → redirect imediato para `/login` (sem flicker de conteúdo)
+  - Com token + `/login` → redirect para `/dashboard`
+  - Matcher exclui `api/`, `_next/static`, `_next/image`, assets estáticos
+
+**Item 5 — React Query no mobile**
+- Criado `apps/mobile/src/lib/query-client.ts` com `QueryClient({ staleTime: 30s, gcTime: 5min, retry: 1 })`
+- `apps/mobile/src/app/App.tsx` envolvido com `<QueryClientProvider client={queryClient}>` a nível raiz (acima de `SafeAreaProvider`)
+- Cache de 30s entre navegações — elimina re-fetch em cada visita ao ecrã
+
+**Item 6 — Rate limiting por endpoint**
+- Verificado: já implementado — `/auth/login` → 5/10min, `/auth/mfa/verificar` → 10/10min. Nenhuma alteração necessária.
+
+**Item 7 — Versionamento da API**
+- `apps/api/src/main.ts`: `app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' })` — todos os endpoints servidos em `/v1/`
+- `apps/web/src/lib/api.ts`: `baseURL` → `${NEXT_PUBLIC_API_URL}/v1`; refresh URL → `/v1/auth/refresh`
+- `apps/mobile/src/lib/api.ts`: `baseURL` → `${API_URL}/v1`; refresh URL → `${API_URL}/v1/auth/refresh`
+
+#### 🟢 Baixa Prioridade — Qualidade e Manutenibilidade
+
+**Item 8 — Validação automática "5 certas" no mobile e API**
+- `apps/api/src/app/medicacao/medicacao.service.ts` — `registarAdministracao()` reescrito:
+  - Função `parsearFrequenciaHoras()` — interpreta strings como `"8/8h"`, `"12/12h"`, `"SOS"` → horas de intervalo (null para SOS/contínuo)
+  - **Doente certo**: se `doenteId` passado no request, verifica que corresponde à medicação
+  - **Hora certa**: se frequência conhecida e há registo anterior, bloqueia administração prematura com tolerância ±1h
+  - `verificacao5Certas: true` definido automaticamente (não mais confiado no checkbox do cliente)
+- `dto/administrar-medicacao.dto.ts` — removido `verificacao5Certas`; adicionado `doenteId?: string` (IsUUID)
+- `medicacao.controller.ts` — passa `doenteId` do DTO ao service
+
+**Item 9 — Eliminar `any` no mobile** — adiado (74 ocorrências em 20 ficheiros; requer tipos adicionais em `@org/shared`)
+
+**Item 10 — Extrair `ConsultasPanel` e `FaturacaoPanel`**
+- Criado `components/consultas-panel.tsx` (90L): fetch próprio de `/consultas?doenteId=`, interface `Consulta` tipada, visível a `medico | enfermeiro | administrativo`
+- Criado `components/faturacao-panel.tsx` (120L): fetch próprio de `/faturacao/doente/:id`, interfaces `EpisodioFaturacao / ItemFaturacao / Pagamento` tipadas, visível a `administrativo | direcao`
+- `doentes/[id]/page.tsx`: 1122L → ~930L; removidos estados `consultas[]` e `faturacao[]`, removidas chamadas de fetch do `useEffect` principal; substituídas 190L de JSX inline por 2 componentes
+
+**Item 11 — Dockerfile para a API**
+- Já existia `apps/api/Dockerfile` com multi-stage build (deps → builder → runner), non-root user, Prisma binary para Alpine, healthcheck. Nenhuma alteração necessária.
+
 ### Prioridade Baixa — Backlog
 12. Visualizador DICOM para imagiologia
-13. Testes automatizados (unitários + e2e)
+13. Testes automatizados e2e (Playwright/Cypress)
 14. Integrações externas (HL7, FHIR, SONHO/SClínico)
 
 ---

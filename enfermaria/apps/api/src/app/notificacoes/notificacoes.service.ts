@@ -8,9 +8,31 @@ interface ExpoPushMessage {
   data?: Record<string, any>;
 }
 
+// Simple circuit breaker: after 3 consecutive failures, skip push for 60 s
+class PushCircuitBreaker {
+  private failures = 0;
+  private openUntil = 0;
+  private readonly threshold = 3;
+  private readonly cooldownMs = 60_000;
+
+  isOpen(): boolean {
+    if (Date.now() < this.openUntil) return true;
+    if (this.openUntil > 0) { this.failures = 0; this.openUntil = 0; } // half-open reset
+    return false;
+  }
+
+  recordSuccess() { this.failures = 0; }
+
+  recordFailure() {
+    this.failures += 1;
+    if (this.failures >= this.threshold) this.openUntil = Date.now() + this.cooldownMs;
+  }
+}
+
 @Injectable()
 export class NotificacoesService {
   private readonly logger = new Logger(NotificacoesService.name);
+  private readonly pushCB = new PushCircuitBreaker();
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -39,11 +61,21 @@ export class NotificacoesService {
       data,
     }));
 
+    if (this.pushCB.isOpen()) {
+      this.logger.warn('Push circuit breaker aberto — notificação ignorada');
+      return;
+    }
+
     fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(mensagens),
-    }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+    })
+      .then(() => this.pushCB.recordSuccess())
+      .catch((err) => {
+        this.pushCB.recordFailure();
+        this.logger.warn('Notificação push falhou', err?.message ?? String(err));
+      });
   }
 
   async listar(utilizadorId: string, page = 1, limit = 30) {

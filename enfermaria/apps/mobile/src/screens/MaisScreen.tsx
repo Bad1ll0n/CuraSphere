@@ -33,6 +33,15 @@ import BlocoScreen from './BlocoScreen';
 import CatalogoScreen from './CatalogoScreen';
 import DashboardQualidadeScreen from './DashboardQualidadeScreen';
 import NotificacoesScreen from './NotificacoesScreen';
+import DietasScreen from './DietasScreen';
+import EventosAdversosScreen from './EventosAdversosScreen';
+import EquipamentosScreen from './EquipamentosScreen';
+import ConsentimentosScreen from './ConsentimentosScreen';
+import RHScreen from './RHScreen';
+import FaturacaoScreen from './FaturacaoScreen';
+import DashboardExecutivoScreen from './DashboardExecutivoScreen';
+import RelatoriosScreen from './RelatoriosScreen';
+import ConformidadeScreen from './ConformidadeScreen';
 
 type SubTela =
   | null
@@ -42,7 +51,8 @@ type SubTela =
   | 'salaespera' | 'iacs' | 'mar' | 'comunicacao'
   | 'ferias' | 'pedidosInternos' | 'interconsultas' | 'worklist'
   | 'especialidades' | 'bloco' | 'catalogo' | 'dashboardqualidade'
-  | 'notificacoes';
+  | 'notificacoes' | 'dietas' | 'eventosadversos' | 'equipamentos' | 'consentimentos'
+  | 'rh' | 'faturacao' | 'dashexecutivo' | 'relatorios' | 'conformidade';
 
 const ROLES_MEDICO     = ['medico'];
 const ROLES_ENFERMAGEM = ['enfermeiro', 'auxiliar'];
@@ -104,6 +114,15 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
   if (subTela === 'catalogo')            return <CatalogoScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'dashboardqualidade')  return <DashboardQualidadeScreen utilizador={utilizador} onVoltar={voltar} />;
   if (subTela === 'notificacoes')        return <NotificacoesScreen utilizador={utilizador} onVoltar={() => { setNaoLidasNotif(0); voltar(); }} />;
+  if (subTela === 'dietas')              return <DietasScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'eventosadversos')     return <EventosAdversosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'equipamentos')        return <EquipamentosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'consentimentos')      return <ConsentimentosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'rh')                  return <RHScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'faturacao')           return <FaturacaoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'dashexecutivo')       return <DashboardExecutivoScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'relatorios')          return <RelatoriosScreen utilizador={utilizador} onVoltar={voltar} />;
+  if (subTela === 'conformidade')        return <ConformidadeScreen utilizador={utilizador} onVoltar={voltar} />;
 
   const confirmarLogout = async () => {
     if (Platform.OS === 'web') {
@@ -161,6 +180,16 @@ export default function MaisScreen({ utilizador, onLogout }: Props) {
     { key: 'bloco',           icon: 'cut-outline',                   cor: '#7c3aed', titulo: 'Bloco Operatório',    sub: 'Cirurgias agendadas',                    visivel: eMedico || eEnfermagem },
     { key: 'catalogo',            icon: 'book-outline',            cor: '#ec4899', titulo: 'Catálogo',               sub: 'Medicamentos e fármacos',            visivel: eFarmaceutico || eAdmin || eMedico || eEnfermagem },
     { key: 'dashboardqualidade',  icon: 'analytics-outline',       cor: '#0d9488', titulo: 'Dashboard Qualidade',    sub: 'Indicadores clínicos e de segurança', visivel: ROLES_QUALIDADE.includes(role) || role === 'direcao' || eMedico || eEnfermagem },
+    { key: 'dietas',             icon: 'restaurant-outline',      cor: '#16a34a', titulo: 'Dietas',                  sub: 'Prescrições dietéticas do dia',       visivel: eClinical || eAdmin },
+    { key: 'eventosadversos',    icon: 'warning-outline',         cor: '#dc2626', titulo: 'Eventos Adversos',        sub: 'Registo de incidentes e near misses',  visivel: eClinical || ROLES_QUALIDADE.includes(role) || role === 'direcao' },
+    { key: 'equipamentos',       icon: 'construct-outline',       cor: '#0891b2', titulo: 'Equipamentos',             sub: 'Inventário e gestão de manutenções',   visivel: eOperacional || eTI || eClinical || eAdmin || role === 'direcao' },
+    { key: 'consentimentos',     icon: 'document-text-outline',   cor: '#6366f1', titulo: 'Consentimentos',           sub: 'Consentimentos informados dos doentes', visivel: eMedico || eEnfermagem || eAdmin },
+    // — Administrativo / Direção
+    { key: 'rh',                 icon: 'people-circle-outline',   cor: '#7c3aed', titulo: 'Recursos Humanos',          sub: 'Ausências, formações e avaliações',     visivel: eAdmin || role === 'direcao' },
+    { key: 'faturacao',          icon: 'card-outline',            cor: '#0d9488', titulo: 'Faturação',                 sub: 'Episódios de faturação e pagamentos',   visivel: eAdmin || role === 'direcao' },
+    { key: 'dashexecutivo',      icon: 'bar-chart-outline',       cor: '#6366f1', titulo: 'Dashboard Executivo',       sub: 'KPIs operacionais e financeiros',        visivel: eAdmin || role === 'direcao' },
+    { key: 'relatorios',         icon: 'document-text-outline',   cor: '#b45309', titulo: 'Relatórios DGS/SNS',        sub: 'Internamento, ocupação, diagnósticos',   visivel: eAdmin || role === 'direcao' || eTI },
+    { key: 'conformidade',       icon: 'shield-checkmark-outline',cor: '#0d9488', titulo: 'Conformidade',              sub: 'Checklist RGPD, DGS, ACSS, SNS',         visivel: ROLES_QUALIDADE.includes(role) || role === 'direcao' || eTI },
   ];
 
   const itensVisiveis = itens.filter((i) => i.visivel);

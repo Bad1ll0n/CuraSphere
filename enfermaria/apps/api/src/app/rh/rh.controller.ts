@@ -8,6 +8,7 @@ import { RegistarFormacaoDto } from './dto/registar-formacao.dto';
 import { CriarAvaliacaoDto } from './dto/criar-avaliacao.dto';
 import { AtualizarAvaliacaoDto } from './dto/atualizar-avaliacao.dto';
 import { CriarContratoDto } from './dto/criar-contrato.dto';
+import { CriarTrocaFolgaDto } from './dto/criar-troca-folga.dto';
 
 const RH_ROLES = ['hr_specialist', 'hr_director', 'direcao', 'administrativo'];
 
@@ -146,8 +147,8 @@ export class RhController {
   // ── Trocas de Folga ───────────────────────────────────────────────────────
 
   @Post('trocas-folga')
-  criarTrocaFolga(@Body() body: any, @Request() req: any) {
-    return this.rh.criarTrocaFolga(req.user.sub, body);
+  criarTrocaFolga(@Body() dto: CriarTrocaFolgaDto, @Request() req: any) {
+    return this.rh.criarTrocaFolga(req.user.sub, dto);
   }
 
   @Get('trocas-folga/minhas')

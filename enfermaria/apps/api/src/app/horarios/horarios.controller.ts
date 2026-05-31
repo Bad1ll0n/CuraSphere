@@ -4,6 +4,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { TipoTurno } from '../common/enums';
+import { CriarEscalaDto } from './dto/criar-escala.dto';
+import { AdicionarTurnoDto } from './dto/adicionar-turno.dto';
+import { EditarTurnoDto } from './dto/editar-turno.dto';
+import { GerarAutomaticoDto } from './dto/gerar-automatico.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('horarios')
@@ -41,26 +45,26 @@ export class HorariosController {
 
   @Roles('enfermeiro', 'administrativo')
   @Post()
-  criar(@Body() body: { mes: number; ano: number }, @Request() req: any) {
-    return this.horariosService.criar({ ...body, criadaPorId: req.user.sub });
+  criar(@Body() dto: CriarEscalaDto, @Request() req: any) {
+    return this.horariosService.criar({ ...dto, criadaPorId: req.user.sub });
   }
 
   @Roles('enfermeiro', 'administrativo')
   @Post(':escalId/turno')
   adicionarTurno(
     @Param('escalId') escalId: string,
-    @Body() body: { tipo: TipoTurno; data: Date; profissionaisIds: string[] },
+    @Body() dto: AdicionarTurnoDto,
   ) {
-    return this.horariosService.adicionarTurno({ ...body, escalId });
+    return this.horariosService.adicionarTurno({ ...dto, escalId });
   }
 
   @Roles('enfermeiro', 'administrativo')
   @Patch('turno/:turnoId')
   editarTurno(
     @Param('turnoId') turnoId: string,
-    @Body() body: { tipo?: TipoTurno; profissionaisIds?: string[] },
+    @Body() dto: EditarTurnoDto,
   ) {
-    return this.horariosService.editarTurno(turnoId, body);
+    return this.horariosService.editarTurno(turnoId, dto);
   }
 
   @Roles('enfermeiro', 'administrativo')
@@ -72,9 +76,9 @@ export class HorariosController {
   @Roles('enfermeiro', 'administrativo')
   @Post('gerar-automatico')
   gerarAutomatico(
-    @Body() body: { mes: number; ano: number; servico?: string },
+    @Body() dto: GerarAutomaticoDto,
     @Request() req: any,
   ) {
-    return this.horariosService.gerarEscalaAutomatica(body.mes, body.ano, req.user.sub, body.servico);
+    return this.horariosService.gerarEscalaAutomatica(dto.mes, dto.ano, req.user.sub, dto.servico);
   }
 }

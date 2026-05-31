@@ -3,6 +3,7 @@ import { BreakGlassService } from './break-glass.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('break-glass')
@@ -12,11 +13,11 @@ export class BreakGlassController {
   @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_turno', 'chefe_enfermeiros')
   @Post()
   ativar(
-    @Body() body: { doenteId: string; motivo: string },
+    @Body() dto: AtivarBreakGlassDto,
     @Request() req: any,
   ) {
     const ip = req.headers['x-real-ip'] ?? req.ip ?? '';
-    return this.service.ativar(req.user.sub, body.doenteId, body.motivo, ip);
+    return this.service.ativar(req.user.sub, dto.doenteId, dto.motivo, ip);
   }
 
   @Roles('direcao', 'ti', 'chefe_turno')

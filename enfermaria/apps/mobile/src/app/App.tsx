@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, TouchableOpacity, Modal, ActivityIndicator, StyleSheet, AppState, AppStateStatus, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '../lib/query-client';
 import { Ionicons } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
 
@@ -139,6 +141,7 @@ export default function App() {
   );
 
   return (
+    <QueryClientProvider client={queryClient}>
     <SafeAreaProvider>
       {/* Modal scanner QR */}
       <Modal visible={scannerAberto} animationType="slide" onRequestClose={() => setScannerAberto(false)}>
@@ -250,6 +253,7 @@ export default function App() {
         )}
       </NavigationContainer>
     </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }
 

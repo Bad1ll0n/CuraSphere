@@ -4,13 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
-
-interface Cama {
-  id: string;
-  numero: string;
-  quarto: string;
-  estado: string;
-}
+import type { Cama } from '@org/shared';
 
 export default function AdmitirDoentesPagina() {
   const router = useRouter();

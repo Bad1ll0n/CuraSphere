@@ -3,6 +3,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EquipamentosService } from './equipamentos.service';
+import { CriarEquipamentoDto } from './dto/criar-equipamento.dto';
+import { AtualizarEquipamentoDto } from './dto/atualizar-equipamento.dto';
+import { CriarManutencaoDto } from './dto/criar-manutencao.dto';
+import { AtualizarManutencaoDto } from './dto/atualizar-manutencao.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('equipamentos')
@@ -17,17 +21,17 @@ export class EquipamentosController {
 
   @Post()
   @Roles('operacional', 'ti')
-  criar(@Body() body: { nome: string; tipo: string; numeroSerie?: string; localizacao?: string; proximaManutencao?: string }) {
-    return this.service.criar(body);
+  criar(@Body() dto: CriarEquipamentoDto) {
+    return this.service.criar(dto);
   }
 
   @Patch(':id')
   @Roles('operacional', 'ti')
   atualizar(
     @Param('id') id: string,
-    @Body() body: { nome?: string; tipo?: string; numeroSerie?: string; localizacao?: string; estado?: string; proximaManutencao?: string },
+    @Body() dto: AtualizarEquipamentoDto,
   ) {
-    return this.service.atualizar(id, body);
+    return this.service.atualizar(id, dto);
   }
 
   @Get('alertas-manutencao')
@@ -52,18 +56,18 @@ export class EquipamentosController {
   @Roles('operacional', 'ti', 'enfermeiro', 'medico', 'auxiliar')
   criarManutencao(
     @Param('id') equipamentoId: string,
-    @Body() body: { tipo: string; descricao: string; prioridade?: string; observacoes?: string },
+    @Body() dto: CriarManutencaoDto,
     @Request() req: any,
   ) {
-    return this.service.criarManutencao(equipamentoId, body, req.user.sub);
+    return this.service.criarManutencao(equipamentoId, dto, req.user.sub);
   }
 
   @Patch('manutencoes/:id')
   @Roles('operacional', 'ti')
   atualizarManutencao(
     @Param('id') id: string,
-    @Body() body: { estado?: string; observacoes?: string; tecnicoId?: string },
+    @Body() dto: AtualizarManutencaoDto,
   ) {
-    return this.service.atualizarManutencao(id, body);
+    return this.service.atualizarManutencao(id, dto);
   }
 }

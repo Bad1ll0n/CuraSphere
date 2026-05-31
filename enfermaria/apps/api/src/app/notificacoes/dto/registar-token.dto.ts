@@ -1,13 +1,14 @@
-import { IsString, IsNotEmpty, IsIn } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegistarTokenDto {
   @ApiProperty()
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   token: string;
 
-  @ApiProperty({ enum: ['ios', 'android', 'web'] })
-  @IsIn(['ios', 'android', 'web'])
-  plataforma: string;
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  plataforma?: string;
 }

@@ -3,6 +3,8 @@ import { AtosClinicosService } from './atos-clinicos.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { CriarAtoClinicoDto } from './dto/criar-ato-clinico.dto';
+import { AtualizarAtoClinicoDto } from './dto/atualizar-ato-clinico.dto';
 
 @Controller('atos-clinicos')
 @UseGuards(JwtAuthGuard)
@@ -17,29 +19,15 @@ export class AtosClinicosController {
   @Post()
   @UseGuards(RolesGuard)
   @Roles('administrativo', 'direcao')
-  criar(@Body() body: {
-    codigo: string;
-    descricao: string;
-    categoria: string;
-    precoBase: number;
-    especialidade?: string;
-    ativo?: boolean;
-  }) {
-    return this.service.criar(body);
+  criar(@Body() dto: CriarAtoClinicoDto) {
+    return this.service.criar(dto);
   }
 
   @Patch(':id')
   @UseGuards(RolesGuard)
   @Roles('administrativo', 'direcao')
-  atualizar(@Param('id') id: string, @Body() body: {
-    codigo?: string;
-    descricao?: string;
-    categoria?: string;
-    precoBase?: number;
-    especialidade?: string;
-    ativo?: boolean;
-  }) {
-    return this.service.atualizar(id, body);
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarAtoClinicoDto) {
+    return this.service.atualizar(id, dto);
   }
 
   @Delete(':id')
