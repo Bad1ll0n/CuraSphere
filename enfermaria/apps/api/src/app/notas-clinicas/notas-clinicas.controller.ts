@@ -25,14 +25,14 @@ export class NotasClinicasController {
 
   @Patch(':id')
   @Roles('medico', 'enfermeiro')
-  atualizar(@Param('id') id: string, @Body() dto: AtualizarNotaClinicaDto) {
-    return this.service.atualizar(id, dto);
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarNotaClinicaDto, @Request() req: any) {
+    return this.service.atualizar(id, req.user.sub, req.user.role, dto);
   }
 
   @Delete(':id')
   @Roles('medico')
-  apagar(@Param('id') id: string) {
-    return this.service.apagar(id);
+  apagar(@Param('id') id: string, @Request() req: any) {
+    return this.service.apagar(id, req.user.sub, req.user.role);
   }
 
   @Post(':id/assinar')

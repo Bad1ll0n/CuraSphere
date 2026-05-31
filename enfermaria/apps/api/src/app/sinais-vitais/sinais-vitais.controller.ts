@@ -3,12 +3,16 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { SinaisVitaisService } from './sinais-vitais.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { CriarSinalVitalDto } from './dto/criar-sinal-vital.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('sinais-vitais')
 export class SinaisVitaisController {
-  constructor(private readonly service: SinaisVitaisService) {}
+  constructor(
+    private readonly service: SinaisVitaisService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'tecnico_saude')
   @Post(':doenteId')
@@ -17,17 +21,20 @@ export class SinaisVitaisController {
   }
 
   @Get(':doenteId')
-  listar(@Param('doenteId') doenteId: string) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
 
   @Get(':doenteId/ultimo')
-  ultimo(@Param('doenteId') doenteId: string) {
+  async ultimo(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.ultimo(doenteId);
   }
 
   @Get(':doenteId/tendencia')
-  analisarTendencia(@Param('doenteId') doenteId: string) {
+  async analisarTendencia(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.analisarTendencia(doenteId);
   }
 }

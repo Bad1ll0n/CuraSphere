@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { EventsGateway } from '../gateway/events.gateway';
@@ -35,13 +35,34 @@ export class AlertasService {
     });
   }
 
-  criarAlerta(doenteId: string, tipo: string, mensagem: string): void {
-    this.prisma.alertaClinico
-      .create({ data: { doenteId, tipo, mensagem } })
-      .then(() => {
-        this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
-      })
+  async criarAlerta(doenteId: string, tipo: string, mensagem: string): Promise<void> {
+    const recente = await this.prisma.alertaClinico.findFirst({
+      where: {
+        doenteId,
+        tipo,
+        lido: false,
+        criadoEm: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+      },
+      select: { id: true },
+    });
+
+    if (recente) {
+      await this.prisma.alertaClinico.update({
+        where: { id: recente.id },
+        data: { mensagem },
+      });
+      return;
+    }
+
+    await this.prisma.alertaClinico.create({ data: { doenteId, tipo, mensagem } });
+    this.notificacoesService.enviarParaDoente(doenteId, '🚨 Alerta Clínico', mensagem)
       .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+  }
+
+  async getDoenteIdByAlertaId(id: string): Promise<string> {
+    const alerta = await this.prisma.alertaClinico.findUnique({ where: { id }, select: { doenteId: true } });
+    if (!alerta) throw new NotFoundException(`Alerta (ID ${id}) não encontrado`);
+    return alerta.doenteId;
   }
 
   // ─── SOS ──────────────────────────────────────────────────────────────────
@@ -139,10 +160,10 @@ export class AlertasService {
     const medicosAtribuidos = atribuicoes.filter(a => a.utilizador.role === 'medico');
 
     if (medicosAtribuidos.length > 0) {
-      for (const a of medicosAtribuidos) {
-        notificadosIds.add(a.utilizador.id);
-        this.notificacoesService.enviarParaUtilizador(a.utilizador.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
-      }
+      const ids = medicosAtribuidos.map(a => a.utilizador.id);
+      ids.forEach(id => notificadosIds.add(id));
+      this.notificacoesService.enviarParaUtilizadores(ids, titulo, corpo, pushData)
+        .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     } else {
       // Tentar pelo subRole da especialidade do doente
       const subRoles = [
@@ -178,19 +199,15 @@ export class AlertasService {
           where: { role: 'medico', ativo: true },
           select: { id: true },
         });
-        for (const m of todosMedicos) {
-          if (!notificadosIds.has(m.id)) {
-            notificadosIds.add(m.id);
-            this.notificacoesService.enviarParaUtilizador(m.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
-          }
-        }
+        const novosIds = todosMedicos.map(m => m.id).filter(id => !notificadosIds.has(id));
+        novosIds.forEach(id => notificadosIds.add(id));
+        this.notificacoesService.enviarParaUtilizadores(novosIds, titulo, corpo, pushData)
+          .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       } else {
-        for (const t of targets) {
-          if (!notificadosIds.has(t.utilizador.id)) {
-            notificadosIds.add(t.utilizador.id);
-            this.notificacoesService.enviarParaUtilizador(t.utilizador.id, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
-          }
-        }
+        const novosIds = targets.map(t => t.utilizador.id).filter(id => !notificadosIds.has(id));
+        novosIds.forEach(id => notificadosIds.add(id));
+        this.notificacoesService.enviarParaUtilizadores(novosIds, titulo, corpo, pushData)
+          .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
     }
 
@@ -200,7 +217,8 @@ export class AlertasService {
       select: { chefeTurnoId: true },
     });
     if (turno && !notificadosIds.has(turno.chefeTurnoId)) {
-      this.notificacoesService.enviarParaUtilizador(turno.chefeTurnoId, titulo, corpo, pushData).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
+      this.notificacoesService.enviarParaUtilizadores([turno.chefeTurnoId], titulo, corpo, pushData)
+        .catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
     }
 
     // Emitir via WebSocket para todos os médicos/enfermeiros online

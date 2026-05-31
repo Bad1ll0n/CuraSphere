@@ -110,6 +110,40 @@ export class NotificacoesService {
     return this.prisma.notificacaoInApp.count({ where: { utilizadorId, lida: false } });
   }
 
+  async enviarParaUtilizadores(ids: string[], titulo: string, corpo: string, data?: Record<string, any>): Promise<void> {
+    if (ids.length === 0) return;
+    const tokens = await this.prisma.dispositivoToken.findMany({ where: { utilizadorId: { in: ids } } });
+    await Promise.all(ids.map((id) =>
+      this.prisma.notificacaoInApp.create({
+        data: { utilizadorId: id, titulo, corpo, dadosExtra: (data ?? null) as any },
+      }).catch((err) => this.logger.warn('Notificação in-app falhou', err?.message ?? String(err))),
+    ));
+    if (tokens.length === 0) return;
+
+    const mensagens: ExpoPushMessage[] = tokens.map((d) => ({
+      to: d.token,
+      title: titulo,
+      body: corpo,
+      data,
+    }));
+
+    if (this.pushCB.isOpen()) {
+      this.logger.warn('Push circuit breaker aberto — notificação ignorada');
+      return;
+    }
+
+    fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(mensagens),
+    })
+      .then(() => this.pushCB.recordSuccess())
+      .catch((err) => {
+        this.pushCB.recordFailure();
+        this.logger.warn('Notificação push falhou', err?.message ?? String(err));
+      });
+  }
+
   async enviarParaRole(role: string, titulo: string, corpo: string, data?: Record<string, any>): Promise<void> {
     const utilizadores = await this.prisma.utilizador.findMany({
       where: { role, ativo: true },

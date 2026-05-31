@@ -25,10 +25,13 @@ export class NotasClinicasService {
     });
   }
 
-  async atualizar(id: string, dto: {
+  async atualizar(id: string, utilizadorId: string, role: string, dto: {
     subjetivo?: string; objetivo?: string; avaliacao?: string; plano?: string;
   }) {
-    await this.buscarNota(id);
+    const nota = await this.buscarNota(id);
+    const rolesSupervision = ['direcao', 'chefe_medicos', 'chefe_enfermeiros'];
+    const podeEditar = nota.autorId === utilizadorId || rolesSupervision.includes(role);
+    if (!podeEditar) throw new ForbiddenException('Só o autor pode editar esta nota');
     return this.prisma.notaClinica.update({
       where: { id },
       data: { ...dto, editadaEm: new Date() },
@@ -36,8 +39,11 @@ export class NotasClinicasService {
     });
   }
 
-  async apagar(id: string) {
-    await this.buscarNota(id);
+  async apagar(id: string, utilizadorId: string, role: string) {
+    const nota = await this.buscarNota(id);
+    const rolesSupervision = ['direcao', 'chefe_medicos'];
+    const podeApagar = nota.autorId === utilizadorId || rolesSupervision.includes(role);
+    if (!podeApagar) throw new ForbiddenException('Só o autor pode apagar esta nota');
     return this.prisma.notaClinica.delete({ where: { id } });
   }
 

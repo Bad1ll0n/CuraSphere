@@ -62,15 +62,15 @@ export class AuthController {
     return this.authService.setupMfa(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @SkipThrottle()
+  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
   mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
     return this.authService.ativarMfa(req.user.sub, dto.secret, dto.code);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @SkipThrottle()
+  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/desativar')
   mfaDesativar(@Request() req: any, @Body() dto: MfaDesativarDto) {
     return this.authService.desativarMfa(req.user.sub, dto.code);
@@ -101,8 +101,8 @@ export class AuthController {
   ) {
     const token = req.cookies?.refresh_token;
     if (token) await this.authService.logout(token);
-    res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'lax' });
-    res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'lax' });
+    res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'strict' });
+    res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'strict' });
     return { mensagem: 'Sessão terminada' };
   }
 
@@ -120,7 +120,8 @@ export class AuthController {
     return this.authService.passwordStatus(req.user.sub);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ThrottlerGuard)
+  @Throttle({ default: { ttl: 3600000, limit: 3 } })
   @Patch('alterar-password')
   async alterarPassword(
     @Request() req: any,
@@ -128,14 +129,14 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.alterarPassword(req.user.sub, dto.passwordAtual, dto.novaPassword);
-    res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'lax' });
-    res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'lax' });
+    res.clearCookie('access_token', { path: '/', httpOnly: true, sameSite: 'strict' });
+    res.clearCookie('refresh_token', { path: '/', httpOnly: true, sameSite: 'strict' });
     return result;
   }
 
   private setTokenCookies(res: Response, accessToken: string, refreshToken: string) {
     const isProd = process.env.NODE_ENV === 'production';
-    const base = { httpOnly: true, secure: isProd, sameSite: 'lax' as const, path: '/' };
+    const base = { httpOnly: true, secure: isProd, sameSite: 'strict' as const, path: '/' };
     res.cookie('access_token',  accessToken,  { ...base, maxAge: COOKIE_MAX_AGE_ACCESS });
     res.cookie('refresh_token', refreshToken, { ...base, maxAge: COOKIE_MAX_AGE_REFRESH });
   }

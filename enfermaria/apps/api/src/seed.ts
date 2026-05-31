@@ -4,7 +4,14 @@ import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hash = await bcrypt.hash('admin123', 10);
+  const seedPassword = process.env.SEED_PASSWORD;
+  if (!seedPassword) {
+    throw new Error(
+      'SEED_PASSWORD não definido. Define antes de correr o seed:\n' +
+      '  SEED_PASSWORD=<password_forte> npx ts-node src/seed.ts',
+    );
+  }
+  const hash = await bcrypt.hash(seedPassword, 12);
 
   const admin = await prisma.utilizador.upsert({
     where: { numeroFuncionario: '00001' },
@@ -16,6 +23,7 @@ async function main() {
       role: 'enfermeiro',
       subRole: 'supervisor_enfermagem',
       ordemExperiencia: 1,
+      passwordExpiresAt: new Date(),
     },
   });
 
@@ -27,6 +35,7 @@ async function main() {
       numeroFuncionario: '00002',
       passwordHash: hash,
       role: 'administrativo',
+      passwordExpiresAt: new Date(),
     },
   });
 
@@ -39,6 +48,7 @@ async function main() {
       passwordHash: hash,
       role: 'ti',
       subRole: 'it_admin',
+      passwordExpiresAt: new Date(),
     },
   });
 
@@ -46,7 +56,6 @@ async function main() {
   console.log(' -', admin.nome, '| Nº', admin.numeroFuncionario, '| Role:', admin.role, '/', admin.subRole);
   console.log(' -', admin2.nome, '| Nº', admin2.numeroFuncionario, '| Role:', admin2.role);
   console.log(' -', itAdmin.nome, '| Nº', itAdmin.numeroFuncionario, '| Role:', itAdmin.role, '/', itAdmin.subRole);
-  console.log('Password de todos: admin123');
 }
 
 main()

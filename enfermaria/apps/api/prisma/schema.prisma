@@ -309,6 +309,7 @@ model Turno {
 
   @@index([chefeTurnoId])
   @@index([dataInicio])
+  @@index([dataInicio, dataFim, tipo])
   @@map("turnos")
 }
 
@@ -543,6 +544,7 @@ model Medicacao {
   registos     RegistoMedicacao[]
 
   @@index([doenteId, ativo])
+  @@index([doenteId, ativo, iniciadoEm])
   @@index([estadoValidacao])
   @@index([deletedAt])
   @@map("medicacoes")
@@ -651,6 +653,7 @@ model AtribuicaoHorarioTurno {
   atribuidoPor Utilizador   @relation("AtribuicaoAtribuidoPor", fields: [atribuidoPorId], references: [id], onDelete: Cascade)
 
   @@unique([horarioTurnoId, doenteId, utilizadorId])
+  @@index([utilizadorId, horarioTurnoId])
   @@map("atribuicoes_horario_turno")
 }
 
@@ -745,6 +748,7 @@ model AlertaClinico {
   criadoEm DateTime @default(now())
 
   @@index([doenteId, lido])
+  @@index([doenteId, lido, criadoEm])
   @@index([criadoEm])
   @@map("alertas_clinicos")
 }
@@ -811,6 +815,7 @@ model NotificacaoInApp {
   lidaEm       DateTime?
 
   @@index([utilizadorId, lida])
+  @@index([utilizadorId, lida, criadaEm])
   @@index([criadaEm])
   @@map("notificacoes_inapp")
 }
