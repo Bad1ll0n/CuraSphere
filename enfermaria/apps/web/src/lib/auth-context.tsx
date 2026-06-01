@@ -74,6 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     api.post('/auth/logout').catch(() => {});
+    sessionStorage.removeItem('mfaSetupToken');
+    sessionStorage.removeItem('pwdExpiredToken');
     queryClient.clear();
     setUtilizador(null);
     setPasswordAviso({ ativo: false, diasRestantes: null });
