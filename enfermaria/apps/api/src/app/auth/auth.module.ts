@@ -16,7 +16,17 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN', '1h') },
+        signOptions: {
+          expiresIn: config.get<string>('JWT_EXPIRES_IN', '1h'),
+          algorithm: 'HS256',
+          issuer: 'curasphere-api',
+          audience: 'curasphere',
+        },
+        verifyOptions: {
+          algorithms: ['HS256'],
+          issuer: 'curasphere-api',
+          audience: 'curasphere',
+        },
       }),
     }),
   ],

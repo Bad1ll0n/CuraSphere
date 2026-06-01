@@ -16,7 +16,7 @@ export class UtilizadoresService {
     servico?: Servico;
     ordemExperiencia?: number;
   }) {
-    const passwordHash = await bcrypt.hash(data.password, 10);
+    const passwordHash = await bcrypt.hash(data.password, 12);
 
     return this.prisma.$transaction(async (tx) => {
       const existe = await tx.utilizador.findUnique({

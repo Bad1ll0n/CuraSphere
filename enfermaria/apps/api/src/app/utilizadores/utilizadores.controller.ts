@@ -18,6 +18,7 @@ export class UtilizadoresController {
     return this.utilizadoresService.criar(body);
   }
 
+  @Roles('ti', 'chefe_turno', 'chefe_enfermeiros', 'direcao')
   @Get()
   listar(
     @Query('role') role?: string,
@@ -26,14 +27,13 @@ export class UtilizadoresController {
     @Query('limit') limit?: string,
   ) {
     const roles = rolesParam ? rolesParam.split(',') : undefined;
-    return this.utilizadoresService.listar(
-      role,
-      roles,
-      page ? parseInt(page, 10) : 1,
-      limit ? parseInt(limit, 10) : 50,
-    );
+    const pageNum = Math.max(1, page ? parseInt(page, 10) || 1 : 1);
+    const limitNum = Math.min(100, Math.max(1, limit ? parseInt(limit, 10) || 50 : 50));
+    return this.utilizadoresService.listar(role, roles, pageNum, limitNum);
   }
 
+  @Roles('ti')
+  @SubRoles('it_admin')
   @Get(':id')
   buscarPorId(@Param('id') id: string) {
     return this.utilizadoresService.buscarPorId(id);

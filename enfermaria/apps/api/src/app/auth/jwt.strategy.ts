@@ -14,6 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ]),
       ignoreExpiration: false,
       secretOrKey: config.get<string>('JWT_SECRET'),
+      // Pinning explícito do algoritmo — impede ataques "alg: none" e algorithm-confusion
+      algorithms: ['HS256'],
+      issuer: 'curasphere-api',
+      audience: 'curasphere',
     });
   }
 

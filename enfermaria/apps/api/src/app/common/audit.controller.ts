@@ -23,7 +23,8 @@ export class AuditController {
     @Query('page') page = '1',
   ) {
     const take = 20;
-    const skip = (parseInt(page) - 1) * take;
+    const pageNum = Math.max(1, parseInt(page) || 1);
+    const skip = (pageNum - 1) * take;
 
     const where: Record<string, any> = {};
     if (utilizadorId) where['utilizadorId'] = utilizadorId;
@@ -46,7 +47,7 @@ export class AuditController {
       }),
     ]);
 
-    return { total, pagina: parseInt(page), totalPaginas: Math.ceil(total / take), logs };
+    return { total, pagina: pageNum, totalPaginas: Math.ceil(total / take), logs };
   }
 
   @Get('checklist')

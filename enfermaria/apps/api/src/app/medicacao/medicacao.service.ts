@@ -1,7 +1,9 @@
 import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { authenticator } from 'otplib';
+import * as crypto from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { RedisService } from '../redis/redis.service';
 import interacoesJson from './interacoes.json';
 
 interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
@@ -44,6 +46,7 @@ export class MedicacaoService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
+    private readonly redis: RedisService,
   ) {}
 
   async listarPorDoente(doenteId: string) {
@@ -417,6 +420,18 @@ export class MedicacaoService {
 
     const valido = authenticator.verify({ token: totpCode, secret: utilizador.mfaSecret });
     if (!valido) throw new ForbiddenException('Código TOTP inválido');
+
+    // Anti-replay: cada código TOTP só pode ser usado uma vez por utilizador
+    const hash = crypto.createHash('sha256').update(`${utilizador.mfaSecret}:${totpCode}`).digest('hex');
+    const setOk = await this.redis.setIfNotExists(`totp:used:sign:${utilizadorId}:${hash}`, '1', 90);
+    if (setOk === null) {
+      this.logger.warn(`Redis indisponível — assinatura clínica fail-closed (utilizador ${utilizadorId})`);
+      throw new ForbiddenException('Serviço de validação temporariamente indisponível. Tente novamente.');
+    }
+    if (!setOk) {
+      this.logger.warn(`Replay de TOTP na assinatura — utilizador ${utilizadorId}, medicacao ${medicacaoId}`);
+      throw new ForbiddenException('Código TOTP já utilizado. Aguarde o próximo código.');
+    }
 
     const med = await this.prisma.medicacao.findUnique({ where: { id: medicacaoId } });
     if (!med) throw new NotFoundException(`Medicação (ID ${medicacaoId}) não encontrada`);

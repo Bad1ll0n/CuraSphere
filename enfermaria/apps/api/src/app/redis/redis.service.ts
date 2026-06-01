@@ -59,4 +59,23 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       // degradação silenciosa
     }
   }
+
+  /**
+   * SET com NX (only-if-not-exists) + EX (TTL).
+   * Devolve `true` se a chave foi criada (o caller obteve "lock"),
+   * `false` se já existia (replay detectado).
+   *
+   * Quando Redis está indisponível devolve `null` — caller decide a política
+   * (fail-open vs fail-closed). Para segurança crítica (anti-replay TOTP),
+   * o caller deve interpretar `null` como "indisponível" e recusar.
+   */
+  async setIfNotExists(key: string, value: string, ttlSeconds: number): Promise<boolean | null> {
+    if (!this.connected) return null;
+    try {
+      const result = await this.client.set(key, value, 'EX', ttlSeconds, 'NX');
+      return result === 'OK';
+    } catch {
+      return null;
+    }
+  }
 }

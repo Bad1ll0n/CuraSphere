@@ -89,6 +89,39 @@ export class DoenteService {
     return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
   }
 
+  /**
+   * Verifica se o utilizador tem direito a aceder ao doente.
+   * Permissões:
+   *   - direcao, qualidade, ti, chefe_turno, chefe_enfermeiros, chefe_medicos, administrativo, farmaceutico → acesso total (oversight)
+   *   - medico, enfermeiro, auxiliar, tecnico_saude, operacional → só doentes a quem estão atribuídos
+   *     (via Atribuicao OU AtribuicaoHorarioTurno alguma vez)
+   * Esta verificação fecha o vector IDOR principal (PHI cross-patient leak).
+   */
+  async assertAcessoDoente(utilizadorId: string, role: string, doenteId: string): Promise<void> {
+    const rolesOversight = ['direcao', 'qualidade', 'ti', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos', 'administrativo', 'farmaceutico'];
+    if (rolesOversight.includes(role)) return;
+
+    const doente = await this.prisma.doente.findUnique({ where: { id: doenteId }, select: { id: true } });
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+
+    // Atribuição direta
+    const atribuicaoDireta = await this.prisma.atribuicaoDoente.findFirst({
+      where: { doenteId, enfermeiroId: utilizadorId },
+      select: { id: true },
+    });
+    if (atribuicaoDireta) return;
+
+    // Atribuição via horário de turno (qualquer histórico — clinicians podem precisar de continuidade)
+    const atribuicaoTurno = await this.prisma.atribuicaoHorarioTurno.findFirst({
+      where: { doenteId, utilizadorId },
+      select: { id: true },
+    });
+    if (atribuicaoTurno) return;
+
+    this.logger.warn(`IDOR negado: utilizador ${utilizadorId} (${role}) tentou aceder a doente ${doenteId}`);
+    throw new ForbiddenException('Sem permissão para aceder a este doente');
+  }
+
   async buscarPorId(id: string) {
     const doente = await this.prisma.doente.findUnique({
       where: { id },
@@ -596,7 +629,17 @@ export class DoenteService {
     });
   }
 
-  async atualizarProblema(id: string, dto: { estado?: string; descricao?: string; dataFim?: string }) {
+  async atualizarProblema(doenteId: string, id: string, dto: { estado?: string; descricao?: string; dataFim?: string }) {
+    // IDOR-fix: confirma que o problema realmente pertence ao doente da URL
+    const problema = await this.prisma.problemaClinico.findUnique({
+      where: { id },
+      select: { id: true, doenteId: true },
+    });
+    if (!problema) throw new NotFoundException(`Problema clínico (ID ${id}) não encontrado`);
+    if (problema.doenteId !== doenteId) {
+      throw new ForbiddenException('Problema clínico não pertence a este doente');
+    }
+
     return this.prisma.problemaClinico.update({
       where: { id },
       data: {

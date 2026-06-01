@@ -25,7 +25,9 @@ export class FaturacaoController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
-    return this.faturacaoService.listar(estado, page ? +page : 1, limit ? +limit : 25);
+    const pageNum = Math.max(1, page ? parseInt(page, 10) || 1 : 1);
+    const limitNum = Math.min(100, Math.max(1, limit ? parseInt(limit, 10) || 25 : 25));
+    return this.faturacaoService.listar(estado, pageNum, limitNum);
   }
 
   @Get('doente/:doenteId')
