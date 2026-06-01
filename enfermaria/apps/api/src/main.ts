@@ -2,6 +2,7 @@ import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { Logger as PinoLogger } from 'nestjs-pino';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -23,11 +24,41 @@ async function bootstrap() {
   const uploadsDir = join(process.cwd(), 'uploads', 'mensagens');
   mkdirSync(uploadsDir, { recursive: true });
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads' });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
+  app.useLogger(app.get(PinoLogger));
+  // Esconder fingerprint Express
+  app.disable('x-powered-by');
+
+  // Servir uploads como anexos (nunca inline) para evitar XSS via SVG/HTML/PDF embutido
+  app.useStaticAssets(join(process.cwd(), 'uploads'), {
+    prefix: '/uploads',
+    setHeaders: (res) => {
+      res.setHeader('Content-Disposition', 'attachment');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
+    },
+  });
 
   app.use((compression as any).default());
-  app.use((helmet as any).default());
+  app.use((helmet as any).default({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'blob:'],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'same-site' },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hsts: { maxAge: 63072000, includeSubDomains: true, preload: true },
+  }));
   app.use((cookieParser as any)());
 
   app.useGlobalFilters(new AllExceptionsFilter());
@@ -52,17 +83,23 @@ async function bootstrap() {
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Correlation-ID'],
+    exposedHeaders: ['X-Correlation-ID'],
   });
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('CuraSphere API')
-    .setDescription('API de Gestão Hospitalar CuraSphere')
-    .setVersion('1.0')
-    .addCookieAuth('access_token')
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api/docs', app, document);
+  // Swagger só em dev — evita expor superfície de ataque + estrutura de endpoints em produção
+  if (process.env.NODE_ENV !== 'production') {
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('CuraSphere API')
+      .setDescription('API de Gestão Hospitalar CuraSphere')
+      .setVersion('1.0')
+      .addCookieAuth('access_token')
+      .build();
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('api/docs', app, document);
+  } else {
+    Logger.log('Swagger desativado em produção');
+  }
 
   const port = process.env.PORT || 3333;
   await app.listen(port);

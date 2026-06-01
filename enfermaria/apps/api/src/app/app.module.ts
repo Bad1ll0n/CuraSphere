@@ -3,6 +3,8 @@ import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import * as Joi from 'joi';
+import { randomUUID } from 'crypto';
+import { LoggerModule } from 'nestjs-pino';
 import { TerminusModule } from '@nestjs/terminus';
 import { PrismaHealthIndicator } from '@nestjs/terminus';
 import { PrismaModule } from './prisma/prisma.module';
@@ -34,6 +36,26 @@ import { OperacionalModule } from './operacional.module';
         PORT: Joi.number().default(3333),
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
       }),
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        genReqId: (req) => (req.headers['x-correlation-id'] as string) ?? randomUUID(),
+        level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
+        transport: process.env['NODE_ENV'] !== 'production'
+          ? { target: 'pino-pretty', options: { colorize: true, translateTime: 'SYS:standard', ignore: 'pid,hostname' } }
+          : undefined,
+        // Não logar passwords ou tokens no body
+        serializers: {
+          req(req) {
+            return { method: req.method, url: req.url, correlationId: req.id };
+          },
+          res(res) {
+            return { statusCode: res.statusCode };
+          },
+        },
+        redact: { paths: ['req.headers.authorization', 'req.headers.cookie'], remove: true },
+        autoLogging: { ignore: (req) => req.url === '/v1/health' },
+      },
     }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     TerminusModule,

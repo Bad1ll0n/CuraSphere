@@ -10,6 +10,20 @@ import { AuditService } from './audit.service';
 
 const METODOS_AUDITADOS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
 
+const CAMPOS_SENSIVEIS = new Set([
+  'password', 'passwordAtual', 'novaPassword', 'passwordHash',
+  'mfaSecret', 'secret', 'code', 'token', 'passwordExpiredToken', 'mfaSetupToken',
+]);
+
+function redactirBody(body: unknown): string | undefined {
+  if (!body || typeof body !== 'object') return undefined;
+  const redacted: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(body as Record<string, unknown>)) {
+    redacted[k] = CAMPOS_SENSIVEIS.has(k) ? '[REDACTED]' : v;
+  }
+  try { return JSON.stringify(redacted); } catch { return undefined; }
+}
+
 function extrairEntidadeId(url: string): string | undefined {
   const partes = url.split('?')[0].split('/').filter(Boolean);
   for (let i = 1; i < partes.length; i++) {
@@ -48,6 +62,8 @@ export class AuditInterceptor implements NestInterceptor {
       return next.handle();
     }
 
+    const detalhes = redactirBody(req.body);
+
     return next.handle().pipe(
       tap({
         next: () => {
@@ -56,6 +72,7 @@ export class AuditInterceptor implements NestInterceptor {
             acao: anonimizarAcao(method, url),
             entidadeId: extrairEntidadeId(url),
             entidadeTipo: extrairEntidadeTipo(url),
+            detalhes,
             ip: ip ?? undefined,
             userAgent,
           });

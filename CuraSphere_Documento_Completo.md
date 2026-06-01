@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-05-31 (sessão 42)
+> **Última actualização:** 2026-06-01 (sessão 45)
 > **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
@@ -1724,6 +1724,236 @@ Implementação dos 11 itens do plano de melhorias arquitecturais (avaliação e
 12. Visualizador DICOM para imagiologia
 13. Testes automatizados e2e (Playwright/Cypress)
 14. Integrações externas (HL7, FHIR, SONHO/SClínico)
+
+---
+
+### ✅ Completado na Sessão 45 (2026-06-01) — Segunda Ronda de Hardening: IDOR Residual, Enforcement Frontend, Logging e Qualidade
+
+Segunda auditoria white-box completa (3 agentes paralelos). 16 itens identificados e implementados em ordem de prioridade.
+
+#### 🔴 Crítico — Vulnerabilidades Imediatas
+
+**IDOR em 8 controllers clínicos restantes**
+- `exames.controller.ts`, `consultas.controller.ts`, `consentimentos.controller.ts`, `dispositivos-invasivos.controller.ts`, `dietas.controller.ts`, `interconsultas.controller.ts`, `notas-clinicas.controller.ts` (GET), `medicacao.controller.ts` (GET doente + historico + interacoes)
+- `DoenteService` injectado em todos + `assertAcessoDoente()` como primeira linha de cada endpoint afectado
+- Módulos correspondentes: `DoenteModule` adicionado a `imports[]`
+
+**Frontend enforcement de MFA obrigatório e password expirada**
+- `login/page.tsx`: branches em `mfaSetupObrigatorio` (→ sessionStorage + `/login/mfa-setup`) e `passwordExpirada` (→ sessionStorage + `/login/alterar-password`)
+- `/login/mfa-setup/page.tsx` (NOVA): lê `mfaSetupToken`; mostra QR code; chama `POST /auth/mfa/ativar`; redirige para login
+- `/login/alterar-password/page.tsx` (NOVA): lê `passwordExpiredToken`; formulário nova password; chama `PATCH /auth/alterar-password`; redirige para login com mensagem
+- `auth-context.tsx`: `LoginResult` estendido com campos `mfaSetupObrigatorio`, `mfaSetupToken`, `passwordExpirada`, `passwordExpiredToken`
+
+**Logout mobile invalida sessão no servidor**
+- `apps/mobile/src/lib/auth.ts`: `logout()` chama `POST /auth/logout` antes de limpar SecureStore — refresh token revogado no servidor
+
+**React Query cache limpo no logout**
+- `auth-context.tsx` (web): `queryClient.clear()` no `logout()` — dados de doentes da sessão anterior não persistem
+- `apps/mobile/src/lib/auth.ts`: idem com `queryClient.clear()` antes de limpar SecureStore
+
+#### 🟡 Alto — Robustez e Correctness
+
+**Middleware Next.js valida expiração JWT**
+- `apps/web/src/middleware.ts`: `async`; usa `jose jwtVerify()` com `algorithms: ['HS256']`, `issuer: 'curasphere-api'`, `audience: 'curasphere'`; token expirado → apaga cookies e redirige para `/login`
+
+**Prisma error handling (P2002/P2025)**
+- `exception.filter.ts`: `PrismaClientKnownRequestError` capturado; P2002 → 409 CONFLICT com nome do campo duplicado; P2025 → 404 NOT_FOUND; outros códigos Prisma → 500 DATABASE_ERROR
+
+**Joi validação de variáveis de ambiente**
+- `app.module.ts`: `ConfigModule.forRoot({ validationSchema })` com `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET` (min 32), `ALLOWED_ORIGINS`, `PORT`, `NODE_ENV`; servidor recusa arrancar se faltar variável crítica
+
+**Break-glass rate limit**
+- `break-glass.controller.ts`: `@Throttle({ default: { ttl: 86400000, limit: 10 } })` — máximo 10 activações de emergência por utilizador por 24h
+
+#### 🟢 Médio — Qualidade e Observabilidade
+
+**Structured JSON logging (nestjs-pino)**
+- `app.module.ts`: `LoggerModule.forRoot` com `pino-http`; correlation ID gerado por `genReqId` (lê `X-Correlation-ID` header ou gera UUID); `pino-pretty` em dev, JSON puro em prod; health check excluído do auto-logging; `Authorization` e `Cookie` headers redactados nos logs
+- `main.ts`: `app.useLogger(PinoLogger)`; `bufferLogs: true`; CORS allowedHeaders inclui `X-Correlation-ID`
+
+**Prisma connection pool**
+- `.env.example`: `DATABASE_URL` agora inclui `?connection_limit=25&pool_timeout=10` — configuração explícita do pool para produção
+
+**CSP header no Next.js frontend**
+- `apps/web/next.config.js`: `Content-Security-Policy` adicionado com `default-src 'self'`, `frame-ancestors 'none'`, `object-src 'none'`, `base-uri 'self'`
+
+**Audit log com payload redactado**
+- `audit.interceptor.ts`: `req.body` serializado para `detalhes`; campos sensíveis (`password`, `passwordAtual`, `novaPassword`, `mfaSecret`, `secret`, `code`, `token`, `passwordExpiredToken`, `mfaSetupToken`) substituídos por `[REDACTED]`
+
+#### Ficheiros Modificados
+
+| Ficheiro | Alterações |
+|---|---|
+| `apps/api/src/app/exames/exames.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/consultas/consultas.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/consentimentos/consentimentos.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/dispositivos-invasivos/dispositivos-invasivos.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/dietas/dietas.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/interconsultas/interconsultas.controller.ts` + module | IDOR assertAcessoDoente |
+| `apps/api/src/app/notas-clinicas/notas-clinicas.controller.ts` + module | IDOR GET assertAcessoDoente |
+| `apps/api/src/app/medicacao/medicacao.controller.ts` + module | IDOR GET assertAcessoDoente |
+| `apps/api/src/app/common/exception.filter.ts` | Prisma P2002/P2025 → 409/404 |
+| `apps/api/src/app/break-glass/break-glass.controller.ts` | @Throttle 10/24h |
+| `apps/api/src/app/app.module.ts` | Joi env validation + LoggerModule pino |
+| `apps/api/src/main.ts` | PinoLogger, bufferLogs, X-Correlation-ID CORS |
+| `apps/api/src/app/common/audit.interceptor.ts` | req.body redactado em detalhes |
+| `apps/api/.env.example` | connection_limit=25&pool_timeout=10 |
+| `apps/web/src/lib/auth-context.tsx` | LoginResult flags, queryClient.clear() |
+| `apps/web/src/app/(auth)/login/page.tsx` | branches mfaSetupObrigatorio/passwordExpirada |
+| `apps/web/src/app/(auth)/login/mfa-setup/page.tsx` | NOVA página MFA setup forçado |
+| `apps/web/src/app/(auth)/login/alterar-password/page.tsx` | NOVA página password expirada |
+| `apps/web/src/middleware.ts` | jose jwtVerify async |
+| `apps/web/next.config.js` | CSP header |
+| `apps/mobile/src/lib/auth.ts` | logout invalida servidor + queryClient.clear() |
+
+---
+
+### ✅ Completado na Sessão 44 (2026-06-01) — Hardening Pós-Auditoria: 14 Correcções de Segurança e Qualidade
+
+Implementação dos 14 itens identificados na avaliação white-box da Sessão 43.
+
+#### 🔴 Crítico — Vulnerabilidades Imediatas
+
+**IDOR em sub-recursos clínicos (sinais-vitais e alertas)**
+- `sinais-vitais.controller.ts`: `DoenteService` injectado; `assertAcessoDoente()` chamado nos 3 endpoints GET antes de servir dados
+- `alertas.controller.ts`: `assertAcessoDoente()` em `listar`, `marcarTodosLidos` e `marcarLido` (este último via `getDoenteIdByAlertaId()` para resolver o doenteId a partir do alertaId)
+- `alertas.service.ts`: helper `getDoenteIdByAlertaId()` adicionado
+- `sinais-vitais.module.ts` e `alertas.module.ts`: `DoenteModule` adicionado aos imports
+
+**Rate limiting em MFA activação/desactivação**
+- `auth.controller.ts`: `@SkipThrottle()` substituído por `@Throttle({ default: { ttl: 60000, limit: 5 } })` em `mfa/ativar` e `mfa/desativar` — impede brute-force dos 6 dígitos TOTP
+
+**Author check em notas clínicas**
+- `notas-clinicas.service.ts`: `atualizar()` e `apagar()` recebem `utilizadorId` e `role`; `ForbiddenException` se `nota.autorId !== utilizadorId` e role não for supervisão (`direcao`, `chefe_medicos`, `chefe_enfermeiros`)
+- `notas-clinicas.controller.ts`: passa `req.user.sub, req.user.role` para ambos os métodos
+
+#### 🟡 Alto — Robustez e Boas Práticas
+
+**Account lockout após 5 falhas de login**
+- `auth.service.ts`: Redis `login:fail:{id}` acumula falhas (TTL 900s); ao atingir 5, define `login:lock:{id}` por 15 min; login bem-sucedido limpa o contador
+- Mantém DUMMY_BCRYPT_HASH para utilizadores inexistentes (timing-safe)
+
+**6 índices compostos no schema Prisma**
+- `Medicacao`: `@@index([doenteId, ativo, iniciadoEm])` — MAR e administração
+- `AlertaClinico`: `@@index([doenteId, lido, criadoEm])` — badge e painel
+- `AtribuicaoHorarioTurno`: `@@index([utilizadorId, horarioTurnoId])` — lista de doentes do enfermeiro
+- `NotificacaoInApp`: `@@index([utilizadorId, lida, criadaEm])` — paginação de notificações
+- `Turno`: `@@index([dataInicio, dataFim, tipo])` — escalas e gestão de RH
+
+**Rate limiting em alterar-password**
+- `auth.controller.ts`: `@Throttle({ default: { ttl: 3600000, limit: 3 } })` — 3 alterações/hora
+
+**Prevenção de alertas duplicados + N+1 fix SOS**
+- `alertas.service.ts`: `criarAlerta()` torna-se `async`; verifica alerta não lido do mesmo tipo em janela de 5 min — actualiza em vez de criar; notificação push apenas para alertas novos
+- `notificacoes.service.ts`: `enviarParaUtilizadores(ids[], ...)` pré-carrega todos os device tokens numa query única; SOS usa este método em vez de loop individual
+
+**Session idle timeout 15 min no web**
+- `client-layout.tsx`: `useRef` + `setTimeout(15min)` com listeners `mousemove`, `keydown`, `click`, `touchstart`; expiração chama `POST /auth/logout` e redirige para `/login`
+
+**Security headers em Next.js**
+- `next.config.js`: `headers()` retorna `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=(self)`, `HSTS: 2 anos`
+
+#### 🟢 Médio — Qualidade e UX Clínica
+
+**Error boundaries nos panels da ficha do doente**
+- `doentes/[id]/page.tsx`: classe `PanelErrorBoundary` (React class component) envolve cada um dos 14 painéis; erro num painel não afecta os restantes — mostra mensagem de erro isolada
+
+**MFA obrigatório para roles clínicos**
+- `auth.service.ts`: após login com sucesso, roles `medico, enfermeiro, farmaceutico, tecnico_saude, auxiliar` sem MFA activo recebem `{ mfaSetupObrigatorio: true, mfaSetupToken }` em vez de access token
+
+**Password expirada bloqueia login (não apenas aviso)**
+- `auth.service.ts`: `passwordExpiresAt < now` emite `{ passwordExpirada: true, passwordExpiredToken }` com scope restrito — access token normal não é emitido
+
+**Seed users com password a expirar imediatamente**
+- `seed.ts`: todos os utilizadores de seed criados com `passwordExpiresAt: new Date()` — força alteração de password no primeiro login
+
+#### Ficheiros Modificados
+
+| Ficheiro | Alterações |
+|---|---|
+| `apps/api/src/app/sinais-vitais/sinais-vitais.controller.ts` | IDOR + DoenteService |
+| `apps/api/src/app/sinais-vitais/sinais-vitais.module.ts` | DoenteModule em imports |
+| `apps/api/src/app/alertas/alertas.controller.ts` | IDOR + DoenteService |
+| `apps/api/src/app/alertas/alertas.module.ts` | DoenteModule em imports |
+| `apps/api/src/app/alertas/alertas.service.ts` | getDoenteIdByAlertaId, criarAlerta dedup, batch SOS |
+| `apps/api/src/app/notificacoes/notificacoes.service.ts` | enviarParaUtilizadores batch |
+| `apps/api/src/app/notas-clinicas/notas-clinicas.service.ts` | author check em atualizar/apagar |
+| `apps/api/src/app/notas-clinicas/notas-clinicas.controller.ts` | passa utilizadorId/role |
+| `apps/api/src/app/auth/auth.controller.ts` | throttle MFA, throttle password |
+| `apps/api/src/app/auth/auth.service.ts` | account lockout, MFA obrigat., pwd expirada |
+| `apps/api/prisma/schema.prisma` | 5 índices compostos |
+| `apps/api/src/seed.ts` | passwordExpiresAt: new Date() |
+| `apps/web/src/app/(dashboard)/client-layout.tsx` | idle timeout 15 min |
+| `apps/web/next.config.js` | security headers |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/page.tsx` | PanelErrorBoundary |
+
+---
+
+### ✅ Completado na Sessão 43 (2026-05-31) — Auditoria de Segurança White-Box (OWASP Top 10 + 26 categorias)
+
+Auditoria completa com leitura de código real, classificação por categoria e aplicação imediata de fixes. Metodologia OWASP Top 10 + 26 categorias adicionais.
+
+#### Resultado Global
+
+| Categoria | Estado | Acção |
+|---|---|---|
+| A01 Broken Access Control | VULNERÁVEL → CORRIGIDO | IDOR PHI cross-patient (CRÍTICO) |
+| A02 Cryptographic Failures | SEGURO | JWT HS256, bcrypt cost 12, HTTPOnly cookies |
+| A03 Injection | SEGURO | Prisma ORM (prepared statements), ValidationPipe whitelist |
+| A04 Insecure Design | RISCO PARCIAL → CORRIGIDO | TOTP anti-replay, refresh reuse detection |
+| A05 Security Misconfiguration | VULNERÁVEL → CORRIGIDO | Helmet CSP/HSTS, Swagger prod-disabled, WS CORS |
+| A06 Vulnerable Components | SEGURO | Dependências actuais; sem CVEs conhecidos |
+| A07 Identification Failures | VULNERÁVEL → CORRIGIDO | Timing attack user-enumeration, JWT alg pinning |
+| A08 Software Integrity | SEGURO | `pnpm-lock.yaml` commitado, sem `--ignore-scripts` |
+| A09 Security Logging | SEGURO | AuditInterceptor assíncrono, Logger em eventos críticos |
+| A10 SSRF | SEGURO | Sem chamadas HTTP externas controladas pelo utilizador |
+| Mass Assignment | VULNERÁVEL → CORRIGIDO | `EditarUtilizadorDto` com `@IsIn` para role/servico |
+| Upload/XSS | VULNERÁVEL → CORRIGIDO | Servir uploads com `Content-Disposition: attachment` + sandbox CSP |
+| WebSocket CORS | VULNERÁVEL → CORRIGIDO | Substituído `origin: '*'` por allowlist `ALLOWED_ORIGINS` |
+| DoS por paginação | VULNERÁVEL → CORRIGIDO | Cap `limit ≤ 100` em todos os endpoints de listagem |
+| Filename injection | RISCO PARCIAL → CORRIGIDO | Sanitização de extensão em uploads de mensagens |
+
+#### Vulnerabilidades Críticas Corrigidas
+
+**IDOR — PHI Cross-Patient Leak (A01)**
+- Qualquer clínico autenticado podia ler registos de qualquer doente via `GET /doentes/:id`
+- Fix: `assertAcessoDoente(utilizadorId, role, doenteId)` em `doentes.service.ts`; verificação de atribuição directa + turno; roles de supervisão isentos; log WARN em cada tentativa negada
+- Aplicado em todos os 12 endpoints de leitura/escrita de `doentes.controller.ts`
+
+**TOTP Anti-Replay — MFA + Assinatura Clínica (A04)**
+- Código TOTP reutilizável dentro da janela de 30s; permitia replay de assinatura de prescrição
+- Fix: `consumirTotpUmaVez(scope, secret, code)` em `auth.service.ts` — Redis `SET NX EX 90` com hash SHA-256 do `secret:code`; fail-closed quando Redis indisponível; aplicado em login, activação/desactivação MFA e assinatura de medicação
+
+**Refresh Token Reuse Detection (A07)**
+- Token revogado reapresentado não era detectado como roubo de sessão
+- Fix: se refresh token já revogado → revogar TODAS as sessões do utilizador + `UnauthorizedException('Sessão comprometida')`
+
+**JWT Algorithm Pinning (A07)**
+- Sem `algorithms` fixo: vulnerável a `alg: none` e algorithm-confusion RS256→HS256
+- Fix: `algorithms: ['HS256']` + `issuer: 'curasphere-api'` + `audience: 'curasphere'` em `jwt.strategy.ts` e `auth.module.ts`
+
+**Timing Attack User Enumeration (A07)**
+- Login falhado retornava imediatamente quando utilizador não existia; retardo diferente traía existência
+- Fix: `DUMMY_BCRYPT_HASH` constante; `bcrypt.compare` corre sempre (cost 12) antes de rejeitar
+
+#### Ficheiros Modificados
+
+| Ficheiro | Tipo de fix |
+|---|---|
+| `apps/api/src/main.ts` | Helmet CSP/HSTS, uploads attachment, Swagger prod-off, `x-powered-by` off |
+| `apps/api/src/app/auth/auth.service.ts` | TOTP anti-replay, refresh reuse detection, timing-safe login |
+| `apps/api/src/app/auth/auth.module.ts` | JWT signOptions: issuer, audience, algorithm HS256 |
+| `apps/api/src/app/auth/jwt.strategy.ts` | algorithms pin, issuer, audience validation |
+| `apps/api/src/app/doentes/doentes.controller.ts` | IDOR fix (12 endpoints), `todos=true` bypass fix, limit cap |
+| `apps/api/src/app/doentes/doentes.service.ts` | `assertAcessoDoente()` |
+| `apps/api/src/app/medicacao/medicacao.service.ts` | TOTP anti-replay em `assinar()` |
+| `apps/api/src/app/redis/redis.service.ts` | `setIfNotExists(key, value, ttl)` — Redis SET NX EX |
+| `apps/api/src/app/gateway/events.gateway.ts` | WebSocket CORS: `origin: '*'` → `ALLOWED_ORIGINS` allowlist |
+| `apps/api/src/app/utilizadores/dto/editar-utilizador.dto.ts` | Mass assignment: `@IsIn(ROLES_PERMITIDAS)`, `@IsIn(SERVICOS_PERMITIDOS)` |
+| `apps/api/src/app/utilizadores/utilizadores.controller.ts` | limit ≤ 100 cap |
+| `apps/api/src/app/faturacao/faturacao.controller.ts` | limit ≤ 100 cap |
+| `apps/api/src/app/common/audit.controller.ts` | limit ≤ 100 cap |
+| `apps/api/src/app/comunicacao/comunicacao.controller.ts` | Filename extension sanitization |
 
 ---
 
