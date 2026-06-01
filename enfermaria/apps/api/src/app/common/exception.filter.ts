@@ -1,4 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Prisma } from '../../generated/prisma';
 
 const HTTP_CODE_MAP: Record<number, string> = {
   400: 'BAD_REQUEST',
@@ -20,6 +21,34 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
+
+    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+      if (exception.code === 'P2002') {
+        const campo = (exception.meta?.target as string[])?.[0] ?? 'campo';
+        return response.status(409).json({
+          statusCode: 409,
+          error: 'CONFLICT',
+          message: `${campo} já existe`,
+          timestamp: new Date().toISOString(),
+        });
+      }
+      if (exception.code === 'P2025') {
+        return response.status(404).json({
+          statusCode: 404,
+          error: 'NOT_FOUND',
+          message: 'Registo não encontrado',
+          timestamp: new Date().toISOString(),
+        });
+      }
+      // Other Prisma errors → 500
+      this.logger.error(`Prisma error ${exception.code}`, exception.message);
+      return response.status(500).json({
+        statusCode: 500,
+        error: 'DATABASE_ERROR',
+        message: 'Erro de base de dados',
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     const status = exception instanceof HttpException
       ? exception.getStatus()

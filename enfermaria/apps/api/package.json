@@ -105,6 +105,7 @@
     "cookie-parser": "^1.4.7",
     "geolib": "^3.3.14",
     "helmet": "^8.1.0",
+    "joi": "^17.13.3",
     "ioredis": "^5.10.1",
     "otplib": "^13.4.0",
     "passport": "^0.7.0",

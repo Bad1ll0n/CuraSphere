@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { MedicacaoService } from './medicacao.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -13,15 +14,20 @@ import { TotpCodeDto } from './dto/totp-code.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('medicacao')
 export class MedicacaoController {
-  constructor(private readonly medicacaoService: MedicacaoService) {}
+  constructor(
+    private readonly medicacaoService: MedicacaoService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Get('doente/:doenteId')
-  listarPorDoente(@Param('doenteId') doenteId: string) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.listarPorDoente(doenteId);
   }
 
   @Get('doente/:doenteId/historico')
-  historicoAdministracao(@Param('doenteId') doenteId: string) {
+  async historicoAdministracao(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.historicoAdministracao(doenteId);
   }
 
@@ -124,7 +130,10 @@ export class MedicacaoController {
   }
 
   @Get('interacoes')
-  verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string) {
+  async verificarInteracoes(@Query('doenteId') doenteId: string, @Query('nome') nome: string, @Request() req: any) {
+    if (doenteId) {
+      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    }
     return this.medicacaoService.verificarInteracoes(doenteId, nome);
   }
 }

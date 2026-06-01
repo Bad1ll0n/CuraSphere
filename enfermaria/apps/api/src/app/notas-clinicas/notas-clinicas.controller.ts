@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { NotasClinicasService } from './notas-clinicas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { CriarNotaClinicaDto } from './dto/criar-nota-clinica.dto';
 import { AtualizarNotaClinicaDto } from './dto/atualizar-nota-clinica.dto';
 import { TotpCodeDto } from './dto/totp-code.dto';
@@ -10,7 +11,10 @@ import { TotpCodeDto } from './dto/totp-code.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('notas-clinicas')
 export class NotasClinicasController {
-  constructor(private readonly service: NotasClinicasService) {}
+  constructor(
+    private readonly service: NotasClinicasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Post(':doenteId')
   @Roles('medico', 'enfermeiro')
@@ -19,7 +23,8 @@ export class NotasClinicasController {
   }
 
   @Get(':doenteId')
-  listar(@Param('doenteId') doenteId: string) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
 

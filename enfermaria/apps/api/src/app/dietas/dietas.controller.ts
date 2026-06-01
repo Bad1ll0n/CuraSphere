@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { DietasService } from './dietas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -8,7 +9,10 @@ import { PrescreverDietaDto } from './dto/prescrever-dieta.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('dietas')
 export class DietasController {
-  constructor(private readonly service: DietasService) {}
+  constructor(
+    private readonly service: DietasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Roles('medico', 'enfermeiro')
   @Post()
@@ -20,12 +24,14 @@ export class DietasController {
   }
 
   @Get('doente/:doenteId')
-  dietaAtual(@Param('doenteId') doenteId: string) {
+  async dietaAtual(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.dietaAtual(doenteId);
   }
 
   @Get('doente/:doenteId/historico')
-  historico(@Param('doenteId') doenteId: string) {
+  async historico(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.historico(doenteId);
   }
 

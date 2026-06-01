@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ConsultasService } from './consultas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { CriarAgendaDto } from './dto/criar-agenda.dto';
 import { AtualizarAgendaDto } from './dto/atualizar-agenda.dto';
 import { AgendarConsultaDto } from './dto/agendar-consulta.dto';
@@ -11,7 +12,10 @@ import { RealizarConsultaDto } from './dto/realizar-consulta.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('consultas')
 export class ConsultasController {
-  constructor(private readonly service: ConsultasService) {}
+  constructor(
+    private readonly service: ConsultasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   // ─── Agenda semanal ───────────────────────────────────────────────────────
 
@@ -60,12 +64,16 @@ export class ConsultasController {
   }
 
   @Get()
-  listar(
+  async listar(
     @Query('medicoId') medicoId?: string,
     @Query('especialidade') especialidade?: string,
     @Query('data') data?: string,
     @Query('doenteId') doenteId?: string,
+    @Request() req?: any,
   ) {
+    if (doenteId) {
+      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    }
     return this.service.listar(medicoId, especialidade, data, doenteId);
   }
 

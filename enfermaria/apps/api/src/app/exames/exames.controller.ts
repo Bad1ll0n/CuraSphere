@@ -3,13 +3,17 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { ExamesService } from './exames.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { SolicitarExameDto } from './dto/solicitar-exame.dto';
 import { RegistarResultadoDto } from './dto/registar-resultado.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('exames')
 export class ExamesController {
-  constructor(private readonly service: ExamesService) {}
+  constructor(
+    private readonly service: ExamesService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Post(':doenteId')
   @Roles('medico', 'enfermeiro')
@@ -24,7 +28,8 @@ export class ExamesController {
   }
 
   @Get(':doenteId')
-  listar(@Param('doenteId') doenteId: string) {
+  async listar(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listar(doenteId);
   }
 

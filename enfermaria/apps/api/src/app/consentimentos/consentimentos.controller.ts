@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { ConsentimentosService } from './consentimentos.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -10,7 +11,10 @@ import { RecusarConsentimentoDto } from './dto/recusar-consentimento.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('consentimentos')
 export class ConsentimentosController {
-  constructor(private readonly service: ConsentimentosService) {}
+  constructor(
+    private readonly service: ConsentimentosService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Roles('medico', 'enfermeiro')
   @Post()
@@ -19,7 +23,8 @@ export class ConsentimentosController {
   }
 
   @Get('doente/:doenteId')
-  listarPorDoente(@Param('doenteId') doenteId: string) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.service.listarPorDoente(doenteId);
   }
 

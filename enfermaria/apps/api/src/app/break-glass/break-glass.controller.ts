@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Query, UseGuards, Request } from '@nestjs/common';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { BreakGlassService } from './break-glass.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -10,6 +11,8 @@ import { AtivarBreakGlassDto } from './dto/ativar-break-glass.dto';
 export class BreakGlassController {
   constructor(private readonly service: BreakGlassService) {}
 
+  @Throttle({ default: { ttl: 86400000, limit: 10 } })
+  @UseGuards(ThrottlerGuard)
   @Roles('medico', 'enfermeiro', 'direcao', 'ti', 'chefe_turno', 'chefe_enfermeiros')
   @Post()
   ativar(

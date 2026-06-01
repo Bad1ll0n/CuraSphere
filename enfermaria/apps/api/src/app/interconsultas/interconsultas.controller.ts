@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { InterconsultasService } from './interconsultas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CriarInterconsultaDto } from './dto/criar-interconsulta.dto';
 import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
@@ -7,7 +8,10 @@ import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
 @UseGuards(JwtAuthGuard)
 @Controller('interconsultas')
 export class InterconsultasController {
-  constructor(private readonly interconsultasService: InterconsultasService) {}
+  constructor(
+    private readonly interconsultasService: InterconsultasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Post('doente/:doenteId')
   criar(
@@ -19,7 +23,8 @@ export class InterconsultasController {
   }
 
   @Get('doente/:doenteId')
-  listarPorDoente(@Param('doenteId') doenteId: string) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.interconsultasService.listarPorDoente(doenteId);
   }
 

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import * as Joi from 'joi';
 import { TerminusModule } from '@nestjs/terminus';
 import { PrismaHealthIndicator } from '@nestjs/terminus';
 import { PrismaModule } from './prisma/prisma.module';
@@ -22,7 +23,18 @@ import { OperacionalModule } from './operacional.module';
 @Module({
   imports: [
     // ─── Infra ────────────────────────────────────────────────────────────────
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      validationSchema: Joi.object({
+        DATABASE_URL: Joi.string().required(),
+        REDIS_URL: Joi.string().default('redis://localhost:6379'),
+        JWT_SECRET: Joi.string().min(32).required(),
+        ALLOWED_ORIGINS: Joi.string().optional(),
+        PORT: Joi.number().default(3333),
+        NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+      }),
+    }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
     TerminusModule,
     PrismaModule,
