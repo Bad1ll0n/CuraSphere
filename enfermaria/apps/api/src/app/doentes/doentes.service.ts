@@ -13,7 +13,8 @@ export class DoenteService {
   ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
-    const skip = (page - 1) * limit;
+    const limitSeguro = Math.min(Math.max(limit, 1), 100);
+    const skip = (page - 1) * limitSeguro;
     const restritos = ['enfermeiro', 'medico', 'auxiliar', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 
     const searchFilter = search?.trim()
@@ -34,12 +35,12 @@ export class DoenteService {
           where: whereBase,
           include: { cama: true },
           orderBy: { dataAdmissao: 'desc' },
-          take: limit,
+          take: limitSeguro,
           skip,
         }),
         this.prisma.doente.count({ where: whereBase }),
       ]);
-      return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
+      return { data, total, page, limit: limitSeguro, totalPaginas: Math.ceil(total / limitSeguro) };
     }
 
     // Clínicos (enfermeiro, médico, auxiliar): apenas doentes internados (com cama)
@@ -81,12 +82,12 @@ export class DoenteService {
         where: whereClinico,
         include: { cama: true },
         orderBy: { dataAdmissao: 'desc' },
-        take: limit,
+        take: limitSeguro,
         skip,
       }),
       this.prisma.doente.count({ where: whereClinico }),
     ]);
-    return { data, total, page, limit, totalPaginas: Math.ceil(total / limit) };
+    return { data, total, page, limit: limitSeguro, totalPaginas: Math.ceil(total / limitSeguro) };
   }
 
   /**

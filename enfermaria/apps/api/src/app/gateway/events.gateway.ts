@@ -52,6 +52,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private clientRooms = new Map<string, string[]>();
   private clientUsers = new Map<string, string>(); // socketId → utilizadorId
+  private lastPing = new Map<string, number>();     // socketId → last ping timestamp
+  private lastPassagem = new Map<string, number>(); // socketId → last passagem timestamp
 
   constructor(
     private readonly jwt: JwtService,
@@ -91,6 +93,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const utilizadorId = this.clientUsers.get(client.id);
     this.clientRooms.delete(client.id);
     this.clientUsers.delete(client.id);
+    this.lastPing.delete(client.id);
+    this.lastPassagem.delete(client.id);
 
     if (utilizadorId) {
       await this.prisma.presencaOnline.deleteMany({
@@ -101,6 +105,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('ping')
   async handlePing(@ConnectedSocket() client: Socket) {
+    const now = Date.now();
+    if (now - (this.lastPing.get(client.id) ?? 0) < 30_000) return;
+    this.lastPing.set(client.id, now);
     const utilizadorId = this.clientUsers.get(client.id);
     if (utilizadorId) {
       await this.prisma.presencaOnline.updateMany({
@@ -116,6 +123,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { passagemId: string },
   ) {
+    const now = Date.now();
+    if (now - (this.lastPassagem.get(client.id) ?? 0) < 5_000) return;
+    this.lastPassagem.set(client.id, now);
     const utilizadorId = this.clientUsers.get(client.id);
     if (!utilizadorId || !data?.passagemId) return;
 

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsNotEmpty, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum TipoAlergiaEnum {
@@ -21,6 +21,7 @@ export class CriarAlergiaDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @MaxLength(200)
   alergenio: string;
 
   @ApiProperty({ enum: TipoAlergiaEnum })
@@ -34,5 +35,6 @@ export class CriarAlergiaDto {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
+  @MaxLength(1000)
   notas?: string;
 }

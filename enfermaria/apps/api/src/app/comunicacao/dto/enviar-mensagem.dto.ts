@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class EnviarMensagemDto {
@@ -10,10 +10,12 @@ export class EnviarMensagemDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @MaxLength(200)
   assunto?: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @MaxLength(10000)
   texto: string;
 }

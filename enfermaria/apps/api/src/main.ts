@@ -6,6 +6,7 @@ import { Logger as PinoLogger } from 'nestjs-pino';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
+import { json, urlencoded } from 'express';
 import { join, mkdirSync } from 'path';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
@@ -60,6 +61,8 @@ async function bootstrap() {
     hsts: { maxAge: 63072000, includeSubDomains: true, preload: true },
   }));
   app.use((cookieParser as any)());
+  app.use(json({ limit: '500kb' }));
+  app.use(urlencoded({ limit: '500kb', extended: true }));
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));

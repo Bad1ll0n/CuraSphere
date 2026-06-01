@@ -9,6 +9,7 @@ const { composePlugins, withNx } = require('@nx/next');
 const nextConfig = {
   nx: {},
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
+  productionBrowserSourceMaps: false,
   transpilePackages: ['@org/shared', '@org/ui'],
   async headers() {
     return [
@@ -30,7 +31,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "script-src 'self'",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob:",
               "font-src 'self' data:",
