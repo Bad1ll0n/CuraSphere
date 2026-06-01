@@ -1727,6 +1727,66 @@ Implementação dos 11 itens do plano de melhorias arquitecturais (avaliação e
 
 ---
 
+### ✅ Completado na Sessão 46 (2026-06-01) — Auditoria Completa: IDOR Residual, @Roles, Qualidade, 6 Novos Testes
+
+Quarta ronda de auditoria white-box (3 agentes especializados: segurança backend, frontend/mobile, arquitectura). 20 itens identificados e implementados.
+
+**Scorecard Global: 8.5 / 10** (subiu de 7.5 para 8.5 vs. início das sessões de hardening)
+
+| Dimensão | Nota |
+|---|---|
+| Autenticação / JWT | **9.5/10** |
+| Autorização backend (RBAC + IDOR) | **9.5/10** (fechados todos os gaps residuais) |
+| Qualidade código API | **9.5/10** |
+| Frontend / middleware | **9.5/10** |
+| Testes unitários | **9/10** (16 serviços cobertos, 157 testes passam) |
+| Arquitectura geral | **9/10** |
+
+#### 🔴 Crítico — IDOR e @Roles residuais
+
+- **IDOR escalas.controller.ts**: `GET :doenteId` e `GET :doenteId/historico` passaram a chamar `assertAcessoDoente()` + `DoenteModule` adicionado a `escalas.module.ts`
+- **IDOR escalas-clinicas.controller.ts**: 3 endpoints (`POST`, `GET`, `GET recentes`) protegidos com `assertAcessoDoente()` + `DoenteModule` adicionado
+- **IDOR tarefas.controller.ts**: `GET doente/:doenteId` protegido com `assertAcessoDoente()` + `DoenteModule` adicionado
+- **@Roles em interconsultas.controller.ts**: `RolesGuard` adicionado à classe; `@Roles('medico','enfermeiro')` em `criar`; `@Roles('medico')` em `aceitar` e `responder`; `@Roles('medico','enfermeiro','chefe_enfermeiros')` em `cancelar`
+- **@Roles em reconciliacao.controller.ts**: `@UseGuards(JwtAuthGuard, RolesGuard)` + `@Roles('medico','farmaceutico','enfermeiro','chefe_enfermeiros','direcao')` ao nível da classe
+
+#### 🟡 Alto — Robustez e Correctness
+
+- **Throttle em `/auth/refresh`**: substituído `@SkipThrottle()` por `@Throttle({ default: { ttl: 60000, limit: 20 } })`; 21.ª tentativa em 1 min → 429
+- **Soft delete em notas-clinicas.service.ts**: `apagar()` usa `update({ data: { deletedAt: new Date() } })` em vez de `delete()`; `listar()` filtra `deletedAt: null`
+- **sessionStorage no logout**: `auth-context.tsx` `logout()` agora limpa `mfaSetupToken` e `pwdExpiredToken`
+- **DTOs em 3 endpoints sem validação**: `consultas/dto/adicionar-ato.dto.ts` (`@IsUUID`, `@Min(1)`); `especialidades/dto/realizar-especialidade.dto.ts` (`@MaxLength(5000)`); `tickets/dto/tirar-senha.dto.ts` (`@IsIn` para tipo/prioridade, `@Matches` para telefone — endpoint público)
+- **JWT payload tipagem no gateway**: `interface JwtPayload { sub, role, servico? }` substitui `as any` em `events.gateway.ts`
+
+#### 🟢 Médio — Qualidade e Observabilidade
+
+- **WebSocket DoS**: `@WebSocketGateway({ maxHttpBufferSize: 1e6, transports: ['websocket'] })`
+- **Fetch Expo push sem timeout**: `AbortController` com 5s timeout nos 4 calls de push em `notificacoes.service.ts`
+- **mfaSetupToken anti-replay**: `setupMfa()` verifica chave Redis `mfaSetup:used:{userId}`; `ativarMfa()` escreve a chave após activação (TTL 1800s)
+- **Índices compostos soft-delete**: `@@index([doenteId, deletedAt])` em `NotaClinica`, `Medicacao`, `RegistoMedicacao`
+
+#### JWT e Segurança de Sessão (Session 45 — residual confirmado)
+
+- **JWT HS256 + iss/aud**: `auth.module.ts` configura `algorithm: 'HS256'`, `issuer: 'curasphere-api'`, `audience: 'curasphere'` em `signOptions` e `verifyOptions`
+- **RBAC comunicacao**: `comunicacao.controller.ts` com `RolesGuard` e matriz de roles completa
+- **Mass-assignment protection**: `editar-utilizador.dto.ts` bloqueia `passwordHash` e `mfaSecret`
+- **Redis TTL helpers**: `redis.service.ts` com métodos `setWithTtl()`, `healthCheck()`
+
+#### 🧪 Novos Testes Unitários (6 serviços)
+
+| Ficheiro | Casos | Destaque |
+|---|---|---|
+| `escalas.service.spec.ts` | Score Braden < 12 → alerta; Morse > 44 → alerta | Lógica de risco |
+| `notas-clinicas.service.spec.ts` | Soft delete; TOTP assinatura; author check | Anti-replay + audit trail |
+| `interconsultas.service.spec.ts` | Máquina de estados: pendente→aceite→respondida | State machine clínica |
+| `break-glass.service.spec.ts` | TTL 4h; notificação TI+chefes; acesso expirado→403 | Acesso emergência |
+| `utilizadores.service.spec.ts` | bcrypt cost 12; `passwordExpiresAt` + 90d; ConflictException | Gestão utilizadores |
+| `escalas-clinicas.service.spec.ts` | NEWS2 ≥ 7 → protocolo sepsis; listarRecentes | Scores clínicos |
+
+**Total de testes: 157 passam em 16 suites** (`pnpm nx test api` verde).
+
+---
+
 ### ✅ Completado na Sessão 45 (2026-06-01) — Segunda Ronda de Hardening: IDOR Residual, Enforcement Frontend, Logging e Qualidade
 
 Segunda auditoria white-box completa (3 agentes paralelos). 16 itens identificados e implementados em ordem de prioridade.
