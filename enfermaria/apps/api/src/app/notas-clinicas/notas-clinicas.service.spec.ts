@@ -1,6 +1,10 @@
+jest.mock('otplib', () => ({
+  authenticator: { verify: jest.fn() },
+}));
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
-import * as otplib from 'otplib';
+import { authenticator } from 'otplib';
 import { NotasClinicasService } from './notas-clinicas.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -135,14 +139,17 @@ describe('NotasClinicasService', () => {
       ).rejects.toThrow(ForbiddenException);
     });
 
-    it('o autor pode apagar a sua nota (chama prisma.notaClinica.delete)', async () => {
+    it('o autor pode apagar a sua nota (soft delete — define deletedAt)', async () => {
       mockPrisma.notaClinica.findUnique.mockResolvedValue({ id: 'nota-1', autorId: 'autor-1' });
-      mockPrisma.notaClinica.delete.mockResolvedValue({ id: 'nota-1' });
+      mockPrisma.notaClinica.update.mockResolvedValue({ id: 'nota-1', deletedAt: new Date() });
 
       await service.apagar('nota-1', 'autor-1', 'medico');
 
-      expect(mockPrisma.notaClinica.delete).toHaveBeenCalledWith(
-        expect.objectContaining({ where: { id: 'nota-1' } }),
+      expect(mockPrisma.notaClinica.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 'nota-1' },
+          data: expect.objectContaining({ deletedAt: expect.any(Date) }),
+        }),
       );
     });
   });
@@ -172,8 +179,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      // Garantir que o authenticator retorna false
-      jest.spyOn(otplib.authenticator, 'verify').mockReturnValue(false);
+      (authenticator.verify as jest.Mock).mockReturnValue(false);
 
       await expect(
         service.assinar('nota-1', 'user-1', '000000'),
@@ -184,7 +190,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      jest.spyOn(otplib.authenticator, 'verify').mockReturnValue(true);
+      (authenticator.verify as jest.Mock).mockReturnValue(true);
       mockPrisma.notaClinica.findUnique.mockResolvedValue({
         id: 'nota-1', assinadaEm: new Date(),
       });
@@ -198,7 +204,7 @@ describe('NotasClinicasService', () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: 'user-1', mfaAtivo: true, mfaSecret: 'SECRET123',
       });
-      jest.spyOn(otplib.authenticator, 'verify').mockReturnValue(true);
+      (authenticator.verify as jest.Mock).mockReturnValue(true);
       mockPrisma.notaClinica.findUnique.mockResolvedValue({
         id: 'nota-1', assinadaEm: null,
       });

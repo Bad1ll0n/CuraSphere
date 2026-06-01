@@ -23,6 +23,7 @@ const mockPrisma = {
 const mockNotificacoes = {
   enviarParaDoente: jest.fn().mockResolvedValue(undefined),
   enviarParaUtilizador: jest.fn().mockResolvedValue(undefined),
+  enviarParaUtilizadores: jest.fn().mockResolvedValue(undefined),
 };
 
 const mockGateway = {
@@ -50,6 +51,7 @@ describe('AlertasService', () => {
     jest.resetAllMocks();
     mockNotificacoes.enviarParaDoente.mockResolvedValue(undefined);
     mockNotificacoes.enviarParaUtilizador.mockResolvedValue(undefined);
+    mockNotificacoes.enviarParaUtilizadores.mockResolvedValue(undefined);
     mockGateway.estaOnline.mockResolvedValue(false);
   });
 
@@ -152,8 +154,8 @@ describe('AlertasService', () => {
 
       await service.acionarSOS('d1', 'u1');
 
-      expect(mockNotificacoes.enviarParaUtilizador).toHaveBeenCalledWith(
-        medicoId,
+      expect(mockNotificacoes.enviarParaUtilizadores).toHaveBeenCalledWith(
+        expect.arrayContaining([medicoId]),
         expect.stringContaining('SOS'),
         expect.any(String),
         expect.any(Object),
@@ -168,8 +170,8 @@ describe('AlertasService', () => {
 
       await service.acionarSOS('d1', 'u1');
 
-      expect(mockNotificacoes.enviarParaUtilizador).toHaveBeenCalledWith(
-        'med2',
+      expect(mockNotificacoes.enviarParaUtilizadores).toHaveBeenCalledWith(
+        expect.arrayContaining(['med2', 'med3']),
         expect.any(String),
         expect.any(String),
         expect.any(Object),

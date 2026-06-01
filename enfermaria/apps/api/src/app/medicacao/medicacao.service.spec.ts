@@ -3,6 +3,7 @@ import { NotFoundException, ConflictException } from '@nestjs/common';
 import { MedicacaoService } from './medicacao.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { RedisService } from '../redis/redis.service';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -20,7 +21,16 @@ const mockPrisma = {
 
 const mockNotificacoes = {
   enviarParaUtilizador: jest.fn().mockResolvedValue(undefined),
+  enviarParaUtilizadores: jest.fn().mockResolvedValue(undefined),
   notificarRole: jest.fn().mockResolvedValue(undefined),
+};
+
+const mockRedis = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue('OK'),
+  del: jest.fn().mockResolvedValue(1),
+  incr: jest.fn().mockResolvedValue(1),
+  expire: jest.fn().mockResolvedValue(1),
 };
 
 describe('MedicacaoService', () => {
@@ -38,6 +48,7 @@ describe('MedicacaoService', () => {
         MedicacaoService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
+        { provide: RedisService, useValue: mockRedis },
       ],
     }).compile();
 
@@ -151,7 +162,7 @@ describe('MedicacaoService', () => {
     });
 
     it('cria registo de administração para medicação ativa', async () => {
-      const med = { id: 'med-1', ativo: true, doenteId: 'doente-1' };
+      const med = { id: 'med-1', ativo: true, doenteId: 'doente-1', frequencia: 'SOS', registos: [] };
       mockPrisma.medicacao.findUnique.mockResolvedValue(med);
       const registo = { id: 'reg-1', administradoPor: { id: 'enf-1', nome: 'Enf. Ana' }, medicacao: {} };
       mockPrisma.registoMedicacao.create.mockResolvedValue(registo);

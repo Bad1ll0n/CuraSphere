@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 const mockPrisma = {
   utilizador: {
@@ -24,10 +25,20 @@ const mockPrisma = {
 const mockJwt = {
   sign: jest.fn().mockReturnValue('jwt-access-token'),
   verify: jest.fn(),
+  decode: jest.fn().mockReturnValue({ jti: 'test-jti' }),
 };
 
 const mockConfig = {
   get: jest.fn().mockReturnValue('7d'),
+};
+
+const mockRedis = {
+  get: jest.fn().mockResolvedValue(null),
+  set: jest.fn().mockResolvedValue('OK'),
+  del: jest.fn().mockResolvedValue(1),
+  incr: jest.fn().mockResolvedValue(1),
+  expire: jest.fn().mockResolvedValue(1),
+  ttl: jest.fn().mockResolvedValue(-1),
 };
 
 describe('AuthService', () => {
@@ -51,6 +62,7 @@ describe('AuthService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: JwtService, useValue: mockJwt },
         { provide: ConfigService, useValue: mockConfig },
+        { provide: RedisService, useValue: mockRedis },
       ],
     }).compile();
 
@@ -102,8 +114,8 @@ describe('AuthService', () => {
     it('devolve accessToken e refreshToken em login bem sucedido sem MFA', async () => {
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
-        role: 'medico', nome: 'Dr. Teste', numeroFuncionario: '12345',
-        servico: 'medicina', passwordExpiresAt: null,
+        role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345',
+        servico: 'ti', passwordExpiresAt: null,
       });
 
       const resultado = await service.login('12345', 'passwordCorreta');
@@ -119,8 +131,8 @@ describe('AuthService', () => {
       const em5Dias = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
       mockPrisma.utilizador.findUnique.mockResolvedValue({
         id: '1', ativo: true, mfaAtivo: false, passwordHash: hashCorreto,
-        role: 'medico', nome: 'Dr. Teste', numeroFuncionario: '12345',
-        servico: 'medicina', passwordExpiresAt: em5Dias,
+        role: 'ti', nome: 'Admin TI', numeroFuncionario: '12345',
+        servico: 'ti', passwordExpiresAt: em5Dias,
       });
 
       const resultado = await service.login('12345', 'passwordCorreta') as any;
