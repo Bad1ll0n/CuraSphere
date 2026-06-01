@@ -5,6 +5,7 @@ import { TicketsService } from './tickets.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConsultasService } from '../consultas/consultas.service';
 import { CriarMarcacaoQuiosqueDto } from './dto/criar-marcacao-quiosque.dto';
+import { TirarSenhaDto } from './dto/tirar-senha.dto';
 
 @Controller('quiosque')
 export class QuiosqueController {
@@ -15,15 +16,7 @@ export class QuiosqueController {
   ) {}
 
   @Post()
-  tirarSenha(
-    @Body()
-    body: {
-      tipo: string;
-      prioridade?: string;
-      nomeUtente?: string;
-      telefone?: string;
-    },
-  ) {
+  tirarSenha(@Body() body: TirarSenhaDto) {
     return this.service.tirarSenha(body);
   }
 

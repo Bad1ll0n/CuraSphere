@@ -141,7 +141,15 @@ export class AuthService {
     return { accessToken, refreshToken, utilizador: this.buildUtilizadorDto(utilizador) };
   }
 
-  async setupMfa(utilizadorId: string) {
+  async setupMfa(utilizadorId: string, setupToken?: string) {
+    // If a setupToken is provided, check if it has already been used to prevent replay
+    if (setupToken) {
+      const jaUsado = await this.redis.get<string>(`mfaSetup:used:${utilizadorId}`);
+      if (jaUsado) {
+        throw new BadRequestException('MFA setup já utilizado. Faça login novamente.');
+      }
+    }
+
     const utilizador = await this.prisma.utilizador.findUnique({
       where: { id: utilizadorId },
       select: { numeroFuncionario: true, mfaAtivo: true },
@@ -155,7 +163,7 @@ export class AuthService {
     return { secret, qrCodeDataUrl };
   }
 
-  async ativarMfa(utilizadorId: string, secret: string, code: string) {
+  async ativarMfa(utilizadorId: string, secret: string, code: string, setupToken?: string) {
     const isValid = authenticator.verify({ token: code, secret });
     if (!isValid) throw new BadRequestException('Código inválido. Verifique a aplicação autenticadora.');
 
@@ -168,6 +176,12 @@ export class AuthService {
       where: { id: utilizadorId },
       data: { mfaSecret: secret, mfaAtivo: true },
     });
+
+    // Invalidate the mfaSetupToken so it cannot be replayed to trigger another setup
+    if (setupToken) {
+      await this.redis.set(`mfaSetup:used:${utilizadorId}`, '1', 1800);
+    }
+
     return { mensagem: 'Autenticação em 2 passos ativada com sucesso' };
   }
 

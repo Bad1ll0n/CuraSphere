@@ -4,6 +4,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { EspecialidadesService } from './especialidades.service';
 import { CriarSessaoEspecialidadeDto } from './dto/criar-sessao-especialidade.dto';
+import { RealizarEspecialidadeDto } from './dto/realizar-especialidade.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles('tecnico_saude')
@@ -27,7 +28,7 @@ export class EspecialidadesController {
   }
 
   @Patch(':id/realizar')
-  realizar(@Param('id') id: string, @Body() dto: { evolucao: string }) {
+  realizar(@Param('id') id: string, @Body() dto: RealizarEspecialidadeDto) {
     return this.service.realizar(id, dto);
   }
 

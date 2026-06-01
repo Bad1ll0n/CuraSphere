@@ -1,8 +1,10 @@
 import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, Sse } from '@nestjs/common';
 import { map } from 'rxjs';
 import { TarefasService } from './tarefas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
 import { CriarTarefaDto } from './dto/criar-tarefa.dto';
 import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
@@ -11,7 +13,10 @@ import { EditarTarefaDto } from './dto/editar-tarefa.dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('tarefas')
 export class TarefasController {
-  constructor(private readonly tarefasService: TarefasService) {}
+  constructor(
+    private readonly tarefasService: TarefasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Get('minhas')
   listarMinhas(@Request() req: any) {
@@ -26,7 +31,8 @@ export class TarefasController {
   }
 
   @Get('doente/:doenteId')
-  listarPorDoente(@Param('doenteId') doenteId: string) {
+  async listarPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.tarefasService.listarPorDoente(doenteId);
   }
 

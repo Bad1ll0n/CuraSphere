@@ -409,6 +409,7 @@ model NotaClinica {
 
   @@index([doenteId, criadaEm])
   @@index([deletedAt])
+  @@index([doenteId, deletedAt])
   @@map("notas_clinicas")
 }
 
@@ -547,6 +548,7 @@ model Medicacao {
   @@index([doenteId, ativo, iniciadoEm])
   @@index([estadoValidacao])
   @@index([deletedAt])
+  @@index([doenteId, deletedAt])
   @@map("medicacoes")
 }
 
@@ -570,6 +572,7 @@ model RegistoMedicacao {
   @@index([medicacaoId])
   @@index([doenteId, administradoEm])
   @@index([deletedAt])
+  @@index([doenteId, deletedAt])
   @@map("registos_medicacao")
 }
 

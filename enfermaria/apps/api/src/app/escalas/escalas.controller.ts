@@ -1,23 +1,30 @@
 import { Controller, Get, Post, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { EscalasService } from './escalas.service';
+import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CriarEscalaDto } from './dto/criar-escala.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('escalas')
 export class EscalasController {
-  constructor(private readonly escalasService: EscalasService) {}
+  constructor(
+    private readonly escalasService: EscalasService,
+    private readonly doenteService: DoenteService,
+  ) {}
 
   @Get(':doenteId')
-  listarUltimas(@Param('doenteId') doenteId: string) {
+  async listarUltimas(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.escalasService.listarUltimas(doenteId);
   }
 
   @Get(':doenteId/historico')
-  historico(
+  async historico(
     @Param('doenteId') doenteId: string,
+    @Request() req: any,
     @Query('tipo') tipo?: string,
   ) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.escalasService.historico(doenteId, tipo);
   }
 

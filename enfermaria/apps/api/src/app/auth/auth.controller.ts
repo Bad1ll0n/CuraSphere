@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, Patch, UseGuards, Request, Res } from '@nestjs/common';
 import { Throttle, ThrottlerGuard, SkipThrottle } from '@nestjs/throttler';
 import { Response } from 'express';
-import { IsString, IsNotEmpty, Length } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AlterarPasswordDto } from './dto/alterar-password.dto';
@@ -15,6 +15,7 @@ class MfaVerificarDto {
 class MfaAtivarDto {
   @IsString() @IsNotEmpty() secret: string;
   @IsString() @Length(6, 6) code: string;
+  @IsOptional() @IsString() setupToken?: string;
 }
 
 class MfaDesativarDto {
@@ -66,7 +67,7 @@ export class AuthController {
   @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('mfa/ativar')
   mfaAtivar(@Request() req: any, @Body() dto: MfaAtivarDto) {
-    return this.authService.ativarMfa(req.user.sub, dto.secret, dto.code);
+    return this.authService.ativarMfa(req.user.sub, dto.secret, dto.code, dto.setupToken);
   }
 
   @UseGuards(JwtAuthGuard, ThrottlerGuard)
@@ -76,7 +77,7 @@ export class AuthController {
     return this.authService.desativarMfa(req.user.sub, dto.code);
   }
 
-  @SkipThrottle()
+  @Throttle({ default: { ttl: 60000, limit: 20 } })
   @Post('refresh')
   async refresh(
     @Request() req: any,

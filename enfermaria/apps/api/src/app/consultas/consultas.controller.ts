@@ -8,6 +8,7 @@ import { CriarAgendaDto } from './dto/criar-agenda.dto';
 import { AtualizarAgendaDto } from './dto/atualizar-agenda.dto';
 import { AgendarConsultaDto } from './dto/agendar-consulta.dto';
 import { RealizarConsultaDto } from './dto/realizar-consulta.dto';
+import { AdicionarAtoDto } from './dto/adicionar-ato.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('consultas')
@@ -107,7 +108,7 @@ export class ConsultasController {
 
   @Post(':id/atos')
   @Roles('medico', 'enfermeiro', 'tecnico_saude')
-  adicionarAto(@Param('id') id: string, @Body() dto: { atoId: string; quantidade?: number }) {
+  adicionarAto(@Param('id') id: string, @Body() dto: AdicionarAtoDto) {
     return this.service.adicionarAto(id, dto);
   }
 

@@ -8,9 +8,41 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 
+interface JwtPayload {
+  sub: string;
+  nome?: string;
+  role: string;
+  servico?: string;
+}
+
+// Origens permitidas — usa ALLOWED_ORIGINS do .env (mesma allowlist que HTTP CORS).
+// Em dev (variável não definida) só permite localhost. Em produção, sem env, recusa tudo.
+function parseAllowedOrigins(): string[] | null {
+  const raw = process.env.ALLOWED_ORIGINS;
+  if (raw) return raw.split(',').map((s) => s.trim()).filter(Boolean);
+  return null;
+}
+
 @WebSocketGateway({
-  cors: { origin: '*' },
+  cors: {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      if (!origin) return callback(null, true); // mobile / curl
+      const allowlist = parseAllowedOrigins();
+      if (allowlist) {
+        return allowlist.includes(origin)
+          ? callback(null, true)
+          : callback(new Error('WebSocket CORS: origin not allowed'));
+      }
+      if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+        return callback(null, true);
+      }
+      callback(new Error('WebSocket CORS: origin not allowed'));
+    },
+    credentials: true,
+  },
   namespace: '/ws',
+  maxHttpBufferSize: 1e6,
+  transports: ['websocket'],
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(EventsGateway.name);
@@ -31,7 +63,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const token = client.handshake.auth?.token as string | undefined;
     if (!token) { client.disconnect(); return; }
     try {
-      const payload = this.jwt.verify(token, { secret: this.config.get('JWT_SECRET') }) as any;
+      const payload = this.jwt.verify(token, { secret: this.config.get('JWT_SECRET') }) as JwtPayload;
       const role: string = payload.role ?? '';
       const servico: string = payload.servico ?? '';
 

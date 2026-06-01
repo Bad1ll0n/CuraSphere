@@ -19,7 +19,7 @@ export class NotasClinicasService {
   async listar(doenteId: string) {
     await this.buscarDoente(doenteId);
     return this.prisma.notaClinica.findMany({
-      where: { doenteId },
+      where: { doenteId, deletedAt: null },
       orderBy: { criadaEm: 'desc' },
       include: { autor: { select: { id: true, nome: true, role: true, subRole: true } } },
     });
@@ -44,7 +44,7 @@ export class NotasClinicasService {
     const rolesSupervision = ['direcao', 'chefe_medicos'];
     const podeApagar = nota.autorId === utilizadorId || rolesSupervision.includes(role);
     if (!podeApagar) throw new ForbiddenException('Só o autor pode apagar esta nota');
-    return this.prisma.notaClinica.delete({ where: { id } });
+    return this.prisma.notaClinica.update({ where: { id }, data: { deletedAt: new Date() } });
   }
 
   private async buscarDoente(id: string) {

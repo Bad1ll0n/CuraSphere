@@ -2,10 +2,12 @@ import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } 
 import { InterconsultasService } from './interconsultas.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { CriarInterconsultaDto } from './dto/criar-interconsulta.dto';
 import { ResponderInterconsultaDto } from './dto/responder-interconsulta.dto';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('interconsultas')
 export class InterconsultasController {
   constructor(
@@ -13,6 +15,7 @@ export class InterconsultasController {
     private readonly doenteService: DoenteService,
   ) {}
 
+  @Roles('medico', 'enfermeiro')
   @Post('doente/:doenteId')
   criar(
     @Param('doenteId') doenteId: string,
@@ -38,11 +41,13 @@ export class InterconsultasController {
     return this.interconsultasService.listarMinhas(req.user.sub);
   }
 
+  @Roles('medico')
   @Patch(':id/aceitar')
   aceitar(@Param('id') id: string, @Request() req: any) {
     return this.interconsultasService.aceitar(id, req.user.sub);
   }
 
+  @Roles('medico')
   @Patch(':id/responder')
   responder(
     @Param('id') id: string,
@@ -52,6 +57,7 @@ export class InterconsultasController {
     return this.interconsultasService.responder(id, req.user.sub, dto.resposta);
   }
 
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
   @Patch(':id/cancelar')
   cancelar(@Param('id') id: string, @Request() req: any) {
     return this.interconsultasService.cancelar(id, req.user.sub);

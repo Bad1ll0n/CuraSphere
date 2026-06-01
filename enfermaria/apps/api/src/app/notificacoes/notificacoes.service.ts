@@ -66,16 +66,20 @@ export class NotificacoesService {
       return;
     }
 
+    const ctrl1 = new AbortController();
+    const t1 = setTimeout(() => ctrl1.abort(), 5000);
     fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(mensagens),
+      signal: ctrl1.signal,
     })
       .then(() => this.pushCB.recordSuccess())
       .catch((err) => {
         this.pushCB.recordFailure();
         this.logger.warn('Notificação push falhou', err?.message ?? String(err));
-      });
+      })
+      .finally(() => clearTimeout(t1));
   }
 
   async listar(utilizadorId: string, page = 1, limit = 30) {
@@ -132,16 +136,20 @@ export class NotificacoesService {
       return;
     }
 
+    const ctrl2 = new AbortController();
+    const t2 = setTimeout(() => ctrl2.abort(), 5000);
     fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(mensagens),
+      signal: ctrl2.signal,
     })
       .then(() => this.pushCB.recordSuccess())
       .catch((err) => {
         this.pushCB.recordFailure();
         this.logger.warn('Notificação push falhou', err?.message ?? String(err));
-      });
+      })
+      .finally(() => clearTimeout(t2));
   }
 
   async enviarParaRole(role: string, titulo: string, corpo: string, data?: Record<string, any>): Promise<void> {
