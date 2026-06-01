@@ -2,12 +2,17 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 import { Utilizador } from '@org/shared';
 import api from './api';
 
 interface LoginResult {
   mfaPendente: boolean;
   mfaChallengeToken?: string;
+  mfaSetupObrigatorio?: boolean;
+  mfaSetupToken?: string;
+  passwordExpirada?: boolean;
+  passwordExpiredToken?: string;
 }
 
 interface AuthContextType {
@@ -26,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [passwordAviso, setPasswordAviso] = useState<{ ativo: boolean; diasRestantes: number | null }>({ ativo: false, diasRestantes: null });
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     api.get('/auth/me')
@@ -46,6 +52,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (data.mfaPendente) {
       return { mfaPendente: true, mfaChallengeToken: data.mfaChallengeToken };
     }
+    if (data.mfaSetupObrigatorio) {
+      return { mfaPendente: false, mfaSetupObrigatorio: true, mfaSetupToken: data.mfaSetupToken };
+    }
+    if (data.passwordExpirada) {
+      return { mfaPendente: false, passwordExpirada: true, passwordExpiredToken: data.passwordExpiredToken };
+    }
     setUtilizador(data.utilizador);
     if (data.passwordExpiradoAviso) {
       setPasswordAviso({ ativo: true, diasRestantes: data.diasRestantesSenha });
@@ -62,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     api.post('/auth/logout').catch(() => {});
+    queryClient.clear();
     setUtilizador(null);
     setPasswordAviso({ ativo: false, diasRestantes: null });
     router.push('/login');

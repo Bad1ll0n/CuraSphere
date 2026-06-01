@@ -2,10 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../lib/auth-context';
 
 export default function LoginPage() {
   const { login, loginMfa } = useAuth();
+  const router = useRouter();
 
   const [numeroFuncionario, setNumeroFuncionario] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,14 @@ export default function LoginPage() {
       if (result.mfaPendente && result.mfaChallengeToken) {
         setMfaChallengeToken(result.mfaChallengeToken);
         setMfaPendente(true);
+      } else if (result.mfaSetupObrigatorio && result.mfaSetupToken) {
+        sessionStorage.setItem('mfaSetupToken', result.mfaSetupToken);
+        router.push('/login/mfa-setup');
+      } else if (result.passwordExpirada && result.passwordExpiredToken) {
+        sessionStorage.setItem('passwordExpiredToken', result.passwordExpiredToken);
+        router.push('/login/alterar-password');
       }
+      // If none of the above, login() already redirected to '/'
     } catch {
       setErro('Número de funcionário ou password incorretos.');
     } finally {

@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { Utilizador } from '@org/shared';
 import api, { setMemToken } from './api';
+import { queryClient } from './query-client';
 
 export type { Utilizador };
 
@@ -13,9 +14,13 @@ export async function login(numeroFuncionario: string, password: string): Promis
 }
 
 export async function logout() {
+  try {
+    await api.post('/auth/logout');
+  } catch { /* ignore — logout locally regardless */ }
+  queryClient.clear();
   setMemToken(null);
-  await SecureStore.deleteItemAsync('token');
-  await SecureStore.deleteItemAsync('utilizador');
+  await SecureStore.deleteItemAsync('token').catch(() => {});
+  await SecureStore.deleteItemAsync('utilizador').catch(() => {});
 }
 
 export async function getUtilizador(): Promise<Utilizador | null> {
