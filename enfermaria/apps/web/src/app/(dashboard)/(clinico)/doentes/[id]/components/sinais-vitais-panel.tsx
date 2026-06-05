@@ -1,8 +1,15 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+function news2Intervalo(score: number): { texto: string; cor: string } {
+  if (score >= 7) return { texto: 'Monitorização contínua · resposta imediata', cor: 'text-red-600' };
+  if (score >= 5) return { texto: 'Monitorizar de 4h/4h · resposta urgente', cor: 'text-amber-600' };
+  return { texto: 'Monitorizar de 12h/12h', cor: 'text-green-600' };
+}
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { HelpTooltip } from '@/components/help-tooltip';
 
 interface Props {
   doenteId: string;
@@ -109,6 +116,8 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   const [svNotas, setSvNotas] = useState('');
   const [svAvpu, setSvAvpu] = useState('A');
   const [salvando, setSalvando] = useState(false);
+  const [baseline, setBaseline] = useState<any>(null);
+  const [baselineAberto, setBaselineAberto] = useState(false);
 
   const carregarSinaisVitais = () =>
     api.get(`/sinais-vitais/${doenteId}`)
@@ -117,6 +126,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
 
   useEffect(() => {
     carregarSinaisVitais();
+  }, [doenteId]);
+
+  useEffect(() => {
+    api.get(`/baselines/${doenteId}`)
+      .then((r) => setBaseline(r.data))
+      .catch(() => setBaseline(null));
   }, [doenteId]);
 
   const submeterSinalVital = async () => {
@@ -151,6 +166,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             </svg>
           </div>
           <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
+          <HelpTooltip chave="news2" />
           {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
             <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setModalSinalVital(true); }} />
           )}
@@ -162,36 +178,41 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             {/* Gráfico */}
             {sinaisVitais.length > 1 && (
               <div style={{ marginBottom: '24px' }}>
-                <ResponsiveContainer width="100%" height={200}>
+                <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={[...sinaisVitais].reverse().map((sv) => ({
                     hora: new Date(sv.data).toLocaleTimeString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
                     TA: sv.pressaoSistolica ?? null,
                     Pulso: sv.pulso ?? null,
                     'SpO₂': sv.saturacaoO2 ?? null,
-                    'Temp': sv.temperatura ?? null,
+                    Temp: sv.temperatura ?? null,
+                    Peso: sv.peso ?? null,
+                    NEWS2: sv.news2 ?? null,
                   }))}>
                     <XAxis dataKey="hora" tick={{ fontSize: 10 }} />
-                    <YAxis tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="left" tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="right" orientation="right" domain={[0, 20]} tick={{ fontSize: 10 }} tickCount={5} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="TA" stroke="#ef4444" dot={false} strokeWidth={2} connectNulls />
-                    <Line type="monotone" dataKey="Pulso" stroke="#f97316" dot={false} strokeWidth={2} connectNulls />
-                    <Line type="monotone" dataKey="SpO₂" stroke="#3b82f6" dot={false} strokeWidth={2} connectNulls />
-                    <Line type="monotone" dataKey="Temp" stroke="#8b5cf6" dot={false} strokeWidth={2} connectNulls />
+                    <Line yAxisId="left" type="monotone" dataKey="TA" stroke="#ef4444" dot={false} strokeWidth={2} connectNulls />
+                    <Line yAxisId="left" type="monotone" dataKey="Pulso" stroke="#f97316" dot={false} strokeWidth={2} connectNulls />
+                    <Line yAxisId="left" type="monotone" dataKey="SpO₂" stroke="#3b82f6" dot={false} strokeWidth={2} connectNulls />
+                    <Line yAxisId="left" type="monotone" dataKey="Temp" stroke="#8b5cf6" dot={false} strokeWidth={2} connectNulls />
+                    <Line yAxisId="left" type="monotone" dataKey="Peso" stroke="#14b8a6" dot={false} strokeWidth={1.5} strokeDasharray="4 2" connectNulls />
+                    <Line yAxisId="right" type="monotone" dataKey="NEWS2" stroke="#dc2626" dot={false} strokeWidth={2} strokeDasharray="6 3" connectNulls />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             )}
-            {/* Banner NEWS2 se score alto */}
-            {sinaisVitais[0]?.news2 != null && sinaisVitais[0].news2 >= 5 && (
-              <div className={`rounded-xl flex items-center gap-3 text-sm font-medium ${sinaisVitais[0].news2 >= 7 ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`} style={{ padding: '12px 16px', marginBottom: '12px' }}>
-                <span className={`text-xl font-black ${sinaisVitais[0].news2 >= 7 ? 'text-red-600' : 'text-amber-600'}`}>{sinaisVitais[0].news2}</span>
+            {/* Banner NEWS2 com intervalo recomendado */}
+            {sinaisVitais[0]?.news2 != null && (
+              <div className={`rounded-xl flex items-start gap-3 text-sm font-medium ${sinaisVitais[0].news2 >= 7 ? 'bg-red-50 border border-red-200 text-red-800' : sinaisVitais[0].news2 >= 5 ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-green-50 border border-green-200 text-green-800'}`} style={{ padding: '12px 16px', marginBottom: '12px' }}>
+                <span className={`text-xl font-black mt-0.5 ${sinaisVitais[0].news2 >= 7 ? 'text-red-600' : sinaisVitais[0].news2 >= 5 ? 'text-amber-600' : 'text-green-600'}`}>{sinaisVitais[0].news2}</span>
                 <div>
                   <p className="font-semibold" style={{ margin: 0 }}>
-                    NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : 'ALTO'} — Score {sinaisVitais[0].news2}
+                    NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : sinaisVitais[0].news2 >= 5 ? 'ALTO' : 'BAIXO'} — Score {sinaisVitais[0].news2}
                   </p>
-                  <p className="text-xs opacity-80" style={{ margin: 0 }}>
-                    {sinaisVitais[0].news2 >= 7 ? 'Resposta imediata necessária. Activar equipa de emergência.' : 'Monitorização frequente e avaliação clínica urgente.'}
+                  <p className={`text-xs font-medium ${news2Intervalo(sinaisVitais[0].news2).cor}`} style={{ margin: 0, marginTop: '2px' }}>
+                    {news2Intervalo(sinaisVitais[0].news2).texto}
                   </p>
                 </div>
               </div>
@@ -243,6 +264,92 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           </>
         )}
       </div>
+
+      {/* Baseline Individual */}
+      {baseline && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginBottom: '24px' }}>
+          <button
+            onClick={() => setBaselineAberto(a => !a)}
+            className="w-full flex items-center justify-between text-left hover:bg-slate-50/50 rounded-2xl transition-colors"
+            style={{ padding: '16px 24px' }}>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <span className="text-sm font-semibold text-slate-700">Baseline Individual</span>
+              <HelpTooltip chave="baseline" />
+              {baseline.nRegistos < 8 && (
+                <span className="text-xs text-violet-600 bg-violet-50 border border-violet-200 rounded-md font-medium" style={{ padding: '2px 8px' }}>
+                  A aprender — {baseline.nRegistos}/8 registos
+                </span>
+              )}
+            </div>
+            <svg className={`w-4 h-4 text-slate-400 transition-transform ${baselineAberto ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {baselineAberto && (
+            <div style={{ padding: '0 24px 20px' }}>
+              {baseline.nRegistos < 8 ? (
+                <div className="rounded-xl bg-violet-50 border border-violet-100 text-center text-sm text-violet-700" style={{ padding: '20px' }}>
+                  A aprender o baseline deste doente — {baseline.nRegistos}/8 registos necessários
+                </div>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 text-xs text-slate-600 font-semibold uppercase tracking-wide border-b border-slate-100">
+                      <th className="text-left py-2">Parâmetro</th>
+                      <th className="text-center py-2">Média ± SD</th>
+                      <th className="text-center py-2">Último valor</th>
+                      <th className="text-center py-2">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { label: 'FC (bpm)', media: baseline.fcMedia, sd: baseline.fcSd, ultimo: sinaisVitais[0]?.pulso },
+                      { label: 'TA Sistólica (mmHg)', media: baseline.pasSistolicaMedia, sd: baseline.pasSistolicaSd, ultimo: sinaisVitais[0]?.pressaoSistolica },
+                      { label: 'TA Diastólica (mmHg)', media: baseline.pasDiastolicaMedia, sd: baseline.pasDiastolicaSd, ultimo: sinaisVitais[0]?.pressaoDiastolica },
+                      { label: 'Temperatura (ºC)', media: baseline.tempMedia, sd: baseline.tempSd, ultimo: sinaisVitais[0]?.temperatura },
+                      { label: 'SpO₂ (%)', media: baseline.spo2Media, sd: baseline.spo2Sd, ultimo: sinaisVitais[0]?.saturacaoO2 },
+                      { label: 'FR (rpm)', media: baseline.frMedia, sd: baseline.frSd, ultimo: sinaisVitais[0]?.frequenciaRespiratoria },
+                    ].map(({ label, media, sd, ultimo }) => {
+                      if (media == null) return null;
+                      const desviado = ultimo != null && sd != null && Math.abs(ultimo - media) > 2 * sd;
+                      return (
+                        <tr key={label} className="border-b border-slate-50">
+                          <td className="py-2.5 text-slate-700 font-medium">{label}</td>
+                          <td className="py-2.5 text-center text-slate-500 text-xs">
+                            {media.toFixed(1)} ± {sd?.toFixed(1) ?? '—'}
+                          </td>
+                          <td className="py-2.5 text-center font-semibold text-slate-700">
+                            {ultimo != null ? ultimo : '—'}
+                          </td>
+                          <td className="py-2.5 text-center">
+                            {ultimo == null ? (
+                              <span className="text-slate-300 text-xs">—</span>
+                            ) : desviado ? (
+                              <span className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-md" style={{ padding: '2px 8px' }}>
+                                ⚠ Desvio
+                              </span>
+                            ) : (
+                              <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-md" style={{ padding: '2px 8px' }}>
+                                ✓ Normal
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Modal Sinais Vitais */}
       {modalSinalVital && (

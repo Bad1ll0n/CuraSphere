@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Patch, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Query, Res, UseGuards, Request } from '@nestjs/common';
+import { Response } from 'express';
 import { MedicacaoService } from './medicacao.service';
 import { DoenteService } from '../doentes/doentes.service';
+import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -17,6 +19,7 @@ export class MedicacaoController {
   constructor(
     private readonly medicacaoService: MedicacaoService,
     private readonly doenteService: DoenteService,
+    private readonly pdfService: PdfService,
   ) {}
 
   @Get('doente/:doenteId')
@@ -100,6 +103,25 @@ export class MedicacaoController {
     return this.medicacaoService.descontinuar(id);
   }
 
+  @Get('doente/:id/mar/pdf')
+  @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros', 'chefe_turno')
+  async marPdf(
+    @Param('id') id: string,
+    @Query('data') data: string | undefined,
+    @Res() res: Response,
+    @Request() req: any,
+  ) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    const buffer = await this.pdfService.gerarMar(id, data);
+    const dataLabel = data ? data.slice(0, 10) : new Date().toISOString().slice(0, 10);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="MAR_${id}_${dataLabel}.pdf"`,
+      'Content-Length': buffer.length,
+    });
+    res.end(buffer);
+  }
+
   @Get('mar')
   mar(@Request() req: any) {
     return this.medicacaoService.mar(req.user.sub);
@@ -135,5 +157,34 @@ export class MedicacaoController {
       await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     }
     return this.medicacaoService.verificarInteracoes(doenteId, nome);
+  }
+
+  @Post('verificar-5-certos')
+  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'auxiliar', 'tecnico_saude')
+  verificar5Certos(@Body() body: { qrPayload: string; doenteIdEsperado: string }) {
+    return this.medicacaoService.verificar5Certos(body.qrPayload, body.doenteIdEsperado);
+  }
+
+  @Get('timeline')
+  @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'farmaceutico')
+  timeline(
+    @Query('servico') servico: string,
+    @Query('turno') turno: 'manha' | 'tarde' | 'noite',
+    @Query('data') data?: string,
+  ) {
+    return this.medicacaoService.timeline(servico, turno ?? 'manha', data);
+  }
+
+  @Get('prescricoes-ativas')
+  @Roles('medico', 'farmaceutico', 'chefe_enfermeiros', 'direcao')
+  listarPrescricoesAtivas(@Query('servico') servico?: string) {
+    return this.medicacaoService.listarPrescricoesAtivas(servico);
+  }
+
+  @Get('doente/:doenteId/interacoes')
+  @Roles('medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros')
+  async listarInteracoesPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    return this.medicacaoService.listarInteracoesPorDoente(doenteId);
   }
 }

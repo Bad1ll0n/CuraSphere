@@ -6,6 +6,9 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
+import { useNetworkStatus } from '../lib/network';
+import { enqueue } from '../lib/mutation-queue';
+import { OfflineBanner } from '../components/OfflineBanner';
 import TabInfo from './doente-detalhe/tabs/TabInfo';
 import TabTarefas from './doente-detalhe/tabs/TabTarefas';
 import TabMedicacao from './doente-detalhe/tabs/TabMedicacao';
@@ -67,6 +70,8 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const [loadingHistorico, setLoadingHistorico] = useState(false);
   const [medHistorico, setMedHistorico] = useState<any[]>([]);
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
+
+  const isOnline = useNetworkStatus();
 
   const role = utilizador.role;
   const meuGrupoChave = role === 'medico' ? 'medico' : role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
@@ -141,8 +146,15 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const concluirTarefa = async (id: string) => {
-    try { await api.patch(`/tarefas/${id}/estado`, { estado: 'concluida' }); await carregar(); }
-    catch { Alert.alert('Erro', 'Não foi possível concluir a tarefa'); }
+    try {
+      if (!isOnline) {
+        await enqueue({ method: 'PATCH', url: `/tarefas/${id}/estado`, body: { estado: 'concluida' } });
+        Alert.alert('Guardado localmente', 'Será enviado quando houver ligação.');
+        return;
+      }
+      await api.patch(`/tarefas/${id}/estado`, { estado: 'concluida' });
+      await carregar();
+    } catch { Alert.alert('Erro', 'Não foi possível concluir a tarefa'); }
   };
 
   const concluirMedicacao = async (id: string) => {
@@ -151,8 +163,15 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const registarMedicacao = async (id: string) => {
-    try { await api.post(`/medicacao/${id}/administrar`, {}); Alert.alert('Registado', 'Administração registada com sucesso'); }
-    catch { Alert.alert('Erro', 'Não foi possível registar'); }
+    try {
+      if (!isOnline) {
+        await enqueue({ method: 'POST', url: `/medicacao/${id}/administrar`, body: {} });
+        Alert.alert('Guardado localmente', 'Será enviado quando houver ligação.');
+        return;
+      }
+      await api.post(`/medicacao/${id}/administrar`, {});
+      Alert.alert('Registado', 'Administração registada com sucesso');
+    } catch { Alert.alert('Erro', 'Não foi possível registar'); }
   };
 
   const alterarEstado = async (novoEstado: string) => {
@@ -199,6 +218,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
 
   return (
     <View style={s.container}>
+      <OfflineBanner />
       <View style={s.header}>
         <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>

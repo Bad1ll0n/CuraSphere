@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, Alert, ScrollView, StyleSheet } from 'react-native';
 import { shared } from '../styles';
 import api from '../../../lib/api';
+import { useNetworkStatus } from '../../../lib/network';
+import { enqueue } from '../../../lib/mutation-queue';
 
 interface Props { visible: boolean; doenteId: string; onClose: () => void; onSaved: () => void }
 
 export default function ModalRegistarVitais({ visible, doenteId, onClose, onSaved }: Props) {
+  const isOnline = useNetworkStatus();
   const [pS, setPS] = useState('');
   const [pD, setPD] = useState('');
   const [pulso, setPulso] = useState('');
@@ -21,18 +24,25 @@ export default function ModalRegistarVitais({ visible, doenteId, onClose, onSave
   }, [visible]);
 
   const submeter = async () => {
+    const body = {
+      pressaoSistolica: pS ? parseInt(pS) : undefined,
+      pressaoDiastolica: pD ? parseInt(pD) : undefined,
+      pulso: pulso ? parseInt(pulso) : undefined,
+      temperatura: temp ? parseFloat(temp) : undefined,
+      saturacaoO2: spo2 ? parseInt(spo2) : undefined,
+      frequenciaRespiratoria: fr ? parseInt(fr) : undefined,
+      peso: peso ? parseFloat(peso) : undefined,
+      notas: notas || undefined,
+    };
     setSalvando(true);
     try {
-      await api.post(`/sinais-vitais/${doenteId}`, {
-        pressaoSistolica: pS ? parseInt(pS) : undefined,
-        pressaoDiastolica: pD ? parseInt(pD) : undefined,
-        pulso: pulso ? parseInt(pulso) : undefined,
-        temperatura: temp ? parseFloat(temp) : undefined,
-        saturacaoO2: spo2 ? parseInt(spo2) : undefined,
-        frequenciaRespiratoria: fr ? parseInt(fr) : undefined,
-        peso: peso ? parseFloat(peso) : undefined,
-        notas: notas || undefined,
-      });
+      if (!isOnline) {
+        await enqueue({ method: 'POST', url: `/sinais-vitais/${doenteId}`, body });
+        Alert.alert('Guardado localmente', 'Será enviado quando houver ligação.');
+        onClose();
+        return;
+      }
+      await api.post(`/sinais-vitais/${doenteId}`, body);
       onClose(); onSaved();
     } catch (e: any) {
       Alert.alert('Erro', e.response?.data?.message ?? 'Erro ao registar sinais vitais');

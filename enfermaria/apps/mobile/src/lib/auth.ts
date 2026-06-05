@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import { Utilizador } from '@org/shared';
 import api, { setMemToken } from './api';
 import { queryClient } from './query-client';
+import { registarPushToken } from './notifications';
 
 export type { Utilizador };
 
@@ -10,6 +11,8 @@ export async function login(numeroFuncionario: string, password: string): Promis
   setMemToken(data.accessToken);
   await SecureStore.setItemAsync('token', data.accessToken);
   await SecureStore.setItemAsync('utilizador', JSON.stringify(data.utilizador));
+  // Registar push token de forma não-bloqueante após login
+  registarPushToken().catch(() => {});
   return data.utilizador;
 }
 

@@ -7,6 +7,27 @@ const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    const data = err.response?.data;
+    const isBreakGlass =
+      err.response?.status === 403 &&
+      (data?.errorCode === 'BREAK_GLASS_REQUIRED' || data?.message?.includes('break_glass'));
+    if (isBreakGlass && !err.config?._breakGlass) {
+      const motivo = window.prompt(
+        `Acesso break-glass requerido.\nEste doente pertence a outro serviço.\n\nJustifique o acesso (mín. 20 caracteres):`,
+      );
+      if (motivo && motivo.trim().length >= 20) {
+        err.config._breakGlass = true;
+        err.config.headers['X-Break-Glass-Reason'] = motivo.trim();
+        return api(err.config);
+      }
+    }
+    return Promise.reject(err);
+  },
+);
+
 let refreshingToken = false;
 let refreshSubscribers: (() => void)[] = [];
 

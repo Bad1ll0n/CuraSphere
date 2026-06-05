@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 
+const SERVICOS_LISTA = ['Cardiologia', 'Ortopedia', 'Medicina Interna', 'Cirurgia', 'Neurologia', 'UCI'];
+
 interface Doente {
   id: string;
   nome: string;
@@ -31,6 +33,12 @@ const estadoLabel: Record<string, string> = {
 const ROLES_CLINICOS = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros', 'chefe_medicos'];
 const LIMIT = 25;
 
+const BANDA_CORES: Record<string, string> = {
+  verde: 'bg-green-100 text-green-700 border-green-200',
+  ambar: 'bg-amber-100 text-amber-700 border-amber-200',
+  vermelho: 'bg-red-100 text-red-700 border-red-200',
+};
+
 export default function DoentesPagina() {
   const { utilizador } = useAuth();
   const [pesquisa, setPesquisa] = useState('');
@@ -38,7 +46,8 @@ export default function DoentesPagina() {
   const [filtroEstado, setFiltroEstado] = useState('');
   const [filtroServico, setFiltroServico] = useState('');
   const [pagina, setPagina] = useState(1);
-  const [aba, setAba] = useState<'meus' | 'todos'>('meus');
+  const [aba, setAba] = useState<'meus' | 'todos' | 'risco'>('meus');
+  const [riscoServico, setRiscoServico] = useState(SERVICOS_LISTA[0]);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isClinico = ROLES_CLINICOS.includes(utilizador?.role ?? '');
@@ -62,14 +71,22 @@ export default function DoentesPagina() {
       if (pesquisaDebounced) params.set('search', pesquisaDebounced);
       return api.get(`/doentes?${params}`).then(r => r.data);
     },
+    enabled: aba !== 'risco',
     placeholderData: (prev) => prev,
+  });
+
+  const { data: riscoData, isLoading: riscoLoading } = useQuery({
+    queryKey: ['risco-turno', riscoServico],
+    queryFn: () => api.get('/baselines/risco-turno', { params: { servico: riscoServico } }).then(r => r.data),
+    enabled: aba === 'risco',
+    refetchInterval: 120_000,
   });
 
   const doentes: Doente[] = data?.data ?? data ?? [];
   const total: number = data?.total ?? doentes.length;
   const totalPaginas: number = data?.totalPaginas ?? 1;
 
-  const mudarAba = (novaAba: 'meus' | 'todos') => { setAba(novaAba); setPagina(1); };
+  const mudarAba = (novaAba: 'meus' | 'todos' | 'risco') => { setAba(novaAba); setPagina(1); };
 
   // Filtros client-side residuais (estado + serviço, não há query params para estes)
   const filtrados = doentes.filter((d) => {
@@ -108,18 +125,18 @@ export default function DoentesPagina() {
         {/* Tabs — só para clínicos */}
         {isClinico && (
           <div className="flex border-b border-slate-100" style={{ padding: '0 24px' }}>
-            {(['meus', 'todos'] as const).map((t) => (
+            {([['meus', 'Meus Doentes'], ['todos', 'Todos os Doentes'], ['risco', '⚠ Vista de Risco']] as const).map(([t, label]) => (
               <button
                 key={t}
                 onClick={() => mudarAba(t)}
                 className={`text-sm font-medium transition-colors relative ${
-                  aba === t ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'
+                  aba === t ? (t === 'risco' ? 'text-amber-600' : 'text-blue-600') : 'text-slate-500 hover:text-slate-700'
                 }`}
                 style={{ padding: '14px 0', marginRight: '24px' }}
               >
-                {t === 'meus' ? 'Meus Doentes' : 'Todos os Doentes'}
+                {label}
                 {aba === t && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />
+                  <span className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${t === 'risco' ? 'bg-amber-500' : 'bg-blue-600'}`} />
                 )}
               </button>
             ))}
@@ -173,7 +190,86 @@ export default function DoentesPagina() {
           )}
         </div>
 
-        {isLoading ? (
+        {/* Vista de Risco */}
+        {aba === 'risco' && (
+          <div>
+            <div className="flex items-center gap-3 border-b border-slate-100" style={{ padding: '12px 24px' }}>
+              <select value={riscoServico} onChange={e => setRiscoServico(e.target.value)}
+                className="text-xs font-medium border border-slate-200 rounded-lg bg-slate-50 text-slate-700 focus:outline-none"
+                style={{ padding: '7px 12px' }}>
+                {SERVICOS_LISTA.map(s => <option key={s}>{s}</option>)}
+              </select>
+              <span className="text-xs text-slate-400">Actualização automática cada 2 min</span>
+            </div>
+            {riscoLoading ? (
+              <div className="flex items-center justify-center gap-2 text-slate-400" style={{ padding: '48px' }}>
+                <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                <span className="text-sm">A calcular scores de risco...</span>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-100">
+                      <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '12px 24px' }}>Cama</th>
+                      <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Doente</th>
+                      <th className="text-center text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Score Risco</th>
+                      <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Factores</th>
+                      <th className="text-left text-xs font-semibold text-slate-600 uppercase tracking-wide" style={{ padding: '12px 16px' }}>Último SV</th>
+                      <th style={{ padding: '12px 24px' }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(riscoData ?? []).map((r: any, i: number) => (
+                      <tr key={r.doenteId} className="hover:bg-slate-50 transition-colors" style={{ borderTop: i > 0 ? '1px solid #f8fafc' : undefined }}>
+                        <td style={{ padding: '14px 24px' }}>
+                          <span className="font-mono text-sm font-semibold text-slate-700">{r.cama}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span className="font-semibold text-slate-800">{r.nome}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px', textAlign: 'center' }}>
+                          <span className={`inline-flex items-center gap-1 text-xs font-bold rounded-lg border ${BANDA_CORES[r.banda]}`} style={{ padding: '4px 12px' }}>
+                            {r.score}
+                          </span>
+                        </td>
+                        <td style={{ padding: '14px 16px', maxWidth: '280px' }}>
+                          <div className="flex flex-wrap gap-1">
+                            {r.factores.map((f: string) => (
+                              <span key={f} className="text-xs bg-slate-100 text-slate-600 rounded-md" style={{ padding: '2px 8px' }}>{f}</span>
+                            ))}
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span className="text-xs text-slate-400">
+                            {r.ultimoSV ? new Date(r.ultimoSV).toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}
+                          </span>
+                        </td>
+                        <td style={{ padding: '14px 24px' }}>
+                          <Link href={`/doentes/${r.doenteId}`}
+                            className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
+                            Ver
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                    {(riscoData ?? []).length === 0 && (
+                      <tr><td colSpan={6} className="text-center text-slate-400 text-sm" style={{ padding: '48px' }}>Sem doentes activos neste serviço</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {aba !== 'risco' && (isLoading ? (
           <div role="status" aria-live="polite" aria-busy="true" aria-label="A carregar doentes"
             className="flex items-center justify-center gap-3 text-slate-400" style={{ padding: '64px' }}>
             <svg className="animate-spin w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 24 24">
@@ -266,10 +362,10 @@ export default function DoentesPagina() {
               </tbody>
             </table>
           </div>
-        )}
+        ))}
 
         {/* Paginação */}
-        {!isLoading && totalPaginas > 1 && (
+        {aba !== 'risco' && !isLoading && totalPaginas > 1 && (
           <div className="flex items-center justify-between border-t border-slate-100" style={{ padding: '16px 24px' }}>
             <span className="text-xs text-slate-500">
               Página {pagina} de {totalPaginas} · {total} doentes

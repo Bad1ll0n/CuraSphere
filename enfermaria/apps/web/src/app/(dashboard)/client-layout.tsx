@@ -15,6 +15,7 @@ import { SosBanner } from './sos-banner';
 import { SidebarNav } from './sidebar-nav';
 import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
+import { TourOverlay } from '@/components/tour-overlay';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
@@ -24,6 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarAberta, setSidebarAberta] = useState(false);
   const [modalPwd, setModalPwd] = useState(false);
   const [modalConfig, setModalConfig] = useState(false);
+  const [mostrarTour, setMostrarTour] = useState(false);
 
   const { data: notifData } = useNaoLidasCount();
   const naoLidas = notifData?.count ?? 0;
@@ -68,6 +70,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       if (utilizador.role === 'ti') router.replace('/dashboard-ti');
       else if (utilizador.role === 'operacional') router.replace('/operacional');
     }
+    if (!loading && utilizador) {
+      const chave = `curasphere_tour_${utilizador.id}`;
+      if (!localStorage.getItem(chave)) setMostrarTour(true);
+    }
   }, [utilizador, loading, router, pathname]);
 
   if (loading || !utilizador) return (
@@ -103,6 +109,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {sosAlerta && (
         <SosBanner sosAlerta={sosAlerta} onClose={() => setSosAlerta(null)} />
+      )}
+
+      {mostrarTour && utilizador && (
+        <TourOverlay role={utilizador.role} onConcluir={() => {
+          localStorage.setItem(`curasphere_tour_${utilizador.id}`, 'done');
+          setMostrarTour(false);
+        }} />
       )}
 
       <SidebarNav

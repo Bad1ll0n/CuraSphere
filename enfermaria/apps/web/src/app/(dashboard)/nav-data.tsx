@@ -463,6 +463,19 @@ export const navItems = [
       </svg>
     ),
   },
+  {
+    href: '/sistemas-externos',
+    label: 'Conectores Externos',
+    servicos: null,
+    roles: [...ROLES_TI, ...ROLES_DIRECAO],
+    subRoles: ['it_admin'],
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
   // ── Grupo C: Pessoal ─────────────────────────────────────────────────
   {
     href: '/atribuicoes',
@@ -487,6 +500,44 @@ export const navItems = [
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    href: '/turno/passagem',
+    label: 'Passagem Turno Pro',
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
+    grupo: 'C',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+      </svg>
+    ),
+  },
+  {
+    href: '/turno/medicacoes',
+    label: 'Timeline Medicação',
+    servicos: null,
+    roles: [...ROLES_MEDICO, ...ROLES_ENFERMAGEM, ...ROLES_FARMACIA],
+    excludeServicos: ['consultas_externas', 'bloco_operatorio'],
+    grupo: 'C',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/farmacia-clinica',
+    label: 'Farmácia Clínica',
+    servicos: null,
+    roles: [...ROLES_FARMACIA, ...ROLES_MEDICO],
+    grupo: 'B',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     ),
   },

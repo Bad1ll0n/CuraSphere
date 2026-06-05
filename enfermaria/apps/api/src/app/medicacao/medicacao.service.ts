@@ -443,4 +443,188 @@ export class MedicacaoService {
       select: { id: true, nome: true, assinadoEm: true, assinadoPor: { select: { id: true, nome: true } } },
     });
   }
+
+  // ── Timeline de Medicação por Turno ─────────────────────────────────────────
+
+  async timeline(servico: string, turno: 'manha' | 'tarde' | 'noite', dataStr?: string) {
+    const TURNOS = { manha: { inicio: 8, fim: 16 }, tarde: { inicio: 16, fim: 24 }, noite: { inicio: 0, fim: 8 } };
+    const { inicio, fim } = TURNOS[turno];
+
+    const dataRef = dataStr ? new Date(dataStr) : new Date();
+    const dia = dataRef.toISOString().split('T')[0];
+
+    const horaInicioDate = new Date(`${dia}T${String(inicio).padStart(2, '0')}:00:00.000Z`);
+    const horaFimDate   = new Date(`${dia}T${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00:00.000Z`);
+    if (fim === 24) horaFimDate.setDate(horaFimDate.getDate() + 1);
+
+    const doentes = await this.prisma.doente.findMany({
+      where: { ativo: true, dataAlta: null, servico: servico as any },
+      select: {
+        id: true, nome: true,
+        cama: { select: { numero: true } },
+        medicacoes: {
+          where: { ativo: true, deletedAt: null },
+          select: {
+            id: true, nome: true, dose: true, frequencia: true, iniciadoEm: true,
+            registos: {
+              orderBy: { administradoEm: 'desc' },
+              take: 1,
+              select: { administradoEm: true },
+            },
+          },
+        },
+      },
+    });
+
+    type SlotEntry = { doenteId: string; doenteName: string; cama: string | null; medicacaoId: string; nome: string; dose: string; administrada: boolean; hora: string };
+    const slotsMap = new Map<string, SlotEntry[]>();
+
+    for (let h = inicio; h < (fim === 24 ? 24 : fim); h++) {
+      const key = `${String(h).padStart(2, '0')}:00`;
+      slotsMap.set(key, []);
+    }
+
+    for (const doente of doentes) {
+      for (const med of doente.medicacoes) {
+        const intervaloH = parsearFrequenciaHoras(med.frequencia);
+        if (!intervaloH) continue;
+
+        const ultimaAdm = med.registos[0]?.administradoEm ?? med.iniciadoEm;
+        let proxAdm = new Date(ultimaAdm.getTime() + intervaloH * 3_600_000);
+
+        // Avançar até ao slot dentro do turno
+        while (proxAdm < horaInicioDate) proxAdm = new Date(proxAdm.getTime() + intervaloH * 3_600_000);
+
+        if (proxAdm >= horaFimDate) continue;
+
+        const horaKey = `${String(proxAdm.getUTCHours()).padStart(2, '0')}:00`;
+        const slotKey = slotsMap.has(horaKey) ? horaKey : [...slotsMap.keys()].find((k) => +k.split(':')[0] === proxAdm.getUTCHours());
+        if (!slotKey) continue;
+
+        const administrada = med.registos.length > 0 && med.registos[0].administradoEm >= proxAdm;
+        slotsMap.get(slotKey)!.push({
+          doenteId: doente.id,
+          doenteName: doente.nome,
+          cama: doente.cama?.numero ?? null,
+          medicacaoId: med.id,
+          nome: med.nome,
+          dose: med.dose,
+          administrada,
+          hora: proxAdm.toISOString(),
+        });
+      }
+    }
+
+    const slots = [...slotsMap.entries()].map(([hora, medicacoes]) => ({
+      hora,
+      total: medicacoes.length,
+      medicacoes,
+    }));
+
+    return {
+      turno: { inicio: `${String(inicio).padStart(2, '0')}:00`, fim: `${String(fim === 24 ? 0 : fim).padStart(2, '0')}:00` },
+      slots,
+    };
+  }
+
+  // ── Vista farmacêutico: prescrições activas ──────────────────────────────────
+
+  async listarPrescricoesAtivas(servico?: string) {
+    return this.prisma.doente.findMany({
+      where: { ativo: true, dataAlta: null, ...(servico ? { servico: servico as any } : {}) },
+      select: {
+        id: true, nome: true,
+        cama: { select: { numero: true, quarto: true } },
+        medicacoes: {
+          where: { ativo: true, deletedAt: null },
+          select: {
+            id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true,
+            registos: {
+              orderBy: { administradoEm: 'desc' },
+              take: 1,
+              select: { administradoEm: true },
+            },
+          },
+          orderBy: { iniciadoEm: 'asc' },
+        },
+      },
+      orderBy: [{ servico: 'asc' }],
+    });
+  }
+
+  async listarInteracoesPorDoente(doenteId: string) {
+    const meds = await this.prisma.medicacao.findMany({
+      where: { doenteId, ativo: true, deletedAt: null },
+      select: { id: true, nome: true },
+    });
+    const nomes = meds.map((m) => m.nome);
+    const encontradas: { med1Id: string; med1: string; med2: string; severidade: string; descricao: string }[] = [];
+
+    for (let i = 0; i < nomes.length; i++) {
+      const interacoes = verificarInteracao(nomes[i], nomes.filter((_, j) => j !== i));
+      for (const int of interacoes) {
+        if (!encontradas.find((e) => (e.med1 === int.med1 && e.med2 === int.med2) || (e.med1 === int.med2 && e.med2 === int.med1))) {
+          encontradas.push({ med1Id: meds[i].id, med1: nomes[i], med2: int.med2, severidade: int.severidade, descricao: int.descricao });
+        }
+      }
+    }
+    return encontradas;
+  }
+
+  // ── Verificação QR 5 Certos ─────────────────────────────────────────────────
+
+  async verificar5Certos(qrPayload: string, doenteIdEsperado: string) {
+    let payload: { medicacaoId?: string; doenteId?: string; nome?: string; dose?: string; via?: string };
+    try {
+      payload = JSON.parse(qrPayload);
+    } catch {
+      return { valido: false, falhas: [{ certo: 'QR', motivo: 'Código QR inválido ou corrompido' }], medicacao: null };
+    }
+
+    const { medicacaoId, doenteId: doenteIdQR } = payload;
+    if (!medicacaoId) return { valido: false, falhas: [{ certo: 'QR', motivo: 'QR sem ID de medicação' }], medicacao: null };
+
+    const medicacao = await this.prisma.medicacao.findUnique({
+      where: { id: medicacaoId },
+      include: { registos: { orderBy: { administradoEm: 'desc' }, take: 1 } },
+    });
+
+    const falhas: { certo: string; motivo: string }[] = [];
+
+    // Certo 1 — Doente certo
+    if (!doenteIdQR || doenteIdQR !== doenteIdEsperado) {
+      falhas.push({ certo: 'Doente', motivo: 'QR pertence a outro doente' });
+    }
+
+    // Certo 2 — Medicamento certo
+    if (!medicacao) {
+      return { valido: false, falhas: [{ certo: 'Medicamento', motivo: 'Medicação não encontrada' }], medicacao: null };
+    }
+    if (!medicacao.ativo) {
+      falhas.push({ certo: 'Medicamento', motivo: 'Medicação foi descontinuada' });
+    }
+
+    // Certo 5 — Hora certa (verificação de janela)
+    const intervaloHoras = parsearFrequenciaHoras(medicacao.frequencia);
+    if (intervaloHoras && medicacao.registos.length > 0) {
+      const ultimaAdm = medicacao.registos[0].administradoEm;
+      const horasDesde = (Date.now() - ultimaAdm.getTime()) / 3_600_000;
+      const TOLERANCIA_H = 1;
+      if (horasDesde < intervaloHoras - TOLERANCIA_H) {
+        falhas.push({ certo: 'Hora', motivo: `Administração prematura — última há ${horasDesde.toFixed(1)}h (mínimo ${(intervaloHoras - TOLERANCIA_H).toFixed(1)}h)` });
+      }
+    }
+
+    return {
+      valido: falhas.length === 0,
+      falhas,
+      medicacao: {
+        id: medicacao.id,
+        nome: medicacao.nome,
+        dose: medicacao.dose,
+        via: medicacao.via,
+        frequencia: medicacao.frequencia,
+      },
+    };
+  }
 }

@@ -203,4 +203,11 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   emitirBlocoUpdate(data: object) {
     this.server.to('geral').emit('bloco:update', { ...data, ts: Date.now() });
   }
+
+  emitirSLAExcedido(data: object) {
+    const payload = { ...data, ts: Date.now() };
+    this.server.to('role:medico').emit('urgencia:sla-excedido', payload);
+    this.server.to('role:enfermeiro').emit('urgencia:sla-excedido', payload);
+    this.server.to('servico:urgencia').emit('urgencia:sla-excedido', payload);
+  }
 }

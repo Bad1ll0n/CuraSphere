@@ -22,6 +22,15 @@ import { TarefasPanel } from './components/tarefas-panel';
 import { MedicacaoPanel } from './components/medicacao-panel';
 import { ConsultasPanel } from './components/consultas-panel';
 import { FaturacaoPanel } from './components/faturacao-panel';
+import { BalancoHidricoPanel } from './components/balanco-hidrico-panel';
+import { FeridasPanel } from './components/feridas-panel';
+import { SepsisPanel } from './components/sepsis-panel';
+import { PlanoAltaPanel } from './components/plano-alta-panel';
+import { AiClinicoPanel } from './components/ai-clinico-panel';
+import { ResultadosLabPanel } from './components/resultados-lab-panel';
+import { ProtocoloPanel } from './components/protocolo-panel';
+import { DocumentosSaudePanel } from './components/documentos-saude-panel';
+import { LosWidget } from './components/los-widget';
 
 interface Doente {
   id: string;
@@ -88,7 +97,7 @@ class PanelErrorBoundary extends React.Component<
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-600">
@@ -175,6 +184,20 @@ export default function DoenteDetalhe() {
   const podeAlterarEstado = ['enfermeiro', 'medico'].includes(utilizador?.role ?? '');
   const podeDarAlta = ['administrativo', 'medico'].includes(utilizador?.role ?? '');
   const podeAcionarSOS = ['enfermeiro', 'medico', 'auxiliar', 'tecnico_saude'].includes(utilizador?.role ?? '');
+  const podeSinalizar = ['medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
+
+  // Sinalizar como Preocupante
+  const [modalSinalizar, setModalSinalizar] = useState(false);
+  const [sinalizacaoAtiva, setSinalizacaoAtiva] = useState<{ id: string; motivo: string; nivelUrgencia: string } | null>(null);
+  const [motivoSinalizar, setMotivoSinalizar] = useState('');
+  const [nivelUrgencia, setNivelUrgencia] = useState<'normal' | 'urgente'>('normal');
+  const [salvandoSinalizar, setSalvandoSinalizar] = useState(false);
+
+  // Auto resumo de alta
+  const [carregandoResumo, setCarregandoResumo] = useState(false);
+
+  // Score de risco
+  const [riscoScore, setRiscoScore] = useState<{ score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] } | null>(null);
 
   // SOS
   const [sosConfirmando, setSosConfirmando] = useState(false);
@@ -215,6 +238,12 @@ export default function DoenteDetalhe() {
     }
   };
 
+  const carregarSinalizacao = useCallback(() => {
+    api.get(`/sinalizacoes/${id}/ativas`)
+      .then(r => setSinalizacaoAtiva(r.data?.length > 0 ? r.data[0] : null))
+      .catch(() => {});
+  }, [id]);
+
   const carregar = useCallback(() => {
     setLoading(true);
     api.get(`/doentes/${id}`)
@@ -251,8 +280,45 @@ export default function DoenteDetalhe() {
   };
 
   useEffect(() => {
-    Promise.all([carregar(), verificarTurnoAtivo(), carregarFicheiroPessoal()]);
+    Promise.all([carregar(), verificarTurnoAtivo(), carregarFicheiroPessoal(), carregarSinalizacao()]);
+    api.get(`/baselines/${id}/risco`).then(r => setRiscoScore(r.data)).catch(() => null);
   }, [id]);
+
+  const submeterSinalizar = async () => {
+    if (!motivoSinalizar.trim()) return;
+    setSalvandoSinalizar(true);
+    try {
+      await api.post(`/sinalizacoes/${id}`, { motivo: motivoSinalizar, nivelUrgencia });
+      toast.success('Sinalização criada');
+      setModalSinalizar(false);
+      setMotivoSinalizar('');
+      carregarSinalizacao();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro');
+    } finally { setSalvandoSinalizar(false); }
+  };
+
+  const resolverSinalizar = async () => {
+    if (!sinalizacaoAtiva) return;
+    try {
+      await api.patch(`/sinalizacoes/${sinalizacaoAtiva.id}/resolver`);
+      toast.success('Sinalização resolvida');
+      setSinalizacaoAtiva(null);
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro');
+    }
+  };
+
+  const abrirModalAlta = async () => {
+    setModalAltaEstruturada(true);
+    setCarregandoResumo(true);
+    try {
+      const r = await api.get(`/doentes/${id}/resumo-alta`);
+      setAltaResumo(r.data.resumoGerado ?? '');
+    } catch {
+      // se não tiver permissão ou falhar, deixa campo vazio
+    } finally { setCarregandoResumo(false); }
+  };
 
   const alterarEstado = async (novoEstado: string) => {
     await api.patch(`/doentes/${id}/estado`, { estado: novoEstado });
@@ -358,6 +424,15 @@ export default function DoenteDetalhe() {
         <div>
           <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
             <h1 className="text-2xl font-bold text-slate-900">{doente.nome}</h1>
+            {riscoScore && (
+              <span className={`text-xs font-bold rounded-lg border px-2 py-0.5 ${
+                riscoScore.banda === 'vermelho' ? 'bg-red-100 text-red-700 border-red-200' :
+                riscoScore.banda === 'ambar' ? 'bg-amber-100 text-amber-700 border-amber-200' :
+                'bg-green-100 text-green-700 border-green-200'
+              }`} title={riscoScore.factores.join(' · ')}>
+                Risco {riscoScore.score}
+              </span>
+            )}
             <div className="relative">
               <button
                 onClick={() => podeAlterarEstado && setAlterandoEstado((v) => !v)}
@@ -389,6 +464,7 @@ export default function DoenteDetalhe() {
           </div>
           <p className="text-slate-400 text-sm font-mono">{doente.numeroProcesso}</p>
           <div className="flex items-center gap-2" style={{ marginTop: '8px' }}>
+            <LosWidget doenteId={id!} utilizador={utilizador} />
             {doente.emIsolamento && (
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded-lg" style={{ padding: '4px 10px' }}>
                 🔶 Em Isolamento{doente.motivoIsolamento ? `: ${doente.motivoIsolamento}` : ''}
@@ -462,8 +538,30 @@ export default function DoenteDetalhe() {
             </svg>
             QR Code
           </button>
+          {/* Sinalizar como Preocupante */}
+          {podeSinalizar && doente.ativo && (
+            sinalizacaoAtiva ? (
+              <div className="inline-flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-300 text-amber-800 text-sm font-semibold rounded-xl" style={{ padding: '10px 14px' }}>
+                  ⚠ Preocupante
+                </div>
+                <button onClick={resolverSinalizar}
+                  className="text-xs text-amber-700 border border-amber-200 hover:bg-amber-50 rounded-xl transition-colors"
+                  style={{ padding: '10px 12px' }}>
+                  Resolver
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setModalSinalizar(true)}
+                className="inline-flex items-center gap-2 border border-amber-200 text-amber-700 hover:bg-amber-50 text-sm font-medium rounded-xl transition-all"
+                style={{ padding: '10px 16px' }}>
+                ⚠ Sinalizar
+              </button>
+            )
+          )}
+
           {podeDarAlta && doente.ativo && (
-            <button onClick={() => setModalAltaEstruturada(true)}
+            <button onClick={abrirModalAlta}
               className="border border-slate-200 text-slate-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50 text-sm font-medium rounded-xl transition-all"
               style={{ padding: '10px 20px' }}>
               Dar Alta
@@ -471,6 +569,26 @@ export default function DoenteDetalhe() {
           )}
         </div>
       </div>
+
+      {/* Banner Sépsis */}
+      <PanelErrorBoundary name="Sépsis">
+        <SepsisPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Análise de Apoio Clínico IA */}
+      <PanelErrorBoundary name="AI Clínico">
+        <AiClinicoPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Verificação de Protocolos IA */}
+      <PanelErrorBoundary name="Protocolos">
+        <ProtocoloPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Dossier Universal de Saúde */}
+      <PanelErrorBoundary name="Documentos de Saúde">
+        <DocumentosSaudePanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
 
       {/* Info grid */}
       <div className="grid grid-cols-3 gap-5" style={{ marginBottom: '24px' }}>
@@ -686,9 +804,29 @@ export default function DoenteDetalhe() {
         <SinaisVitaisPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
+      {/* Balanço Hídrico */}
+      <PanelErrorBoundary name="Balanço Hídrico">
+        <BalancoHidricoPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Feridas e Curativos */}
+      <PanelErrorBoundary name="Feridas e Curativos">
+        <FeridasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Plano de Alta */}
+      <PanelErrorBoundary name="Plano de Alta">
+        <PlanoAltaPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
       {/* Escalas de Risco */}
       <PanelErrorBoundary name="Escalas de Risco">
         <RiscoEscalasPanel doenteId={id!} utilizador={utilizador} />
+      </PanelErrorBoundary>
+
+      {/* Resultados Analíticos (Lab) */}
+      <PanelErrorBoundary name="Resultados Analíticos">
+        <ResultadosLabPanel doenteId={id!} utilizador={utilizador} />
       </PanelErrorBoundary>
 
       {/* Exames Complementares */}
@@ -901,16 +1039,25 @@ export default function DoenteDetalhe() {
             )}
 
             <div style={{ marginBottom: '20px' }}>
-              <label className="block text-sm font-semibold text-slate-700" style={{ marginBottom: '6px' }}>
-                Resumo Clínico <span className="text-red-500">*</span>
-              </label>
+              <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
+                <label className="block text-sm font-semibold text-slate-700">
+                  Resumo Clínico <span className="text-red-500">*</span>
+                </label>
+                {carregandoResumo && (
+                  <span className="text-xs text-blue-500 animate-pulse">A gerar resumo automático...</span>
+                )}
+                {!carregandoResumo && altaResumo && (
+                  <span className="text-xs text-green-600 font-medium">✓ Gerado automaticamente</span>
+                )}
+              </div>
               <textarea
                 value={altaResumo}
                 onChange={(e) => setAltaResumo(e.target.value)}
-                rows={4}
-                placeholder="Descreva o internamento, evolução e estado à data de alta..."
-                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition resize-none"
+                rows={8}
+                placeholder={carregandoResumo ? 'A gerar resumo a partir dos dados do doente...' : 'Descreva o internamento, evolução e estado à data de alta...'}
+                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition resize-none font-mono text-xs"
                 style={{ padding: '10px 14px' }}
+                disabled={carregandoResumo}
               />
             </div>
 
@@ -947,6 +1094,44 @@ export default function DoenteDetalhe() {
                 className="flex-1 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50 transition-colors"
                 style={{ padding: '11px' }}>
                 {salvandoAlta ? 'A processar...' : 'Confirmar Alta'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Sinalizar como Preocupante */}
+      {modalSinalizar && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" style={{ backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '420px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '20px' }}>
+              <h2 className="text-lg font-bold text-slate-900">⚠ Sinalizar como Preocupante</h2>
+              <button onClick={() => setModalSinalizar(false)} className="text-slate-400 hover:text-slate-600 text-xl font-bold">✕</button>
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Motivo *</label>
+              <textarea value={motivoSinalizar} onChange={e => setMotivoSinalizar(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none"
+                style={{ padding: '10px 14px' }} rows={3}
+                placeholder="Descreva a preocupação clínica observada..." />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nível de Urgência</label>
+              <div className="flex gap-2">
+                {(['normal', 'urgente'] as const).map(n => (
+                  <button key={n} onClick={() => setNivelUrgencia(n)}
+                    className={`flex-1 text-sm font-medium rounded-xl border transition-all ${nivelUrgencia === n ? (n === 'urgente' ? 'bg-red-600 text-white border-red-600' : 'bg-amber-500 text-white border-amber-500') : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                    style={{ padding: '9px' }}>
+                    {n === 'normal' ? 'Normal' : 'Urgente'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setModalSinalizar(false)} className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50" style={{ padding: '11px' }}>Cancelar</button>
+              <button onClick={submeterSinalizar} disabled={!motivoSinalizar.trim() || salvandoSinalizar}
+                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl disabled:opacity-50" style={{ padding: '11px' }}>
+                {salvandoSinalizar ? 'A guardar...' : 'Sinalizar'}
               </button>
             </div>
           </div>

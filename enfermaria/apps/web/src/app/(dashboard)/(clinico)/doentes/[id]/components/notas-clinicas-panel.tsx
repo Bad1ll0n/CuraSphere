@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
@@ -36,6 +36,41 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
 
   const role = utilizador?.role ?? '';
   const podeCriarNotaClinica = ['medico', 'enfermeiro'].includes(role);
+
+  // Voice dictation
+  const [activeVoiceField, setActiveVoiceField] = useState<string | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+
+  const toggleVoice = (fieldKey: string) => {
+    const SR = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+    if (!SR) { toast.error('Ditação por voz não suportada neste browser'); return; }
+
+    if (isListening && activeVoiceField === fieldKey) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    if (recognitionRef.current) recognitionRef.current.stop();
+
+    const rec = new SR();
+    rec.lang = 'pt-PT';
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.onresult = (e: any) => {
+      const transcript = Array.from(e.results as SpeechRecognitionResultList)
+        .map((r: any) => r[0].transcript)
+        .join(' ');
+      setSoapForm(f => ({ ...f, [fieldKey]: (f as any)[fieldKey] ? `${(f as any)[fieldKey]} ${transcript}` : transcript }));
+    };
+    rec.onend = () => { setIsListening(false); setActiveVoiceField(null); };
+    rec.onerror = () => { setIsListening(false); setActiveVoiceField(null); };
+
+    recognitionRef.current = rec;
+    rec.start();
+    setIsListening(true);
+    setActiveVoiceField(fieldKey);
+  };
 
   const carregarNotasClincias = () =>
     api.get(`/notas-clinicas/${doenteId}`).then((r) => setNotasClincias(r.data)).catch(() => setNotasClincias([]));
@@ -156,7 +191,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
-              <button onClick={() => setModalNotaClinica(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button onClick={() => { recognitionRef.current?.stop(); setModalNotaClinica(false); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -167,10 +202,27 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
               { key: 'plano', label: 'P — Plano', placeholder: 'Plano de ação: tratamento, exames a pedir, consultas, alta...', cor: 'green' },
             ].map(({ key, label, placeholder, cor }) => (
               <div key={key} style={{ marginBottom: '16px' }}>
-                <label className={`block text-xs font-bold text-${cor}-600 uppercase tracking-wide`} style={{ marginBottom: '6px' }}>{label}</label>
+                <div className="flex items-center justify-between" style={{ marginBottom: '6px' }}>
+                  <label className={`block text-xs font-bold text-${cor}-600 uppercase tracking-wide`}>{label}</label>
+                  <button
+                    type="button"
+                    onClick={() => toggleVoice(key)}
+                    title={isListening && activeVoiceField === key ? 'Parar ditação' : 'Iniciar ditação por voz'}
+                    className={`flex items-center gap-1 text-xs font-medium rounded-lg border transition-all ${
+                      isListening && activeVoiceField === key
+                        ? 'bg-red-500 text-white border-red-500 animate-pulse'
+                        : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700'
+                    }`}
+                    style={{ padding: '4px 8px' }}>
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                    {isListening && activeVoiceField === key ? 'A gravar...' : 'Voz'}
+                  </button>
+                </div>
                 <textarea value={(soapForm as any)[key]} onChange={e => setSoapForm(f => ({ ...f, [key]: e.target.value }))}
                   rows={3} placeholder={placeholder}
-                  className={`w-full border border-${cor}-200 rounded-xl text-sm bg-${cor}-50 focus:outline-none focus:ring-2 focus:ring-${cor}-400 resize-none`}
+                  className={`w-full border border-${cor}-200 rounded-xl text-sm bg-${cor}-50 focus:outline-none focus:ring-2 focus:ring-${cor}-400 resize-none ${isListening && activeVoiceField === key ? 'ring-2 ring-red-400' : ''}`}
                   style={{ padding: '10px 14px' }} />
               </div>
             ))}

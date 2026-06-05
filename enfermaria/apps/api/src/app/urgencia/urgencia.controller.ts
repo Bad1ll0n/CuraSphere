@@ -8,6 +8,9 @@ import { UrgenciaService } from './urgencia.service';
 import { RegistarEntradaUrgenciaDto } from './dto/registar-entrada-urgencia.dto';
 import { PreNotificacaoDto } from './dto/pre-notificacao.dto';
 import { CompletarPreNotificacaoDto } from './dto/completar-pre-notificacao.dto';
+import { ReTriagemDto } from './dto/re-triagem.dto';
+import { AdicionarAtualizacaoDto } from './dto/adicionar-atualizacao.dto';
+import { ActivarEspecialidadeDto } from './dto/activar-especialidade.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('urgencia')
@@ -30,6 +33,24 @@ export class UrgenciaController {
   @Roles('enfermeiro', 'administrativo', 'medico')
   completarPreNotificacao(@Param('id') id: string, @Body() dto: CompletarPreNotificacaoDto) {
     return this.service.completarPreNotificacao(id, dto);
+  }
+
+  @Patch(':id/re-triagem')
+  @Roles('enfermeiro', 'medico')
+  reTriar(@Param('id') id: string, @Body() dto: ReTriagemDto, @Request() req: any) {
+    return this.service.reTriar(id, dto, req.user.sub);
+  }
+
+  @Post(':id/atualizacao')
+  @Roles('enfermeiro', 'medico', 'administrativo')
+  adicionarAtualizacao(@Param('id') id: string, @Body() dto: AdicionarAtualizacaoDto, @Request() req: any) {
+    return this.service.adicionarAtualizacao(id, dto, req.user.sub);
+  }
+
+  @Post(':id/activar-especialidade')
+  @Roles('medico', 'enfermeiro')
+  activarEspecialidade(@Param('id') id: string, @Body() dto: ActivarEspecialidadeDto, @Request() req: any) {
+    return this.service.activarEspecialidade(id, dto, req.user.sub);
   }
 
   @Get('lista')
@@ -57,7 +78,11 @@ export class UrgenciaController {
 
   @Patch(':id/atribuir-medico')
   @Roles('medico', 'administrativo')
-  atribuirMedico(@Param('id') id: string, @Body('medicoResponsavelId') medicoId: string) {
-    return this.service.atribuirMedico(id, medicoId);
+  atribuirMedico(
+    @Param('id') id: string,
+    @Body('medicoResponsavelId') medicoId: string,
+    @Body('salaAtendimento') salaAtendimento?: string,
+  ) {
+    return this.service.atribuirMedico(id, medicoId, salaAtendimento);
   }
 }

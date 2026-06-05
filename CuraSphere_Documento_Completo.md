@@ -1,6 +1,6 @@
 # CuraSphere — Documento Completo da Aplicação
 
-> **Última actualização:** 2026-06-01 (sessão 45)
+> **Última actualização:** 2026-06-05 (sessão 52 — IA Máxima completo)
 > **Estado geral:** Em desenvolvimento activo — backend completo, infraestrutura de produção pronta, web e mobile funcionais
 
 ---
@@ -2147,6 +2147,849 @@ Auditoria completa com leitura de código real, classificação por categoria e 
 | `notas-clinicas.service.ts` | Mesmo padrão de assinatura digital |
 | `camas.controller.ts` | `PATCH /:id/confirmar-limpeza` (auxiliar/enfermeiro) |
 | `notificacoes.service.ts` | Novo método `enviarParaRole(role, titulo, corpo, data?)` |
+
+---
+
+## 13. Session 48 — Módulos Clínicos Novos + Melhorias Dashboard e Urgência
+
+### 13.1 Novos Modelos Prisma
+
+| Modelo | Descrição |
+|--------|-----------|
+| `BalancoHidrico` | Registo de entradas/saídas hídricas por doente; tipo (`entrada`/`saida`), categoria, quantidade (mL), registadoPor; índice por `doenteId+data` |
+| `AvaliacaoFerida` | Avaliação clínica de ferida com tipo, localização, dimensões (LxCxP cm), leito, exsudado, periferia, dor NRS, odor, penso e data próxima troca; soft delete |
+| `AtualizacaoTransporte` | Actualizações INEM en route durante pré-notificação de ambulância; campo `novaETA` opcional |
+
+**Campos adicionados a `EpisodioUrgencia`:** `iniciadoAtendimentoEm`, `salaAtendimento`, `news2Triagem`, `corAnterior`, `idadeAproximada`, `sexo`, `consciente`, `glasgow`, `mecanismo`, `vitalsPASistolica/Diastolica/FC/SpO2/FR`, `intervencoes String[]`, `especialidadeActivada/Em/PorId`
+
+### 13.2 Novos Módulos Backend
+
+| Módulo | Endpoints | Roles |
+|--------|-----------|-------|
+| `balanco-hidrico/` | `POST /:doenteId`, `GET /:doenteId?data=`, `GET /:doenteId/historico`, `DELETE /:id` | medico, enfermeiro, auxiliar, tecnico_saude |
+| `feridas/` | `POST /:doenteId`, `GET /:doenteId`, `GET /:doenteId/ultima`, `DELETE /:id` | medico, enfermeiro, tecnico_saude |
+
+**Helper partilhado:** `apps/api/src/app/common/news2.helper.ts` — `calcularNEWS2()` extraído para reutilização por `sinais-vitais.service` e `urgencia.service`.
+
+### 13.3 Melhorias Backend — Urgência
+
+| Funcionalidade | Detalhe |
+|----------------|---------|
+| NEWS2 automático na triagem | `registarEntrada()` calcula NEWS2 a partir dos sinais vitais de triagem e guarda em `news2Triagem` |
+| SLA Manchester automático | `setInterval` 2 min verifica episódios em `sala_espera`; emite `urgencia:sla-excedido` via WS se SLA excedido (dedup 5 min) |
+| Re-triagem | `PATCH /urgencia/:id/re-triagem` — guarda `corAnterior`, actualiza `triagem`, appende nota de auditoria |
+| Sala de atendimento | `atribuirMedico()` aceita `salaAtendimento`; `atualizarEstado('em_atendimento')` guarda `iniciadoAtendimentoEm` |
+| Pré-notificação enriquecida | `preNotificar()` aceita dados demográficos, vitais en route, intervenções INEM, cálculo automático NEWS2 |
+| Actualização transporte | `POST /urgencia/:id/atualizacao` — cria `AtualizacaoTransporte`, actualiza ETA se fornecida |
+| Activação especialidade | `POST /urgencia/:id/activar-especialidade` — notifica cardiologistas/neurologistas/cirurgia+anestesia conforme tipo (`stemi`/`avc`/`trauma`) |
+
+### 13.4 Melhorias Backend — Dashboard
+
+**`GET /dashboard/news2`** (roles: medico, enfermeiro, chefe_turno, chefe_enfermeiros, direcao, qualidade):
+- Retorna `{ totalAtivos, news2: { baixo, medio, alto, semRegisto }, acuidade: { estavel, grave, critico } }`
+
+### 13.5 Novos Componentes Frontend
+
+| Componente | Caminho | Descrição |
+|------------|---------|-----------|
+| `BalancoHidricoPanel` | `doentes/[id]/components/balanco-hidrico-panel.tsx` | Navegação por dia, 3 cards resumo (Entradas/Saídas/Balanço), tabela de registos, modal registo, gráfico barras 7 dias |
+| `FeridasPanel` | `doentes/[id]/components/feridas-panel.tsx` | Lista colapsável com indicador de tendência (↑/→/↓), badge ⚠️ para exsudado purulento/odor, modal 4 secções (Identificação/Características/Penso/Notas) |
+
+Ambos integrados em `doentes/[id]/page.tsx` com `PanelErrorBoundary`.
+
+### 13.6 Melhorias Frontend — Sinais Vitais
+
+- **Intervalo recomendado** exibido abaixo do badge NEWS2: `0–4 → 12h/12h`, `5–6 → 4h/4h · urgente`, `≥7 → contínua · imediata`
+- **Linha NEWS2 no gráfico** (eixo Y direito 0–20, tracejado vermelho)
+- **Linha Peso** adicionada ao gráfico (tracejado teal)
+- Banner NEWS2 agora aparece para **qualquer score** (não só ≥5), com cor adaptativa
+
+### 13.7 Melhorias Frontend — Dashboard
+
+- **Widget NEWS2** (médico e enfermeiro): 4 badges coloridos (Baixo/Médio/Alto/Sem Registo) com counts
+- **Widget Acuidade** (médico): PieChart Recharts com fatias Estável/Grave/Crítico
+- Ambos os dashboards com `refetchInterval: 60_000` e dados de `/dashboard/news2`
+
+### 13.8 Melhorias Frontend — Urgência
+
+| Funcionalidade | Detalhe |
+|----------------|---------|
+| SLA badge dinâmico | Cada episódio em `sala_espera` mostra badge verde/laranja/vermelho pulsante com minutos de espera |
+| Toast SLA WS | `urgencia:sla-excedido` via WebSocket gera toast de alerta |
+| NEWS2 por episódio | Badge colorido NEWS2 na row de cada episódio (a partir de `news2Triagem`) |
+| Botão Re-triar | Disponível para episódios em `sala_espera`; modal com select cor + textarea motivo obrigatório |
+| Campo Sala/Box | Modal "Atribuir Médico" inclui campo sala; valor exibido na row com ícone 📍 |
+| Pré-notificação 3 blocos | Step 1: Doente (nome, idade, sexo, consciência, glasgow); Step 2: Clínica (queixa, triagem, mecanismo, condição, ETA); Step 3: INEM en route (vitais + checkboxes intervenções) |
+| Sugestão especialidade | Pós-notificação, banner amarelo sugere activação STEMI/AVC/Trauma se critérios detectados |
+| Painel em trânsito enriquecido | Vitais en route, intervenções como pills, badge especialidade activada |
+| `turno:passagem-desafio/confirmada` | Eventos WS adicionados ao tipo `SocketEvent` em `use-socket.ts` |
+
+---
+
+## 14. Session 49 — Inteligência Clínica Completa
+
+> **Data:** 2026-06-05 | **Última actualização do documento:** 2026-06-05
+
+### 14.1 Novos Modelos Prisma
+
+| Modelo | Tabela | Descrição |
+|--------|--------|-----------|
+| `SinalizacaoPreocupante` | `sinalizacoes_preocupante` | Sinalização clínica de enfermeiro; nível normal/urgente |
+| `AlertaSepsis` | `alertas_sepsis` | Alerta sépsis qSOFA/SIRS com bundle de 4 acções |
+| `BaselineDoente` | `baselines_doente` | Baseline individual por parâmetro vital (média ± SD) |
+| `PlanoAlta` | `planos_alta` | Checklist 8 critérios de alta desde o dia 1 |
+| `ReconciliacaoMedicacao` | `reconciliacoes_medicacao` | Reconciliação medicação casa vs. hospital |
+| `RelatorioPassagemTurno` | `relatorios_passagem_turno` | Relatório auto-gerado por serviço e turno |
+| `AcessoFamiliar` | `acessos_familiares` | Token de acesso 7 dias para portal família |
+| `DispositivoFhir` | `dispositivos_fhir` | Dispositivos médicos integrados via FHIR R4 |
+
+### 14.2 Novos Módulos Backend
+
+| Módulo | Endpoints principais | Roles |
+|--------|---------------------|-------|
+| `sinalizacoes` | `POST /sinalizacoes/:doenteId`, `PATCH /:id/resolver`, `GET /:doenteId/ativas` | medico, enfermeiro, chefe_turno |
+| `sepsis` | `GET /sepsis/:doenteId`, `PATCH /:id/bundle`, `PATCH /:id/resolver` | medico, enfermeiro |
+| `baselines` | `GET /baselines/:doenteId` (auto-calculado em hook) | todos clínicos |
+| `reconciliacao-medicacao` | `POST /:doenteId`, `PATCH /:id/aprovar`, `GET /pendentes/aprovacao` | farmaceutico, medico |
+| `relatorio-passagem-turno` | `POST /gerar`, `POST /:id/confirmar`, `GET /historico` | enfermeiro, medico |
+| `plano-alta` | `GET /:doenteId`, `PATCH /:doenteId` | medico, enfermeiro |
+| `familia` | `GET /portal/:token` (público), `POST /acesso/:doenteId`, `DELETE /:id` | medico, enfermeiro |
+| `fhir` | `POST /fhir/Observation` (API key), `GET /fhir/dispositivos`, CRUD | admin, it_admin |
+
+### 14.3 Modificações em Módulos Existentes
+
+| Ficheiro | Alteração |
+|----------|-----------|
+| `doentes.service.ts` | `gerarResumoAlta(doenteId)` — texto estruturado automático com vitais, medicação, notas, exames |
+| `doentes.controller.ts` | `GET /doentes/:id/resumo-alta` — roles: medico, chefe_enfermeiros, direcao |
+| `sinais-vitais.service.ts` | Hooks async: `sepsisService.avaliar()` + `baselinesService.avaliarEAlertar()` após cada registo |
+| `medicacao.service.ts` | `timeline()`, `listarPrescricoesAtivas()`, `listarInteracoesPorDoente()` |
+| `medicacao.controller.ts` | `GET /medicacao/timeline`, `GET /medicacao/prescricoes-ativas`, `GET /medicacao/doente/:id/interacoes` |
+| `clinical.module.ts` | Registados 8 novos módulos Session 49 |
+
+### 14.4 Novas Páginas e Componentes Frontend
+
+| Localização | Descrição |
+|-------------|-----------|
+| `doentes/[id]/components/sepsis-panel.tsx` | Banner vermelho com bundle checklist 4 acções + qSOFA/SIRS score |
+| `doentes/[id]/components/plano-alta-panel.tsx` | Checklist colapsável 8 critérios + data alvo + barra progresso |
+| `doentes/[id]/page.tsx` | Botão "Sinalizar" (modal motivo + urgência), banner sépsis, resumo auto no modal alta |
+| `turno/medicacoes/page.tsx` | Timeline visual por turno: grade CSS, blocos coloridos por estado, indicador de densidade |
+| `turno/passagem/page.tsx` | Geração + edição + confirmação de relatório de passagem de turno |
+| `farmacia-clinica/page.tsx` | 3 tabs: prescrições activas, interacções (severidade), reconciliação pendente |
+| `familia/[token]/page.tsx` | Portal público família — estado geral simplificado, sem dados clínicos |
+| `nav-data.tsx` | Novos items: Timeline Medicação, Passagem Turno Pro, Farmácia Clínica |
+
+### 14.5 Lógica Clínica
+
+| Feature | Lógica |
+|---------|--------|
+| **qSOFA** | FR≥22 +1, PAS≤100 +1; score ≥2 → alerta sépsis + WS `sos:alerta` |
+| **SIRS** | Temp>38 ou <36 +1, FC>90 +1, FR>20 +1; score ≥2 → alerta sépsis |
+| **Sépsis deduplicação** | Só cria novo AlertaSepsis se não existir activo nas últimas 4h |
+| **Baselines** | Últimos 20 sinais vitais, ≥8 necessários; desvio >2 SD → alerta; upsert automático |
+| **Resumo de Alta** | Agrega vitais (admissão vs. último + tendência NEWS2), medicação activa, exames com resultado, notas clínicas, alertas pendentes |
+| **Passagem de Turno** | Doentes ordenados por criticidade (sépsis > urgente > preocupante > NEWS2) |
+| **FHIR LOINC** | `8867-4`=FC, `8310-5`=Temp, `59408-5`=SpO₂, `9279-1`=FR, `8480-6`/`8462-4`=TA |
+
+---
+
+---
+
+## 15. Session 50 — Roadmap para 10/10 (Score de Risco · Onboarding · AI Clínico · QR 5 Certos · FHIR Export)
+
+> **Data:** 2026-06-05 | **Última actualização do documento:** 2026-06-05
+
+### 15.1 Score de Risco de Deterioração
+
+Algoritmo determinístico puro, sem ML, baseado em dados já existentes.
+
+**Fórmula:**
+
+| Factor | Pontos |
+|--------|--------|
+| NEWS2 0 | 0 |
+| NEWS2 1-4 | +15 |
+| NEWS2 5-6 | +35 |
+| NEWS2 ≥7 | +50 |
+| Tendência NEWS2 subindo (últimas 3 leituras) | +20 |
+| Tendência NEWS2 descendo | -5 |
+| Cada desvio de baseline activo | +10 (máx +40) |
+| AlertaSepsis activo | +30 |
+| Sinalização urgente activa | +25 |
+| Sinalização normal activa | +10 |
+| Último SV > 8h | +15 |
+| Último SV > 24h | +25 |
+| **Total** | clampado [0, 100] |
+
+**Bandas:** verde < 30 · âmbar 30-60 · vermelho > 60
+
+**Backend:**
+- `baselines.service.ts` — `calcularRisco(doenteId)` → `{ score, banda, factores[] }`
+- `baselines.service.ts` — `calcularRiscoTurno(servico)` → array ordenado por score
+- `baselines.controller.ts` — `GET /baselines/risco-turno?servico=X` (declarado antes de `/:doenteId`)
+- `baselines.controller.ts` — `GET /baselines/:doenteId/risco`
+
+**Frontend:**
+- Lista de doentes: tab **"⚠ Vista de Risco"** — tabela ordenada por score com colunas cama/doente/score/factores/último SV
+- Ficha do doente: badge colorido com score no header ao lado do nome
+- Roles: medico, enfermeiro, chefe_turno, chefe_enfermeiros, direcao
+
+---
+
+### 15.2 Onboarding Guiado + Tooltips Contextuais
+
+**Tour de boas-vindas** (sem alterações de schema — usa `localStorage`):
+- Chave: `curasphere_tour_${userId}` = `"done"`
+- Activado automaticamente no primeiro login
+- Componente: `components/tour-overlay.tsx` — overlay com spotlight, 5 passos por role
+- Lógica em `app/(dashboard)/client-layout.tsx`
+
+**Passos por role (médico):** Dashboard → Lista Doentes → Ficha → Sinais Vitais → Painel IA
+
+**Passos por role (enfermeiro):** Dashboard → Timeline Medicação → Passagem de Turno → Ficha (Sinalizações) → QR 5 Certos
+
+**Tooltips Contextuais:**
+- Componente: `components/help-tooltip.tsx` — ícone `?` com popover ao clique
+- Conteúdo: `lib/help-content.ts` — 12 entradas: `news2`, `baseline`, `braden`, `glasgow`, `morse`, `qsofa`, `sirs`, `balanco_hidrico`, `sepsis_bundle`, `plano_alta`, `risco_score`, `ai_clinico`
+- Adicionados em: SinaisVitaisPanel (NEWS2 + Baseline), SepsisPanel (Bundle Sépsis), AiClinicoPanel
+
+---
+
+### 15.3 Clinical Decision Support com LLM (AI Clínico)
+
+> **Princípio inegociável:** Decisões clínicas (medicação, plano terapêutico) são **exclusivas do médico**. O módulo IA é **apenas observacional e de apoio**. Nunca age, nunca prescreve, nunca altera dados.
+
+**Backend — novo módulo `apps/api/src/app/ai-clinico/`:**
+- `ai-clinico.service.ts` — usa `@anthropic-ai/sdk`, modelo `claude-haiku-4-5-20251001`, temperatura 0.2, max_tokens 600
+- Cache em memória (Map) com TTL 5 min por `(doenteId + role)` — evita chamadas repetidas
+- Contexto injectado: últimos 5 sinais vitais, medicações activas, alertas não lidos, sinalizações, baseline, sépsis activa
+- **System prompt por role:**
+  - `medico` → observações + padrões + sugestões de investigação (nunca nomeia medicamento específico)
+  - `enfermeiro` / `chefe_*` → observações de sinais vitais apenas; "considerar notificar o médico se..."
+- Resposta JSON: `{ observacoes, padroesDetectados?, investigacoesAConsiderar?, disclaimer }`
+- `ai-clinico.controller.ts` — `GET /ai-clinico/:doenteId`
+- Roles: medico, enfermeiro, chefe_enfermeiros, chefe_turno
+- `clinical.module.ts` — `AiClinicoModule` registado
+
+**Frontend — `components/ai-clinico-panel.tsx`:**
+- Painel colapsável (fechado por defeito — sem auto-fetch)
+- Disclaimer âmbar sempre visível: _"Apoio à decisão clínica. Não substitui avaliação médica."_
+- Médico vê: Observações + Padrões Detectados + Investigações a Considerar
+- Enfermeiro vê: Observações apenas
+- Botão "Reanalisar" para forçar nova chamada
+
+**Variável de ambiente necessária:** `ANTHROPIC_API_KEY=sk-ant-...`
+
+---
+
+### 15.4 QR 5 Certos (Segurança de Medicação)
+
+Verificação dos 5 Certos de administração sem alterações de schema — o QR usa o `id` da medicação.
+
+**Payload QR (JSON):** `{ medicacaoId, doenteId, nome, dose, via }`
+
+**Backend:**
+- `medicacao.service.ts` — `verificar5Certos(qrPayload, doenteIdEsperado)`:
+  1. **Doente certo** — `qrPayload.doenteId === doenteIdEsperado`
+  2. **Medicamento certo** — `medicacao.ativo === true`
+  3. **Dose certa** — retornada para confirmação visual
+  4. **Via certa** — retornada para confirmação visual
+  5. **Hora certa** — reutiliza `parsearFrequenciaHoras()` existente
+  - Retorna: `{ valido, falhas: [{ certo, motivo }], medicacao: { id, nome, dose, via, frequencia } }`
+- `medicacao.controller.ts` — `POST /medicacao/verificar-5-certos`
+- Roles: medico, enfermeiro, chefe_turno, chefe_enfermeiros, auxiliar, tecnico_saude
+
+**Frontend Web — `medicacao-panel.tsx`:**
+- Botão ícone QR em cada linha de medicação activa
+- Modal com `<QRCode>` (lib `react-qr-code`, já instalada) — QR grande para o enfermeiro mostrar ao colega
+- QR codifica o payload JSON acima
+
+---
+
+### 15.5 FHIR R4 Export
+
+Exportação de dados clínicos em formato FHIR R4 Bundle sem infraestrutura externa.
+
+**Backend — `fhir.service.ts`:**
+- `exportarBundleDoente(doenteId)` — gera Bundle FHIR R4 `type: 'document'` com:
+  - `Patient` (nome, numero processo, data nascimento)
+  - `Condition` (por cada problema activo)
+  - `MedicationStatement` (por cada medicação activa, com dose/via/frequência)
+  - `Observation` (últimos 10 sinais vitais; cada parâmetro vira recurso separado com código LOINC correcto)
+  - `AllergyIntolerance` (por cada alergia)
+- `lookupSns(numeroSNS)` — mock que simula resposta RNU; integração real requer contrato SPMS
+
+**Endpoints em `fhir.controller.ts`:**
+- `GET /fhir/doentes/lookup-sns?numeroSNS=X` — simulação RNU
+- `GET /fhir/doentes/:id/exportar-fhir` — Bundle FHIR R4 completo
+- Roles: medico, enfermeiro, admin, direcao, chefe_enfermeiros
+
+**Mapeamento LOINC na exportação:**
+
+| LOINC | Campo | Display |
+|-------|-------|---------|
+| `8867-4` | pulso | Heart rate |
+| `8310-5` | temperatura | Body temperature |
+| `59408-5` | saturacaoO2 | Oxygen saturation |
+| `9279-1` | frequenciaRespiratoria | Respiratory rate |
+| `8480-6` | pressaoSistolica | Systolic blood pressure |
+| `8462-4` | pressaoDiastolica | Diastolic blood pressure |
+
+---
+
+### 15.6 Ficheiros Criados / Modificados (Session 50)
+
+| Ficheiro | Acção |
+|----------|-------|
+| `apps/api/src/app/baselines/baselines.service.ts` | + `calcularRisco()` + `calcularRiscoTurno()` |
+| `apps/api/src/app/baselines/baselines.controller.ts` | + `GET /risco-turno` + `GET /:doenteId/risco` |
+| `apps/api/src/app/ai-clinico/ai-clinico.service.ts` | Novo — LLM com cache 5 min |
+| `apps/api/src/app/ai-clinico/ai-clinico.controller.ts` | Novo — `GET /:doenteId` |
+| `apps/api/src/app/ai-clinico/ai-clinico.module.ts` | Novo |
+| `apps/api/src/app/clinical.module.ts` | + `AiClinicoModule` |
+| `apps/api/src/app/medicacao/medicacao.service.ts` | + `verificar5Certos()` |
+| `apps/api/src/app/medicacao/medicacao.controller.ts` | + `POST /verificar-5-certos` |
+| `apps/api/src/app/fhir/fhir.service.ts` | + `exportarBundleDoente()` + `lookupSns()` |
+| `apps/api/src/app/fhir/fhir.controller.ts` | + `GET /doentes/:id/exportar-fhir` + `GET /doentes/lookup-sns` |
+| `apps/web/src/lib/help-content.ts` | Novo — 12 entradas de ajuda em PT |
+| `apps/web/src/components/help-tooltip.tsx` | Novo — ícone `?` com popover |
+| `apps/web/src/components/tour-overlay.tsx` | Novo — tour 5 passos por role |
+| `apps/web/src/app/(dashboard)/client-layout.tsx` | + lógica primeiro login → tour |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/page.tsx` | + Vista de Risco (tab + tabela) + badge risco |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/page.tsx` | + badge risco no header + AiClinicoPanel |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/ai-clinico-panel.tsx` | Novo — painel IA colapsável |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/sinais-vitais-panel.tsx` | + HelpTooltip NEWS2 + Baseline |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/medicacao-panel.tsx` | + QR code por medicação |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/sepsis-panel.tsx` | + HelpTooltip Sépsis Bundle |
+
+---
+
+---
+
+## 16. Session 51 — Closing the Real Gaps
+
+> **Data:** 2026-06-05 | **Última actualização do documento:** 2026-06-05
+
+### 16.0 Correcção de Rating
+
+Após exploração profunda do código, vários itens das sessões anteriores já estavam implementados e não tinham sido contabilizados:
+
+| Feature | Estado real |
+|---------|-------------|
+| Dark mode | ✅ Toggle em modal de configurações + CSS vars em `globals.css` |
+| Audit trail UI | ✅ Página web em `(gestao)/auditoria/page.tsx` |
+| PDF de alta | ✅ `GET /doentes/:id/alta/pdf` via `PdfService` + pdfmake |
+| PDF de turno | ✅ `GET /turnos/:id/relatorio/pdf` |
+| App mobile | ✅ 46 ecrãs incluindo `QRScannerScreen` |
+| expo-notifications | ✅ Instalado; `NotificacoesService` já envia push via Expo |
+
+**Rating corrigido após Session 51:**
+
+| Critério | Session 50 | Session 51 |
+|----------|-----------|-----------|
+| 💡 Ideia | 9.5/10 | **9.5/10** |
+| ⚙️ Features | 9/10 | **9.5/10** |
+| 🎨 UX | 9/10 | **9.5/10** |
+
+---
+
+### 16.1 Mobile QR 5 Certos — Fluxo Completo
+
+**Problema:** `QRScannerScreen.tsx` chamava `GET /doentes/${data}` (verificação de existência do doente). Não usava o endpoint `POST /medicacao/verificar-5-certos`.
+
+**Solução:** Reescrita do `QRScannerScreen.tsx` com dois modos:
+- **Modo medicação** (JSON com `medicacaoId` + `doenteId`): chama `POST /medicacao/verificar-5-certos`, mostra checklist 5 itens ✅/❌
+- **Modo doente** (string simples): mantém comportamento original para leitura de QR de cama/pulseira
+
+**Nova interface de props:**
+```typescript
+interface Props {
+  onScan: (doenteId: string) => void;    // modo doente (compatibilidade)
+  onFechar: () => void;
+  doenteIdEsperado?: string;             // para modo 5 Certos
+  onAdministrar?: (medicacaoId: string, justificacao?: string) => void;
+}
+```
+
+**UI do resultado:**
+- Banner verde/vermelho com resumo
+- Card com nome, dose, via, frequência da medicação
+- Checklist: Doente certo / Medicamento certo / Dose certa / Via certa / Hora certa
+- Override: campo de justificação obrigatório (mín. 10 chars) se há falhas
+- Botão "Administrar" desactivado até todas as condições estarem cumpridas
+
+---
+
+### 16.2 Testes Session 50
+
+Criados 3 novos ficheiros de testes:
+
+**`baselines.service.spec.ts`** — 6 testes para `calcularRisco()`:
+- Doente estável → banda verde
+- NEWS2=6 → âmbar
+- NEWS2=7 + sépsis → vermelho, score ≥60
+- Sinalização urgente → +25 pts
+- Sem registos SV → +25 pts + factor "Sem registos de SV"
+- Score clampado a 100 com múltiplos factores
+- Tendência NEWS2 em subida → factor "NEWS2 em subida"
+
+**`medicacao.service.spec.ts`** — 6 novos testes adicionados para `verificar5Certos()`:
+- Todos certos passam → `valido: true`
+- Doente errado → falha certo 1
+- Medicação inactiva → falha certo 2
+- Administração prematura → falha certo 5 (hora)
+- JSON inválido → `valido: false`, `medicacao: null`
+- Medicação não encontrada → `valido: false`
+
+**`ai-clinico.service.spec.ts`** — 4 testes:
+- Role médico → recebe `investigacoesAConsiderar`
+- Role enfermeiro → não recebe `investigacoesAConsiderar`
+- Cache hit: segunda chamada não invoca Anthropic
+- Roles diferentes → caches separadas (2 chamadas à API)
+
+---
+
+### 16.3 MAR PDF (Medication Administration Record)
+
+**Backend:**
+- `pdf.service.ts` — novo método `gerarMar(doenteId, dataStr?)`:
+  - Fetch: doente + medicações activas + registos de administração do dia (00:00-23:59)
+  - PDF A4 com tabela: medicamento | dose | via | frequência | estado (✓ Administrada / Omitida / Não administrada) | hora + observações
+  - Usa pdfmake com `PdfPrinter` + fontes Helvetica (padrão da app)
+- `medicacao.module.ts` — adicionado `PdfService` aos providers
+- `medicacao.controller.ts` — novo endpoint `GET /medicacao/doente/:id/mar/pdf?data=YYYY-MM-DD`
+  - Roles: medico, enfermeiro, farmaceutico, chefe_enfermeiros, chefe_turno
+  - Response: `Content-Type: application/pdf`, `Content-Disposition: inline`
+
+**Frontend:**
+- `medicacao-panel.tsx` — botão ⬇ no header do painel (link `<a>` para o endpoint, abre em nova aba)
+- Título do ficheiro: `MAR_{doenteId}_{data}.pdf`
+
+---
+
+### 16.4 Push Notifications Mobile
+
+**Infra já existia:** `NotificacoesService.enviarParaUtilizador()` já enviava push via Expo Push API + `dispositivoToken` já existia no schema + endpoint `POST /notificacoes/registar-token` já existia.
+
+**O que foi adicionado:**
+
+`apps/mobile/src/lib/notifications.ts` (novo):
+- `registarPushToken()`: pede permissão → obtém token Expo → chama `POST /notificacoes/registar-token`
+- Configura canal Android `curasphere-alertas` (prioridade MAX, vibração)
+- `configurarHandlers(onNotificacao?, onResposta?)`: configura listeners foreground/background; retorna função cleanup para `useEffect`
+
+`apps/mobile/src/lib/auth.ts`:
+- `login()` agora chama `registarPushToken().catch(() => {})` após login bem-sucedido (não-bloqueante)
+- Sem impacto no fluxo de login em caso de falha (dispositivo sem câmara, simulador)
+
+---
+
+### 16.5 Ficheiros Criados / Modificados (Session 51)
+
+| Ficheiro | Acção |
+|----------|-------|
+| `apps/mobile/src/screens/QRScannerScreen.tsx` | Reescrito — modo 5 Certos + modo doente |
+| `apps/mobile/src/lib/notifications.ts` | Novo — registar push token + handlers |
+| `apps/mobile/src/lib/auth.ts` | + `registarPushToken()` após login |
+| `apps/api/src/app/baselines/baselines.service.spec.ts` | Novo — 6 testes `calcularRisco` |
+| `apps/api/src/app/medicacao/medicacao.service.spec.ts` | + 6 testes `verificar5Certos` |
+| `apps/api/src/app/ai-clinico/ai-clinico.service.spec.ts` | Novo — 4 testes cache + roles |
+| `apps/api/src/app/common/pdf.service.ts` | + método `gerarMar(doenteId, dataStr?)` |
+| `apps/api/src/app/medicacao/medicacao.module.ts` | + `PdfService` nos providers |
+| `apps/api/src/app/medicacao/medicacao.controller.ts` | + `GET /doente/:id/mar/pdf` |
+| `apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/medicacao-panel.tsx` | + botão ⬇ MAR |
+
+---
+
+## 17. Session 52 — IA Máxima: Triagem, Protocolos, Lab, Ditação por Voz
+
+### 17.0 Contexto
+
+Após rating 9.5/10 (Ideia), 9.5/10 (Features), 9/10 (UX), foram identificados 5 eixos de melhoria com foco em IA hospitalar:
+- Offline-first mobile
+- Integração de resultados analíticos (Lab)
+- Ditação por voz para notas clínicas
+- IA na triagem de urgência (Manchester)
+- IA de verificação de protocolos (NEWS2, bundle sépsis)
+
+Além disso, adicionadas áreas de AI extra: sumarização automática de turno, detecção silenciosa de deterioração, reconciliação medicamentosa com IA, assistente de prescrição contextual.
+
+---
+
+### 17.1 AI Clínico — Novos Métodos
+
+**`apps/api/src/app/ai-clinico/ai-clinico.service.ts`** — 3 novos métodos:
+
+| Método | Descrição |
+|--------|-----------|
+| `analisarTriagem(episodio)` | Apoio IA à triagem Manchester. `temperature=0.15`. Devolve `{ alertasVermelhos, nivelSugerido, observacoes, discriminadoresAvaliar, disclaimer }` |
+| `verificarProtocolos(doenteId)` | Verificação híbrida: P1 = intervalos NEWS2, P2 = bundle sépsis (3h), P3 = sinalização NEWS2≥5. AI explica violações. Cache 10 min. |
+| `sumarizarTurno(doentes[])` | Narrativa de passagem de turno + 3 destaques. `temperature=0.3`. Sem cache (dados sempre frescos). |
+| `sumarizarTurnoServico(servico)` | Variante que busca doentes directamente do Prisma. Cache 5 min. |
+
+**Tipos exportados:** `EpisodioTriagem`, `DoenteTurno`
+
+**Cache keys separados:** `doente:X:role`, `protocolo:X`, `triagem:json(episodio)`, `turno-servico:X`
+
+---
+
+### 17.2 AI Clínico — Novos Endpoints
+
+**`apps/api/src/app/ai-clinico/ai-clinico.controller.ts`**:
+
+| Método | Rota | Roles |
+|--------|------|-------|
+| `POST` | `/ai-clinico/triagem` | medico, enfermeiro |
+| `POST` | `/ai-clinico/sumarizar-turno` | medico, enfermeiro, chefe_turno, chefe_enfermeiros |
+| `POST` | `/ai-clinico/sumarizar-turno-servico` | medico, enfermeiro, chefe_turno, chefe_enfermeiros |
+| `GET` | `/ai-clinico/:doenteId/protocolo` | medico, enfermeiro, chefe_enfermeiros |
+| `GET` | `/ai-clinico/:doenteId` | (existente) |
+
+---
+
+### 17.3 Resultados Analíticos (Lab)
+
+**Novo modelo Prisma — `ResultadoAnalise`:**
+- Campos: `parametro`, `valor`, `unidade`, `refMin`, `refMax`, `alterado`, `critico`, `painel`, `observacoes`
+- Painéis: `hemograma`, `bioquimica`, `coagulacao`, `microbiologia`
+- Emit WebSocket `resultado-critico` quando `critico=true`
+
+**Novo módulo `exames-lab`:**
+
+| Endpoint | Roles |
+|----------|-------|
+| `GET /exames-lab/doente/:id` | medico, enfermeiro, chefe_enfermeiros, farmaceutico, chefe_turno |
+| `GET /exames-lab/doente/:id/resumo` | idem |
+| `POST /exames-lab` | medico, enfermeiro, farmaceutico |
+| `POST /exames-lab/lote` | medico, enfermeiro, farmaceutico |
+
+---
+
+### 17.4 Frontend — Novos Componentes
+
+#### `ResultadosLabPanel` (`resultados-lab-panel.tsx`)
+- Tabela de resultados com filtro por painel
+- Valores críticos em destaque vermelho pulsante
+- Registo de novos resultados com modal (com cálculo automático de `alterado`)
+- Integrado na ficha do doente entre "Sinalização" e "Exames Complementares"
+
+#### `ProtocoloPanel` (`protocolo-panel.tsx`)
+- Verificação lazy (só chama quando o utilizador expande)
+- Mostra P1/P2/P3 com badges ok/pendente/violado
+- Narrativa AI em painel indigo
+- Botão "Actualizar" (respeita cache de 10 min)
+- Integrado na ficha do doente logo após AiClinicoPanel
+
+---
+
+### 17.5 Urgência — Apoio IA à Triagem Manchester
+
+**`apps/web/src/app/(dashboard)/(clinico)/urgencia/page.tsx`:**
+- Botão "Apoio IA — Triagem Manchester" no bloco 2 (Situação Clínica) do form de pré-notificação de ambulância
+- Chama `POST /ai-clinico/triagem` com todos os dados clínicos disponíveis
+- Mostra: alertas vermelhos, observações, discriminadores a avaliar
+- Sugere automaticamente a cor de triagem e actualiza o selector
+
+---
+
+### 17.6 Passagem de Turno — Narrativa IA
+
+**`apps/web/src/app/(dashboard)/(clinico)/turno/passagem/page.tsx`:**
+- Painel "Enriquecer com Inteligência Artificial" aparece após gerar o rascunho
+- Chama `POST /ai-clinico/sumarizar-turno-servico` com o serviço seleccionado
+- Mostra narrativa + 3 destaques prioritários para o turno seguinte
+- Painel pode ser fechado
+
+---
+
+### 17.7 Ditação por Voz — Notas Clínicas SOAP
+
+**`apps/web/src/app/(dashboard)/(clinico)/doentes/[id]/components/notas-clinicas-panel.tsx`:**
+- Botão "Voz" em cada campo SOAP (S/O/A/P)
+- Usa Web Speech API nativa (`SpeechRecognition` / `webkitSpeechRecognition`)
+- `lang: 'pt-PT'`, `continuous: true`, `interimResults: false`
+- Transcrição concatenada ao texto existente
+- Indicação visual "A gravar..." quando activo (botão vermelho pulsante + ring no textarea)
+- Para automaticamente ao fechar o modal
+- Graceful degradation: mensagem de erro se o browser não suportar
+
+---
+
+### 17.8 Ficheiros Criados / Modificados (Session 52)
+
+| Ficheiro | Acção |
+|----------|-------|
+| `apps/api/src/app/ai-clinico/ai-clinico.service.ts` | + `analisarTriagem`, `verificarProtocolos`, `sumarizarTurno`, `sumarizarTurnoServico`; tipos exportados |
+| `apps/api/src/app/ai-clinico/ai-clinico.controller.ts` | + 4 novos endpoints |
+| `apps/api/prisma/schema.prisma` | + modelo `ResultadoAnalise` + relações em `Doente` e `Utilizador` |
+| `apps/api/src/app/exames-lab/exames-lab.module.ts` | Novo |
+| `apps/api/src/app/exames-lab/exames-lab.service.ts` | Novo |
+| `apps/api/src/app/exames-lab/exames-lab.controller.ts` | Novo |
+| `apps/api/src/app/exames-lab/dto/criar-resultado.dto.ts` | Novo |
+| `apps/api/src/app/clinical.module.ts` | + `ExamesLabModule` |
+| `apps/web/.../doentes/[id]/components/resultados-lab-panel.tsx` | Novo |
+| `apps/web/.../doentes/[id]/components/protocolo-panel.tsx` | Novo |
+| `apps/web/.../doentes/[id]/page.tsx` | + `ResultadosLabPanel`, `ProtocoloPanel` |
+| `apps/web/.../doentes/[id]/components/notas-clinicas-panel.tsx` | + ditação por voz Web Speech API |
+| `apps/web/.../urgencia/page.tsx` | + IA triagem Manchester no form ambulância |
+| `apps/web/.../turno/passagem/page.tsx` | + Narrativa IA de turno |
+
+---
+
+---
+
+## 18. Session 53 — Dossier Universal + AI Loop + Offline + Regulatório (2026-06-05)
+
+### 18.1 Dossier Universal do Doente
+
+#### Storage (S3/MinIO)
+
+**`apps/api/src/app/common/storage.service.ts`** — novo serviço `@Global()`:
+- `upload(buffer, key, mimeType)` → S3/MinIO/local
+- `getSignedUrl(key, ttl=3600)` → pre-signed URL (TTL 1h)
+- `delete(key)` → remove objecto
+
+Variáveis: `STORAGE_PROVIDER`, `MINIO_ENDPOINT`, `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`, `MINIO_BUCKET` / `AWS_*`, `S3_BUCKET`.
+
+#### Módulo `documentos-saude` (backend)
+
+**`apps/api/src/app/documentos-saude/documentos-saude.service.ts`:**
+- `listar(doenteId, tipo?)` — ordenado por `dataDocumento DESC`
+- `upload(doenteId, file, dto, userId)` — magic bytes + upload S3
+- `getDownloadUrl(docId, userId)` — pre-signed URL ou `urlExterna`
+- `sincronizar(doenteId, userId)` — pull FHIR R4 `DocumentReference` de sistemas activos; upsert por `fhirResourceId`
+- `remover(docId, userId, role)` — apaga S3 + BD
+
+**`apps/api/src/app/documentos-saude/documentos-saude.controller.ts`:**
+
+| Método | Rota | Roles |
+|--------|------|-------|
+| `GET` | `/documentos-saude/doente/:id` | medico, enfermeiro, chefe_enfermeiros, farmaceutico, chefe_turno |
+| `POST` | `/documentos-saude/doente/:id/upload` | medico, enfermeiro, tecnico_saude |
+| `GET` | `/documentos-saude/:id/download` | idem |
+| `POST` | `/documentos-saude/doente/:id/sincronizar` | medico, enfermeiro, chefe_enfermeiros |
+| `DELETE` | `/documentos-saude/:id` | medico, chefe_enfermeiros |
+
+Multer: `memoryStorage()`, 50MB, tipos: PDF/JPG/PNG/DICOM.
+
+#### Módulo `sistemas-externos` (backend)
+
+**`apps/api/src/app/sistemas-externos/sistemas-externos.service.ts`:**
+- CRUD para `SistemaExternoSaude`
+- `testarConectividade(id)` → `GET {endpoint}/metadata` com timeout 5s
+- `adicionarIdentificadorDoente(doenteId, sistemaId, valorId, tipo)`
+
+Roles: `it_admin`, `direcao`.
+
+#### Novos modelos Prisma
+
+| Modelo | Descrição |
+|--------|-----------|
+| `SistemaExternoSaude` | Registo de hospitais/labs externos com endpoint FHIR/DICOM |
+| `IdentificadorExterno` | ID do doente em cada sistema externo (SNS, NIF, hospital_id…) |
+| `DocumentoSaude` | Documento clínico (PDF, DICOM, imagem) com storageKey ou urlExterna |
+| `AiDecisao` | Log de cada decisão IA com payload, aceite/rejeitado, override |
+
+#### Frontend Web — `DocumentosSaudePanel`
+
+**`apps/web/.../doentes/[id]/components/documentos-saude-panel.tsx`:**
+- 5 tabs: Todos | Radiologia | Laboratório | Relatórios | Outros
+- Card: ícone tipo, badge origem (azul=externo, cinza=upload), tamanho
+- PDF → iframe modal com URL pre-assinada
+- DICOM CT/MR → `window.open(urlExterna)` (PACS externo)
+- JPG/PNG → lightbox `<img>`
+- Botão "↺ Sincronizar" + botão "+ Upload" com drag-and-drop
+- Integrado em `[id]/page.tsx` após `ProtocoloPanel`
+
+#### Página Admin — Conectores Externos
+
+**`apps/web/src/app/(dashboard)/sistemas-externos/page.tsx`:**
+- Lista com badge conectividade (verde/vermelho)
+- Modal CRUD + botão "Testar Ligação"
+- Adicionado ao nav (Gestão) em `nav-data.tsx`
+
+#### Mobile — `DocumentosScreen`
+
+**`apps/mobile/src/screens/DocumentosScreen.tsx`:**
+- FlatList de documentos por tipo/origem
+- "Ver" → `expo-web-browser.openBrowserAsync(signedUrl)`
+- "Upload" → `expo-document-picker.getDocumentAsync()` → POST multipart
+
+---
+
+### 18.2 AI Feedback Loop
+
+#### Backend
+
+**`apps/api/src/app/ai-clinico/ai-clinico.service.ts`** actualizado:
+- `private logDecisao(tipo, payload, utilizadorId, doenteId?)` → cria `AiDecisao`, retorna id
+- Todos os métodos de IA chamam `logDecisao()` e anexam `_decisaoId` à resposta
+- `registarFeedback(decisaoId, aceite, overrideMotivo?)` — actualiza `AiDecisao`
+- `relatorioAuditoria(from?, to?, tipo?)` → CSV com todas as decisões
+
+Novos endpoints no controller:
+- `GET /ai-clinico/relatorio-auditoria` (roles: direcao, it_admin, chefe_enfermeiros) → CSV download
+- `PATCH /ai-clinico/decisao/:id/feedback` → `{ aceite, overrideMotivo? }`
+
+#### Frontend Web
+
+**`apps/web/src/components/ai-feedback.tsx`** — componente reutilizável:
+- Botões 👍 / 👎 junto a cada resposta IA
+- Ao clicar 👎: textarea para motivo do override
+- Props: `decisaoId: string | null | undefined`
+
+Integrado em: `ai-clinico-panel.tsx`, `protocolo-panel.tsx`.
+
+---
+
+### 18.3 LOS Prediction (Length of Stay)
+
+**`apps/api/src/app/ai-clinico/ai-clinico.service.ts`** — novo método `preverLOS(doenteId, utilizadorId?)`:
+- Busca: diagnóstico, dataAdmissão, idade, comorbilidades, NEWS2, alertas sépsis, banda risco
+- Prompt Claude → `{ losEstimadoDias, confianca, factores[], alertaAtraso }`
+- Cache 2h (`los:${doenteId}`)
+
+Endpoint: `GET /ai-clinico/:doenteId/los` (roles: medico, chefe_enfermeiros, chefe_turno)
+
+**`apps/web/.../doentes/[id]/components/los-widget.tsx`:**
+- Chip compacto "X dias estimados" no header da ficha
+- Dropdown: badge confiança, lista de factores, alerta de atraso
+- Botão "Reanalisar"
+
+---
+
+### 18.4 Offline-First Mobile (MVP)
+
+**`apps/mobile/src/lib/network.ts`** — hook `useNetworkStatus()`:
+- `NetInfo.addEventListener` para detectar online/offline
+- Auto-flush da mutation queue quando volta a ficar online
+
+**`apps/mobile/src/lib/mutation-queue.ts`** — queue persistida em AsyncStorage:
+- `enqueue(op)`, `getQueue()`, `flushMutationQueue()`, `clearQueue()`
+- Key: `curasphere:mutation_queue`
+
+**`apps/mobile/src/components/OfflineBanner.tsx`:**
+- Banner âmbar no topo quando offline
+- Texto: "Sem ligação — dados guardados localmente"
+
+Operações com suporte offline (enqueue quando `!isOnline`):
+| Ficheiro | Operação |
+|----------|----------|
+| `ModalRegistarVitais.tsx` | POST `/sinais-vitais/:doenteId` |
+| `DoenteDetalheScreen.tsx` → `registarMedicacao` | POST `/medicacao/:id/administrar` |
+| `DoenteDetalheScreen.tsx` → `concluirTarefa` | PATCH `/tarefas/:id/estado` |
+
+---
+
+### 18.5 Regulatório MVP (GDPR / MDR)
+
+#### Consentimento IA
+
+**`apps/web/src/lib/ai-consent.ts`:**
+- `hasAiConsent()` → verifica `localStorage['curasphere:ai_consent_v1']`
+- `giveAiConsent()` / `revokeAiConsent()`
+
+**`apps/web/src/components/ai-consent-modal.tsx`:**
+- Modal RGPD Art. 22 apresentado uma única vez antes do primeiro acesso à IA
+- Texto: o que é processado, aviso de que não substitui julgamento clínico, como revogar
+- Botões: "Recusar" / "Aceitar e Continuar"
+- Integrado em `ai-clinico-panel.tsx`
+
+#### Auditoria IA
+
+- `GET /ai-clinico/relatorio-auditoria?from=&to=&tipo=` → CSV download
+- Roles: `direcao`, `it_admin`, `chefe_enfermeiros`
+
+#### Explicabilidade IA
+
+- Botão "Ver factores considerados ▼" em cada painel IA
+- Expande lista de dados incluídos na análise (diagnóstico, vitais, medicação, tarefas, notas, escalas)
+- Implementado em: `ai-clinico-panel.tsx`, `protocolo-panel.tsx`, painel triagem urgência
+- Sem nova chamada de API — informação estática derivada do comportamento conhecido do serviço
+
+---
+
+### 18.6 Ficheiros Criados / Modificados (Session 53)
+
+| Ficheiro | Acção |
+|----------|-------|
+| `apps/api/prisma/schema.prisma` | + 4 modelos: `SistemaExternoSaude`, `IdentificadorExterno`, `DocumentoSaude`, `AiDecisao` |
+| `apps/api/src/app/common/storage.service.ts` | Novo — S3/MinIO/local |
+| `apps/api/src/app/common/storage.module.ts` | Novo — `@Global()` |
+| `apps/api/src/app/documentos-saude/` | Novo módulo (service, controller, module, dto) |
+| `apps/api/src/app/sistemas-externos/` | Novo módulo (service, controller, module) |
+| `apps/api/src/app/ai-clinico/ai-clinico.service.ts` | + `logDecisao`, `registarFeedback`, `relatorioAuditoria`, `preverLOS`; cache TTL 2h para LOS |
+| `apps/api/src/app/ai-clinico/ai-clinico.controller.ts` | + `/relatorio-auditoria`, `/:doenteId/los`, `/decisao/:id/feedback` |
+| `apps/api/src/app/clinical.module.ts` | + `DocumentosSaudeModule` |
+| `apps/api/src/app/app.module.ts` | + `SistemasExternosModule`, `StorageModule` |
+| `apps/web/src/components/ai-feedback.tsx` | Novo — componente 👍/👎 reutilizável |
+| `apps/web/src/components/ai-consent-modal.tsx` | Novo — modal RGPD Art. 22 |
+| `apps/web/src/lib/ai-consent.ts` | Novo — gestão consentimento localStorage |
+| `apps/web/.../doentes/[id]/components/documentos-saude-panel.tsx` | Novo |
+| `apps/web/.../doentes/[id]/components/los-widget.tsx` | Novo — widget LOS no header da ficha |
+| `apps/web/.../doentes/[id]/components/ai-clinico-panel.tsx` | + consentimento, explainabilidade, AiFeedback |
+| `apps/web/.../doentes/[id]/components/protocolo-panel.tsx` | + explainabilidade, AiFeedback |
+| `apps/web/.../doentes/[id]/page.tsx` | + `DocumentosSaudePanel`, `LosWidget` |
+| `apps/web/src/app/(dashboard)/sistemas-externos/page.tsx` | Novo — admin conectores |
+| `apps/web/src/app/(dashboard)/nav-data.tsx` | + "Conectores Externos" |
+| `apps/mobile/src/lib/network.ts` | Novo |
+| `apps/mobile/src/lib/mutation-queue.ts` | Novo |
+| `apps/mobile/src/components/OfflineBanner.tsx` | Novo |
+| `apps/mobile/src/screens/DocumentosScreen.tsx` | Novo |
+| `apps/mobile/src/screens/DoenteDetalheScreen.tsx` | + offline para `registarMedicacao` e `concluirTarefa`, `OfflineBanner` |
+| `apps/mobile/src/screens/doente-detalhe/modals/ModalRegistarVitais.tsx` | + offline queue |
+| `apps/web/.../urgencia/page.tsx` | + "Ver factores" no painel IA triagem |
+
+---
+
+### 18.7 Correcções Pós-Implementação (Session 53 — revisão)
+
+Quatro desvios ao plano original foram identificados e corrigidos:
+
+#### Fix 1 — Viewer DICOM CR/DX inline (sem Cornerstone.js)
+
+O plano previa `@cornerstonejs/core` + `@cornerstonejs/dicom-image-loader`. Implementado com abordagem alternativa mais segura:
+
+**`apps/web/src/components/dicom-viewer.tsx`** — Novo viewer full-screen:
+- `dicom-parser` (puro JS, sem wasm) para parsing do ficheiro DICOM
+- Canvas API para renderização grayscale dos pixels
+- Sliders de Window Center (WC) e Window Width (WW) — ajuste de contraste em tempo real
+- Suporta modalidades CR e DX (radiografias simples)
+- Sem alterações ao CSP nem ao webpack — compatível com a configuração de segurança existente
+- Fallback gracioso se o ficheiro não for DICOM válido
+
+**`apps/web/.../documentos-saude-panel.tsx`** actualizado:
+- `abrirDocumento()` detecta `isDicomSimples(doc)` e abre `DicomViewer` em vez do modal genérico
+- DICOM CT/MR continua com `window.open(urlExterna)` para PACS externo
+
+#### Fix 2 — AiFeedback no painel de triagem urgência
+
+**`apps/web/.../urgencia/page.tsx`** actualizado:
+- `AiFeedback` importado e adicionado ao painel "Apoio IA — Manchester"
+- Passa `(aiTriagem as any)?._decisaoId` — decisão de triagem fica auditável com 👍/👎
+
+#### Fix 3 — Arquitectura FHIR corrigida
+
+`pullFhirDocumentos()` estava privado em `DocumentosSaudeService`. Movido para a camada correcta:
+
+**`apps/api/src/app/fhir/fhir.service.ts`** — novo método público:
+- `pullDocumentosDoente(sistema, patientId)` — query FHIR `DocumentReference` com auth
+- `mimeToFormato(mime)` — helper de mapeamento MIME → formato interno
+
+**`apps/api/src/app/documentos-saude/documentos-saude.module.ts`** — importa `FhirModule`
+
+**`apps/api/src/app/documentos-saude/documentos-saude.service.ts`** — injeta `FhirService`, delega pull FHIR para `this.fhir.pullDocumentosDoente()`
+
+#### Fix 4 — React Query offline persistence (mobile)
+
+O `gcTime` estava a 5 minutos e sem persistência em disco. Corrigido:
+
+**`apps/mobile/src/lib/query-client.ts`** actualizado:
+- `gcTime: 24 * 60 * 60_000` (24h) — dados ficam em memória após ficar offline
+- `persistQueryClient` com `createAsyncStoragePersister` (AsyncStorage, key `curasphere:query_cache`)
+- Cache expira após 24h — evita dados clínicos obsoletos
+- Pacotes adicionados: `@tanstack/react-query-persist-client`, `@tanstack/query-async-storage-persister`
 
 ---
 

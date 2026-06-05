@@ -174,6 +174,20 @@ model Utilizador {
   trocasFolgaSolicitadas     TrocaFolga[]               @relation("TrocaFolgaSolicitante")
   trocasFolgaRecebidas       TrocaFolga[]               @relation("TrocaFolgaDestinatario")
   trocasFolgaAprovadas       TrocaFolga[]               @relation("TrocaFolgaAprovador")
+  balancosHidricosRegistados BalancoHidrico[]           @relation("BalancoHidricoRegistadoPor")
+  feridasRegistadas          AvaliacaoFerida[]          @relation("FeridasRegistadoPor")
+  atualizacoesTransporte     AtualizacaoTransporte[]    @relation("AtualizacaoTransporteRegistadoPor")
+  episodiosEspecialidadeActivada EpisodioUrgencia[]     @relation("EpisodioEspecialidadeActivadaPor")
+  sinalizacoesCriadas            SinalizacaoPreocupante[] @relation("SinalizacoesCriadas")
+  sinalizacoesResolvidas         SinalizacaoPreocupante[] @relation("SinalizacoesResolvidas")
+  relatoriosPassagemCriados      RelatorioPassagemTurno[] @relation("RelatorioPassagemCriado")
+  relatoriosPassagemConfirmados  RelatorioPassagemTurno[] @relation("RelatorioPassagemConfirmado")
+  reconciliacoesCriadas          ReconciliacaoMedicacao[] @relation("ReconciliacoesCriadas")
+  reconciliacoesAprovadas        ReconciliacaoMedicacao[] @relation("ReconciliacoesAprovadas")
+  acessosFamiliaresCriados       AcessoFamiliar[]         @relation("AcessoFamiliarCriado")
+  resultadosAnaliseRegistados    ResultadoAnalise[]       @relation("ResultadosAnaliseRegisto")
+  documentosSaudeRegistados      DocumentoSaude[]         @relation("DocumentosSaudeRegisto")
+  aiDecisoes                     AiDecisao[]              @relation("AiDecisoes")
 
   @@index([role, ativo])
   @@index([servico])
@@ -275,6 +289,17 @@ model Doente {
   protocolosClinicos  ProtocoloClinico[]
   prescricoesDieta    PrescricaoDieta[]
   culturasMicrobiologicas    CulturaMicrobiologica[]
+  balancosHidricos           BalancoHidrico[]
+  feridas                    AvaliacaoFerida[]
+  sinalizacoes               SinalizacaoPreocupante[]
+  alertasSepsis              AlertaSepsis[]
+  baseline                   BaselineDoente?
+  planoAlta                  PlanoAlta?
+  reconciliacoesMedicacao    ReconciliacaoMedicacao[]
+  acessosFamiliares          AcessoFamiliar[]
+  resultadosAnalise          ResultadoAnalise[]
+  documentosSaude            DocumentoSaude[]
+  identificadoresExternos    IdentificadorExterno[]
 
   @@index([ativo])
   @@index([estado])
@@ -685,6 +710,62 @@ model SinalVital {
   @@map("sinais_vitais")
 }
 
+// ─── Balanço Hídrico ──────────────────────────────────────────────────────────
+
+model BalancoHidrico {
+  id             String     @id @default(uuid())
+  doenteId       String
+  registadoPorId String
+  data           DateTime   @default(now())
+  tipo           String     // 'entrada' | 'saida'
+  categoria      String     // entrada: 'soro_iv'|'oral'|'enteral'|'outro'
+                             // saida:   'urina'|'dreno'|'vomito'|'fezes'|'aspiracao'|'outro'
+  quantidade     Int        // mL
+  descricao      String?
+
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador @relation("BalancoHidricoRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, data])
+  @@map("balancos_hidricos")
+}
+
+// ─── Feridas e Curativos ──────────────────────────────────────────────────────
+
+model AvaliacaoFerida {
+  id             String    @id @default(uuid())
+  doenteId       String
+  registadoPorId String
+  criadaEm       DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  tipo               String   // 'ulcera_pressao'|'ulcera_venosa'|'ulcera_arterial'|'cirurgica'|'traumatica'|'queimadura'|'outra'
+  localizacao        String   @db.VarChar(300)
+  estadoCicatrizacao String   // 'fase_inflamacao'|'fase_proliferacao'|'fase_maturacao'|'cronificada'
+
+  comprimento  Float?
+  largura      Float?
+  profundidade Float?
+
+  leito          String?  // 'granulacao'|'fibrina'|'necrose_humida'|'necrose_seca'|'epitelizacao'|'misto'
+  exsudadoVolume String?  // 'nenhum'|'escasso'|'moderado'|'abundante'
+  exsudadoTipo   String?  // 'seroso'|'sero_sanguinolento'|'sanguinolento'|'purulento'
+  periferia      String?  // 'normal'|'eritema'|'edema'|'macerada'|'seca'|'callosa'
+  dor            Int?     // 0-10 NRS
+  odor           Boolean  @default(false)
+
+  pensoAplicado String?   @db.VarChar(200)
+  proximaTroca  DateTime?
+  notas         String?   @db.VarChar(2000)
+
+  doente       Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador @relation("FeridasRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, criadaEm])
+  @@map("avaliacoes_feridas")
+}
+
 // ─── Audit Log ───────────────────────────────────────────────────────────────
 
 model AuditLog {
@@ -905,21 +986,67 @@ model EpisodioUrgencia {
   nomeTemporario    String?
   queixaPrincipal   String
   triagem           CorTriagem
+  corAnterior       String?        // cor antes da re-triagem
   estadoEpisodio    EstadoEpisodio @default(sala_espera)
   triadoPorId       String
   triadoPor         Utilizador     @relation("EpisodioTriador", fields: [triadoPorId], references: [id], onDelete: Cascade)
   medicoResponsavelId String?
   medicoResponsavel Utilizador?    @relation("EpisodioMedico", fields: [medicoResponsavelId], references: [id], onDelete: SetNull)
   dataEntrada       DateTime       @default(now())
+  iniciadoAtendimentoEm DateTime?
   dataSaida         DateTime?
   notas             String?
   sinaisVitaisTriagem Json?
   preNotificacao    Boolean        @default(false)
   etaMinutos        Int?
   condicaoPrevia    String?
+  salaAtendimento   String?
+
+  // NEWS2 calculado automaticamente na triagem
+  news2Triagem      Int?
+
+  // Dados pré-hospitalares (pré-notificação enriquecida)
+  idadeAproximada   Int?
+  sexo              String?        // 'masculino' | 'feminino' | 'desconhecido'
+  consciente        Boolean?
+  glasgow           Int?           // 3-15
+  mecanismo         String?        // 'medico' | 'trauma' | 'intoxicacao' | 'obstetrico' | 'pediatrico'
+
+  // Vitais en route
+  vitalsPASistolica Int?
+  vitalsPADiastolica Int?
+  vitalsFC          Int?
+  vitalsSpO2        Int?
+  vitalsFR          Int?
+
+  // Intervenções INEM
+  intervencoes      String[]
+
+  // Activação de especialidade
+  especialidadeActivada    String?   // 'stemi' | 'avc' | 'trauma'
+  especialidadeActivadaEm  DateTime?
+  especialidadeActivadaPorId String?
+  especialidadeActivadaPor Utilizador? @relation("EpisodioEspecialidadeActivadaPor", fields: [especialidadeActivadaPorId], references: [id], onDelete: SetNull)
+
+  atualizacoes      AtualizacaoTransporte[]
 
   @@index([estadoEpisodio, dataEntrada])
   @@map("episodios_urgencia")
+}
+
+model AtualizacaoTransporte {
+  id             String   @id @default(uuid())
+  episodioId     String
+  registadoPorId String
+  criadaEm       DateTime @default(now())
+  texto          String   @db.VarChar(1000)
+  novaETA        Int?
+
+  episodio     EpisodioUrgencia @relation(fields: [episodioId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador       @relation("AtualizacaoTransporteRegistadoPor", fields: [registadoPorId], references: [id], onDelete: Cascade)
+
+  @@index([episodioId, criadaEm])
+  @@map("atualizacoes_transporte")
 }
 
 // ─── Bloco Operatório ────────────────────────────────────────────────────────
@@ -2013,4 +2140,282 @@ model ConformidadeChecklistItem {
   atualizadoPor   Utilizador? @relation("ChecklistAtualizador", fields: [atualizadoPorId], references: [id], onDelete: SetNull)
 
   @@map("conformidade_checklist")
+}
+
+// ─── Session 49: Sinalizar como Preocupante ───────────────────────────────────
+
+model SinalizacaoPreocupante {
+  id             String    @id @default(uuid())
+  doenteId       String
+  criadaPorId    String
+  criadaEm       DateTime  @default(now())
+  resolvida      Boolean   @default(false)
+  resolvidaEm    DateTime?
+  resolvidaPorId String?
+  motivo         String    @db.VarChar(500)
+  nivelUrgencia  String    @default("normal") // 'normal' | 'urgente'
+
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  criadaPor    Utilizador  @relation("SinalizacoesCriadas", fields: [criadaPorId], references: [id], onDelete: Cascade)
+  resolvidaPor Utilizador? @relation("SinalizacoesResolvidas", fields: [resolvidaPorId], references: [id], onDelete: SetNull)
+
+  @@index([doenteId, resolvida])
+  @@map("sinalizacoes_preocupante")
+}
+
+// ─── Session 49: Sepsis Sentinel ─────────────────────────────────────────────
+
+model AlertaSepsis {
+  id                    String    @id @default(uuid())
+  doenteId              String
+  criadoEm              DateTime  @default(now())
+  criterio              String    // 'qsofa' | 'sirs'
+  score                 Int
+  resolvido             Boolean   @default(false)
+  resolvidoEm           DateTime?
+
+  hemoculturasColhidas  Boolean   @default(false)
+  hemoculturasEm        DateTime?
+  antibioticosIniciados Boolean   @default(false)
+  antibioticosEm        DateTime?
+  lactatoMedido         Boolean   @default(false)
+  lactatoEm             DateTime?
+  fluidoterapiaIniciada Boolean   @default(false)
+  fluidoterapiaEm       DateTime?
+
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, resolvido])
+  @@map("alertas_sepsis")
+}
+
+// ─── Session 49: Baselines Individuais ───────────────────────────────────────
+
+model BaselineDoente {
+  id          String   @id @default(uuid())
+  doenteId    String   @unique
+  calculadaEm DateTime @default(now())
+  nRegistos   Int
+
+  fcMedia            Float?
+  fcSd               Float?
+  pasSistolicaMedia  Float?
+  pasSistolicaSd     Float?
+  pasDiastolicaMedia Float?
+  pasDiastolicaSd    Float?
+  tempMedia          Float?
+  tempSd             Float?
+  spo2Media          Float?
+  spo2Sd             Float?
+  frMedia            Float?
+  frSd               Float?
+
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+
+  @@map("baselines_doente")
+}
+
+// ─── Session 49: Planeamento de Alta ─────────────────────────────────────────
+
+model PlanoAlta {
+  id                   String    @id @default(uuid())
+  doenteId             String    @unique
+  criadoEm             DateTime  @default(now())
+  dataAlvoDia          DateTime?
+
+  afebrилApenas24h     Boolean   @default(false)
+  mobilidadeAdequada   Boolean   @default(false)
+  alimentacaoOral      Boolean   @default(false)
+  doresControladas     Boolean   @default(false)
+  familiaInformada     Boolean   @default(false)
+  transporteAssegurado Boolean   @default(false)
+  medicacaoPreparada   Boolean   @default(false)
+  consultaSegAlt       Boolean   @default(false)
+  notas                String?   @db.VarChar(1000)
+
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+
+  @@map("planos_alta")
+}
+
+// ─── Session 49: Farmácia / Reconciliação ────────────────────────────────────
+
+model ReconciliacaoMedicacao {
+  id            String    @id @default(uuid())
+  doenteId      String
+  criadoPorId   String
+  criadaEm      DateTime  @default(now())
+  medicacaoCasa String    @db.Text
+  discrepancias String    @db.Text
+  aprovadaEm    DateTime?
+  aprovadaPorId String?
+
+  doente      Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  criadoPor   Utilizador  @relation("ReconciliacoesCriadas", fields: [criadoPorId], references: [id], onDelete: Cascade)
+  aprovadaPor Utilizador? @relation("ReconciliacoesAprovadas", fields: [aprovadaPorId], references: [id], onDelete: SetNull)
+
+  @@index([doenteId])
+  @@map("reconciliacoes_medicacao")
+}
+
+// ─── Session 49: Relatório de Passagem de Turno ───────────────────────────────
+
+model RelatorioPassagemTurno {
+  id              String    @id @default(uuid())
+  criadaEm        DateTime  @default(now())
+  turno           String    // 'manha' | 'tarde' | 'noite'
+  servico         String
+  criadaPorId     String
+  confirmadaEm    DateTime?
+  confirmadaPorId String?
+  rascunho        String    @db.Text
+  conteudo        String    @db.Text
+
+  criadaPor     Utilizador  @relation("RelatorioPassagemCriado", fields: [criadaPorId], references: [id], onDelete: Cascade)
+  confirmadaPor Utilizador? @relation("RelatorioPassagemConfirmado", fields: [confirmadaPorId], references: [id], onDelete: SetNull)
+
+  @@index([servico, criadaEm])
+  @@map("relatorios_passagem_turno")
+}
+
+// ─── Session 49: Portal de Família ───────────────────────────────────────────
+
+model AcessoFamiliar {
+  id              String    @id @default(uuid())
+  doenteId        String
+  criadoPorId     String
+  criadoEm        DateTime  @default(now())
+  nomeContacto    String
+  email           String
+  accessToken     String    @unique @default(cuid())
+  accessTokenExpiry DateTime
+  ativo           Boolean   @default(true)
+
+  doente    Doente     @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  criadoPor Utilizador @relation("AcessoFamiliarCriado", fields: [criadoPorId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, ativo])
+  @@index([accessToken])
+  @@map("acessos_familiares")
+}
+
+// ─── Session 49: Dispositivos FHIR ───────────────────────────────────────────
+
+model DispositivoFhir {
+  id        String   @id @default(uuid())
+  nome      String
+  tipo      String   // 'monitor_vitais' | 'ventilador' | 'bomba_infusao'
+  apiKey    String   @unique @default(cuid())
+  doenteId  String?
+  ativo     Boolean  @default(true)
+  ultimoPing DateTime?
+  criadoEm  DateTime @default(now())
+
+  @@index([ativo])
+  @@map("dispositivos_fhir")
+}
+
+// ─── Session 53: Dossier Universal + AI Feedback ─────────────────────────────
+
+model SistemaExternoSaude {
+  id                  String    @id @default(uuid())
+  nome                String
+  tipo                String    // 'fhir_r4' | 'dicom_wado' | 'hl7_v2' | 'upload_manual'
+  endpoint            String?
+  authTipo            String    @default("api_key") // 'api_key' | 'oauth2' | 'none'
+  authConfig          String?   // JSON encriptado com credenciais
+  ativo               Boolean   @default(true)
+  ultimaSincronizacao DateTime?
+  criadoEm            DateTime  @default(now())
+
+  documentos DocumentoSaude[]
+
+  @@index([ativo, tipo])
+  @@map("sistemas_externos_saude")
+}
+
+model IdentificadorExterno {
+  id       String @id @default(uuid())
+  doenteId String
+  sistema  String // nome/id do sistema
+  valorId  String // ID do doente nesse sistema
+  tipo     String // 'sns' | 'nif' | 'hospital_id' | 'fhir_patient_id'
+
+  doente Doente @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+
+  @@unique([doenteId, sistema, tipo])
+  @@index([doenteId])
+  @@map("identificadores_externos")
+}
+
+model DocumentoSaude {
+  id              String   @id @default(uuid())
+  doenteId        String
+  tipo            String   // 'rx'|'tc'|'rmn'|'eco'|'ecg'|'lab'|'alta'|'prescricao'|'vacinacao'|'patologia'|'outro'
+  titulo          String
+  descricao       String?
+  dataDocumento   DateTime
+  origem          String   // "Hospital Santa Maria", "Synlab", "Upload manual"
+  sistemaOrigemId String?
+  formato         String   // 'pdf'|'dicom'|'jpg'|'png'|'hl7'|'fhir_json'
+  storageKey      String?  // S3/MinIO object key (null se referência externa)
+  urlExterna      String?  // Link PACS ou sistema origem
+  mimeType        String
+  tamanhoBytes    Int?
+  fhirResourceId  String?  // ID do recurso FHIR (para upsert)
+  modalidadeDicom String?  // 'CR'|'CT'|'MR'|'US'|'DX'|'NM'
+  verificado      Boolean  @default(false)
+  registadoPorId  String?
+  criadoEm        DateTime @default(now())
+
+  doente        Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  sistemaOrigem SistemaExternoSaude? @relation(fields: [sistemaOrigemId], references: [id], onDelete: SetNull)
+  registadoPor  Utilizador?          @relation("DocumentosSaudeRegisto", fields: [registadoPorId], references: [id], onDelete: SetNull)
+
+  @@index([doenteId, tipo])
+  @@index([doenteId, dataDocumento])
+  @@index([fhirResourceId])
+  @@map("documentos_saude")
+}
+
+model AiDecisao {
+  id             String   @id @default(uuid())
+  tipo           String   // 'analise'|'triagem'|'protocolo'|'turno'|'los'
+  payload        Json
+  aceite         Boolean?
+  overrideMotivo String?
+  doenteId       String?
+  utilizadorId   String
+  criadoEm       DateTime @default(now())
+
+  utilizador Utilizador @relation("AiDecisoes", fields: [utilizadorId], references: [id], onDelete: Cascade)
+
+  @@index([doenteId, criadoEm])
+  @@index([tipo, criadoEm])
+  @@map("ai_decisoes")
+}
+
+// ─── Session 52: Resultados Analíticos (Lab) ─────────────────────────────────
+
+model ResultadoAnalise {
+  id          String   @id @default(uuid())
+  doenteId    String
+  parametro   String   // 'Hemoglobina', 'Leucócitos', 'PCR', etc.
+  valor       Float
+  unidade     String   // 'g/dL', '10^9/L', 'mg/L', etc.
+  refMin      Float?   // limite inferior de referência
+  refMax      Float?   // limite superior de referência
+  alterado    Boolean  @default(false) // fora do intervalo de referência
+  critico     Boolean  @default(false) // valor crítico / alarmante
+  painel      String?  // 'hemograma', 'bioquimica', 'coagulacao', 'microbiologia'
+  observacoes String?
+  registadoEm DateTime @default(now())
+  registadoPorId String?
+
+  doente       Doente      @relation(fields: [doenteId], references: [id], onDelete: Cascade)
+  registadoPor Utilizador? @relation("ResultadosAnaliseRegisto", fields: [registadoPorId], references: [id], onDelete: SetNull)
+
+  @@index([doenteId, registadoEm])
+  @@index([critico])
+  @@map("resultados_analise")
 }

@@ -10,6 +10,7 @@ import { useSocket } from '@/lib/use-socket';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, BarChart, Bar,
+  PieChart, Pie, Cell,
 } from 'recharts';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -225,28 +226,38 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-medico'],
     queryFn: async () => {
-      const [d, t, ic, ex] = await Promise.all([
+      const [d, t, ic, ex, news2] = await Promise.all([
         api.get('/doentes?todos=true').catch(() => ({ data: [] })),
         api.get('/tarefas/minhas').catch(() => ({ data: [] })),
         api.get(`/interconsultas/pendentes?especialidade=${utilizador.subRole ?? ''}`).catch(() => ({ data: [] })),
         api.get('/exames/worklist?estado=resultado_disponivel').catch(() => ({ data: [] })),
+        api.get('/dashboard/news2').catch(() => ({ data: null })),
       ]);
       return {
         doentes: d.data?.data ?? [],
         tarefas: (t.data ?? []).filter((x: any) => x.estado !== 'concluida' && x.estado !== 'cancelada'),
         interconsultas: ic.data ?? [],
         exames: ex.data ?? [],
+        news2Data: news2.data,
       };
     },
     staleTime: 60_000,
+    refetchInterval: 60_000,
   });
 
   const doentes: any[] = (data as any).doentes ?? [];
   const tarefas: any[] = (data as any).tarefas ?? [];
   const interconsultas: any[] = (data as any).interconsultas ?? [];
   const exames: any[] = (data as any).exames ?? [];
+  const news2Data: any = (data as any).news2Data;
   const criticos = doentes.filter((d: any) => d.estado === 'critico' || d.estado === 'grave');
   const urgentes = tarefas.filter((t: any) => t.prioridade === 'urgente' || t.prioridade === 'alta');
+
+  const acuidadePieData = news2Data ? [
+    { name: 'Estável', value: news2Data.acuidade?.estavel ?? 0, color: '#10b981' },
+    { name: 'Grave', value: news2Data.acuidade?.grave ?? 0, color: '#f97316' },
+    { name: 'Crítico', value: news2Data.acuidade?.critico ?? 0, color: '#ef4444' },
+  ].filter(d => d.value > 0) : [];
 
   if (isLoading) return <Spinner />;
 
@@ -260,6 +271,56 @@ function DashboardMedico({ utilizador }: { utilizador: any }) {
         <StatCard label="Tarefas Pendentes" value={tarefas.length} color="bg-amber-500" />
         <StatCard label="Urgentes" value={urgentes.length} color={urgentes.length > 0 ? 'bg-orange-500' : 'bg-slate-400'} />
       </div>
+
+      {/* Widgets clínicos: NEWS2 + Acuidade */}
+      {news2Data && (
+        <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
+            <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '16px' }}>NEWS2 — Distribuição Agora</p>
+            <div className="grid grid-cols-4 gap-3">
+              {[
+                { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
+                { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
+                { label: 'Alto', value: news2Data.news2?.alto ?? 0, badge: 'bg-red-100 text-red-700', sub: '≥7' },
+                { label: 'Sem Registo', value: news2Data.news2?.semRegisto ?? 0, badge: 'bg-slate-100 text-slate-500', sub: '—' },
+              ].map(({ label, value, badge, sub }) => (
+                <div key={label} className={`rounded-xl text-center ${badge}`} style={{ padding: '14px 8px' }}>
+                  <p className="text-2xl font-black">{value}</p>
+                  <p className="text-xs font-semibold" style={{ marginTop: '2px' }}>{label}</p>
+                  <p className="text-xs opacity-70">{sub}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400 text-right" style={{ marginTop: '10px' }}>{news2Data.totalAtivos} doentes activos</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px' }}>
+            <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '8px' }}>Acuidade dos Doentes</p>
+            {acuidadePieData.length === 0 ? (
+              <div className="flex items-center justify-center text-slate-400 text-sm" style={{ height: '120px' }}>Sem dados</div>
+            ) : (
+              <div className="flex items-center gap-4">
+                <ResponsiveContainer width={120} height={120}>
+                  <PieChart>
+                    <Pie data={acuidadePieData} dataKey="value" cx="50%" cy="50%" innerRadius={30} outerRadius={52} paddingAngle={2}>
+                      {acuidadePieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="flex flex-col gap-2">
+                  {acuidadePieData.map((d) => (
+                    <div key={d.name} className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
+                      <span className="text-sm text-slate-700 font-medium">{d.value}</span>
+                      <span className="text-xs text-slate-400">{d.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-5" style={{ marginBottom: '24px' }}>
         <CardContainer>
@@ -553,12 +614,13 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
   const { data = {}, isLoading } = useQuery({
     queryKey: ['dash-enfermeiro'],
     queryFn: async () => {
-      const [d, t, turnoR, msg, wl] = await Promise.all([
+      const [d, t, turnoR, msg, wl, news2] = await Promise.all([
         api.get('/doentes').catch(() => ({ data: [] })),
         api.get('/tarefas/minhas').catch(() => ({ data: [] })),
         api.get('/turnos/ativo').catch(() => ({ data: null })),
         api.get('/comunicacao/mensagens/nao-lidas').catch(() => ({ data: { count: 0 } })),
         api.get('/dashboard/workload-turno').catch(() => ({ data: [] })),
+        api.get('/dashboard/news2').catch(() => ({ data: null })),
       ]);
       return {
         doentes: d.data?.data ?? [],
@@ -566,9 +628,11 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
         turno: turnoR.data,
         mensagensNaoLidas: msg.data?.count ?? msg.data?.length ?? 0,
         workload: wl.data ?? [],
+        news2Data: news2.data,
       };
     },
     staleTime: 60_000,
+    refetchInterval: 60_000,
   });
 
   const doentes: any[] = (data as any).doentes ?? [];
@@ -576,6 +640,7 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
   const turno = (data as any).turno ?? null;
   const mensagensNaoLidas: number = (data as any).mensagensNaoLidas ?? 0;
   const workload: any[] = (data as any).workload ?? [];
+  const news2Data: any = (data as any).news2Data;
   const urgentes = tarefas.filter((t: any) => t.prioridade === 'urgente' || t.prioridade === 'alta');
   const isUCI = utilizador.subRole === 'enf_uci';
 
@@ -591,6 +656,27 @@ function DashboardEnfermeiro({ utilizador }: { utilizador: any }) {
         <StatCard label="Tarefas Urgentes" value={urgentes.length} color={urgentes.length > 0 ? 'bg-red-500' : 'bg-emerald-500'} />
         <StatCard label="Mensagens Não Lidas" value={mensagensNaoLidas} color={mensagensNaoLidas > 0 ? 'bg-blue-600' : 'bg-slate-400'} />
       </div>
+
+      {/* Widget NEWS2 clínico */}
+      {news2Data && (
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '20px 24px', marginBottom: '24px' }}>
+          <p className="text-sm font-semibold text-slate-700" style={{ marginBottom: '14px' }}>NEWS2 — Distribuição Actual ({news2Data.totalAtivos} doentes activos)</p>
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { label: 'Baixo', value: news2Data.news2?.baixo ?? 0, badge: 'bg-green-100 text-green-700', sub: '0–4' },
+              { label: 'Médio', value: news2Data.news2?.medio ?? 0, badge: 'bg-amber-100 text-amber-700', sub: '5–6' },
+              { label: 'Alto', value: news2Data.news2?.alto ?? 0, badge: 'bg-red-100 text-red-700', sub: '≥7' },
+              { label: 'Sem Registo', value: news2Data.news2?.semRegisto ?? 0, badge: 'bg-slate-100 text-slate-500', sub: '—' },
+            ].map(({ label, value, badge, sub }) => (
+              <div key={label} className={`rounded-xl text-center ${badge}`} style={{ padding: '14px 8px' }}>
+                <p className="text-2xl font-black">{value}</p>
+                <p className="text-xs font-semibold" style={{ marginTop: '2px' }}>{label}</p>
+                <p className="text-xs opacity-70">{sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {turno && (
         <div className="bg-teal-50 border border-teal-200 rounded-2xl flex items-center gap-3" style={{ padding: '14px 20px', marginBottom: '24px' }}>

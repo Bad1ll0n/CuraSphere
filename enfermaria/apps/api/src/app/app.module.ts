@@ -21,6 +21,8 @@ import { AuditInterceptor } from './common/audit.interceptor';
 import { ClinicalModule } from './clinical.module';
 import { GestaoModule } from './gestao.module';
 import { OperacionalModule } from './operacional.module';
+import { StorageModule } from './common/storage.module';
+import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.module';
 
 @Module({
   imports: [
@@ -65,6 +67,8 @@ import { OperacionalModule } from './operacional.module';
     NotificacoesModule,
     GatewayModule,
     ConfiguracoesModule,
+    StorageModule,
+    SistemasExternosModule,
 
     // ─── Domínios ─────────────────────────────────────────────────────────────
     ClinicalModule,

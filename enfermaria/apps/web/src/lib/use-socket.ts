@@ -21,10 +21,13 @@ function getSocket(token: string): Socket {
 type SocketEvent =
   | 'urgencia:update'
   | 'urgencia:ambulancia'
+  | 'urgencia:sla-excedido'
   | 'sos:alerta'
   | 'alerta:novo'
   | 'doente:estado'
   | 'bloco:update'
+  | 'turno:passagem-desafio'
+  | 'turno:passagem-confirmada'
   | 'pong';
 
 export function useSocket(

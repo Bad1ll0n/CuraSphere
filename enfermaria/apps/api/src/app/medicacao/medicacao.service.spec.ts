@@ -227,4 +227,74 @@ describe('MedicacaoService', () => {
       expect(resultado[0]).toMatchObject({ severidade: 'grave' });
     });
   });
+
+  // ── verificar5Certos() ────────────────────────────────────────────────────────
+
+  describe('verificar5Certos()', () => {
+    const medAtiva = {
+      id: 'med-1', nome: 'Paracetamol 1g', dose: '1g', via: 'oral',
+      frequencia: '8/8h', ativo: true,
+      registos: [],
+    };
+
+    const buildPayload = (overrides: object = {}) =>
+      JSON.stringify({ medicacaoId: 'med-1', doenteId: 'doente-1', nome: 'Paracetamol', dose: '1g', via: 'oral', ...overrides });
+
+    it('devolve valido=true quando todos os certos passam', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(medAtiva);
+
+      const r = await service.verificar5Certos(buildPayload(), 'doente-1');
+
+      expect(r.valido).toBe(true);
+      expect(r.falhas).toHaveLength(0);
+      expect(r.medicacao.nome).toBe('Paracetamol 1g');
+    });
+
+    it('falha no Certo 1 quando doenteId do QR não corresponde ao esperado', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(medAtiva);
+
+      const r = await service.verificar5Certos(buildPayload(), 'doente-OUTRO');
+
+      expect(r.valido).toBe(false);
+      expect(r.falhas.some(f => f.certo === 'Doente')).toBe(true);
+    });
+
+    it('falha no Certo 2 quando medicação está inactiva', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue({ ...medAtiva, ativo: false });
+
+      const r = await service.verificar5Certos(buildPayload(), 'doente-1');
+
+      expect(r.valido).toBe(false);
+      expect(r.falhas.some(f => f.certo === 'Medicamento')).toBe(true);
+    });
+
+    it('falha no Certo 5 quando administração é prematura', async () => {
+      const ultimaAdm = new Date(Date.now() - 2 * 3_600_000); // há 2h (muito cedo para 8/8h com 1h tolerância)
+      mockPrisma.medicacao.findUnique.mockResolvedValue({
+        ...medAtiva,
+        registos: [{ administradoEm: ultimaAdm }],
+      });
+
+      const r = await service.verificar5Certos(buildPayload(), 'doente-1');
+
+      expect(r.valido).toBe(false);
+      expect(r.falhas.some(f => f.certo === 'Hora')).toBe(true);
+    });
+
+    it('devolve valido=false e medicacao=null quando QR é JSON inválido', async () => {
+      const r = await service.verificar5Certos('não é json', 'doente-1');
+
+      expect(r.valido).toBe(false);
+      expect(r.medicacao).toBeNull();
+    });
+
+    it('devolve valido=false quando medicação não existe na BD', async () => {
+      mockPrisma.medicacao.findUnique.mockResolvedValue(null);
+
+      const r = await service.verificar5Certos(buildPayload(), 'doente-1');
+
+      expect(r.valido).toBe(false);
+      expect(r.falhas.some(f => f.certo === 'Medicamento')).toBe(true);
+    });
+  });
 });

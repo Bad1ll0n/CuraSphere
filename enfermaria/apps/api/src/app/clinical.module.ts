@@ -25,6 +25,23 @@ import { UrgenciaModule } from './urgencia/urgencia.module';
 import { BlocoModule } from './bloco/bloco.module';
 import { FisioterapiaModule } from './fisioterapia/fisioterapia.module';
 import { IacsModule } from './iacs/iacs.module';
+import { BalancoHidricoModule } from './balanco-hidrico/balanco-hidrico.module';
+import { FeridasModule } from './feridas/feridas.module';
+// Session 49
+import { SinalizacoesModule } from './sinalizacoes/sinalizacoes.module';
+import { SepsisModule } from './sepsis/sepsis.module';
+import { BaselinesModule } from './baselines/baselines.module';
+import { ReconciliacaoMedicacaoModule } from './reconciliacao-medicacao/reconciliacao-medicacao.module';
+import { RelatorioPassagemTurnoModule } from './relatorio-passagem-turno/relatorio-passagem-turno.module';
+import { PlanoAltaModule } from './plano-alta/plano-alta.module';
+import { FamiliaModule } from './familia/familia.module';
+import { FhirModule } from './fhir/fhir.module';
+// Session 50
+import { AiClinicoModule } from './ai-clinico/ai-clinico.module';
+// Session 52
+import { ExamesLabModule } from './exames-lab/exames-lab.module';
+// Session 53
+import { DocumentosSaudeModule } from './documentos-saude/documentos-saude.module';
 
 const clinicalModules = [
   // Doente & Cama
@@ -40,6 +57,17 @@ const clinicalModules = [
   FisioterapiaModule,
   // Vigilância
   IacsModule,
+  // Session 48
+  BalancoHidricoModule, FeridasModule,
+  // Session 49 — Inteligência Clínica
+  SinalizacoesModule, SepsisModule, BaselinesModule, ReconciliacaoMedicacaoModule,
+  RelatorioPassagemTurnoModule, PlanoAltaModule, FamiliaModule, FhirModule,
+  // Session 50
+  AiClinicoModule,
+  // Session 52
+  ExamesLabModule,
+  // Session 53
+  DocumentosSaudeModule,
 ];
 
 @Module({

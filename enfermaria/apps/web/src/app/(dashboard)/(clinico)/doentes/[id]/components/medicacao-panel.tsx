@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import QRCode from 'react-qr-code';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { ConfirmModal } from '@/components/confirm-modal';
@@ -115,6 +116,9 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const role = utilizador?.role ?? '';
   const podePrescreveMed = role === 'medico';
   const podeProporMed = role === 'enfermeiro';
+
+  // QR 5 Certos
+  const [qrMed, setQrMed] = useState<{ id: string; nome: string; dose: string; via: string } | null>(null);
 
   // Prescrever medicação state
   const [modalMed, setModalMed] = useState(false);
@@ -255,6 +259,17 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
             </span>
           )}
           <div className="flex items-center gap-1.5" style={{ marginLeft: 'auto' }}>
+            <a
+              href={`${process.env.NEXT_PUBLIC_API_URL ?? ''}/medicacao/doente/${doenteId}/mar/pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Descarregar MAR PDF"
+              title="Descarregar MAR do dia"
+              className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+              <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </a>
             <button onClick={abrirHistoricoMed} aria-label="Histórico de medicação"
               className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
               <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,15 +303,24 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                     <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
                   )}
                 </div>
-                {podePrescreveMed && (
-                  <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
-                    className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors shrink-0"
-                    style={{ marginLeft: '8px' }}>
-                    <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <div className="flex items-center gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
+                  <button
+                    onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
+                    title="Gerar QR para verificação 5 Certos"
+                    className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
+                    <svg className="w-3 h-3 text-slate-400 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                     </svg>
                   </button>
-                )}
+                  {podePrescreveMed && (
+                    <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
+                      className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors">
+                      <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -540,6 +564,36 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
         onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
         onCancelar={() => setConfirmarAcao(null)}
       />
+
+      {/* Modal QR 5 Certos */}
+      {qrMed && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          style={{ backdropFilter: 'blur(4px)' }}
+          onClick={() => setQrMed(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl" style={{ padding: '32px', maxWidth: '320px', width: '90%' }}
+            onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '16px' }}>
+              <h3 className="text-base font-bold text-slate-900">QR — 5 Certos</h3>
+              <button onClick={() => setQrMed(null)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex items-center justify-center bg-white rounded-xl border border-slate-100" style={{ padding: '20px', marginBottom: '16px' }}>
+              <QRCode
+                value={JSON.stringify({ medicacaoId: qrMed.id, doenteId, nome: qrMed.nome, dose: qrMed.dose, via: qrMed.via })}
+                size={200}
+              />
+            </div>
+            <p className="text-sm font-semibold text-slate-800 text-center" style={{ marginBottom: '4px' }}>{qrMed.nome}</p>
+            <p className="text-xs text-slate-400 text-center">{qrMed.dose} · {qrMed.via}</p>
+            <p className="text-xs text-slate-400 text-center" style={{ marginTop: '12px' }}>
+              Scan com o telemóvel para verificar os 5 Certos antes de administrar
+            </p>
+          </div>
+        </div>
+      )}
     </>
   );
 }

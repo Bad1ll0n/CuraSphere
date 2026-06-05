@@ -18,10 +18,17 @@ export type RoleKey = typeof ROLES[keyof typeof ROLES];
 
 // Sub-roles privilegiados usados em guards específicos
 export const SUBROLES = {
-  it_admin:            'it_admin',
-  medico_gestor:       'medico_gestor',
+  it_admin:              'it_admin',
+  medico_gestor:         'medico_gestor',
   supervisor_enfermagem: 'supervisor_enfermagem',
+  cardiologista:         'cardiologista',
+  neurologista:          'neurologista',
+  chefe_enfermeiros:     'chefe_enfermeiros',
+  tae:                   'tae',        // Técnico Ambulância Emergência
+  tec_rad:               'tec_rad',    // Técnico Radiologia
 } as const;
+
+export type SubRoleKey = typeof SUBROLES[keyof typeof SUBROLES];
 
 export enum Servico {
   internamento = 'internamento',

@@ -384,4 +384,43 @@ export class DashboardService {
       medicacao: { pendentes: medicacaoPendenteHoje, administradasHoje: medicacaoAdministradaHoje },
     };
   }
+
+  async news2Distribuicao() {
+    const doentesAtivos = await this.prisma.doente.findMany({
+      where: { ativo: true, deletedAt: null },
+      select: {
+        id: true,
+        estado: true,
+        sinaisVitais: {
+          where: { news2: { not: null } },
+          orderBy: { data: 'desc' },
+          take: 1,
+          select: { news2: true, data: true },
+        },
+      },
+    });
+
+    const distribuicao = { baixo: 0, medio: 0, alto: 0, semRegisto: 0 };
+    const porAcuidade = { estavel: 0, grave: 0, critico: 0 };
+
+    for (const d of doentesAtivos) {
+      // Acuidade
+      if (d.estado === 'critico') porAcuidade.critico++;
+      else if (d.estado === 'grave') porAcuidade.grave++;
+      else porAcuidade.estavel++;
+
+      // NEWS2
+      const news2 = d.sinaisVitais[0]?.news2 ?? null;
+      if (news2 == null) distribuicao.semRegisto++;
+      else if (news2 <= 4) distribuicao.baixo++;
+      else if (news2 <= 6) distribuicao.medio++;
+      else distribuicao.alto++;
+    }
+
+    return {
+      totalAtivos: doentesAtivos.length,
+      news2: distribuicao,
+      acuidade: porAcuidade,
+    };
+  }
 }

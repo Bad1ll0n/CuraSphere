@@ -156,6 +156,13 @@ export class DoenteController {
     return this.doenteService.getSumarioAlta(doenteId);
   }
 
+  @Roles('medico', 'chefe_enfermeiros', 'direcao')
+  @Get(':id/resumo-alta')
+  async gerarResumoAlta(@Param('id') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    return this.doenteService.gerarResumoAlta(doenteId);
+  }
+
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id/timeline')
   async getTimeline(@Param('id') doenteId: string, @Request() req: any) {

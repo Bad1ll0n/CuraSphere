@@ -234,6 +234,12 @@ export class DoenteService {
         });
       }
 
+      await tx.planoAlta.upsert({
+        where: { doenteId: doente.id },
+        create: { doenteId: doente.id },
+        update: {},
+      });
+
       return doente;
     }, { isolationLevel: 'Serializable' });
   }
@@ -500,6 +506,138 @@ export class DoenteService {
       where: { doenteId },
       include: { criadoPor: { select: { nome: true, role: true } } },
     });
+  }
+
+  async gerarResumoAlta(doenteId: string) {
+    const doente = await this.prisma.doente.findUnique({
+      where: { id: doenteId },
+      select: {
+        id: true, nome: true, dataNascimento: true, dataAdmissao: true, dataAlta: true,
+        diagnosticoPrincipal: true, servico: true, estado: true,
+        ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
+        cama: { select: { numero: true, quarto: true } },
+      },
+    });
+    if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+
+    const [sinaisVitais, medicacoes, notasClinicas, exames, alertas] = await Promise.all([
+      this.prisma.sinalVital.findMany({
+        where: { doenteId },
+        orderBy: { data: 'desc' },
+        take: 10,
+        select: { data: true, pressaoSistolica: true, pressaoDiastolica: true, pulso: true, saturacaoO2: true, temperatura: true, frequenciaRespiratoria: true, news2: true },
+      }),
+      this.prisma.medicacao.findMany({
+        where: { doenteId, ativo: true },
+        select: { nome: true, dose: true, via: true, frequencia: true },
+      }),
+      this.prisma.notaClinica.findMany({
+        where: { doenteId },
+        orderBy: { criadaEm: 'desc' },
+        take: 5,
+        select: { criadaEm: true, tipo: true, texto: true, autor: { select: { nome: true, role: true } } },
+      }).catch(() => []),
+      this.prisma.exame.findMany({
+        where: { doenteId },
+        orderBy: { criadoEm: 'desc' },
+        take: 10,
+        select: { tipo: true, descricao: true, estado: true, resultado: true, criadoEm: true },
+      }).catch(() => []),
+      this.prisma.alertaClinico.findMany({
+        where: { doenteId, lido: false },
+        orderBy: { criadoEm: 'desc' },
+        take: 10,
+        select: { tipo: true, mensagem: true, urgencia: true, criadoEm: true },
+      }),
+    ]);
+
+    const fmt = (d: Date | string | null) => d ? new Date(d).toLocaleDateString('pt-PT') : '—';
+    const fmtNum = (n: number | null | undefined) => n != null ? String(n) : '—';
+
+    const svAdmissao = sinaisVitais[sinaisVitais.length - 1];
+    const svUltimo = sinaisVitais[0];
+
+    const secoes: string[] = [];
+
+    // Identificação
+    const idade = doente.dataNascimento
+      ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (1000 * 60 * 60 * 24 * 365.25))
+      : null;
+    secoes.push([
+      '=== IDENTIFICAÇÃO ===',
+      `Nome: ${doente.nome}${idade ? ` (${idade} anos)` : ''}`,
+      doente.ficheiroPessoal?.numeroSNS ? `SNS: ${doente.ficheiroPessoal.numeroSNS}` : '',
+      `Internamento: ${fmt(doente.dataAdmissao)} → ${doente.dataAlta ? fmt(doente.dataAlta) : 'Em curso'}`,
+      doente.cama ? `Cama: ${doente.cama.numero}${doente.cama.quarto ? ` (${doente.cama.quarto})` : ''}` : '',
+    ].filter(Boolean).join('\n'));
+
+    // Motivo
+    secoes.push([
+      '=== MOTIVO DE INTERNAMENTO ===',
+      doente.diagnosticoPrincipal ?? '[A preencher]',
+    ].join('\n'));
+
+    // Sinais vitais
+    const svLinhas: string[] = [];
+    if (svAdmissao && sinaisVitais.length > 1) {
+      svLinhas.push(`Admissão (${fmt(svAdmissao.data)}): TA ${fmtNum(svAdmissao.pressaoSistolica)}/${fmtNum(svAdmissao.pressaoDiastolica)} mmHg · FC ${fmtNum(svAdmissao.pulso)} bpm · SpO₂ ${fmtNum(svAdmissao.saturacaoO2)}% · Temp ${fmtNum(svAdmissao.temperatura)}°C${svAdmissao.news2 != null ? ` · NEWS2 ${svAdmissao.news2}` : ''}`);
+    }
+    if (svUltimo) {
+      svLinhas.push(`Último (${fmt(svUltimo.data)}): TA ${fmtNum(svUltimo.pressaoSistolica)}/${fmtNum(svUltimo.pressaoDiastolica)} mmHg · FC ${fmtNum(svUltimo.pulso)} bpm · SpO₂ ${fmtNum(svUltimo.saturacaoO2)}% · Temp ${fmtNum(svUltimo.temperatura)}°C${svUltimo.news2 != null ? ` · NEWS2 ${svUltimo.news2}` : ''}`);
+      if (svAdmissao && svUltimo.news2 != null && svAdmissao.news2 != null) {
+        const delta = svUltimo.news2 - svAdmissao.news2;
+        svLinhas.push(`Tendência NEWS2: ${delta < 0 ? `↓ melhorou ${Math.abs(delta)} pontos` : delta > 0 ? `↑ agravou ${delta} pontos` : '→ estável'}`);
+      }
+    }
+    secoes.push(['=== EVOLUÇÃO / SINAIS VITAIS ===', ...svLinhas, '[Resumo clínico a completar pelo médico]'].join('\n'));
+
+    // Medicação activa
+    if (medicacoes.length > 0) {
+      const medLinhas = medicacoes.map(m => `• ${m.nome} ${m.dose} — ${m.via} — ${m.frequencia}`);
+      secoes.push(['=== MEDICAÇÃO À ALTA ===', ...medLinhas].join('\n'));
+    } else {
+      secoes.push('=== MEDICAÇÃO À ALTA ===\n[Sem medicação activa registada]');
+    }
+
+    // Exames relevantes
+    const examesComResultado = (exames as any[]).filter(e => e.resultado);
+    if (examesComResultado.length > 0) {
+      const exLinhas = examesComResultado.map(e => `• ${e.tipo ?? e.descricao} (${fmt(e.criadoEm)}): ${e.resultado.slice(0, 150)}`);
+      secoes.push(['=== EXAMES COMPLEMENTARES ===', ...exLinhas].join('\n'));
+    }
+
+    // Notas clínicas recentes
+    if ((notasClinicas as any[]).length > 0) {
+      const notaLinhas = (notasClinicas as any[]).map(n =>
+        `• [${fmt(n.criadaEm)}] ${n.tipo ?? 'Nota'} por ${n.autor?.nome ?? '?'}: ${(n.texto ?? '').slice(0, 200)}`
+      );
+      secoes.push(['=== NOTAS CLÍNICAS RELEVANTES ===', ...notaLinhas].join('\n'));
+    }
+
+    // Alertas activos
+    if (alertas.length > 0) {
+      const alertaLinhas = alertas.map(a => `• ${a.urgencia ? '[URGENTE] ' : ''}${a.mensagem}`);
+      secoes.push(['=== ALERTAS PENDENTES ===', ...alertaLinhas].join('\n'));
+    }
+
+    // Instruções de alta
+    secoes.push([
+      '=== INSTRUÇÕES DE ALTA ===',
+      'Seguimento: [A preencher]',
+      'Próxima consulta: [A preencher]',
+      'Recomendações: [A preencher]',
+    ].join('\n'));
+
+    return {
+      resumoGerado: secoes.join('\n\n'),
+      dadosUsados: {
+        vitals: sinaisVitais.length,
+        notas: (notasClinicas as any[]).length,
+        medicacoes: medicacoes.length,
+        exames: (exames as any[]).length,
+        alertas: alertas.length,
+      },
+    };
   }
 
   async atualizarIsolamento(id: string, emIsolamento: boolean, motivoIsolamento?: string) {

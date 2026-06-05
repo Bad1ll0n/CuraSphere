@@ -3,6 +3,9 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { ProtocolosService } from '../protocolos/protocolos.service';
+import { SepsisService } from '../sepsis/sepsis.service';
+import { BaselinesService } from '../baselines/baselines.service';
+import { calcularNEWS2 } from '../common/news2.helper';
 
 const ROLES_PODEM_REGISTAR = [
   'enfermeiro', 'auxiliar', 'medico',
@@ -34,65 +37,6 @@ function detetar(dto: CriarSinalVitalDto): string[] {
   return alertas;
 }
 
-function calcularNEWS2(dto: CriarSinalVitalDto): number | null {
-  const parametros = [
-    dto.frequenciaRespiratoria, dto.saturacaoO2, dto.temperatura,
-    dto.pressaoSistolica, dto.pulso,
-  ];
-  // Só calcular se pelo menos 3 parâmetros presentes
-  if (parametros.filter((p) => p != null).length < 3) return null;
-
-  let score = 0;
-
-  if (dto.frequenciaRespiratoria != null) {
-    const fr = dto.frequenciaRespiratoria;
-    if (fr <= 8) score += 3;
-    else if (fr <= 11) score += 1;
-    else if (fr <= 20) score += 0;
-    else if (fr <= 24) score += 2;
-    else score += 3;
-  }
-
-  if (dto.saturacaoO2 != null) {
-    const spo2 = dto.saturacaoO2;
-    if (spo2 <= 91) score += 3;
-    else if (spo2 <= 93) score += 2;
-    else if (spo2 <= 95) score += 1;
-  }
-
-  if (dto.temperatura != null) {
-    const t = dto.temperatura;
-    if (t <= 35.0) score += 3;
-    else if (t <= 36.0) score += 1;
-    else if (t <= 38.0) score += 0;
-    else if (t <= 39.0) score += 1;
-    else score += 2;
-  }
-
-  if (dto.pressaoSistolica != null) {
-    const ps = dto.pressaoSistolica;
-    if (ps <= 90) score += 3;
-    else if (ps <= 100) score += 2;
-    else if (ps <= 110) score += 1;
-    else if (ps <= 219) score += 0;
-    else score += 3;
-  }
-
-  if (dto.pulso != null) {
-    const fc = dto.pulso;
-    if (fc <= 40) score += 3;
-    else if (fc <= 50) score += 1;
-    else if (fc <= 90) score += 0;
-    else if (fc <= 110) score += 1;
-    else if (fc <= 130) score += 2;
-    else score += 3;
-  }
-
-  if (dto.avpu && dto.avpu !== 'A') score += 3;
-
-  return score;
-}
-
 @Injectable()
 export class SinaisVitaisService {
   private readonly logger = new Logger(SinaisVitaisService.name);
@@ -102,6 +46,8 @@ export class SinaisVitaisService {
     private readonly alertasService: AlertasService,
     private readonly notificacoesService: NotificacoesService,
     private readonly protocolosService: ProtocolosService,
+    private readonly sepsisService: SepsisService,
+    private readonly baselinesService: BaselinesService,
   ) {}
 
   async criar(doenteId: string, utilizadorId: string, role: string, dto: CriarSinalVitalDto) {
@@ -148,6 +94,10 @@ export class SinaisVitaisService {
         this.protocolosService.ativarSeNaoAtivo(doenteId, 'sepsis').catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
       }
     }
+
+    // Hooks assíncronos: Sépsis Sentinel + Baselines Individuais
+    this.sepsisService.avaliar(doenteId, dto).catch((err) => this.logger.warn('SepsisService.avaliar falhou', err?.message ?? String(err)));
+    this.baselinesService.avaliarEAlertar(doenteId, dto).catch((err) => this.logger.warn('BaselinesService.avaliarEAlertar falhou', err?.message ?? String(err)));
 
     return registo;
   }

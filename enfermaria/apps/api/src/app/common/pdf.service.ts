@@ -286,4 +286,114 @@ export class PdfService {
 
     return this.build(docDefinition);
   }
+
+  async gerarMar(doenteId: string, dataStr?: string): Promise<Buffer> {
+    const dataRef = dataStr ? new Date(dataStr) : new Date();
+    const inicioDia = new Date(dataRef);
+    inicioDia.setHours(0, 0, 0, 0);
+    const fimDia = new Date(dataRef);
+    fimDia.setHours(23, 59, 59, 999);
+
+    const doente = await this.prisma.doente.findUnique({
+      where: { id: doenteId },
+      select: { nome: true, numeroProcesso: true, dataAdmissao: true, diagnosticoPrincipal: true, cama: { select: { numero: true, quarto: true } } },
+    });
+    if (!doente) throw new Error('Doente não encontrado');
+
+    const medicacoes = await this.prisma.medicacao.findMany({
+      where: { doenteId, ativo: true, deletedAt: null },
+      select: {
+        id: true, nome: true, dose: true, via: true, frequencia: true,
+        registos: {
+          where: { administradoEm: { gte: inicioDia, lte: fimDia }, deletedAt: null },
+          select: { administradoEm: true, naoAdministrada: true, motivoNaoAdmin: true, observacoes: true },
+          orderBy: { administradoEm: 'asc' },
+        },
+      },
+      orderBy: { iniciadoEm: 'asc' },
+    });
+
+    const now = new Date();
+
+    const docDefinition: any = {
+      defaultStyle: { font: 'Helvetica', fontSize: 9 },
+      styles: {
+        header:      { fontSize: 18, bold: true, color: '#1e40af' },
+        subheader:   { fontSize: 12, bold: true, color: '#1e3a8a', margin: [0, 10, 0, 4] },
+        label:       { bold: true, color: '#374151' },
+        small:       { fontSize: 8, color: '#6b7280' },
+        tableHeader: { bold: true, fillColor: '#eff6ff', color: '#1e3a8a', fontSize: 9 },
+      },
+      content: [
+        {
+          columns: [
+            { text: 'CuraSphere', style: 'header', width: '*' },
+            { text: `Emitido em: ${dtPt(now)}`, style: 'small', alignment: 'right', width: 'auto', margin: [0, 6, 0, 0] },
+          ],
+          margin: [0, 0, 0, 4],
+        },
+        { text: 'REGISTO DE ADMINISTRAÇÃO DE MEDICAÇÃO (MAR)', fontSize: 13, bold: true, margin: [0, 0, 0, 4], color: '#111827' },
+        { text: `Data: ${dataPt(dataRef)}`, fontSize: 10, color: '#374151', margin: [0, 0, 0, 10] },
+        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#bfdbfe' }] },
+
+        { text: 'IDENTIFICAÇÃO', style: 'subheader' },
+        {
+          table: {
+            widths: ['auto', '*', 'auto', '*'],
+            body: [
+              [{ text: 'Doente:', style: 'label' }, doente.nome, { text: 'Nº Processo:', style: 'label' }, doente.numeroProcesso ?? '—'],
+              [{ text: 'Diagnóstico:', style: 'label' }, doente.diagnosticoPrincipal ?? '—', { text: 'Cama:', style: 'label' }, doente.cama ? `Q${doente.cama.quarto}/C${doente.cama.numero}` : '—'],
+            ],
+          },
+          layout: 'lightHorizontalLines',
+          margin: [0, 0, 0, 14],
+        },
+
+        { text: 'ADMINISTRAÇÕES DO DIA', style: 'subheader' },
+        ...(medicacoes.length === 0 ? [{ text: 'Sem medicações activas.', fontSize: 9, color: '#6b7280' }] : [
+          {
+            table: {
+              widths: ['*', 'auto', 'auto', 'auto', 'auto', '*'],
+              body: [
+                [
+                  { text: 'Medicamento', style: 'tableHeader' },
+                  { text: 'Dose', style: 'tableHeader' },
+                  { text: 'Via', style: 'tableHeader' },
+                  { text: 'Frequência', style: 'tableHeader' },
+                  { text: 'Estado', style: 'tableHeader' },
+                  { text: 'Hora / Observações', style: 'tableHeader' },
+                ],
+                ...medicacoes.flatMap((m) => {
+                  if (m.registos.length === 0) {
+                    return [[m.nome, m.dose, m.via, m.frequencia, { text: 'Não administrada', color: '#dc2626', bold: true }, '—']];
+                  }
+                  return m.registos.map((r) => [
+                    m.nome,
+                    m.dose,
+                    m.via,
+                    m.frequencia,
+                    r.naoAdministrada
+                      ? { text: 'Omitida', color: '#f59e0b', bold: true }
+                      : { text: '✓ Administrada', color: '#16a34a', bold: true },
+                    r.naoAdministrada
+                      ? (r.motivoNaoAdmin ?? '—')
+                      : `${dtPt(r.administradoEm)}${r.observacoes ? ' — ' + r.observacoes : ''}`,
+                  ]);
+                }),
+              ],
+            },
+            layout: 'lightHorizontalLines',
+            margin: [0, 0, 0, 12],
+          },
+        ]),
+
+        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#d1d5db' }], margin: [0, 12, 0, 0] },
+        { text: `CuraSphere · ${dtPt(now)}`, style: 'small', alignment: 'center', margin: [0, 8, 0, 0] },
+      ],
+      pageSize: 'A4',
+      pageMargins: [40, 40, 40, 40],
+    };
+
+    return this.build(docDefinition);
+  }
 }
