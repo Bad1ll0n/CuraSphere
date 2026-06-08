@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DoenteService } from '../doentes/doentes.service';
 import { RegistarBalancoDto } from './dto/registar-balanco.dto';
 
 const ROLES_PODEM_REGISTAR = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude', 'chefe_turno', 'chefe_enfermeiros'];
@@ -9,7 +8,6 @@ const ROLES_PODEM_REGISTAR = ['medico', 'enfermeiro', 'auxiliar', 'tecnico_saude
 export class BalancoHidricoService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly doenteService: DoenteService,
   ) {}
 
   async registar(doenteId: string, dto: RegistarBalancoDto, userId: string, role: string) {

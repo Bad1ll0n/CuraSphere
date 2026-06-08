@@ -158,9 +158,9 @@ export class DashboardService {
       this.prisma.cama.count({ where: { estado: 'reservada' } }),
       this.prisma.episodioFaturacao.findMany({ where: { criadoEm: { gte: inicioMes } }, select: { totalCobrado: true, estado: true, tipoCobertura: true } }),
       this.prisma.consulta.findMany({ where: { dataHora: { gte: hoje, lt: amanha } }, select: { estado: true } }),
-      this.prisma.pedidoTrocaTurno.count({ where: { estado: 'pendente' } }),
+      this.prisma.pedidoTrocaTurno.count({ where: { estado: 'pendente' as any } }),
       this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
-      this.prisma.episodioUrgencia.groupBy({ by: ['estado'], where: { criadoEm: { gte: hoje } }, _count: { id: true } }).catch(() => []),
+      this.prisma.episodioUrgencia.groupBy({ by: ['estadoEpisodio'], where: { dataEntrada: { gte: hoje } }, _count: { id: true } }).catch(() => []),
       this.prisma.cirurgiaProgramada.groupBy({ by: ['estado'], where: { dataHora: { gte: inicioMes } }, _count: { id: true } }).catch(() => []),
       this.prisma.ausencia.count({ where: { estado: 'aprovada', dataInicio: { lte: agora }, dataFim: { gte: agora } } }).catch(() => 0),
     ]);
@@ -256,7 +256,7 @@ export class DashboardService {
     const [utilizadoresPorRole, trocas30d, horariosTurno7d] = await Promise.all([
       this.prisma.utilizador.groupBy({ by: ['role'], where: { ativo: true }, _count: { id: true } }),
       this.prisma.pedidoTrocaTurno.groupBy({ by: ['estado'], where: { criadoEm: { gte: trintaDiasAtras } }, _count: { id: true } }),
-      this.prisma.horarioTurno.findMany({ where: { data: { gte: seteDiasAtras } }, include: { profissionais: { select: { id: true } } } }),
+      this.prisma.horarioTurno.findMany({ where: { data: { gte: seteDiasAtras } }, include: { profissionais: { select: { utilizadorId: true } } } }),
     ]);
 
     const turnosCobertos = horariosTurno7d.filter(t => t.profissionais.length > 0).length;
@@ -265,9 +265,9 @@ export class DashboardService {
       turnosCobertos7d: turnosCobertos,
       turnosSemCobertura7d: horariosTurno7d.length - turnosCobertos,
       trocas30d: {
-        pendente: trocas30d.find(t => t.estado === 'pendente')?._count.id ?? 0,
-        aprovado: trocas30d.find(t => t.estado === 'aprovado')?._count.id ?? 0,
-        recusado: trocas30d.find(t => t.estado === 'recusado')?._count.id ?? 0,
+        pendente: (trocas30d as any[]).find(t => t.estado === 'pendente' || t.estado === 'pendente_destinatario' || t.estado === 'pendente_chefe')?._count.id ?? 0,
+        aprovado: (trocas30d as any[]).find(t => t.estado === 'aprovado')?._count.id ?? 0,
+        recusado: (trocas30d as any[]).find(t => t.estado === 'rejeitado' || t.estado === 'recusado')?._count.id ?? 0,
       },
     };
   }
@@ -292,7 +292,7 @@ export class DashboardService {
       const doente = atribuicoes.find(a => a.doenteId === doenteId)?.doente;
       const [medicacoesPendentes, tarefasAtrasadas, alertasNaoLidos, ultimoSinalVital] = await Promise.all([
         this.prisma.medicacao.count({
-          where: { doenteId, estado: 'pendente', registos: { none: { administradoEm: { gte: oitoHorasAtras } } } },
+          where: { doenteId, registos: { none: { administradoEm: { gte: oitoHorasAtras } } } } as any,
         }),
         this.prisma.tarefa.count({
           where: { doenteId, estado: { in: ['pendente', 'em_progresso'] }, prazo: { lt: agora } },

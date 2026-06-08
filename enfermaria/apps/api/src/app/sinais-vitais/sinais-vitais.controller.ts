@@ -32,6 +32,12 @@ export class SinaisVitaisController {
     return this.service.ultimo(doenteId);
   }
 
+  @Get(':doenteId/scores')
+  async calcularScores(@Param('doenteId') doenteId: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    return this.service.calcularScores(doenteId);
+  }
+
   @Get(':doenteId/tendencia')
   async analisarTendencia(@Param('doenteId') doenteId: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);

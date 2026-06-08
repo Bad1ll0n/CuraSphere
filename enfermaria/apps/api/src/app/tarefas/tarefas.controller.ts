@@ -5,7 +5,7 @@ import { DoenteService } from '../doentes/doentes.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { TipoTarefa, PrioridadeTarefa, EstadoTarefa } from '../common/enums';
+import { EstadoTarefa } from '../common/enums';
 import { CriarTarefaDto } from './dto/criar-tarefa.dto';
 import { AtualizarEstadoTarefaDto } from './dto/atualizar-estado-tarefa.dto';
 import { EditarTarefaDto } from './dto/editar-tarefa.dto';
@@ -39,7 +39,7 @@ export class TarefasController {
   @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
   @Post()
   criar(@Body() dto: CriarTarefaDto, @Request() req: any) {
-    return this.tarefasService.criar({ ...dto, criadoPorId: req.user.sub });
+    return this.tarefasService.criar({ ...dto, criadoPorId: req.user.sub } as any);
   }
 
   @Roles('medico', 'enfermeiro', 'auxiliar', 'chefe_enfermeiros', 'chefe_turno', 'administrativo')
@@ -57,6 +57,6 @@ export class TarefasController {
     @Param('id') id: string,
     @Body() dto: EditarTarefaDto,
   ) {
-    return this.tarefasService.editar(id, dto);
+    return this.tarefasService.editar(id, dto as any);
   }
 }

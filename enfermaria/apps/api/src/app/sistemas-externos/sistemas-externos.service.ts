@@ -1,10 +1,8 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SistemasExternosService {
-  private readonly logger = new Logger(SistemasExternosService.name);
-
   constructor(private readonly prisma: PrismaService) {}
 
   listar() {
@@ -53,6 +51,8 @@ export class SistemasExternosService {
     }
 
     try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const { default: fetch } = await import('node-fetch');
       const url = `${sistema.endpoint}/metadata`;
       const inicio = Date.now();

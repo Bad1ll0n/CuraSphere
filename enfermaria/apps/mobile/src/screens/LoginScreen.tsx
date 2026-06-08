@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
   StyleSheet, KeyboardAvoidingView, Platform,
-  ActivityIndicator, ScrollView,
+  ActivityIndicator, ScrollView, Alert,
 } from 'react-native';
 import Svg, { Circle, Ellipse, Rect, Defs, RadialGradient, Stop } from 'react-native-svg';
-import { login } from '../lib/auth';
+import { login, logout } from '../lib/auth';
+import {
+  autenticarComBiometria, biometriaDisponivel,
+  guardarCredenciaisBiometricas, obterCredenciaisBiometricas,
+} from '../lib/biometric';
+
+const PAPEIS_CLINICOS = ['medico', 'enfermeiro', 'farmaceutico', 'chefe_enfermeiros'];
 
 interface Props { onLogin: () => void }
 
@@ -38,19 +44,79 @@ export default function LoginScreen({ onLogin }: Props) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
+  const [temBiometria, setTemBiometria] = useState(false);
+  const [oferecerBiometria, setOferecerBiometria] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const disponivel = await biometriaDisponivel();
+      if (!disponivel) return;
+      const credenciais = await obterCredenciaisBiometricas();
+      if (credenciais) {
+        setTemBiometria(true);
+        // Auto-tentativa biométrica ao abrir a app
+        const ok = await autenticarComBiometria();
+        if (ok) {
+          setLoading(true);
+          try {
+            await login(credenciais.username, credenciais.password);
+            onLogin();
+          } catch {
+            setErro('Sessão expirada. Por favor inicie sessão manualmente.');
+          } finally {
+            setLoading(false);
+          }
+        }
+      }
+    })();
+  }, []);
 
   const handleLogin = async () => {
     if (!numeroFuncionario || !password) return;
     setLoading(true);
     setErro('');
     try {
-      await login(numeroFuncionario, password);
-      onLogin();
+      const utilizador = await login(numeroFuncionario, password);
+      const disponivel = await biometriaDisponivel();
+
+      // Biometria obrigatória para papéis clínicos
+      if (PAPEIS_CLINICOS.includes(utilizador.role)) {
+        if (disponivel) {
+          const ok = await autenticarComBiometria();
+          if (!ok) {
+            await logout();
+            Alert.alert(
+              'Biometria necessária',
+              'A biometria é obrigatória para acesso clínico. Tente novamente e confirme com Face ID / Touch ID.',
+            );
+            return;
+          }
+        } else {
+          Alert.alert(
+            '⚠️ Recomendação de segurança',
+            'Active biometria (Face ID/Touch ID) nas definições do dispositivo para proteger o acesso aos dados dos doentes.',
+            [{ text: 'OK' }],
+          );
+        }
+      }
+
+      if (disponivel && !temBiometria) {
+        setOferecerBiometria(true);
+      } else {
+        onLogin();
+      }
     } catch {
       setErro('Número de funcionário ou password incorretos.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const activarBiometria = async () => {
+    await guardarCredenciaisBiometricas(numeroFuncionario, password);
+    setTemBiometria(true);
+    setOferecerBiometria(false);
+    onLogin();
   };
 
   return (
@@ -126,6 +192,39 @@ export default function LoginScreen({ onLogin }: Props) {
           }
         </TouchableOpacity>
 
+        {temBiometria && !oferecerBiometria && (
+          <TouchableOpacity style={s.botaoBio} onPress={async () => {
+            const credenciais = await obterCredenciaisBiometricas();
+            if (!credenciais) return;
+            const ok = await autenticarComBiometria();
+            if (!ok) return;
+            setLoading(true);
+            try {
+              await login(credenciais.username, credenciais.password);
+              onLogin();
+            } catch {
+              setErro('Sessão expirada. Por favor inicie sessão manualmente.');
+            } finally { setLoading(false); }
+          }} activeOpacity={0.8}>
+            <Text style={s.botaoBioTexto}>🔒 Entrar com biometria</Text>
+          </TouchableOpacity>
+        )}
+
+        {oferecerBiometria && (
+          <View style={s.bioOferta}>
+            <Text style={s.bioOfertaTitulo}>Activar autenticação biométrica?</Text>
+            <Text style={s.bioOfertaDesc}>Utilize Face ID / Touch ID nos próximos acessos</Text>
+            <View style={s.bioOfertaBotoes}>
+              <TouchableOpacity style={s.bioNao} onPress={() => { setOferecerBiometria(false); onLogin(); }}>
+                <Text style={s.bioNaoTexto}>Agora não</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={s.bioSim} onPress={activarBiometria}>
+                <Text style={s.bioSimTexto}>Activar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
         <Text style={s.rodape}>Acesso restrito a profissionais autorizados</Text>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -181,4 +280,22 @@ const s = StyleSheet.create({
   botaoTexto: { color: '#fff', fontWeight: '700', fontSize: 16 },
 
   rodape: { textAlign: 'center', fontSize: 11, color: '#94a3b8', marginTop: 24 },
+
+  botaoBio: {
+    marginTop: 12, borderWidth: 1.5, borderColor: '#2563eb',
+    borderRadius: 14, paddingVertical: 14, alignItems: 'center',
+  },
+  botaoBioTexto: { color: '#2563eb', fontWeight: '700', fontSize: 15 },
+
+  bioOferta: {
+    marginTop: 20, backgroundColor: '#eff6ff', borderWidth: 1,
+    borderColor: '#bfdbfe', borderRadius: 14, padding: 18,
+  },
+  bioOfertaTitulo: { fontSize: 15, fontWeight: '700', color: '#1e40af', marginBottom: 4 },
+  bioOfertaDesc: { fontSize: 13, color: '#3b82f6', marginBottom: 14 },
+  bioOfertaBotoes: { flexDirection: 'row', gap: 10 },
+  bioNao: { flex: 1, borderWidth: 1, borderColor: '#93c5fd', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
+  bioNaoTexto: { color: '#3b82f6', fontSize: 13, fontWeight: '600' },
+  bioSim: { flex: 1, backgroundColor: '#2563eb', borderRadius: 10, paddingVertical: 11, alignItems: 'center' },
+  bioSimTexto: { color: '#fff', fontSize: 13, fontWeight: '700' },
 });

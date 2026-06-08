@@ -38,6 +38,61 @@ html.dark {
 
 /* ── Dark Mode ──────────────────────────────────────────── */
 html.dark { color-scheme: dark; }
+
+/* ── High Contrast Mode (WCAG AAA) ─────────────────────── */
+html.high-contrast {
+  color-scheme: dark;
+  --bg-page:        #000000;
+  --bg-card:        #0a0a0a;
+  --bg-input:       #000000;
+  --bg-tabs:        #0a0a0a;
+  --bg-tab-active:  #1a1a1a;
+  --text-main:      #ffffff;
+  --text-muted:     #e0e0e0;
+  --border:         #ffff00;
+}
+html.high-contrast body { background-color: #000 !important; color: #fff !important; }
+html.high-contrast .bg-white,
+html.high-contrast .bg-slate-50,
+html.high-contrast .bg-gray-50,
+html.high-contrast .bg-slate-100,
+html.high-contrast .bg-gray-100  { background-color: #0a0a0a !important; }
+html.high-contrast .bg-slate-200,
+html.high-contrast .bg-gray-200  { background-color: #1a1a1a !important; }
+html.high-contrast .text-slate-900,
+html.high-contrast .text-gray-900,
+html.high-contrast .text-slate-800,
+html.high-contrast .text-gray-800,
+html.high-contrast .text-slate-700,
+html.high-contrast .text-gray-700 { color: #ffffff !important; }
+html.high-contrast .text-slate-600,
+html.high-contrast .text-gray-600,
+html.high-contrast .text-slate-500,
+html.high-contrast .text-gray-500  { color: #e0e0e0 !important; }
+html.high-contrast .border,
+html.high-contrast .border-slate-100,
+html.high-contrast .border-slate-200,
+html.high-contrast .border-gray-200,
+html.high-contrast .border-slate-300 { border-color: #ffff00 !important; }
+html.high-contrast .divide-slate-100 > * + *,
+html.high-contrast .divide-slate-200 > * + * { border-color: #ffff00 !important; }
+html.high-contrast input,
+html.high-contrast select,
+html.high-contrast textarea {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+  border-color: #ffff00 !important;
+}
+html.high-contrast input::placeholder,
+html.high-contrast textarea::placeholder { color: #a0a0a0 !important; }
+html.high-contrast .shadow-sm,
+html.high-contrast .shadow,
+html.high-contrast .shadow-lg,
+html.high-contrast .shadow-2xl { box-shadow: 0 0 0 1px #ffff00 !important; }
+html.high-contrast .hover\:bg-slate-50:hover,
+html.high-contrast .hover\:bg-gray-50:hover,
+html.high-contrast .hover\:bg-slate-100:hover,
+html.high-contrast .hover\:bg-gray-100:hover { background-color: #1a1a1a !important; }
 html.dark body { background-color: #0f172a !important; color: #e2e8f0 !important; }
 
 /* Backgrounds */
@@ -92,3 +147,30 @@ html.dark .hover\:bg-slate-50:hover  { background-color: #1e293b !important; }
 html.dark .hover\:bg-gray-50:hover   { background-color: #1e293b !important; }
 html.dark .hover\:bg-slate-100:hover { background-color: #334155 !important; }
 html.dark .hover\:bg-gray-100:hover  { background-color: #334155 !important; }
+
+/* ── WCAG 2.1 AA — Focus visível ────────────────────────── */
+:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+/* Remove outline para cliques com rato (mantém para teclado) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Skip-to-content (WCAG 2.4.1) ──────────────────────── */
+.skip-to-content {
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  padding: 8px 16px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 8px 0;
+  z-index: 9999;
+}
+.skip-to-content:focus {
+  top: 0;
+}

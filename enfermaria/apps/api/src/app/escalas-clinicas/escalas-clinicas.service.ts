@@ -9,14 +9,25 @@ export class EscalasClinicasService {
     tipo: string; valores: Record<string, any>; pontuacao?: number; classificacao?: string; observacoes?: string;
   }, registadoPorId: string) {
     await this.buscarDoente(doenteId);
+
+    let pontuacao = dto.pontuacao;
+    let classificacao = dto.classificacao;
+
+    if (dto.tipo === 'Glasgow') {
+      const { ocular, verbal, motor } = dto.valores as { ocular: number; verbal: number; motor: number };
+      const total = Number(ocular) + Number(verbal) + Number(motor);
+      pontuacao = total;
+      classificacao = total <= 8 ? 'grave' : total <= 12 ? 'moderado' : 'ligeiro';
+    }
+
     return this.prisma.escalaClinica.create({
       data: {
         doenteId,
         registadoPorId,
         tipo: dto.tipo as any,
         valores: dto.valores,
-        pontuacao: dto.pontuacao,
-        classificacao: dto.classificacao,
+        pontuacao,
+        classificacao,
         observacoes: dto.observacoes,
       },
       include: { registadoPor: { select: { id: true, nome: true, role: true, subRole: true } } },
@@ -35,7 +46,7 @@ export class EscalasClinicasService {
   async listarRecentes(doenteId: string) {
     // Último registo de cada tipo de escala para o doente
     await this.buscarDoente(doenteId);
-    const tipos = ['RASS', 'CPOT', 'SOFA', 'CTG', 'Apgar', 'PEWS', 'FLACC'];
+    const tipos = ['RASS', 'CPOT', 'SOFA', 'CTG', 'Apgar', 'PEWS', 'FLACC', 'Glasgow'];
     const resultados = await Promise.all(
       tipos.map(tipo =>
         this.prisma.escalaClinica.findFirst({

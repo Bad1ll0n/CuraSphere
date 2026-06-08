@@ -196,6 +196,14 @@ export default function DoenteDetalhe() {
   // Auto resumo de alta
   const [carregandoResumo, setCarregandoResumo] = useState(false);
 
+  // Portal do Doente
+  const [modalPortal, setModalPortal] = useState(false);
+  const [portalEmail, setPortalEmail] = useState('');
+  const [portalSenha, setPortalSenha] = useState('');
+  const [criandoPortal, setCriandoPortal] = useState(false);
+  const [portalCriado, setPortalCriado] = useState(false);
+  const podeCriarPortal = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
+
   // Score de risco
   const [riscoScore, setRiscoScore] = useState<{ score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[] } | null>(null);
 
@@ -421,6 +429,14 @@ export default function DoenteDetalhe() {
 
       {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: '28px' }}>
+        <div className="flex items-start gap-4">
+          {/* Avatar do doente */}
+          {(doente as any).fotoUrl
+            ? <img src={(doente as any).fotoUrl} alt={`Foto de ${doente.nome}`} className="w-14 h-14 rounded-full object-cover border-2 border-slate-200 shrink-0 mt-0.5" />
+            : <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200 shrink-0 mt-0.5">
+                <span className="text-xl font-bold text-blue-700">{doente.nome?.[0] ?? '?'}</span>
+              </div>
+          }
         <div>
           <div className="flex items-center gap-3" style={{ marginBottom: '6px' }}>
             <h1 className="text-2xl font-bold text-slate-900">{doente.nome}</h1>
@@ -486,6 +502,7 @@ export default function DoenteDetalhe() {
               )
             )}
           </div>
+        </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -565,6 +582,16 @@ export default function DoenteDetalhe() {
               className="border border-slate-200 text-slate-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50 text-sm font-medium rounded-xl transition-all"
               style={{ padding: '10px 20px' }}>
               Dar Alta
+            </button>
+          )}
+          {podeCriarPortal && (
+            <button onClick={() => { setPortalEmail(''); setPortalSenha(''); setPortalCriado(false); setModalPortal(true); }}
+              className="inline-flex items-center gap-2 border border-blue-200 text-blue-700 hover:bg-blue-50 text-sm font-medium rounded-xl transition-all"
+              style={{ padding: '10px 16px' }}>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Portal
             </button>
           )}
         </div>
@@ -1146,6 +1173,86 @@ export default function DoenteDetalhe() {
         onConfirmar={confirmarAcao?.onConfirmar ?? (() => {})}
         onCancelar={() => setConfirmarAcao(null)}
       />
+
+      {/* Modal Portal do Doente */}
+      {modalPortal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)' }}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '440px', padding: '32px', margin: '0 16px' }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Portal do Doente</h2>
+                <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Criar ou actualizar acesso para {doente.nome}</p>
+              </div>
+              <button onClick={() => setModalPortal(false)} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {portalCriado ? (
+              <div className="text-center" style={{ padding: '16px 0' }}>
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto" style={{ marginBottom: '16px' }}>
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-slate-800" style={{ marginBottom: '8px' }}>Acesso criado com sucesso</p>
+                <div className="bg-slate-50 rounded-xl text-left" style={{ padding: '12px 16px', marginBottom: '16px' }}>
+                  <p className="text-xs text-slate-500" style={{ marginBottom: '4px' }}>Email: <span className="font-semibold text-slate-700">{portalEmail}</span></p>
+                  <p className="text-xs text-slate-500">URL: <span className="font-mono text-blue-600">/portal/login</span></p>
+                </div>
+                <p className="text-xs text-amber-600 bg-amber-50 rounded-lg" style={{ padding: '8px 12px' }}>
+                  Entregue estas credenciais ao doente por canal seguro (carta ou email pessoal).
+                </p>
+                <button onClick={() => setModalPortal(false)}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+                  style={{ padding: '11px', marginTop: '16px' }}>
+                  Fechar
+                </button>
+              </div>
+            ) : (
+              <>
+                <div style={{ marginBottom: '16px' }}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Email do Doente</label>
+                  <input type="email" value={portalEmail} onChange={e => setPortalEmail(e.target.value)}
+                    placeholder="doente@exemplo.com"
+                    className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
+                    style={{ padding: '10px 14px' }} />
+                </div>
+                <div style={{ marginBottom: '24px' }}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Password Temporária</label>
+                  <input type="text" value={portalSenha} onChange={e => setPortalSenha(e.target.value)}
+                    placeholder="Mínimo 8 caracteres"
+                    className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
+                    style={{ padding: '10px 14px' }} />
+                  <p className="text-xs text-slate-400" style={{ marginTop: '4px' }}>O doente poderá alterar a password após o primeiro acesso.</p>
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => setModalPortal(false)}
+                    className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-sm"
+                    style={{ padding: '11px' }}>Cancelar</button>
+                  <button
+                    disabled={criandoPortal || !portalEmail.trim() || portalSenha.length < 8}
+                    onClick={async () => {
+                      setCriandoPortal(true);
+                      try {
+                        await api.post('/portal/criar-acesso', { doenteId: id, email: portalEmail, senha: portalSenha });
+                        setPortalCriado(true);
+                      } catch (e: any) {
+                        toast.error(e?.response?.data?.message ?? 'Erro ao criar acesso');
+                      } finally { setCriandoPortal(false); }
+                    }}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors text-sm disabled:opacity-50"
+                    style={{ padding: '11px' }}>
+                    {criandoPortal ? 'A criar...' : 'Criar Acesso'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

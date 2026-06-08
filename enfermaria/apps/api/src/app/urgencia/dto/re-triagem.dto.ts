@@ -4,10 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ReTriagemDto {
   @ApiProperty({ enum: ['verde', 'amarelo', 'laranja', 'vermelho', 'azul'] })
   @IsIn(['verde', 'amarelo', 'laranja', 'vermelho', 'azul'])
-  novaTriagem: string;
+  novaTriagem!: string;
 
   @ApiProperty()
   @IsString()
   @MaxLength(500)
-  motivo: string;
+  motivo!: string;
 }

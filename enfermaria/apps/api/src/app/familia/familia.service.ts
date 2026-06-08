@@ -43,8 +43,8 @@ export class FamiliaService {
       include: {
         doente: {
           select: {
-            id: true, nome: true, dataAdmissao: true, servico: true,
-            cama: { select: { numero: true, quarto: true } },
+            id: true, nome: true, dataAdmissao: true,
+            cama: { select: { numero: true, quarto: true, servico: true } },
             sinaisVitais: {
               orderBy: { data: 'desc' },
               take: 1,
@@ -64,8 +64,8 @@ export class FamiliaService {
     if (!acesso.ativo) throw new ForbiddenException('Acesso familiar revogado');
     if (new Date() > acesso.accessTokenExpiry) throw new ForbiddenException('Acesso familiar expirado');
 
-    const doente = acesso.doente;
-    const sv = doente.sinaisVitais[0];
+    const doente = (acesso as any).doente;
+    const sv = doente?.sinaisVitais?.[0];
 
     // Estado simplificado sem dados clínicos detalhados
     const news2 = sv?.news2 ?? null;

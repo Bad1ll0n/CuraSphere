@@ -183,6 +183,7 @@ exports.Prisma.DoenteScalarFieldEnum = {
   emIsolamento: 'emIsolamento',
   motivoIsolamento: 'motivoIsolamento',
   deletedAt: 'deletedAt',
+  fotoUrl: 'fotoUrl',
   camaId: 'camaId',
   administrativoAdmissaoId: 'administrativoAdmissaoId'
 };
@@ -314,6 +315,19 @@ exports.Prisma.MedicacaoScalarFieldEnum = {
   assinadoPorId: 'assinadoPorId'
 };
 
+exports.Prisma.StewardshipAntibioticoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  medicacaoId: 'medicacaoId',
+  diasTerapia: 'diasTerapia',
+  categoria: 'categoria',
+  alertaEmitido: 'alertaEmitido',
+  sugestaoIA: 'sugestaoIA',
+  aprovadoPor: 'aprovadoPor',
+  aprovadoEm: 'aprovadoEm',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.RegistoMedicacaoScalarFieldEnum = {
   id: 'id',
   administradoEm: 'administradoEm',
@@ -380,7 +394,11 @@ exports.Prisma.SinalVitalScalarFieldEnum = {
   peso: 'peso',
   notas: 'notas',
   avpu: 'avpu',
-  news2: 'news2'
+  o2Suplementar: 'o2Suplementar',
+  news2: 'news2',
+  glasgow: 'glasgow',
+  pamMedia: 'pamMedia',
+  vasopressores: 'vasopressores'
 };
 
 exports.Prisma.BalancoHidricoScalarFieldEnum = {
@@ -482,7 +500,11 @@ exports.Prisma.SumarioAltaScalarFieldEnum = {
   prescricaoSaida: 'prescricaoSaida',
   medicoFamilia: 'medicoFamilia',
   criadoPorId: 'criadoPorId',
-  criadoEm: 'criadoEm'
+  criadoEm: 'criadoEm',
+  riscReadmissao: 'riscReadmissao',
+  fatoresReadmissao: 'fatoresReadmissao',
+  recomendacoesAlta: 'recomendacoesAlta',
+  cartaAlta: 'cartaAlta'
 };
 
 exports.Prisma.DispositivoTokenScalarFieldEnum = {
@@ -1364,6 +1386,69 @@ exports.Prisma.ResultadoAnaliseScalarFieldEnum = {
   registadoPorId: 'registadoPorId'
 };
 
+exports.Prisma.FotoFeridaScalarFieldEnum = {
+  id: 'id',
+  avaliacaoId: 'avaliacaoId',
+  storageKey: 'storageKey',
+  mimeType: 'mimeType',
+  ordem: 'ordem',
+  criadaEm: 'criadaEm',
+  criadaPorId: 'criadaPorId',
+  analiseIA: 'analiseIA'
+};
+
+exports.Prisma.GuidelineClinicaScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  categoria: 'categoria',
+  conteudo: 'conteudo',
+  fonte: 'fonte',
+  versao: 'versao',
+  ativo: 'ativo',
+  criadoEm: 'criadoEm',
+  embeddingJson: 'embeddingJson'
+};
+
+exports.Prisma.PortalDoenteScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  ativo: 'ativo',
+  criadoPorId: 'criadoPorId',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.Hl7MensagemScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  remetente: 'remetente',
+  conteudoRaw: 'conteudoRaw',
+  processado: 'processado',
+  erroMsg: 'erroMsg',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.DashboardConfigScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  widgets: 'widgets',
+  atualizadoEm: 'atualizadoEm',
+  criadoEm: 'criadoEm'
+};
+
+exports.Prisma.FollowUpAgendadoScalarFieldEnum = {
+  id: 'id',
+  doenteId: 'doenteId',
+  tipo: 'tipo',
+  dataAgendada: 'dataAgendada',
+  especialidade: 'especialidade',
+  responsavelId: 'responsavelId',
+  concluido: 'concluido',
+  observacoes: 'observacoes',
+  criadoEm: 'criadoEm'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1438,7 +1523,8 @@ exports.TipoEscalaClinica = exports.$Enums.TipoEscalaClinica = {
   FOIS: 'FOIS',
   NRS2002: 'NRS2002',
   PHQ9: 'PHQ9',
-  GAD7: 'GAD7'
+  GAD7: 'GAD7',
+  Glasgow: 'Glasgow'
 };
 
 exports.TipoTarefa = exports.$Enums.TipoTarefa = {
@@ -1657,6 +1743,7 @@ exports.Prisma.ModelName = {
   NotaTurno: 'NotaTurno',
   Tarefa: 'Tarefa',
   Medicacao: 'Medicacao',
+  StewardshipAntibiotico: 'StewardshipAntibiotico',
   RegistoMedicacao: 'RegistoMedicacao',
   Escala: 'Escala',
   HorarioTurno: 'HorarioTurno',
@@ -1739,7 +1826,13 @@ exports.Prisma.ModelName = {
   IdentificadorExterno: 'IdentificadorExterno',
   DocumentoSaude: 'DocumentoSaude',
   AiDecisao: 'AiDecisao',
-  ResultadoAnalise: 'ResultadoAnalise'
+  ResultadoAnalise: 'ResultadoAnalise',
+  FotoFerida: 'FotoFerida',
+  GuidelineClinica: 'GuidelineClinica',
+  PortalDoente: 'PortalDoente',
+  Hl7Mensagem: 'Hl7Mensagem',
+  DashboardConfig: 'DashboardConfig',
+  FollowUpAgendado: 'FollowUpAgendado'
 };
 
 /**

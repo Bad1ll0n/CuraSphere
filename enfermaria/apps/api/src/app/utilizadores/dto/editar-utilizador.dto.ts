@@ -39,7 +39,7 @@ export class EditarUtilizadorDto {
   @ApiPropertyOptional({ enum: SERVICOS_PERMITIDOS })
   @IsOptional()
   @IsIn(SERVICOS_PERMITIDOS, { message: 'Serviço inválido' })
-  servico?: string;
+  servico?: Servico;
 
   @ApiPropertyOptional()
   @IsOptional()

@@ -1,20 +1,27 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, Alert, ActivityIndicator, RefreshControl,
+  StyleSheet, Alert, ActivityIndicator, RefreshControl, Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../lib/api';
 import { Utilizador } from '../lib/auth';
 import { useNetworkStatus } from '../lib/network';
 import { enqueue } from '../lib/mutation-queue';
 import { OfflineBanner } from '../components/OfflineBanner';
+import { SyncStatusBanner } from '../components/SyncStatusBanner';
+import * as Haptics from 'expo-haptics';
 import TabInfo from './doente-detalhe/tabs/TabInfo';
 import TabTarefas from './doente-detalhe/tabs/TabTarefas';
 import TabMedicacao from './doente-detalhe/tabs/TabMedicacao';
 import TabNotas from './doente-detalhe/tabs/TabNotas';
 import TabVitais from './doente-detalhe/tabs/TabVitais';
 import TabEscalas from './doente-detalhe/tabs/TabEscalas';
+import TabFeridas from './doente-detalhe/tabs/TabFeridas';
+import TabIA from './doente-detalhe/tabs/TabIA';
+import TabAlertas from './doente-detalhe/tabs/TabAlertas';
 import ModalAlterarEstado from './doente-detalhe/modals/ModalAlterarEstado';
 import ModalCriarTarefa from './doente-detalhe/modals/ModalCriarTarefa';
 import ModalPrescreverMedicacao from './doente-detalhe/modals/ModalPrescreverMedicacao';
@@ -40,7 +47,7 @@ interface Props {
   onVoltar: () => void;
 }
 
-type Aba = 'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas';
+type Aba = 'info' | 'tarefas' | 'medicacao' | 'notas' | 'vitais' | 'escalas' | 'feridas' | 'ia' | 'alertas';
 
 export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: Props) {
   const [doente, setDoente] = useState<any>(null);
@@ -72,6 +79,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   const [loadingHistoricoMed, setLoadingHistoricoMed] = useState(false);
 
   const isOnline = useNetworkStatus();
+  const prevAlertIdsRef = React.useRef<Set<string>>(new Set());
 
   const role = utilizador.role;
   const meuGrupoChave = role === 'medico' ? 'medico' : role === 'auxiliar' ? 'auxiliar' : 'enfermeiro';
@@ -105,7 +113,19 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
   };
 
   const carregarAlertas = async () => {
-    try { const r = await api.get(`/alertas/${doenteId}`); setAlertas(r.data); } catch { setAlertas([]); }
+    try {
+      const r = await api.get(`/alertas/${doenteId}`);
+      const novosAlertas: any[] = r.data;
+      const TIPOS_CRITICOS = ['ia_watchdog', 'escalacao_automatica', 'news2_critico', 'sepsis', 'sos'];
+      const temNovoCritico = novosAlertas.some(
+        (a: any) => !a.lido && TIPOS_CRITICOS.includes(a.tipo) && !prevAlertIdsRef.current.has(a.id)
+      );
+      if (temNovoCritico) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      }
+      prevAlertIdsRef.current = new Set(novosAlertas.map((a: any) => a.id));
+      setAlertas(novosAlertas);
+    } catch { setAlertas([]); }
   };
 
   const carregarEscalas = async () => {
@@ -201,6 +221,19 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     catch { Alert.alert('Erro', 'Não foi possível remover o contacto'); }
   };
 
+  const uploadFoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') { Alert.alert('Permissão necessária', 'Ative o acesso à câmara nas definições.'); return; }
+    const result = await ImagePicker.launchCameraAsync({ quality: 0.7, allowsEditing: true, aspect: [1, 1] });
+    if (result.canceled) return;
+    const formData = new FormData();
+    formData.append('foto', { uri: result.assets[0].uri, type: 'image/jpeg', name: 'foto.jpg' } as any);
+    try {
+      const r = await api.patch(`/doentes/${doenteId}/foto`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      setDoente((d: any) => ({ ...d, fotoUrl: r.data.fotoUrl }));
+    } catch { Alert.alert('Erro', 'Não foi possível guardar a foto'); }
+  };
+
   if (loading) return <View style={s.centro}><ActivityIndicator size="large" color="#2563eb" /></View>;
   if (!doente) return null;
 
@@ -214,14 +247,25 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
     { key: 'notas', label: 'Notas' },
     { key: 'vitais', label: 'Vitais' },
     { key: 'escalas', label: 'Escalas' },
+    { key: 'feridas', label: 'Feridas' },
+    { key: 'ia', label: '🧠 IA' },
+    { key: 'alertas', label: `🔔 Alertas${alertas.filter((a: any) => !a.lido).length > 0 ? ` (${alertas.filter((a: any) => !a.lido).length})` : ''}` },
   ];
 
   return (
     <View style={s.container}>
       <OfflineBanner />
+      <SyncStatusBanner />
       <View style={s.header}>
         <TouchableOpacity onPress={onVoltar} style={s.voltarBotao}>
           <Text style={s.voltarTexto}>‹  Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(role) ? uploadFoto : undefined} activeOpacity={0.8} style={s.avatarContainer}>
+          {doente.fotoUrl
+            ? <Image source={{ uri: doente.fotoUrl }} style={s.avatar} />
+            : <View style={[s.avatar, s.avatarPlaceholder]}><Text style={s.avatarInicial}>{doente.nome?.[0] ?? '?'}</Text></View>
+          }
+          {['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(role) && <Text style={s.avatarCamIcon}>📷</Text>}
         </TouchableOpacity>
         <View style={s.headerInfo}>
           <Text style={s.headerNome}>{doente.nome}</Text>
@@ -250,13 +294,13 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         </TouchableOpacity>
       )}
 
-      <View style={s.abas}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.abas} contentContainerStyle={{ flexDirection: 'row' }}>
         {abas.map((a) => (
           <TouchableOpacity key={a.key} style={[s.aba, abaAtiva === a.key && s.abaAtiva]} onPress={() => setAbaAtiva(a.key)}>
             <Text style={[s.abaTexto, abaAtiva === a.key && s.abaTextoAtivo]}>{a.label}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       <ScrollView style={s.conteudo} refreshControl={<RefreshControl refreshing={false} onRefresh={carregar} />}>
         {abaAtiva === 'info' && (
@@ -283,6 +327,7 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         )}
         {abaAtiva === 'medicacao' && (
           <TabMedicacao
+            doenteId={doenteId}
             medicacoesAtivas={medicacoesAtivas}
             podePrescreveMed={podePrescreveMed} podeRegistarMed={podeRegistarMed}
             onHistorico={abrirHistoricoMed}
@@ -308,6 +353,23 @@ export default function DoenteDetalheScreen({ doenteId, utilizador, onVoltar }: 
         )}
         {abaAtiva === 'escalas' && (
           <TabEscalas escalas={escalas} onAvaliar={setModalEscala} />
+        )}
+        {abaAtiva === 'feridas' && (
+          <TabFeridas doenteId={doenteId} podeRegistar={['medico', 'enfermeiro', 'tecnico_saude'].includes(role)} />
+        )}
+        {abaAtiva === 'ia' && (
+          <TabIA doenteId={doenteId} />
+        )}
+        {abaAtiva === 'alertas' && (
+          <TabAlertas
+            alertas={alertas}
+            onMarcarLido={async (id: string) => {
+              try {
+                await api.patch(`/alertas/${id}/ler`);
+                setAlertas((prev: any[]) => prev.map((a) => a.id === id ? { ...a, lido: true } : a));
+              } catch { /* ignore */ }
+            }}
+          />
         )}
       </ScrollView>
 
@@ -336,14 +398,19 @@ const s = StyleSheet.create({
   centro: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { backgroundColor: '#1e293b', padding: 20, paddingTop: 16 },
   voltarBotao: { alignSelf: 'flex-start', backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 14, marginBottom: 10 },
+  avatarContainer: { position: 'absolute', top: 16, right: 20, alignItems: 'center' },
+  avatar: { width: 48, height: 48, borderRadius: 24, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)' },
+  avatarPlaceholder: { backgroundColor: '#3b82f6', alignItems: 'center', justifyContent: 'center' },
+  avatarInicial: { fontSize: 20, fontWeight: '700', color: '#fff' },
+  avatarCamIcon: { fontSize: 10, marginTop: 2 },
   voltarTexto: { color: '#fff', fontSize: 12, fontWeight: '600' },
   headerInfo: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
   headerNome: { fontSize: 20, fontWeight: '700', color: '#fff', flex: 1, marginRight: 12 },
   estadoBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20 },
   estadoTexto: { fontSize: 12, fontWeight: '600' },
   headerSub: { fontSize: 13, color: '#64748b' },
-  abas: { flexDirection: 'row', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0' },
-  aba: { flex: 1, paddingVertical: 12, alignItems: 'center' },
+  abas: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e2e8f0', maxHeight: 44 },
+  aba: { paddingVertical: 12, paddingHorizontal: 14, alignItems: 'center' },
   abaAtiva: { borderBottomWidth: 2, borderBottomColor: '#2563eb' },
   abaTexto: { fontSize: 11, color: '#94a3b8', fontWeight: '500' },
   abaTextoAtivo: { color: '#2563eb', fontWeight: '700' },

@@ -31,6 +31,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [salvando, setSalvando] = useState(false);
+  const [historico, setHistorico] = useState<Record<string, number>>({});
 
   // Modal: escolher profissional para doente
   const [modalDoente, setModalDoente] = useState<any>(null);
@@ -170,7 +171,15 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
                     <TouchableOpacity
                       key={d.id}
                       style={s.doenteCard}
-                      onPress={() => souChefe && setModalDoente(d)}
+                      onPress={() => {
+                        if (!souChefe) return;
+                        setModalDoente(d);
+                        if (turnoSelecionado) {
+                          api.get(`/atribuicoes/turno/${turnoSelecionado.id}/historico`)
+                            .then(r => setHistorico(r.data))
+                            .catch(() => {});
+                        }
+                      }}
                       activeOpacity={souChefe ? 0.7 : 1}
                     >
                       <View style={s.doenteCardEsq}>
@@ -210,6 +219,7 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
             {profissionaisDoTurno.map((p: any) => {
               const atual = atribuicaoDe(modalDoente?.id);
               const selecionado = atual?.utilizadorId === p.utilizador.id;
+              const count = historico[`${p.utilizador.id}|${modalDoente?.id}`] ?? 0;
               return (
                 <TouchableOpacity
                   key={p.utilizador.id}
@@ -219,8 +229,11 @@ export default function AtribuicoesScreen({ utilizador, onVoltar }: Props) {
                   <View style={s.profInfo}>
                     <Text style={s.profNome}>{p.utilizador.nome}</Text>
                     <Text style={s.profAtribs}>
-                      {turnoSelecionado?.atribuicoes.filter((a: any) => a.utilizadorId === p.utilizador.id).length ?? 0} doentes
+                      {turnoSelecionado?.atribuicoes.filter((a: any) => a.utilizadorId === p.utilizador.id).length ?? 0} doentes neste turno
                     </Text>
+                    {count > 0 && (
+                      <Text style={s.profHistorico}>↩ Já conhece ({count}×)</Text>
+                    )}
                   </View>
                   {selecionado && <Text style={s.check}>✓</Text>}
                 </TouchableOpacity>
@@ -270,5 +283,6 @@ const s = StyleSheet.create({
   profInfo: { flex: 1 },
   profNome: { fontSize: 14, fontWeight: '600', color: '#1e293b' },
   profAtribs: { fontSize: 12, color: '#94a3b8', marginTop: 1 },
+  profHistorico: { fontSize: 11, color: '#16a34a', fontWeight: '600', marginTop: 2 },
   check: { color: '#2563eb', fontWeight: '700', fontSize: 16 },
 });

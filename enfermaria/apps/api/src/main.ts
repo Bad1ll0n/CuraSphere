@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -7,11 +8,28 @@ import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'express';
-import { join, mkdirSync } from 'path';
+import { join } from 'path';
+import { mkdirSync } from 'fs';
 import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './app/common/exception.filter';
 
 const JWT_SECRET_PADRAO = 'substitui_por_um_secret_seguro_em_producao';
+
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV ?? 'development',
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.05 : 1.0,
+    beforeSend: (event) => {
+      // RGPD: não enviar corpo do request nem cookies
+      if (event.request) {
+        delete event.request.data;
+        delete event.request.cookies;
+      }
+      return event;
+    },
+  });
+}
 
 async function bootstrap() {
   const jwtSecret = process.env.JWT_SECRET;
@@ -53,6 +71,7 @@ async function bootstrap() {
         frameAncestors: ["'none'"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
+        reportUri: [`${process.env['API_URL'] ?? 'http://localhost:3333'}/csp-report`],
       },
     },
     crossOriginEmbedderPolicy: false,
@@ -63,6 +82,9 @@ async function bootstrap() {
   app.use((cookieParser as any)());
   app.use(json({ limit: '500kb' }));
   app.use(urlencoded({ limit: '500kb', extended: true }));
+  // Raw text for HL7 v2 messages (MLLP transport over HTTP)
+  const { text } = await import('express');
+  app.use('/v1/hl7/receive', text({ type: ['text/plain', 'application/hl7-v2'], limit: '100kb' }));
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
@@ -86,7 +108,7 @@ async function bootstrap() {
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Correlation-ID'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Correlation-ID', 'X-CSRF-Token'],
     exposedHeaders: ['X-Correlation-ID'],
   });
 

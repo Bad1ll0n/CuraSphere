@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, Request, Res, Header, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { DoenteService } from './doentes.service';
 import { PdfService } from '../common/pdf.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { EstadoDoente } from '../common/enums';
 import { AtualizarEstadoDto } from './dto/atualizar-estado.dto';
 import { AtualizarFichaPessoalDto } from './dto/atualizar-ficha-pessoal.dto';
 import { CriarProblemaDto } from './dto/criar-problema.dto';
@@ -50,6 +50,15 @@ export class DoenteController {
     );
   }
 
+  @Roles('direcao', 'chefe_turno', 'chefe_enfermeiros', 'qualidade')
+  @Header('Content-Type', 'text/csv; charset=utf-8')
+  @Header('Content-Disposition', 'attachment; filename="doentes.csv"')
+  @Get('export')
+  async exportarCsv(@Res() res: Response) {
+    const csv = await this.doenteService.exportarCsv();
+    res.send(csv);
+  }
+
   @Roles('medico', 'enfermeiro', 'administrativo', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
   @Get(':id')
   async buscarPorId(@Param('id') id: string, @Request() req: any) {
@@ -76,20 +85,20 @@ export class DoenteController {
     @Body() dto: RegistroRapidoDto,
     @Request() req: any,
   ) {
-    return this.doenteService.registroRapido(dto, req.user.sub);
+    return this.doenteService.registroRapido(dto as any, req.user.sub);
   }
 
   @Roles('administrativo', 'enfermeiro')
   @Post('admitir')
   admitir(@Body() dto: AdmitirDoenteDto, @Request() req: any) {
-    return this.doenteService.admitir({ ...dto, administrativoAdmissaoId: req.user.sub });
+    return this.doenteService.admitir({ ...dto, dataNascimento: new Date(dto.dataNascimento), dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined, administrativoAdmissaoId: req.user.sub } as any);
   }
 
   @Roles('medico', 'enfermeiro', 'administrativo')
   @Patch(':id')
   async editar(@Param('id') id: string, @Body() dto: EditarDoenteDto, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
-    return this.doenteService.editar(id, dto);
+    return this.doenteService.editar(id, { ...dto, dataAltaPrevista: dto.dataAltaPrevista ? new Date(dto.dataAltaPrevista) : undefined } as any);
   }
 
   @Roles('enfermeiro', 'medico')
@@ -181,6 +190,16 @@ export class DoenteController {
     res.send(buffer);
   }
 
+  @Roles('medico', 'chefe_enfermeiros', 'direcao')
+  @Get(':id/carta-alta/pdf')
+  async pdfCartaAlta(@Param('id') doenteId: string, @Request() req: any, @Res() res: Response) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    const safeId = doenteId.replace(/[^a-zA-Z0-9_-]/g, '');
+    const buffer = await this.pdfService.gerarCartaAltaPdf(doenteId);
+    res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="carta-alta-${safeId}.pdf"` });
+    res.send(buffer);
+  }
+
   @Roles('medico', 'enfermeiro')
   @Post(':id/tarefa')
   async criarTarefa(
@@ -189,7 +208,13 @@ export class DoenteController {
     @Request() req: any,
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
-    return this.doenteService.criarTarefa(doenteId, req.user.sub, dto);
+    return this.doenteService.criarTarefa(doenteId, req.user.sub, dto as any);
+  }
+
+  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  @Get('risco-clinico')
+  listarRiscoClinoco() {
+    return this.doenteService.listarRiscoClinoco();
   }
 
   @Roles('medico', 'enfermeiro', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
@@ -255,5 +280,29 @@ export class DoenteController {
   ) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.doenteService.atualizarProblema(doenteId, problemaId, dto);
+  }
+
+  @Get(':id/followups')
+  @Roles('medico', 'enfermeiro', 'administrativo')
+  async listarFollowUps(@Param('id') id: string, @Request() req: any) {
+    await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, id);
+    return this.doenteService.listarFollowUps(id);
+  }
+
+  @Patch('followup/:followUpId/concluir')
+  @Roles('medico', 'enfermeiro')
+  async concluirFollowUp(@Param('followUpId') followUpId: string, @Request() req: any) {
+    return this.doenteService.concluirFollowUp(followUpId, req.user.sub);
+  }
+
+  @Patch(':id/foto')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros')
+  @UseInterceptors(FileInterceptor('foto'))
+  async uploadFoto(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Request() req: any,
+  ) {
+    return this.doenteService.uploadFoto(id, file, req.user.sub, req.user.role);
   }
 }

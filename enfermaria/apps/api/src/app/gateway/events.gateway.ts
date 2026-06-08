@@ -7,6 +7,7 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 interface JwtPayload {
   sub: string;
@@ -52,6 +53,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private clientRooms = new Map<string, string[]>();
   private clientUsers = new Map<string, string>(); // socketId → utilizadorId
+  private clientNames = new Map<string, string>(); // socketId → nome
+  private clientLocks = new Map<string, Array<{ notaId: string; doenteId: string }>>(); // socketId → nota locks held
   private lastPing = new Map<string, number>();     // socketId → last ping timestamp
   private lastPassagem = new Map<string, number>(); // socketId → last passagem timestamp
 
@@ -59,6 +62,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
     private readonly prisma: PrismaService,
+    private readonly redis: RedisService,
   ) {}
 
   async handleConnection(client: Socket) {
@@ -77,6 +81,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       for (const room of rooms) client.join(room);
       this.clientRooms.set(client.id, rooms);
       this.clientUsers.set(client.id, payload.sub);
+      this.clientNames.set(client.id, payload.nome ?? 'Utilizador');
 
       // Registar presença online
       await this.prisma.presencaOnline.upsert({
@@ -90,6 +95,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(client: Socket) {
+    // Release any nota locks held by this client
+    for (const { notaId, doenteId } of this.clientLocks.get(client.id) ?? []) {
+      await this.redis.del(`nota:lock:${notaId}`);
+      this.server.to(`doente:${doenteId}`).emit('nota:unlock', { notaId });
+    }
+    this.clientLocks.delete(client.id);
+    this.clientNames.delete(client.id);
+
     const utilizadorId = this.clientUsers.get(client.id);
     this.clientRooms.delete(client.id);
     this.clientUsers.delete(client.id);
@@ -146,6 +159,54 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       aceitoPor: utilizadorId,
       ts: Date.now(),
     });
+  }
+
+  // ── Colaboração em tempo real nas notas clínicas ────────────────────────────
+
+  @SubscribeMessage('nota:join-doente')
+  handleNotaJoinDoente(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { doenteId: string },
+  ) {
+    if (!data?.doenteId) return;
+    client.join(`doente:${data.doenteId}`);
+  }
+
+  @SubscribeMessage('nota:edit-start')
+  async handleNotaEditStart(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { notaId: string; doenteId: string },
+  ) {
+    if (!data?.notaId || !data?.doenteId) return;
+    const userId = this.clientUsers.get(client.id);
+    const nome = this.clientNames.get(client.id) ?? 'Utilizador';
+    if (!userId) return;
+
+    const existing = await this.redis.get<{ userId: string; nome: string }>(`nota:lock:${data.notaId}`);
+    if (existing && existing.userId !== userId) {
+      client.emit('nota:lock-denied', { notaId: data.notaId, editadoPor: existing.nome });
+      return;
+    }
+
+    await this.redis.set(`nota:lock:${data.notaId}`, { userId, nome }, 300);
+    const locks = this.clientLocks.get(client.id) ?? [];
+    if (!locks.find(l => l.notaId === data.notaId)) {
+      locks.push({ notaId: data.notaId, doenteId: data.doenteId });
+      this.clientLocks.set(client.id, locks);
+    }
+    this.server.to(`doente:${data.doenteId}`).emit('nota:lock', { notaId: data.notaId, nome });
+  }
+
+  @SubscribeMessage('nota:edit-stop')
+  async handleNotaEditStop(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { notaId: string; doenteId: string },
+  ) {
+    if (!data?.notaId || !data?.doenteId) return;
+    await this.redis.del(`nota:lock:${data.notaId}`);
+    const remaining = (this.clientLocks.get(client.id) ?? []).filter(l => l.notaId !== data.notaId);
+    this.clientLocks.set(client.id, remaining);
+    this.server.to(`doente:${data.doenteId}`).emit('nota:unlock', { notaId: data.notaId });
   }
 
   // ── Verificar se utilizador está online ─────────────────────────────────────

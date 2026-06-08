@@ -26,6 +26,7 @@ export function ModalConfiguracoes({ onClose, onAlterarPassword }: Props) {
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{ backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      onKeyDown={e => { if (e.key === 'Escape') onClose(); }}
     >
       <div role="dialog" aria-modal="true" aria-labelledby="modal-config-titulo"
         className="bg-white rounded-2xl shadow-2xl w-full" style={{ maxWidth: '380px', padding: '28px', margin: '0 16px' }}>

@@ -16,18 +16,18 @@ export class PreNotificacaoDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(500)
-  queixaPrincipal: string;
+  queixaPrincipal!: string;
 
   @ApiProperty({ enum: ['verde', 'amarelo', 'laranja', 'vermelho', 'azul'] })
   @IsIn(['verde', 'amarelo', 'laranja', 'vermelho', 'azul'])
-  triagem: string;
+  triagem!: string;
 
   @ApiProperty({ minimum: 1, maximum: 120 })
   @Type(() => Number)
   @IsNumber()
   @Min(1)
   @Max(120)
-  etaMinutos: number;
+  etaMinutos!: number;
 
   @ApiPropertyOptional()
   @IsOptional()

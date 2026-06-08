@@ -16,9 +16,11 @@ WORKDIR /workspace
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# URL pública da API (substituída no build pelo docker-compose)
+# Variáveis públicas substituídas no build pelo docker-compose
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 ENV NODE_ENV=production
 
 COPY --from=deps /workspace/node_modules ./node_modules

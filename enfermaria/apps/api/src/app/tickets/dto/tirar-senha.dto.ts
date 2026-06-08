@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsIn, MaxLength, Matches } from 'class-validator';
+import { IsString, IsOptional, IsIn, MaxLength, Matches } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 const TIPOS_SENHA = ['consulta', 'urgencia', 'admissao', 'farmacia', 'administrativo', 'exames'];

@@ -1,12 +1,14 @@
 import {
   Controller, Get, Post, Patch, Param, Body, Query,
-  UseGuards, Request, Res,
+  UseGuards, Request, Res, Sse,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Observable } from 'rxjs';
+import type { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { AiClinicoService, EpisodioTriagem, DoenteTurno } from './ai-clinico.service';
+import { AiClinicoService } from './ai-clinico.service';
+import type { EpisodioTriagem, DoenteTurno } from './ai-clinico.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('ai-clinico')
@@ -31,6 +33,12 @@ export class AiClinicoController {
     return this.service.sumarizarTurnoServico(body.servico, req.user.id);
   }
 
+  @Post('nlq')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno', 'direcao')
+  executarNLQ(@Body() body: { query: string }, @Request() req: any) {
+    return this.service.executarNLQ(body.query, req.user.id);
+  }
+
   // Relatório de auditoria IA (antes de /:doenteId para evitar conflito de rota)
   @Get('relatorio-auditoria')
   @Roles('direcao', 'it_admin', 'chefe_enfermeiros')
@@ -44,6 +52,12 @@ export class AiClinicoController {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename="auditoria-ia.csv"');
     res.send(csv);
+  }
+
+  @Post(':doenteId/readmissao')
+  @Roles('medico', 'chefe_enfermeiros', 'administrativo', 'chefe_turno')
+  calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {
+    return this.service.calcularRiscoReadmissao(doenteId);
   }
 
   @Get(':doenteId/protocolo')
@@ -67,9 +81,32 @@ export class AiClinicoController {
     return this.service.registarFeedback(id, body.aceite, body.overrideMotivo);
   }
 
+  @Sse(':doenteId/stream')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
+  analisarStream(@Param('doenteId') doenteId: string, @Request() req: any): Observable<MessageEvent> {
+    return this.service.analisarStream(doenteId, req.user.role, req.user.id) as unknown as Observable<MessageEvent>;
+  }
+
   @Get(':doenteId')
   @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'chefe_turno')
   analisar(@Param('doenteId') doenteId: string, @Request() req: any) {
     return this.service.analisar(doenteId, req.user.role, req.user.id);
+  }
+
+  @Post(':doenteId/diagnostico-diferencial')
+  @Roles('medico', 'chefe_enfermeiros', 'chefe_turno')
+  diagnosticoDiferencial(
+    @Param('doenteId') doenteId: string,
+    @Body('sintomas') sintomas: string,
+    @Request() req: any,
+  ) {
+    return this.service.diagnosticoDiferencial(doenteId, sintomas, req.user.sub);
+  }
+
+  @Post(':doenteId/carta-alta')
+  @Roles('medico', 'enfermeiro', 'chefe_enfermeiros', 'direcao')
+  async gerarCartaAlta(@Param('doenteId') doenteId: string) {
+    await this.service.gerarCartaAlta(doenteId);
+    return { ok: true };
   }
 }

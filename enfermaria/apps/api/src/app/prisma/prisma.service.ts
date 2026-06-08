@@ -1,5 +1,6 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
+import { aplicarEncriptacaoPrisma } from './encryption.middleware';
 
 const SLOW_QUERY_MS = 500;
 
@@ -14,6 +15,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         this.logger.warn(`${e.duration}ms — ${e.query.slice(0, 200)}`);
       }
     });
+    aplicarEncriptacaoPrisma(this);
   }
 
   async onModuleInit() {

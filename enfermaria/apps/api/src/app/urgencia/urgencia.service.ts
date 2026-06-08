@@ -331,7 +331,7 @@ export class UrgenciaService implements OnModuleInit, OnModuleDestroy {
         this.emit('urgencia_sla_excedido', payload);
       }
     } catch (err) {
-      this.logger.warn('Erro na verificação de SLAs', err?.message ?? String(err));
+      this.logger.warn('Erro na verificação de SLAs', (err as any)?.message ?? String(err));
     }
   }
 

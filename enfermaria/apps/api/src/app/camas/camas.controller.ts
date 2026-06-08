@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Body, Param, UseGuards, Request, Sse } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, UseGuards, Sse } from '@nestjs/common';
 import { map } from 'rxjs';
 import { CamasService } from './camas.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';

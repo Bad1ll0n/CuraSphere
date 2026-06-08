@@ -42,7 +42,7 @@ export class ExamesController {
   @Patch(':id/resultado')
   @Roles('medico', 'farmaceutico', 'administrativo', 'enfermeiro', 'tecnico_saude')
   registarResultado(@Param('id') id: string, @Body() dto: RegistarResultadoDto, @Request() req: any) {
-    return this.service.registarResultado(id, dto, req.user.sub);
+    return this.service.registarResultado(id, { ...dto, dataResultado: dto.dataResultado ? new Date(dto.dataResultado) : undefined }, req.user.sub);
   }
 
   @Patch(':id/cancelar')

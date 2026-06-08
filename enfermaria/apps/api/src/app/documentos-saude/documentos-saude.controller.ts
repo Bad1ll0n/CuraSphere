@@ -25,7 +25,7 @@ async function validarMagicBytes(buffer: Buffer, mimetype: string): Promise<bool
     case 'image/png':       return buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47;
     case 'application/pdf': return buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46;
     case 'application/dicom': return buffer[128] === 0x44 && buffer[129] === 0x49 && buffer[130] === 0x43 && buffer[131] === 0x4D;
-    default: return true;
+    default: return false;
   }
 }
 

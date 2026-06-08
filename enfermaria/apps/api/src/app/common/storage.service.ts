@@ -108,4 +108,22 @@ export class StorageService {
     const filePath = path.join(this.localBase, key.replace(/\//g, '_'));
     return fs.promises.readFile(filePath).catch(() => null);
   }
+
+  async getBuffer(key: string): Promise<Buffer | null> {
+    if (this.provider === 'local') {
+      return this.readLocal(key);
+    }
+    try {
+      const { GetObjectCommand } = require('@aws-sdk/client-s3');
+      const resp = await this.s3Client.send(new GetObjectCommand({ Bucket: this.bucket, Key: key }));
+      const chunks: Buffer[] = [];
+      for await (const chunk of resp.Body as AsyncIterable<Uint8Array>) {
+        chunks.push(Buffer.from(chunk));
+      }
+      return Buffer.concat(chunks);
+    } catch (e: any) {
+      this.logger.warn(`getBuffer failed for key ${key}: ${e.message}`);
+      return null;
+    }
+  }
 }

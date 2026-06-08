@@ -1,6 +1,9 @@
 import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
+import { StorageService } from '../common/storage.service';
 import { EstadoDoente } from '../common/enums';
 
 @Injectable()
@@ -10,6 +13,8 @@ export class DoenteService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
+    private readonly aiClinico: AiClinicoService,
+    private readonly storage: StorageService,
   ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
@@ -284,7 +289,80 @@ export class DoenteService {
     }
 
     await this.prisma.$transaction(ops);
+
+    // Agendar follow-ups (fire-and-forget)
+    this.agendarFollowUps(id, doente.nome).catch((err) =>
+      this.logger.warn(`Follow-up scheduling failed: ${err?.message}`),
+    );
+
     return { mensagem: 'Alta registada com sucesso' };
+  }
+
+  private async agendarFollowUps(doenteId: string, doenteNome: string) {
+    const medico = await this.prisma.utilizador.findFirst({
+      where: { role: 'medico', ativo: true },
+      orderBy: { criadoEm: 'asc' },
+    });
+    if (!medico) return;
+
+    const agora = new Date();
+    await this.prisma.followUpAgendado.createMany({
+      data: [
+        { doenteId, tipo: '7_dias', dataAgendada: new Date(agora.getTime() + 7 * 86_400_000), responsavelId: medico.id },
+        { doenteId, tipo: '30_dias', dataAgendada: new Date(agora.getTime() + 30 * 86_400_000), responsavelId: medico.id },
+      ],
+    });
+    await this.notificacoes.enviarParaUtilizador(
+      medico.id,
+      `Follow-up agendado: ${doenteNome}`,
+      `Doente teve alta. Follow-ups agendados para 7 e 30 dias.`,
+    );
+  }
+
+  async uploadFoto(id: string, file: Express.Multer.File, utilizadorId: string, role: string) {
+    await this.assertAcessoDoente(utilizadorId, role, id);
+    const { key } = await this.storage.upload(
+      file.buffer,
+      `doentes/${id}/foto_${Date.now()}.jpg`,
+      file.mimetype,
+    );
+    const fotoUrl = await this.storage.getSignedUrl(key, 86400 * 365);
+    return this.prisma.doente.update({ where: { id }, data: { fotoUrl } });
+  }
+
+  async listarFollowUps(doenteId: string) {
+    return this.prisma.followUpAgendado.findMany({
+      where: { doenteId },
+      include: { responsavel: { select: { id: true, nome: true, role: true } } },
+      orderBy: { dataAgendada: 'asc' },
+    });
+  }
+
+  async concluirFollowUp(followUpId: string, utilizadorId: string) {
+    const fu = await this.prisma.followUpAgendado.findUnique({ where: { id: followUpId } });
+    if (!fu) throw new NotFoundException('Follow-up não encontrado');
+    return this.prisma.followUpAgendado.update({
+      where: { id: followUpId },
+      data: { concluido: true },
+    });
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_8AM)
+  async lembrarFollowUps(): Promise<void> {
+    this.logger.log('Follow-up: verificar lembretes diários');
+    const amanha = new Date(Date.now() + 86_400_000);
+    const pendentes = await this.prisma.followUpAgendado.findMany({
+      where: { concluido: false, dataAgendada: { lte: amanha } },
+      include: { doente: { select: { nome: true } } },
+    });
+    for (const fu of pendentes) {
+      await this.notificacoes.enviarParaUtilizador(
+        fu.responsavelId,
+        `⏰ Follow-up: ${fu.doente.nome}`,
+        `${fu.tipo === '7_dias' ? '7 dias' : '30 dias'} após alta — contactar doente`,
+      ).catch(() => {});
+    }
+    this.logger.log(`Follow-up: ${pendentes.length} lembretes enviados`);
   }
 
   async adicionarNota(doenteId: string, autorId: string, texto: string) {
@@ -498,6 +576,13 @@ export class DoenteService {
       }
 
       return sumario;
+    }).then((sumario) => {
+      // Fire-and-forget: gerar carta de alta e calcular risco de readmissão em background
+      this.aiClinico.gerarCartaAlta(doenteId)
+        .catch(err => this.logger.warn('gerarCartaAlta falhou', (err as any)?.message));
+      this.aiClinico.calcularRiscoReadmissao(doenteId)
+        .catch(err => this.logger.warn('calcularRiscoReadmissao falhou', (err as any)?.message));
+      return sumario;
     });
   }
 
@@ -513,9 +598,9 @@ export class DoenteService {
       where: { id: doenteId },
       select: {
         id: true, nome: true, dataNascimento: true, dataAdmissao: true, dataAlta: true,
-        diagnosticoPrincipal: true, servico: true, estado: true,
+        diagnosticoPrincipal: true, estado: true,
         ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
-        cama: { select: { numero: true, quarto: true } },
+        cama: { select: { numero: true } },
       },
     });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
@@ -535,7 +620,7 @@ export class DoenteService {
         where: { doenteId },
         orderBy: { criadaEm: 'desc' },
         take: 5,
-        select: { criadaEm: true, tipo: true, texto: true, autor: { select: { nome: true, role: true } } },
+        select: { criadaEm: true, subjetivo: true, avaliacao: true, plano: true, autor: { select: { nome: true, role: true } } },
       }).catch(() => []),
       this.prisma.exame.findMany({
         where: { doenteId },
@@ -568,7 +653,7 @@ export class DoenteService {
       `Nome: ${doente.nome}${idade ? ` (${idade} anos)` : ''}`,
       doente.ficheiroPessoal?.numeroSNS ? `SNS: ${doente.ficheiroPessoal.numeroSNS}` : '',
       `Internamento: ${fmt(doente.dataAdmissao)} → ${doente.dataAlta ? fmt(doente.dataAlta) : 'Em curso'}`,
-      doente.cama ? `Cama: ${doente.cama.numero}${doente.cama.quarto ? ` (${doente.cama.quarto})` : ''}` : '',
+      doente.cama ? `Cama: ${doente.cama.numero}` : '',
     ].filter(Boolean).join('\n'));
 
     // Motivo
@@ -672,6 +757,37 @@ export class DoenteService {
       }),
     ]);
     return { total, pagina: page, totalPaginas: Math.ceil(total / limit), doentes };
+  }
+
+  async listarRiscoClinoco() {
+    const doentes = await this.prisma.doente.findMany({
+      where: { ativo: true, estadoRegisto: 'internado' },
+      select: {
+        id: true, nome: true, estado: true, diagnosticoPrincipal: true,
+        dataAdmissao: true, dataAltaPrevista: true,
+        cama: { select: { numero: true, quarto: true, servico: true } },
+        sinaisVitais: {
+          orderBy: { data: 'desc' },
+          take: 1,
+          select: { news2: true, data: true },
+        },
+      },
+      orderBy: { dataAdmissao: 'desc' },
+    });
+
+    const hoje = new Date().toISOString().split('T')[0];
+    return doentes.map(d => ({
+      id: d.id,
+      nome: d.nome,
+      estado: d.estado,
+      diagnosticoPrincipal: d.diagnosticoPrincipal,
+      dataAdmissao: d.dataAdmissao,
+      dataAltaPrevista: d.dataAltaPrevista,
+      cama: d.cama,
+      news2: d.sinaisVitais[0]?.news2 ?? null,
+      ultimoSinalEm: d.sinaisVitais[0]?.data ?? null,
+      altaPrevistHoje: d.dataAltaPrevista ? d.dataAltaPrevista.toISOString().split('T')[0] === hoje : false,
+    }));
   }
 
   async listarIsolados() {
@@ -903,7 +1019,7 @@ export class DoenteService {
         where: { doenteId },
         orderBy: { criadaEm: 'desc' },
         take: 20,
-        select: { id: true, criadaEm: true, tipo: true, texto: true, autor: { select: { nome: true, role: true } } },
+        select: { id: true, criadaEm: true, subjetivo: true, avaliacao: true, plano: true, autor: { select: { nome: true, role: true } } },
       }).catch(() => []),
       this.prisma.tarefa.findMany({
         where: { doenteId },
@@ -962,5 +1078,36 @@ export class DoenteService {
 
     eventos.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
     return { doente: { id: doente.id, nome: doente.nome }, total: eventos.length, eventos };
+  }
+
+  async exportarCsv(): Promise<string> {
+    const doentes = await this.prisma.doente.findMany({
+      where: { ativo: true },
+      include: { cama: true },
+      orderBy: { dataAdmissao: 'asc' },
+    });
+
+    const escapeCsv = (v: string | null | undefined) => {
+      const s = String(v ?? '');
+      return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+
+    const header = 'Nome,NIF,SNS,Diagnóstico,Estado,Serviço,Cama,Data Admissão';
+    const rows = doentes.map((d: any) =>
+      [
+        d.nome,
+        d.nif ?? '',
+        d.sns ?? '',
+        d.diagnosticoPrincipal ?? '',
+        d.estado ?? '',
+        d.cama?.servico ?? '',
+        d.cama?.numero ?? '',
+        d.dataAdmissao ? new Date(d.dataAdmissao).toLocaleDateString('pt-PT') : '',
+      ]
+        .map(escapeCsv)
+        .join(','),
+    );
+
+    return [header, ...rows].join('\n');
   }
 }

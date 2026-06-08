@@ -139,6 +139,18 @@ export class AtribuicoesService {
     });
   }
 
+  // Conta pares (utilizadorId, doenteId) em turnos anteriores ao turnoId dado
+  async historicoPares(turnoId: string): Promise<Record<string, number>> {
+    const pares = await this.prisma.atribuicaoHorarioTurno.groupBy({
+      by: ['utilizadorId', 'doenteId'],
+      where: { horarioTurnoId: { not: turnoId } },
+      _count: { id: true },
+    });
+    return Object.fromEntries(
+      pares.map(p => [`${p.utilizadorId}|${p.doenteId}`, p._count.id]),
+    );
+  }
+
   // Lista turnos do dia (para o chefe escolher qual gerir)
   async turnosDoDia(data?: string) {
     const diaStr = data ?? new Date().toISOString().split('T')[0];

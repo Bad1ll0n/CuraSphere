@@ -7,6 +7,25 @@ const api = axios.create({
   withCredentials: true,
 });
 
+let csrfToken: string | null = null;
+
+export async function initCsrf(): Promise<void> {
+  if (csrfToken) return;
+  try {
+    const r = await axios.get(`${API_BASE}/csrf-token`, { withCredentials: true });
+    csrfToken = r.data.token as string;
+  } catch { /* non-critical — server may not require CSRF in dev */ }
+}
+
+const STATEFUL_METHODS = new Set(['post', 'put', 'patch', 'delete']);
+
+api.interceptors.request.use((config) => {
+  if (STATEFUL_METHODS.has(config.method ?? '') && csrfToken) {
+    config.headers['X-CSRF-Token'] = csrfToken;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
   (res) => res,
   async (err) => {

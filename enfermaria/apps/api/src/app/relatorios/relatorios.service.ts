@@ -120,13 +120,13 @@ export class RelatoriosService {
 
   async urgencia(inicio: Date, fim: Date) {
     const episodios = await this.prisma.episodioUrgencia.findMany({
-      where: { criadoEm: { gte: inicio, lte: fim } },
+      where: { dataEntrada: { gte: inicio, lte: fim } },
       select: {
         id: true,
-        motivoEntrada: true,
+        queixaPrincipal: true,
         triagem: true,
-        criadoEm: true,
-        estado: true,
+        dataEntrada: true,
+        estadoEpisodio: true,
       },
     });
 

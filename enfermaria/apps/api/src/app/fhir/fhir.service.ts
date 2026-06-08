@@ -119,11 +119,12 @@ export class FhirService {
       include: {
         medicacoes: { where: { ativo: true }, select: { id: true, nome: true, dose: true, via: true, frequencia: true, iniciadoEm: true } },
         sinaisVitais: { orderBy: { data: 'desc' }, take: 10, select: { id: true, data: true, pulso: true, pressaoSistolica: true, pressaoDiastolica: true, temperatura: true, saturacaoO2: true, frequenciaRespiratoria: true } },
-        alergias: { select: { id: true, substancia: true, reacao: true, gravidade: true } },
-        problemas: { where: { ativo: true }, select: { id: true, descricao: true, tipo: true } },
+        alergias: { select: { id: true, alergenio: true, notas: true, severidade: true } },
+        problemas: { where: { estado: 'ativo' }, select: { id: true, descricao: true, tipo: true } },
       },
     });
     if (!doente) throw new NotFoundException(`Doente (ID ${doenteId}) não encontrado`);
+    const doenteAny = doente as any;
 
     const base = `urn:curasp:${doenteId}`;
     const agora = new Date().toISOString();
@@ -136,7 +137,7 @@ export class FhirService {
       birthDate: doente.dataNascimento ? new Date(doente.dataNascimento).toISOString().split('T')[0] : undefined,
     };
 
-    const conditions = (doente.problemas ?? []).map(p => ({
+    const conditions = ((doenteAny.problemas ?? []) as any[]).map((p: any) => ({
       resourceType: 'Condition',
       id: p.id,
       subject: { reference: `Patient/${doente.id}` },
@@ -144,7 +145,7 @@ export class FhirService {
       category: [{ text: p.tipo }],
     }));
 
-    const medications = (doente.medicacoes ?? []).map(m => ({
+    const medications = ((doenteAny.medicacoes ?? []) as any[]).map((m: any) => ({
       resourceType: 'MedicationStatement',
       id: m.id,
       subject: { reference: `Patient/${doente.id}` },
@@ -154,8 +155,8 @@ export class FhirService {
       status: 'active',
     }));
 
-    const observations = (doente.sinaisVitais ?? []).flatMap(sv => {
-      const obs = [];
+    const observations = ((doenteAny.sinaisVitais ?? []) as any[]).flatMap((sv: any) => {
+      const obs: any[] = [];
       const addObs = (code: string, display: string, value: number | null, unit: string) => {
         if (value == null) return;
         obs.push({
@@ -176,12 +177,12 @@ export class FhirService {
       return obs;
     });
 
-    const allergies = (doente.alergias ?? []).map(a => ({
+    const allergies = ((doenteAny.alergias ?? []) as any[]).map((a: any) => ({
       resourceType: 'AllergyIntolerance',
       id: a.id,
       patient: { reference: `Patient/${doente.id}` },
-      code: { text: a.substancia },
-      reaction: [{ description: a.reacao, severity: a.gravidade }],
+      code: { text: a.alergenio },
+      reaction: [{ description: a.notas, severity: a.severidade }],
     }));
 
     const entries = [patient, ...conditions, ...medications, ...observations, ...allergies];
@@ -208,6 +209,8 @@ export class FhirService {
     tipo: string; titulo: string; dataDocumento: Date; formato: string;
     urlExterna?: string; mimeType: string; fhirResourceId?: string; origem?: string;
   }>> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { default: fetch } = await import('node-fetch');
     const url = `${sistema.endpoint}/DocumentReference?patient=${patientId}&_sort=-date&_count=50`;
 

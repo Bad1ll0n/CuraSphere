@@ -1,15 +1,31 @@
-import { Controller, Get, Post, Patch, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { AlertasService } from './alertas.service';
 import { DoenteService } from '../doentes/doentes.service';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('alertas')
 export class AlertasController {
   constructor(
     private readonly service: AlertasService,
     private readonly doenteService: DoenteService,
   ) {}
+
+  @Get()
+  @Roles('medico', 'chefe_turno', 'chefe_enfermeiros', 'direcao', 'qualidade')
+  listarGlobal(
+    @Query('tipo') tipo?: string,
+    @Query('lido') lido?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.service.listarGlobal({
+      tipo,
+      lido: lido === 'false' ? false : lido === 'true' ? true : undefined,
+      limit: limit ? Math.min(parseInt(limit, 10) || 50, 100) : 50,
+    });
+  }
 
   @Get(':doenteId')
   async listar(@Param('doenteId') doenteId: string, @Request() req: any) {

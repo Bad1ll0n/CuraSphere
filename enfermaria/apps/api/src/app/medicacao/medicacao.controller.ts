@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Patch, Body, Param, Query, Res, UseGuards, Request } from '@nestjs/common';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { MedicacaoService } from './medicacao.service';
 import { DoenteService } from '../doentes/doentes.service';
 import { PdfService } from '../common/pdf.service';
@@ -186,5 +186,18 @@ export class MedicacaoController {
   async listarInteracoesPorDoente(@Param('doenteId') doenteId: string, @Request() req: any) {
     await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
     return this.medicacaoService.listarInteracoesPorDoente(doenteId);
+  }
+
+  @Get('ajuste-renal')
+  @Roles('medico', 'farmaceutico', 'chefe_enfermeiros')
+  async ajusteRenal(
+    @Query('doenteId') doenteId: string,
+    @Query('medicamento') medicamento: string,
+    @Request() req: any,
+  ) {
+    if (doenteId) {
+      await this.doenteService.assertAcessoDoente(req.user.sub, req.user.role, doenteId);
+    }
+    return this.medicacaoService.calcularAjusteRenal(doenteId, medicamento);
   }
 }

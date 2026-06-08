@@ -1,0 +1,27 @@
+{
+  "name": "@org/web-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": ["@org/web"],
+    "targets": {
+      "e2e": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "pnpm playwright test",
+          "cwd": "apps/web-e2e"
+        }
+      },
+      "e2e-ci": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "pnpm playwright test --reporter=list",
+          "cwd": "apps/web-e2e"
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0"
+  }
+}

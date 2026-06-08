@@ -47,7 +47,7 @@ export class NotificacoesService {
   async enviarParaUtilizador(utilizadorId: string, titulo: string, corpo: string, data?: Record<string, any>): Promise<void> {
     // Persistir in-app
     await this.prisma.notificacaoInApp.create({
-      data: { utilizadorId, titulo, corpo, dadosExtra: data ?? null },
+      data: { utilizadorId, titulo, corpo, dadosExtra: data ?? undefined },
     }).catch((err) => this.logger.warn('Notificação falhou', err?.message ?? String(err)));
 
     // Push via Expo

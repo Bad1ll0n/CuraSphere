@@ -10,6 +10,7 @@ function news2Intervalo(score: number): { texto: string; cor: string } {
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
 import { HelpTooltip } from '@/components/help-tooltip';
+import { FormField } from '@/components/form-field';
 
 interface Props {
   doenteId: string;
@@ -115,9 +116,13 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
   const [svPeso, setSvPeso] = useState('');
   const [svNotas, setSvNotas] = useState('');
   const [svAvpu, setSvAvpu] = useState('A');
+  const [svO2Suplementar, setSvO2Suplementar] = useState(false);
+  const [svErrors, setSvErrors] = useState<Record<string, string>>({});
   const [salvando, setSalvando] = useState(false);
   const [baseline, setBaseline] = useState<any>(null);
   const [baselineAberto, setBaselineAberto] = useState(false);
+  const [scores, setScores] = useState<any>(null);
+  const [news2Slope, setNews2Slope] = useState<number | null>(null);
 
   const carregarSinaisVitais = () =>
     api.get(`/sinais-vitais/${doenteId}`)
@@ -132,9 +137,37 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
     api.get(`/baselines/${doenteId}`)
       .then((r) => setBaseline(r.data))
       .catch(() => setBaseline(null));
+    api.get(`/sinais-vitais/${doenteId}/scores`)
+      .then((r) => setScores(r.data))
+      .catch(() => setScores(null));
+    api.get(`/sinais-vitais/${doenteId}/tendencia`)
+      .then((r) => setNews2Slope(r.data?.news2Slope ?? null))
+      .catch(() => setNews2Slope(null));
   }, [doenteId]);
 
+  const svItens = [
+    { key: 'pressaoS', label: 'TA Sistólica (mmHg)', val: svPressaoS, set: setSvPressaoS, ph: '120', min: 50, max: 250 },
+    { key: 'pressaoD', label: 'TA Diastólica (mmHg)', val: svPressaoD, set: setSvPressaoD, ph: '80', min: 30, max: 150 },
+    { key: 'pulso', label: 'Pulso (bpm)', val: svPulso, set: setSvPulso, ph: '72', min: 20, max: 300 },
+    { key: 'temp', label: 'Temperatura (ºC)', val: svTemp, set: setSvTemp, ph: '36.5', min: 30, max: 45 },
+    { key: 'spO2', label: 'SpO₂ (%)', val: svSpO2, set: setSvSpO2, ph: '98', min: 50, max: 100 },
+    { key: 'freqResp', label: 'Freq. Resp. (rpm)', val: svFreqResp, set: setSvFreqResp, ph: '16', min: 5, max: 60 },
+  ] as const;
+
+  const validarSV = (): boolean => {
+    const erros: Record<string, string> = {};
+    svItens.forEach(({ key, val, min, max }) => {
+      if (!val) return;
+      const n = Number(val);
+      if (isNaN(n)) erros[key] = 'Valor inválido';
+      else if (n < min || n > max) erros[key] = `Deve estar entre ${min} e ${max}`;
+    });
+    setSvErrors(erros);
+    return Object.keys(erros).length === 0;
+  };
+
   const submeterSinalVital = async () => {
+    if (!validarSV()) return;
     setSalvando(true);
     try {
       await api.post(`/sinais-vitais/${doenteId}`, {
@@ -147,6 +180,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
         peso:                   svPeso      ? parseFloat(svPeso)    : undefined,
         notas: svNotas || undefined,
         avpu: svAvpu || undefined,
+        o2Suplementar: svO2Suplementar || undefined,
       });
       toast.success('Sinais vitais registados');
       setModalSinalVital(false);
@@ -168,7 +202,7 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
           <span className="text-sm font-semibold text-slate-700">Sinais Vitais</span>
           <HelpTooltip chave="news2" />
           {['enfermeiro', 'auxiliar', 'medico'].includes(utilizador?.role ?? '') && (
-            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setModalSinalVital(true); }} />
+            <BtnAdd label="Registar sinais vitais" onClick={() => { setSvPressaoS(''); setSvPressaoD(''); setSvPulso(''); setSvTemp(''); setSvSpO2(''); setSvFreqResp(''); setSvPeso(''); setSvNotas(''); setSvAvpu('A'); setSvO2Suplementar(false); setModalSinalVital(true); }} />
           )}
         </div>
         {sinaisVitais.length === 0 ? (
@@ -207,13 +241,99 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
             {sinaisVitais[0]?.news2 != null && (
               <div className={`rounded-xl flex items-start gap-3 text-sm font-medium ${sinaisVitais[0].news2 >= 7 ? 'bg-red-50 border border-red-200 text-red-800' : sinaisVitais[0].news2 >= 5 ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-green-50 border border-green-200 text-green-800'}`} style={{ padding: '12px 16px', marginBottom: '12px' }}>
                 <span className={`text-xl font-black mt-0.5 ${sinaisVitais[0].news2 >= 7 ? 'text-red-600' : sinaisVitais[0].news2 >= 5 ? 'text-amber-600' : 'text-green-600'}`}>{sinaisVitais[0].news2}</span>
-                <div>
-                  <p className="font-semibold" style={{ margin: 0 }}>
-                    NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : sinaisVitais[0].news2 >= 5 ? 'ALTO' : 'BAIXO'} — Score {sinaisVitais[0].news2}
-                  </p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="font-semibold" style={{ margin: 0 }}>
+                      NEWS2 {sinaisVitais[0].news2 >= 7 ? 'CRÍTICO' : sinaisVitais[0].news2 >= 5 ? 'ALTO' : 'BAIXO'} — Score {sinaisVitais[0].news2}
+                    </p>
+                    {news2Slope !== null && (
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        news2Slope >= 0.4 ? 'bg-red-100 text-red-700' :
+                        news2Slope >= 0.1 ? 'bg-amber-100 text-amber-700' :
+                        news2Slope <= -0.1 ? 'bg-green-100 text-green-700' :
+                        'bg-slate-100 text-slate-600'
+                      }`}>
+                        {news2Slope >= 0.1 ? `↑ +${news2Slope.toFixed(1)}/h` : news2Slope <= -0.1 ? `↓ ${news2Slope.toFixed(1)}/h` : '→ estável'}
+                      </span>
+                    )}
+                  </div>
                   <p className={`text-xs font-medium ${news2Intervalo(sinaisVitais[0].news2).cor}`} style={{ margin: 0, marginTop: '2px' }}>
                     {news2Intervalo(sinaisVitais[0].news2).texto}
                   </p>
+                </div>
+              </div>
+            )}
+
+            {/* Scores de Risco Clínico: qSOFA + CURB-65 */}
+            {scores && (scores.qSOFA || scores.curb65) && (
+              <div className="rounded-xl border border-slate-100 bg-slate-50" style={{ padding: '12px 16px', marginBottom: '12px' }}>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Scores de Risco</p>
+                <div className="flex flex-wrap gap-3">
+                  {scores.qSOFA && (
+                    <div className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${scores.qSOFA.risco === 'alto' ? 'bg-red-50 border-red-200' : scores.qSOFA.risco === 'moderado' ? 'bg-amber-50 border-amber-200' : 'bg-green-50 border-green-200'}`}>
+                      <div>
+                        <p className="text-xs font-bold text-slate-600">qSOFA</p>
+                        <span className={`text-lg font-black leading-none ${scores.qSOFA.risco === 'alto' ? 'text-red-600' : scores.qSOFA.risco === 'moderado' ? 'text-amber-600' : 'text-green-600'}`}>
+                          {scores.qSOFA.score}/3
+                        </span>
+                      </div>
+                      <div>
+                        <p className={`text-xs font-semibold ${scores.qSOFA.risco === 'alto' ? 'text-red-700' : scores.qSOFA.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
+                          {scores.qSOFA.risco === 'alto' ? '⚠ Suspeita sépsis' : scores.qSOFA.risco === 'moderado' ? 'Monitorizar' : 'Baixo risco'}
+                        </p>
+                        <p className="text-xs text-slate-400">FR · PAS · Consciência</p>
+                      </div>
+                    </div>
+                  )}
+                  {scores.curb65 && (
+                    <div className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${scores.curb65.risco === 'alto' ? 'bg-red-50 border-red-200' : scores.curb65.risco === 'moderado' ? 'bg-amber-50 border-amber-200' : 'bg-green-50 border-green-200'}`}>
+                      <div>
+                        <p className="text-xs font-bold text-slate-600">CURB-65</p>
+                        <span className={`text-lg font-black leading-none ${scores.curb65.risco === 'alto' ? 'text-red-600' : scores.curb65.risco === 'moderado' ? 'text-amber-600' : 'text-green-600'}`}>
+                          {scores.curb65.score}/4
+                        </span>
+                      </div>
+                      <div>
+                        <p className={`text-xs font-semibold ${scores.curb65.risco === 'alto' ? 'text-red-700' : scores.curb65.risco === 'moderado' ? 'text-amber-700' : 'text-green-700'}`}>
+                          {scores.curb65.risco === 'alto' ? 'Considerar UCI' : scores.curb65.risco === 'moderado' ? 'Internamento' : 'Ambulatório'}
+                        </p>
+                        <p className="text-xs text-slate-400">Pneumonia (sem Ureia)</p>
+                      </div>
+                    </div>
+                  )}
+                  {scores.sofa && (
+                    <div className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${
+                      scores.sofa.gravidade === 'muito_grave' ? 'bg-red-50 border-red-200' :
+                      scores.sofa.gravidade === 'grave' ? 'bg-orange-50 border-orange-200' :
+                      scores.sofa.gravidade === 'moderado' ? 'bg-amber-50 border-amber-200' :
+                      'bg-green-50 border-green-200'
+                    }`}>
+                      <div>
+                        <p className="text-xs font-bold text-slate-600">SOFA</p>
+                        <span className={`text-lg font-black leading-none ${
+                          scores.sofa.gravidade === 'muito_grave' ? 'text-red-600' :
+                          scores.sofa.gravidade === 'grave' ? 'text-orange-600' :
+                          scores.sofa.gravidade === 'moderado' ? 'text-amber-600' :
+                          'text-green-600'
+                        }`}>
+                          {scores.sofa.score}/24
+                        </span>
+                      </div>
+                      <div>
+                        <p className={`text-xs font-semibold ${
+                          scores.sofa.gravidade === 'muito_grave' ? 'text-red-700' :
+                          scores.sofa.gravidade === 'grave' ? 'text-orange-700' :
+                          scores.sofa.gravidade === 'moderado' ? 'text-amber-700' :
+                          'text-green-700'
+                        }`}>
+                          {scores.sofa.gravidade === 'muito_grave' ? '⚠ Muito grave' :
+                           scores.sofa.gravidade === 'grave' ? '⚠ Grave — UCI' :
+                           scores.sofa.gravidade === 'moderado' ? 'Moderado' : 'Leve'}
+                        </p>
+                        <p className="text-xs text-slate-400">{scores.sofa.componentesDisponiveis}/6 componentes</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -355,18 +475,12 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
       {modalSinalVital && (
         <Modal titulo="Registar Sinais Vitais" onClose={() => setModalSinalVital(false)}>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
-            {[
-              { label: 'TA Sistólica (mmHg)', val: svPressaoS, set: setSvPressaoS, ph: '120' },
-              { label: 'TA Diastólica (mmHg)', val: svPressaoD, set: setSvPressaoD, ph: '80' },
-              { label: 'Pulso (bpm)', val: svPulso, set: setSvPulso, ph: '72' },
-              { label: 'Temperatura (ºC)', val: svTemp, set: setSvTemp, ph: '36.5' },
-              { label: 'SpO₂ (%)', val: svSpO2, set: setSvSpO2, ph: '98' },
-              { label: 'Freq. Resp. (rpm)', val: svFreqResp, set: setSvFreqResp, ph: '16' },
-            ].map(({ label, val, set, ph }) => (
-              <div key={label}>
-                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>{label}</label>
-                <input type="number" value={val} onChange={(e) => set(e.target.value)} placeholder={ph} className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" style={{ padding: '8px 12px' }} />
-              </div>
+            {svItens.map(({ key, label, val, set, ph }) => (
+              <FormField key={key} label={label} error={svErrors[key]}>
+                <input type="number" value={val} onChange={(e) => { set(e.target.value); setSvErrors(prev => { const n = { ...prev }; delete n[key]; return n; }); }} placeholder={ph}
+                  className={`w-full border rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${svErrors[key] ? 'border-red-400' : 'border-slate-200'}`}
+                  style={{ padding: '8px 12px' }} />
+              </FormField>
             ))}
           </div>
           <div className="grid grid-cols-2 gap-3" style={{ marginBottom: '14px' }}>
@@ -383,6 +497,18 @@ export function SinaisVitaisPanel({ doenteId, utilizador }: Props) {
                 <option value="U">U — Unresponsive (Sem resposta)</option>
               </select>
             </div>
+          </div>
+          <div style={{ marginBottom: '14px' }}>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={svO2Suplementar}
+                onChange={(e) => setSvO2Suplementar(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-slate-700">O₂ Suplementar em uso</span>
+              <span className="text-xs text-slate-400">(+2 pts NEWS2)</span>
+            </label>
           </div>
           <div style={{ marginBottom: '14px' }}>
             <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '4px' }}>Notas</label>

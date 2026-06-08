@@ -1,0 +1,7 @@
+# Block accidental .env commits
+if git diff --cached --name-only | grep -qE '(^|/)\.env$'; then
+  echo "ERROR: .env cannot be committed — add secrets to .env.example instead"
+  exit 1
+fi
+
+pnpm test

@@ -60,7 +60,7 @@ export class QuiosqueController {
     amanha.setDate(amanha.getDate() + 1);
     return this.prisma.consulta.findMany({
       where: { doenteId, estado: 'agendada', dataHora: { gte: hoje, lt: amanha } },
-      include: { medico: { select: { nome: true, especialidade: true } } },
+      include: { medico: { select: { nome: true, subRole: true } } },
       orderBy: { dataHora: 'asc' },
     });
   }
@@ -74,7 +74,7 @@ export class QuiosqueController {
       where: { codigo: codigo.toUpperCase() },
       include: {
         doente: { select: { id: true, nome: true, numeroProcesso: true } },
-        medico: { select: { id: true, nome: true, especialidade: true } },
+        medico: { select: { id: true, nome: true, subRole: true } },
       },
     });
     if (!consulta) throw new NotFoundException('Marcação não encontrada');

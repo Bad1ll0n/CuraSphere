@@ -1,12 +1,15 @@
 import { Injectable, Logger, NotFoundException, ConflictException, BadRequestException, ForbiddenException } from '@nestjs/common';
-import { authenticator } from 'otplib';
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
+const { authenticator } = require('otplib') as any;
 import * as crypto from 'crypto';
+import Anthropic from '@anthropic-ai/sdk';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { RedisService } from '../redis/redis.service';
+import { StewardshipService } from '../stewardship/stewardship.service';
 import interacoesJson from './interacoes.json';
 
-interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
+export interface Interacao { med1: string; med2: string; severidade: string; descricao: string; }
 const INTERACOES: Interacao[] = interacoesJson as Interacao[];
 
 function parsearFrequenciaHoras(frequencia: string): number | null {
@@ -42,12 +45,43 @@ function verificarInteracao(nomeMed: string, medicacoesAtivas: string[]): Intera
 @Injectable()
 export class MedicacaoService {
   private readonly logger = new Logger(MedicacaoService.name);
+  private readonly anthropic = new Anthropic();
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificacoes: NotificacoesService,
     private readonly redis: RedisService,
+    private readonly stewardship: StewardshipService,
   ) {}
+
+  private async verificarInteracaoIA(novoNome: string, ativas: string[]): Promise<{ bloqueante: boolean; aviso: string | null }> {
+    if (ativas.length === 0) return { bloqueante: false, aviso: null };
+    try {
+      const msg = await this.anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 200,
+        temperature: 0.05 as any,
+        system: [{ type: 'text' as const, text: 'És um sistema de verificação de interações medicamentosas clínicas. Responde APENAS com JSON válido: { "interacao": boolean, "severidade": "nenhuma|minor|moderada|grave|contraindicada", "descricao": "string curta ou null" }. Sê conservador — só assinala interações clinicamente documentadas.', cache_control: { type: 'ephemeral' as const } }],
+        messages: [{ role: 'user', content: `Novo fármaco: ${novoNome}\nAtivos: ${ativas.join(', ')}` }],
+      });
+      const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
+      const r = JSON.parse(texto);
+      if (!r.interacao || r.severidade === 'nenhuma') return { bloqueante: false, aviso: null };
+      const aviso = `${(r.severidade as string).toUpperCase()}: ${r.descricao ?? 'Interação detectada'}`;
+      return { bloqueante: r.severidade === 'contraindicada', aviso };
+    } catch (err) {
+      this.logger.warn('IA interação falhou (fallback para JSON)', (err as any)?.message);
+      const jsonInteracoes = verificarInteracao(novoNome, ativas);
+      if (jsonInteracoes.length === 0) return { bloqueante: false, aviso: null };
+      const pior = jsonInteracoes.find((i) => i.severidade === 'contraindicada')
+        ?? jsonInteracoes.find((i) => i.severidade === 'grave')
+        ?? jsonInteracoes[0];
+      return {
+        bloqueante: pior.severidade === 'contraindicada',
+        aviso: `${pior.severidade.toUpperCase()}: ${pior.descricao}`,
+      };
+    }
+  }
 
   async listarPorDoente(doenteId: string) {
     return this.prisma.medicacao.findMany({
@@ -74,6 +108,16 @@ export class MedicacaoService {
     forcarApesarDeAlergia?: boolean;
     justificativaOverride?: string;
   }) {
+    // Verificação IA de interações antes da transação (não-bloqueante em caso de falha)
+    const ativasPreCheck = await this.prisma.medicacao.findMany({
+      where: { doenteId: data.doenteId, ativo: true, deletedAt: null },
+      select: { nome: true },
+    });
+    const iaCheck = await this.verificarInteracaoIA(data.nome, ativasPreCheck.map(m => m.nome));
+    if (iaCheck.bloqueante) {
+      throw new ConflictException(`INTERAÇÃO CONTRAINDICADA: ${iaCheck.aviso}`);
+    }
+
     return this.prisma.$transaction(async (tx) => {
       const doente = await tx.doente.findUnique({ where: { id: data.doenteId } });
       if (!doente) throw new NotFoundException(`Doente (ID ${data.doenteId}) não encontrado`);
@@ -109,7 +153,11 @@ export class MedicacaoService {
         include: { prescritoPor: { select: { id: true, nome: true } } },
       });
 
-      return { ...medicacao, avisoInteracoes: interacoesDetectadas };
+      // Registar em stewardship se for antibiótico (assíncrono, não bloqueia a transação)
+      this.stewardship.registarSeAntibiotico(data.doenteId, medicacao.id, data.nome)
+        .catch((err) => this.logger.warn(`Stewardship registo falhou: ${err?.message}`));
+
+      return { ...medicacao, avisoInteracoes: interacoesDetectadas, avisoIA: iaCheck.aviso };
     }, { isolationLevel: 'Serializable' });
   }
 
@@ -329,7 +377,7 @@ export class MedicacaoService {
 
     // Notificar os médicos do serviço do doente
     const medicos = await this.prisma.utilizador.findMany({
-      where: { role: 'medico', servico: doente.servico ?? undefined },
+      where: { role: 'medico' },
       select: { id: true },
     });
     for (const medico of medicos) {
@@ -349,10 +397,9 @@ export class MedicacaoService {
       where: {
         estadoValidacao: 'pendente_medico',
         ativo: false,
-        ...(servico ? { doente: { servico } } : {}),
       },
       include: {
-        doente: { select: { id: true, nome: true, servico: true, cama: { select: { numero: true, quarto: true } } } },
+        doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
         prescritoPor: { select: { id: true, nome: true, role: true } },
       },
       orderBy: { iniciadoEm: 'asc' },
@@ -458,7 +505,7 @@ export class MedicacaoService {
     if (fim === 24) horaFimDate.setDate(horaFimDate.getDate() + 1);
 
     const doentes = await this.prisma.doente.findMany({
-      where: { ativo: true, dataAlta: null, servico: servico as any },
+      where: { ativo: true, dataAlta: null },
       select: {
         id: true, nome: true,
         cama: { select: { numero: true } },
@@ -484,7 +531,7 @@ export class MedicacaoService {
       slotsMap.set(key, []);
     }
 
-    for (const doente of doentes) {
+    for (const doente of doentes as any[]) {
       for (const med of doente.medicacoes) {
         const intervaloH = parsearFrequenciaHoras(med.frequencia);
         if (!intervaloH) continue;
@@ -531,7 +578,7 @@ export class MedicacaoService {
 
   async listarPrescricoesAtivas(servico?: string) {
     return this.prisma.doente.findMany({
-      where: { ativo: true, dataAlta: null, ...(servico ? { servico: servico as any } : {}) },
+      where: { ativo: true, dataAlta: null },
       select: {
         id: true, nome: true,
         cama: { select: { numero: true, quarto: true } },
@@ -548,7 +595,7 @@ export class MedicacaoService {
           orderBy: { iniciadoEm: 'asc' },
         },
       },
-      orderBy: [{ servico: 'asc' }],
+      orderBy: [{ nome: 'asc' }],
     });
   }
 
@@ -626,5 +673,44 @@ export class MedicacaoService {
         frequencia: medicacao.frequencia,
       },
     };
+  }
+
+  async calcularAjusteRenal(doenteId: string, nomeMedicamento: string) {
+    const [creatinina, doente] = await Promise.all([
+      (this.prisma as any).resultadoAnalise?.findFirst({
+        where: { doenteId, parametro: { contains: 'Creatinina', mode: 'insensitive' } },
+        orderBy: { registadoEm: 'desc' },
+        select: { valor: true, unidade: true },
+      }).catch(() => null) ?? null,
+      this.prisma.doente.findUnique({
+        where: { id: doenteId },
+        select: { dataNascimento: true },
+      }),
+    ]);
+
+    if (!creatinina) {
+      return { gfr: null, aviso: 'Sem creatinina registada — ajuste manual necessário.' };
+    }
+
+    const cr = Number(creatinina.valor);
+    const idade = doente?.dataNascimento
+      ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 86_400_000))
+      : 65;
+
+    // CKD-EPI simplificado (sem sexo — equação masculina conservadora)
+    const gfr = Math.round(
+      141 * Math.pow(Math.min(cr / 0.9, 1), -0.411) * Math.pow(Math.max(cr / 0.9, 1), -1.209) * Math.pow(0.993, idade),
+    );
+
+    const msg = await this.anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 400,
+      system: 'És um farmacêutico clínico especialista em insuficiência renal. Responde apenas com JSON no formato: {"doseRecomendada":"...","intervalo":"...","classificacao":"normal|ligeira|moderada|grave|terminal","observacoes":"..."}',
+      messages: [{ role: 'user', content: `Medicamento: ${nomeMedicamento}\nGFR estimado (CKD-EPI): ${gfr} mL/min/1.73m²\nCreatinina sérica: ${cr} ${creatinina.unidade ?? 'mg/dL'}` }],
+    });
+
+    const texto = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
+    const ajuste = (() => { try { return JSON.parse(texto); } catch { return {}; } })();
+    return { gfr, creatinina: cr, unidadeCreatinina: creatinina.unidade ?? 'mg/dL', ...ajuste };
   }
 }

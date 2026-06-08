@@ -128,6 +128,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
   const [medFreq, setMedFreq] = useState('');
   const [erroModal, setErroModal] = useState('');
   const [salvando, setSalvando] = useState(false);
+  const [interacoes, setInteracoes] = useState<{ med1: string; med2: string; severidade: string; descricao: string }[]>([]);
+  const [justificativaInteracao, setJustificativaInteracao] = useState('');
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [ajusteRenal, setAjusteRenal] = useState<any | null>(null);
+  const [loadingAjusteRenal, setLoadingAjusteRenal] = useState(false);
 
   // Proposta state
   const [modalPropor, setModalPropor] = useState(false);
@@ -156,6 +161,11 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     onConfirmar: () => void;
   } | null>(null);
 
+  // Stewardship antibiótico
+  const [stewardship, setStewardship] = useState<any[]>([]);
+  const [sugestaoExpandida, setSugestaoExpandida] = useState<string | null>(null);
+  const [aprovandoStewardship, setAprovandoStewardship] = useState<string | null>(null);
+
   const carregarPropostas = useCallback(async () => {
     if (role !== 'medico' && role !== 'direcao') return;
     try {
@@ -166,13 +176,44 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
 
   useEffect(() => { carregarPropostas(); }, [carregarPropostas]);
 
+  useEffect(() => {
+    api.get(`/stewardship/${doenteId}`)
+      .then(r => setStewardship(r.data ?? []))
+      .catch(() => {});
+  }, [doenteId]);
+
+  useEffect(() => {
+    if (!modalMed || medNome.trim().length < 3) { setInteracoes([]); return; }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const { data } = await api.get(`/medicacao/interacoes?doenteId=${doenteId}&nome=${encodeURIComponent(medNome.trim())}`);
+        setInteracoes(data ?? []);
+      } catch {
+        setInteracoes([]);
+      }
+    }, 500);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [medNome, modalMed, doenteId]);
+
+  const temInteracaoGrave = interacoes.some(i => i.severidade === 'grave');
+
   const submeterMed = async () => {
     if (!medNome.trim() || !medDose.trim() || !medVia.trim() || !medFreq.trim()) return;
+    if (temInteracaoGrave && !justificativaInteracao.trim()) {
+      setErroModal('Interacção grave detectada — é obrigatório registar a justificação clínica.');
+      return;
+    }
     setSalvando(true); setErroModal('');
     try {
-      await api.post('/medicacao/prescrever', { doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq });
+      await api.post('/medicacao/prescrever', {
+        doenteId, nome: medNome, dose: medDose, via: medVia, frequencia: medFreq,
+        ...(temInteracaoGrave && justificativaInteracao ? { justificativaOverride: justificativaInteracao } : {}),
+      });
       toast.success('Prescrição guardada');
-      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); onRefresh();
+      setModalMed(false); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq('');
+      setInteracoes([]); setJustificativaInteracao('');
+      onRefresh();
     } catch (e: any) {
       setErroModal(e?.response?.data?.message ?? 'Erro ao prescrever medicação');
     } finally { setSalvando(false); }
@@ -243,6 +284,17 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
     finally { setLoadingHistoricoMed(false); }
   };
 
+  const aprovarDeescalacao = async (stewardshipId: string) => {
+    setAprovandoStewardship(stewardshipId);
+    try {
+      await api.patch(`/stewardship/${stewardshipId}/aprovar`);
+      toast.success('De-escalação aprovada');
+      setStewardship(prev => prev.map(s => s.id === stewardshipId ? { ...s, aprovadoPor: utilizador?.id } : s));
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao aprovar de-escalação');
+    } finally { setAprovandoStewardship(null); }
+  };
+
   return (
     <>
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ padding: '24px' }}>
@@ -276,7 +328,7 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>
-            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setModalMed(true); }} />}
+            {podePrescreveMed && <BtnAdd label="Prescrever medicação" onClick={() => { setErroModal(''); setMedNome(''); setMedDose(''); setMedVia(''); setMedFreq(''); setInteracoes([]); setJustificativaInteracao(''); setModalMed(true); }} />}
             {podeProporMed && (
               <button onClick={() => { setPropostaMedNome(''); setPropostaMedDose(''); setPropostaMedVia(''); setPropostaMedFreq(''); setPropostaObs(''); setModalPropor(true); }}
                 aria-label="Propor prescrição"
@@ -294,35 +346,77 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           </p>
         ) : (
           <div className="flex flex-col gap-3">
-            {medicacoes.map((m) => (
-              <div key={m.id} className="flex items-start justify-between bg-slate-50 rounded-xl" style={{ padding: '12px 14px' }}>
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
-                  <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
-                  {m.prescritoPor && (
-                    <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
+            {medicacoes.map((m) => {
+              const sw = stewardship.find(s => s.medicacaoId === m.id);
+              return (
+                <div key={m.id} className="bg-slate-50 rounded-xl overflow-hidden">
+                  <div className="flex items-start justify-between" style={{ padding: '12px 14px' }}>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{m.nome}</p>
+                      <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>{m.dose} · {m.via} · {m.frequencia}</p>
+                      {m.prescritoPor && (
+                        <p className="text-xs text-slate-400" style={{ marginTop: '2px' }}>Prescrito por {m.prescritoPor.nome}</p>
+                      )}
+                      {sw && (
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full" style={{ padding: '2px 8px', marginTop: '6px' }}>
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Dia {sw.diasTerapia} de antibioterapia
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
+                      <button
+                        onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
+                        title="Gerar QR para verificação 5 Certos"
+                        className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
+                        <svg className="w-3 h-3 text-slate-400 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                        </svg>
+                      </button>
+                      {podePrescreveMed && (
+                        <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
+                          className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors">
+                          <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  {sw?.alertaEmitido && !sw?.aprovadoPor && (
+                    <div style={{ borderTop: '1px solid #fde68a', padding: '10px 14px' }} className="bg-amber-50">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold text-amber-800" style={{ marginBottom: '4px' }}>
+                            Considerar de-escalação (Dia {sw.diasTerapia}+)
+                          </p>
+                          {sw.sugestaoIA && (
+                            <button onClick={() => setSugestaoExpandida(sugestaoExpandida === sw.id ? null : sw.id)}
+                              className="text-xs text-amber-700 underline hover:text-amber-900">
+                              {sugestaoExpandida === sw.id ? 'Ocultar sugestão IA' : 'Ver sugestão IA'}
+                            </button>
+                          )}
+                          {sugestaoExpandida === sw.id && sw.sugestaoIA && (
+                            <p className="text-xs text-amber-700 bg-amber-100 rounded-lg" style={{ padding: '8px 10px', marginTop: '6px', lineHeight: '1.5' }}>
+                              {sw.sugestaoIA}
+                            </p>
+                          )}
+                        </div>
+                        {podePrescreveMed && (
+                          <button onClick={() => aprovarDeescalacao(sw.id)} disabled={aprovandoStewardship === sw.id}
+                            className="text-xs font-semibold bg-amber-600 hover:bg-amber-700 text-white rounded-lg disabled:opacity-50 shrink-0"
+                            style={{ padding: '5px 10px' }}>
+                            {aprovandoStewardship === sw.id ? '...' : 'Aprovar'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
-                <div className="flex items-center gap-1.5 shrink-0" style={{ marginLeft: '8px' }}>
-                  <button
-                    onClick={() => setQrMed({ id: m.id, nome: m.nome, dose: m.dose, via: m.via })}
-                    title="Gerar QR para verificação 5 Certos"
-                    className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-violet-50 hover:border-violet-300 flex items-center justify-center transition-colors">
-                    <svg className="w-3 h-3 text-slate-400 hover:text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                    </svg>
-                  </button>
-                  {podePrescreveMed && (
-                    <button onClick={() => concluirMedicacao(m.id)} title="Concluir medicação"
-                      className="w-6 h-6 rounded-lg bg-white border border-slate-200 hover:bg-red-50 hover:border-red-200 flex items-center justify-center transition-colors">
-                      <svg className="w-3 h-3 text-slate-400 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -361,10 +455,35 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
           <div className="flex flex-col gap-4" style={{ marginBottom: '20px' }}>
             <div>
               <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Nome do medicamento *</label>
-              <input autoFocus type="text" value={medNome} onChange={(e) => setMedNome(e.target.value)}
+              <input autoFocus type="text" value={medNome} onChange={(e) => { setMedNome(e.target.value); setAjusteRenal(null); }}
                 placeholder="Ex: Paracetamol"
                 className="w-full border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{ padding: '10px 14px' }} />
+              {medNome.trim().length >= 3 && (
+                <button type="button" onClick={async () => {
+                  setLoadingAjusteRenal(true);
+                  try {
+                    const r = await api.get('/medicacao/ajuste-renal', { params: { doenteId, medicamento: medNome.trim() } });
+                    setAjusteRenal(r.data);
+                  } catch { setAjusteRenal(null); }
+                  finally { setLoadingAjusteRenal(false); }
+                }} disabled={loadingAjusteRenal}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-medium disabled:opacity-50"
+                  style={{ marginTop: '4px' }}>
+                  {loadingAjusteRenal ? '⌛ A calcular GFR...' : '💊 Verificar dose renal'}
+                </button>
+              )}
+              {ajusteRenal && (
+                <div className={`rounded-xl text-xs border mt-2 ${ajusteRenal.classificacao === 'normal' ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'}`} style={{ padding: '8px 12px' }}>
+                  <div className="font-semibold text-slate-800">
+                    GFR: {ajusteRenal.gfr != null ? `${ajusteRenal.gfr} mL/min` : 'Indisponível'}
+                    {ajusteRenal.classificacao && <span className="ml-2 capitalize text-slate-600">— {ajusteRenal.classificacao}</span>}
+                  </div>
+                  {ajusteRenal.aviso && <p className="text-amber-700 mt-0.5">{ajusteRenal.aviso}</p>}
+                  {ajusteRenal.doseRecomendada && <p className="text-slate-700 mt-0.5"><strong>Dose:</strong> {ajusteRenal.doseRecomendada} · <strong>Intervalo:</strong> {ajusteRenal.intervalo}</p>}
+                  {ajusteRenal.observacoes && <p className="text-slate-500 italic mt-0.5">{ajusteRenal.observacoes}</p>}
+                </div>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -406,9 +525,42 @@ export function MedicacaoPanel({ doenteId, utilizador, medicacoes, onRefresh }: 
               </select>
             </div>
           </div>
+          {interacoes.length > 0 && (
+            <div style={{ marginBottom: '16px' }}>
+              {interacoes.map((int, i) => {
+                const isGrave = int.severidade === 'grave';
+                return (
+                  <div key={i} className={`flex items-start gap-2 rounded-xl text-sm ${isGrave ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`} style={{ padding: '10px 14px', marginBottom: '8px' }}>
+                    <span className="font-bold shrink-0">{isGrave ? '🔴' : '🟡'}</span>
+                    <div>
+                      <p className="font-semibold text-xs uppercase tracking-wide" style={{ marginBottom: '2px' }}>
+                        {isGrave ? 'Major' : 'Moderada'} — {int.med2}
+                      </p>
+                      <p className="text-xs">{int.descricao}</p>
+                    </div>
+                  </div>
+                );
+              })}
+              {temInteracaoGrave && (
+                <div style={{ marginTop: '8px' }}>
+                  <label className="block text-xs font-semibold text-red-700 uppercase tracking-wide" style={{ marginBottom: '4px' }}>
+                    Justificação clínica obrigatória *
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={justificativaInteracao}
+                    onChange={(e) => setJustificativaInteracao(e.target.value)}
+                    placeholder="Fundamente clinicamente a prescrição apesar da interacção grave..."
+                    className="w-full border border-red-300 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+                    style={{ padding: '8px 12px' }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
           {erroModal && <ErroBox texto={erroModal} />}
           <ModalFooter onCancel={() => setModalMed(false)} onConfirm={submeterMed}
-            loading={salvando} disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq} labelConfirm="Prescrever" />
+            loading={salvando} disabled={!medNome.trim() || !medDose.trim() || !medVia || !medFreq || (temInteracaoGrave && !justificativaInteracao.trim())} labelConfirm="Prescrever" />
         </Modal>
       )}
 

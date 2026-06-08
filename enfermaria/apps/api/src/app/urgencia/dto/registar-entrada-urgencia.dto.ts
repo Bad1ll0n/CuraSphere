@@ -15,11 +15,11 @@ export class RegistarEntradaUrgenciaDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  queixaPrincipal: string;
+  queixaPrincipal!: string;
 
   @ApiProperty({ enum: ['verde', 'amarelo', 'laranja', 'vermelho', 'azul'] })
   @IsIn(['verde', 'amarelo', 'laranja', 'vermelho', 'azul'])
-  triagem: string;
+  triagem!: string;
 
   @ApiPropertyOptional()
   @IsOptional()

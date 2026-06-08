@@ -69,22 +69,50 @@ export default function NotificacoesPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {lista.map(n => (
-            <div key={n.id}
-              className={`bg-white rounded-2xl border flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50 ${n.lida ? 'border-slate-100' : 'border-blue-100 bg-blue-50/30'}`}
-              style={{ padding: '18px 20px' }}
-              onClick={() => { if (!n.lida) mutLer.mutate(n.id); }}>
-              <div className={`w-2.5 h-2.5 rounded-full shrink-0 mt-1.5 ${n.lida ? 'bg-slate-200' : 'bg-blue-500'}`} />
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-semibold ${n.lida ? 'text-slate-600' : 'text-slate-900'}`}>{n.titulo}</p>
-                <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>{n.corpo}</p>
-                <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}</p>
+          {lista.map(n => {
+            const isWatchdog = n.tipo === 'ia_watchdog';
+            const isEscalacao = n.tipo === 'escalacao_automatica';
+            const borderClass = isEscalacao
+              ? 'border-red-200 bg-red-50/40'
+              : isWatchdog
+              ? 'border-violet-200 bg-violet-50/30'
+              : n.lida ? 'border-slate-100' : 'border-blue-100 bg-blue-50/30';
+
+            return (
+              <div key={n.id}
+                className={`bg-white rounded-2xl border flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50 ${borderClass}`}
+                style={{ padding: '18px 20px' }}
+                onClick={() => { if (!n.lida) mutLer.mutate(n.id); }}>
+                <div className={`w-6 h-6 rounded-full shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold ${
+                  isEscalacao ? 'bg-red-100 text-red-600' :
+                  isWatchdog ? 'bg-violet-100 text-violet-600' :
+                  n.lida ? 'bg-slate-100 text-slate-400' : 'bg-blue-100 text-blue-600'
+                }`}>
+                  {isEscalacao ? '⬆' : isWatchdog ? '🧠' : n.lida ? '' : '·'}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className={`text-sm font-semibold ${n.lida ? 'text-slate-600' : 'text-slate-900'}`}>{n.titulo}</p>
+                    {isEscalacao && (
+                      <span className="text-xs font-bold text-red-700 bg-red-100 rounded-lg" style={{ padding: '1px 6px' }}>ESCALAÇÃO</span>
+                    )}
+                    {isWatchdog && (
+                      <span className="text-xs font-bold text-violet-700 bg-violet-100 rounded-lg" style={{ padding: '1px 6px' }}>IA Watchdog</span>
+                    )}
+                  </div>
+                  <p className="text-sm text-slate-500" style={{ marginTop: '2px' }}>{n.corpo}</p>
+                  <p className="text-xs text-slate-400" style={{ marginTop: '6px' }}>{fmt(n.criadaEm)}</p>
+                </div>
+                {!n.lida && (
+                  <span className={`shrink-0 text-xs font-semibold rounded-full ${
+                    isEscalacao ? 'text-red-700 bg-red-50' :
+                    isWatchdog ? 'text-violet-700 bg-violet-50' :
+                    'text-blue-600 bg-blue-50'
+                  }`} style={{ padding: '2px 8px' }}>Nova</span>
+                )}
               </div>
-              {!n.lida && (
-                <span className="shrink-0 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full" style={{ padding: '2px 8px' }}>Nova</span>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

@@ -210,8 +210,8 @@ export class PdfService {
     });
     if (!turno) throw new Error('Turno não encontrado');
 
-    const passagem = await this.prisma.passagemTurno.findMany({
-      where: { turnoId },
+    const passagem = await (this.prisma.passagemTurno as any).findMany({
+      where: { turnoAnteriorId: turnoId },
       include: {
         doente: {
           select: {
@@ -225,10 +225,6 @@ export class PdfService {
               take: 5,
             },
           },
-        },
-        notas: {
-          include: { autor: { select: { nome: true } } },
-          take: 3,
         },
       },
       take: 50,
@@ -269,10 +265,6 @@ export class PdfService {
               text: 'Tarefas pendentes: ' + d.tarefas.map((t: any) => `${t.descricao} [${t.prioridade}]`).join(' · '),
               fontSize: 9, color: '#92400e', margin: [0, 0, 0, 4],
             }] : []),
-            ...(p.notas?.length > 0 ? p.notas.map((n: any) => ({
-              text: `• ${n.autor?.nome ?? ''}: ${n.texto}`,
-              fontSize: 9, color: '#374151', margin: [8, 0, 0, 2],
-            })) : []),
             { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.3, lineColor: '#e5e7eb' }], margin: [0, 6, 0, 0] },
           ];
         }),
@@ -389,6 +381,104 @@ export class PdfService {
 
         { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#d1d5db' }], margin: [0, 12, 0, 0] },
         { text: `CuraSphere · ${dtPt(now)}`, style: 'small', alignment: 'center', margin: [0, 8, 0, 0] },
+      ],
+      pageSize: 'A4',
+      pageMargins: [40, 40, 40, 40],
+    };
+
+    return this.build(docDefinition);
+  }
+
+  async gerarCartaAltaPdf(doenteId: string): Promise<Buffer> {
+    const doente = await this.prisma.doente.findUnique({
+      where: { id: doenteId },
+      include: {
+        medicacoes: { where: { ativo: true }, take: 20 },
+        alergias: { take: 10 },
+        sumarioAlta: { include: { criadoPor: { select: { nome: true } } } },
+        ficheiroPessoal: { select: { nif: true, numeroSNS: true } },
+      },
+    });
+
+    if (!doente) throw new Error('Doente não encontrado');
+
+    const now = new Date();
+    const sumario = (doente as any).sumarioAlta;
+
+    const docDefinition: any = {
+      defaultStyle: { font: 'Helvetica', fontSize: 10.5, lineHeight: 1.4 },
+      styles: {
+        header:    { fontSize: 20, bold: true, color: '#1d4ed8' },
+        sub:       { fontSize: 11, color: '#475569', margin: [0, 2, 0, 16] },
+        titulo:    { fontSize: 13, bold: true, color: '#0f172a', margin: [0, 14, 0, 6] },
+        label:     { bold: true, color: '#374151' },
+        small:     { fontSize: 8, color: '#6b7280' },
+        tableHdr:  { bold: true, fillColor: '#eff6ff', color: '#1e3a8a', fontSize: 9 },
+      },
+      content: [
+        // Cabeçalho
+        { text: 'CuraSphere', style: 'header' },
+        { text: 'CARTA DE ALTA HOSPITALAR', style: 'sub' },
+        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#bfdbfe' }] },
+
+        // Identificação
+        { text: 'DADOS DO DOENTE', style: 'titulo' },
+        {
+          table: {
+            widths: ['auto', '*', 'auto', '*'],
+            body: [
+              [{ text: 'Nome:', style: 'label' }, doente.nome,
+               { text: 'Nº Processo:', style: 'label' }, doente.numeroProcesso ?? '—'],
+              [{ text: 'Data Nasc.:', style: 'label' }, dataPt(doente.dataNascimento),
+               { text: 'SNS:', style: 'label' }, (doente as any).ficheiroPessoal?.numeroSNS ?? '—'],
+              [{ text: 'Data Admissão:', style: 'label' }, dataPt(doente.dataAdmissao),
+               { text: 'Data Alta:', style: 'label' }, dataPt(doente.dataAlta ?? now)],
+              [{ text: 'Diagnóstico:', style: 'label' }, { text: doente.diagnosticoPrincipal ?? '—', colSpan: 3 }, '', ''],
+            ],
+          },
+          layout: 'lightHorizontalLines',
+          margin: [0, 0, 0, 12],
+        },
+
+        // Resumo clínico da IA
+        ...(sumario?.cartaAlta ? [
+          { text: 'RESUMO CLÍNICO', style: 'titulo' },
+          { text: sumario.cartaAlta, fontSize: 10.5, margin: [0, 0, 0, 12] },
+        ] : []),
+
+        // Prescrição de saída / instruções
+        ...(sumario?.prescricaoSaida ? [
+          { text: 'INSTRUCÇÕES AO DOENTE / MÉDICO DE FAMÍLIA', style: 'titulo' },
+          { text: sumario.prescricaoSaida, fontSize: 10.5, margin: [0, 0, 0, 12] },
+        ] : []),
+
+        // Medicações na alta
+        ...(doente.medicacoes.length > 0 ? [
+          { text: 'MEDICAÇÃO NA ALTA', style: 'titulo' },
+          {
+            table: {
+              widths: ['*', 'auto', 'auto', 'auto'],
+              body: [
+                [{ text: 'Medicamento', style: 'tableHdr' }, { text: 'Dose', style: 'tableHdr' }, { text: 'Via', style: 'tableHdr' }, { text: 'Frequência', style: 'tableHdr' }],
+                ...doente.medicacoes.map((m: any) => [m.nome, m.dose ?? '—', m.via ?? '—', m.frequencia ?? '—']),
+              ],
+            },
+            layout: 'lightHorizontalLines',
+            margin: [0, 0, 0, 12],
+          },
+        ] : []),
+
+        // Alergias
+        ...(doente.alergias.length > 0 ? [
+          { text: 'ALERGIAS CONHECIDAS', style: 'titulo', color: '#dc2626' },
+          { text: doente.alergias.map((a: any) => `${a.alergenio} (${a.severidade})`).join(' · '), fontSize: 10.5, color: '#dc2626', margin: [0, 0, 0, 12] },
+        ] : []),
+
+        // Médico emitente e rodapé
+        ...(sumario?.criadoPor?.nome ? [{ text: `Emitido por: ${sumario.criadoPor.nome}`, style: 'label', margin: [0, 8, 0, 0] }] : []),
+        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5, lineColor: '#d1d5db' }], margin: [0, 16, 0, 0] },
+        { text: 'Documento gerado electronicamente pelo sistema CuraSphere. Assinatura digital do médico responsável requerida para validade legal.', style: 'small', alignment: 'center', margin: [0, 6, 0, 0] },
+        { text: `Emitido em: ${dtPt(now)}`, style: 'small', alignment: 'center', margin: [0, 2, 0, 0] },
       ],
       pageSize: 'A4',
       pageMargins: [40, 40, 40, 40],

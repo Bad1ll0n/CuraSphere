@@ -5,7 +5,7 @@ export class AdicionarAtualizacaoDto {
   @ApiProperty()
   @IsString()
   @MaxLength(1000)
-  texto: string;
+  texto!: string;
 
   @ApiPropertyOptional({ description: 'Nova ETA em minutos (substitui a anterior)' })
   @IsOptional()

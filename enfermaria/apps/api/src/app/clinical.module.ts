@@ -42,6 +42,8 @@ import { AiClinicoModule } from './ai-clinico/ai-clinico.module';
 import { ExamesLabModule } from './exames-lab/exames-lab.module';
 // Session 53
 import { DocumentosSaudeModule } from './documentos-saude/documentos-saude.module';
+// Session 58
+import { StewardshipModule } from './stewardship/stewardship.module';
 
 const clinicalModules = [
   // Doente & Cama
@@ -68,6 +70,8 @@ const clinicalModules = [
   ExamesLabModule,
   // Session 53
   DocumentosSaudeModule,
+  // Session 58
+  StewardshipModule,
 ];
 
 @Module({

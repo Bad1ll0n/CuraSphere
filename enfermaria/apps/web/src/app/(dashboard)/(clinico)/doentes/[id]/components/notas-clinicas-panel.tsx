@@ -2,7 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { ConfirmModal } from '@/components/confirm-modal';
+import { useSocket, emitSocket } from '@/lib/use-socket';
 
 interface Props {
   doenteId: string;
@@ -33,9 +35,25 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
     titulo: string; mensagem: string; variant: 'danger' | 'warning';
     onConfirmar: () => void;
   } | null>(null);
+  const [locks, setLocks] = useState<Record<string, string>>({}); // notaId → nome do editor
 
   const role = utilizador?.role ?? '';
   const podeCriarNotaClinica = ['medico', 'enfermeiro'].includes(role);
+
+  const soapDirty = modalNotaClinica && Object.values(soapForm).some(v => v.trim().length > 0);
+  useUnsavedChanges(soapDirty);
+
+  // Socket — join doente room and listen for nota locks
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? undefined : undefined;
+  useSocket(token, {
+    'nota:lock': (data: { notaId: string; nome: string }) =>
+      setLocks(prev => ({ ...prev, [data.notaId]: data.nome })),
+    'nota:unlock': (data: { notaId: string }) =>
+      setLocks(prev => { const n = { ...prev }; delete n[data.notaId]; return n; }),
+  });
+  useEffect(() => {
+    if (token) emitSocket('nota:join-doente', { doenteId });
+  }, [doenteId, token]);
 
   // Voice dictation
   const [activeVoiceField, setActiveVoiceField] = useState<string | null>(null);
@@ -86,6 +104,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
     try {
       if (notaSoapEditandoId) {
         await api.patch(`/notas-clinicas/${notaSoapEditandoId}`, soapForm);
+        emitSocket('nota:edit-stop', { notaId: notaSoapEditandoId, doenteId });
         setNotaSoapEditandoId(null);
       } else {
         await api.post(`/notas-clinicas/${doenteId}`, soapForm);
@@ -97,6 +116,12 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao guardar');
     } finally { setSalvandoSoap(false); }
+  };
+
+  const cancelarEdicao = (notaId: string | null) => {
+    if (notaId) emitSocket('nota:edit-stop', { notaId, doenteId });
+    setNotaSoapEditandoId(null);
+    setModalNotaClinica(false);
   };
 
   const apagarNotaClinica = (notaId: string) => {
@@ -158,11 +183,24 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
                     {n.editadaEm && <span className="text-xs text-slate-400 italic">(editada)</span>}
                   </div>
                   {podeCriarNotaClinica && n.autor?.id === utilizador?.id && (
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => { setSoapForm({ subjetivo: n.subjetivo, objetivo: n.objetivo, avaliacao: n.avaliacao, plano: n.plano }); setNotaSoapEditandoId(n.id); setModalNotaClinica(true); }}
-                        className="text-xs text-slate-400 hover:text-emerald-600 transition-colors" style={{ padding: '4px 8px' }}>Editar</button>
-                      <button onClick={() => apagarNotaClinica(n.id)}
-                        className="text-xs text-slate-400 hover:text-red-500 transition-colors" style={{ padding: '4px 8px' }}>Apagar</button>
+                    <div className="flex items-center gap-2">
+                      {locks[n.id] && locks[n.id] !== utilizador?.nome ? (
+                        <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded px-2 py-0.5">
+                          ✎ A ser editado por {locks[n.id]}
+                        </span>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => {
+                            emitSocket('nota:edit-start', { notaId: n.id, doenteId });
+                            setSoapForm({ subjetivo: n.subjetivo, objetivo: n.objetivo, avaliacao: n.avaliacao, plano: n.plano });
+                            setNotaSoapEditandoId(n.id);
+                            setModalNotaClinica(true);
+                          }}
+                            className="text-xs text-slate-400 hover:text-emerald-600 transition-colors" style={{ padding: '4px 8px' }}>Editar</button>
+                          <button onClick={() => apagarNotaClinica(n.id)}
+                            className="text-xs text-slate-400 hover:text-red-500 transition-colors" style={{ padding: '4px 8px' }}>Apagar</button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -191,7 +229,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
           <div className="bg-white rounded-2xl shadow-2xl w-full overflow-y-auto" style={{ maxWidth: '600px', padding: '32px', maxHeight: '90vh', margin: '0 16px' }}>
             <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
               <h2 className="text-xl font-bold text-slate-900">{notaSoapEditandoId ? 'Editar Nota SOAP' : 'Nova Nota Clínica SOAP'}</h2>
-              <button onClick={() => { recognitionRef.current?.stop(); setModalNotaClinica(false); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
+              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }} className="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center">
                 <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -227,7 +265,7 @@ export function NotasClinicasPanel({ doenteId, utilizador }: Props) {
               </div>
             ))}
             <div className="flex gap-3" style={{ marginTop: '8px' }}>
-              <button onClick={() => setModalNotaClinica(false)}
+              <button onClick={() => { recognitionRef.current?.stop(); cancelarEdicao(notaSoapEditandoId); }}
                 className="flex-1 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors"
                 style={{ padding: '11px' }}>Cancelar</button>
               <button onClick={submeterNotaClinica} disabled={salvandoSoap || !soapForm.subjetivo.trim() || !soapForm.objetivo.trim() || !soapForm.avaliacao.trim() || !soapForm.plano.trim()}

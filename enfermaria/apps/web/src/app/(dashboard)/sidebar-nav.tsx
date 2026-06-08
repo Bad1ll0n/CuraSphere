@@ -21,6 +21,7 @@ interface SidebarNavProps {
   onCloseSidebar: () => void;
   onOpenConfig: () => void;
   onLogout: () => void;
+  onOpenPalette?: () => void;
 }
 
 export function SidebarNav({
@@ -32,6 +33,7 @@ export function SidebarNav({
   onCloseSidebar,
   onOpenConfig,
   onLogout,
+  onOpenPalette,
 }: SidebarNavProps) {
   return (
     <aside
@@ -52,8 +54,27 @@ export function SidebarNav({
         </div>
       </div>
 
+      {/* Pesquisa rápida */}
+      {onOpenPalette && (
+        <div style={{ paddingLeft: '20px', paddingRight: '20px', paddingTop: '16px', paddingBottom: '4px' }}>
+          <button
+            onClick={onOpenPalette}
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-500 bg-white/5 hover:bg-white/10 transition-all"
+            aria-label="Pesquisa rápida (Ctrl+K)"
+          >
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span className="flex-1 text-left text-slate-500">Pesquisar...</span>
+            <kbd className="hidden md:flex items-center gap-0.5 text-[10px] text-slate-600 font-mono">
+              <span>⌘</span><span>K</span>
+            </kbd>
+          </button>
+        </div>
+      )}
+
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto" style={{ paddingTop: '28px', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' }}>
+      <nav className="flex-1 overflow-y-auto" style={{ paddingTop: '16px', paddingBottom: '16px', paddingLeft: '20px', paddingRight: '20px' }}>
         {(['A', 'B', 'C', 'D'] as const).reduce<React.ReactNode[]>((acc, grupo) => {
           const GRUPO_LABELS: Record<string, string> = { A: 'Dashboards', B: 'Trabalho', C: 'Pessoal', D: 'Comunicação' };
           const items = itemsVisiveis.filter(i => i.grupo === grupo).sort((a, b) => a.label.localeCompare(b.label, 'pt'));

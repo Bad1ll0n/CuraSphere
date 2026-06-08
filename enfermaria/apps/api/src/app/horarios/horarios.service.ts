@@ -246,7 +246,7 @@ export class HorariosService {
     });
 
     const diasNoMes = new Date(ano, mes, 0).getDate();
-    const tipos: TipoTurno[] = ['manha', 'tarde', 'noite'];
+    const tipos: TipoTurno[] = [TipoTurno.manha, TipoTurno.tarde, TipoTurno.noite];
     let turnosCriados = 0;
 
     // Pre-load all existing turns for this scale in one query — avoids 90 findFirst calls in the loop

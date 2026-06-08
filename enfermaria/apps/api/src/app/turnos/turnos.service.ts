@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TarefasService } from '../tarefas/tarefas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -130,12 +130,6 @@ export class TurnosService {
     });
 
     if (passagens.length === 0) throw new BadRequestException('Sem passagens pendentes');
-
-    // Verificar quem está escalado a seguir para receber o turno
-    const turnoAnterior = await this.prisma.turno.findFirst({
-      where: { dataFim: { lte: turno.dataInicio } },
-      orderBy: { dataFim: 'desc' },
-    });
 
     // Encontrar profissionais escalados no turno atual que ainda não fizeram check-in
     const escaladosNoTurno = await this.prisma.horarioTurnoProfissional.findMany({

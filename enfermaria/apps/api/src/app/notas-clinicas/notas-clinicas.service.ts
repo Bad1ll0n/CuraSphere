@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
-import { authenticator } from 'otplib';
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
+const { authenticator } = require('otplib') as any;
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()

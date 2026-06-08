@@ -22,6 +22,10 @@ export interface CriarSinalVitalDto {
   peso?: number;
   notas?: string;
   avpu?: string;
+  o2Suplementar?: boolean;
+  glasgow?: number;
+  pamMedia?: number;
+  vasopressores?: boolean;
 }
 
 function detetar(dto: CriarSinalVitalDto): string[] {
@@ -97,7 +101,7 @@ export class SinaisVitaisService {
 
     // Hooks assíncronos: Sépsis Sentinel + Baselines Individuais
     this.sepsisService.avaliar(doenteId, dto).catch((err) => this.logger.warn('SepsisService.avaliar falhou', err?.message ?? String(err)));
-    this.baselinesService.avaliarEAlertar(doenteId, dto).catch((err) => this.logger.warn('BaselinesService.avaliarEAlertar falhou', err?.message ?? String(err)));
+    this.baselinesService.avaliarEAlertar(doenteId, dto as any).catch((err) => this.logger.warn('BaselinesService.avaliarEAlertar falhou', err?.message ?? String(err)));
 
     return registo;
   }
@@ -117,6 +121,158 @@ export class SinaisVitaisService {
       orderBy: { data: 'desc' },
       include: { registadoPor: { select: { id: true, nome: true } } },
     });
+  }
+
+  async calcularScores(doenteId: string) {
+    const ontem = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const [sv, doente, labs] = await Promise.all([
+      this.prisma.sinalVital.findFirst({
+        where: { doenteId },
+        orderBy: { data: 'desc' },
+        select: {
+          frequenciaRespiratoria: true, pressaoSistolica: true, pressaoDiastolica: true,
+          avpu: true, news2: true, data: true,
+          saturacaoO2: true, glasgow: true, pamMedia: true, vasopressores: true,
+        },
+      }),
+      this.prisma.doente.findUnique({ where: { id: doenteId }, select: { dataNascimento: true } }),
+      this.prisma.resultadoAnalise.findMany({
+        where: { doenteId, registadoEm: { gte: ontem } },
+        orderBy: { registadoEm: 'desc' },
+        select: { parametro: true, valor: true },
+      }),
+    ]);
+
+    if (!sv) return { qSOFA: null, curb65: null, sofa: null, mensagem: 'Sem registos de sinais vitais' };
+
+    // qSOFA (Seymour 2016 — triagem rápida de sépsis, 3 critérios bedside)
+    const qsofaCriterios: { criterio: string; valor: boolean }[] = [
+      { criterio: `FR ≥22 (actual: ${sv.frequenciaRespiratoria ?? 'N/A'})`, valor: (sv.frequenciaRespiratoria ?? 0) >= 22 },
+      { criterio: `PAS ≤100 (actual: ${sv.pressaoSistolica ?? 'N/A'})`, valor: (sv.pressaoSistolica ?? 999) <= 100 },
+      { criterio: `Consciência alterada (AVPU: ${sv.avpu ?? 'N/A'})`, valor: !!(sv.avpu && sv.avpu !== 'A') },
+    ];
+    const qsofaScore = qsofaCriterios.filter(c => c.valor).length;
+
+    // CURB-65 (British Thoracic Society — gravidade pneumonia)
+    const idadeAnos = doente?.dataNascimento
+      ? Math.floor((Date.now() - new Date(doente.dataNascimento).getTime()) / (365.25 * 24 * 3600 * 1000))
+      : null;
+
+    const curb65Criterios: { criterio: string; valor: boolean | null }[] = [
+      { criterio: `Confusão (AVPU: ${sv.avpu ?? 'N/A'})`, valor: !!(sv.avpu && sv.avpu !== 'A') },
+      { criterio: 'Ureia >7 mmol/L', valor: null }, // requer lab
+      { criterio: `FR ≥30 (actual: ${sv.frequenciaRespiratoria ?? 'N/A'})`, valor: (sv.frequenciaRespiratoria ?? 0) >= 30 },
+      { criterio: `PAS <90 ou PAD ≤60 (actual: ${sv.pressaoSistolica ?? 'N/A'}/${sv.pressaoDiastolica ?? 'N/A'})`, valor: (sv.pressaoSistolica ?? 999) < 90 || (sv.pressaoDiastolica ?? 999) <= 60 },
+      { criterio: `Idade ≥65 (${idadeAnos != null ? idadeAnos + ' anos' : 'N/A'})`, valor: idadeAnos != null ? idadeAnos >= 65 : null },
+    ];
+    const curb65Score = curb65Criterios.filter(c => c.valor === true).length;
+
+    // SOFA Score — Sequential Organ Failure Assessment (Vincent 1996)
+    // Requer dados clínicos + laboratoriais das últimas 24h
+    function getLab(nome: string): number | null {
+      const match = labs.find(l => l.parametro.toLowerCase().includes(nome.toLowerCase()));
+      return match ? match.valor : null;
+    }
+
+    const plaquetas = getLab('plaqueta') ?? getLab('platelet');
+    const bilirrubina = getLab('bilirrub');
+    const creatinina = getLab('creatinin');
+
+    // Componente 1 — Respiratório (SpO2 proxy para PaO2/FiO2)
+    const spo2 = sv.saturacaoO2;
+    let sofaResp = 0;
+    if (spo2 != null) {
+      if (spo2 < 88) sofaResp = 4;
+      else if (spo2 <= 90) sofaResp = 3;
+      else if (spo2 <= 93) sofaResp = 2;
+      else if (spo2 <= 95) sofaResp = 1;
+    }
+
+    // Componente 2 — Coagulação (plaquetas ×10³/µL)
+    let sofaCoag = 0;
+    if (plaquetas != null) {
+      if (plaquetas < 20) sofaCoag = 4;
+      else if (plaquetas < 50) sofaCoag = 3;
+      else if (plaquetas < 100) sofaCoag = 2;
+      else if (plaquetas < 150) sofaCoag = 1;
+    }
+
+    // Componente 3 — Hepático (bilirrubina mg/dL)
+    let sofaHep = 0;
+    if (bilirrubina != null) {
+      if (bilirrubina >= 12) sofaHep = 4;
+      else if (bilirrubina >= 6) sofaHep = 3;
+      else if (bilirrubina >= 2) sofaHep = 2;
+      else if (bilirrubina >= 1.2) sofaHep = 1;
+    }
+
+    // Componente 4 — Cardiovascular (PAM + vasopressores)
+    const pam = sv.pamMedia ?? (sv.pressaoSistolica != null && sv.pressaoDiastolica != null
+      ? Math.round(sv.pressaoDiastolica + (sv.pressaoSistolica - sv.pressaoDiastolica) / 3)
+      : null);
+    let sofaCardio = 0;
+    if (sv.vasopressores) sofaCardio = 2;
+    else if (pam != null && pam < 70) sofaCardio = 1;
+
+    // Componente 5 — SNC (Glasgow Coma Scale)
+    const gcs = sv.glasgow;
+    let sofaSNC = 0;
+    if (gcs != null) {
+      if (gcs < 6) sofaSNC = 4;
+      else if (gcs < 10) sofaSNC = 3;
+      else if (gcs < 13) sofaSNC = 2;
+      else if (gcs < 15) sofaSNC = 1;
+    }
+
+    // Componente 6 — Renal (creatinina mg/dL)
+    let sofaRenal = 0;
+    if (creatinina != null) {
+      if (creatinina >= 5) sofaRenal = 4;
+      else if (creatinina >= 3.5) sofaRenal = 3;
+      else if (creatinina >= 2) sofaRenal = 2;
+      else if (creatinina >= 1.2) sofaRenal = 1;
+    }
+
+    const sofaTotal = sofaResp + sofaCoag + sofaHep + sofaCardio + sofaSNC + sofaRenal;
+    const sofaComponentes = [
+      { nome: 'Respiratório (SpO₂)', score: sofaResp, disponivel: spo2 != null },
+      { nome: 'Coagulação (plaquetas)', score: sofaCoag, disponivel: plaquetas != null },
+      { nome: 'Hepático (bilirrubina)', score: sofaHep, disponivel: bilirrubina != null },
+      { nome: 'Cardiovascular (PAM/vasopressores)', score: sofaCardio, disponivel: pam != null },
+      { nome: 'SNC (Glasgow)', score: sofaSNC, disponivel: gcs != null },
+      { nome: 'Renal (creatinina)', score: sofaRenal, disponivel: creatinina != null },
+    ];
+    const sofaGravidade = sofaTotal >= 12 ? 'muito_grave' : sofaTotal >= 10 ? 'grave' : sofaTotal >= 7 ? 'moderado' : 'leve';
+    const componentesDisponiveis = sofaComponentes.filter(c => c.disponivel).length;
+
+    return {
+      qSOFA: {
+        score: qsofaScore,
+        criterios: qsofaCriterios,
+        interpretacao: qsofaScore >= 2 ? 'Suspeita de sépsis — avaliar urgentemente' : qsofaScore === 1 ? 'Baixo risco — monitorizar' : 'Sem critérios',
+        risco: qsofaScore >= 2 ? 'alto' : qsofaScore === 1 ? 'moderado' : 'baixo',
+      },
+      curb65: {
+        score: curb65Score,
+        criterios: curb65Criterios,
+        interpretacao: curb65Score >= 3 ? 'Pneumonia grave — considerar UCI' : curb65Score <= 1 ? 'Pneumonia leve — tratamento ambulatório' : 'Pneumonia moderada — internamento',
+        risco: curb65Score >= 3 ? 'alto' : curb65Score <= 1 ? 'baixo' : 'moderado',
+        nota: 'Ureia não incluída (requer resultado laboratorial)',
+      },
+      sofa: {
+        score: sofaTotal,
+        componentes: sofaComponentes,
+        gravidade: sofaGravidade,
+        interpretacao: sofaGravidade === 'muito_grave' ? 'Disfunção orgânica muito grave — UCI imediata' :
+                       sofaGravidade === 'grave' ? 'Disfunção orgânica grave — UCI urgente' :
+                       sofaGravidade === 'moderado' ? 'Disfunção orgânica moderada — vigilância intensiva' :
+                       'Disfunção orgânica leve — monitorizar',
+        componentesDisponiveis,
+        nota: componentesDisponiveis < 4 ? `Apenas ${componentesDisponiveis}/6 componentes com dados (registar Glasgow e aguardar labs)` : undefined,
+      },
+      ultimoRegisto: sv.data,
+      news2Atual: sv.news2,
+    };
   }
 
   async analisarTendencia(doenteId: string) {
@@ -201,6 +357,7 @@ export class SinaisVitaisService {
     return {
       risco,
       news2Atual: ultimoScore,
+      news2Slope: parseFloat(newsSlope.toFixed(3)),
       totalRegistosAnalisados: registos.length,
       alertas: alertasCount,
       tendencias,

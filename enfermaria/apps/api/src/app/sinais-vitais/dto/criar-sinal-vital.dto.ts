@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsEnum, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsEnum, IsBoolean, IsInt, Min, Max } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -75,4 +75,29 @@ export class CriarSinalVitalDto {
   @IsEnum(AvpuEnum)
   @IsOptional()
   avpu?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  o2Suplementar?: boolean;
+
+  @ApiPropertyOptional({ description: 'Glasgow Coma Scale 3-15 (para SOFA SNC)' })
+  @IsInt()
+  @IsOptional()
+  @Min(3)
+  @Max(15)
+  @Type(() => Number)
+  glasgow?: number;
+
+  @ApiPropertyOptional({ description: 'Pressão Arterial Média mmHg (para SOFA cardiovascular)' })
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
+  @Max(200)
+  @Type(() => Number)
+  pamMedia?: number;
+
+  @ApiPropertyOptional({ description: 'Em suporte vasopressor (para SOFA cardiovascular)' })
+  @IsBoolean()
+  @IsOptional()
+  vasopressores?: boolean;
 }

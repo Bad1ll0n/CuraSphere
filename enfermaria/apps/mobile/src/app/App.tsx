@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: process.env['EXPO_PUBLIC_SENTRY_DSN'] ?? '',
+  enabled: process.env['NODE_ENV'] === 'production',
+  tracesSampleRate: 0.2,
+});
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, TouchableOpacity, Modal, ActivityIndicator, StyleSheet, AppState, AppStateStatus, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ActivityIndicator, StyleSheet, AppState, AppStateStatus, Platform, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/query-client';
@@ -62,7 +69,7 @@ function TabIcon({ label, ativo }: { label: string; ativo: boolean }) {
   );
 }
 
-export default function App() {
+function App() {
   const [utilizador, setUtilizador] = useState<Utilizador | null>(null);
   const [loading, setLoading] = useState(true);
   const [scannerAberto, setScannerAberto] = useState(false);
@@ -71,6 +78,7 @@ export default function App() {
   const TIMEOUT_MS = 15 * 60 * 1000;
   const lastActiveRef = useRef<number>(Date.now());
   const appStateRef = useRef<AppStateStatus>(AppState.currentState);
+  const avisoMostradoRef = useRef(false);
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', async (nextState: AppStateStatus) => {
@@ -87,6 +95,24 @@ export default function App() {
     });
     return () => sub.remove();
   }, []);
+
+  // Aviso 2 minutos antes do timeout de sessão
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      if (appStateRef.current !== 'active' || !utilizador) return;
+      const inativos = Date.now() - lastActiveRef.current;
+      const restantes = TIMEOUT_MS - inativos;
+      if (restantes <= 2 * 60 * 1000 && restantes > 0 && !avisoMostradoRef.current) {
+        avisoMostradoRef.current = true;
+        Alert.alert(
+          'Sessão prestes a expirar',
+          'Sem actividade há 13 minutos. Toque OK para continuar.',
+          [{ text: 'OK', onPress: () => { lastActiveRef.current = Date.now(); avisoMostradoRef.current = false; } }],
+        );
+      }
+    }, 30_000);
+    return () => clearInterval(intervalo);
+  }, [utilizador]);
 
   // Configurar notificações push
   useEffect(() => {
@@ -283,3 +309,5 @@ const estilos = StyleSheet.create({
     elevation: 8,
   },
 });
+
+export default Sentry.wrap(App);

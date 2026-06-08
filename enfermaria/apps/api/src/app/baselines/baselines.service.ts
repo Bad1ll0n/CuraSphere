@@ -51,8 +51,8 @@ export class BaselinesService {
 
     return this.prisma.baselineDoente.upsert({
       where: { doenteId },
-      update: data,
-      create: data,
+      update: data as any,
+      create: data as any,
     });
   }
 
@@ -166,7 +166,7 @@ export class BaselinesService {
 
   async calcularRiscoTurno(servico: string): Promise<{ doenteId: string; nome: string; cama: string; score: number; banda: 'verde' | 'ambar' | 'vermelho'; factores: string[]; ultimoSV: Date | null }[]> {
     const doentes = await this.prisma.doente.findMany({
-      where: { servico: servico as any, ativo: true },
+      where: { ativo: true } as any,
       select: { id: true, nome: true, cama: { select: { numero: true } } },
       orderBy: { cama: { numero: 'asc' } },
     });

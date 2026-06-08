@@ -5,7 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
-import { authenticator } from 'otplib';
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
+const { authenticator } = require('otplib') as any;
 import { toDataURL } from 'qrcode';
 
 // Hash bcrypt fixo (cost 12) usado para equalizar o tempo de resposta

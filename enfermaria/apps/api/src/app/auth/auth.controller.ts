@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Body, Patch, UseGuards, Request, Res } from '@nestjs/common';
 import { Throttle, ThrottlerGuard, SkipThrottle } from '@nestjs/throttler';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -40,7 +40,7 @@ export class AuthController {
     if (result.mfaPendente) {
       return { mfaPendente: true, mfaChallengeToken: result.mfaChallengeToken };
     }
-    this.setTokenCookies(res, result.accessToken, result.refreshToken);
+    this.setTokenCookies(res, result.accessToken!, result.refreshToken!);
     return { utilizador: result.utilizador };
   }
 

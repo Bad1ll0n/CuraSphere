@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import api from '@/lib/api';
+import api, { initCsrf } from '@/lib/api';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useNaoLidasCount } from '@/lib/hooks';
@@ -16,6 +16,10 @@ import { SidebarNav } from './sidebar-nav';
 import { ModalConfiguracoes } from './modal-configuracoes';
 import { ModalAlterarPassword } from './modal-alterar-password';
 import { TourOverlay } from '@/components/tour-overlay';
+import { CommandPalette } from '@/components/command-palette';
+import { DarkModeToggle } from '@/components/dark-mode-toggle';
+import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal';
+import { NotificationBell } from '@/components/notification-bell';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { utilizador, loading, logout, passwordAviso } = useAuth();
@@ -26,6 +30,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [modalPwd, setModalPwd] = useState(false);
   const [modalConfig, setModalConfig] = useState(false);
   const [mostrarTour, setMostrarTour] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+
+  useEffect(() => { initCsrf(); }, []);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+        return;
+      }
+      if (e.key === '?' && !e.metaKey && !e.ctrlKey && !['INPUT', 'TEXTAREA'].includes((e.target as Element)?.tagName ?? '')) {
+        e.preventDefault();
+        setShortcutsOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, []);
 
   const { data: notifData } = useNaoLidasCount();
   const naoLidas = notifData?.count ?? 0;
@@ -99,6 +123,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">
+      <a href="#main-content" className="skip-to-content">
+        Ir para conteúdo principal
+      </a>
+
       {sidebarAberta && (
         <div
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
@@ -118,6 +146,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }} />
       )}
 
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <KeyboardShortcutsModal open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+
       <SidebarNav
         utilizador={utilizador}
         itemsVisiveis={itemsVisiveis}
@@ -127,9 +158,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         onCloseSidebar={() => setSidebarAberta(false)}
         onOpenConfig={() => setModalConfig(true)}
         onLogout={logout}
+        onOpenPalette={() => setPaletteOpen(true)}
       />
 
-      <main className="flex-1 overflow-auto">
+      <main id="main-content" className="flex-1 overflow-auto" tabIndex={-1}>
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+          <NotificationBell />
+          <DarkModeToggle />
+        </div>
+
         <button
           className="md:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-[#0f172a] text-white rounded-xl flex items-center justify-center shadow-lg"
           aria-label="Abrir menu"

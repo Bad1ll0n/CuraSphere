@@ -3,7 +3,6 @@ import { HorariosService } from './horarios.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-import { TipoTurno } from '../common/enums';
 import { CriarEscalaDto } from './dto/criar-escala.dto';
 import { AdicionarTurnoDto } from './dto/adicionar-turno.dto';
 import { EditarTurnoDto } from './dto/editar-turno.dto';
@@ -55,7 +54,7 @@ export class HorariosController {
     @Param('escalId') escalId: string,
     @Body() dto: AdicionarTurnoDto,
   ) {
-    return this.horariosService.adicionarTurno({ ...dto, escalId });
+    return this.horariosService.adicionarTurno({ ...dto, escalId } as any);
   }
 
   @Roles('enfermeiro', 'administrativo')
@@ -64,7 +63,7 @@ export class HorariosController {
     @Param('turnoId') turnoId: string,
     @Body() dto: EditarTurnoDto,
   ) {
-    return this.horariosService.editarTurno(turnoId, dto);
+    return this.horariosService.editarTurno(turnoId, dto as any);
   }
 
   @Roles('enfermeiro', 'administrativo')

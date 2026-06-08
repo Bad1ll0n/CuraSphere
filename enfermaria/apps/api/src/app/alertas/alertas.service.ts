@@ -13,6 +13,21 @@ export class AlertasService {
     private readonly gateway: EventsGateway,
   ) {}
 
+  async listarGlobal(opts: { tipo?: string; lido?: boolean; limit?: number }) {
+    const where: any = {};
+    if (opts.tipo) where.tipo = opts.tipo;
+    if (opts.lido !== undefined) where.lido = opts.lido;
+    return this.prisma.alertaClinico.findMany({
+      where,
+      orderBy: { criadoEm: 'desc' },
+      take: opts.limit ?? 50,
+      include: {
+        doente: { select: { id: true, nome: true, cama: { select: { numero: true, quarto: true } } } },
+        acusadoPor: { select: { id: true, nome: true } },
+      },
+    });
+  }
+
   async listarNaoLidos(doenteId: string) {
     return this.prisma.alertaClinico.findMany({
       where: { doenteId, lido: false },

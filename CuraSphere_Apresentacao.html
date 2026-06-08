@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CuraSphere — Apresentação Executiva</title>
+<style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    width: 297mm;
+    height: 167mm;
+    background: white;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  /* ── CORES ── */
+  :root {
+    --navy: #0f2044;
+    --navy-mid: #1a3260;
+    --blue: #2563eb;
+    --blue-light: #3b82f6;
+    --teal: #0891b2;
+    --white: #ffffff;
+    --slate: #64748b;
+    --light: #f1f5f9;
+    --accent: #06b6d4;
+  }
+
+  /* ── SLIDE 1 — CAPA ── */
+  .slide-capa {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1e4080 100%);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+  .slide-capa .bg-pattern {
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(37, 99, 235, 0.15) 100%);
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  .slide-capa .bg-circle {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.15);
+  }
+  .slide-capa .bg-circle2 {
+    position: absolute;
+    bottom: -80px; right: 80px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(6,182,212,0.07);
+    border: 1px solid rgba(6,182,212,0.12);
+  }
+  .slide-capa .content {
+    padding: 44px 52px;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .logo-mark .icon {
+    width: 42px; height: 42px;
+    background: var(--blue);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-mark .icon svg { width: 24px; height: 24px; }
+  .logo-mark .name {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.3px;
+  }
+  .slide-capa h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    max-width: 520px;
+    margin-bottom: 20px;
+  }
+  .slide-capa h1 span { color: var(--accent); }
+  .slide-capa .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-bottom: 32px;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .slide-capa .tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .slide-capa .tag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .slide-capa .right-panel {
+    position: absolute;
+    right: 52px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .slide-capa .stat-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 20px;
+    min-width: 160px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+  .stat-card .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-card .stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+    display: block;
+  }
+  .slide-number-capa {
+    position: absolute;
+    bottom: 20px;
+    right: 28px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 500;
+  }
+
+  /* ── SLIDES STANDARD ── */
+  .slide-header {
+    padding: 24px 36px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+  }
+  .slide-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .slide-icon svg { width: 20px; height: 20px; }
+  .slide-title-block { flex: 1; }
+  .slide-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .slide-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
+  .slide-headline {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+    padding: 8px 36px 0;
+    line-height: 1.5;
+  }
+  .divider {
+    height: 2px;
+    margin: 12px 36px 0;
+    border-radius: 2px;
+  }
+  .slide-body {
+    flex: 1;
+    padding: 14px 36px 20px;
+    display: flex;
+    gap: 20px;
+  }
+  .bullets { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .bullet {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .bullet-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .bullet-text { font-size: 13px; color: #334155; line-height: 1.45; }
+  .bullet-text strong { color: var(--navy); font-weight: 700; }
+  .slide-num {
+    position: absolute;
+    bottom: 14px;
+    right: 28px;
+    font-size: 10px;
+    color: #cbd5e1;
+    font-weight: 600;
+  }
+
+  /* Slide com 2 colunas */
+  .two-col { display: flex; gap: 16px; flex: 1; }
+  .col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .col-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--slate);
+    margin-bottom: 2px;
+  }
+
+  /* Slide com steps */
+  .steps { display: flex; gap: 12px; flex: 1; align-items: stretch; }
+  .step {
+    flex: 1;
+    background: var(--light);
+    border-radius: 12px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .step-desc { font-size: 11.5px; color: #475569; line-height: 1.5; }
+  .step-arrow {
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    color: #cbd5e1;
+    font-size: 16px;
+    font-weight: 300;
+    z-index: 1;
+  }
+
+  /* Card de destaque */
+  .highlight-card {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 16px;
+    color: white;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hc-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .hc-value { font-size: 24px; font-weight: 800; color: var(--accent); }
+  .hc-desc { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.4; }
+
+  /* Resultado cards */
+  .result-cards { display: flex; gap: 12px; flex: 1; align-items: stretch; }
+  .result-card {
+    flex: 1;
+    border-radius: 12px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .rc-icon { font-size: 22px; margin-bottom: 4px; }
+  .rc-num { font-size: 28px; font-weight: 800; line-height: 1; }
+  .rc-title { font-size: 12px; font-weight: 700; }
+  .rc-desc { font-size: 11px; line-height: 1.4; }
+
+  /* Footer bar */
+  .footer-bar {
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  /* CTA slide */
+  .cta-steps { display: flex; gap: 16px; flex: 1; }
+  .cta-step {
+    flex: 1;
+    border-radius: 14px;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cta-num { font-size: 32px; font-weight: 900; opacity: 0.25; line-height: 1; }
+  .cta-title { font-size: 14px; font-weight: 700; }
+  .cta-desc { font-size: 12px; line-height: 1.5; opacity: 0.8; }
+
+  /* Tech slide */
+  .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
+  .tech-item {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tech-icon-wrap {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+  .tech-content { flex: 1; }
+  .tech-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--slate); }
+  .tech-value { font-size: 12px; color: #334155; line-height: 1.4; margin-top: 2px; }
+
+  /* Nota do apresentador */
+  .presenter-note {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    margin: 0 36px 20px;
+    padding: 8px 12px;
+    border-radius: 0 8px 8px 0;
+    font-size: 10.5px;
+    color: #78350f;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+      break-after: page;
+    }
+    .presenter-note { display: none; }
+  }
+
+  @page {
+    size: 297mm 167mm;
+    margin: 0;
+  }
+
+  @media print {
+    body { background: white !important; }
+    .slide {
+      width: 297mm !important;
+      height: 167mm !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 1 — CAPA
+════════════════════════════════════════════════════ -->
+<div class="slide slide-capa">
+  <div class="bg-pattern"></div>
+  <div class="bg-circle"></div>
+  <div class="bg-circle2"></div>
+
+  <div class="content">
+    <div class="logo-mark">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <span class="name">CuraSphere</span>
+    </div>
+
+    <h1>A Inteligência Clínica que o seu <span>Hospital Merece</span></h1>
+    <p class="subtitle">Sistema de Informação Clínica para enfermarias hospitalares — da admissão à alta, em tempo real e com IA integrada.</p>
+
+    <div class="tags">
+      <span class="tag">IA Clínica Nativa</span>
+      <span class="tag">Mobile para Enfermeiros</span>
+      <span class="tag">FHIR / HL7</span>
+      <span class="tag">RGPD Compliant</span>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="stat-card">
+      <span class="stat-num">100+</span>
+      <span class="stat-label">Módulos Clínicos</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Plataformas (Web · iOS · Android)</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">24/7</span>
+      <span class="stat-label">Monitorização em Tempo Real</span>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #2563eb, #06b6d4);"></div>
+  <div class="slide-number-capa">Confidencial · CuraSphere 2025</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 2 — O PROBLEMA
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#fef2f2;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#ef4444;">O Problema</div>
+      <div class="slide-title">Os Hospitais Privados Perdem Competitividade com Processos Obsoletos</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #ef4444, #f97316);"></div>
+  <p class="slide-headline">Quatro dores estruturais que comprometem a qualidade clínica e a eficiência operacional.</p>
+
+  <div class="slide-body">
+    <div class="bullets">
+      <div class="bullet" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="bullet-dot" style="background:#ef4444; flex-shrink:0;"></div>
+          <div class="bullet-text"><strong>Registos em papel</strong> — informação fragmentada, ilegível e propensa a erros críticos</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding-left:20px;line-height:1.5;">· Processos clínicos impossíveis de auditar retrospectivamente<br>· Duplicação de registos entre turnos e serviços</div>
+      </div>
+      <div class="bullet" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="bullet-dot" style="background:#f97316; flex-shrink:0;"></div>
+          <div class="bullet-text"><strong>Sistemas legados desatualizados</strong> — sem mobile, sem alertas, sem IA; equipas frustradas e ineficientes</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding-left:20px;line-height:1.5;">· Integração impossível com laboratórios e farmácia<br>· Alertas de deterioração clínica inexistentes ou tardios</div>
+      </div>
+      <div class="bullet" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="bullet-dot" style="background:#eab308; flex-shrink:0;"></div>
+          <div class="bullet-text"><strong>Gestão sem visibilidade em tempo real</strong> — decisões baseadas em relatórios manuais desatualizados</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding-left:20px;line-height:1.5;">· Ocupação, carga de enfermagem e KPIs sem dashboard<br>· Escalada de recursos baseada em intuição, não em dados</div>
+      </div>
+      <div class="bullet" style="flex-direction:column; align-items:flex-start; gap:4px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="bullet-dot" style="background:#dc2626; flex-shrink:0;"></div>
+          <div class="bullet-text"><strong>Incidentes evitáveis</strong> — erros de medicação, alertas tardios e exposição regulatória crescente</div>
+        </div>
+        <div style="font-size:11px;color:#64748b;padding-left:20px;line-height:1.5;">· Interações medicamentosas não detectadas em prescrição<br>· Registos físicos aumentam exposição a coimas RGPD</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px; min-width:200px;">
+      <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:14px 16px; flex:1;">
+        <div style="font-size:11px; color:#dc2626; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Impacto Financeiro</div>
+        <div style="font-size:26px; font-weight:800; color:#dc2626;">€ 18 000</div>
+        <div style="font-size:11px; color:#991b1b; margin-top:4px; line-height:1.5;">custo médio estimado por incidente adverso evitável<br><span style="opacity:0.7;">Fonte: WHO Patient Safety Report 2023</span></div>
+      </div>
+      <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:14px 16px; flex:1;">
+        <div style="font-size:11px; color:#ea580c; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Tempo Perdido</div>
+        <div style="font-size:26px; font-weight:800; color:#ea580c;">2,5h</div>
+        <div style="font-size:11px; color:#9a3412; margin-top:4px; line-height:1.5;">por turno de enfermagem em burocracia clínica<br><span style="opacity:0.7;">≈ 30% da capacidade assistencial desperdiçada</span></div>
+      </div>
+      <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:12px; padding:14px 16px; flex:1;">
+        <div style="font-size:11px; color:#7c3aed; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Risco Regulatório</div>
+        <div style="font-size:26px; font-weight:800; color:#7c3aed;">4%</div>
+        <div style="font-size:11px; color:#5b21b6; margin-top:4px; line-height:1.5;">da facturação global em coimas RGPD por incidente de dados<br><span style="opacity:0.7;">Regulamento (UE) 2016/679 Art.º 83</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #ef4444, #f97316);"></div>
+  <div class="slide-num">02 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 3 — A SOLUÇÃO
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f0fdf4;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#22c55e;">A Solução</div>
+      <div class="slide-title">CuraSphere Unifica Todo o Processo Clínico Numa Plataforma Única</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #22c55e, #06b6d4);"></div>
+  <p class="slide-headline">Um único sistema para médicos, enfermeiros, farmácia e gestão — sem duplicação, sem papel.</p>
+
+  <div class="slide-body" style="align-items:stretch;">
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1;">
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:16px 18px; flex:1;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+          <div style="font-size:14px; font-weight:700; color:#15803d;">Um único sistema, todas as equipas</div>
+        </div>
+        <div style="font-size:12.5px; color:#166534; line-height:1.55;">Médicos, enfermeiros, farmácia e gestão partilham o mesmo registo clínico em tempo real — sem re-trabalho, sem perda de informação entre turnos.</div>
+      </div>
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px 18px; flex:1;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#2563eb;flex-shrink:0;"></div>
+          <div style="font-size:14px; font-weight:700; color:#1d4ed8;">Alertas automáticos com suporte de IA</div>
+        </div>
+        <div style="font-size:12.5px; color:#1e40af; line-height:1.55;">Scores clínicos calculados em tempo real. A IA identifica deterioração antes de se tornar urgência — com evidência clínica, não apenas dados brutos.</div>
+      </div>
+      <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:12px; padding:16px 18px; flex:1;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#9333ea;flex-shrink:0;"></div>
+          <div style="font-size:14px; font-weight:700; color:#7e22ce;">Conformidade regulatória integrada</div>
+        </div>
+        <div style="font-size:12.5px; color:#6b21a8; line-height:1.55;">RGPD, auditoria completa e rastreabilidade de cada acção clínica — por defeito, sem configuração adicional.</div>
+      </div>
+    </div>
+
+    <div style="min-width:200px; background:var(--navy); border-radius:14px; padding:20px 18px; color:white; display:flex; flex-direction:column; gap:14px; justify-content:center;">
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.4); margin-bottom:4px;">Substitui</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.7);">
+        <span style="width:16px;height:16px;background:rgba(239,68,68,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✕</span>
+        Papel e Excel clínico
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.7);">
+        <span style="width:16px;height:16px;background:rgba(239,68,68,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✕</span>
+        Sistemas legados sem mobile
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.7);">
+        <span style="width:16px;height:16px;background:rgba(239,68,68,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✕</span>
+        Silos de informação por serviço
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:rgba(255,255,255,0.7);">
+        <span style="width:16px;height:16px;background:rgba(239,68,68,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✕</span>
+        Alertas manuais e tardios
+      </div>
+      <div style="height:1px; background:rgba(255,255,255,0.1);"></div>
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.4);">Introduz</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#6ee7b7;">
+        <span style="width:16px;height:16px;background:rgba(34,197,94,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✓</span>
+        Registo clínico unificado
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#6ee7b7;">
+        <span style="width:16px;height:16px;background:rgba(34,197,94,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✓</span>
+        IA nativa, alertas proactivos
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#6ee7b7;">
+        <span style="width:16px;height:16px;background:rgba(34,197,94,0.2);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;">✓</span>
+        Auditoria e compliance total
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #22c55e, #06b6d4);"></div>
+  <div class="slide-num">03 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 4 — COMO FUNCIONA
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f0f9ff;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#0891b2;">Como Funciona</div>
+      <div class="slide-title">Quatro Passos — Da Admissão à Alta, Sem Papel</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #0891b2, #2563eb);"></div>
+  <p class="slide-headline">Fluxo desenhado para reduzir fricção clínica e eliminar burocracia manual em cada etapa.</p>
+
+  <div class="slide-body">
+    <div class="steps">
+      <div class="step" style="border-top: 3px solid #0891b2;">
+        <div class="step-num" style="background:#0891b2;">1</div>
+        <div class="step-title">Admissão</div>
+        <div class="step-desc">Registo digital do doente. Alocação automática de cama. Histórico clínico importado via HL7.</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;flex:1;">
+          <div style="font-size:11px;color:#0369a1;display:flex;align-items:center;gap:6px;"><span style="color:#0891b2;font-weight:700;">›</span> Dados demográficos e clínicos</div>
+          <div style="font-size:11px;color:#0369a1;display:flex;align-items:center;gap:6px;"><span style="color:#0891b2;font-weight:700;">›</span> Alergias e antecedentes relevantes</div>
+          <div style="font-size:11px;color:#0369a1;display:flex;align-items:center;gap:6px;"><span style="color:#0891b2;font-weight:700;">›</span> Plano terapêutico inicial definido</div>
+        </div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step" style="border-top: 3px solid #2563eb;">
+        <div class="step-num" style="background:#2563eb;">2</div>
+        <div class="step-title">Internamento</div>
+        <div class="step-desc">Monitorização contínua. Prescrições, notas clínicas e registos de enfermagem em tempo real.</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;flex:1;">
+          <div style="font-size:11px;color:#1d4ed8;display:flex;align-items:center;gap:6px;"><span style="color:#2563eb;font-weight:700;">›</span> Sinais vitais com scores automáticos</div>
+          <div style="font-size:11px;color:#1d4ed8;display:flex;align-items:center;gap:6px;"><span style="color:#2563eb;font-weight:700;">›</span> Prescrição com deteção de interações</div>
+          <div style="font-size:11px;color:#1d4ed8;display:flex;align-items:center;gap:6px;"><span style="color:#2563eb;font-weight:700;">›</span> Registos de enfermagem via mobile</div>
+        </div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step" style="border-top: 3px solid #7c3aed;">
+        <div class="step-num" style="background:#7c3aed;">3</div>
+        <div class="step-title">Alertas IA</div>
+        <div class="step-desc">Scores automáticos detectam deterioração. Equipa recebe alerta com contexto clínico completo.</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;flex:1;">
+          <div style="font-size:11px;color:#6d28d9;display:flex;align-items:center;gap:6px;"><span style="color:#7c3aed;font-weight:700;">›</span> NEWS2, SOFA, qSOFA, CURB-65</div>
+          <div style="font-size:11px;color:#6d28d9;display:flex;align-items:center;gap:6px;"><span style="color:#7c3aed;font-weight:700;">›</span> Deteção precoce de sépsis</div>
+          <div style="font-size:11px;color:#6d28d9;display:flex;align-items:center;gap:6px;"><span style="color:#7c3aed;font-weight:700;">›</span> De-escalação antibiótica assistida por IA</div>
+        </div>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step" style="border-top: 3px solid #059669;">
+        <div class="step-num" style="background:#059669;">4</div>
+        <div class="step-title">Alta</div>
+        <div class="step-desc">Plano de alta estruturado. Relatório de continuidade gerado automaticamente para o médico de família.</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;flex:1;">
+          <div style="font-size:11px;color:#047857;display:flex;align-items:center;gap:6px;"><span style="color:#059669;font-weight:700;">›</span> Critérios de alta validados clinicamente</div>
+          <div style="font-size:11px;color:#047857;display:flex;align-items:center;gap:6px;"><span style="color:#059669;font-weight:700;">›</span> Carta de alta e relatório de enfermagem</div>
+          <div style="font-size:11px;color:#047857;display:flex;align-items:center;gap:6px;"><span style="color:#059669;font-weight:700;">›</span> Continuidade de cuidados documentada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="presenter-note">💡 O fluxo é desenhado para que médicos prescrevam mais rapidamente, enfermeiros registem ao lado do doente via telemóvel, e a gestão veja tudo em tempo real — sem reuniões de ponto de situação.</div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #0891b2, #2563eb);"></div>
+  <div class="slide-num">04 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 5 — IA CLÍNICA & SCORES
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#fdf4ff;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#9333ea;">IA Clínica</div>
+      <div class="slide-title">A Primeira Plataforma com IA Clínica Nativamente Integrada</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #9333ea, #2563eb);"></div>
+  <p class="slide-headline">Enquanto outros sistemas registam dados, a CuraSphere interpreta-os e actua proactivamente.</p>
+
+  <div class="slide-body">
+    <div class="bullets">
+      <div class="bullet" style="background:#fdf4ff; border:1px solid #e9d5ff; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#9333ea; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Scores automáticos em tempo real</strong> — NEWS2, SOFA, qSOFA, CURB-65 calculados a cada registo de sinais vitais</div>
+        </div>
+        <div style="font-size:11px;color:#7c3aed;padding-left:16px;line-height:1.6;">· NEWS2 ≥ 5 activa alerta imediato &nbsp;·&nbsp; SOFA ≥ 2 sinaliza disfunção orgânica &nbsp;·&nbsp; CURB-65 orienta antibioterapia</div>
+      </div>
+      <div class="bullet" style="background:#fdf4ff; border:1px solid #e9d5ff; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#7c3aed; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Assistente IA clínico</strong> — análise completa do doente em linguagem clínica, disponível para médico e enfermeiro</div>
+        </div>
+        <div style="font-size:11px;color:#7c3aed;padding-left:16px;line-height:1.6;">· Raciocínio clínico estruturado por doente &nbsp;·&nbsp; Sugestão de plano de cuidados &nbsp;·&nbsp; Histórico de análises por episódio</div>
+      </div>
+      <div class="bullet" style="background:#fdf4ff; border:1px solid #e9d5ff; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#6d28d9; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Antibioterapia inteligente</strong> — tracking de dias de terapia com alerta de de-escalação baseado em antibiograma</div>
+        </div>
+        <div style="font-size:11px;color:#7c3aed;padding-left:16px;line-height:1.6;">· DOT (Days of Therapy) automático &nbsp;·&nbsp; Alerta ao 3.º dia para revisão clínica &nbsp;·&nbsp; Sugestão de de-escalação aprovada por médico</div>
+      </div>
+      <div class="bullet" style="background:#fdf4ff; border:1px solid #e9d5ff; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#dc2626; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Deteção precoce de sépsis</strong> — monitorização contínua com critérios qSOFA e SOFA integrados</div>
+        </div>
+        <div style="font-size:11px;color:#9333ea;padding-left:16px;line-height:1.6;">· Critérios qSOFA: AMSS, FR, PA sistólica &nbsp;·&nbsp; SOFA com dados laboratoriais integrados &nbsp;·&nbsp; Alerta directo ao médico de guardia</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px; min-width:185px;">
+      <div style="background:var(--navy); border-radius:12px; padding:14px 16px; color:white;">
+        <div style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.4); margin-bottom:8px;">Scores Disponíveis</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="background:rgba(147,51,234,0.3); color:#e9d5ff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;">NEWS2</span>
+          <span style="background:rgba(147,51,234,0.3); color:#e9d5ff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;">SOFA</span>
+          <span style="background:rgba(147,51,234,0.3); color:#e9d5ff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;">qSOFA</span>
+          <span style="background:rgba(147,51,234,0.3); color:#e9d5ff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px;">CURB-65</span>
+        </div>
+      </div>
+      <div style="background:#f5f3ff; border:1px solid #ede9fe; border-radius:12px; padding:14px 16px; flex:1;">
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#7c3aed; margin-bottom:6px;">IA Alimentada por</div>
+        <div style="font-size:13px; font-weight:800; color:#4c1d95;">Claude · Anthropic</div>
+        <div style="font-size:11px; color:#6b21a8; margin-top:6px; line-height:1.5;">Modelo de IA de uso médico com raciocínio clínico estruturado. Respostas em português clínico, contextualizadas com o historial do doente.</div>
+      </div>
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#15803d; margin-bottom:4px;">Análise de Feridas</div>
+        <div style="font-size:11px; color:#166534; line-height:1.5;">AI Vision analisa fotografias de feridas e sugere classificação clínica (PUSH, Wagner) com evolução comparativa entre registos.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #9333ea, #2563eb);"></div>
+  <div class="slide-num">05 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 6 — SEGURANÇA & COMPLIANCE
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f0fdf4;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#16a34a;">Segurança & Compliance</div>
+      <div class="slide-title">Construída para os Requisitos mais Exigentes do Setor Hospitalar</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #16a34a, #0891b2);"></div>
+  <p class="slide-headline">Cada acção clínica é rastreável. Cada acesso é justificável. O risco institucional cai significativamente.</p>
+
+  <div class="slide-body">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1;">
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#16a34a;"></div>
+          <div style="font-size:13px;font-weight:700;color:#15803d;">Autenticação MFA</div>
+        </div>
+        <div style="font-size:12px;color:#166534;line-height:1.45;">Acesso por código único (TOTP) para todos os perfis — médicos, enfermeiros, gestão e farmácia</div>
+      </div>
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#2563eb;"></div>
+          <div style="font-size:13px;font-weight:700;color:#1d4ed8;">Controlo de Acessos RBAC</div>
+        </div>
+        <div style="font-size:12px;color:#1e40af;line-height:1.45;">Cada perfil vê apenas o que necessita. Permissões granulares por módulo, por serviço e por acção</div>
+      </div>
+      <div style="background:#fefce8; border:1px solid #fef08a; border-radius:12px; padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#ca8a04;"></div>
+          <div style="font-size:13px;font-weight:700;color:#854d0e;">Auditoria Completa</div>
+        </div>
+        <div style="font-size:12px;color:#713f12;line-height:1.45;">Log imutável de cada acção clínica e administrativa — quem, quando, o quê e porquê</div>
+      </div>
+      <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:12px; padding:14px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#9333ea;"></div>
+          <div style="font-size:13px;font-weight:700;color:#7e22ce;">RGPD by Design</div>
+        </div>
+        <div style="font-size:12px;color:#6b21a8;line-height:1.45;">Portal do doente com exportação de dados, sem informação clínica em logs de sistema</div>
+      </div>
+      <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; padding:14px; grid-column:span 2;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#e11d48;"></div>
+          <div style="font-size:13px;font-weight:700;color:#be123c;">Acesso de Emergência "Break-Glass"</div>
+        </div>
+        <div style="font-size:12px;color:#9f1239;line-height:1.45;">Acesso de urgência a dados de qualquer doente com registo automático, justificação obrigatória e notificação imediata à chefia — auditável em tempo real</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #16a34a, #0891b2);"></div>
+  <div class="slide-num">06 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 7 — MOBILE PARA ENFERMEIROS
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#fff7ed;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#ea580c;">Mobile para Enfermeiros</div>
+      <div class="slide-title">As Equipas Registam ao Lado do Doente, Não nas Secretárias</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #ea580c, #f59e0b);"></div>
+  <p class="slide-headline">A adesão das equipas de enfermagem é o maior risco de falha de qualquer sistema clínico — a CuraSphere resolve-o com design mobile-first.</p>
+
+  <div class="slide-body">
+    <div class="bullets">
+      <div class="bullet" style="background:#fff7ed; border:1px solid #fed7aa; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#ea580c; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>App nativa iOS e Android</strong> — não é browser adaptado; interface desenhada para uso rápido em contexto clínico</div>
+        </div>
+        <div style="font-size:11px;color:#9a3412;padding-left:16px;line-height:1.6;">· Gestos optimizados para uso com uma mão &nbsp;·&nbsp; Dark mode para ambientes nocturnos &nbsp;·&nbsp; Sem instalação de servidores locais</div>
+      </div>
+      <div class="bullet" style="background:#fff7ed; border:1px solid #fed7aa; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#f59e0b; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Funcionamento offline completo</strong> — sem dependência de WiFi hospitalar; sincroniza automaticamente quando voltar rede</div>
+        </div>
+        <div style="font-size:11px;color:#9a3412;padding-left:16px;line-height:1.6;">· Dados do turno disponíveis sem rede &nbsp;·&nbsp; Sincronização sem perda de registos &nbsp;·&nbsp; Resolução inteligente de conflitos</div>
+      </div>
+      <div class="bullet" style="background:#fff7ed; border:1px solid #fed7aa; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#d97706; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Notificações push em tempo real</strong> — alertas clínicos chegam ao enfermeiro certo, no momento certo</div>
+        </div>
+        <div style="font-size:11px;color:#9a3412;padding-left:16px;line-height:1.6;">· Segmentadas por doente atribuído &nbsp;·&nbsp; Prioridade visual por nível de urgência &nbsp;·&nbsp; Silencia automaticamente em procedimento</div>
+      </div>
+      <div class="bullet" style="background:#fff7ed; border:1px solid #fed7aa; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#b45309; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Verificação de medicação por QR</strong> — protocolo dos 5 Certos digital com scan via câmara do telemóvel</div>
+        </div>
+        <div style="font-size:11px;color:#9a3412;padding-left:16px;line-height:1.6;">· Scan de pulseira e embalagem &nbsp;·&nbsp; Verifica doente, dose, via, hora e medicamento &nbsp;·&nbsp; Registo imediato com carimbo temporal</div>
+      </div>
+    </div>
+
+    <div style="min-width:195px; display:flex; flex-direction:column; gap:10px;">
+      <div style="background:var(--navy); border-radius:14px; padding:18px 16px; color:white; flex:1; display:flex; flex-direction:column; gap:10px;">
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.4);">Disponível em</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;color:white;">🍎 iOS</div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;color:white;">🤖 Android</div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.4);">Funcionalidades incluídas</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:6px;"><span style="color:#fb923c;font-weight:700;">✓</span> Sinais vitais e scores automáticos</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:6px;"><span style="color:#fb923c;font-weight:700;">✓</span> Administração de medicação (5 Certos)</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:6px;"><span style="color:#fb923c;font-weight:700;">✓</span> Atribuições de enfermagem por turno</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:6px;"><span style="color:#fb923c;font-weight:700;">✓</span> Registo fotográfico de feridas com IA</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:6px;"><span style="color:#fb923c;font-weight:700;">✓</span> Alertas e notificações push em tempo real</div>
+        </div>
+        <div style="background:rgba(234,88,12,0.25);border:1px solid rgba(234,88,12,0.4);border-radius:8px;padding:10px 12px;margin-top:auto;">
+          <div style="font-size:20px;font-weight:800;color:#fdba74;">–40%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">tempo por turno em registos clínicos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #ea580c, #f59e0b);"></div>
+  <div class="slide-num">07 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 8 — VISIBILIDADE EM TEMPO REAL
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f0f9ff;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#0284c7;">Gestão em Tempo Real</div>
+      <div class="slide-title">A Gestão Vê o Hospital em Tempo Real, Sem Relatórios Manuais</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #0284c7, #9333ea);"></div>
+  <p class="slide-headline">Hoje a maioria dos directores clínicos descobre o que aconteceu nas enfermarias por reunião matinal. Com a CuraSphere, a visibilidade é contínua.</p>
+
+  <div class="slide-body">
+    <div class="bullets">
+      <div class="bullet" style="background:#f0f9ff; border:1px solid #bae6fd; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#0284c7; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Mapa de camas em tempo real</strong> — estado clínico, ocupação e alertas por enfermaria visíveis num único ecrã</div>
+        </div>
+        <div style="font-size:11px;color:#0369a1;padding-left:16px;line-height:1.6;">· Código de cor por score clínico (NEWS2) &nbsp;·&nbsp; Filtragem por enfermaria ou médico &nbsp;·&nbsp; Atualização automática sem refresh</div>
+      </div>
+      <div class="bullet" style="background:#f0f9ff; border:1px solid #bae6fd; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#0369a1; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Dashboard executivo</strong> — KPIs operacionais e clínicos centralizados: taxa de ocupação, alertas ativos, tempo médio de internamento</div>
+        </div>
+        <div style="font-size:11px;color:#0369a1;padding-left:16px;line-height:1.6;">· KPIs actualizados em tempo real &nbsp;·&nbsp; Exportação automática em PDF &nbsp;·&nbsp; Comparação histórica por período</div>
+      </div>
+      <div class="bullet" style="background:#f0f9ff; border:1px solid #bae6fd; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#075985; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Alertas críticos para gestores</strong> — notificação directa a directores clínicos em situações de deterioração severa</div>
+        </div>
+        <div style="font-size:11px;color:#0369a1;padding-left:16px;line-height:1.6;">· Push notification no telemóvel do director &nbsp;·&nbsp; Escalada automática se não confirmado &nbsp;·&nbsp; Log imutável de todas as notificações</div>
+      </div>
+      <div class="bullet" style="background:#f0f9ff; border:1px solid #bae6fd; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div class="bullet-dot" style="background:#0c4a6e; margin-top:5px;"></div>
+          <div class="bullet-text"><strong>Relatórios de turno automáticos</strong> — passagem de turno sem papel, com contexto clínico completo de cada doente</div>
+        </div>
+        <div style="font-size:11px;color:#0369a1;padding-left:16px;line-height:1.6;">· Gerado 30 min antes do fim do turno &nbsp;·&nbsp; Inclui medicação pendente e alertas activos &nbsp;·&nbsp; Disponível em web e mobile</div>
+      </div>
+    </div>
+
+    <div style="min-width:195px; display:flex; flex-direction:column; gap:10px;">
+      <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#0284c7;margin-bottom:8px;">Dashboard Inclui</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#075985;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#0284c7;flex-shrink:0;"></span>Ocupação por enfermaria
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#075985;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#0369a1;flex-shrink:0;"></span>Alertas clínicos ativos
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#075985;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#0c4a6e;flex-shrink:0;"></span>Scores críticos (NEWS2 ≥ 7)
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#075985;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#7c3aed;flex-shrink:0;"></span>Tarefas pendentes por turno
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--navy); border-radius:12px; padding:14px 16px; color:white; flex:1;">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:8px;">Disponível via</div>
+        <div style="font-size:13px;font-weight:700;color:#7dd3fc;margin-bottom:8px;">Web Browser</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;">Acesso seguro a partir de qualquer dispositivo com browser — sem instalação necessária.</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:6px;"><span style="color:#38bdf8;">✓</span> Chrome, Safari, Firefox, Edge</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:6px;"><span style="color:#38bdf8;">✓</span> Desktop, tablet e mobile</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:6px;"><span style="color:#38bdf8;">✓</span> Sessão com MFA obrigatório</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #0284c7, #9333ea);"></div>
+  <div class="slide-num">08 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 9 — RESULTADOS ESPERADOS
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative; background: linear-gradient(135deg, #0f2044 0%, #1a3260 100%); display:flex; flex-direction:column;">
+  <div style="position:absolute; top:0;left:0;right:0;bottom:0; background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><circle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.03)%22 stroke-width=%221%22/></svg>'); opacity:0.5;"></div>
+
+  <div style="padding: 24px 36px 0; position:relative; z-index:2;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="background:rgba(255,255,255,0.1); border-radius:10px; width:40px;height:40px; display:flex;align-items:center;justify-content:center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:3px;">Resultados Esperados</div>
+        <div style="font-size:22px;font-weight:800;color:white;letter-spacing:-0.3px;">Impacto Mensurável nos Primeiros 90 Dias</div>
+      </div>
+    </div>
+    <div style="height:2px; background:linear-gradient(90deg,#06b6d4,#2563eb); border-radius:2px; margin-top:14px;"></div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.55);padding-top:8px;line-height:1.5;">Impacto em linguagem de negócio. O piloto valida as métricas com os dados reais do hospital.</p>
+  </div>
+
+  <div style="padding: 12px 36px 24px; display:flex; gap:14px; position:relative; z-index:2; flex:1;">
+    <div style="flex:1;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;">
+      <div style="font-size:36px;font-weight:800;color:#06b6d4;line-height:1;">–40%</div>
+      <div style="font-size:13px;font-weight:700;color:white;margin:8px 0 4px;">Tempo por Turno</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.4;">em registos clínicos manuais de enfermagem</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(6,182,212,0.2);font-size:10.5px;color:rgba(255,255,255,0.45);line-height:1.7;">
+        · Sinais vitais registados em &lt;30 segundos<br>
+        · Templates de notas estruturadas por turno<br>
+        · Elimina dupla entrada papel/sistema
+      </div>
+    </div>
+    <div style="flex:1;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.25);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;">
+      <div style="font-size:36px;font-weight:800;color:#93c5fd;line-height:1;">–60%</div>
+      <div style="font-size:13px;font-weight:700;color:white;margin:8px 0 4px;">Passagem de Turno</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.4;">com relatórios automáticos gerados pela plataforma</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,99,235,0.2);font-size:10.5px;color:rgba(255,255,255,0.45);line-height:1.7;">
+        · Relatório gerado automaticamente no fim do turno<br>
+        · Alertas activos e medicação pendente em destaque<br>
+        · Tempo médio: de 25 min para &lt; 8 min
+      </div>
+    </div>
+    <div style="flex:1;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;">
+      <div style="font-size:36px;font-weight:800;color:#6ee7b7;line-height:1;">↓ Erros</div>
+      <div style="font-size:13px;font-weight:700;color:white;margin:8px 0 4px;">Segurança Medicação</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.4;">deteção automática de interações medicamentosas</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(34,197,94,0.2);font-size:10.5px;color:rgba(255,255,255,0.45);line-height:1.7;">
+        · Verificação automática de interações e alergias<br>
+        · Alerta de dose dupla por turno<br>
+        · Rastreabilidade completa por enfermeiro
+      </div>
+    </div>
+    <div style="flex:1;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;">
+      <div style="font-size:36px;font-weight:800;color:#fca5a5;line-height:1;">Precoce</div>
+      <div style="font-size:13px;font-weight:700;color:white;margin:8px 0 4px;">Deteção Clínica</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.4;">deterioração identificada por scores antes de urgência</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(239,68,68,0.2);font-size:10.5px;color:rgba(255,255,255,0.45);line-height:1.7;">
+        · NEWS2 calculado a cada registo de sinais vitais<br>
+        · Alerta de sépsis com critérios SIRS em tempo real<br>
+        · SOFA score integrado com dados laboratoriais
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #06b6d4, #2563eb);"></div>
+  <div style="position:absolute;bottom:14px;right:28px;font-size:10px;color:rgba(255,255,255,0.2);font-weight:600;">09 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 10 — PORQUÊ CURASPHERE
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#eff6ff;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#2563eb;">Porquê CuraSphere</div>
+      <div class="slide-title">Não é Só Software — É Parceria Clínica de Longo Prazo</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #2563eb, #06b6d4);"></div>
+  <p class="slide-headline">Diferenciais concretos face à concorrência e ao status quo actual.</p>
+
+  <div class="slide-body">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1;">
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:#1d4ed8;margin-bottom:6px;">IA Clínica Nativa</div>
+        <div style="font-size:12px;color:#1e40af;line-height:1.45;">Não é módulo externo comprado. A IA foi integrada desde o design — responde ao contexto do doente, não apenas a comandos genéricos</div>
+      </div>
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:6px;">Integração sem Substituição</div>
+        <div style="font-size:12px;color:#166534;line-height:1.45;">FHIR R4 + HL7 v2 permitem integrar com sistemas existentes de laboratório, imagiologia e farmácia — sem substituir tudo de raiz</div>
+      </div>
+      <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:#c2410c;margin-bottom:6px;">Multi-plataforma Real</div>
+        <div style="font-size:12px;color:#9a3412;line-height:1.45;">Web + app nativa iOS/Android — não "app responsiva". Desenhado para os dois públicos: gestão/médicos no web, enfermeiros no mobile</div>
+      </div>
+      <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:12px; padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:#7e22ce;margin-bottom:6px;">Segurança desde o Design</div>
+        <div style="font-size:12px;color:#6b21a8;line-height:1.45;">MFA, RBAC, auditoria e RGPD não foram adicionados depois — fazem parte da arquitectura base desde a primeira linha de código</div>
+      </div>
+      <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:14px 16px; grid-column:span 2;">
+        <div style="font-size:13px;font-weight:700;color:#0369a1;margin-bottom:6px;">Contexto Hospitalar Português</div>
+        <div style="font-size:12px;color:#075985;line-height:1.45;">Construída especificamente para os fluxos clínicos, requisitos regulatórios e integrações do contexto português — não é uma adaptação de solução estrangeira</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #2563eb, #06b6d4);"></div>
+  <div class="slide-num">10 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 11 — PRÓXIMOS PASSOS
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f0fdf4;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#16a34a;">Próximos Passos</div>
+      <div class="slide-title">Da Apresentação à Decisão em Três Passos Simples</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #16a34a, #2563eb);"></div>
+  <p class="slide-headline">Não pedimos uma decisão de compra hoje. Pedimos 45 minutos para mostrar a CuraSphere na prática.</p>
+
+  <div class="slide-body">
+    <div class="cta-steps">
+      <div class="cta-step" style="background:#f0fdf4; border:2px solid #22c55e; justify-content:space-between;">
+        <div>
+          <div class="cta-num" style="color:#16a34a;">01</div>
+          <div class="cta-title" style="color:#15803d;">Demo Guiada (45 min)</div>
+          <div class="cta-desc" style="color:#166534;">Caso de uso real numa enfermaria tipo — sinais vitais, alertas IA, prescrição e mobile. Sem slides.</div>
+        </div>
+        <div style="border-top:1px solid #bbf7d0; padding-top:10px; margin-top:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#15803d;margin-bottom:6px;">Inclui</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:11px;color:#166534;display:flex;gap:5px;"><span style="color:#22c55e;">✓</span> Doente simulado com dados reais</div>
+            <div style="font-size:11px;color:#166534;display:flex;gap:5px;"><span style="color:#22c55e;">✓</span> Demonstração da app mobile</div>
+            <div style="font-size:11px;color:#166534;display:flex;gap:5px;"><span style="color:#22c55e;">✓</span> Q&A técnico e clínico</div>
+          </div>
+        </div>
+        <div style="font-size:11px; font-weight:700; color:#16a34a; text-transform:uppercase; letter-spacing:0.5px; margin-top:8px;">Sem compromisso</div>
+      </div>
+      <div class="cta-step" style="background:#eff6ff; border:2px solid #3b82f6; justify-content:space-between;">
+        <div>
+          <div class="cta-num" style="color:#2563eb;">02</div>
+          <div class="cta-title" style="color:#1d4ed8;">Piloto Estruturado (90 dias)</div>
+          <div class="cta-desc" style="color:#1e40af;">1 enfermaria. Métricas e ROI definidos à partida. Equipa de implementação dedicada. Resultado mensurável.</div>
+        </div>
+        <div style="border-top:1px solid #bfdbfe; padding-top:10px; margin-top:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:6px;">Inclui</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:11px;color:#1e40af;display:flex;gap:5px;"><span style="color:#3b82f6;">✓</span> Instalação e configuração completa</div>
+            <div style="font-size:11px;color:#1e40af;display:flex;gap:5px;"><span style="color:#3b82f6;">✓</span> Formação das equipas clínicas</div>
+            <div style="font-size:11px;color:#1e40af;display:flex;gap:5px;"><span style="color:#3b82f6;">✓</span> Suporte semanal dedicado</div>
+          </div>
+        </div>
+        <div style="font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase; letter-spacing:0.5px; margin-top:8px;">Risco controlado</div>
+      </div>
+      <div class="cta-step" style="background:var(--navy); border:2px solid #2563eb; justify-content:space-between;">
+        <div>
+          <div class="cta-num" style="color:rgba(255,255,255,0.2);">03</div>
+          <div class="cta-title" style="color:white;">Proposta Formal</div>
+          <div class="cta-desc" style="color:rgba(255,255,255,0.65);">Após validação do piloto — proposta ajustada às especificidades do hospital, com SLA e suporte definidos.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.4);margin-bottom:6px;">Inclui</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);display:flex;gap:5px;"><span style="color:#06b6d4;">✓</span> Proposta financeira personalizada</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);display:flex;gap:5px;"><span style="color:#06b6d4;">✓</span> SLA e plano de suporte detalhado</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);display:flex;gap:5px;"><span style="color:#06b6d4;">✓</span> Plano de migração e rollout</div>
+          </div>
+        </div>
+        <div style="font-size:11px; font-weight:700; color:#06b6d4; text-transform:uppercase; letter-spacing:0.5px; margin-top:8px;">Decisão informada</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin: 0 36px 16px; background:linear-gradient(90deg,#eff6ff,#f0fdf4); border:1px solid #bfdbfe; border-radius:12px; padding:12px 18px; display:flex; align-items:center; gap:12px;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    <div style="font-size:12.5px; color:#1e40af; font-weight:500;">Para agendar a demo, responda a este email ou contacte-nos directamente. Respondemos em menos de 24 horas.</div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #16a34a, #2563eb);"></div>
+  <div class="slide-num">11 / 12</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 12 — INFORMAÇÃO TÉCNICA DE SUPORTE
+════════════════════════════════════════════════════ -->
+<div class="slide" style="position:relative;">
+  <div class="slide-header">
+    <div class="slide-icon" style="background:#f8fafc;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+      </svg>
+    </div>
+    <div class="slide-title-block">
+      <div class="slide-label" style="color:#475569;">Suporte Técnico</div>
+      <div class="slide-title">Para Validação de Integração e Compliance pelo Departamento de IT</div>
+    </div>
+  </div>
+  <div class="divider" style="background: linear-gradient(90deg, #475569, #0891b2);"></div>
+  <p class="slide-headline">Informação de referência para o director de informática ou responsável de compliance efectuar a avaliação técnica.</p>
+
+  <div class="slide-body">
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#eff6ff;">🔗</div>
+        <div class="tech-content">
+          <div class="tech-label">Integração</div>
+          <div class="tech-value">FHIR R4 + HL7 v2 — laboratório, imagiologia, farmácia e outros HIS</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · REST API documentada (OpenAPI 3.0)<br>
+            · Webhooks para eventos externos em tempo real<br>
+            · SDK open-source para integradores locais
+          </div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#f0fdf4;">🖥️</div>
+        <div class="tech-content">
+          <div class="tech-label">Infraestrutura</div>
+          <div class="tech-value">Cloud ou on-premise hospitalar — Docker, PostgreSQL, Redis. Sem vendor lock-in</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · Imagens Docker reproducíveis e assinadas<br>
+            · Migrações de schema automáticas (Prisma)<br>
+            · CI/CD com testes e auditoria de dependências
+          </div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#fdf4ff;">🔐</div>
+        <div class="tech-content">
+          <div class="tech-label">Segurança Técnica</div>
+          <div class="tech-value">TLS 1.3, HSTS, CSP, MFA TOTP, RBAC granular, auditoria imutável</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · JWT com refresh token rotation automático<br>
+            · Rate limiting e body-size limit por endpoint<br>
+            · Break-glass com notificação imediata ao DPO
+          </div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#fefce8;">🛡️</div>
+        <div class="tech-content">
+          <div class="tech-label">Privacidade & RGPD</div>
+          <div class="tech-value">Sem dados clínicos em logs. Portal do doente com export controlado. RGPD by design</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · Consentimento informado digital com versioning<br>
+            · Direito ao esquecimento (anonimização reversível)<br>
+            · Isolamento lógico por hospital (multi-tenant)
+          </div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#fff1f2;">📊</div>
+        <div class="tech-content">
+          <div class="tech-label">Disponibilidade</div>
+          <div class="tech-value">99.9% SLA. Healthchecks automáticos. Backup diário com retenção 30 dias</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · Redis para cache, sessões e rate limiting<br>
+            · Alertas Sentry em tempo real para a equipa<br>
+            · Rollback automático em falha de deploy
+          </div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon-wrap" style="background:#f0f9ff;">📱</div>
+        <div class="tech-content">
+          <div class="tech-label">Mobile</div>
+          <div class="tech-value">React Native nativo. Offline-first com sincronização automática ao recuperar rede</div>
+          <div style="font-size:10px;color:#64748b;margin-top:5px;line-height:1.6;">
+            · iOS e Android com uma única base de código<br>
+            · Notificações push para alertas clínicos urgentes<br>
+            · Sincronização parcial limitada aos doentes atribuídos
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar" style="background: linear-gradient(90deg, #475569, #0891b2);"></div>
+  <div class="slide-num">12 / 12</div>
+</div>
+
+</body>
+</html>

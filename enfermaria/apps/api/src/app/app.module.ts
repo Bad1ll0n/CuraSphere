@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
+import { CsrfMiddleware } from './common/csrf.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 import * as Joi from 'joi';
 import { randomUUID } from 'crypto';
 import { LoggerModule } from 'nestjs-pino';
@@ -18,11 +20,16 @@ import { AppService } from './app.service';
 import { AuditService } from './common/audit.service';
 import { AuditController } from './common/audit.controller';
 import { AuditInterceptor } from './common/audit.interceptor';
+import { CspReportController } from './common/csp-report.controller';
 import { ClinicalModule } from './clinical.module';
 import { GestaoModule } from './gestao.module';
 import { OperacionalModule } from './operacional.module';
 import { StorageModule } from './common/storage.module';
 import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.module';
+import { GuidelinesModule } from './guidelines/guidelines.module';
+import { PortalDoenteModule } from './portal-doente/portal-doente.module';
+import { Hl7Module } from './hl7/hl7.module';
+import { DashboardConfigModule } from './dashboard-config/dashboard-config.module';
 
 @Module({
   imports: [
@@ -60,6 +67,7 @@ import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.mo
       },
     }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 60 }]),
+    ScheduleModule.forRoot(),
     TerminusModule,
     PrismaModule,
     RedisModule,
@@ -69,13 +77,17 @@ import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.mo
     ConfiguracoesModule,
     StorageModule,
     SistemasExternosModule,
+    GuidelinesModule,
+    PortalDoenteModule,
+    Hl7Module,
+    DashboardConfigModule,
 
     // ─── Domínios ─────────────────────────────────────────────────────────────
     ClinicalModule,
     GestaoModule,
     OperacionalModule,
   ],
-  controllers: [AppController, AuditController],
+  controllers: [AppController, AuditController, CspReportController],
   providers: [
     AppService,
     AuditService,
@@ -84,4 +96,10 @@ import { SistemasExternosModule } from './sistemas-externos/sistemas-externos.mo
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CsrfMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

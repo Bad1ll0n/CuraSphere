@@ -27,7 +27,6 @@ export class SinalizacoesService {
       include: { criadaPor: { select: { id: true, nome: true, role: true } } },
     });
 
-    const urgencia = dto.nivelUrgencia === 'urgente' ? 'alta' : 'media';
     await this.alertas.criarAlerta(
       doenteId,
       'sinalizacao_preocupante',

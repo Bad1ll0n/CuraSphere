@@ -78,7 +78,7 @@ export class TurnosController {
   @Roles('enfermeiro', 'administrativo')
   @Post()
   criar(@Body() dto: CriarTurnoDto) {
-    return this.turnosService.criar({ ...dto, tipo: dto.tipo as TipoTurno });
+    return this.turnosService.criar({ ...dto, tipo: dto.tipo as TipoTurno, dataInicio: new Date(dto.dataInicio), dataFim: new Date(dto.dataFim) });
   }
 
   @Get(':id/relatorio/pdf')

@@ -195,11 +195,39 @@ const ESCALA_CONFIG: Record<string, {
     calcularPontuacao: (v) => (v['nivel'] as number) ?? 1,
     classificar: (p) => p <= 2 ? 'Sem/mínima ingestão oral' : p <= 4 ? 'Ingestão oral parcial' : p <= 6 ? 'Ingestão oral com restrições' : 'Ingestão oral normal',
   },
+  Glasgow: {
+    label: 'Glasgow (GCS)', cor: 'indigo',
+    itens: [
+      { key: 'ocular', label: 'Abertura Ocular (E)', opcoes: [
+        { v: 1, l: 'E1 — Sem resposta' },
+        { v: 2, l: 'E2 — À dor' },
+        { v: 3, l: 'E3 — À voz' },
+        { v: 4, l: 'E4 — Espontânea' },
+      ]},
+      { key: 'verbal', label: 'Resposta Verbal (V)', opcoes: [
+        { v: 1, l: 'V1 — Sem resposta' },
+        { v: 2, l: 'V2 — Sons incompreensíveis' },
+        { v: 3, l: 'V3 — Palavras inapropriadas' },
+        { v: 4, l: 'V4 — Confuso/desorientado' },
+        { v: 5, l: 'V5 — Orientado' },
+      ]},
+      { key: 'motor', label: 'Resposta Motora (M)', opcoes: [
+        { v: 1, l: 'M1 — Sem resposta' },
+        { v: 2, l: 'M2 — Extensão (descerebração)' },
+        { v: 3, l: 'M3 — Flexão anormal (decorticação)' },
+        { v: 4, l: 'M4 — Retirada à dor' },
+        { v: 5, l: 'M5 — Localiza a dor' },
+        { v: 6, l: 'M6 — Obedece a ordens' },
+      ]},
+    ],
+    calcularPontuacao: (v) => ((v['ocular'] as number) ?? 0) + ((v['verbal'] as number) ?? 0) + ((v['motor'] as number) ?? 0),
+    classificar: (p) => p <= 8 ? 'Grave (TCE grave)' : p <= 12 ? 'Moderado' : 'Ligeiro',
+  },
 };
 
 const COR_ESCALAS: Record<string, string> = {
   RASS: 'violet', CPOT: 'rose', SOFA: 'red', CTG: 'pink', Apgar: 'blue', PEWS: 'amber', FLACC: 'orange',
-  Barthel: 'green', MRC: 'blue', FOIS: 'teal', NRS2002: 'amber', PHQ9: 'purple', GAD7: 'teal',
+  Barthel: 'green', MRC: 'blue', FOIS: 'teal', NRS2002: 'amber', PHQ9: 'purple', GAD7: 'teal', Glasgow: 'indigo',
 };
 
 export function EscalasClinicasPanel({ doenteId, utilizador }: Props) {

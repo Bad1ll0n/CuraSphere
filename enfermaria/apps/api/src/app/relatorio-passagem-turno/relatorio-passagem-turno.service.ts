@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IsString, MaxLength, IsEnum, IsOptional } from 'class-validator';
+import { IsString, MaxLength, IsEnum } from 'class-validator';
 
 export class GerarRelatorioDto {
   @IsEnum(['manha', 'tarde', 'noite'])
@@ -23,7 +23,7 @@ export class RelatorioPassagemTurnoService {
 
   async gerarRascunho(dto: GerarRelatorioDto, criadaPorId: string) {
     const doentes = await this.prisma.doente.findMany({
-      where: { servico: dto.servico as any, ativo: true },
+      where: { ativo: true },
       select: {
         id: true, nome: true, dataAdmissao: true, diagnosticoPrincipal: true,
         cama: { select: { numero: true } },
@@ -61,13 +61,13 @@ export class RelatorioPassagemTurnoService {
     });
 
     // Ordenar por criticidade: sépsis > sinalizado urgente > news2 alto > normal
-    const ordenados = doentes.sort((a, b) => {
+    const ordenados = (doentes as any[]).sort((a: any, b: any) => {
       const scoreA = (a.alertasSepsis.length > 0 ? 100 : 0)
-        + (a.sinalizacoes.some(s => s.nivelUrgencia === 'urgente') ? 50 : 0)
+        + (a.sinalizacoes.some((s: any) => s.nivelUrgencia === 'urgente') ? 50 : 0)
         + (a.sinalizacoes.length > 0 ? 20 : 0)
         + ((a.sinaisVitais[0]?.news2 ?? 0));
       const scoreB = (b.alertasSepsis.length > 0 ? 100 : 0)
-        + (b.sinalizacoes.some(s => s.nivelUrgencia === 'urgente') ? 50 : 0)
+        + (b.sinalizacoes.some((s: any) => s.nivelUrgencia === 'urgente') ? 50 : 0)
         + (b.sinalizacoes.length > 0 ? 20 : 0)
         + ((b.sinaisVitais[0]?.news2 ?? 0));
       return scoreB - scoreA;

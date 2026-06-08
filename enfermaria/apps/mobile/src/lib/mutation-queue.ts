@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from './api';
 
 const QUEUE_KEY = 'curasphere:mutation_queue';
+const MAX_TENTATIVAS = 3;
 
 export interface QueuedOp {
   id: string;
@@ -31,25 +32,42 @@ export async function getQueue(): Promise<QueuedOp[]> {
   }
 }
 
+export async function getQueueLength(): Promise<number> {
+  return (await getQueue()).length;
+}
+
+async function tentarReplay(op: QueuedOp, tentativa = 0): Promise<'ok' | 'fail'> {
+  try {
+    await (api as any)[op.method.toLowerCase()](op.url, op.body);
+    return 'ok';
+  } catch {
+    if (tentativa < MAX_TENTATIVAS - 1) {
+      await new Promise((r) => setTimeout(r, 500 * Math.pow(2, tentativa)));
+      return tentarReplay(op, tentativa + 1);
+    }
+    return 'fail';
+  }
+}
+
 export async function flushMutationQueue(): Promise<{ sucesso: number; falha: number }> {
   const queue = await getQueue();
   if (queue.length === 0) return { sucesso: 0, falha: 0 };
 
   let sucesso = 0;
   let falha = 0;
-  const restantes: QueuedOp[] = [];
+  const falhados: QueuedOp[] = [];
 
   for (const op of queue) {
-    try {
-      await (api as any)[op.method.toLowerCase()](op.url, op.body);
+    const resultado = await tentarReplay(op);
+    if (resultado === 'ok') {
       sucesso++;
-    } catch {
+    } else {
       falha++;
-      restantes.push(op);
+      falhados.push(op);
     }
   }
 
-  await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(restantes));
+  await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(falhados));
   return { sucesso, falha };
 }
 

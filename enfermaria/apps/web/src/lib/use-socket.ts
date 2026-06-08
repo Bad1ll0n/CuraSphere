@@ -28,6 +28,9 @@ type SocketEvent =
   | 'bloco:update'
   | 'turno:passagem-desafio'
   | 'turno:passagem-confirmada'
+  | 'nota:lock'
+  | 'nota:unlock'
+  | 'nota:lock-denied'
   | 'pong';
 
 export function useSocket(

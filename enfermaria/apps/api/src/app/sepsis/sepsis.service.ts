@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { EventsGateway } from '../gateway/events.gateway';
@@ -12,8 +12,6 @@ interface SinalVitalParams {
 
 @Injectable()
 export class SepsisService {
-  private readonly logger = new Logger(SepsisService.name);
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly alertas: AlertasService,

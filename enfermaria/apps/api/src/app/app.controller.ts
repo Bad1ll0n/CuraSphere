@@ -1,4 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
+import type { Response } from 'express';
+import { randomBytes } from 'crypto';
 import { HealthCheck, HealthCheckService, PrismaHealthIndicator } from '@nestjs/terminus';
 import { SkipThrottle } from '@nestjs/throttler';
 import { PrismaService } from './prisma/prisma.service';
@@ -17,6 +19,17 @@ export class AppController {
   @Get()
   getData() {
     return { message: 'CuraSphere API' };
+  }
+
+  @Get('csrf-token')
+  getCsrfToken(@Res() res: Response) {
+    const token = randomBytes(32).toString('hex');
+    res.cookie('csrf-token', token, {
+      httpOnly: false, // must be readable by JS
+      sameSite: 'strict',
+      secure: process.env['NODE_ENV'] === 'production',
+    });
+    res.json({ token });
   }
 
   @Get('health')

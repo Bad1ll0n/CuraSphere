@@ -1,8 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '@/lib/api';
 import { useToast } from '@/components/toast';
+import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
+import { FormField } from '@/components/form-field';
 
 const TIPOS_FERIDA = [
   { value: 'ulcera_pressao', label: 'Úlcera de Pressão', color: 'bg-red-100 text-red-700' },
@@ -53,6 +55,24 @@ const PERIFERIA_OPTIONS = [
   { value: 'callosa', label: 'Calosa' },
 ];
 
+interface AnaliseIA {
+  estadio?: string;
+  sinaisInfecao?: string[];
+  tecidoLeito?: string;
+  recomendacao?: string;
+  confianca?: string;
+  analisadaEm?: string;
+}
+
+interface FotoFerida {
+  id: string;
+  url: string;
+  mimeType: string;
+  criadaEm: string;
+  criadaPorId: string;
+  analiseIA?: AnaliseIA;
+}
+
 interface AvaliacaoFerida {
   id: string;
   criadaEm: string;
@@ -72,6 +92,7 @@ interface AvaliacaoFerida {
   proximaTroca?: string;
   notas?: string;
   registadoPor: { id: string; nome: string };
+  fotos: FotoFerida[];
 }
 
 interface FeridasPanelProps {
@@ -128,9 +149,18 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [guardando, setGuardando] = useState(false);
   const [expandido, setExpandido] = useState<string | null>(null);
+  const [uploadingFoto, setUploadingFoto] = useState<string | null>(null); // avaliacaoId em upload
+  const [analisandoFoto, setAnalisandoFoto] = useState<string | null>(null); // fotoId em análise IA
+  const [lightbox, setLightbox] = useState<string | null>(null); // URL da foto em lightbox
+  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const toast = useToast();
 
+  const [feridasErrors, setFeridasErrors] = useState<Record<string, string>>({});
+  const formDirty = modalAberto && (form.localizacao.trim().length > 0 || form.notas.trim().length > 0);
+  useUnsavedChanges(formDirty);
+
   const podeRegistar = ['medico', 'enfermeiro', 'tecnico_saude'].includes(utilizador?.role ?? '');
+  const podeAnalisar = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(utilizador?.role ?? '');
 
   const carregar = useCallback(async () => {
     setLoading(true);
@@ -153,7 +183,10 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
   };
 
   const submeter = async () => {
-    if (!form.localizacao.trim()) { toast.error('Localização obrigatória'); return; }
+    const erros: Record<string, string> = {};
+    if (!form.localizacao.trim()) erros['localizacao'] = 'Localização é obrigatória';
+    setFeridasErrors(erros);
+    if (Object.keys(erros).length > 0) return;
     setGuardando(true);
     try {
       await api.post(`/feridas/${doenteId}`, {
@@ -190,6 +223,45 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
       carregar();
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao remover');
+    }
+  };
+
+  const uploadFoto = async (avaliacaoId: string, file: File) => {
+    if (!['image/jpeg', 'image/png'].includes(file.type)) { toast.error('Apenas JPEG ou PNG'); return; }
+    if (file.size > 10 * 1024 * 1024) { toast.error('Ficheiro demasiado grande (máx 10 MB)'); return; }
+    setUploadingFoto(avaliacaoId);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      await api.post(`/feridas/${avaliacaoId}/fotos`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      toast.success('Foto adicionada');
+      carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao enviar foto');
+    } finally {
+      setUploadingFoto(null);
+    }
+  };
+
+  const apagarFoto = async (fotoId: string) => {
+    try {
+      await api.delete(`/feridas/fotos/${fotoId}`);
+      carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao remover foto');
+    }
+  };
+
+  const analisarFotoIA = async (avaliacaoId: string, fotoId: string) => {
+    setAnalisandoFoto(fotoId);
+    try {
+      await api.post(`/feridas/${avaliacaoId}/fotos/${fotoId}/analisar`);
+      toast.success('Análise IA concluída');
+      carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro na análise IA');
+    } finally {
+      setAnalisandoFoto(null);
     }
   };
 
@@ -349,8 +421,114 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                         </div>
                       )}
 
+                      {/* Fotografias */}
+                      <div style={{ marginTop: '12px' }}>
+                        <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
+                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Fotografias</p>
+                          {podeRegistar && (
+                            <>
+                              <input
+                                type="file"
+                                accept="image/jpeg,image/png"
+                                className="hidden"
+                                ref={el => { fileInputRefs.current[av.id] = el; }}
+                                onChange={e => { const f = e.target.files?.[0]; if (f) uploadFoto(av.id, f); e.target.value = ''; }}
+                              />
+                              <button
+                                onClick={() => fileInputRefs.current[av.id]?.click()}
+                                disabled={uploadingFoto === av.id}
+                                className="text-xs text-slate-500 hover:text-rose-600 border border-slate-200 hover:border-rose-300 rounded-lg transition-colors disabled:opacity-50"
+                                style={{ padding: '3px 10px' }}>
+                                {uploadingFoto === av.id ? 'A enviar...' : '+ Foto'}
+                              </button>
+                            </>
+                          )}
+                        </div>
+                        {(av.fotos?.length ?? 0) === 0 ? (
+                          <p className="text-xs text-slate-300 italic">Sem fotografias</p>
+                        ) : (
+                          <div className="flex flex-col gap-3">
+                            {av.fotos.map((foto) => (
+                              <div key={foto.id} className="flex flex-col gap-2">
+                                <div className="flex items-start gap-3">
+                                  <div className="relative group shrink-0">
+                                    <img
+                                      src={foto.url}
+                                      alt="Fotografia da ferida"
+                                      onClick={() => setLightbox(foto.url)}
+                                      className="w-20 h-20 object-cover rounded-xl border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
+                                    />
+                                    {podeRegistar && (
+                                      <button
+                                        onClick={() => apagarFoto(foto.id)}
+                                        className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hidden group-hover:flex"
+                                        aria-label="Remover foto">
+                                        ×
+                                      </button>
+                                    )}
+                                  </div>
+                                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                                    <p className="text-xs text-slate-400">{new Date(foto.criadaEm).toLocaleDateString('pt-PT')}</p>
+                                    {podeAnalisar && (
+                                      <button
+                                        onClick={() => analisarFotoIA(av.id, foto.id)}
+                                        disabled={analisandoFoto === foto.id}
+                                        className="inline-flex items-center gap-1.5 self-start text-xs font-semibold text-violet-600 hover:text-violet-700 border border-violet-200 hover:border-violet-300 bg-violet-50 hover:bg-violet-100 rounded-lg transition-colors disabled:opacity-60"
+                                        style={{ padding: '4px 10px' }}>
+                                        {analisandoFoto === foto.id ? (
+                                          <>
+                                            <svg className="animate-spin w-3 h-3" fill="none" viewBox="0 0 24 24">
+                                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                            </svg>
+                                            A analisar…
+                                          </>
+                                        ) : foto.analiseIA ? (
+                                          '✦ Reanalisar'
+                                        ) : (
+                                          '✦ Analisar com IA'
+                                        )}
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                                {foto.analiseIA && (
+                                  <div className="rounded-xl border border-violet-100 bg-violet-50/60" style={{ padding: '12px 14px' }}>
+                                    <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: '8px' }}>
+                                      <span className={`text-xs font-bold rounded-lg ${estadioBadgeColor(foto.analiseIA.estadio)} `} style={{ padding: '2px 8px' }}>
+                                        Estádio {foto.analiseIA.estadio ?? '—'}
+                                      </span>
+                                      <span className={`text-xs font-semibold rounded-lg ${confiancaBadge(foto.analiseIA.confianca)}`} style={{ padding: '2px 8px' }}>
+                                        Confiança: {foto.analiseIA.confianca ?? '—'}
+                                      </span>
+                                    </div>
+                                    {foto.analiseIA.tecidoLeito && (
+                                      <p className="text-xs text-slate-600" style={{ marginBottom: '4px' }}>
+                                        <span className="font-semibold text-slate-500">Leito:</span> {foto.analiseIA.tecidoLeito}
+                                      </p>
+                                    )}
+                                    {(foto.analiseIA.sinaisInfecao?.length ?? 0) > 0 && (
+                                      <p className="text-xs text-red-700 font-medium" style={{ marginBottom: '4px' }}>
+                                        ⚠ Sinais de infecção: {foto.analiseIA.sinaisInfecao!.join(', ')}
+                                      </p>
+                                    )}
+                                    {foto.analiseIA.recomendacao && (
+                                      <p className="text-xs text-slate-700" style={{ marginBottom: '6px' }}>{foto.analiseIA.recomendacao}</p>
+                                    )}
+                                    <p className="text-xs text-slate-400 italic">
+                                      Análise de apoio clínico. Não substitui avaliação presencial.
+                                      {foto.analiseIA.analisadaEm && ` · ${new Date(foto.analiseIA.analisadaEm).toLocaleDateString('pt-PT')}`}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
                       {podeRegistar && utilizador?.id === av.registadoPor.id && (
-                        <div className="flex justify-end">
+                        <div className="flex justify-end" style={{ marginTop: '12px' }}>
                           <button onClick={() => apagar(av.id)}
                             className="text-xs text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
                             style={{ padding: '4px 10px' }}>
@@ -366,6 +544,22 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
           </div>
         )}
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}
+          onClick={() => setLightbox(null)}>
+          <img src={lightbox} alt="Fotografia da ferida" className="max-w-full max-h-full rounded-xl" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+          <button
+            onClick={() => setLightbox(null)}
+            className="absolute top-4 right-4 w-9 h-9 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
+            style={{ fontSize: '20px', lineHeight: 1 }}>
+            ×
+          </button>
+        </div>
+      )}
 
       {/* Modal Nova Avaliação */}
       {modalAberto && (
@@ -417,13 +611,13 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Localização *</label>
-                    <input type="text" value={form.localizacao} onChange={e => setForm(f => ({ ...f, localizacao: e.target.value }))}
+                  <FormField label="Localização" required error={feridasErrors['localizacao']}>
+                    <input type="text" value={form.localizacao}
+                      onChange={e => { setForm(f => ({ ...f, localizacao: e.target.value })); setFeridasErrors(prev => { const n = { ...prev }; delete n['localizacao']; return n; }); }}
                       placeholder="Ex: Sacro, Calcanhar direito, Maléolo..."
-                      className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-400 transition"
+                      className={`w-full border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-400 transition ${feridasErrors['localizacao'] ? 'border-red-400' : 'border-slate-200'}`}
                       style={{ padding: '10px 14px' }} maxLength={300} />
-                  </div>
+                  </FormField>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '8px' }}>Estado de Cicatrização *</label>
@@ -600,4 +794,23 @@ export function FeridasPanel({ doenteId, utilizador }: FeridasPanelProps) {
 
 function estatoLabel(e: string) {
   return ESTADOS_CICATRIZACAO.find((s) => s.value === e)?.label ?? e;
+}
+
+function estadioBadgeColor(estadio?: string) {
+  switch (estadio) {
+    case 'I': return 'bg-green-100 text-green-700';
+    case 'II': return 'bg-yellow-100 text-yellow-700';
+    case 'III': return 'bg-orange-100 text-orange-700';
+    case 'IV': return 'bg-red-100 text-red-700';
+    default: return 'bg-slate-100 text-slate-600';
+  }
+}
+
+function confiancaBadge(confianca?: string) {
+  switch (confianca) {
+    case 'alta': return 'bg-green-100 text-green-700';
+    case 'media': return 'bg-yellow-100 text-yellow-700';
+    case 'baixa': return 'bg-slate-100 text-slate-500';
+    default: return 'bg-slate-100 text-slate-500';
+  }
 }

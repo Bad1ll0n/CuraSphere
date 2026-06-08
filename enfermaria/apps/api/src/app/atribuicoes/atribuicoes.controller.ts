@@ -20,6 +20,12 @@ export class AtribuicoesController {
     return this.service.turnoAtivo();
   }
 
+  // Histórico de pares enfermeiro-doente (para badge de continuidade de cuidados)
+  @Get('turno/:turnoId/historico')
+  historico(@Param('turnoId') turnoId: string) {
+    return this.service.historicoPares(turnoId);
+  }
+
   // Turno por id
   @Get('turno/:turnoId')
   buscarTurno(@Param('turnoId') turnoId: string) {

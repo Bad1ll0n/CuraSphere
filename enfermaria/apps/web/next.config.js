@@ -2,6 +2,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withSentryConfig } = require('@sentry/nextjs');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -39,6 +41,7 @@ const nextConfig = {
               "frame-ancestors 'none'",
               "object-src 'none'",
               "base-uri 'self'",
+              `report-uri ${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'}/v1/csp-report`,
             ].join('; '),
           },
         ],
@@ -49,4 +52,11 @@ const nextConfig = {
 
 const plugins = [withNx];
 
-module.exports = composePlugins(...plugins)(nextConfig);
+const baseConfig = composePlugins(...plugins)(nextConfig);
+
+module.exports = withSentryConfig(baseConfig, {
+  silent: true,
+  // Desactivar upload de source maps se não houver auth token configurado
+  disableServerWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
+  disableClientWebpackPlugin: !process.env.SENTRY_AUTH_TOKEN,
+});

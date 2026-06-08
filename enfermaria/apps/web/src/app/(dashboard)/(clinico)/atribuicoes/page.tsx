@@ -65,6 +65,7 @@ export default function AtribuicoesPage() {
   const [turnoSelecionado, setTurnoSelecionado] = useState<HorarioTurno | null>(null);
   const [loading, setLoading] = useState(true);
   const [salvando, setSalvando] = useState(false);
+  const [historico, setHistorico] = useState<Record<string, number>>({});
 
   const meuGrupo = grupoRoles[utilizador?.role ?? ''] ?? ['enfermeiro'];
 
@@ -110,6 +111,16 @@ export default function AtribuicoesPage() {
   };
 
   const souChefe = turnoSelecionado ? chefeDeTurno(turnoSelecionado)?.id === utilizador?.id : false;
+
+  useEffect(() => {
+    if (turnoSelecionado && souChefe) {
+      api.get(`/atribuicoes/turno/${turnoSelecionado.id}/historico`)
+        .then(r => setHistorico(r.data))
+        .catch(() => setHistorico({}));
+    } else {
+      setHistorico({});
+    }
+  }, [turnoSelecionado?.id, souChefe]);
 
   const atribuicaoDe = (doenteId: string): Atribuicao | undefined =>
     turnoSelecionado?.atribuicoes.find((a) => a.doenteId === doenteId && meuGrupo.includes(a.utilizador.role));
@@ -282,20 +293,28 @@ export default function AtribuicoesPage() {
                                   <div className="flex flex-wrap gap-2">
                                     {enfermeirosDoTurno.map((p) => {
                                       const selecionado = atrib?.utilizadorId === p.utilizadorId;
+                                      const count = historico[`${p.utilizadorId}|${d.id}`] ?? 0;
                                       return (
                                         <button
                                           key={p.utilizadorId}
                                           onClick={() => atribuir(d.id, p.utilizadorId)}
                                           disabled={salvando}
-                                          className={`text-xs font-medium rounded-lg border transition-all ${
+                                          className={`inline-flex items-center gap-1.5 text-xs font-medium rounded-lg border transition-all ${
                                             selecionado
                                               ? 'bg-blue-600 text-white border-blue-600'
                                               : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
                                           }`}
                                           style={{ padding: '5px 10px' }}
                                         >
-                                          {p.utilizador.nome.split(' ')[0]}
-                                          {p.utilizador.equipa ? ` · ${p.utilizador.equipa}` : ''}
+                                          <span>
+                                            {p.utilizador.nome.split(' ')[0]}
+                                            {p.utilizador.equipa ? ` · ${p.utilizador.equipa}` : ''}
+                                          </span>
+                                          {count > 0 && (
+                                            <span className={`rounded px-1 leading-none ${selecionado ? 'bg-white/20 text-white' : 'bg-green-100 text-green-700'}`}>
+                                              ↩ {count}×
+                                            </span>
+                                          )}
                                         </button>
                                       );
                                     })}

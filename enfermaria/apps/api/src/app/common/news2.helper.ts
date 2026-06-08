@@ -1,6 +1,7 @@
 export interface News2Params {
   frequenciaRespiratoria?: number | null;
   saturacaoO2?: number | null;
+  o2Suplementar?: boolean | null;
   temperatura?: number | null;
   pressaoSistolica?: number | null;
   pulso?: number | null;
@@ -34,6 +35,9 @@ export function calcularNEWS2(params: News2Params): number | null {
     else if (spo2 <= 93) score += 2;
     else if (spo2 <= 95) score += 1;
   }
+
+  // O2 suplementar: +2 pontos se em uso (NEWS2 parâmetro independente)
+  if (params.o2Suplementar) score += 2;
 
   if (params.temperatura != null) {
     const t = params.temperatura;

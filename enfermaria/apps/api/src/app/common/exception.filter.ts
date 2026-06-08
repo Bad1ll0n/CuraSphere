@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma';
 
@@ -73,6 +74,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         `${request.method} ${request.url} → ${status}`,
         exception instanceof Error ? exception.stack : String(exception),
       );
+      // Reportar erros 5xx ao Sentry (não reportar 4xx que são input do utilizador)
+      if (!(exception instanceof HttpException)) {
+        Sentry.captureException(exception);
+      }
     }
 
     const body: Record<string, unknown> = {
