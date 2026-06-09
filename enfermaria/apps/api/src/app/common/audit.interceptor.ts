@@ -7,8 +7,10 @@ import {
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { AuditService } from './audit.service';
+import { AnomalyDetectionService } from './anomaly-detection.service';
 
 const METODOS_AUDITADOS = new Set(['POST', 'PATCH', 'PUT', 'DELETE']);
+const DOENTE_ID_RE = /^\/(?:v\d+\/)?doentes\/([0-9a-f-]{8,})/i;
 
 const CAMPOS_SENSIVEIS = new Set([
   'password', 'passwordAtual', 'novaPassword', 'passwordHash',
@@ -51,12 +53,23 @@ function anonimizarAcao(method: string, url: string): string {
 export class AuditInterceptor implements NestInterceptor {
   private readonly logger = new Logger(AuditInterceptor.name);
 
-  constructor(private audit: AuditService) {}
+  constructor(
+    private audit: AuditService,
+    private anomaly: AnomalyDetectionService,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const { method, url, user, ip, headers } = req;
     const userAgent: string | undefined = headers['user-agent'];
+
+    // Detecção de anomalia: acesso bulk a doentes via GET
+    if (method === 'GET' && user?.sub) {
+      const m = DOENTE_ID_RE.exec(url.split('?')[0]);
+      if (m) {
+        this.anomaly.rastrearAcessoDoente(user.sub, m[1]);
+      }
+    }
 
     if (!METODOS_AUDITADOS.has(method) || !user?.sub) {
       return next.handle();

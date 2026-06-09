@@ -24,6 +24,8 @@ interface Documento {
   fhirResourceId?: string;
   storageKey?: string;
   urlExterna?: string;
+  assinadoEm?: string | null;
+  assinadoPor?: { id: string; nome: string } | null;
   sistemaOrigem?: { nome: string; tipo: string } | null;
   registadoPor?: { nome: string } | null;
 }
@@ -55,6 +57,7 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
   const podeUpload = ['medico', 'enfermeiro', 'tecnico_saude'].includes(role);
   const podeSincronizar = ['medico', 'enfermeiro', 'chefe_enfermeiros'].includes(role);
   const podeApagar = ['medico', 'chefe_enfermeiros', 'it_admin'].includes(role);
+  const podeAssinar = ['medico', 'chefe_enfermeiros', 'direcao'].includes(role);
 
   const [documentos, setDocumentos] = useState<Documento[]>([]);
   const [tabAtiva, setTabAtiva] = useState('');
@@ -144,6 +147,17 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
     } catch (e: any) {
       toast.error(e?.response?.data?.message ?? 'Erro ao carregar');
     } finally { setEnviando(false); }
+  };
+
+  const assinarDocumento = async (docId: string) => {
+    if (!confirm('Assinar digitalmente este documento? Esta acção não pode ser revertida.')) return;
+    try {
+      await api.post(`/documentos-saude/${docId}/assinar`);
+      toast.success('Documento assinado com sucesso');
+      carregar();
+    } catch (e: any) {
+      toast.error(e?.response?.data?.message ?? 'Erro ao assinar documento');
+    }
   };
 
   const isExternalOrigin = (doc: Documento) => !!doc.fhirResourceId || !!doc.sistemaOrigem;
@@ -276,6 +290,25 @@ export function DocumentosSaudePanel({ doenteId, utilizador }: Props) {
                     >
                       Ver
                     </button>
+                  )}
+                  {podeAssinar && !doc.assinadoEm && (
+                    <button
+                      onClick={() => assinarDocumento(doc.id)}
+                      title="Assinar digitalmente"
+                      className="text-xs font-medium text-emerald-600 hover:text-emerald-700 border border-emerald-200 rounded-lg transition-colors"
+                      style={{ padding: '4px 10px' }}
+                    >
+                      ✍️ Assinar
+                    </button>
+                  )}
+                  {doc.assinadoEm && (
+                    <span
+                      title={`Assinado por ${doc.assinadoPor?.nome ?? '—'} em ${new Date(doc.assinadoEm).toLocaleDateString('pt-PT')}`}
+                      className="text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg cursor-default"
+                      style={{ padding: '4px 8px' }}
+                    >
+                      ✓ Assinado
+                    </span>
                   )}
                   {podeApagar && (
                     <button

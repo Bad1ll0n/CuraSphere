@@ -76,6 +76,12 @@ export class DocumentosSaudeController {
     return this.service.sincronizar(doenteId, req.user.id);
   }
 
+  @Post(':id/assinar')
+  @Roles('medico', 'chefe_enfermeiros', 'direcao')
+  assinar(@Param('id') docId: string, @Request() req: any) {
+    return this.service.assinar(docId, req.user.id);
+  }
+
   @Delete(':id')
   @Roles('medico', 'chefe_enfermeiros', 'it_admin')
   remover(@Param('id') docId: string, @Request() req: any) {

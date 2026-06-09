@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Patch, UseGuards, Request, Res } from '@nestjs/common';
+import { Controller, Post, Get, Body, Patch, UseGuards, Request, Req, Res } from '@nestjs/common';
 import { Throttle, ThrottlerGuard, SkipThrottle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
@@ -35,8 +35,9 @@ export class AuthController {
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
+    @Req() req: any,
   ) {
-    const result = await this.authService.login(dto.numeroFuncionario, dto.password);
+    const result = await this.authService.login(dto.numeroFuncionario, dto.password, req.ip);
     if (result.mfaPendente) {
       return { mfaPendente: true, mfaChallengeToken: result.mfaChallengeToken };
     }

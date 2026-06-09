@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform,
+  StyleSheet, ActivityIndicator, RefreshControl, Alert, Platform, Linking,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ interface Consulta {
   tipo: string;
   estado: string;
   motivo: string;
+  videoRoomId?: string | null;
   doente: { nome: string; numeroProcesso: string };
   medico: { nome: string };
   sala?: string;
@@ -136,6 +137,21 @@ export default function ConsultasScreen({ utilizador, onVoltar }: Props) {
                     <Text style={s.btnRealizarTexto}>Marcar como Realizada</Text>
                   </TouchableOpacity>
                 )}
+                {c.tipo === 'teleconsulta' && c.videoRoomId && (
+                  <TouchableOpacity
+                    style={s.btnVideo}
+                    onPress={async () => {
+                      try {
+                        const { data } = await api.get(`/consultas/${c.id}/video/entrar`);
+                        await Linking.openURL(data.roomUrl);
+                      } catch {
+                        Alert.alert('Erro', 'Não foi possível entrar na videochamada.');
+                      }
+                    }}
+                  >
+                    <Text style={s.btnVideoTexto}>📹 Entrar na Videochamada</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })
@@ -174,4 +190,6 @@ const s = StyleSheet.create({
   motivo: { fontSize: 13, color: '#475569', marginTop: 8, fontStyle: 'italic' },
   btnRealizar: { marginTop: 10, backgroundColor: '#dcfce7', paddingVertical: 8, borderRadius: 10, alignItems: 'center' },
   btnRealizarTexto: { color: '#16a34a', fontWeight: '700', fontSize: 14 },
+  btnVideo: { marginTop: 8, backgroundColor: '#22c55e', paddingVertical: 8, borderRadius: 10, alignItems: 'center' },
+  btnVideoTexto: { color: '#fff', fontWeight: '700', fontSize: 14 },
 });

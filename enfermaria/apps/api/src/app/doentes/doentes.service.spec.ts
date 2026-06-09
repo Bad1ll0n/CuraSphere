@@ -3,6 +3,9 @@ import { NotFoundException, BadRequestException, ConflictException } from '@nest
 import { DoenteService } from './doentes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
+import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
+import { StorageService } from '../common/storage.service';
+import { ConfigService } from '@nestjs/config';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -27,6 +30,7 @@ const mockPrisma = {
   },
   notaTurno: { create: jest.fn() },
   tarefa: { create: jest.fn() },
+  planoAlta: { upsert: jest.fn().mockResolvedValue({}) },
 };
 
 const mockNotificacoes = {
@@ -34,6 +38,14 @@ const mockNotificacoes = {
   notificarRoleNaEnfermaria: jest.fn(),
   enviarParaUtilizador: jest.fn().mockResolvedValue(undefined),
 };
+
+const mockAiClinico = { analisar: jest.fn().mockResolvedValue({ observacoes: [] }) };
+const mockStorage = {
+  uploadFoto: jest.fn().mockResolvedValue('https://example.com/foto.jpg'),
+  deleteFoto: jest.fn().mockResolvedValue(undefined),
+  getPresignedUrl: jest.fn().mockResolvedValue('https://presigned.url'),
+};
+const mockConfig = { get: jest.fn().mockReturnValue('test-value') };
 
 describe('DoenteService', () => {
   let service: DoenteService;
@@ -50,6 +62,9 @@ describe('DoenteService', () => {
         DoenteService,
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
+        { provide: AiClinicoService, useValue: mockAiClinico },
+        { provide: StorageService, useValue: mockStorage },
+        { provide: ConfigService, useValue: mockConfig },
       ],
     }).compile();
 

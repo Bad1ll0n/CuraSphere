@@ -626,6 +626,47 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
     return (n * sumXY - sumX * sumY) / denom;
   }
 
+  private async verificarLabsCriticos(doenteId: string): Promise<string[]> {
+    try {
+      const limite = new Date(Date.now() - 48 * 3600_000);
+      const labs = await (this.prisma as any).resultadoAnalise.findMany({
+        where: { doenteId, registadoEm: { gte: limite } },
+        orderBy: { registadoEm: 'desc' },
+        take: 50,
+      });
+
+      const alertas: string[] = [];
+      const valoresPorParametro: Record<string, number[]> = {};
+
+      for (const lab of labs) {
+        const p = (lab.parametro ?? '').toLowerCase();
+        const v = typeof lab.valor === 'number' ? lab.valor : parseFloat(String(lab.valor ?? ''));
+        if (isNaN(v)) continue;
+
+        if (!valoresPorParametro[p]) valoresPorParametro[p] = [];
+        valoresPorParametro[p].push(v);
+
+        if (p.includes('troponina') && v > 0.04) alertas.push(`Troponina elevada: ${v} µg/L`);
+        if (p.includes('lactato') && v > 2.0) alertas.push(`Lactato elevado: ${v} mmol/L`);
+        if ((p === 'hb' || p === 'hemoglobina' || p.includes('hemoglobin')) && v < 7.0) alertas.push(`Hemoglobina crítica: ${v} g/dL`);
+        if ((p.includes('leucocit') || p === 'wbc') && (v > 12.0 || v < 4.0)) alertas.push(`Leucócitos anómalos: ${v} ×10⁹/L`);
+      }
+
+      // AKI: progressão creatinina > 0.3 mg/dL nas últimas 48h
+      const creatKeys = Object.keys(valoresPorParametro).filter(k => k.includes('creatinin'));
+      for (const key of creatKeys) {
+        const vals = valoresPorParametro[key]; // mais recente primeiro (orderBy desc)
+        if (vals.length >= 2 && vals[0] - vals[vals.length - 1] > 0.3) {
+          alertas.push(`Progressão creatinina: ${vals[vals.length - 1]} → ${vals[0]} mg/dL (AKI suspeito)`);
+        }
+      }
+
+      return [...new Set(alertas)]; // deduplica
+    } catch {
+      return [];
+    }
+  }
+
   @Cron('0 */30 * * * *')
   async watchdogDeterioration(): Promise<void> {
     const doentes = await this.prisma.doente.findMany({
@@ -649,11 +690,14 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
         const ultimoSinal = sinais24h.at(-1);
         const slopeNews2 = this.calcularSlopeNews2(sinais24h);
 
+        const labsAlertas = await this.verificarLabsCriticos(doente.id);
+
         const requerAnalise =
           (ultimoSinal?.news2 ?? 0) >= 5 ||
           doente.estado === 'grave' ||
           doente.estado === 'critico' ||
-          slopeNews2 >= 0.4;
+          slopeNews2 >= 0.4 ||
+          labsAlertas.length > 0;
 
         if (!requerAnalise) continue;
 
@@ -661,7 +705,8 @@ Alta prevista: ${altaPrevista ? new Date(altaPrevista).toLocaleDateString('pt-PT
           where: { doenteId: doente.id, lido: false, urgencia: true },
         });
 
-        const contextoCompacto = `Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'desconhecido'} | Estado: ${doente.estado} | NEWS2 atual: ${ultimoSinal?.news2 ?? 'sem registo'} | Tendência NEWS2 (slope/medição): ${slopeNews2.toFixed(2)} | Medições 24h: ${sinais24h.length} | SpO2: ${ultimoSinal?.saturacaoO2 ?? '?'}% | FC: ${ultimoSinal?.pulso ?? '?'} | Alertas urgentes: ${alertasAtivos}`;
+        const labsInfo = labsAlertas.length > 0 ? ` | Labs críticos: ${labsAlertas.join('; ')}` : '';
+        const contextoCompacto = `Doente: ${doente.nome} | Diagnóstico: ${doente.diagnosticoPrincipal ?? 'desconhecido'} | Estado: ${doente.estado} | NEWS2 atual: ${ultimoSinal?.news2 ?? 'sem registo'} | Tendência NEWS2 (slope/medição): ${slopeNews2.toFixed(2)} | Medições 24h: ${sinais24h.length} | SpO2: ${ultimoSinal?.saturacaoO2 ?? '?'}% | FC: ${ultimoSinal?.pulso ?? '?'} | Alertas urgentes: ${alertasAtivos}${labsInfo}`;
 
         const msg = await this.client.messages.create({
           model: 'claude-haiku-4-5-20251001',
@@ -870,5 +915,61 @@ Tabelas disponíveis e campos:
       where: { doenteId },
       data: { cartaAlta: carta },
     }).catch(err => this.logger.warn('Erro ao guardar carta de alta', (err as any)?.message));
+  }
+
+  // ── 12. Insights de Rejeição IA ──────────────────────────────────────────────
+
+  async insightsRejeicao(from?: string, to?: string) {
+    const where: any = {};
+    if (from || to) {
+      where.criadoEm = {};
+      if (from) where.criadoEm.gte = new Date(from);
+      if (to) where.criadoEm.lte = new Date(to);
+    }
+
+    const decisoes = await this.prisma.aiDecisao.findMany({
+      where,
+      orderBy: { criadoEm: 'desc' },
+      take: 2000,
+      select: { tipo: true, aceite: true, overrideMotivo: true, criadoEm: true },
+    });
+
+    const porTipo: Record<string, { total: number; aceites: number; rejeitados: number; semFeedback: number; motivos: string[] }> = {};
+
+    for (const d of decisoes) {
+      if (!porTipo[d.tipo]) porTipo[d.tipo] = { total: 0, aceites: 0, rejeitados: 0, semFeedback: 0, motivos: [] };
+      porTipo[d.tipo].total++;
+      if (d.aceite === true) porTipo[d.tipo].aceites++;
+      else if (d.aceite === false) {
+        porTipo[d.tipo].rejeitados++;
+        if (d.overrideMotivo) porTipo[d.tipo].motivos.push(d.overrideMotivo);
+      } else {
+        porTipo[d.tipo].semFeedback++;
+      }
+    }
+
+    const frequenciaMotivos: Record<string, number> = {};
+    for (const d of decisoes) {
+      if (d.aceite === false && d.overrideMotivo) {
+        frequenciaMotivos[d.overrideMotivo] = (frequenciaMotivos[d.overrideMotivo] ?? 0) + 1;
+      }
+    }
+    const topMotivos = Object.entries(frequenciaMotivos)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([motivo, count]) => ({ motivo, count }));
+
+    const totalComFeedback = decisoes.filter(d => d.aceite !== null).length;
+    const taxaAceitacaoGlobal = totalComFeedback > 0
+      ? Math.round((decisoes.filter(d => d.aceite === true).length / totalComFeedback) * 100)
+      : null;
+
+    return {
+      total: decisoes.length,
+      totalComFeedback,
+      taxaAceitacaoGlobal,
+      porTipo,
+      topMotivosRejeicao: topMotivos,
+    };
   }
 }

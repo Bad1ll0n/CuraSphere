@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Request, Res, Header } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request, Res, Header } from '@nestjs/common';
 import type { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -68,5 +68,17 @@ export class PortalDoenteController {
   @UseGuards(PortalJwtGuard)
   exportarJson(@Request() req: any) {
     return this.service.exportarJson(req.user.doenteId);
+  }
+
+  @Get('teleconsultas')
+  @UseGuards(PortalJwtGuard)
+  teleconsultas(@Request() req: any) {
+    return this.service.teleconsultas(req.user.sub);
+  }
+
+  @Get('teleconsultas/:id/video')
+  @UseGuards(PortalJwtGuard)
+  entrarVideoPortal(@Param('id') id: string, @Request() req: any) {
+    return this.service.entrarVideoPortal(id, req.user.sub);
   }
 }

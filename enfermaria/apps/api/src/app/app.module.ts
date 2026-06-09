@@ -30,6 +30,7 @@ import { GuidelinesModule } from './guidelines/guidelines.module';
 import { PortalDoenteModule } from './portal-doente/portal-doente.module';
 import { Hl7Module } from './hl7/hl7.module';
 import { DashboardConfigModule } from './dashboard-config/dashboard-config.module';
+import { AnomalyDetectionModule } from './common/anomaly-detection.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { DashboardConfigModule } from './dashboard-config/dashboard-config.modul
     PortalDoenteModule,
     Hl7Module,
     DashboardConfigModule,
+    AnomalyDetectionModule,
 
     // ─── Domínios ─────────────────────────────────────────────────────────────
     ClinicalModule,

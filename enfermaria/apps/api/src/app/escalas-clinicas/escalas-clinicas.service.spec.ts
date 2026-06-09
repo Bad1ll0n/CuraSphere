@@ -157,8 +157,8 @@ describe('EscalasClinicasService', () => {
 
       await service.listarRecentes('doente-1');
 
-      // Deve ter sido chamado 7 vezes (RASS, CPOT, SOFA, CTG, Apgar, PEWS, FLACC)
-      expect(mockPrisma.escalaClinica.findFirst).toHaveBeenCalledTimes(7);
+      // Deve ter sido chamado 8 vezes (RASS, CPOT, SOFA, CTG, Apgar, PEWS, FLACC, Glasgow)
+      expect(mockPrisma.escalaClinica.findFirst).toHaveBeenCalledTimes(8);
     });
   });
 });

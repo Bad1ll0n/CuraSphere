@@ -54,6 +54,12 @@ export class AiClinicoController {
     res.send(csv);
   }
 
+  @Get('insights')
+  @Roles('direcao', 'qualidade', 'chefe_enfermeiros')
+  insightsRejeicao(@Query('from') from?: string, @Query('to') to?: string) {
+    return this.service.insightsRejeicao(from, to);
+  }
+
   @Post(':doenteId/readmissao')
   @Roles('medico', 'chefe_enfermeiros', 'administrativo', 'chefe_turno')
   calcularRiscoReadmissao(@Param('doenteId') doenteId: string) {

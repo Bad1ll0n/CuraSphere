@@ -28,6 +28,7 @@ import MaisScreen from '../screens/MaisScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import DoenteDetalheScreen from '../screens/DoenteDetalheScreen';
 import AuditoriaScreen from '../screens/AuditoriaScreen';
+import RegistarVitaisRapidoScreen from '../screens/RegistarVitaisRapidoScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,6 +52,7 @@ const TAB_ICONS: Record<string, { ativo: IoniconName; inativo: IoniconName }> = 
   Dashboard:    { ativo: 'grid',          inativo: 'grid-outline' },
   Doentes:      { ativo: 'medkit',        inativo: 'medkit-outline' },
   Tarefas:      { ativo: 'checkbox',      inativo: 'checkbox-outline' },
+  Vitais:       { ativo: 'pulse',         inativo: 'pulse-outline' },
   Incidentes:   { ativo: 'alert-circle',  inativo: 'alert-circle-outline' },
   Pedidos:      { ativo: 'layers',        inativo: 'layers-outline' },
   Mais:         { ativo: 'menu',          inativo: 'menu-outline' },
@@ -257,6 +259,11 @@ function App() {
             <Tab.Screen name="Doentes" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Doentes" ativo={focused} /> }}>
               {() => <DoentesScreen utilizador={utilizador} />}
             </Tab.Screen>
+            {ROLES_ENFERMAGEM.includes(utilizador.role) && (
+              <Tab.Screen name="Vitais" options={{ tabBarIcon: ({ focused }) => <TabIcon label="Vitais" ativo={focused} /> }}>
+                {() => <RegistarVitaisRapidoScreen utilizador={utilizador} />}
+              </Tab.Screen>
+            )}
             {/* Botão Scan central */}
             <Tab.Screen
               name="Scan"

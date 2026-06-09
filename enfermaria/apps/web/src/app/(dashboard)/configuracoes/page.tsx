@@ -20,6 +20,75 @@ const categoriaColor: Record<string, string> = {
   ti:      'bg-cyan-500/15 text-cyan-400',
 };
 
+function QuiosqueSection() {
+  const [servicoId, setServicoPId] = useState('internamento');
+  const [link, setLink] = useState('');
+  const [gerando, setGerando] = useState(false);
+
+  const gerar = async () => {
+    setGerando(true);
+    try {
+      const { data } = await api.post(`/doentes/quiosque-token?servicoId=${encodeURIComponent(servicoId)}`);
+      const url = `${window.location.origin}/quiosque/${encodeURIComponent(data.servicoId)}?token=${encodeURIComponent(data.token)}`;
+      setLink(url);
+    } catch (e: any) {
+      alert(e.response?.data?.message ?? 'Erro ao gerar link');
+    } finally {
+      setGerando(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm" style={{ marginTop: '40px', padding: '28px 32px' }}>
+      <div className="flex items-center gap-2" style={{ marginBottom: '20px' }}>
+        <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
+          <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
+          </svg>
+        </div>
+        <div>
+          <span className="text-sm font-semibold text-slate-700">Quiosque de Corredor</span>
+          <p className="text-xs text-slate-400">Ecrã público com ocupação anonimizada para corredor de enfermaria</p>
+        </div>
+      </div>
+      <div className="flex items-end gap-3" style={{ marginBottom: link ? '16px' : '0' }}>
+        <div className="flex-1">
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide" style={{ marginBottom: '6px' }}>Serviço</label>
+          <input
+            value={servicoId}
+            onChange={e => { setServicoPId(e.target.value); setLink(''); }}
+            placeholder="ex: internamento"
+            className="w-full border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+            style={{ padding: '10px 14px' }}
+          />
+        </div>
+        <button
+          onClick={gerar}
+          disabled={gerando || !servicoId.trim()}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-50 shrink-0"
+          style={{ padding: '10px 20px' }}
+        >
+          {gerando ? 'A gerar...' : 'Gerar link'}
+        </button>
+      </div>
+      {link && (
+        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl" style={{ padding: '10px 14px' }}>
+          <span className="text-xs text-slate-500 truncate flex-1 font-mono">{link}</span>
+          <button
+            onClick={() => { navigator.clipboard.writeText(link); }}
+            className="text-xs font-semibold text-blue-600 hover:text-blue-700 shrink-0"
+          >
+            Copiar
+          </button>
+          <a href={link} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 shrink-0">
+            Abrir
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ConfiguracoesPage() {
   const { utilizador, loading } = useAuth();
   const router = useRouter();
@@ -234,6 +303,9 @@ export default function ConfiguracoesPage() {
           </div>
         ))}
       </div>
+
+      {/* Quiosque de Corredor */}
+      <QuiosqueSection />
 
       {/* Modal */}
       {modalAberto && (

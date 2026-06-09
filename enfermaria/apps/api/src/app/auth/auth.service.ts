@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
     private readonly redis: RedisService,
+    private readonly anomaly: AnomalyDetectionService,
   ) {}
 
   /**
@@ -44,7 +46,7 @@ export class AuthService {
     return ok;
   }
 
-  async login(numeroFuncionario: string, password: string) {
+  async login(numeroFuncionario: string, password: string, ip?: string) {
     const utilizador = await this.prisma.utilizador.findUnique({
       where: { numeroFuncionario },
     });
@@ -78,6 +80,8 @@ export class AuthService {
     }
 
     await this.redis.del(failKey);
+
+    this.anomaly.verificarIpLogin(utilizador.id, ip);
 
     if (utilizador.mfaAtivo) {
       const mfaChallengeToken = this.jwtService.sign(

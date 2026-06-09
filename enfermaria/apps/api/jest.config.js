@@ -21,4 +21,16 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
+  collectCoverageFrom: [
+    'src/app/**/*.service.ts',
+    '!src/app/**/index.ts',
+    '!src/generated/**',
+  ],
+  coverageThreshold: {
+    'src/app/auth/': { statements: 50 },
+    'src/app/sinais-vitais/': { statements: 50 },
+    'src/app/consultas/': { statements: 50 },
+    'src/app/break-glass/': { statements: 60 },
+    global: { statements: 45 },
+  },
 };

@@ -187,6 +187,7 @@ model Utilizador {
   acessosFamiliaresCriados       AcessoFamiliar[]            @relation("AcessoFamiliarCriado")
   resultadosAnaliseRegistados    ResultadoAnalise[]          @relation("ResultadosAnaliseRegisto")
   documentosSaudeRegistados      DocumentoSaude[]            @relation("DocumentosSaudeRegisto")
+  documentosSaudeAssinados       DocumentoSaude[]            @relation("DocumentoSaudeAssinatura")
   aiDecisoes                     AiDecisao[]                 @relation("AiDecisoes")
   fotosFeridas                   FotoFerida[]                @relation("FotosFeridasCriadas")
   portaisCriados                 PortalDoente[]              @relation("PortalDoentesCriados")
@@ -1170,6 +1171,10 @@ model Consulta {
   proximaConsulta   DateTime?
   codigo            String?            @unique
   checkinEm         DateTime?
+  tipo              String             @default("presencial") // 'presencial' | 'teleconsulta'
+  videoRoomId       String?
+  videoIniciadaEm   DateTime?
+  videoTerminouEm   DateTime?
   criadoEm          DateTime           @default(now())
   atosConsulta      AtoConsulta[]
   episodioFaturacao EpisodioFaturacao?
@@ -2404,11 +2409,15 @@ model DocumentoSaude {
   modalidadeDicom String? // 'CR'|'CT'|'MR'|'US'|'DX'|'NM'
   verificado      Boolean  @default(false)
   registadoPorId  String?
+  assinadoEm      DateTime?
+  assinadoPorId   String?
+  hashSHA256      String?
   criadoEm        DateTime @default(now())
 
   doente        Doente               @relation(fields: [doenteId], references: [id], onDelete: Cascade)
   sistemaOrigem SistemaExternoSaude? @relation(fields: [sistemaOrigemId], references: [id], onDelete: SetNull)
   registadoPor  Utilizador?          @relation("DocumentosSaudeRegisto", fields: [registadoPorId], references: [id], onDelete: SetNull)
+  assinadoPor   Utilizador?          @relation("DocumentoSaudeAssinatura", fields: [assinadoPorId], references: [id], onDelete: SetNull)
 
   @@index([doenteId, tipo])
   @@index([doenteId, dataDocumento])

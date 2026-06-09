@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 // Mock do SDK Anthropic antes de importar o service
 jest.mock('@anthropic-ai/sdk', () => {
   return {
+    __esModule: true,
     default: jest.fn().mockImplementation(() => ({
       messages: {
         create: jest.fn(),
@@ -14,6 +15,11 @@ jest.mock('@anthropic-ai/sdk', () => {
 });
 
 import Anthropic from '@anthropic-ai/sdk';
+import { GuidelinesService } from '../guidelines/guidelines.service';
+import { AlertasService } from '../alertas/alertas.service';
+
+const mockGuidelines = { buscarSimilares: jest.fn().mockResolvedValue([]) };
+const mockAlertasAI = { criarAlerta: jest.fn().mockResolvedValue(undefined) };
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },
@@ -42,12 +48,16 @@ describe('AiClinicoService', () => {
   let mockMessagesCreate: jest.Mock;
 
   beforeEach(async () => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
+    mockGuidelines.buscarSimilares.mockResolvedValue([]);
+    mockAlertasAI.criarAlerta.mockResolvedValue(undefined);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AiClinicoService,
         { provide: PrismaService, useValue: mockPrisma },
+        { provide: GuidelinesService, useValue: mockGuidelines },
+        { provide: AlertasService, useValue: mockAlertasAI },
       ],
     }).compile();
 

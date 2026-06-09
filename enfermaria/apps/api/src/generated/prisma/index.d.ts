@@ -11020,6 +11020,7 @@ export namespace Prisma {
     acessosFamiliaresCriados: number
     resultadosAnaliseRegistados: number
     documentosSaudeRegistados: number
+    documentosSaudeAssinados: number
     aiDecisoes: number
     fotosFeridas: number
     portaisCriados: number
@@ -11130,6 +11131,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: boolean | UtilizadorCountOutputTypeCountAcessosFamiliaresCriadosArgs
     resultadosAnaliseRegistados?: boolean | UtilizadorCountOutputTypeCountResultadosAnaliseRegistadosArgs
     documentosSaudeRegistados?: boolean | UtilizadorCountOutputTypeCountDocumentosSaudeRegistadosArgs
+    documentosSaudeAssinados?: boolean | UtilizadorCountOutputTypeCountDocumentosSaudeAssinadosArgs
     aiDecisoes?: boolean | UtilizadorCountOutputTypeCountAiDecisoesArgs
     fotosFeridas?: boolean | UtilizadorCountOutputTypeCountFotosFeridasArgs
     portaisCriados?: boolean | UtilizadorCountOutputTypeCountPortaisCriadosArgs
@@ -11865,6 +11867,13 @@ export namespace Prisma {
    * UtilizadorCountOutputType without action
    */
   export type UtilizadorCountOutputTypeCountDocumentosSaudeRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocumentoSaudeWhereInput
+  }
+
+  /**
+   * UtilizadorCountOutputType without action
+   */
+  export type UtilizadorCountOutputTypeCountDocumentosSaudeAssinadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DocumentoSaudeWhereInput
   }
 
@@ -15612,6 +15621,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: boolean | Utilizador$acessosFamiliaresCriadosArgs<ExtArgs>
     resultadosAnaliseRegistados?: boolean | Utilizador$resultadosAnaliseRegistadosArgs<ExtArgs>
     documentosSaudeRegistados?: boolean | Utilizador$documentosSaudeRegistadosArgs<ExtArgs>
+    documentosSaudeAssinados?: boolean | Utilizador$documentosSaudeAssinadosArgs<ExtArgs>
     aiDecisoes?: boolean | Utilizador$aiDecisoesArgs<ExtArgs>
     fotosFeridas?: boolean | Utilizador$fotosFeridasArgs<ExtArgs>
     portaisCriados?: boolean | Utilizador$portaisCriadosArgs<ExtArgs>
@@ -15787,6 +15797,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: boolean | Utilizador$acessosFamiliaresCriadosArgs<ExtArgs>
     resultadosAnaliseRegistados?: boolean | Utilizador$resultadosAnaliseRegistadosArgs<ExtArgs>
     documentosSaudeRegistados?: boolean | Utilizador$documentosSaudeRegistadosArgs<ExtArgs>
+    documentosSaudeAssinados?: boolean | Utilizador$documentosSaudeAssinadosArgs<ExtArgs>
     aiDecisoes?: boolean | Utilizador$aiDecisoesArgs<ExtArgs>
     fotosFeridas?: boolean | Utilizador$fotosFeridasArgs<ExtArgs>
     portaisCriados?: boolean | Utilizador$portaisCriadosArgs<ExtArgs>
@@ -15910,6 +15921,7 @@ export namespace Prisma {
       acessosFamiliaresCriados: Prisma.$AcessoFamiliarPayload<ExtArgs>[]
       resultadosAnaliseRegistados: Prisma.$ResultadoAnalisePayload<ExtArgs>[]
       documentosSaudeRegistados: Prisma.$DocumentoSaudePayload<ExtArgs>[]
+      documentosSaudeAssinados: Prisma.$DocumentoSaudePayload<ExtArgs>[]
       aiDecisoes: Prisma.$AiDecisaoPayload<ExtArgs>[]
       fotosFeridas: Prisma.$FotoFeridaPayload<ExtArgs>[]
       portaisCriados: Prisma.$PortalDoentePayload<ExtArgs>[]
@@ -16433,6 +16445,7 @@ export namespace Prisma {
     acessosFamiliaresCriados<T extends Utilizador$acessosFamiliaresCriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$acessosFamiliaresCriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AcessoFamiliarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     resultadosAnaliseRegistados<T extends Utilizador$resultadosAnaliseRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$resultadosAnaliseRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResultadoAnalisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     documentosSaudeRegistados<T extends Utilizador$documentosSaudeRegistadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$documentosSaudeRegistadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentoSaudePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    documentosSaudeAssinados<T extends Utilizador$documentosSaudeAssinadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$documentosSaudeAssinadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentoSaudePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     aiDecisoes<T extends Utilizador$aiDecisoesArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$aiDecisoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDecisaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     fotosFeridas<T extends Utilizador$fotosFeridasArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$fotosFeridasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FotoFeridaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     portaisCriados<T extends Utilizador$portaisCriadosArgs<ExtArgs> = {}>(args?: Subset<T, Utilizador$portaisCriadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PortalDoentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -19387,6 +19400,30 @@ export namespace Prisma {
    * Utilizador.documentosSaudeRegistados
    */
   export type Utilizador$documentosSaudeRegistadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocumentoSaude
+     */
+    select?: DocumentoSaudeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocumentoSaude
+     */
+    omit?: DocumentoSaudeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocumentoSaudeInclude<ExtArgs> | null
+    where?: DocumentoSaudeWhereInput
+    orderBy?: DocumentoSaudeOrderByWithRelationInput | DocumentoSaudeOrderByWithRelationInput[]
+    cursor?: DocumentoSaudeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DocumentoSaudeScalarFieldEnum | DocumentoSaudeScalarFieldEnum[]
+  }
+
+  /**
+   * Utilizador.documentosSaudeAssinados
+   */
+  export type Utilizador$documentosSaudeAssinadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the DocumentoSaude
      */
@@ -63840,6 +63877,10 @@ export namespace Prisma {
     proximaConsulta: Date | null
     codigo: string | null
     checkinEm: Date | null
+    tipo: string | null
+    videoRoomId: string | null
+    videoIniciadaEm: Date | null
+    videoTerminouEm: Date | null
     criadoEm: Date | null
   }
 
@@ -63857,6 +63898,10 @@ export namespace Prisma {
     proximaConsulta: Date | null
     codigo: string | null
     checkinEm: Date | null
+    tipo: string | null
+    videoRoomId: string | null
+    videoIniciadaEm: Date | null
+    videoTerminouEm: Date | null
     criadoEm: Date | null
   }
 
@@ -63874,6 +63919,10 @@ export namespace Prisma {
     proximaConsulta: number
     codigo: number
     checkinEm: number
+    tipo: number
+    videoRoomId: number
+    videoIniciadaEm: number
+    videoTerminouEm: number
     criadoEm: number
     _all: number
   }
@@ -63901,6 +63950,10 @@ export namespace Prisma {
     proximaConsulta?: true
     codigo?: true
     checkinEm?: true
+    tipo?: true
+    videoRoomId?: true
+    videoIniciadaEm?: true
+    videoTerminouEm?: true
     criadoEm?: true
   }
 
@@ -63918,6 +63971,10 @@ export namespace Prisma {
     proximaConsulta?: true
     codigo?: true
     checkinEm?: true
+    tipo?: true
+    videoRoomId?: true
+    videoIniciadaEm?: true
+    videoTerminouEm?: true
     criadoEm?: true
   }
 
@@ -63935,6 +63992,10 @@ export namespace Prisma {
     proximaConsulta?: true
     codigo?: true
     checkinEm?: true
+    tipo?: true
+    videoRoomId?: true
+    videoIniciadaEm?: true
+    videoTerminouEm?: true
     criadoEm?: true
     _all?: true
   }
@@ -64039,6 +64100,10 @@ export namespace Prisma {
     proximaConsulta: Date | null
     codigo: string | null
     checkinEm: Date | null
+    tipo: string
+    videoRoomId: string | null
+    videoIniciadaEm: Date | null
+    videoTerminouEm: Date | null
     criadoEm: Date
     _count: ConsultaCountAggregateOutputType | null
     _avg: ConsultaAvgAggregateOutputType | null
@@ -64075,6 +64140,10 @@ export namespace Prisma {
     proximaConsulta?: boolean
     codigo?: boolean
     checkinEm?: boolean
+    tipo?: boolean
+    videoRoomId?: boolean
+    videoIniciadaEm?: boolean
+    videoTerminouEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -64097,6 +64166,10 @@ export namespace Prisma {
     proximaConsulta?: boolean
     codigo?: boolean
     checkinEm?: boolean
+    tipo?: boolean
+    videoRoomId?: boolean
+    videoIniciadaEm?: boolean
+    videoTerminouEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -64116,6 +64189,10 @@ export namespace Prisma {
     proximaConsulta?: boolean
     codigo?: boolean
     checkinEm?: boolean
+    tipo?: boolean
+    videoRoomId?: boolean
+    videoIniciadaEm?: boolean
+    videoTerminouEm?: boolean
     criadoEm?: boolean
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -64135,10 +64212,14 @@ export namespace Prisma {
     proximaConsulta?: boolean
     codigo?: boolean
     checkinEm?: boolean
+    tipo?: boolean
+    videoRoomId?: boolean
+    videoIniciadaEm?: boolean
+    videoTerminouEm?: boolean
     criadoEm?: boolean
   }
 
-  export type ConsultaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nomeDoente" | "medicoId" | "especialidade" | "dataHora" | "duracao" | "estado" | "notas" | "diagnostico" | "proximaConsulta" | "codigo" | "checkinEm" | "criadoEm", ExtArgs["result"]["consulta"]>
+  export type ConsultaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "nomeDoente" | "medicoId" | "especialidade" | "dataHora" | "duracao" | "estado" | "notas" | "diagnostico" | "proximaConsulta" | "codigo" | "checkinEm" | "tipo" | "videoRoomId" | "videoIniciadaEm" | "videoTerminouEm" | "criadoEm", ExtArgs["result"]["consulta"]>
   export type ConsultaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | Consulta$doenteArgs<ExtArgs>
     medico?: boolean | UtilizadorDefaultArgs<ExtArgs>
@@ -64177,6 +64258,10 @@ export namespace Prisma {
       proximaConsulta: Date | null
       codigo: string | null
       checkinEm: Date | null
+      tipo: string
+      videoRoomId: string | null
+      videoIniciadaEm: Date | null
+      videoTerminouEm: Date | null
       criadoEm: Date
     }, ExtArgs["result"]["consulta"]>
     composites: {}
@@ -64618,6 +64703,10 @@ export namespace Prisma {
     readonly proximaConsulta: FieldRef<"Consulta", 'DateTime'>
     readonly codigo: FieldRef<"Consulta", 'String'>
     readonly checkinEm: FieldRef<"Consulta", 'DateTime'>
+    readonly tipo: FieldRef<"Consulta", 'String'>
+    readonly videoRoomId: FieldRef<"Consulta", 'String'>
+    readonly videoIniciadaEm: FieldRef<"Consulta", 'DateTime'>
+    readonly videoTerminouEm: FieldRef<"Consulta", 'DateTime'>
     readonly criadoEm: FieldRef<"Consulta", 'DateTime'>
   }
     
@@ -129557,6 +129646,9 @@ export namespace Prisma {
     modalidadeDicom: string | null
     verificado: boolean | null
     registadoPorId: string | null
+    assinadoEm: Date | null
+    assinadoPorId: string | null
+    hashSHA256: string | null
     criadoEm: Date | null
   }
 
@@ -129578,6 +129670,9 @@ export namespace Prisma {
     modalidadeDicom: string | null
     verificado: boolean | null
     registadoPorId: string | null
+    assinadoEm: Date | null
+    assinadoPorId: string | null
+    hashSHA256: string | null
     criadoEm: Date | null
   }
 
@@ -129599,6 +129694,9 @@ export namespace Prisma {
     modalidadeDicom: number
     verificado: number
     registadoPorId: number
+    assinadoEm: number
+    assinadoPorId: number
+    hashSHA256: number
     criadoEm: number
     _all: number
   }
@@ -129630,6 +129728,9 @@ export namespace Prisma {
     modalidadeDicom?: true
     verificado?: true
     registadoPorId?: true
+    assinadoEm?: true
+    assinadoPorId?: true
+    hashSHA256?: true
     criadoEm?: true
   }
 
@@ -129651,6 +129752,9 @@ export namespace Prisma {
     modalidadeDicom?: true
     verificado?: true
     registadoPorId?: true
+    assinadoEm?: true
+    assinadoPorId?: true
+    hashSHA256?: true
     criadoEm?: true
   }
 
@@ -129672,6 +129776,9 @@ export namespace Prisma {
     modalidadeDicom?: true
     verificado?: true
     registadoPorId?: true
+    assinadoEm?: true
+    assinadoPorId?: true
+    hashSHA256?: true
     criadoEm?: true
     _all?: true
   }
@@ -129780,6 +129887,9 @@ export namespace Prisma {
     modalidadeDicom: string | null
     verificado: boolean
     registadoPorId: string | null
+    assinadoEm: Date | null
+    assinadoPorId: string | null
+    hashSHA256: string | null
     criadoEm: Date
     _count: DocumentoSaudeCountAggregateOutputType | null
     _avg: DocumentoSaudeAvgAggregateOutputType | null
@@ -129820,10 +129930,14 @@ export namespace Prisma {
     modalidadeDicom?: boolean
     verificado?: boolean
     registadoPorId?: boolean
+    assinadoEm?: boolean
+    assinadoPorId?: boolean
+    hashSHA256?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["documentoSaude"]>
 
   export type DocumentoSaudeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -129844,10 +129958,14 @@ export namespace Prisma {
     modalidadeDicom?: boolean
     verificado?: boolean
     registadoPorId?: boolean
+    assinadoEm?: boolean
+    assinadoPorId?: boolean
+    hashSHA256?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["documentoSaude"]>
 
   export type DocumentoSaudeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -129868,10 +129986,14 @@ export namespace Prisma {
     modalidadeDicom?: boolean
     verificado?: boolean
     registadoPorId?: boolean
+    assinadoEm?: boolean
+    assinadoPorId?: boolean
+    hashSHA256?: boolean
     criadoEm?: boolean
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }, ExtArgs["result"]["documentoSaude"]>
 
   export type DocumentoSaudeSelectScalar = {
@@ -129892,24 +130014,30 @@ export namespace Prisma {
     modalidadeDicom?: boolean
     verificado?: boolean
     registadoPorId?: boolean
+    assinadoEm?: boolean
+    assinadoPorId?: boolean
+    hashSHA256?: boolean
     criadoEm?: boolean
   }
 
-  export type DocumentoSaudeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "titulo" | "descricao" | "dataDocumento" | "origem" | "sistemaOrigemId" | "formato" | "storageKey" | "urlExterna" | "mimeType" | "tamanhoBytes" | "fhirResourceId" | "modalidadeDicom" | "verificado" | "registadoPorId" | "criadoEm", ExtArgs["result"]["documentoSaude"]>
+  export type DocumentoSaudeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "doenteId" | "tipo" | "titulo" | "descricao" | "dataDocumento" | "origem" | "sistemaOrigemId" | "formato" | "storageKey" | "urlExterna" | "mimeType" | "tamanhoBytes" | "fhirResourceId" | "modalidadeDicom" | "verificado" | "registadoPorId" | "assinadoEm" | "assinadoPorId" | "hashSHA256" | "criadoEm", ExtArgs["result"]["documentoSaude"]>
   export type DocumentoSaudeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }
   export type DocumentoSaudeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }
   export type DocumentoSaudeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     doente?: boolean | DoenteDefaultArgs<ExtArgs>
     sistemaOrigem?: boolean | DocumentoSaude$sistemaOrigemArgs<ExtArgs>
     registadoPor?: boolean | DocumentoSaude$registadoPorArgs<ExtArgs>
+    assinadoPor?: boolean | DocumentoSaude$assinadoPorArgs<ExtArgs>
   }
 
   export type $DocumentoSaudePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -129918,6 +130046,7 @@ export namespace Prisma {
       doente: Prisma.$DoentePayload<ExtArgs>
       sistemaOrigem: Prisma.$SistemaExternoSaudePayload<ExtArgs> | null
       registadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
+      assinadoPor: Prisma.$UtilizadorPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -129937,6 +130066,9 @@ export namespace Prisma {
       modalidadeDicom: string | null
       verificado: boolean
       registadoPorId: string | null
+      assinadoEm: Date | null
+      assinadoPorId: string | null
+      hashSHA256: string | null
       criadoEm: Date
     }, ExtArgs["result"]["documentoSaude"]>
     composites: {}
@@ -130335,6 +130467,7 @@ export namespace Prisma {
     doente<T extends DoenteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DoenteDefaultArgs<ExtArgs>>): Prisma__DoenteClient<$Result.GetResult<Prisma.$DoentePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sistemaOrigem<T extends DocumentoSaude$sistemaOrigemArgs<ExtArgs> = {}>(args?: Subset<T, DocumentoSaude$sistemaOrigemArgs<ExtArgs>>): Prisma__SistemaExternoSaudeClient<$Result.GetResult<Prisma.$SistemaExternoSaudePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     registadoPor<T extends DocumentoSaude$registadoPorArgs<ExtArgs> = {}>(args?: Subset<T, DocumentoSaude$registadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    assinadoPor<T extends DocumentoSaude$assinadoPorArgs<ExtArgs> = {}>(args?: Subset<T, DocumentoSaude$assinadoPorArgs<ExtArgs>>): Prisma__UtilizadorClient<$Result.GetResult<Prisma.$UtilizadorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -130381,6 +130514,9 @@ export namespace Prisma {
     readonly modalidadeDicom: FieldRef<"DocumentoSaude", 'String'>
     readonly verificado: FieldRef<"DocumentoSaude", 'Boolean'>
     readonly registadoPorId: FieldRef<"DocumentoSaude", 'String'>
+    readonly assinadoEm: FieldRef<"DocumentoSaude", 'DateTime'>
+    readonly assinadoPorId: FieldRef<"DocumentoSaude", 'String'>
+    readonly hashSHA256: FieldRef<"DocumentoSaude", 'String'>
     readonly criadoEm: FieldRef<"DocumentoSaude", 'DateTime'>
   }
     
@@ -130800,6 +130936,25 @@ export namespace Prisma {
    * DocumentoSaude.registadoPor
    */
   export type DocumentoSaude$registadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Utilizador
+     */
+    select?: UtilizadorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Utilizador
+     */
+    omit?: UtilizadorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UtilizadorInclude<ExtArgs> | null
+    where?: UtilizadorWhereInput
+  }
+
+  /**
+   * DocumentoSaude.assinadoPor
+   */
+  export type DocumentoSaude$assinadoPorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Utilizador
      */
@@ -140276,6 +140431,10 @@ export namespace Prisma {
     proximaConsulta: 'proximaConsulta',
     codigo: 'codigo',
     checkinEm: 'checkinEm',
+    tipo: 'tipo',
+    videoRoomId: 'videoRoomId',
+    videoIniciadaEm: 'videoIniciadaEm',
+    videoTerminouEm: 'videoTerminouEm',
     criadoEm: 'criadoEm'
   };
 
@@ -141165,6 +141324,9 @@ export namespace Prisma {
     modalidadeDicom: 'modalidadeDicom',
     verificado: 'verificado',
     registadoPorId: 'registadoPorId',
+    assinadoEm: 'assinadoEm',
+    assinadoPorId: 'assinadoPorId',
+    hashSHA256: 'hashSHA256',
     criadoEm: 'criadoEm'
   };
 
@@ -142102,6 +142264,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarListRelationFilter
     resultadosAnaliseRegistados?: ResultadoAnaliseListRelationFilter
     documentosSaudeRegistados?: DocumentoSaudeListRelationFilter
+    documentosSaudeAssinados?: DocumentoSaudeListRelationFilter
     aiDecisoes?: AiDecisaoListRelationFilter
     fotosFeridas?: FotoFeridaListRelationFilter
     portaisCriados?: PortalDoenteListRelationFilter
@@ -142232,6 +142395,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarOrderByRelationAggregateInput
     resultadosAnaliseRegistados?: ResultadoAnaliseOrderByRelationAggregateInput
     documentosSaudeRegistados?: DocumentoSaudeOrderByRelationAggregateInput
+    documentosSaudeAssinados?: DocumentoSaudeOrderByRelationAggregateInput
     aiDecisoes?: AiDecisaoOrderByRelationAggregateInput
     fotosFeridas?: FotoFeridaOrderByRelationAggregateInput
     portaisCriados?: PortalDoenteOrderByRelationAggregateInput
@@ -142365,6 +142529,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarListRelationFilter
     resultadosAnaliseRegistados?: ResultadoAnaliseListRelationFilter
     documentosSaudeRegistados?: DocumentoSaudeListRelationFilter
+    documentosSaudeAssinados?: DocumentoSaudeListRelationFilter
     aiDecisoes?: AiDecisaoListRelationFilter
     fotosFeridas?: FotoFeridaListRelationFilter
     portaisCriados?: PortalDoenteListRelationFilter
@@ -145670,6 +145835,10 @@ export namespace Prisma {
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     codigo?: StringNullableFilter<"Consulta"> | string | null
     checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    tipo?: StringFilter<"Consulta"> | string
+    videoRoomId?: StringNullableFilter<"Consulta"> | string | null
+    videoIniciadaEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    videoTerminouEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
@@ -145691,6 +145860,10 @@ export namespace Prisma {
     proximaConsulta?: SortOrderInput | SortOrder
     codigo?: SortOrderInput | SortOrder
     checkinEm?: SortOrderInput | SortOrder
+    tipo?: SortOrder
+    videoRoomId?: SortOrderInput | SortOrder
+    videoIniciadaEm?: SortOrderInput | SortOrder
+    videoTerminouEm?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
     medico?: UtilizadorOrderByWithRelationInput
@@ -145715,6 +145888,10 @@ export namespace Prisma {
     diagnostico?: StringNullableFilter<"Consulta"> | string | null
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    tipo?: StringFilter<"Consulta"> | string
+    videoRoomId?: StringNullableFilter<"Consulta"> | string | null
+    videoIniciadaEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    videoTerminouEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
     doente?: XOR<DoenteNullableScalarRelationFilter, DoenteWhereInput> | null
     medico?: XOR<UtilizadorScalarRelationFilter, UtilizadorWhereInput>
@@ -145736,6 +145913,10 @@ export namespace Prisma {
     proximaConsulta?: SortOrderInput | SortOrder
     codigo?: SortOrderInput | SortOrder
     checkinEm?: SortOrderInput | SortOrder
+    tipo?: SortOrder
+    videoRoomId?: SortOrderInput | SortOrder
+    videoIniciadaEm?: SortOrderInput | SortOrder
+    videoTerminouEm?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: ConsultaCountOrderByAggregateInput
     _avg?: ConsultaAvgOrderByAggregateInput
@@ -145761,6 +145942,10 @@ export namespace Prisma {
     proximaConsulta?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
     codigo?: StringNullableWithAggregatesFilter<"Consulta"> | string | null
     checkinEm?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
+    tipo?: StringWithAggregatesFilter<"Consulta"> | string
+    videoRoomId?: StringNullableWithAggregatesFilter<"Consulta"> | string | null
+    videoIniciadaEm?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
+    videoTerminouEm?: DateTimeNullableWithAggregatesFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"Consulta"> | Date | string
   }
 
@@ -150324,10 +150509,14 @@ export namespace Prisma {
     modalidadeDicom?: StringNullableFilter<"DocumentoSaude"> | string | null
     verificado?: BoolFilter<"DocumentoSaude"> | boolean
     registadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    assinadoEm?: DateTimeNullableFilter<"DocumentoSaude"> | Date | string | null
+    assinadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    hashSHA256?: StringNullableFilter<"DocumentoSaude"> | string | null
     criadoEm?: DateTimeFilter<"DocumentoSaude"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     sistemaOrigem?: XOR<SistemaExternoSaudeNullableScalarRelationFilter, SistemaExternoSaudeWhereInput> | null
     registadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    assinadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }
 
   export type DocumentoSaudeOrderByWithRelationInput = {
@@ -150348,10 +150537,14 @@ export namespace Prisma {
     modalidadeDicom?: SortOrderInput | SortOrder
     verificado?: SortOrder
     registadoPorId?: SortOrderInput | SortOrder
+    assinadoEm?: SortOrderInput | SortOrder
+    assinadoPorId?: SortOrderInput | SortOrder
+    hashSHA256?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     doente?: DoenteOrderByWithRelationInput
     sistemaOrigem?: SistemaExternoSaudeOrderByWithRelationInput
     registadoPor?: UtilizadorOrderByWithRelationInput
+    assinadoPor?: UtilizadorOrderByWithRelationInput
   }
 
   export type DocumentoSaudeWhereUniqueInput = Prisma.AtLeast<{
@@ -150375,10 +150568,14 @@ export namespace Prisma {
     modalidadeDicom?: StringNullableFilter<"DocumentoSaude"> | string | null
     verificado?: BoolFilter<"DocumentoSaude"> | boolean
     registadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    assinadoEm?: DateTimeNullableFilter<"DocumentoSaude"> | Date | string | null
+    assinadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    hashSHA256?: StringNullableFilter<"DocumentoSaude"> | string | null
     criadoEm?: DateTimeFilter<"DocumentoSaude"> | Date | string
     doente?: XOR<DoenteScalarRelationFilter, DoenteWhereInput>
     sistemaOrigem?: XOR<SistemaExternoSaudeNullableScalarRelationFilter, SistemaExternoSaudeWhereInput> | null
     registadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
+    assinadoPor?: XOR<UtilizadorNullableScalarRelationFilter, UtilizadorWhereInput> | null
   }, "id">
 
   export type DocumentoSaudeOrderByWithAggregationInput = {
@@ -150399,6 +150596,9 @@ export namespace Prisma {
     modalidadeDicom?: SortOrderInput | SortOrder
     verificado?: SortOrder
     registadoPorId?: SortOrderInput | SortOrder
+    assinadoEm?: SortOrderInput | SortOrder
+    assinadoPorId?: SortOrderInput | SortOrder
+    hashSHA256?: SortOrderInput | SortOrder
     criadoEm?: SortOrder
     _count?: DocumentoSaudeCountOrderByAggregateInput
     _avg?: DocumentoSaudeAvgOrderByAggregateInput
@@ -150428,6 +150628,9 @@ export namespace Prisma {
     modalidadeDicom?: StringNullableWithAggregatesFilter<"DocumentoSaude"> | string | null
     verificado?: BoolWithAggregatesFilter<"DocumentoSaude"> | boolean
     registadoPorId?: StringNullableWithAggregatesFilter<"DocumentoSaude"> | string | null
+    assinadoEm?: DateTimeNullableWithAggregatesFilter<"DocumentoSaude"> | Date | string | null
+    assinadoPorId?: StringNullableWithAggregatesFilter<"DocumentoSaude"> | string | null
+    hashSHA256?: StringNullableWithAggregatesFilter<"DocumentoSaude"> | string | null
     criadoEm?: DateTimeWithAggregatesFilter<"DocumentoSaude"> | Date | string
   }
 
@@ -151262,6 +151465,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -151391,6 +151595,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -151520,6 +151725,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -151649,6 +151855,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -155168,6 +155375,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
@@ -155189,6 +155400,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
@@ -155206,6 +155421,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
@@ -155227,6 +155446,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
@@ -155246,6 +155469,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -155261,6 +155488,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -155278,6 +155509,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -160138,10 +160373,13 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutDocumentosSaudeInput
     sistemaOrigem?: SistemaExternoSaudeCreateNestedOneWithoutDocumentosInput
     registadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeRegistadosInput
+    assinadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeAssinadosInput
   }
 
   export type DocumentoSaudeUncheckedCreateInput = {
@@ -160162,6 +160400,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -160180,10 +160421,13 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutDocumentosSaudeNestedInput
     sistemaOrigem?: SistemaExternoSaudeUpdateOneWithoutDocumentosNestedInput
     registadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeRegistadosNestedInput
+    assinadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeAssinadosNestedInput
   }
 
   export type DocumentoSaudeUncheckedUpdateInput = {
@@ -160204,6 +160448,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -160225,6 +160472,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -160243,6 +160493,8 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -160264,6 +160516,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -164159,6 +164414,10 @@ export namespace Prisma {
     proximaConsulta?: SortOrder
     codigo?: SortOrder
     checkinEm?: SortOrder
+    tipo?: SortOrder
+    videoRoomId?: SortOrder
+    videoIniciadaEm?: SortOrder
+    videoTerminouEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -164180,6 +164439,10 @@ export namespace Prisma {
     proximaConsulta?: SortOrder
     codigo?: SortOrder
     checkinEm?: SortOrder
+    tipo?: SortOrder
+    videoRoomId?: SortOrder
+    videoIniciadaEm?: SortOrder
+    videoTerminouEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -164197,6 +164460,10 @@ export namespace Prisma {
     proximaConsulta?: SortOrder
     codigo?: SortOrder
     checkinEm?: SortOrder
+    tipo?: SortOrder
+    videoRoomId?: SortOrder
+    videoIniciadaEm?: SortOrder
+    videoTerminouEm?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -166938,6 +167205,9 @@ export namespace Prisma {
     modalidadeDicom?: SortOrder
     verificado?: SortOrder
     registadoPorId?: SortOrder
+    assinadoEm?: SortOrder
+    assinadoPorId?: SortOrder
+    hashSHA256?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -166963,6 +167233,9 @@ export namespace Prisma {
     modalidadeDicom?: SortOrder
     verificado?: SortOrder
     registadoPorId?: SortOrder
+    assinadoEm?: SortOrder
+    assinadoPorId?: SortOrder
+    hashSHA256?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -166984,6 +167257,9 @@ export namespace Prisma {
     modalidadeDicom?: SortOrder
     verificado?: SortOrder
     registadoPorId?: SortOrder
+    assinadoEm?: SortOrder
+    assinadoPorId?: SortOrder
+    hashSHA256?: SortOrder
     criadoEm?: SortOrder
   }
 
@@ -168091,6 +168367,13 @@ export namespace Prisma {
     connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
   }
 
+  export type DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput = {
+    create?: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput> | DocumentoSaudeCreateWithoutAssinadoPorInput[] | DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput[]
+    connectOrCreate?: DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput | DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput[]
+    createMany?: DocumentoSaudeCreateManyAssinadoPorInputEnvelope
+    connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+  }
+
   export type AiDecisaoCreateNestedManyWithoutUtilizadorInput = {
     create?: XOR<AiDecisaoCreateWithoutUtilizadorInput, AiDecisaoUncheckedCreateWithoutUtilizadorInput> | AiDecisaoCreateWithoutUtilizadorInput[] | AiDecisaoUncheckedCreateWithoutUtilizadorInput[]
     connectOrCreate?: AiDecisaoCreateOrConnectWithoutUtilizadorInput | AiDecisaoCreateOrConnectWithoutUtilizadorInput[]
@@ -168855,6 +169138,13 @@ export namespace Prisma {
     create?: XOR<DocumentoSaudeCreateWithoutRegistadoPorInput, DocumentoSaudeUncheckedCreateWithoutRegistadoPorInput> | DocumentoSaudeCreateWithoutRegistadoPorInput[] | DocumentoSaudeUncheckedCreateWithoutRegistadoPorInput[]
     connectOrCreate?: DocumentoSaudeCreateOrConnectWithoutRegistadoPorInput | DocumentoSaudeCreateOrConnectWithoutRegistadoPorInput[]
     createMany?: DocumentoSaudeCreateManyRegistadoPorInputEnvelope
+    connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+  }
+
+  export type DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput = {
+    create?: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput> | DocumentoSaudeCreateWithoutAssinadoPorInput[] | DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput[]
+    connectOrCreate?: DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput | DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput[]
+    createMany?: DocumentoSaudeCreateManyAssinadoPorInputEnvelope
     connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
   }
 
@@ -170388,6 +170678,20 @@ export namespace Prisma {
     deleteMany?: DocumentoSaudeScalarWhereInput | DocumentoSaudeScalarWhereInput[]
   }
 
+  export type DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput = {
+    create?: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput> | DocumentoSaudeCreateWithoutAssinadoPorInput[] | DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput[]
+    connectOrCreate?: DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput | DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput[]
+    upsert?: DocumentoSaudeUpsertWithWhereUniqueWithoutAssinadoPorInput | DocumentoSaudeUpsertWithWhereUniqueWithoutAssinadoPorInput[]
+    createMany?: DocumentoSaudeCreateManyAssinadoPorInputEnvelope
+    set?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    disconnect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    delete?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    update?: DocumentoSaudeUpdateWithWhereUniqueWithoutAssinadoPorInput | DocumentoSaudeUpdateWithWhereUniqueWithoutAssinadoPorInput[]
+    updateMany?: DocumentoSaudeUpdateManyWithWhereWithoutAssinadoPorInput | DocumentoSaudeUpdateManyWithWhereWithoutAssinadoPorInput[]
+    deleteMany?: DocumentoSaudeScalarWhereInput | DocumentoSaudeScalarWhereInput[]
+  }
+
   export type AiDecisaoUpdateManyWithoutUtilizadorNestedInput = {
     create?: XOR<AiDecisaoCreateWithoutUtilizadorInput, AiDecisaoUncheckedCreateWithoutUtilizadorInput> | AiDecisaoCreateWithoutUtilizadorInput[] | AiDecisaoUncheckedCreateWithoutUtilizadorInput[]
     connectOrCreate?: AiDecisaoCreateOrConnectWithoutUtilizadorInput | AiDecisaoCreateOrConnectWithoutUtilizadorInput[]
@@ -171913,6 +172217,20 @@ export namespace Prisma {
     connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
     update?: DocumentoSaudeUpdateWithWhereUniqueWithoutRegistadoPorInput | DocumentoSaudeUpdateWithWhereUniqueWithoutRegistadoPorInput[]
     updateMany?: DocumentoSaudeUpdateManyWithWhereWithoutRegistadoPorInput | DocumentoSaudeUpdateManyWithWhereWithoutRegistadoPorInput[]
+    deleteMany?: DocumentoSaudeScalarWhereInput | DocumentoSaudeScalarWhereInput[]
+  }
+
+  export type DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput = {
+    create?: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput> | DocumentoSaudeCreateWithoutAssinadoPorInput[] | DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput[]
+    connectOrCreate?: DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput | DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput[]
+    upsert?: DocumentoSaudeUpsertWithWhereUniqueWithoutAssinadoPorInput | DocumentoSaudeUpsertWithWhereUniqueWithoutAssinadoPorInput[]
+    createMany?: DocumentoSaudeCreateManyAssinadoPorInputEnvelope
+    set?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    disconnect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    delete?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    connect?: DocumentoSaudeWhereUniqueInput | DocumentoSaudeWhereUniqueInput[]
+    update?: DocumentoSaudeUpdateWithWhereUniqueWithoutAssinadoPorInput | DocumentoSaudeUpdateWithWhereUniqueWithoutAssinadoPorInput[]
+    updateMany?: DocumentoSaudeUpdateManyWithWhereWithoutAssinadoPorInput | DocumentoSaudeUpdateManyWithWhereWithoutAssinadoPorInput[]
     deleteMany?: DocumentoSaudeScalarWhereInput | DocumentoSaudeScalarWhereInput[]
   }
 
@@ -178094,6 +178412,12 @@ export namespace Prisma {
     connect?: UtilizadorWhereUniqueInput
   }
 
+  export type UtilizadorCreateNestedOneWithoutDocumentosSaudeAssinadosInput = {
+    create?: XOR<UtilizadorCreateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedCreateWithoutDocumentosSaudeAssinadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutDocumentosSaudeAssinadosInput
+    connect?: UtilizadorWhereUniqueInput
+  }
+
   export type DoenteUpdateOneRequiredWithoutDocumentosSaudeNestedInput = {
     create?: XOR<DoenteCreateWithoutDocumentosSaudeInput, DoenteUncheckedCreateWithoutDocumentosSaudeInput>
     connectOrCreate?: DoenteCreateOrConnectWithoutDocumentosSaudeInput
@@ -178120,6 +178444,16 @@ export namespace Prisma {
     delete?: UtilizadorWhereInput | boolean
     connect?: UtilizadorWhereUniqueInput
     update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDocumentosSaudeRegistadosInput, UtilizadorUpdateWithoutDocumentosSaudeRegistadosInput>, UtilizadorUncheckedUpdateWithoutDocumentosSaudeRegistadosInput>
+  }
+
+  export type UtilizadorUpdateOneWithoutDocumentosSaudeAssinadosNestedInput = {
+    create?: XOR<UtilizadorCreateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedCreateWithoutDocumentosSaudeAssinadosInput>
+    connectOrCreate?: UtilizadorCreateOrConnectWithoutDocumentosSaudeAssinadosInput
+    upsert?: UtilizadorUpsertWithoutDocumentosSaudeAssinadosInput
+    disconnect?: UtilizadorWhereInput | boolean
+    delete?: UtilizadorWhereInput | boolean
+    connect?: UtilizadorWhereUniqueInput
+    update?: XOR<XOR<UtilizadorUpdateToOneWithWhereWithoutDocumentosSaudeAssinadosInput, UtilizadorUpdateWithoutDocumentosSaudeAssinadosInput>, UtilizadorUncheckedUpdateWithoutDocumentosSaudeAssinadosInput>
   }
 
   export type UtilizadorCreateNestedOneWithoutAiDecisoesInput = {
@@ -180373,6 +180707,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
@@ -180392,6 +180730,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
@@ -181935,6 +182277,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -182063,6 +182406,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -182196,6 +182540,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -182324,6 +182669,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -183501,9 +183847,12 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutDocumentosSaudeInput
     sistemaOrigem?: SistemaExternoSaudeCreateNestedOneWithoutDocumentosInput
+    assinadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeAssinadosInput
   }
 
   export type DocumentoSaudeUncheckedCreateWithoutRegistadoPorInput = {
@@ -183523,6 +183872,9 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -183533,6 +183885,62 @@ export namespace Prisma {
 
   export type DocumentoSaudeCreateManyRegistadoPorInputEnvelope = {
     data: DocumentoSaudeCreateManyRegistadoPorInput | DocumentoSaudeCreateManyRegistadoPorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DocumentoSaudeCreateWithoutAssinadoPorInput = {
+    id?: string
+    tipo: string
+    titulo: string
+    descricao?: string | null
+    dataDocumento: Date | string
+    origem: string
+    formato: string
+    storageKey?: string | null
+    urlExterna?: string | null
+    mimeType: string
+    tamanhoBytes?: number | null
+    fhirResourceId?: string | null
+    modalidadeDicom?: string | null
+    verificado?: boolean
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
+    criadoEm?: Date | string
+    doente: DoenteCreateNestedOneWithoutDocumentosSaudeInput
+    sistemaOrigem?: SistemaExternoSaudeCreateNestedOneWithoutDocumentosInput
+    registadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeRegistadosInput
+  }
+
+  export type DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    titulo: string
+    descricao?: string | null
+    dataDocumento: Date | string
+    origem: string
+    sistemaOrigemId?: string | null
+    formato: string
+    storageKey?: string | null
+    urlExterna?: string | null
+    mimeType: string
+    tamanhoBytes?: number | null
+    fhirResourceId?: string | null
+    modalidadeDicom?: string | null
+    verificado?: boolean
+    registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type DocumentoSaudeCreateOrConnectWithoutAssinadoPorInput = {
+    where: DocumentoSaudeWhereUniqueInput
+    create: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput>
+  }
+
+  export type DocumentoSaudeCreateManyAssinadoPorInputEnvelope = {
+    data: DocumentoSaudeCreateManyAssinadoPorInput | DocumentoSaudeCreateManyAssinadoPorInput[]
     skipDuplicates?: boolean
   }
 
@@ -184549,6 +184957,10 @@ export namespace Prisma {
     proximaConsulta?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     codigo?: StringNullableFilter<"Consulta"> | string | null
     checkinEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    tipo?: StringFilter<"Consulta"> | string
+    videoRoomId?: StringNullableFilter<"Consulta"> | string | null
+    videoIniciadaEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
+    videoTerminouEm?: DateTimeNullableFilter<"Consulta"> | Date | string | null
     criadoEm?: DateTimeFilter<"Consulta"> | Date | string
   }
 
@@ -185738,6 +186150,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -185866,6 +186279,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -186821,7 +187235,26 @@ export namespace Prisma {
     modalidadeDicom?: StringNullableFilter<"DocumentoSaude"> | string | null
     verificado?: BoolFilter<"DocumentoSaude"> | boolean
     registadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    assinadoEm?: DateTimeNullableFilter<"DocumentoSaude"> | Date | string | null
+    assinadoPorId?: StringNullableFilter<"DocumentoSaude"> | string | null
+    hashSHA256?: StringNullableFilter<"DocumentoSaude"> | string | null
     criadoEm?: DateTimeFilter<"DocumentoSaude"> | Date | string
+  }
+
+  export type DocumentoSaudeUpsertWithWhereUniqueWithoutAssinadoPorInput = {
+    where: DocumentoSaudeWhereUniqueInput
+    update: XOR<DocumentoSaudeUpdateWithoutAssinadoPorInput, DocumentoSaudeUncheckedUpdateWithoutAssinadoPorInput>
+    create: XOR<DocumentoSaudeCreateWithoutAssinadoPorInput, DocumentoSaudeUncheckedCreateWithoutAssinadoPorInput>
+  }
+
+  export type DocumentoSaudeUpdateWithWhereUniqueWithoutAssinadoPorInput = {
+    where: DocumentoSaudeWhereUniqueInput
+    data: XOR<DocumentoSaudeUpdateWithoutAssinadoPorInput, DocumentoSaudeUncheckedUpdateWithoutAssinadoPorInput>
+  }
+
+  export type DocumentoSaudeUpdateManyWithWhereWithoutAssinadoPorInput = {
+    where: DocumentoSaudeScalarWhereInput
+    data: XOR<DocumentoSaudeUpdateManyMutationInput, DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorInput>
   }
 
   export type AiDecisaoUpsertWithWhereUniqueWithoutUtilizadorInput = {
@@ -187401,6 +187834,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -187529,6 +187963,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -188220,6 +188655,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
     atosConsulta?: AtoConsultaCreateNestedManyWithoutConsultaInput
@@ -188239,6 +188678,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
@@ -189124,9 +189567,12 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
     sistemaOrigem?: SistemaExternoSaudeCreateNestedOneWithoutDocumentosInput
     registadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeRegistadosInput
+    assinadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeAssinadosInput
   }
 
   export type DocumentoSaudeUncheckedCreateWithoutDoenteInput = {
@@ -189146,6 +189592,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -189433,6 +189882,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -189561,6 +190011,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -190665,6 +191116,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -190793,6 +191245,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -191111,6 +191564,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -191239,6 +191693,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -191604,6 +192059,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -191732,6 +192188,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -192054,6 +192511,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -192182,6 +192640,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -192378,6 +192837,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -192506,6 +192966,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -192687,6 +193148,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -192815,6 +193277,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -193367,6 +193830,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -193495,6 +193959,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -193639,6 +194104,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -193767,6 +194233,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -193895,6 +194362,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -194023,6 +194491,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -194167,6 +194636,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -194295,6 +194765,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -194564,6 +195035,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -194692,6 +195164,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -194825,6 +195298,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -194953,6 +195427,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -195244,6 +195719,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -195372,6 +195848,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -195511,6 +195988,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -195639,6 +196117,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -195908,6 +196387,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -196036,6 +196516,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -196327,6 +196808,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -196455,6 +196937,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -196755,6 +197238,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -196883,6 +197367,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -197211,6 +197696,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -197339,6 +197825,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -197608,6 +198095,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -197736,6 +198224,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -197869,6 +198358,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -197997,6 +198487,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -198319,6 +198810,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -198447,6 +198939,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -198586,6 +199079,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -198714,6 +199208,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -199020,6 +199515,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -199148,6 +199644,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -199281,6 +199778,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -199409,6 +199907,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -199542,6 +200041,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -199670,6 +200170,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -200024,6 +200525,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -200152,6 +200654,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -200291,6 +200794,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -200419,6 +200923,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -200558,6 +201063,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -200686,6 +201192,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -201441,6 +201948,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -201569,6 +202077,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -201913,6 +202422,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -202041,6 +202551,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -202169,6 +202680,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -202297,6 +202809,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -202469,6 +202982,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -202597,6 +203111,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -202942,6 +203457,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -203070,6 +203586,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -203243,6 +203760,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -203371,6 +203889,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -203499,6 +204018,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -203627,6 +204147,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -203760,6 +204281,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -203888,6 +204410,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -204044,6 +204567,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -204172,6 +204696,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -204316,6 +204841,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -204444,6 +204970,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -204583,6 +205110,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -204711,6 +205239,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -204879,6 +205408,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -205007,6 +205537,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -205299,6 +205830,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -205427,6 +205959,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -205560,6 +206093,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -205688,6 +206222,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -206008,6 +206543,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -206136,6 +206672,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -206275,6 +206812,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -206403,6 +206941,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -206672,6 +207211,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -206800,6 +207340,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -207091,6 +207632,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -207219,6 +207761,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -207488,6 +208031,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -207616,6 +208160,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -207907,6 +208452,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -208035,6 +208581,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -208304,6 +208851,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -208432,6 +208980,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -208753,6 +209302,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -208881,6 +209431,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -209025,6 +209576,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -209153,6 +209705,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -209297,6 +209850,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -209425,6 +209979,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -210270,6 +210825,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -210398,6 +210954,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -210689,6 +211246,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -210817,6 +211375,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -211086,6 +211645,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -211214,6 +211774,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -211505,6 +212066,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -211633,6 +212195,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -211902,6 +212465,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -212030,6 +212594,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -212321,6 +212886,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -212449,6 +213015,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -212577,6 +213144,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -212705,6 +213273,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -212849,6 +213418,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -212977,6 +213547,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -213105,6 +213676,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -213233,6 +213805,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -213377,6 +213950,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -213505,6 +214079,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -213774,6 +214349,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -213902,6 +214478,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -214217,6 +214794,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -214345,6 +214923,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -214713,6 +215292,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -214841,6 +215421,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -214974,6 +215555,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -215102,6 +215684,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -215235,6 +215818,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -215363,6 +215947,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -215680,6 +216265,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -215808,6 +216394,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -215947,6 +216534,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -216075,6 +216663,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -216214,6 +216803,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -216342,6 +216932,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -216563,6 +217154,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -216691,6 +217283,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -216918,6 +217511,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -217046,6 +217640,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -217315,6 +217910,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -217443,6 +218039,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -217576,6 +218173,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -217704,6 +218302,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -218026,6 +218625,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -218154,6 +218754,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -218293,6 +218894,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -218421,6 +219023,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -218625,6 +219228,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -218753,6 +219357,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -218886,6 +219491,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -219014,6 +219620,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -219147,6 +219754,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -219275,6 +219883,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -219464,6 +220073,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -219592,6 +220202,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -219731,6 +220342,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -219859,6 +220471,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -219998,6 +220611,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -220126,6 +220740,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -220395,6 +221010,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -220523,6 +221139,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -220875,6 +221492,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -221003,6 +221621,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -221200,6 +221819,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -221328,6 +221948,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -221472,6 +222093,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -221600,6 +222222,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -221728,6 +222351,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -221856,6 +222480,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -221989,6 +222614,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -222117,6 +222743,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -222261,6 +222888,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -222389,6 +223017,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -222528,6 +223157,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -222656,6 +223286,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -223095,6 +223726,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -223223,6 +223855,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -223356,6 +223989,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -223484,6 +224118,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -223617,6 +224252,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -223745,6 +224381,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -223934,6 +224571,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -224062,6 +224700,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -224201,6 +224840,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -224329,6 +224969,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -224468,6 +225109,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -224596,6 +225238,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -224840,6 +225483,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -224968,6 +225612,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -225157,6 +225802,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -225285,6 +225931,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -225452,6 +226099,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -225580,6 +226228,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -225713,6 +226362,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -225841,6 +226491,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -226030,6 +226681,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -226158,6 +226810,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -226297,6 +226950,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -226425,6 +227079,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -226673,6 +227328,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -226801,6 +227457,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -227023,6 +227680,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -227151,6 +227809,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -227420,6 +228079,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -227548,6 +228208,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -227871,6 +228532,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -227999,6 +228661,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -228311,6 +228974,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -228439,6 +229103,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -228763,6 +229428,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -228891,6 +229557,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -229160,6 +229827,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -229288,6 +229956,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -229421,6 +230090,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -229549,6 +230219,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -229840,6 +230511,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -229968,6 +230640,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -230107,6 +230780,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -230235,6 +230909,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -230363,6 +231038,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -230491,6 +231167,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -230635,6 +231312,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -230763,6 +231441,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -230891,6 +231570,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -231019,6 +231699,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -231152,6 +231833,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -231280,6 +231962,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -231452,6 +232135,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -231580,6 +232264,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -231719,6 +232404,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -231847,6 +232533,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -232201,6 +232888,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -232329,6 +233017,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -232462,6 +233151,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -232590,6 +233280,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -232881,6 +233572,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -233009,6 +233701,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -233148,6 +233841,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -233276,6 +233970,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -233545,6 +234240,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -233673,6 +234369,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -233964,6 +234661,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -234092,6 +234790,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -234220,6 +234919,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -234348,6 +235048,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -234481,6 +235182,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -234609,6 +235311,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -234777,6 +235480,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -234905,6 +235609,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -235044,6 +235749,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -235172,6 +235878,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -235349,6 +236056,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -235477,6 +236185,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -235660,6 +236369,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -235788,6 +236498,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -235916,6 +236627,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -236044,6 +236756,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -236177,6 +236890,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -236305,6 +237019,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -236449,6 +237164,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -236577,6 +237293,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -236716,6 +237433,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -236844,6 +237562,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -237113,6 +237832,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -237241,6 +237961,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -237532,6 +238253,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -237660,6 +238382,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -237820,6 +238543,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
@@ -237840,6 +238567,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     atosConsulta?: AtoConsultaUncheckedCreateNestedManyWithoutConsultaInput
   }
@@ -237970,6 +238701,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -238098,6 +238830,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -238338,6 +239071,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
@@ -238358,6 +239095,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
   }
@@ -238494,6 +239235,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -238622,6 +239364,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -238907,6 +239650,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -239035,6 +239779,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -239220,6 +239965,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -239348,6 +240094,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -239409,6 +240156,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     doente?: DoenteCreateNestedOneWithoutConsultasInput
     medico: UtilizadorCreateNestedOneWithoutConsultasInput
@@ -239429,6 +240180,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
     episodioFaturacao?: EpisodioFaturacaoUncheckedCreateNestedOneWithoutConsultaInput
   }
@@ -239488,6 +240243,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
@@ -239508,6 +240267,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
   }
@@ -239666,6 +240429,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -239794,6 +240558,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -239938,6 +240703,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -240066,6 +240832,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -240335,6 +241102,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -240463,6 +241231,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -240754,6 +241523,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -240882,6 +241652,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -241091,6 +241862,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -241219,6 +241991,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -241352,6 +242125,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -241480,6 +242254,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -241659,6 +242434,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -241787,6 +242563,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -241926,6 +242703,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -242054,6 +242832,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -242182,6 +242961,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -242310,6 +243090,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -242443,6 +243224,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -242571,6 +243353,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -242715,6 +243498,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -242843,6 +243627,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -242982,6 +243767,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -243110,6 +243896,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -243238,6 +244025,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -243366,6 +244154,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -243499,6 +244288,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -243627,6 +244417,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -243760,6 +244551,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -243888,6 +244680,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -244032,6 +244825,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -244160,6 +244954,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -244299,6 +245094,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -244427,6 +245223,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -244566,6 +245363,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -244694,6 +245492,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -244822,6 +245621,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -244950,6 +245750,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -245094,6 +245895,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -245222,6 +246024,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -245491,6 +246294,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -245619,6 +246423,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -245910,6 +246715,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -246038,6 +246844,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -246307,6 +247114,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -246435,6 +247243,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -246726,6 +247535,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -246854,6 +247664,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -246982,6 +247793,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -247110,6 +247922,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -247243,6 +248056,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -247371,6 +248185,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -247515,6 +248330,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -247643,6 +248459,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -247782,6 +248599,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -247910,6 +248728,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -248038,6 +248857,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -248166,6 +248986,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -248310,6 +249131,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -248438,6 +249260,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -248707,6 +249530,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -248835,6 +249659,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -248968,6 +249793,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -249096,6 +249922,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -249387,6 +250214,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -249515,6 +250343,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -249654,6 +250483,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -249782,6 +250612,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -249910,6 +250741,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -250038,6 +250870,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -250323,6 +251156,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -250451,6 +251285,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -250867,6 +251702,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -250995,6 +251831,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -251314,6 +252151,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -251442,6 +252280,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -251609,6 +252448,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -251737,6 +252577,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -251910,6 +252751,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -252038,6 +252880,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -252307,6 +253150,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -252435,6 +253279,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -252726,6 +253571,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -252854,6 +253700,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -253123,6 +253970,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -253251,6 +254099,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -253542,6 +254391,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -253670,6 +254520,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -253798,6 +254649,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -253926,6 +254778,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -254070,6 +254923,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -254198,6 +255052,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -254326,6 +255181,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -254454,6 +255310,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -254598,6 +255455,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -254726,6 +255584,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -254995,6 +255854,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -255123,6 +255983,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -255256,6 +256117,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -255384,6 +256246,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -255675,6 +256538,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -255803,6 +256667,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -255942,6 +256807,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -256070,6 +256936,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -257203,6 +258070,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -257331,6 +258199,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -257464,6 +258333,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -257592,6 +258462,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -257883,6 +258754,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -258011,6 +258883,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -258150,6 +259023,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -258278,6 +259152,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -258406,6 +259281,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -258534,6 +259410,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -258667,6 +259544,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -258795,6 +259673,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -258939,6 +259818,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -259067,6 +259947,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -259206,6 +260087,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -259334,6 +260216,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -259603,6 +260486,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -259731,6 +260615,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -260022,6 +260907,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -260150,6 +261036,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -260172,9 +261059,12 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
     doente: DoenteCreateNestedOneWithoutDocumentosSaudeInput
     registadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeRegistadosInput
+    assinadoPor?: UtilizadorCreateNestedOneWithoutDocumentosSaudeAssinadosInput
   }
 
   export type DocumentoSaudeUncheckedCreateWithoutSistemaOrigemInput = {
@@ -260194,6 +261084,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -260802,6 +261695,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -260930,6 +261824,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -260940,6 +261835,269 @@ export namespace Prisma {
   export type UtilizadorCreateOrConnectWithoutDocumentosSaudeRegistadosInput = {
     where: UtilizadorWhereUniqueInput
     create: XOR<UtilizadorCreateWithoutDocumentosSaudeRegistadosInput, UtilizadorUncheckedCreateWithoutDocumentosSaudeRegistadosInput>
+  }
+
+  export type UtilizadorCreateWithoutDocumentosSaudeAssinadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    turnosComoChefe?: TurnoCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTICreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTICreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTICreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTICreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisCreateNestedOneWithoutUtilizadorInput
+    chefe?: UtilizadorCreateNestedOneWithoutSubordinadosInput
+    subordinados?: UtilizadorCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTICreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorUncheckedCreateWithoutDocumentosSaudeAssinadosInput = {
+    id?: string
+    numeroFuncionario: string
+    nome: string
+    passwordHash: string
+    mfaSecret?: string | null
+    mfaAtivo?: boolean
+    passwordExpiresAt?: Date | string | null
+    role: string
+    subRole?: string | null
+    servico?: $Enums.Servico
+    ordemExperiencia?: number | null
+    equipa?: string | null
+    ativo?: boolean
+    criadoEm?: Date | string
+    atualizadoEm?: Date | string
+    chefeId?: string | null
+    turnosComoChefe?: TurnoUncheckedCreateNestedManyWithoutChefeTurnoInput
+    horariosEntrada?: HorarioEntradaUncheckedCreateNestedManyWithoutUtilizadorInput
+    notasTurno?: NotaTurnoUncheckedCreateNestedManyWithoutAutorInput
+    tarefasCriadas?: TarefaUncheckedCreateNestedManyWithoutCriadoPorInput
+    tarefasResponsavel?: TarefaUncheckedCreateNestedManyWithoutResponsavelInput
+    medicacoesPrescritas?: MedicacaoUncheckedCreateNestedManyWithoutPrescritoPorInput
+    registosMedicacao?: RegistoMedicacaoUncheckedCreateNestedManyWithoutAdministradoPorInput
+    doentesAdmitidos?: DoenteUncheckedCreateNestedManyWithoutAdministrativoInput
+    escalas?: EscalaUncheckedCreateNestedManyWithoutCriadaPorInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedCreateNestedManyWithoutEnfermeiroInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutUtilizadorInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedCreateNestedManyWithoutAtribuidoPorInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedCreateNestedManyWithoutAprovadoPorInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUtilizadorInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedCreateNestedManyWithoutRegistadoPorInput
+    dispositivosTokens?: DispositivoTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    notificacoesInApp?: NotificacaoInAppUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sumariosAlta?: SumarioAltaUncheckedCreateNestedManyWithoutCriadoPorInput
+    notasClinciasAutor?: NotaClinicaUncheckedCreateNestedManyWithoutAutorInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    examesSolicitados?: ExameUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutTriadoPorInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutMedicoResponsavelInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutCirurgiaoInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedCreateNestedManyWithoutAnestesistaInput
+    consultas?: ConsultaUncheckedCreateNestedManyWithoutMedicoInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutProcessadoPorInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedCreateNestedManyWithoutFisioterapeutaInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedCreateNestedManyWithoutExecutadoPorInput
+    anunciosPublicados?: AnuncioUncheckedCreateNestedManyWithoutAutorInput
+    mensagensEnviadas?: MensagemInternaUncheckedCreateNestedManyWithoutRemetenteInput
+    mensagensRecebidas?: MensagemInternaUncheckedCreateNestedManyWithoutDestinatarioInput
+    interconsultasRequisitadas?: InterconsultaUncheckedCreateNestedManyWithoutRequisitanteInput
+    interconsultasRespondidas?: InterconsultaUncheckedCreateNestedManyWithoutMedicoRespostaInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedCreateNestedManyWithoutInseridoPorInput
+    medicacoesValidadas?: MedicacaoUncheckedCreateNestedManyWithoutValidadoPorInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignInPorInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutTimeOutPorInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedCreateNestedManyWithoutSignOutPorInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutRececionistaInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedCreateNestedManyWithoutMedicoInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUtilizadorInput
+    incidentesCriados?: IncidenteTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    incidentesAtribuidos?: IncidenteTIUncheckedCreateNestedManyWithoutResponsavelInput
+    pedidosTICriados?: PedidoTIUncheckedCreateNestedManyWithoutCriadoPorInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedCreateNestedManyWithoutResponsavelInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    pagamentosRegistados?: PagamentoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    agendas?: AgendaMedicoUncheckedCreateNestedManyWithoutMedicoInput
+    problemasRegistados?: ProblemaClinicoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    manutencoesReportadas?: ManutencaoUncheckedCreateNestedManyWithoutReportadoPorInput
+    manutencoesTecnico?: ManutencaoUncheckedCreateNestedManyWithoutTecnicoInput
+    alertasAcusados?: AlertaClinicoUncheckedCreateNestedManyWithoutAcusadoPorInput
+    ausencias?: AusenciaUncheckedCreateNestedManyWithoutUtilizadorInput
+    ausenciasAprovadas?: AusenciaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    formacoes?: FormacaoUtilizadorUncheckedCreateNestedManyWithoutUtilizadorInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedCreateNestedManyWithoutProfissionalInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutUtilizadorInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedCreateNestedManyWithoutAvaliadorInput
+    dadosContratuais?: DadosContratuaisUncheckedCreateNestedOneWithoutUtilizadorInput
+    subordinados?: UtilizadorUncheckedCreateNestedManyWithoutChefeInput
+    ajustesStock?: AjusteStockUncheckedCreateNestedManyWithoutUtilizadorInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedCreateNestedManyWithoutSolicitadoPorInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedCreateNestedManyWithoutConfirmadoPorInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedCreateNestedManyWithoutRecebioPorInput
+    presencaOnline?: PresencaOnlineUncheckedCreateNestedOneWithoutUtilizadorInput
+    registosCheckin?: RegistoCheckinUncheckedCreateNestedManyWithoutUtilizadorInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutCriadoPorInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedCreateNestedManyWithoutTestemunhaInput
+    breakGlassUsados?: BreakGlassAccessUncheckedCreateNestedManyWithoutUtilizadorInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedCreateNestedManyWithoutAtivadoPorInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedCreateNestedManyWithoutConcluidoPorInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedCreateNestedManyWithoutCriadaPorInput
+    medicacoesAssinadas?: MedicacaoUncheckedCreateNestedManyWithoutAssinadoPorInput
+    notasAssinadas?: NotaClinicaUncheckedCreateNestedManyWithoutAssinadaPorInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    surtosRegistados?: SurtoIACSUncheckedCreateNestedManyWithoutRegistadoPorInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedCreateNestedManyWithoutAutorInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedCreateNestedManyWithoutAtualizadoPorInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedCreateNestedManyWithoutSolicitanteInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedCreateNestedManyWithoutDestinatarioInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedCreateNestedManyWithoutAprovadoPorInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedCreateNestedManyWithoutRegistadoPorInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedCreateNestedManyWithoutRegistadoPorInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedCreateNestedManyWithoutRegistadoPorInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedCreateNestedManyWithoutEspecialidadeActivadaPorInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutCriadaPorInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedCreateNestedManyWithoutResolvidaPorInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutCriadaPorInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedCreateNestedManyWithoutConfirmadaPorInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutCriadoPorInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
+    fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
+    portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
+    dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedCreateNestedManyWithoutResponsavelInput
+  }
+
+  export type UtilizadorCreateOrConnectWithoutDocumentosSaudeAssinadosInput = {
+    where: UtilizadorWhereUniqueInput
+    create: XOR<UtilizadorCreateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedCreateWithoutDocumentosSaudeAssinadosInput>
   }
 
   export type DoenteUpsertWithoutDocumentosSaudeInput = {
@@ -261256,6 +262414,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -261384,6 +262543,276 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUncheckedUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUpsertWithoutDocumentosSaudeAssinadosInput = {
+    update: XOR<UtilizadorUpdateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedUpdateWithoutDocumentosSaudeAssinadosInput>
+    create: XOR<UtilizadorCreateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedCreateWithoutDocumentosSaudeAssinadosInput>
+    where?: UtilizadorWhereInput
+  }
+
+  export type UtilizadorUpdateToOneWithWhereWithoutDocumentosSaudeAssinadosInput = {
+    where?: UtilizadorWhereInput
+    data: XOR<UtilizadorUpdateWithoutDocumentosSaudeAssinadosInput, UtilizadorUncheckedUpdateWithoutDocumentosSaudeAssinadosInput>
+  }
+
+  export type UtilizadorUpdateWithoutDocumentosSaudeAssinadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    turnosComoChefe?: TurnoUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUpdateOneWithoutUtilizadorNestedInput
+    chefe?: UtilizadorUpdateOneWithoutSubordinadosNestedInput
+    subordinados?: UtilizadorUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
+    fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
+    portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
+    dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
+    followUpsResponsavel?: FollowUpAgendadoUpdateManyWithoutResponsavelNestedInput
+  }
+
+  export type UtilizadorUncheckedUpdateWithoutDocumentosSaudeAssinadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    numeroFuncionario?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    mfaSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    mfaAtivo?: BoolFieldUpdateOperationsInput | boolean
+    passwordExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    subRole?: NullableStringFieldUpdateOperationsInput | string | null
+    servico?: EnumServicoFieldUpdateOperationsInput | $Enums.Servico
+    ordemExperiencia?: NullableIntFieldUpdateOperationsInput | number | null
+    equipa?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    atualizadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    chefeId?: NullableStringFieldUpdateOperationsInput | string | null
+    turnosComoChefe?: TurnoUncheckedUpdateManyWithoutChefeTurnoNestedInput
+    horariosEntrada?: HorarioEntradaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notasTurno?: NotaTurnoUncheckedUpdateManyWithoutAutorNestedInput
+    tarefasCriadas?: TarefaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    tarefasResponsavel?: TarefaUncheckedUpdateManyWithoutResponsavelNestedInput
+    medicacoesPrescritas?: MedicacaoUncheckedUpdateManyWithoutPrescritoPorNestedInput
+    registosMedicacao?: RegistoMedicacaoUncheckedUpdateManyWithoutAdministradoPorNestedInput
+    doentesAdmitidos?: DoenteUncheckedUpdateManyWithoutAdministrativoNestedInput
+    escalas?: EscalaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    atribuicoesEnfermeiro?: AtribuicaoDoenteUncheckedUpdateManyWithoutEnfermeiroNestedInput
+    horariosTurnoProfissional?: HorarioTurnoProfissionalUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesComoUtilizador?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    atribuicoesFeitas?: AtribuicaoHorarioTurnoUncheckedUpdateManyWithoutAtribuidoPorNestedInput
+    trocasSolicitadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasRecebidas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasAprovadas?: PedidoTrocaTurnoUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUtilizadorNestedInput
+    sinaisVitaisRegistados?: SinalVitalUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    dispositivosTokens?: DispositivoTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    notificacoesInApp?: NotificacaoInAppUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesRisco?: AvaliacaoRiscoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sumariosAlta?: SumarioAltaUncheckedUpdateManyWithoutCriadoPorNestedInput
+    notasClinciasAutor?: NotaClinicaUncheckedUpdateManyWithoutAutorNestedInput
+    escalasClinicasRegistadas?: EscalaClinicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    examesSolicitados?: ExameUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    episodiosTriados?: EpisodioUrgenciaUncheckedUpdateManyWithoutTriadoPorNestedInput
+    episodiosMedico?: EpisodioUrgenciaUncheckedUpdateManyWithoutMedicoResponsavelNestedInput
+    cirurgiasComoCircurgiao?: CirurgiaProgramadaUncheckedUpdateManyWithoutCirurgiaoNestedInput
+    cirurgiasComoAnestesista?: CirurgiaProgramadaUncheckedUpdateManyWithoutAnestesistaNestedInput
+    consultas?: ConsultaUncheckedUpdateManyWithoutMedicoNestedInput
+    stockPedidosSolicitados?: PedidoFarmaciaUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    stockPedidosProcessados?: PedidoFarmaciaUncheckedUpdateManyWithoutProcessadoPorNestedInput
+    stockPedidosAprovados?: PedidoFarmaciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    planosReabilitacao?: PlanoReabilitacaoUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    sessoesFisioterapia?: SessaoFisioterapiaUncheckedUpdateManyWithoutFisioterapeutaNestedInput
+    pedidosInternosSolicitados?: PedidoInternoUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    pedidosInternosExecutados?: PedidoInternoUncheckedUpdateManyWithoutExecutadoPorNestedInput
+    anunciosPublicados?: AnuncioUncheckedUpdateManyWithoutAutorNestedInput
+    mensagensEnviadas?: MensagemInternaUncheckedUpdateManyWithoutRemetenteNestedInput
+    mensagensRecebidas?: MensagemInternaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    interconsultasRequisitadas?: InterconsultaUncheckedUpdateManyWithoutRequisitanteNestedInput
+    interconsultasRespondidas?: InterconsultaUncheckedUpdateManyWithoutMedicoRespostaNestedInput
+    dispositivosInseridos?: DispositivoInvasivoUncheckedUpdateManyWithoutInseridoPorNestedInput
+    medicacoesValidadas?: MedicacaoUncheckedUpdateManyWithoutValidadoPorNestedInput
+    checklistsSignIn?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignInPorNestedInput
+    checklistsTimeOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutTimeOutPorNestedInput
+    checklistsSignOut?: ChecklistCirurgiaUncheckedUpdateManyWithoutSignOutPorNestedInput
+    checkinsRececionados?: CheckinSalaEsperaUncheckedUpdateManyWithoutRececionistaNestedInput
+    checkinsAtendidos?: CheckinSalaEsperaUncheckedUpdateManyWithoutMedicoNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUtilizadorNestedInput
+    incidentesCriados?: IncidenteTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    incidentesAtribuidos?: IncidenteTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    pedidosTICriados?: PedidoTIUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pedidosTIAtribuidos?: PedidoTIUncheckedUpdateManyWithoutResponsavelNestedInput
+    ficheirosPessoaisAtualizados?: FicheiroPessoalDoenteUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    episodiosFaturacaoCriados?: EpisodioFaturacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    pagamentosRegistados?: PagamentoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    agendas?: AgendaMedicoUncheckedUpdateManyWithoutMedicoNestedInput
+    problemasRegistados?: ProblemaClinicoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    manutencoesReportadas?: ManutencaoUncheckedUpdateManyWithoutReportadoPorNestedInput
+    manutencoesTecnico?: ManutencaoUncheckedUpdateManyWithoutTecnicoNestedInput
+    alertasAcusados?: AlertaClinicoUncheckedUpdateManyWithoutAcusadoPorNestedInput
+    ausencias?: AusenciaUncheckedUpdateManyWithoutUtilizadorNestedInput
+    ausenciasAprovadas?: AusenciaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    formacoes?: FormacaoUtilizadorUncheckedUpdateManyWithoutUtilizadorNestedInput
+    eventosAdversosRegistados?: EventoAdversoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    sessoesEspecialidade?: SessaoEspecialidadeUncheckedUpdateManyWithoutProfissionalNestedInput
+    avaliacoesComoAvaliado?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutUtilizadorNestedInput
+    avaliacoesComoAvaliador?: AvaliacaoDesempenhoUncheckedUpdateManyWithoutAvaliadorNestedInput
+    dadosContratuais?: DadosContratuaisUncheckedUpdateOneWithoutUtilizadorNestedInput
+    subordinados?: UtilizadorUncheckedUpdateManyWithoutChefeNestedInput
+    ajustesStock?: AjusteStockUncheckedUpdateManyWithoutUtilizadorNestedInput
+    transferenciasSolicitadas?: TransferenciaStockUncheckedUpdateManyWithoutSolicitadoPorNestedInput
+    transferenciasConfirmadas?: TransferenciaStockUncheckedUpdateManyWithoutConfirmadoPorNestedInput
+    encomendasRecebidas?: EncomendaFornecedorUncheckedUpdateManyWithoutRecebioPorNestedInput
+    presencaOnline?: PresencaOnlineUncheckedUpdateOneWithoutUtilizadorNestedInput
+    registosCheckin?: RegistoCheckinUncheckedUpdateManyWithoutUtilizadorNestedInput
+    consentimentosCriados?: ConsentimentoInformadoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    consentimentosTestemunha?: ConsentimentoInformadoUncheckedUpdateManyWithoutTestemunhaNestedInput
+    breakGlassUsados?: BreakGlassAccessUncheckedUpdateManyWithoutUtilizadorNestedInput
+    protocolosAtivados?: ProtocoloClinicoUncheckedUpdateManyWithoutAtivadoPorNestedInput
+    itensProtocoloConcluidos?: ItemProtocoloUncheckedUpdateManyWithoutConcluidoPorNestedInput
+    prescricoesDietaCriadas?: PrescricaoDietaUncheckedUpdateManyWithoutCriadaPorNestedInput
+    medicacoesAssinadas?: MedicacaoUncheckedUpdateManyWithoutAssinadoPorNestedInput
+    notasAssinadas?: NotaClinicaUncheckedUpdateManyWithoutAssinadaPorNestedInput
+    culturasRegistadas?: CulturaMicrobiologicaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    surtosRegistados?: SurtoIACSUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    notasIncidentesTI?: NotaIncidenteTIUncheckedUpdateManyWithoutAutorNestedInput
+    checklistsConformidade?: ConformidadeChecklistItemUncheckedUpdateManyWithoutAtualizadoPorNestedInput
+    trocasFolgaSolicitadas?: TrocaFolgaUncheckedUpdateManyWithoutSolicitanteNestedInput
+    trocasFolgaRecebidas?: TrocaFolgaUncheckedUpdateManyWithoutDestinatarioNestedInput
+    trocasFolgaAprovadas?: TrocaFolgaUncheckedUpdateManyWithoutAprovadoPorNestedInput
+    balancosHidricosRegistados?: BalancoHidricoUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    feridasRegistadas?: AvaliacaoFeridaUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    atualizacoesTransporte?: AtualizacaoTransporteUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    episodiosEspecialidadeActivada?: EpisodioUrgenciaUncheckedUpdateManyWithoutEspecialidadeActivadaPorNestedInput
+    sinalizacoesCriadas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutCriadaPorNestedInput
+    sinalizacoesResolvidas?: SinalizacaoPreocupanteUncheckedUpdateManyWithoutResolvidaPorNestedInput
+    relatoriosPassagemCriados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutCriadaPorNestedInput
+    relatoriosPassagemConfirmados?: RelatorioPassagemTurnoUncheckedUpdateManyWithoutConfirmadaPorNestedInput
+    reconciliacoesCriadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutCriadoPorNestedInput
+    reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
+    acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
+    resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -261513,6 +262942,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
     dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
@@ -261641,6 +263071,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
     dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
@@ -261785,6 +263216,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
     dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
@@ -261913,6 +263345,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
     dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
@@ -262181,6 +263614,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoCreateNestedManyWithoutAprovadaPorInput
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -262309,6 +263743,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedCreateNestedManyWithoutAprovadaPorInput
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -262600,6 +264035,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUpdateManyWithoutAprovadaPorNestedInput
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -262728,6 +264164,7 @@ export namespace Prisma {
     reconciliacoesAprovadas?: ReconciliacaoMedicacaoUncheckedUpdateManyWithoutAprovadaPorNestedInput
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -262910,6 +264347,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
     dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
@@ -263038,6 +264476,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
     dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
@@ -263241,6 +264680,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
     dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
@@ -263369,6 +264809,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
     dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
@@ -263638,6 +265079,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     dashboardConfig?: DashboardConfigCreateNestedOneWithoutUtilizadorInput
@@ -263766,6 +265208,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     dashboardConfig?: DashboardConfigUncheckedCreateNestedOneWithoutUtilizadorInput
@@ -264057,6 +265500,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     dashboardConfig?: DashboardConfigUpdateOneWithoutUtilizadorNestedInput
@@ -264185,6 +265629,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     dashboardConfig?: DashboardConfigUncheckedUpdateOneWithoutUtilizadorNestedInput
@@ -264313,6 +265758,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -264441,6 +265887,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -264585,6 +266032,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -264713,6 +266161,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -264982,6 +266431,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteCreateNestedManyWithoutCriadoPorInput
@@ -265110,6 +266560,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedCreateNestedManyWithoutCriadoPorInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedCreateNestedManyWithoutRegistadoPorInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedCreateNestedManyWithoutRegistadoPorInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedCreateNestedManyWithoutAssinadoPorInput
     aiDecisoes?: AiDecisaoUncheckedCreateNestedManyWithoutUtilizadorInput
     fotosFeridas?: FotoFeridaUncheckedCreateNestedManyWithoutCriadaPorInput
     portaisCriados?: PortalDoenteUncheckedCreateNestedManyWithoutCriadoPorInput
@@ -265401,6 +266852,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -265529,6 +266981,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -265959,6 +267412,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -266882,6 +268339,32 @@ export namespace Prisma {
     fhirResourceId?: string | null
     modalidadeDicom?: string | null
     verificado?: boolean
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
+    criadoEm?: Date | string
+  }
+
+  export type DocumentoSaudeCreateManyAssinadoPorInput = {
+    id?: string
+    doenteId: string
+    tipo: string
+    titulo: string
+    descricao?: string | null
+    dataDocumento: Date | string
+    origem: string
+    sistemaOrigemId?: string | null
+    formato: string
+    storageKey?: string | null
+    urlExterna?: string | null
+    mimeType: string
+    tamanhoBytes?: number | null
+    fhirResourceId?: string | null
+    modalidadeDicom?: string | null
+    verificado?: boolean
+    registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -268198,6 +269681,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneWithoutConsultasNestedInput
     atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
@@ -268217,6 +269704,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
@@ -268235,6 +269726,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -269838,6 +271333,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUpdateManyWithoutCriadoPorNestedInput
@@ -269966,6 +271462,7 @@ export namespace Prisma {
     acessosFamiliaresCriados?: AcessoFamiliarUncheckedUpdateManyWithoutCriadoPorNestedInput
     resultadosAnaliseRegistados?: ResultadoAnaliseUncheckedUpdateManyWithoutRegistadoPorNestedInput
     documentosSaudeRegistados?: DocumentoSaudeUncheckedUpdateManyWithoutRegistadoPorNestedInput
+    documentosSaudeAssinados?: DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorNestedInput
     aiDecisoes?: AiDecisaoUncheckedUpdateManyWithoutUtilizadorNestedInput
     fotosFeridas?: FotoFeridaUncheckedUpdateManyWithoutCriadaPorNestedInput
     portaisCriados?: PortalDoenteUncheckedUpdateManyWithoutCriadoPorNestedInput
@@ -271210,9 +272707,12 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutDocumentosSaudeNestedInput
     sistemaOrigem?: SistemaExternoSaudeUpdateOneWithoutDocumentosNestedInput
+    assinadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeAssinadosNestedInput
   }
 
   export type DocumentoSaudeUncheckedUpdateWithoutRegistadoPorInput = {
@@ -271232,6 +272732,9 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -271252,6 +272755,78 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocumentoSaudeUpdateWithoutAssinadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    dataDocumento?: DateTimeFieldUpdateOperationsInput | Date | string
+    origem?: StringFieldUpdateOperationsInput | string
+    formato?: StringFieldUpdateOperationsInput | string
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    urlExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    tamanhoBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
+    verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+    doente?: DoenteUpdateOneRequiredWithoutDocumentosSaudeNestedInput
+    sistemaOrigem?: SistemaExternoSaudeUpdateOneWithoutDocumentosNestedInput
+    registadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeRegistadosNestedInput
+  }
+
+  export type DocumentoSaudeUncheckedUpdateWithoutAssinadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    dataDocumento?: DateTimeFieldUpdateOperationsInput | Date | string
+    origem?: StringFieldUpdateOperationsInput | string
+    sistemaOrigemId?: NullableStringFieldUpdateOperationsInput | string | null
+    formato?: StringFieldUpdateOperationsInput | string
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    urlExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    tamanhoBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
+    verificado?: BoolFieldUpdateOperationsInput | boolean
+    registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
+    criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocumentoSaudeUncheckedUpdateManyWithoutAssinadoPorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    doenteId?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    dataDocumento?: DateTimeFieldUpdateOperationsInput | Date | string
+    origem?: StringFieldUpdateOperationsInput | string
+    sistemaOrigemId?: NullableStringFieldUpdateOperationsInput | string | null
+    formato?: StringFieldUpdateOperationsInput | string
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    urlExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    tamanhoBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
+    verificado?: BoolFieldUpdateOperationsInput | boolean
+    registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -271614,6 +273189,10 @@ export namespace Prisma {
     proximaConsulta?: Date | string | null
     codigo?: string | null
     checkinEm?: Date | string | null
+    tipo?: string
+    videoRoomId?: string | null
+    videoIniciadaEm?: Date | string | null
+    videoTerminouEm?: Date | string | null
     criadoEm?: Date | string
   }
 
@@ -271895,6 +273474,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -272628,6 +274210,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     medico?: UtilizadorUpdateOneRequiredWithoutConsultasNestedInput
     atosConsulta?: AtoConsultaUpdateManyWithoutConsultaNestedInput
@@ -272647,6 +274233,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     atosConsulta?: AtoConsultaUncheckedUpdateManyWithoutConsultaNestedInput
     episodioFaturacao?: EpisodioFaturacaoUncheckedUpdateOneWithoutConsultaNestedInput
@@ -272665,6 +274255,10 @@ export namespace Prisma {
     proximaConsulta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codigo?: NullableStringFieldUpdateOperationsInput | string | null
     checkinEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tipo?: StringFieldUpdateOperationsInput | string
+    videoRoomId?: NullableStringFieldUpdateOperationsInput | string | null
+    videoIniciadaEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    videoTerminouEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -273476,9 +275070,12 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     sistemaOrigem?: SistemaExternoSaudeUpdateOneWithoutDocumentosNestedInput
     registadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeRegistadosNestedInput
+    assinadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeAssinadosNestedInput
   }
 
   export type DocumentoSaudeUncheckedUpdateWithoutDoenteInput = {
@@ -273498,6 +275095,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -273518,6 +275118,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -274770,6 +276373,9 @@ export namespace Prisma {
     modalidadeDicom?: string | null
     verificado?: boolean
     registadoPorId?: string | null
+    assinadoEm?: Date | string | null
+    assinadoPorId?: string | null
+    hashSHA256?: string | null
     criadoEm?: Date | string
   }
 
@@ -274788,9 +276394,12 @@ export namespace Prisma {
     fhirResourceId?: NullableStringFieldUpdateOperationsInput | string | null
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
     doente?: DoenteUpdateOneRequiredWithoutDocumentosSaudeNestedInput
     registadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeRegistadosNestedInput
+    assinadoPor?: UtilizadorUpdateOneWithoutDocumentosSaudeAssinadosNestedInput
   }
 
   export type DocumentoSaudeUncheckedUpdateWithoutSistemaOrigemInput = {
@@ -274810,6 +276419,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -274830,6 +276442,9 @@ export namespace Prisma {
     modalidadeDicom?: NullableStringFieldUpdateOperationsInput | string | null
     verificado?: BoolFieldUpdateOperationsInput | boolean
     registadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    assinadoEm?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assinadoPorId?: NullableStringFieldUpdateOperationsInput | string | null
+    hashSHA256?: NullableStringFieldUpdateOperationsInput | string | null
     criadoEm?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

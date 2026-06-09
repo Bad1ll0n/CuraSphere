@@ -89,6 +89,8 @@ export default function RelatoriosPage() {
     );
   }
 
+  const SUPORTA_XLSX = new Set(['internamento', 'diagnosticos', 'medicamentos']);
+
   const downloadCSV = async (key: string) => {
     try {
       const resp = await api.get(`/relatorios/${key}?inicio=${inicio}&fim=${fim}`, {
@@ -103,6 +105,22 @@ export default function RelatoriosPage() {
       URL.revokeObjectURL(url);
     } catch {
       toast.error('Erro ao exportar CSV');
+    }
+  };
+
+  const downloadXlsx = async (key: string) => {
+    try {
+      const resp = await api.get(`/relatorios/${key}/xlsx?inicio=${inicio}&fim=${fim}`, {
+        responseType: 'blob',
+      });
+      const url = URL.createObjectURL(new Blob([resp.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${key}-${inicio}-${fim}.xlsx`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error('Erro ao exportar Excel');
     }
   };
 
@@ -170,15 +188,28 @@ export default function RelatoriosPage() {
               <h2 className="font-semibold text-slate-800">
                 {RELATORIOS.find((r) => r.key === relatorioAtivo)?.label}
               </h2>
-              <button
-                onClick={() => downloadCSV(relatorioAtivo)}
-                className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 text-sm rounded-lg hover:bg-slate-50"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Exportar CSV
-              </button>
+              <div className="flex items-center gap-2">
+                {SUPORTA_XLSX.has(relatorioAtivo) && (
+                  <button
+                    onClick={() => downloadXlsx(relatorioAtivo)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 border border-green-300 text-green-700 text-sm rounded-lg hover:bg-green-50"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Excel
+                  </button>
+                )}
+                <button
+                  onClick={() => downloadCSV(relatorioAtivo)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 text-sm rounded-lg hover:bg-slate-50"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Exportar CSV
+                </button>
+              </div>
             </div>
 
             {isLoading && (

@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { AnomalyDetectionService } from '../common/anomaly-detection.service';
 
 const mockPrisma = {
   utilizador: {
@@ -41,6 +42,11 @@ const mockRedis = {
   ttl: jest.fn().mockResolvedValue(-1),
 };
 
+const mockAnomaly = {
+  verificarIpLogin: jest.fn(),
+  rastrearAcessoDoente: jest.fn(),
+};
+
 describe('AuthService', () => {
   let service: AuthService;
 
@@ -63,6 +69,7 @@ describe('AuthService', () => {
         { provide: JwtService, useValue: mockJwt },
         { provide: ConfigService, useValue: mockConfig },
         { provide: RedisService, useValue: mockRedis },
+        { provide: AnomalyDetectionService, useValue: mockAnomaly },
       ],
     }).compile();
 

@@ -5,6 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AlertasService } from '../alertas/alertas.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { ProtocolosService } from '../protocolos/protocolos.service';
+import { SepsisService } from '../sepsis/sepsis.service';
+import { BaselinesService } from '../baselines/baselines.service';
 
 const mockPrisma = {
   doente: { findUnique: jest.fn() },
@@ -14,6 +16,8 @@ const mockPrisma = {
 const mockAlertas = { criarAlerta: jest.fn() };
 const mockNotificacoes = { enviarParaDoente: jest.fn().mockResolvedValue(undefined) };
 const mockProtocolos = { ativarSeNaoAtivo: jest.fn().mockResolvedValue(undefined) };
+const mockSepsis = { avaliar: jest.fn().mockResolvedValue(undefined) };
+const mockBaselines = { avaliarEAlertar: jest.fn().mockResolvedValue(undefined) };
 
 const mockDoente = { id: 'd1', nome: 'Maria Santos', ativo: true };
 
@@ -28,6 +32,8 @@ describe('SinaisVitaisService', () => {
         { provide: AlertasService, useValue: mockAlertas },
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: ProtocolosService, useValue: mockProtocolos },
+        { provide: SepsisService, useValue: mockSepsis },
+        { provide: BaselinesService, useValue: mockBaselines },
       ],
     }).compile();
 
@@ -38,6 +44,8 @@ describe('SinaisVitaisService', () => {
     jest.resetAllMocks();
     mockNotificacoes.enviarParaDoente.mockResolvedValue(undefined);
     mockProtocolos.ativarSeNaoAtivo.mockResolvedValue(undefined);
+    mockSepsis.avaliar.mockResolvedValue(undefined);
+    mockBaselines.avaliarEAlertar.mockResolvedValue(undefined);
   });
 
   // ── criar() — controlo de acesso ──────────────────────────────────────────

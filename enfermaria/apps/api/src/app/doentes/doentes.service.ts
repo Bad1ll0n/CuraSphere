@@ -1,10 +1,12 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { AiClinicoService } from '../ai-clinico/ai-clinico.service';
 import { StorageService } from '../common/storage.service';
 import { EstadoDoente } from '../common/enums';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class DoenteService {
@@ -15,6 +17,7 @@ export class DoenteService {
     private readonly notificacoes: NotificacoesService,
     private readonly aiClinico: AiClinicoService,
     private readonly storage: StorageService,
+    private readonly config: ConfigService,
   ) {}
 
   async listar(utilizadorId: string, role: string, page = 1, limit = 25, search?: string) {
@@ -1078,6 +1081,60 @@ export class DoenteService {
 
     eventos.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
     return { doente: { id: doente.id, nome: doente.nome }, total: eventos.length, eventos };
+  }
+
+  gerarTokenQuiosque(servicoId: string): string {
+    const secret = this.config.get<string>('QUIOSQUE_SECRET');
+    if (!secret) throw new Error('QUIOSQUE_SECRET não configurado');
+    return jwt.sign({ servicoId, purpose: 'quiosque' }, secret, { expiresIn: '365d' });
+  }
+
+  async dadosQuiosque(token: string, servicoId: string) {
+    const secret = this.config.get<string>('QUIOSQUE_SECRET');
+    if (!secret) throw new UnauthorizedException('Quiosque não configurado');
+
+    try {
+      const payload = jwt.verify(token, secret) as any;
+      if (payload.purpose !== 'quiosque' || payload.servicoId !== servicoId) {
+        throw new UnauthorizedException('Token inválido');
+      }
+    } catch {
+      throw new UnauthorizedException('Token inválido ou expirado');
+    }
+
+    const [camas, alertasCriticos, sinalVitais] = await Promise.all([
+      this.prisma.cama.findMany({ where: { servico: servicoId } }),
+      (this.prisma as any).alertaClinico.count({
+        where: {
+          acusado: false,
+          doente: { cama: { servico: servicoId } },
+          severidade: { in: ['critico', 'alta'] },
+        },
+      }).catch(() => 0),
+      (this.prisma as any).sinalVital.findMany({
+        where: {
+          doente: { cama: { servico: servicoId }, ativo: true },
+          registadoEm: { gte: new Date(Date.now() - 12 * 60 * 60 * 1000) },
+        },
+        select: { news2Score: true },
+      }).catch(() => []),
+    ]);
+
+    const camasTotal = camas.length;
+    const camasOcupadas = camas.filter((c: any) => c.estado === 'ocupada').length;
+    const camasLivres = camas.filter((c: any) => c.estado === 'livre').length;
+    const camasLimpeza = camas.filter((c: any) => c.estado === 'em_limpeza').length;
+
+    const news2Counts = { normal: 0, medio: 0, alto: 0, critico: 0 };
+    for (const sv of sinalVitais as any[]) {
+      const s = sv.news2Score ?? 0;
+      if (s <= 2) news2Counts.normal++;
+      else if (s <= 4) news2Counts.medio++;
+      else if (s <= 6) news2Counts.alto++;
+      else news2Counts.critico++;
+    }
+
+    return { camasTotal, camasOcupadas, camasLivres, camasLimpeza, news2Counts, alertasCriticosCount: alertasCriticos };
   }
 
   async exportarCsv(): Promise<string> {

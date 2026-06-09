@@ -148,6 +148,29 @@ export class PortalDoenteService {
     };
   }
 
+  async teleconsultas(portalId: string) {
+    const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
+    if (!portal) throw new UnauthorizedException();
+    return this.prisma.consulta.findMany({
+      where: { doenteId: portal.doenteId, tipo: 'teleconsulta' as any, estado: 'agendada' },
+      orderBy: { dataHora: 'asc' },
+      include: { medico: { select: { id: true, nome: true, subRole: true } } },
+    });
+  }
+
+  async entrarVideoPortal(consultaId: string, portalId: string) {
+    const portal = await this.prisma.portalDoente.findUnique({ where: { id: portalId } });
+    if (!portal) throw new UnauthorizedException();
+    const consulta = await this.prisma.consulta.findFirst({
+      where: { id: consultaId, doenteId: portal.doenteId },
+    });
+    if (!consulta) throw new NotFoundException('Consulta não encontrada');
+    const roomId: string | null = (consulta as any).videoRoomId ?? null;
+    if (!roomId) throw new NotFoundException('Chamada ainda não iniciada');
+    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
+    return { roomUrl: `${server}/${roomId}`, videoRoomId: roomId };
+  }
+
   async enviarMensagem(doenteId: string, conteudo: string) {
     const doente = await this.prisma.doente.findUnique({
       where: { id: doenteId },

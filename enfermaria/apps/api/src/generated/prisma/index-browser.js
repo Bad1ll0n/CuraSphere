@@ -638,6 +638,10 @@ exports.Prisma.ConsultaScalarFieldEnum = {
   proximaConsulta: 'proximaConsulta',
   codigo: 'codigo',
   checkinEm: 'checkinEm',
+  tipo: 'tipo',
+  videoRoomId: 'videoRoomId',
+  videoIniciadaEm: 'videoIniciadaEm',
+  videoTerminouEm: 'videoTerminouEm',
   criadoEm: 'criadoEm'
 };
 
@@ -1356,6 +1360,9 @@ exports.Prisma.DocumentoSaudeScalarFieldEnum = {
   modalidadeDicom: 'modalidadeDicom',
   verificado: 'verificado',
   registadoPorId: 'registadoPorId',
+  assinadoEm: 'assinadoEm',
+  assinadoPorId: 'assinadoPorId',
+  hashSHA256: 'hashSHA256',
   criadoEm: 'criadoEm'
 };
 

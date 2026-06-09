@@ -1,0 +1,185 @@
+name: CI — CuraSphere
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_e2e:
+        description: 'Correr testes E2E (Playwright)'
+        type: boolean
+        default: false
+  schedule:
+    # Suite E2E nocturna — todos os dias às 02:00 UTC
+    - cron: '0 2 * * *'
+
+env:
+  PNPM_VERSION: '9'
+  NODE_VERSION: '20'
+
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  # ── Job 1: TypeScript + Unit Tests (corre em cada push/PR, ~2min) ──────────
+  unit:
+    name: TypeScript + Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: enfermaria
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript — verificar tipos (API)
+        run: pnpm nx run api:tsc --noEmit
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+
+      - name: Unit Tests (API) com cobertura
+        run: pnpm nx run api:test --coverage --passWithNoTests
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          REDIS_URL: redis://localhost:6379/1
+          NODE_ENV: test
+
+      - name: Publicar relatório de cobertura
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: enfermaria/apps/api/test-output/jest/coverage/
+          retention-days: 14
+
+  # ── Job 2: Playwright E2E (schedule nocturno ou trigger manual) ────────────
+  e2e:
+    name: E2E Playwright
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_e2e == 'true')
+    defaults:
+      run:
+        working-directory: enfermaria
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: enfermaria_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: enfermaria/pnpm-lock.yaml
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Instalar browsers Playwright
+        run: pnpm playwright install chromium --with-deps
+
+      - name: Migrar base de dados de teste
+        working-directory: enfermaria/apps/api
+        run: pnpm prisma db push --force-reset
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+
+      - name: Build API
+        run: pnpm nx build api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+
+      - name: Arrancar API em background
+        run: pnpm nx serve api &
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/enfermaria_test
+          JWT_SECRET: test-ci-secret-32-chars-minimo-curasphere!!
+          REDIS_URL: redis://localhost:6379/1
+          PORT: 3333
+          NODE_ENV: test
+          ALLOWED_ORIGINS: http://localhost:3000
+
+      - name: Arrancar Web em background
+        run: pnpm nx serve web &
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+
+      - name: Aguardar servidores (API + Web)
+        run: |
+          npx wait-on http://localhost:3333/v1/health http://localhost:3000 --timeout 120000
+
+      - name: Seed de dados de teste
+        run: npx ts-node apps/web-e2e/fixtures/seed.ts
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3333
+          TEST_USER: '00001'
+          TEST_PASSWORD: Admin1234!
+        continue-on-error: true
+
+      - name: Correr testes Playwright
+        run: pnpm playwright test --config=apps/web-e2e/playwright.config.ts
+        env:
+          BASE_URL: http://localhost:3000
+          TEST_USER: '00001'
+          TEST_PASSWORD: Admin1234!
+
+      - name: Publicar relatório Playwright
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: enfermaria/apps/web-e2e/playwright-report/
+          retention-days: 7
+
+      - name: Publicar screenshots de falha
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-test-results
+          path: enfermaria/apps/web-e2e/test-results/
+          retention-days: 7

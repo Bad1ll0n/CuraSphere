@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import api from '@/lib/api';
 
@@ -11,6 +12,8 @@ interface Consulta {
   dataHora: string;
   duracao: number;
   estado: string;
+  tipo?: string;
+  videoRoomId?: string | null;
   notas?: string;
   diagnostico?: string;
   proximaConsulta?: string;
@@ -48,6 +51,7 @@ type Tab = 'marcacoes' | 'agenda';
 
 export default function ConsultasPage() {
   const { utilizador } = useAuth();
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>('marcacoes');
 
   // ─── Marcações state ──────────────────────────────────────────────────────
@@ -67,7 +71,7 @@ export default function ConsultasPage() {
   const [medicos, setMedicos] = useState<Medico[]>([]);
   const [novaForm, setNovaForm] = useState({
     medicoId: '', especialidade: '', dataMarcacao: new Date().toISOString().split('T')[0],
-    slotSelecionado: '', nomeDoente: '', doenteId: '', duracao: 20,
+    slotSelecionado: '', nomeDoente: '', doenteId: '', duracao: 20, tipo: 'presencial',
   });
   const [slots, setSlots] = useState<Slot[]>([]);
   const [carregandoSlots, setCarregandoSlots] = useState(false);
@@ -130,9 +134,10 @@ export default function ConsultasPage() {
         duracao: novaForm.duracao,
         nomeDoente: novaForm.nomeDoente || undefined,
         doenteId: novaForm.doenteId || undefined,
+        tipo: novaForm.tipo,
       });
       setModalNova(false);
-      setNovaForm({ medicoId: '', especialidade: '', dataMarcacao: new Date().toISOString().split('T')[0], slotSelecionado: '', nomeDoente: '', doenteId: '', duracao: 20 });
+      setNovaForm({ medicoId: '', especialidade: '', dataMarcacao: new Date().toISOString().split('T')[0], slotSelecionado: '', nomeDoente: '', doenteId: '', duracao: 20, tipo: 'presencial' });
       carregar();
     } catch (e: any) {
       alert(e?.response?.data?.message ?? 'Erro ao agendar');
@@ -280,6 +285,11 @@ export default function ConsultasPage() {
                               {c.codigo}
                             </span>
                           )}
+                          {c.tipo === 'teleconsulta' && (
+                            <span style={{ background: '#eff6ff', color: '#1d4ed8', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 600 }}>
+                              📹 Teleconsulta
+                            </span>
+                          )}
                           {c.checkinEm && (
                             <span style={{ background: '#d1fae5', color: '#065f46', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 600 }}>
                               ✅ Check-in: {new Date(c.checkinEm).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
@@ -290,6 +300,29 @@ export default function ConsultasPage() {
                     </div>
                     {c.estado === 'agendada' && (
                       <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                        {c.tipo === 'teleconsulta' && utilizador?.role === 'medico' && !c.videoRoomId && (
+                          <button
+                            onClick={async () => {
+                              try {
+                                await api.post(`/consultas/${c.id}/video/iniciar`);
+                                router.push(`/teleconsulta/${c.id}`);
+                              } catch (e: any) {
+                                alert(e?.response?.data?.message ?? 'Erro ao iniciar vídeo');
+                              }
+                            }}
+                            style={{ background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                          >
+                            📹 Iniciar
+                          </button>
+                        )}
+                        {c.tipo === 'teleconsulta' && c.videoRoomId && (
+                          <button
+                            onClick={() => router.push(`/teleconsulta/${c.id}`)}
+                            style={{ background: '#10b981', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                          >
+                            📹 Entrar
+                          </button>
+                        )}
                         {eAdmin && !c.checkinEm && (
                           <button
                             onClick={() => checkin(c.id)}
@@ -453,6 +486,28 @@ export default function ConsultasPage() {
                 placeholder="Para utentes sem registo no sistema"
                 style={{ width: '100%', border: '1px solid #e2e8f0', borderRadius: 10, padding: '10px 14px', fontSize: 14, background: '#f8fafc', boxSizing: 'border-box' }}
               />
+            </div>
+
+            {/* Tipo de consulta */}
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Tipo</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {(['presencial', 'teleconsulta'] as const).map(t => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setNovaForm(f => ({ ...f, tipo: t }))}
+                    style={{
+                      flex: 1, borderRadius: 10, padding: '9px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                      background: novaForm.tipo === t ? (t === 'teleconsulta' ? '#3b82f6' : '#0f172a') : '#f1f5f9',
+                      color: novaForm.tipo === t ? '#fff' : '#64748b',
+                      border: novaForm.tipo === t ? 'none' : '1px solid #e2e8f0',
+                    }}
+                  >
+                    {t === 'presencial' ? '🏥 Presencial' : '📹 Teleconsulta'}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Data */}

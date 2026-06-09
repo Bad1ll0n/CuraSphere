@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../common/storage.service';
 import { FhirService } from '../fhir/fhir.service';
 import { UploadDocumentoDto } from './dto/upload-documento.dto';
-import { randomUUID } from 'crypto';
+import { createHash, randomUUID } from 'crypto';
 
 @Injectable()
 export class DocumentosSaudeService {
@@ -134,6 +134,38 @@ export class DocumentosSaudeService {
     }
 
     return { novos, mensagem: `Sincronização concluída. ${novos} novo(s) documento(s).` };
+  }
+
+  async assinar(docId: string, userId: string) {
+    const doc = await this.prisma.documentoSaude.findUnique({ where: { id: docId } });
+    if (!doc) throw new NotFoundException('Documento não encontrado');
+    if (doc.assinadoEm) throw new ForbiddenException('Documento já foi assinado');
+
+    let hashSHA256: string | null = null;
+    if (doc.storageKey) {
+      const buffer = await this.storage.getBuffer(doc.storageKey);
+      if (buffer) {
+        hashSHA256 = createHash('sha256').update(buffer).digest('hex');
+      }
+    }
+
+    const updated = await this.prisma.documentoSaude.update({
+      where: { id: docId },
+      data: { assinadoEm: new Date(), assinadoPorId: userId, hashSHA256, verificado: true },
+      include: { assinadoPor: { select: { id: true, nome: true } } },
+    });
+
+    await (this.prisma as any).auditLog.create({
+      data: {
+        utilizadorId: userId,
+        acao: 'assinar_documento',
+        entidade: 'DocumentoSaude',
+        entidadeId: docId,
+        detalhes: { hashSHA256 },
+      },
+    });
+
+    return updated;
   }
 
   async remover(docId: string, userId: string, role: string) {

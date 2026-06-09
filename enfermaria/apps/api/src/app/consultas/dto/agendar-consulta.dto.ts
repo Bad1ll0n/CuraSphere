@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsNotEmpty, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsNotEmpty, IsDateString, IsIn } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -37,4 +37,9 @@ export class AgendarConsultaDto {
   @IsOptional()
   @IsString()
   notas?: string;
+
+  @ApiPropertyOptional({ enum: ['presencial', 'teleconsulta'] })
+  @IsOptional()
+  @IsIn(['presencial', 'teleconsulta'])
+  tipo?: string;
 }

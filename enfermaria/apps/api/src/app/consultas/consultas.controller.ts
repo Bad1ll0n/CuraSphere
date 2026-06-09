@@ -117,4 +117,22 @@ export class ConsultasController {
   removerAto(@Param('id') id: string, @Param('atoConsultaId') atoConsultaId: string) {
     return this.service.removerAto(id, atoConsultaId);
   }
+
+  @Post(':id/video/iniciar')
+  @Roles('medico')
+  iniciarVideo(@Param('id') id: string, @Request() req: any) {
+    return this.service.iniciarVideo(id, req.user.sub);
+  }
+
+  @Post(':id/video/terminar')
+  @Roles('medico')
+  terminarVideo(@Param('id') id: string, @Request() req: any) {
+    return this.service.terminarVideo(id, req.user.sub);
+  }
+
+  @Get(':id/video/entrar')
+  @Roles('medico', 'enfermeiro', 'administrativo', 'direcao')
+  dadosVideo(@Param('id') id: string, @Request() req: any) {
+    return this.service.dadosVideo(id, req.user.sub);
+  }
 }

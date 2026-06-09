@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ConflictException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TicketsService } from '../tickets/tickets.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
@@ -103,7 +103,7 @@ export class ConsultasService {
 
   async agendar(dto: {
     doenteId?: string; nomeDoente?: string; medicoId: string; especialidade: string;
-    dataHora: string; duracao?: number; notas?: string;
+    dataHora: string; duracao?: number; notas?: string; tipo?: string;
   }) {
     return this.prisma.$transaction(async (tx) => {
       const duracao = dto.duracao ?? 30;
@@ -139,6 +139,7 @@ export class ConsultasService {
           duracao,
           notas: dto.notas ?? null,
           codigo,
+          ...(dto.tipo ? { tipo: dto.tipo } as any : {}),
         },
         include: this.includeRelations(),
       });
@@ -318,6 +319,45 @@ export class ConsultasService {
     }
 
     return { enviados, medicos: medicoIds.length };
+  }
+
+  async iniciarVideo(consultaId: string, userId: string) {
+    const c = await this.buscar(consultaId);
+    if (c.medicoId !== userId) throw new ForbiddenException('Apenas o médico pode iniciar');
+    if ((c as any).tipo !== 'teleconsulta') throw new BadRequestException('Consulta não é teleconsulta');
+    const videoRoomId = 'curasphere-' + consultaId.slice(0, 8).toLowerCase();
+    await this.prisma.consulta.update({
+      where: { id: consultaId },
+      data: { videoRoomId, videoIniciadaEm: new Date() } as any,
+    });
+    const portal = await (this.prisma as any).portalDoente.findUnique({ where: { doenteId: c.doenteId ?? '' } });
+    if (portal?.ativo) {
+      await this.notificacoesService
+        .enviarParaUtilizador(portal.id, 'Teleconsulta iniciada', 'O seu médico está à sua espera na videochamada.')
+        .catch(() => {});
+    }
+    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
+    return { videoRoomId, roomUrl: `${server}/${videoRoomId}`, consultaId };
+  }
+
+  async terminarVideo(consultaId: string, userId: string) {
+    const c = await this.buscar(consultaId);
+    if (c.medicoId !== userId) throw new ForbiddenException('Apenas o médico pode terminar');
+    const updated = await this.prisma.consulta.update({
+      where: { id: consultaId },
+      data: { videoTerminouEm: new Date() } as any,
+    });
+    const iniciadaEm: Date | null = (updated as any).videoIniciadaEm ?? null;
+    const duracaoMin = iniciadaEm ? Math.round((Date.now() - iniciadaEm.getTime()) / 60000) : null;
+    return { duracaoMin };
+  }
+
+  async dadosVideo(consultaId: string, _userId: string) {
+    const c = await this.buscar(consultaId);
+    const roomId: string | null = (c as any).videoRoomId ?? null;
+    if (!roomId) throw new NotFoundException('Chamada ainda não iniciada');
+    const server = process.env['JITSI_SERVER'] ?? 'https://meet.jit.si';
+    return { videoRoomId: roomId, roomUrl: `${server}/${roomId}` };
   }
 
   private async buscar(id: string) {

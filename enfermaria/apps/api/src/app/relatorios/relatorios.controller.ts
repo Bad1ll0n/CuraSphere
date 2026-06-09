@@ -1,6 +1,7 @@
 import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { RelatoriosService } from './relatorios.service';
+import { ExcelService } from '../common/excel.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -9,7 +10,10 @@ import { Roles } from '../auth/roles.decorator';
 @Roles('direcao', 'administrativo', 'ti')
 @Controller('relatorios')
 export class RelatoriosController {
-  constructor(private readonly service: RelatoriosService) {}
+  constructor(
+    private readonly service: RelatoriosService,
+    private readonly excel: ExcelService,
+  ) {}
 
   private parseDatas(inicio?: string, fim?: string): { inicio: Date; fim: Date } {
     const agora = new Date();
@@ -88,5 +92,32 @@ export class RelatoriosController {
       return res.send(this.service.toCSV(data.linhas));
     }
     return res ? res.json(data) : data;
+  }
+
+  @Get('internamento/xlsx')
+  async internamentoXlsx(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Res() res?: Response) {
+    if (!res) return;
+    const datas = this.parseDatas(inicio, fim);
+    const data = await this.service.internamento(datas.inicio, datas.fim);
+    const rows = data.resumoPorServico.map(r => [r.servico, r.totalInternamentos, r.demoraMediaDias]);
+    await this.excel.enviarXlsx(res, 'internamento.xlsx', 'Internamento', ['Serviço', 'Total Internamentos', 'Demora Média (dias)'], rows);
+  }
+
+  @Get('diagnosticos/xlsx')
+  async diagnosticosXlsx(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Res() res?: Response) {
+    if (!res) return;
+    const datas = this.parseDatas(inicio, fim);
+    const data = await this.service.diagnosticos(datas.inicio, datas.fim);
+    const rows = data.top20.map((r: any) => [r.diagnostico, r.total]);
+    await this.excel.enviarXlsx(res, 'diagnosticos.xlsx', 'Top Diagnósticos', ['Diagnóstico', 'Total'], rows);
+  }
+
+  @Get('medicamentos/xlsx')
+  async medicamentosXlsx(@Query('inicio') inicio?: string, @Query('fim') fim?: string, @Res() res?: Response) {
+    if (!res) return;
+    const datas = this.parseDatas(inicio, fim);
+    const data = await this.service.medicamentos(datas.inicio, datas.fim);
+    const rows = data.top20.map((r: any) => [r.nome, r.totalAdministracoes]);
+    await this.excel.enviarXlsx(res, 'medicamentos.xlsx', 'Top Medicamentos', ['Medicamento', 'Total Administrações'], rows);
   }
 }

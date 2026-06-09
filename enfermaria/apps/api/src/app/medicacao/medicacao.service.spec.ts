@@ -4,6 +4,7 @@ import { MedicacaoService } from './medicacao.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificacoesService } from '../notificacoes/notificacoes.service';
 import { RedisService } from '../redis/redis.service';
+import { StewardshipService } from '../stewardship/stewardship.service';
 
 const mockPrisma = {
   $transaction: jest.fn(),
@@ -33,11 +34,25 @@ const mockRedis = {
   expire: jest.fn().mockResolvedValue(1),
 };
 
+const mockStewardship = {
+  registarSeAntibiotico: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('MedicacaoService', () => {
   let service: MedicacaoService;
 
   beforeEach(async () => {
     jest.resetAllMocks();
+    mockStewardship.registarSeAntibiotico.mockResolvedValue(undefined);
+    mockNotificacoes.enviarParaUtilizador.mockResolvedValue(undefined);
+    mockNotificacoes.enviarParaUtilizadores.mockResolvedValue(undefined);
+    mockNotificacoes.notificarRole.mockResolvedValue(undefined);
+    // Defaults para métodos que retornam arrays (usados com .map antes da transação)
+    mockPrisma.medicacao.findMany.mockResolvedValue([]);
+    mockPrisma.alergia.findMany.mockResolvedValue([]);
+    mockPrisma.registoMedicacao.findMany.mockResolvedValue([]);
+    mockPrisma.atribuicaoHorarioTurno.findMany.mockResolvedValue([]);
+    mockRedis.get.mockResolvedValue(null);
     mockPrisma.$transaction.mockImplementation((arg: any) => {
       if (typeof arg === 'function') return arg(mockPrisma);
       return Promise.all(arg);
@@ -49,6 +64,7 @@ describe('MedicacaoService', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: NotificacoesService, useValue: mockNotificacoes },
         { provide: RedisService, useValue: mockRedis },
+        { provide: StewardshipService, useValue: mockStewardship },
       ],
     }).compile();
 
