@@ -26,5 +26,30 @@ describe('AuditService', () => {
         service.registar({ utilizadorId: 'u1', acao: 'login', entidadeTipo: 'auth', ip: '127.0.0.1' }),
       ).not.toThrow();
     });
+
+    it('não propaga excepção quando prisma.auditLog.create rejeita', async () => {
+      mockPrisma.auditLog.create.mockRejectedValue(new Error('DB offline'));
+
+      // registar() é void — não deve lançar mesmo quando prisma falha
+      expect(() =>
+        service.registar({ utilizadorId: 'u1', acao: 'login' }),
+      ).not.toThrow();
+
+      // Flush microtasks — a promise rejeitada deve ser absorvida silenciosamente
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    it('chama prisma.create sem entidadeId quando não fornecido', () => {
+      mockPrisma.auditLog.create.mockResolvedValue({ id: 'al-2' });
+
+      service.registar({ utilizadorId: 'u2', acao: 'logout' });
+
+      expect(mockPrisma.auditLog.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.not.objectContaining({ entidadeId: expect.anything() }),
+        }),
+      );
+    });
   });
 });

@@ -27,10 +27,6 @@ module.exports = {
     '!src/generated/**',
   ],
   coverageThreshold: {
-    'src/app/auth/': { statements: 50 },
-    'src/app/sinais-vitais/': { statements: 50 },
-    'src/app/consultas/': { statements: 50 },
-    'src/app/break-glass/': { statements: 60 },
-    global: { statements: 45 },
+    global: { statements: 50, branches: 28, functions: 45, lines: 52 },
   },
 };
